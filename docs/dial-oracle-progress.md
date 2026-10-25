@@ -50,3 +50,95 @@ verified recovery strategy before a clean fresh attempt. Expand to six/eight L3.
 Existing violations remain violations even after unlocking; distinguish goal
 reached, clean success and privileged-assisted Oracle. No GPT policy experiment
 or merge is authorized by this continuation.
+
+## Formal continuation milestone
+
+Frozen manipulation source: `cbd14c3` (all running attempts snapshot their own
+complete Python source). `scripts/audit_best5_oracle.py` was subsequently added
+for closed-run transcript, motion and measured concurrency auditing.
+
+- `runs/oracle/dial-best5-recovery-20261026/dial-best5-n04-d3/attempt-001`:
+  **passed**, no online research intervention, no process violations/unknowns.
+  12 explicit guesses, 19 actual valid inputs, 501.08 simulated seconds,
+  456.91 wall seconds, 3 recorded failed robot actions recovered by the reference.
+  Transcript replay and all 30,066 motion frames verified. Source task,
+  environment, scene bundle and effective harness are byte-identical to the old
+  attempt. Peak 4 concurrent action jobs, 154.76 seconds measured multi-arm
+  motion overlap; sustained blue support is accounted separately.
+  Videos: `outputs/oracle/dial-recovery-20261026/four-L3/{global,global_rear}.mp4`,
+  complete decoding verified by render manifest.
+- Six-dial D04 local unit `stem-six-d04/attempt-001`: all five marks, return to
+  1, physical release and 4-second passive return passed; no violations. Its
+  videos are under `outputs/oracle/dial-recovery-20261026/six-d04-unit`.
+- Six/eight L3 full blind runs are active under the same new batch root, each
+  `attempt-001`, with 3600 wall / 2400 simulation-second bounds. Native exec
+  sessions are 4697 (six) and 48877 (eight); inspect real status/process state
+  before assuming an old session remains live. Recovery directories retain
+  their worlds if the reference fails. No third physical experiment is active.
+
+User asked about parallelism while running and explicitly said continue.
+Reference already batches independent red turns, keeps blue support and
+unchanged red holds, and uses sampled whole-arm conflict checks. The measured
+overlap above is evidence of concurrency, not a serial-vs-parallel speedup proof.
+Do not change/restart the ongoing experiments solely for this question.
+
+## Later live milestones
+
+Six L3 `attempt-001` passed: 16 explicit guesses / 24 actual valid inputs,
+838.78 simulation seconds, 1248.85 wall seconds, 11 retained failed robot
+actions, zero violations or unknowns, no online research intervention. Frozen
+solver replay and all 50,328 motion frames verified. Peak 6 concurrent actions,
+331.32 simulation seconds measured motion overlap. Its two videos completed
+encoding and full decoding under `outputs/oracle/dial-recovery-20261026/six-L3`.
+
+Eight L3 reached a real live repair boundary at sim 722.34, guess 12, BEST3,
+923 remaining candidates: D04 blue H failed support requalification; red G was
+held stationary. No process violation had occurred. The world and solver were
+retained. First research plan reissued normal 20 mm / 70 N H grasp: terminal
+failure at 14.86 mm, retained in results. Second plan used the declared stem's
+16 mm cross-section dimension with the same 70 N force and existing tolerances:
+normal executor completed, H drive hold and actual qualified blue support
+restored, no violation. Research reviewed and resumed the original guess with
+an empty third envelope. The ongoing eight-dial episode MUST be classified as
+privileged-assisted, even if it later passes. Do not erase the first failed
+repair or count it as pure-program Oracle.
+
+Observation, not a proven universal cause: H was in drive approach phase with
+no active action after support loss; ordinary regrasp caused force qualification.
+The 16x20 mm stem presents different apparent widths under roll. A future
+automatic recovery must still verify actual bilateral support; drive width or
+is_grasped alone is insufficient. No new untested automatic rule was hot-loaded
+into this frozen episode.
+
+User also asked about factory migration. Current motion format records every
+qpos at 60 Hz, source-bound geometry and timestamped appearance changes. Fixed
+workstation transforms and new materials/background can reproduce that motion
+offline without re-integrating physics. This is not a 2 ms full restart state.
+No factory rebuild or GPT-policy experiment was requested/started here.
+
+## Eight L3 second recovery and new reference
+
+At sim790.562 D04 support dropped during red G motion and a genuine
+`driven_red_without_support` violation was recorded. The run remained live for
+research. Reissuing the 16 mm grasp failed at10.5 mm; a wider inner estimate
+allowance was rejected before movement by the existing closing-operation gate.
+A12 mm corner-contact estimate then restored actual qualified support using
+the original70 N force. All failed plans and the original violation remain.
+This is engineering recovery evidence, not a clean pass. The now-understood
+violated episode is being sealed gracefully for a new initial-state attempt.
+
+New family-owned reference uses an optional private Trial step guard: while
+executing a red turn, an idle blue drive leaving hold or rapidly closing near
+its width window requests an ordinary controlled stop for the affected red
+robot. At known terminal feedback it issues an ordinary blue grasp and verifies
+actual qualified support before continuing measured angle corrections. It does
+not edit driver state, object poses, physics, force limits or scoring. Uncertain
+results still enter the existing recovery fence. The initial gate also checks
+blue pressure before starting another red segment.
+
+34 focused tests passed, including a real dual-grasp fault injection with red
+temporarily holding the rotor; an empty red hand is not a valid load-bearing
+fixture for this recovery. Eight-D04 local commissioning with the new reference
+passed all marks1..5, return1, release and passive return, no process violation:
+`runs/engineering/best5-recovery-20261026/pressure-guard-eight-d04/attempt-001`.
+The full new eight-dial run will use attempt-002 and a fresh blind solver.

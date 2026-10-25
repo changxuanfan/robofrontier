@@ -80,6 +80,58 @@ class BestManipulator(HoldingManipulator):
         self.red_capture_offset_m=0.;self.red_grasp_force_n=30.
         self.robot_geometry=None
         self.hold_recoveries={}
+    def blue_pressure_issue(self,a):
+        arm=self.t.arms[a['nominal_robots'][1]]
+        if arm.job is not None:return False
+        if arm.grasp_force is None:return True
+        width=arm.observe()['gripper_width_m']
+        closing=min(float(self.t.data.joint(arm.name+'_'+suffix).qvel[0]) for suffix in ('finger_joint1','finger_joint2'))<-.01
+        return arm.grasp_phase!='hold' or (closing and width<arm.grasp_width-arm.grasp_epsilon[0]+.002)
+    def requalify_blue_pressure(self,entries):
+        t=self.t
+        for a in entries:
+            robot=a['nominal_robots'][1];arm=t.arms[robot]
+            width=arm.observe()['gripper_width_m']
+            if not .010<width<.030:raise RuntimeError('Blue pressure repair needs geometry review '+a['id'])
+            # The declared stem has 16/20 mm faces. This is a new ordinary
+            # grasp, not a driver-state write or proof based on aperture alone.
+            expected=.020 if width>=.018 else .016
+            force=arm.grasp_force if arm.grasp_force is not None else 70.
+            t.execute('blue-pressure-requalify',{robot:('gripper',dict(mode='grasp',width_m=expected,
+                force_n=force,speed_m_s=.02,epsilon_inner_m=.005,epsilon_outer_m=.005))})
+            t.wait(.3)
+            super().wait_support([a])
+            t.event('reference_blue_pressure_requalified',dial=a['id'],robot=robot,expected_width_m=expected,
+                scope='Ordinary actuator regrasp; actual bilateral airborne support reverified')
+    def wait_support(self,entries):
+        if self.t.task['level']==3:
+            affected=[a for a in entries if self.blue_pressure_issue(a)]
+            if affected:self.requalify_blue_pressure(affected)
+        return super().wait_support(entries)
+    def guarded_turn(self,label,commands):
+        t=self.t;affected={};previous=getattr(t,'reference_step_guard',None)
+        def guard():
+            if previous is not None:previous()
+            if t.task['level']!=3:return
+            for a in self.dials:
+                red=a['nominal_robots'][0]
+                if red not in commands or a['id'] in affected:continue
+                arm=t.arms[red]
+                if arm.job is not None and arm.job_op=='move' and self.blue_pressure_issue(a):
+                    affected[a['id']]=a
+                    arm.request_stop(t.time,'Blue support pressure requires requalification')
+                    t.event('reference_blue_pressure_guard',dial=a['id'],red_robot=red,
+                        scope='Early controlled stop; no object state or process-rule edits')
+        t.reference_step_guard=guard
+        try:results=t.execute(label,commands,allow_failure=True)
+        finally:t.reference_step_guard=previous
+        if affected:
+            if any(v['status'] not in ('completed','failed') or (v['status']=='failed' and
+                v.get('reason')!='Blue support pressure requires requalification') for v in results.values()):
+                raise RuntimeError(label+': '+str(results))
+            self.requalify_blue_pressure(list(affected.values()))
+        elif any(v['status']!='completed' for v in results.values()):raise RuntimeError(label+': '+str(results))
+        return results
     def blue_capture_options(self,a,mr,point):
         if self.t.task['level']!=3 or self.blue_capture_mode!='shoulder':return super().blue_capture_options(a,mr,point)
         t=self.t;geoms=[t.model.geom(a['id']+'_handle_shoulder'+str(i)) for i in (0,1)]
@@ -163,14 +215,14 @@ class BestManipulator(HoldingManipulator):
         return True
     def execute_turn(self,label,commands):
         t=self.t
-        if self.batch_arc_clear(commands):return t.execute(label,commands)
+        if self.batch_arc_clear(commands):return self.guarded_turn(label,commands)
         # A bounded reference scheduling fallback, not a harness restriction.
         t.event('reference_turn_batch_conflict',robots=list(commands),scope='Sampled nominal whole-arm joint interpolation; no dynamics guarantee')
         pending=dict(commands);results={}
         while pending:
             robot=next((r for r,c in pending.items() if self.batch_arc_clear({r:c})),None)
             if robot is None:raise RuntimeError('No screened turn batch or single-arm ordering')
-            results.update(t.execute(label+'-separate-'+robot,{robot:pending.pop(robot)}))
+            results.update(self.guarded_turn(label+'-separate-'+robot,{robot:pending.pop(robot)}))
         return results
     def update_decoder(self,guess):
         # Updates occur on every actual observed ready combination, including

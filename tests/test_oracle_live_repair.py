@@ -12,6 +12,36 @@ from robofrontier.suite.oracle import Trial
 
 
 class LiveRepairTests(unittest.TestCase):
+    def test_red_turn_stops_and_requalifies_idle_blue_approach_phase(self):
+        from robofrontier.suite.oracle import Trial
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(__file__).resolve().parents[1]
+            scene=root/'configs/environments/spring_dial/frontier-v2-r11-dial-best5-n06-d3'
+            cfg=json.loads((root/'runs/oracle/suite-v2-r10-closure-20261025/inputs/harness.json').read_text())
+            t=Trial(scene,Path(tmp)/'world',frames=False,controller_cfg=cfg)
+            m=BestManipulator(t);entry=m.dials[3];m.lift([entry])
+            m.grasp([entry],[1]*len(m.dials))
+            self.assertTrue(t.monitor.dial_ready[3])
+            step=t.step;injected=[False]
+            def inject_idle_driver_phase():
+                if t.arms['G'].job is not None and not injected[0]:
+                    # Declared driver fault injection, no object/robot pose edits.
+                    t.arms['H'].grasp_phase='approach';t.arms['H'].grasp_confirmed=False
+                    t.arms['H'].grasp_drive_force=0.;t.arms['H'].grasp_force_started=None
+                    t.arms['H'].grasp_contact_width=None;t.arms['H'].grasp_settling.clear()
+                    injected[0]=True
+                step()
+            t.step=inject_idle_driver_phase
+            target=t.data.site_xpos[t.arms['G'].site]+np.array([0,0,.005])
+            rotation=t.data.site_xmat[t.arms['G'].site].reshape(3,3).copy()
+            try:
+                result=m.execute_turn('guard-regression',{'G':t.pose_command('G',target,rotation,.02,.2)})
+                self.assertEqual(result['G']['status'],'failed')
+                self.assertTrue(t.monitor.dial_ready[3]);self.assertEqual(t.arms['H'].grasp_phase,'hold')
+                self.assertFalse(t.monitor.violations)
+                self.assertTrue(any(e['event']=='reference_blue_pressure_requalified' for e in t.events))
+            finally:t.close(dict(passed=False,scope='Engineering blue-pressure fault injection'))
+
     def test_production_close_drains_recovery_and_preserves_assistance(self):
         from scripts.run_blind_dial_oracle import close_trial
         from robofrontier.suite.oracle_recovery import OracleRecovery, RecoverablePlanError

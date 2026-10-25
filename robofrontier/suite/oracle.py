@@ -147,6 +147,8 @@ class Trial:
         self.last_heartbeat=stamp
     def step(self):
         if self.data is not getattr(self,'_live_data',self.data):raise RuntimeError('Planning scratch cannot step a physical world')
+        guard=getattr(self,'reference_step_guard',None)
+        if guard is not None:guard()
         if self.tick%self.stride==0:
             self.check_stop()
             for arm in self.arms.values():arm.control(.02)
