@@ -142,3 +142,69 @@ fixture for this recovery. Eight-D04 local commissioning with the new reference
 passed all marks1..5, return1, release and passive return, no process violation:
 `runs/engineering/best5-recovery-20261026/pressure-guard-eight-d04/attempt-001`.
 The full new eight-dial run will use attempt-002 and a fresh blind solver.
+
+## Active attempt-002 (frozen 69430cd)
+
+Native exec22643; wall budget5400s / sim3000s. First solver query confirmed
+390625 candidates, not the previous posterior. D04 pressure guard triggered
+at sim703.258 and requalified at704.06, before the old first failure. Later
+several guarded red stops/regrasps prevented a process violation, but shrinking
+corner contact eventually hit the normal closing-operation admission gate at
+sim794.62. The world/solver were retained with zero violations, guess13/BEST3,
+672 candidates. This episode is now privileged-assisted.
+
+Research repairs, all via ordinary recorded actuator commands:
+
+- A12mm width estimate restored the existing corner contact. Static centering
+  while strongly held just dragged the coupled apparatus; it did not recenter
+  the actual grasp. Red G was raised temporarily to70N within the existing
+  30..70N limits. A proposed5N blue guidance command was rejected before any
+  physical execution; replacement30N remained within the frozen limits.
+- Opened blue H to32mm while red G stayed stationary and force-held. G took
+  temporary support. The free module rotated about its real spring joint;
+  no object pose was assigned. After finite settling actions, scratch-only
+  IK/full-scene collision searches compared actual current blue capture poses.
+- Search helper is preserved at
+  `runs/engineering/best5-recovery-20261026/search-blue-regrasp.py`; results and
+  rejected candidates are in `attempt-002/recovery/pause-001/blue-search.json`.
+  Conventional zero-twist20mm stem capture was chosen with joint-limit margin;
+  a smaller-cost diagonal candidate approached a joint limit and was rejected.
+- Approached the measured current stem center with H open, then closed at the
+  existing70N setpoint and allowed .08m/s closing speed. Width uncertainty was
+  declared in the command; independent actual bilateral/airborne support still
+  required qualification. Real capture completed at sim810.18, width19.85mm,
+  qualified blue support and zero process violations.
+- Restored H to the normal20mm estimate/70N and G to27.5mm/30N, independently
+  verified all eight blue supports, then resumed the same guess/solver at
+  sim810.94. All11 plan envelopes (including admission rejection and review)
+  remain recorded; never classify this attempted run as pure-program.
+
+The user viewed the newly generated four/six L3 front videos inline. Side
+questions did not cancel the experiment. Explained: numeric privileged Oracle
+versus RGB-based GPT policy; measured multi-arm concurrency; exact reset versus
+physical retreat; 60Hz source-bound replay versus a full physics checkpoint;
+heuristic entropy/move-count query selection versus a proven fastest solver.
+Existing five-symbol logical simulations were rechecked from the raw summary:
+mean9.2816/14.1716/19.1038, P95=14/20/26 for4/6/8 disks, respectively. The4-disk
+sample is exhaustive625; six/eight use4096 sampled passwords each. These are
+logical reference results, not GPT/physical success-time predictions.
+
+## User preference: do not time-limit a progressing task
+
+User explicitly requested no arbitrary episode time limit while work progresses.
+New launchers now default to disabled wall, simulation, action and BEST5 query
+budgets (0 at CLI, null in reports). Explicit STOP/signal and actual execution
+fault handling remain. The batch supervisor only force-kills after an explicit
+stop/requested-budget termination has already failed to settle; it has no
+normal-progress wall watchdog by default.35 focused tests passed, including
+large elapsed/simulation/action values continuing with defaults and explicit
+STOP/selected limits still taking effect.
+
+The active frozen attempt-002 has no safe online budget-control endpoint. It
+retains the original5400 wall /3000 sim limits; do not falsely claim the live
+process has been altered. Do not inject code into it or reset it just to change
+a management setting. At wall3993 /sim1045 it was progressing normally, guess21,
+10 candidates/BEST4, with all prior assisted repairs preserved and no violation.
+If it approaches its original limit, report the actual constraint explicitly;
+future attempts must use the new unlimited defaults unless the user requests
+specific bounds.

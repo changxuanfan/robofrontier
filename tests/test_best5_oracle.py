@@ -15,6 +15,22 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 class BestOracleTests(unittest.TestCase):
+    def test_unlimited_run_keeps_progressing_but_explicit_stops_still_apply(self):
+        from scripts.run_blind_dial_oracle import make_stop_check
+        from types import SimpleNamespace
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as tmp:
+            output=Path(tmp)/'attempt';trial=SimpleNamespace(time=100000.,actions=range(100000))
+            signal=[False]
+            with patch('scripts.run_blind_dial_oracle.time.monotonic',return_value=100000.):
+                unlimited=make_stop_check(trial,signal,output,0)
+                self.assertFalse(unlimited())
+                self.assertTrue(make_stop_check(trial,signal,output,0,wall_s=1)())
+                self.assertTrue(make_stop_check(trial,signal,output,0,sim_s=1)())
+                self.assertTrue(make_stop_check(trial,signal,output,0,actions=1)())
+                signal[0]=True;self.assertTrue(unlimited());signal[0]=False
+                (Path(tmp)/'STOP').touch();self.assertTrue(unlimited())
+
     def test_final_win_is_rechecked_after_cleanup(self):
         from scripts.run_blind_dial_oracle import final_success
         good=dict(passed=True,evaluation=dict(task_success=True,violations=[]),unresolved_robot_actions=[])

@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import signal
@@ -15,6 +16,14 @@ def final_success(report):
     return bool(report.get('passed') and not report.get('error')
                 and evaluation.get('task_success') and not evaluation.get('violations')
                 and not report.get('unresolved_robot_actions'))
+
+
+def make_stop_check(trial,stop,output,began,wall_s=0,sim_s=0,actions=0):
+    """Zero disables a user-selected budget; explicit STOP always applies."""
+    return lambda:(stop[0] or (Path(output).parent/'STOP').exists()
+        or (wall_s>0 and time.monotonic()-began>wall_s)
+        or (sim_s>0 and trial.time>sim_s)
+        or (actions>0 and len(trial.actions)>actions))
 
 
 def close_trial(trial,report):
@@ -57,11 +66,13 @@ def close_trial(trial,report):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--case',required=True);p.add_argument('--output',type=Path,required=True)
-    p.add_argument('--codebook',type=Path,required=True);p.add_argument('--wall-s',type=float,default=1800)
+    p.add_argument('--codebook',type=Path,required=True);p.add_argument('--wall-s',type=float,default=0,help='Optional wall budget; 0 means no limit')
     p.add_argument('--best5',action='store_true',help='Use R11 five-symbol BEST; --codebook is an evaluator-only per-case puzzle JSON')
     p.add_argument('--harness',type=Path,help='Frozen controller configuration for this batch')
-    p.add_argument('--sim-s',type=float,default=2400);p.add_argument('--actions',type=int,default=12000)
+    p.add_argument('--sim-s',type=float,default=0);p.add_argument('--actions',type=int,default=0)
+    p.add_argument('--guesses',type=int,default=0,help='Optional BEST5 query budget; 0 means no limit')
     a=p.parse_args();root=Path(__file__).resolve().parents[1]
+    if any(not math.isfinite(x) or x<0 for x in (a.wall_s,a.sim_s,a.actions,a.guesses)):p.error('Budgets must be nonnegative; zero disables the budget')
     from robofrontier.suite.source_snapshot import reexec_entry
     harness=a.harness or root/'runs/oracle/suite-v2-r10-closure-20261025/inputs/harness.json'
     catalog=root/'configs/suites/dial-best5-r11.json' if a.best5 else root/'runs/oracle/suite-v2-r10-closure-20261025/inputs/catalog.json'
@@ -93,13 +104,15 @@ def main():
     write_json(trial.directory/'task.json',trial.task)
     trial.abort_on_process_violation=True;stop=[False];began=time.monotonic()
     signal.signal(signal.SIGTERM,lambda *_:stop.__setitem__(0,True))
-    trial.stop_requested=lambda:stop[0] or (a.output.parent/'STOP').exists() or time.monotonic()-began>a.wall_s or trial.time>a.sim_s or len(trial.actions)>a.actions
+    trial.stop_requested=make_stop_check(trial,stop,a.output,began,a.wall_s,a.sim_s,a.actions)
     report=dict(case_id=a.case,passed=False,scope='Full blind BEST-only Oracle; no mechanical warmup or historical command prefix' if a.best5 else 'Full blind count-only Oracle, new continuous-grasp protocol; no historical command prefix',protocol=protocol,
-        budgets=dict(wall_s=a.wall_s,sim_s=a.sim_s,action_batches=a.actions),
+        budgets=dict(wall_s=a.wall_s or None,sim_s=a.sim_s or None,action_batches=a.actions or None,explicit_guesses=a.guesses or None),
         new_physics_integration=True,solver_answer_input=False,mechanical_oracle_geometry_privileged=True,
         new_evaluator_sha256=hashlib.sha256(b''.join((root/'robofrontier/suite'/name).read_bytes() for name in (('dial_best_worker.py','dial_feedback.py','dial_best_oracle.py') if a.best5 else ('dial_blind_worker.py','dial_hold_oracle.py')))).hexdigest())
     try:
-        trial.event('blind_protocol_start',protocol=protocol['version']);solve(trial)
+        trial.event('blind_protocol_start',protocol=protocol['version'])
+        if a.best5:solve(trial,max_guesses=a.guesses or None)
+        else:solve(trial)
         report['evaluation']=trial.monitor.result();report['passed']=bool(report['evaluation']['task_success'])
         report['goal_reached']=bool(report['evaluation'].get('solved'))
     except Exception as error:

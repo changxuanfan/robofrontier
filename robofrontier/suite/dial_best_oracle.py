@@ -4,6 +4,7 @@ The isolated solver receives observed complete inputs and the public record.
 The evaluator alone loads the secret; no private trial history is relayed.
 """
 import math
+from itertools import count
 from pathlib import Path
 import numpy as np
 import mujoco
@@ -235,7 +236,7 @@ class BestManipulator(HoldingManipulator):
         return bool(np.all(abs((angles-np.asarray(symbols)*self.angle_step_deg+180)%360-180)<=4))
 
 
-def solve(trial,max_guesses=48):
+def solve(trial,max_guesses=None):
     """Available after commissioning; not invoked by the mechanical runner."""
     decoder=BestDecoder(len(trial.task['dials']),trial.directory)
     trial.monitor.game.observer=decoder.observe
@@ -250,8 +251,9 @@ def solve(trial,max_guesses=48):
             repair.recover(error,None)
             while trial.task['level']>1 and not all(trial.monitor.dial_ready):
                 repair.recover(RuntimeError('Initial supports still need repair; partial lift is not replayed'),None)
-        for index in range(max_guesses):
+        for index in count():
             if trial.monitor.game.won:break
+            if max_guesses is not None and index>=max_guesses:break
             current=[round(math.degrees(float(trial.data.joint(a['id']+'_hinge').qpos[0]))/60)%6 for a in m.dials]
             guess=decoder.choose(current)
             trial.event('blind_best_guess',attempt=index+1,requested=guess,candidates=len(decoder.candidates))

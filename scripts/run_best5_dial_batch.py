@@ -7,6 +7,7 @@ import argparse
 import concurrent.futures
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import signal
@@ -20,8 +21,9 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--output-root',required=True,type=Path)
-    p.add_argument('--workers',type=int,choices=(1,2),default=2);p.add_argument('--wall-s',type=float,default=1800)
+    p.add_argument('--workers',type=int,choices=(1,2),default=2);p.add_argument('--wall-s',type=float,default=0,help='Optional wall budget per case; 0 means no limit')
     p.add_argument('--cases',nargs='*');a=p.parse_args();base=a.output_root.resolve()
+    if not math.isfinite(a.wall_s) or a.wall_s<0:p.error('Wall budget must be nonnegative; zero disables it')
     catalog=ROOT/'configs/suites/dial-best5-r11.json';cases=json.loads(catalog.read_text())['cases']
     ids=[c['id'] for c in cases if not a.cases or c['id'] in a.cases]
     if a.cases and set(ids)!=set(a.cases):raise ValueError('Unknown case')
@@ -33,7 +35,7 @@ def main():
     (base/'inputs/harness.json').write_bytes(old.read_bytes());(base/'inputs/catalog.json').write_bytes(catalog.read_bytes())
     write_json(base/'manifest.json',dict(protocol='dial-best5-continuous-grasp-repair-v2',git_commit=commit,worktree=str(ROOT),
         solver_password_input=False,mechanical_geometry_privileged=True,mechanical_warmup_in_episode=False,
-        cases=ids,workers=a.workers,wall_budget_per_case_s=a.wall_s,sim_budget_per_case_s=2400,
+        cases=ids,workers=a.workers,wall_budget_per_case_s=a.wall_s or None,sim_budget_per_case_s=None,
         catalog_sha256=hashlib.sha256(catalog.read_bytes()).hexdigest(),created_unix_s=time.time()))
     results=[]
     def status(active):
@@ -43,17 +45,17 @@ def main():
         private=ROOT/f'configs/evaluations/private/dial-best5-r11/{cid}.json'
         if not private.exists():raise FileNotFoundError('Missing evaluator-only puzzle file')
         cmd=[sys.executable,str(ROOT/'scripts/run_blind_dial_oracle.py'),'--best5','--case',cid,'--output',str(out),
-            '--codebook',str(private),'--harness',str(base/'inputs/harness.json'),'--wall-s',str(a.wall_s),'--sim-s','2400']
+            '--codebook',str(private),'--harness',str(base/'inputs/harness.json'),'--wall-s',str(a.wall_s)]
         env=os.environ.copy();env.update(PYTHONPATH=str(ROOT),OPENBLAS_NUM_THREADS='1',OMP_NUM_THREADS='1',MKL_NUM_THREADS='1',PYTHONUNBUFFERED='1')
         began=time.monotonic();record=dict(case_id=cid,phase='running',output=str(out),started_unix_s=time.time())
         with (base/(cid+'.log')).open('w') as log:
             process=subprocess.Popen(cmd,cwd=ROOT,env=env,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
-            record['pid']=process.pid;write_json(base/(cid+'-process.json'),record);signalled=False
+            record['pid']=process.pid;write_json(base/(cid+'-process.json'),record);signalled=False;signal_time=None
             while process.poll() is None:
                 elapsed=time.monotonic()-began
-                if ((base/'STOP').exists() or elapsed>a.wall_s+40) and not signalled:
-                    os.kill(process.pid,signal.SIGTERM);signalled=True
-                if elapsed>a.wall_s+75:
+                if ((base/'STOP').exists() or (a.wall_s>0 and elapsed>a.wall_s+40)) and not signalled:
+                    os.kill(process.pid,signal.SIGTERM);signalled=True;signal_time=elapsed
+                if signalled and elapsed-signal_time>35:
                     os.killpg(process.pid,signal.SIGKILL);process.wait();break
                 time.sleep(.5)
         report=out/'report.json';r=json.loads(report.read_text()) if report.exists() else {}
