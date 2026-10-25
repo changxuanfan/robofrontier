@@ -28,7 +28,7 @@ def require_known_idle(trial):
 
 
 class MosaicReview:
-    def __init__(self, trial, *, review_wall_s=300., publish=None, on_enter=None):
+    def __init__(self, trial, *, review_wall_s=None, publish=None, on_enter=None):
         self.trial = trial
         self.directory = Path(trial.directory)/'review'
         for name in ('requests', 'results', 'rejected'):
@@ -200,7 +200,8 @@ class MosaicReview:
                     self.trial.event('mosaic_review_resumed',**boundary)
                     self._status('running');return
             now=time.monotonic()
-            if now-start>self.review_wall_s:raise ReferenceStopped('Bounded review deadline exhausted')
+            if self.review_wall_s is not None and now-start>self.review_wall_s:
+                raise ReferenceStopped('Explicit review deadline exhausted')
             self.trial.wait(.02)
             if now-last_publish>=2:
                 self.publish();self._status('review');last_publish=now
@@ -208,7 +209,7 @@ class MosaicReview:
             time.sleep(max(0.,.02-(time.monotonic()-now)))
 
 
-def run_reference(trial, review, *, solver=reference.solve, max_goals=None, motion_profile=None, max_reviews=20, goal_ids=None):
+def run_reference(trial, review, *, solver=reference.solve, max_goals=None, motion_profile=None, max_reviews=None, goal_ids=None):
     resume=False
     while True:
         try:
@@ -224,6 +225,7 @@ def run_reference(trial, review, *, solver=reference.solve, max_goals=None, moti
         except (ProcessViolation,ReferenceStopped):raise
         except RuntimeError as error:
             require_known_idle(trial)
-            if len(review.history)>=max_reviews:raise ReferenceStopped('Review count budget exhausted')
+            if max_reviews is not None and len(review.history)>=max_reviews:
+                raise ReferenceStopped('Explicit review count budget exhausted')
             review.await_resolution(error)
             resume=True

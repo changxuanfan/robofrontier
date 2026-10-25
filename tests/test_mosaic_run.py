@@ -36,6 +36,22 @@ class MosaicRunTests(unittest.TestCase):
             self.assertEqual(seen,[False,True,True]);self.assertEqual(result['reference_placed'],3)
             self.assertEqual(len(review.history),2);trial.close.assert_not_called()
 
+    def test_productive_reviews_have_no_implicit_elapsed_or_round_limit(self):
+        from robofrontier.suite.mosaic_run import MosaicReview,run_reference
+        with tempfile.TemporaryDirectory() as directory:
+            trial=self.trial(directory);review=MosaicReview(trial,publish=lambda:None)
+            self.assertIsNone(review.review_wall_s)
+            for i in range(1,23):self.request(review,f'resume-{i}',i)
+            calls=[]
+            def solver(world,**kwargs):
+                calls.append(kwargs['resume'])
+                if len(calls)<=22:raise RuntimeError('Known reviewed planning boundary')
+                return {'reference_placed':1}
+            result=run_reference(trial,review,solver=solver)
+            self.assertEqual(len(review.history),22)
+            self.assertEqual(result['reference_placed'],1)
+            trial.close.assert_not_called()
+
     def test_unknown_action_does_not_enter_recovery_or_replay(self):
         from robofrontier.suite.mosaic_run import MosaicReview, run_reference
         with tempfile.TemporaryDirectory() as directory:

@@ -56,8 +56,9 @@ def run(args):
     process_identity=dict(pid=os.getpid(),case_id=case['id'],output=str(trial.directory),
         frozen_root=str(ROOT),git_commit=os.environ.get('ROBOFRONTIER_MOSAIC_COMMIT'),started_unix_s=time.time())
     write_json(trial.directory/'process.json',dict(process_identity,phase='running'))
-    budget_hit=lambda:(time.monotonic()-overall_started>=args.wall_s or trial.time>=args.sim_s or
-        len(trial.actions)>=args.action_batches)
+    budget_hit=lambda:((args.wall_s is not None and time.monotonic()-overall_started>=args.wall_s) or
+        (args.sim_s is not None and trial.time>=args.sim_s) or
+        (args.action_batches is not None and len(trial.actions)>=args.action_batches))
     trial.stop_requested=lambda:budget_hit() or (trial.directory/'STOP').exists()
     def stop(signum,frame):raise ReferenceStopped('External owner stop requested')
     signal.signal(signal.SIGTERM,stop)
@@ -153,9 +154,9 @@ def main():
     p.add_argument('--case',default='mosaic-a04-6x12-d1');p.add_argument('--output',required=True,type=Path)
     p.add_argument('--catalog',type=Path,default=ROOT/'configs/suites/frontier-mosaic-r13.json')
     p.add_argument('--harness',type=Path,default=ROOT/'configs/harness-frontier-v2-servo2.json')
-    p.add_argument('--wall-s',type=float,default=1800.);p.add_argument('--sim-s',type=float,default=8000.)
-    p.add_argument('--action-batches',type=int,default=20000);p.add_argument('--review-wall-s',type=float,default=300.)
-    p.add_argument('--max-reviews',type=int,default=20);p.add_argument('--loaded-speed',type=float,default=.20)
+    p.add_argument('--wall-s',type=float);p.add_argument('--sim-s',type=float)
+    p.add_argument('--action-batches',type=int);p.add_argument('--review-wall-s',type=float)
+    p.add_argument('--max-reviews',type=int);p.add_argument('--loaded-speed',type=float,default=.20)
     p.add_argument('--max-goals',type=int);p.add_argument('--review-after',nargs='*',type=int,default=[])
     p.add_argument('--goal-id',action='append')
     p.add_argument('--concurrency-source',type=Path)
@@ -172,7 +173,7 @@ def main():
         p.error('Full source-bound concurrency cannot be mixed with commissioning selectors')
     if a.equivalent_replay_source and (a.concurrency_source or a.goal_id or a.max_goals or a.review_after):
         p.error('Equivalent replay is a separate full canonical execution mode')
-    if any(not math.isfinite(v) or v<=0 for v in (a.wall_s,a.sim_s,a.review_wall_s,a.action_batches,a.max_reviews,a.loaded_speed)):
+    if any(v is not None and (not math.isfinite(v) or v<=0) for v in (a.wall_s,a.sim_s,a.review_wall_s,a.action_batches,a.max_reviews,a.loaded_speed)):
         p.error('Positive finite budgets and speed required')
     a.output=a.output.resolve()
     if os.environ.get(MARKER)!=str(ROOT):
