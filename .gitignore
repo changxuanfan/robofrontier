@@ -18,3 +18,11 @@ vendor/
 # Large environment assets/previews are materialized per worktree.
 /configs/environments/**/assets/
 /configs/environments/**/preview-*.png
+
+# Also match setup symlinks in worktree checkouts.
+/.venv
+/vendor
+/runs
+/outputs
+/docs/generated
+/configs/evaluations/private
