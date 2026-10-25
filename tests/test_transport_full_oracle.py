@@ -41,6 +41,20 @@ def recorded_frontier(fixture_name='transport_air_frontier.json'):
 
 
 class TransferCoverageTests(unittest.TestCase):
+    def test_matching_keeps_easy_side_stock_for_direct_socket_work(self):
+        from types import SimpleNamespace
+        names=['up','side1','side2'];positions={n:np.array([i*.1,0.,.83]) for i,n in enumerate(names)}
+        side=np.array([[1.,0,0],[0,0,-1.],[0,1.,0]])
+        rotations={'up':np.diag([1.,-1.,-1.]),'side1':side,'side2':side}
+        goals=[dict(goal_id=r,robot=r,requires=dict(identity='same'),point=[i,0.,.83]) for i,r in enumerate('ABC')]
+        t=SimpleNamespace(arms={r:None for r in 'ABC'},stations={r:dict(base_position_m=[i,0.,.8]) for i,r in enumerate('ABC')},
+            env=dict(objects=[dict(id=n,identity='same') for n in names]),task=dict(level=2,goals=goals),event=Mock(),
+            data=SimpleNamespace(body=lambda n:SimpleNamespace(xpos=positions[n],xmat=rotations[n].reshape(-1))))
+        with patch.object(full,'candidate_graph',return_value={r:[s for s in 'ABC' if s!=r] for r in 'ABC'}),patch.object(full,'goal_coverage',side_effect=lambda _,g:[g['robot']]),patch.object(full,'goal_pose',side_effect=lambda _,g:(np.array(g['point']),np.eye(3))),patch.object(full.ref,'_pickup_coverage',return_value={n:['A'] for n in names}):
+            jobs=full.plan_jobs(t)
+        direct=next(j for j in jobs if len(j['path'])==1)
+        self.assertNotEqual(direct['object'],'up')
+
     def test_small_clear_retained_load_move_remains_admissible(self):
         from types import SimpleNamespace
         from robofrontier.suite.transport_runtime import sampled_motion_admission
@@ -95,6 +109,9 @@ class TransferCoverageTests(unittest.TestCase):
         with patch.object(full,'goal_pose',return_value=(np.zeros(3),np.eye(3))),patch.object(full,'goal_coverage',return_value=['A','B']),patch('robofrontier.suite.transport_unit_motion.direct_grasp_candidate',return_value=(None,{})) as planner:
             # C being free is not sufficient if only B is a suitable receiver.
             self.assertIsNone(full.pickup_resources(t,runtime,job))
+            self.assertIsNone(full.pickup_resources(t,runtime,job))
+            self.assertEqual(planner.call_count,1)
+            runtime.running={'C':object()}
             self.assertIsNone(full.pickup_resources(t,runtime,job))
             self.assertEqual(planner.call_count,1)
             runtime.leases.clear()

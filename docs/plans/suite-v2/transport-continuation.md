@@ -182,3 +182,27 @@ Pair-dependent geometry checks use exact signed distances plus bounding-sphere
 rejection; synchronized/static/self sweeps are retained. On a reconstructed
 twelve-arm state both old/new admitted the same small candidate,1.171→0.230s.
 This is read-only screen timing, not whole-task speedup.80 regressions pass.
+
+## Readiness cost, stock posture and recoverable preparation
+
+The eight-arm L2 frontier performed156 repeated F_slot2 probes in627wall seconds
+(518s in that probe), because unrelated action IDs invalidated the negative cache.
+Cache invalidation now follows lease ownership and accepted placements; actual
+admitted movement still receives current-scene checks. Matching also charges a
+private grip-change heuristic for pins-up stock assigned to a direct socket job,
+so existing transfer work can reorient that stock. It is not a feasibility proof.
+
+A twelve-arm retained-load frontier reproduced a recovery deadlock: historical
+J/K/L scope demanded K again, although K was released and belonged to another
+retained-load job. Explicit recovery scopes now combine requested actors with
+all currently retained actors, rather than all historical peers. Default retries
+keep only available old peers plus retained actors. Runtime still rejects busy,
+unknown or omitted retained actors. New `resume_goal:false` inputs execute bounded
+ordinary preparation commands and return a distinct `prepared` frontier. This is
+pending work, never task success; retained loads keep their leases and can be
+observed/recovered again. No live executor is hotpatched.84 regressions pass.
+
+Additional full qualification: four-arm L3 attempt001 (source7a1cbf4),12/12,
+345 robot commands, one known recoverable failed command, zero process violations
+or unresolved actions,719.92sim/1015.54wall seconds. All43197 motion frames audited.
+Two complete, decoded4x videos are included in the continuation gallery.

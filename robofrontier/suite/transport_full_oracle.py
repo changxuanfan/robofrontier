@@ -59,6 +59,7 @@ def plan_jobs(t):
     for obj in t.env['objects']:supply[obj['identity']].append(obj)
     for goal in t.task['goals']:demand[goal['requires']['identity']].append(goal)
     coverage={g['goal_id']:goal_coverage(t,g) for g in t.task['goals']}
+    pins_up={o['id']:(t.task['level']>1 and t.data.body(o['id']).xmat.reshape(3,3)[2,2]<-.8) for o in t.env['objects']}
     for identity,objects in supply.items():
         goals=demand[identity];cost=np.full((len(objects),len(goals)),1e6);options={}
         if len(objects)!=len(goals):raise ValueError('Transport identity inventory mismatch')
@@ -71,18 +72,25 @@ def plan_jobs(t):
                         if path is None:continue
                         pickup=float(np.linalg.norm(t.data.body(obj['id']).xpos[:2]-np.asarray(t.stations[source]['base_position_m'])[:2]))
                         placement=float(np.linalg.norm(p[:2]-np.asarray(t.stations[dest]['base_position_m'])[:2]))
-                        candidates.append((2.*(len(path)-1)+pickup+.4*placement,path))
+                        posture=0.
+                        if pins_up[obj['id']] and len(path)==1:
+                            # A top pickup of pins-up stock may need a real
+                            # grip change. Prefer assigning side stock to a
+                            # direct job and using existing transfer work for
+                            # the hard orientation, rather than extra regrips.
+                            posture=2.25 if any(r!=source for r in coverage[goal['goal_id']]) else 4.25
+                        candidates.append((2.*(len(path)-1)+pickup+.4*placement+posture,path,posture))
                 if candidates:
-                    score,path=min(candidates,key=lambda c:c[0]);cost[i,j]=score;options[i,j]=path
+                    score,path,posture=min(candidates,key=lambda c:c[0]);cost[i,j]=score;options[i,j]=(path,posture)
         rows,cols=linear_sum_assignment(cost)
         for i,j in zip(rows,cols):
             if cost[i,j]>=1e6:raise RuntimeError('No finite pickup/destination route '+objects[i]['id'])
             jobs.append(dict(id=goals[j]['goal_id'],goal=goals[j],object=objects[i]['id'],
-                path=options[i,j],receiver_candidates=coverage[goals[j]['goal_id']],cost=float(cost[i,j]),attempts=0))
+                path=options[i,j][0],receiver_candidates=coverage[goals[j]['goal_id']],cost=float(cost[i,j]),posture_cost=options[i,j][1],attempts=0))
     # Cheap local work can use capacity while a longer relay is progressing.
     jobs.sort(key=lambda j:(len(j['path']),j['cost']))
-    t.event('transport_private_plan',jobs=[dict(id=j['id'],object=j['object'],path=j['path'],cost=j['cost']) for j in jobs],
-        scope='Finite geometric candidate graph and identity matching; not an optimality or dynamics certificate')
+    t.event('transport_private_plan',jobs=[dict(id=j['id'],object=j['object'],path=j['path'],cost=j['cost'],posture_cost=j['posture_cost']) for j in jobs],
+        scope='Finite geometry/pose-aware identity matching; heuristic grip-change cost, not an optimality or dynamics certificate')
     return jobs
 
 
@@ -256,7 +264,12 @@ def pickup_resources(t,runtime,job):
     if robots & set(runtime.leases):return None
     if t.task['level']==1 or len(robots)>1:return robots
     source=job['path'][0]
-    revision=(tuple(sorted(runtime.leases.items())),tuple(sorted((r,id(rec)) for r,rec in runtime.running.items())))
+    monitor=getattr(t,'monitor',None)
+    accepted=monitor.result().get('assignments',{}) if monitor is not None else {}
+    # A failed readiness probe should not restart after every unrelated arm
+    # action. Resource ownership or accepted placement changes justify review;
+    # the actual pickup/insertion is still screened again when admitted.
+    revision=(tuple(sorted(runtime.leases.items())),tuple(sorted(accepted.items())))
     if job.get('grasp_check_revision')!=revision:
         from .transport_unit_motion import direct_grasp_candidate
         plan,stats=direct_grasp_candidate(t,source,job['object'],goal_pose(t,job['goal']),job['goal']['board'],budget_s=3.,check_seating=True)
@@ -308,7 +321,7 @@ def solve(t,on_blocked=None):
                 break
             runtime.cycle()
         accepted=t.monitor.result().get('assignments',{})
-        history=[dict(job=i,goal=j.get('goal',{}).get('goal_id'),error=str(j.get('error'))) for i,j in runtime.jobs.items() if j['status']=='failed']
+        history=[dict(job=i,goal=j.get('goal',{}).get('goal_id'),error=str(j.get('error')),status=j['status']) for i,j in runtime.jobs.items() if j['status'] in ('failed','prepared')]
         result=dict(completed=list(accepted),
             failed=[row for row in history if row['goal'] not in accepted],failures_history=history,
             pending=[j['id'] for j in pending],retained_resources=dict(runtime.leases),

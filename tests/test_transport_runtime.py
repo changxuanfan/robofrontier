@@ -3,7 +3,7 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock
 
-from robofrontier.suite.transport_runtime import TransportRuntime
+from robofrontier.suite.transport_runtime import TransportRuntime, PreparationComplete
 
 
 class Arm:
@@ -68,6 +68,22 @@ class TransportRuntimeTests(unittest.TestCase):
         runtime.add('a',['A'],fail);self.drain(runtime)
         self.assertEqual(runtime.leases,{'A':'a'})
         self.assertFalse(runtime.add('new',['A'],lambda:None))
+
+    def test_prepared_frontier_retains_load_and_can_be_recovered_again(self):
+        t=trial();runtime=TransportRuntime(t)
+        def prepare():
+            t.execute('prepare',{'A':command(.1)})
+            t.arms['A'].grasp_force=70.;t.held['A']='part'
+            raise PreparationComplete()
+        runtime.add('prepare',['A'],prepare);self.drain(runtime)
+        self.assertEqual(runtime.jobs['prepare']['status'],'prepared')
+        self.assertEqual(runtime.leases,{'A':'prepare'})
+        def finish():
+            t.execute('finish',{'A':command(.1)})
+            t.arms['A'].grasp_force=None;t.held.pop('A')
+        self.assertTrue(runtime.recover('prepare','finish',['A'],finish));self.drain(runtime)
+        self.assertEqual(runtime.jobs['finish']['status'],'done')
+        self.assertFalse(runtime.leases)
 
     def test_nominal_conflict_delays_only_new_motion(self):
         t=trial()

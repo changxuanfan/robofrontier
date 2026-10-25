@@ -12,6 +12,10 @@ import numpy as np
 from greenlet import getcurrent, greenlet
 
 
+class PreparationComplete(Exception):
+    """Ordinary repair steps finished; keep the goal pending for observation."""
+
+
 class TransportRuntime:
     def __init__(self, trial, admission=None):
         if any(a.job is not None for a in trial.arms.values()):
@@ -36,7 +40,7 @@ class TransportRuntime:
     def recover(self,ident,new_ident,robots,callback):
         """Transfer a failed, known-idle frontier without clearing its history."""
         old=self.jobs[ident];robots=set(robots)
-        if old['status']!='failed':raise ValueError('Recovery requires a failed job boundary')
+        if old['status'] not in ('failed','prepared'):raise ValueError('Recovery requires a failed or prepared job boundary')
         retained={r for r,owner in self.leases.items() if owner==ident}
         if retained-robots:raise ValueError('Recovery must account for every retained robot')
         if any(r in self.leases and self.leases[r]!=ident for r in robots):return False
@@ -80,6 +84,7 @@ class TransportRuntime:
         if robots & set(self.leases):return False
         def run(*_):
             try:return dict(kind='done',job=ident,result=callback())
+            except PreparationComplete:return dict(kind='prepared',job=ident)
             except Exception as error:return dict(kind='failed',job=ident,error=error)
         self.jobs[ident]=dict(robots=robots,fiber=greenlet(run,parent=self.owner),status='ready')
         for r in robots:self.leases[r]=ident
@@ -100,7 +105,7 @@ class TransportRuntime:
     def _handle(self,ident,message):
         job=self.jobs[ident]
         kind=message['kind']
-        if kind in ('done','failed'):
+        if kind in ('done','failed','prepared'):
             job.update(status=kind,result=message.get('result'),error=message.get('error'))
             # A failed load retains its owner; independent jobs can finish,
             # but the scheduler cannot pretend this arm became available.
@@ -172,7 +177,7 @@ class TransportRuntime:
 
     @property
     def active(self):
-        return any(j['status'] not in ('done','failed') for j in self.jobs.values())
+        return any(j['status'] not in ('done','failed','prepared') for j in self.jobs.values())
 
     def close(self):
         if self.active or self.running:raise RuntimeError('Cannot detach with unresolved Oracle jobs')

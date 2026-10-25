@@ -13,6 +13,7 @@ import numpy as np
 
 from ..run_setup import write_json
 from .transport_full_oracle import execute_job
+from .transport_runtime import PreparationComplete
 
 
 class EngineeringRecovery:
@@ -25,7 +26,7 @@ class EngineeringRecovery:
     def observation(self,t,runtime):
         failed={ident:dict(goal=job.get('goal'),object=job.get('object'),error=str(job.get('error')),
             robots=sorted(job['robots']),retained=[r for r,owner in runtime.leases.items() if owner==ident])
-            for ident,job in runtime.jobs.items() if job['status']=='failed' and not job.get('recovered_by')}
+            for ident,job in runtime.jobs.items() if job['status'] in ('failed','prepared') and not job.get('recovered_by')}
         return dict(schema='transport.engineering-frontier.v1',scene_sha256=t.task['scene_sha256'],
             sim_time_s=t.time,wall_s=time.monotonic()-t.started,failed_jobs=failed,
             accepted_goals=t.monitor.result().get('assignments',{}),retained_resources=runtime.leases,
@@ -37,17 +38,21 @@ class EngineeringRecovery:
     def _retry(self,t,runtime,ident,request):
         old=runtime.jobs[ident]
         if old.get('recovered_by'):raise ValueError('This failure already has a recovery owner')
-        goal=old['goal'];name=old['object'];robots=set(old['robots'])
+        goal=old['goal'];name=old['object']
+        retained={r for r,owner in runtime.leases.items() if owner==ident}
         requested=request.get('robots')
         if requested is None:
+            robots=retained|{r for r in old['robots'] if r not in runtime.leases}
             p=t.data.body(goal['board']).xpos
             nearby=sorted((r for r in t.arms if r not in runtime.leases),
                 key=lambda r:np.linalg.norm(np.asarray(t.stations[r]['base_position_m'])[:2]-p[:2]))[:2]
             robots.update(nearby)
-        else:robots.update(requested)
+        else:robots=retained|set(requested)
         if robots-set(t.arms):raise ValueError('Unknown recovery robot')
         original=dict(id=goal['goal_id'],goal=goal,object=name,path=list(robots),attempts=1)
         steps=request.get('steps',[])
+        resume=request.get('resume_goal',True)
+        if not isinstance(resume,bool):raise ValueError('resume_goal must be boolean')
         if not isinstance(steps,list) or len(steps)>64:raise ValueError('At most 64 ordinary recovery steps')
         for step in steps:
             if 'wait_s' in step:
@@ -58,6 +63,7 @@ class EngineeringRecovery:
             for step in steps:
                 if 'wait_s' in step:t.wait(float(step['wait_s']))
                 else:t.execute('engineering-repair',{step['robot']:(step['operation'],step['parameters'])})
+            if not resume:raise PreparationComplete()
             return execute_job(t,runtime,original,resume=True)
         self.counter+=1;new_id=goal['goal_id']+'-recovery-'+str(self.counter)
         if not runtime.recover(ident,new_id,robots,recover):raise ValueError('Requested recovery resources are still busy')
@@ -80,10 +86,10 @@ class EngineeringRecovery:
             if file.name in self.seen:continue
             try:
                 payload=file.read_bytes();request=json.loads(payload)
-                if set(request)-{'id','job','scene_sha256','robots','steps','reason','author'}:raise ValueError('Unsupported engineering input')
+                if set(request)-{'id','job','scene_sha256','robots','steps','reason','author','resume_goal'}:raise ValueError('Unsupported engineering input')
                 if request['scene_sha256']!=t.task['scene_sha256']:raise ValueError('Wrong physical scene')
                 ident=request['job']
-                if ident not in runtime.jobs or runtime.jobs[ident]['status']!='failed':raise ValueError('No matching failed job')
+                if ident not in runtime.jobs or runtime.jobs[ident]['status'] not in ('failed','prepared'):raise ValueError('No matching failed or prepared job')
                 new_id=self._retry(t,runtime,ident,request)
                 record=dict(id=request['id'],source_file=file.name,sha256=hashlib.sha256(payload).hexdigest(),
                     input=request,admitted_sim_s=t.time,recovery_job=new_id)

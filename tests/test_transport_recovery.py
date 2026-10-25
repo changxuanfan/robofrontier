@@ -3,12 +3,35 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from types import SimpleNamespace
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from robofrontier.suite.transport_recovery import EngineeringRecovery
 
 
 class EngineeringRecoveryTests(unittest.TestCase):
+    def test_explicit_scope_keeps_current_carrier_without_reacquiring_busy_old_peers(self):
+        with TemporaryDirectory() as tmp:
+            handler=EngineeringRecovery(tmp)
+            old=dict(status='failed',goal=dict(goal_id='slot'),object='item',robots={'J','K','L'})
+            runtime=SimpleNamespace(jobs={'old':old},leases={'L':'old','K':'another'},recover=Mock(return_value=True))
+            t=SimpleNamespace(arms={r:None for r in 'JKL'})
+            handler._retry(t,runtime,'old',dict(robots=['J','L']))
+            self.assertEqual(runtime.recover.call_args.args[2],{'J','L'})
+
+    def test_preparation_returns_to_a_recoverable_frontier_without_resuming_goal(self):
+        from robofrontier.suite.transport_runtime import PreparationComplete
+        with TemporaryDirectory() as tmp:
+            handler=EngineeringRecovery(tmp)
+            old=dict(status='failed',goal=dict(goal_id='slot'),object='item',robots={'A'})
+            runtime=SimpleNamespace(jobs={'old':old},leases={'A':'old'},recover=Mock(return_value=True))
+            t=SimpleNamespace(arms={'A':None},execute=Mock())
+            handler._retry(t,runtime,'old',dict(robots=['A'],resume_goal=False,
+                steps=[dict(robot='A',operation='gripper',parameters=dict(mode='move',width_m=.072))]))
+            with patch('robofrontier.suite.transport_recovery.execute_job') as execute_goal:
+                with self.assertRaises(PreparationComplete):runtime.recover.call_args.args[3]()
+                execute_goal.assert_not_called()
+            t.execute.assert_called_once()
+
     def test_further_real_progress_enables_a_second_current_state_retry(self):
         with TemporaryDirectory() as tmp:
             handler=EngineeringRecovery(tmp)
