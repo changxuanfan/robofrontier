@@ -27,7 +27,9 @@ def dependencies(jobs):
     result=[]
     for j,job in enumerate(jobs):
         result.append([i for i,earlier in enumerate(jobs[:j])
-            if set(job['robots'])&set(earlier['robots']) or overlap(job['bounds_m'],earlier['bounds_m'])])
+            if (set(job['robots'])&set(earlier['robots']) or
+                (job.get('object') is not None and job.get('object')==earlier.get('object')) or
+                overlap(job['bounds_m'],earlier['bounds_m']))])
     return result
 
 
@@ -60,6 +62,17 @@ def build_plan(source):
         jobs.append(dict(goal_id=event['goal'],object=event['object'],path=event['path'],robots=robots,
             actions=commands,end_sim_s=event['sim_time_s'],bounds_m=[np.full(3,np.inf),np.full(3,-np.inf)]))
     if cursor!=len(actions):raise ValueError('Unassigned trailing physical actions')
+    # Reserve individual finite operations rather than a whole multi-arm job.
+    # Object order retains the actual custody/staging chain; disjoint robots
+    # can prepare/execute other jobs between its operations.
+    scopes=jobs;last_nodes={};jobs=[]
+    for scope in scopes:
+        for i,action in enumerate(scope['actions']):
+            end=(scope['actions'][i+1]['start_sim_s'] if i+1<len(scope['actions']) else scope['end_sim_s'])
+            jobs.append(dict(goal_id=scope['goal_id'],object=scope['object'],path=scope['path'],
+                robots=sorted(action['commands']),actions=[action],end_sim_s=end,
+                bounds_m=[np.full(3,np.inf),np.full(3,-np.inf)]))
+        last_nodes[len(jobs)-1]=scope['goal_id']
     model=mujoco.MjModel.from_xml_path(str(source/'scene.xml'));data=mujoco.MjData(model)
     task=json.loads((source/'task.json').read_text());monitor=Monitor(SimpleNamespace(model=model,data=data,task=task,arms=task['arms']))
     physical=(model.geom_contype!=0)|(model.geom_conaffinity!=0)
@@ -83,16 +96,18 @@ def build_plan(source):
     for job in jobs:job['bounds_m']=[v.tolist() for v in job['bounds_m']]
     pred=dependencies(jobs)
     critical=[0.]*len(jobs)
-    for i in range(len(jobs)-1,-1,-1):
-        duration=jobs[i]['end_sim_s']-jobs[i]['actions'][0]['start_sim_s']
-        critical[i]=duration+max([critical[j] for j in range(i+1,len(jobs)) if i in pred[j]] or [0.])
+    durations=[j['end_sim_s']-j['actions'][0]['start_sim_s'] for j in jobs]
+    critical=list(durations)
+    for j in range(len(jobs)-1,-1,-1):
+        for i in pred[j]:critical[i]=max(critical[i],durations[i]+critical[j])
     return dict(source=str(source),case_id=report['case_id'],jobs=jobs,predecessors=pred,critical_path_weights=critical,
         initial_commands=initial[0]['commands'],source_physical_control_sha256=report['physical_control_sha256'],
         source_environment_logic_sha256=report['environment_logic_sha256'],source_scene_bundle_sha256=report['scene_bundle_sha256'],
         source_report_sha256=hashlib.sha256((source/'report.json').read_bytes()).hexdigest(),
         source_actions_sha256=hashlib.sha256((source/'actions.json').read_bytes()).hexdigest(),
+        last_goal_nodes=last_nodes,total_goals=len(scopes),planning_granularity='ordinary_finite_action',
         frames_screened=frames,planning_wall_s=time.monotonic()-began,reserve_per_scope_m=.02,
-        scope='Source-order dependencies for shared robots or overlapping sampled full-scope envelopes; no continuous safety or optimality certificate')
+        scope='Source-order dependencies for shared robots, object custody or overlapping sampled operation envelopes; no continuous safety or optimality certificate')
 
 
 def execute_plan(trial,plan):
@@ -102,15 +117,17 @@ def execute_plan(trial,plan):
         raise ValueError('Concurrent world must match source control/evaluator/assets')
     trial.execute('clear-idle-arms',deepcopy(plan['initial_commands']));trial.wait(.2)
     trial.parking_q={r:np.asarray(c[1]['joint_rad']) for r,c in plan['initial_commands'].items()}
-    completed=set();active={};peak=0;rounds=0
+    completed=set();active={};peak=0;rounds=0;qualified=set();started={}
     jobs=plan['jobs'];trial.mosaic_protected_assignments={}
+    last_goal_nodes={int(i):goal for i,goal in plan['last_goal_nodes'].items()}
     while len(completed)<len(jobs):
         ready=ready_scopes(plan['predecessors'],completed,active)
         for index in sorted(ready,key=lambda i:-plan['critical_path_weights'][i]):
             active[index]=0
+            job=jobs[index];started[job['goal_id']]=dict(goal_id=job['goal_id'],object=job['object'],path=job['path'])
         if not active:raise RuntimeError('No enabled scope in acyclic concurrency plan')
         peak=max(peak,len(active))
-        trial.mosaic_active_jobs=[dict(goal_id=jobs[i]['goal_id'],object=jobs[i]['object'],path=jobs[i]['path']) for i in active]
+        trial.mosaic_active_jobs=list(started.values())
         trial.event('mosaic_concurrent_frontier',active=trial.mosaic_active_jobs,completed=len(completed))
         commands={};owners={}
         for i,cursor in active.items():
@@ -137,14 +154,17 @@ def execute_plan(trial,plan):
         for goal,name in trial.mosaic_protected_assignments.items():
             if current.get(goal)!=name:raise RuntimeError('Concurrent motion disturbed completed pairing '+goal)
         for i in finished:
-            if current.get(jobs[i]['goal_id'])!=jobs[i]['object']:
-                raise RuntimeError('Concurrent finite command scope did not satisfy original evaluator '+jobs[i]['goal_id'])
             completed.add(i);active.pop(i)
-            trial.mosaic_protected_assignments=dict(current)
-            print(f"{trial.task['id']} concurrent {len(completed)}/{len(jobs)} validated",flush=True)
-            callback=getattr(trial,'mosaic_after_goal',None)
-            if callback is not None:callback(trial)
+            if i in last_goal_nodes:
+                goal=last_goal_nodes[i]
+                if current.get(goal)!=jobs[i]['object']:
+                    raise RuntimeError('Concurrent finite command scope did not satisfy original evaluator '+goal)
+                qualified.add(goal);started.pop(goal,None)
+                trial.mosaic_protected_assignments=dict(current)
+                print(f"{trial.task['id']} concurrent {len(qualified)}/{plan['total_goals']} validated",flush=True)
+                callback=getattr(trial,'mosaic_after_goal',None)
+                if callback is not None:callback(trial)
     trial.mosaic_active_jobs=[];trial.wait(2.4)
-    return dict(reference_placed=len(completed),total_goals=len(trial.task['goals']),
+    return dict(reference_placed=len(qualified),total_goals=len(trial.task['goals']),
         commissioning_only=False,concurrent_scope_peak=peak,concurrent_rounds=rounds,
         strategy='Conservative source-bound dependency list scheduling; not proven optimal')
