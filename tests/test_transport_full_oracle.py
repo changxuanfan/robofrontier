@@ -41,6 +41,22 @@ def recorded_frontier(fixture_name='transport_air_frontier.json'):
 
 
 class TransferCoverageTests(unittest.TestCase):
+    def test_unqualified_pickup_waits_for_a_receiver_that_can_finish(self):
+        from types import SimpleNamespace
+        t=SimpleNamespace(task=dict(level=2),event=Mock())
+        runtime=SimpleNamespace(leases={'B':'other'},running={},settled=lambda _:True)
+        job=dict(id='slot',path=['A'],object='item',goal=dict(board='board'),receiver_candidates=['A','B'])
+        with patch.object(full,'goal_pose',return_value=(np.zeros(3),np.eye(3))),patch.object(full,'goal_coverage',return_value=['A','B']),patch('robofrontier.suite.transport_unit_motion.direct_grasp_candidate',return_value=(None,{})) as planner:
+            # C being free is not sufficient if only B is a suitable receiver.
+            self.assertIsNone(full.pickup_resources(t,runtime,job))
+            self.assertIsNone(full.pickup_resources(t,runtime,job))
+            self.assertEqual(planner.call_count,1)
+            runtime.leases.clear()
+            self.assertEqual(full.pickup_resources(t,runtime,job),{'A','B'})
+        with patch.object(full,'goal_pose',return_value=(np.zeros(3),np.eye(3))),patch('robofrontier.suite.transport_unit_motion.direct_grasp_candidate',return_value=({},{})):
+            job.pop('grasp_check_revision');runtime.leases={'B':'other'}
+            self.assertEqual(full.pickup_resources(t,runtime,job),{'A'})
+
     def test_independent_progress_can_reach_other_arms_finished_pose(self):
         from types import SimpleNamespace
         from robofrontier.suite.transport_runtime import sampled_motion_admission

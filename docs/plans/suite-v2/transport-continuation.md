@@ -79,3 +79,30 @@ at most once per goal/progress count. Static blocked frontiers cannot spin retri
 and unknown/active actions remain ineligible. The regression reproduces the old
 second-progress failure before the fix. Next run must establish a frozen-program
 full pass without the owner's recovery request.
+
+## Frozen full-order attempt003
+
+Source `c152ef3` completed all12 goals without owner recovery input: zero process
+violations, zero failed or unknown robot actions,335 robot commands,453.66sim s,
+259.42wall s. Actual multi-arm movement overlap131.84sim s,390.16sim s with any
+arm moving, peak4 moving arms. All27221 source frames and visual events audited.
+Two-view4x replay and complete-decode manifests are under
+`outputs/oracle/transport-continuation-20261026/l1-frozen-pass/`.
+This qualifies four-arm L1 on that source, not all nine cases or a global optimum.
+
+## L2 pickup capacity
+
+The first full L2 run accepted3 goals but retained three pins-up loads whose
+current grasps could not finish insertion. The only free arm could not provide
+the required final continuation. The frozen runner was stopped with original
+state/motion/failure records preserved. This is a planning/capacity block, not
+proof of physical impossibility.
+
+Before a one-arm socket pickup the new Oracle screens a direct insertion grasp.
+If none is found, it reserves a free receiver that can reach the final board;
+an unrelated free arm is insufficient. Screened direct jobs retain single-arm
+resources. There is no fixed two-arm cap or added task ownership rule. Checks
+are cached until action/resource boundaries change, avoiding per-physics-tick
+searches. Real pickup, concurrent motion and insertion remain independently
+checked. The regression includes unavailable relevant receiver, unrelated free
+capacity, direct-grip independence and bounded repeated screening.

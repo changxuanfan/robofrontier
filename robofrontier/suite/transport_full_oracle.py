@@ -78,7 +78,7 @@ def plan_jobs(t):
         for i,j in zip(rows,cols):
             if cost[i,j]>=1e6:raise RuntimeError('No finite pickup/destination route '+objects[i]['id'])
             jobs.append(dict(id=goals[j]['goal_id'],goal=goals[j],object=objects[i]['id'],
-                path=options[i,j],cost=float(cost[i,j]),attempts=0))
+                path=options[i,j],receiver_candidates=coverage[goals[j]['goal_id']],cost=float(cost[i,j]),attempts=0))
     # Cheap local work can use capacity while a longer relay is progressing.
     jobs.sort(key=lambda j:(len(j['path']),j['cost']))
     t.event('transport_private_plan',jobs=[dict(id=j['id'],object=j['object'],path=j['path'],cost=j['cost']) for j in jobs],
@@ -225,6 +225,33 @@ def execute_job(t,runtime,job,resume=False):
     return dict(goal=goal['goal_id'],object=name,operator=robot)
 
 
+def pickup_resources(t,runtime,job):
+    """Keep a useful successor receiver available for unqualified socket grips.
+
+    A screened direct grip needs only its own arm. Otherwise reserve a receiver
+    that can reach the final board before filling the source gripper. This is a
+    bounded Oracle allocation heuristic, not a task constraint or fixed arm cap.
+    """
+    robots=set(job['path'])
+    if robots & set(runtime.leases):return None
+    if t.task['level']==1 or len(robots)>1:return robots
+    source=job['path'][0]
+    revision=(tuple(sorted(runtime.leases.items())),tuple(sorted((r,id(rec)) for r,rec in runtime.running.items())))
+    if job.get('grasp_check_revision')!=revision:
+        from .transport_unit_motion import direct_grasp_candidate
+        plan,stats=direct_grasp_candidate(t,source,job['object'],goal_pose(t,job['goal']),job['goal']['board'],budget_s=3.,check_seating=True)
+        job['grasp_check_revision']=revision;job['direct_grip_screened']=plan is not None
+        t.event('transport_pickup_successor_capacity',job=job['id'],direct_candidate=plan is not None,diagnostics=stats,
+                scope='Finite scratch candidate; actual pickup, insertion and concurrency still checked')
+    if job['direct_grip_screened']:return robots
+    receivers=job.get('receiver_candidates')
+    if receivers is None:receivers=goal_coverage(t,job['goal'])
+    for receiver in receivers:
+        if receiver!=source and receiver not in runtime.leases and runtime.settled(receiver):
+            return robots|{receiver}
+    return None
+
+
 def solve(t,on_blocked=None):
     if t.task['family']!='transport':raise ValueError('Transport-only reference')
     clear_idle_arms(t);jobs=plan_jobs(t)
@@ -250,8 +277,9 @@ def solve(t,on_blocked=None):
             t.check_stop()
             if on_blocked is not None and hasattr(on_blocked,'poll'):on_blocked.poll(t,runtime,jobs,pending)
             for job in list(pending):
-                if set(job['path']) & set(runtime.leases):continue
-                if runtime.add(job['id'],job['path'],lambda job=job:execute_job(t,runtime,job)):
+                resources=pickup_resources(t,runtime,job)
+                if resources is None:continue
+                if runtime.add(job['id'],resources,lambda job=job:execute_job(t,runtime,job)):
                     runtime.jobs[job['id']].update(object=job['object'],goal=job['goal'])
                     pending.remove(job)
             if not runtime.active:
