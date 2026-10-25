@@ -157,11 +157,14 @@ def receiving_routes(t,ident,selected):
  probe=copy(t);probe.live_preview=False;probe.data=mujoco.MjData(t.model);probe.data.qpos[:]=t.data.qpos
  for item in selected:
   robot=item['robot']
+  if item.get('retained'):continue
   for suffix in ('finger_joint1','finger_joint2'):probe.data.joint(robot+'_'+suffix).qpos[0]=(.065-t.arms[robot].grip_min)/2
  mujoco.mj_forward(t.model,probe.data)
  paths={}
  for item in selected:
   robot=item['robot'];arm=t.arms[robot];start=probe.data.qpos[arm.qids].copy();goal=item['seed']
+  if item.get('retained'):
+   paths[robot]=[start];continue
   def edge(a,b):
    steps=max(2,math.ceil(np.max(abs(b-a))/.025))
    return all(probe.pose_clear(robot,a+(b-a)*f) for f in np.linspace(0,1,steps+1)[1:])
@@ -221,7 +224,7 @@ def received_transport_preview(t,ident,senders,receivers,future):
  probe=copy(t);probe.live_preview=False;probe.data=mujoco.MjData(t.model);probe.data.qpos[:]=t.data.qpos
  probe.arms=dict(t.arms)
  probe.held={a:ident for a in receivers}
- preview_released_home(t,probe.data,senders)
+ preview_released_home(t,probe.data,set(senders)-set(receivers))
  for robot in receivers:
   probe.data.qpos[t.arms[robot].qids]=t.relay_grasp_plan[robot]['contact_q']
   for suffix in ('finger_joint1','finger_joint2'):probe.data.joint(robot+'_'+suffix).qpos[0]=(t.task['mechanism']['cross_section_m'][0]-t.arms[robot].grip_min)/2
@@ -310,12 +313,22 @@ def terminal_pair_order(pairs,rotation,weighted):
  return preferred+side[:64-len(preferred)]
 
 
-def _choose_team(t,ident,center,rotation,offset,exclude=(),future_region=None,future_yaw=None,future_fraction=.55,future_height=None,future_waypoints=(),landing_point=None,require_topdown=False):
+def _choose_team(t,ident,center,rotation,offset,exclude=(),future_region=None,future_yaw=None,future_fraction=.55,future_height=None,future_waypoints=(),landing_point=None,require_topdown=False,retained=None):
  # Resolve finite jaw-symmetric IK branches and approach directions before
  # selecting a team. Endpoint reach alone can hide elbow interference.
  points=grasp_targets(t,ident,center,rotation,offset)
+ retained={} if retained is None else dict(retained)
+ if len(retained)>1 or any(side not in (0,1) or robot not in exclude for side,robot in retained.items()):raise ValueError('Retain at most one existing side holder')
+ departing=set(exclude)-set(retained.values())
  robots=[a for a in t.arms if a not in exclude];options=[]
- for point,base_r in points:
+ for side,(point,base_r) in enumerate(points):
+  if side in retained:
+   robot=retained[side];arm=t.arms[robot];q=t.data.qpos[arm.qids].copy()
+   r=t.data.site_xmat[arm.site].reshape(3,3).copy()
+   options.append([dict(robot=robot,retained=True,rotation=r,point_delta=t.data.site_xpos[arm.site]-point,
+       approach=np.zeros(3),seed=q,contact_q=q,
+       margin=float(np.min(np.minimum(q-arm.ik.limits[:,0],arm.ik.limits[:,1]-q))))])
+   continue
   choices=[]
   candidates=sorted(robots,key=lambda a:np.linalg.norm(np.asarray(t.task['arms'][a]['base_position_m'])[:2]-point[:2]))[:5]
   for a in candidates:
@@ -368,7 +381,7 @@ def _choose_team(t,ident,center,rotation,offset,exclude=(),future_region=None,fu
     # the explicit release/withdraw before this later carry; live contacts are
     # still audited in the actual run. Never move live objects or arm state.
     probe=copy(t);probe.live_preview=False;probe.data=mujoco.MjData(t.model);probe.data.qpos[:]=t.data.qpos
-    preview_released_home(t,probe.data,exclude)
+    preview_released_home(t,probe.data,departing)
     team=[v['robot'] for v in selected]
     for v in selected:probe.data.qpos[t.arms[v['robot']].qids]=v['contact_q']
     mujoco.mj_forward(t.model,probe.data)
@@ -385,7 +398,7 @@ def _choose_team(t,ident,center,rotation,offset,exclude=(),future_region=None,fu
     if not clear:continue
    paths=receiving_routes(t,ident,selected)
    if paths is None:continue
-   exits=donor_exit_routes(t,ident,selected,exclude)
+   exits=donor_exit_routes(t,ident,selected,departing)
    if exits is None:continue
    t.relay_grasp_plan={v['robot']:{**v,'arrival_route':paths[v['robot']]} for v in selected}
    t.relay_release_plan=exits
@@ -399,8 +412,11 @@ def grasp(t,ident,team,offset):
  # when a table-compatible grasp lies inward of the best-balanced station.
  # This is an ordinary allowed robot command, not a raised actuator limit.
  force=70. if t.monitor.relay_v2.states[ident]['assembly'].get('weight_body') else 50.
- t.execute('relay-preshape',{a:('gripper',dict(mode='move',width_m=.065,speed_m_s=.06)) for a in team})
+ continuing={a for a in team if t.relay_grasp_plan[a].get('retained')}
+ if continuing and not continuing<=t.monitor.bilateral(t.monitor.relay_v2.states[ident]['rod_geoms'],positive_force=True):raise RuntimeError('Retained holder lost actual beam support '+ident)
+ t.execute('relay-preshape',{a:('gripper',dict(mode='move',width_m=.065,speed_m_s=.06)) for a in team if a not in continuing})
  for a,(point,rotation) in zip(team,targets):
+  if a in continuing:continue
   plan=t.relay_grasp_plan[a];rotation=plan['rotation'];point=point+plan['point_delta']
   t.event('relay_receiving_plan',robot=a,payload=ident,offset_m=offset,arrival_waypoints=len(plan['arrival_route']),approach_joints=plan['seed'].tolist(),tool_z_dot_payload_z=float(np.dot(plan['rotation'][:,2],r[:,2])))
   arm=t.arms[a]
@@ -601,11 +617,44 @@ def landing_increment_clear(t,ident,team,dz):
  return commands
 
 
+def terminal_reposition_plan(t,ident,team):
+ """Find a small coupled L1 adjustment with a checked descent successor.
+
+ A settled two-hand grasp can enter a local IK boundary despite a successful
+ earlier preview. Compare finite actuator-reachable alternatives in scratch
+ data, retaining measured load/tool transforms. This never relaxes limits or
+ predicts suspended-weight articulation; other mechanisms keep their guard.
+ """
+ if t.task['level']!=1:return None
+ body=t.data.body(ident);point=body.xpos.copy();rotation=body.xmat.reshape(3,3).copy()
+ yaw=math.atan2(rotation[1,0],rotation[0,0]);table=t.task['table_height_m']
+ gap=t.monitor.bottom(t.monitor.relay_v2.states[ident]['all_geoms'])-table
+ if gap<=.01:return None
+ for delta in ([0,-.02,0],[0,.02,0],[0,0,.03],[-.02,0,0],[.02,0,0]):
+  target=point+delta
+  if not carry_clear(t,ident,team,target,yaw,target_rotation=rotation):continue
+  endpoint=t.relay_carry_endpoint
+  probe=copy(t);probe.live_preview=False;probe.data=mujoco.MjData(t.model)
+  probe.data.qpos[:]=endpoint['qpos'];probe.arms={a:copy(v) for a,v in t.arms.items()}
+  mujoco.mj_forward(t.model,probe.data)
+  for robot in team:probe.arms[robot].qref=probe.data.qpos[t.arms[robot].qids].copy()
+  probe.monitor=copy(t.monitor);probe.monitor.d=probe.data;probe.monitor.w=probe
+  probe.monitor.relay_v2=copy(t.monitor.relay_v2);probe.monitor.relay_v2.mon=probe.monitor
+  if not probe.monitor.relay_v2.inside(probe.monitor.relay_v2.states[ident]):continue
+  landing=target.copy();landing[2]-=gap+float(delta[2])-.01
+  if not carry_clear(probe,ident,team,landing,yaw,target_rotation=rotation):continue
+  if landing_increment_clear(probe,ident,team,.005) is None:continue
+  return dict(target_m=target,rotation=rotation,yaw=yaw,delta_m=list(delta),
+              predicted_descent_target_m=landing)
+ return None
+
+
 def place(t,ident,team):
  """Stop at supported placement, rather than pressing a flexed root to z."""
  state=t.monitor.relay_v2.states[ident]
  if not t.monitor.relay_v2.inside(state):raise RuntimeError('Terminal descent requires entire apparatus inside final region')
  limit=math.ceil(max(0.,float(t.data.body(ident).xpos[2])-t.task['table_height_m']+.05)/.005)+1
+ repairs=0
  for _ in range(limit):
   t.check_stop()
   if not t.monitor.relay_v2.inside(state):raise RuntimeError('Apparatus left final region during terminal descent '+ident)
@@ -613,7 +662,19 @@ def place(t,ident,team):
    t.wait(.15)
    if final_support(t,ident,team):return
   commands=landing_increment_clear(t,ident,team,.005)
-  if commands is None:raise RuntimeError('No whole-arm-clear terminal descent '+ident)
+  if commands is None:
+   live=t.data is getattr(t,'_live_data',None)
+   support=t.monitor.bilateral(state['rod_geoms'],positive_force=True)
+   known=live and not t.monitor.violations and not state['dropped'] and set(team)<=support and not any(arm.job is not None for arm in t.arms.values())
+   plan=terminal_reposition_plan(t,ident,team) if known and repairs<2 else None
+   if plan is None:raise RuntimeError('No whole-arm-clear terminal descent '+ident)
+   repairs+=1
+   t.event('terminal_descent_forward_adjustment',payload=ident,robots=list(team),
+           target_m=plan['target_m'].tolist(),delta_m=plan['delta_m'],
+           predicted_descent_target_m=plan['predicted_descent_target_m'].tolist(),
+           reason='Actual settled local IK or collision guard; checked coupled successor')
+   carry(t,ident,team,plan['target_m'],plan['yaw'],target_rotation=plan['rotation'])
+   continue
   execute_landing_increment(t,ident,team,commands)
   if t.monitor.violations:raise RuntimeError('Physical terminal placement violation: '+str(t.monitor.violations[-1]))
   if state['dropped']:raise RuntimeError('Physical support lost during terminal placement '+ident)
@@ -802,13 +863,14 @@ def release(t,ident,team,terminal=False):
   t.move_free(a,*t.home[a],label='send-clear',target_joints=t.home_q[a])
 
 
-def handover_plan(t,ident,team,offset,index,search_budget_s=None,lookahead_depth=2):
+def handover_plan(t,ident,team,offset,index,search_budget_s=None,lookahead_depth=2,retained_side=None):
  """One bounded search stage, including all nested IK and route checks."""
  started=time.monotonic();original_stop=t.stop_requested;search=copy(t);search.live_preview=False
  if not hasattr(t,'relay_ik_stats'):t.relay_ik_stats={}
  search.relay_ik_stats=t.relay_ik_stats;before=dict(t.relay_ik_stats)
  search.relay_handover_best=None;search.relay_handover_seen=set();search.relay_handover_score=None
  search.relay_handover_depth=max(1,min(2,int(lookahead_depth)));search.relay_handover_started=started
+ search.relay_retained_side=retained_side
  budget=STAGE_SEARCH_WALL_S if search_budget_s is None else max(0.,float(search_budget_s))
  search.stop_requested=lambda:((original_stop is not None and original_stop()) or time.monotonic()-started>=budget)
  live=t.data is getattr(t,'_live_data',None) and hasattr(t,'trace')
@@ -855,6 +917,12 @@ def _handover_plan(t,ident,team,offset,index):
   # Keep a small finite set; actual COM ranks it, geometry and physics judge it.
   asymmetric=[(.32,.54),(.54,.32),(.36,.54),(.54,.36),(.38,.56),(.56,.38),(.40,.56),(.56,.40),(.32,.50),(.50,.32),(.36,.50),(.50,.36),(.40,.54),(.54,.40)]
   offsets += [v for v in asymmetric if np.all(abs(np.asarray(v)-previous)>=.035)]
+ retained_side=getattr(t,'relay_retained_side',None)
+ if retained_side is not None:
+  if retained_side not in (0,1):raise ValueError('Unknown retained grasp side')
+  changing=1-retained_side
+  offsets=[tuple(previous[side] if side==retained_side else value for side in (0,1))
+           for value in candidates if abs(value-previous[changing])>=.035]
  weighted=t.task['level']>1;lookahead=weighted or curved
  # Unverified asymmetric future contacts are not evidence of future room.
  # They remain available as current grasps, subject to full geometry checks.
@@ -884,7 +952,13 @@ def _handover_plan(t,ident,team,offset,index):
        # constraints. Raise vertically before translating over the bases;
        # a diagonal shortcut can strike the shoulder before gaining height.
        transit=np.asarray(nxt['center_m']).copy();transit[2]=later_height
+       if retained_side is not None and index<len(route)-1:
+        # Intermediate anchors are search references, not compulsory stops.
+        # A retained inner hand can make a shorter useful prefix while the
+        # denser outer ring changes hands; a later stage replans the frontier.
+        transit[:2]=.65*point[:2]+.35*transit[:2]
        future_kwargs=dict(future_region=point.tolist(),future_yaw=yaw,future_fraction=1.,future_height=later_height,future_waypoints=[(transit.tolist(),payload_route_yaw(t,ident,nxt))])
+       if retained_side is not None:future_kwargs['retained']={retained_side:team[retained_side]}
        # Only require the legs actually executed before the next planning
        # boundary. An arbitrary extra reach toward a later station can
        # exclude a valid receiver that hands over earlier from this centre.
@@ -943,7 +1017,26 @@ def _handover_plan(t,ident,team,offset,index):
  raise RuntimeError('No bounded whole-arm carry/receiving candidate at stage '+str(index)+' '+ident)
 
 
-def solve(t,payload_ids=None,terminal_observer=None):
+def flexible_handover_plan(t,ident,team,offset,index,search_budget_s=None):
+ """Try a retained holder within the same finite stage search budget.
+
+ Unequal rings prefer retaining an inner arm when both choices are feasible.
+ This is a candidate order, never a fixed team or a clearance exemption.
+ """
+ budget=STAGE_SEARCH_WALL_S if search_budget_s is None else max(0.,float(search_budget_s))
+ started=time.monotonic();mechanism=t.task['mechanism']
+ inner=set(mechanism.get('inner_robot_ids',list(t.arms)[mechanism.get('outer_arms',len(t.arms)):]))
+ order=sorted((0,1),key=lambda side:team[side] not in inner)
+ for side in order:
+  remaining=budget-(time.monotonic()-started)
+  if remaining<=0:break
+  try:return handover_plan(t,ident,team,offset,index,search_budget_s=min(remaining,budget*.20),retained_side=side)
+  except ReferenceStopped:raise
+  except RuntimeError:pass
+ return handover_plan(t,ident,team,offset,index,search_budget_s=max(0.,budget-(time.monotonic()-started)))
+
+
+def solve(t,payload_ids=None,terminal_observer=None,allow_partial_handover=False,handover_observer=None):
  if t.task.get('suite_version')!=2:raise ValueError('V2 relay reference requires v2 task')
  assemblies=t.task['mechanism']['payload_assemblies'];route=t.task['route']
  selected=None if payload_ids is None else set(payload_ids)
@@ -968,7 +1061,8 @@ def solve(t,payload_ids=None,terminal_observer=None):
     # Retain a share of the same total stage budget to validate the actual
     # settled pose after the selected physical carry, including corrections.
     selection_budget=remaining_search*(.75 if t.task['level']>1 or t.task['mechanism']['layout']!='straight' else 1.)
-    point,yaw,receiver_offset,future_kwargs=handover_plan(t,ident,team,offset,index,search_budget_s=selection_budget)
+    planner=flexible_handover_plan if allow_partial_handover else handover_plan
+    point,yaw,receiver_offset,future_kwargs=planner(t,ident,team,offset,index,search_budget_s=selection_budget)
     remaining_search-=time.monotonic()-search_started
     height=point[2];carry(t,ident,team,point,yaw)
     # Compliance and tracking change a predicted pose slightly. A rejected
@@ -983,15 +1077,19 @@ def solve(t,payload_ids=None,terminal_observer=None):
      t.event('handover_revalidation_rejected',payload=ident,stage=index,correction=correction,reason=str(error))
     finally:remaining_search-=time.monotonic()-search_started
    if receiver is None:raise RuntimeError('Actual receiving pose remained infeasible after bounded replanning '+ident)
-   grasp(t,ident,receiver,receiver_offset);t.wait(.25);release(t,ident,team);team=receiver;offset=receiver_offset
+   prior_team=list(team)
+   grasp(t,ident,receiver,receiver_offset);t.wait(.25)
+   release(t,ident,[robot for robot in team if robot not in receiver]);team=receiver;offset=receiver_offset
    height=future_kwargs['future_height']
    lift=np.asarray(future_kwargs['future_region']).copy();lift[2]=height
-   point=np.asarray(nxt['center_m']).copy();point[2]=height
-   t.relay_committed_carry=(point.copy(),payload_route_yaw(t,ident,nxt))
+   point=np.asarray(future_kwargs['future_waypoints'][0][0]).copy()
+   next_yaw=future_kwargs['future_waypoints'][0][1]
+   t.relay_committed_carry=(point.copy(),next_yaw)
    try:
     if np.linalg.norm(lift-t.data.body(ident).xpos)>.003:carry(t,ident,team,lift,future_kwargs['future_yaw'])
    finally:t.relay_committed_carry=None
-   carry(t,ident,team,point,payload_route_yaw(t,ident,nxt))
+   carry(t,ident,team,point,next_yaw)
+   if handover_observer is not None:handover_observer(ident,prior_team,list(team),index)
   final=route[-1];rotation=rz(final['nominal_yaw_rad']);point=np.asarray(final['center_m'])+rotation@np.array([(number-(len(assemblies)-1)/2)*.12-.045,0,0]);point[2]=height
   carry(t,ident,team,point,payload_route_yaw(t,ident,final))
   state=t.monitor.relay_v2.states[ident]

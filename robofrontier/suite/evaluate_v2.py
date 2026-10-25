@@ -88,7 +88,7 @@ class Relay:
             beam_ids={monitor.m.body(n).id for n in item.get('beam_bodies',[ident])}
             rod=[g for g in all_geoms if monitor.m.geom_bodyid[g] in beam_ids
                  and ('_beam' in (monitor.m.geom(g).name or ''))]
-            self.states[ident]=dict(assembly=item,all_geoms=all_geoms,rod_geoms=rod,airborne=False,custody=set(),candidate=set(),overlap_since=None,qualified=set(),gap_since=None,dropped=False,drops=0,transitions=[],goal_since=None,landed=False,spill=False)
+            self.states[ident]=dict(assembly=item,all_geoms=all_geoms,rod_geoms=rod,airborne=False,custody=set(),candidate=set(),candidate_since={},overlap_since=None,qualified=set(),gap_since=None,dropped=False,drops=0,transitions=[],goal_since=None,landed=False,spill=False)
     def environment_contact(self,geoms):
         mon=self.mon;own=set(geoms)
         return any(c.dist<=0 and any(int(a) in own and (mon.m.geom(int(b)).name or '').startswith(('table_','floor','pocket_')) for a,b in ((c.geom1,c.geom2),(c.geom2,c.geom1))) for c in mon.d.contact)
@@ -113,14 +113,23 @@ class Relay:
                 else:state['gap_since']=None
                 if not state['dropped']:
                     fresh=support-state['custody']
-                    if len(fresh)>=2 and support&state['custody']:
-                        if fresh!=state['candidate']:state['candidate']=fresh;state['overlap_since']=t
-                        if t-state['overlap_since']>=.20:state['qualified']|=fresh
-                    elif not state['qualified']:state['candidate']=set();state['overlap_since']=None
-                    if not(support&state['custody']) and len(support)>=2:
-                        if len(support&state['qualified'])>=2:
-                            state['transitions'].append(dict(sim_time_s=t,senders=sorted(state['custody']),receivers=sorted(support)))
-                            state['custody']=set(support);state['qualified']=set();state['candidate']=set();state['overlap_since']=None
+                    # Qualify each arriving hand while the established team
+                    # still supplies at least two supports. A contact loss
+                    # invalidates that receiver's earlier overlap evidence.
+                    state['qualified'].intersection_update(fresh)
+                    state['candidate_since']={a:s for a,s in state['candidate_since'].items() if a in fresh}
+                    if len(support&state['custody'])>=2:
+                        for robot in fresh:
+                            since=state['candidate_since'].setdefault(robot,t)
+                            if t-since>=.20-1e-9:state['qualified'].add(robot)
+                    state['candidate']=set(fresh)
+                    state['overlap_since']=min(state['candidate_since'].values(),default=None)
+                    if not state['custody']<=support and len(support)>=2:
+                        if fresh<=state['qualified']:
+                            old=set(state['custody'])
+                            state['transitions'].append(dict(sim_time_s=t,senders=sorted(old),receivers=sorted(support),
+                                retained=sorted(old&support),released=sorted(old-support),joined=sorted(fresh),protocol='qualified-members-v2'))
+                            state['custody']=set(support);state['qualified']=set();state['candidate']=set();state['candidate_since']={};state['overlap_since']=None
                         else:mon.violation('unverified_handover',key=ident)
                 if on_table and inside and len(support&state['custody'])>=2:state['landed']=True
                 bad_contact=on_table and not(state['landed'] and inside)

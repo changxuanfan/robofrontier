@@ -45,7 +45,9 @@ def diagnostic_world(run):
     t.screen_data=mujoco.MjData(t.screen_model);t.held=dict(observation['held']);t.carry_geoms={};t.hand_geoms={}
     t.monitor=Monitor(t)
     errors={a:float(np.linalg.norm(t.data.site_xpos[arm.site]-observation['robots'][a]['tcp_m'])) for a,arm in t.arms.items()}
-    if max(errors.values())>1e-8:raise ValueError('Recorded FK does not match observation: '+str(errors))
+    # Remaining finger coordinates are float32 and can affect the TCP site by
+    # tens of nanometres. This checks reconstruction, not robot admission.
+    if max(errors.values())>1e-6:raise ValueError('Recorded FK does not match observation: '+str(errors))
     return t,observation
 
 
