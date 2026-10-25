@@ -59,3 +59,23 @@ admission in0.43s; the fixed screen rejects it in1.21s. Pairwise independent pha
 samples now include finished/idle peer poses. This is still sampled nominal
 geometry, not a dynamics or continuous-clearance certificate. Process monitoring
 and unchanged original acceptance remain authoritative.
+
+## Full-order attempt002: assisted12/12
+
+All12 original goals accepted, zero process violations and zero unknown actions.
+Total503.22 simulation seconds,309.93 wall seconds,336 robot commands. Actual
+multi-arm motion overlap124.86 simulation seconds; peak4 moving arms. These are
+whole-episode metrics, not a serial/parallel speedup measurement.
+
+The program reached11/12 by itself. The final failed scope had been retried when
+only B/C were available, and the once-per-goal automatic retry rule prevented
+reconsideration after later work freed all arms. One owner-authored empty-step
+request expanded the final replanning scope to the four free arms. It performed
+ordinary commands from the actual world and completed the final goal. The report
+correctly marks `engineering_assisted=true`, `llm_used=true`.
+
+New code admits a fresh current-state retry after genuinely new accepted progress,
+at most once per goal/progress count. Static blocked frontiers cannot spin retries,
+and unknown/active actions remain ineligible. The regression reproduces the old
+second-progress failure before the fix. Next run must establish a frozen-program
+full pass without the owner's recovery request.

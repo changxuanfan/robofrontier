@@ -9,6 +9,25 @@ from robofrontier.suite.transport_recovery import EngineeringRecovery
 
 
 class EngineeringRecoveryTests(unittest.TestCase):
+    def test_further_real_progress_enables_a_second_current_state_retry(self):
+        with TemporaryDirectory() as tmp:
+            handler=EngineeringRecovery(tmp)
+            state=dict(failed_jobs={'first':dict(goal=dict(goal_id='remaining'))},accepted_goals={})
+            handler.observation=Mock(side_effect=lambda *_:state);handler._retry=Mock(return_value='recovery')
+            t=SimpleNamespace(time=0.,event=Mock());runtime=SimpleNamespace()
+            handler.poll(t,runtime,[],[],force=True)
+            state['accepted_goals']={'one':'item1'}
+            handler.poll(t,runtime,[],[],force=True)
+            self.assertEqual(handler._retry.call_count,1)
+            state['failed_jobs']={'second':dict(goal=dict(goal_id='remaining'))}
+            handler.poll(t,runtime,[],[],force=True)
+            # Static waiting must not reissue a failed action or spin retries.
+            handler.poll(t,runtime,[],[],force=True)
+            self.assertEqual(handler._retry.call_count,1)
+            state['accepted_goals']['two']='item2'
+            handler.poll(t,runtime,[],[],force=True)
+            self.assertEqual(handler._retry.call_count,2)
+
     def test_foreign_or_state_edit_input_never_reaches_execution(self):
         for request in (dict(id='x',job='bad',scene_sha256='other'),
                         dict(id='x',job='bad',scene_sha256='correct',qpos=[0])):

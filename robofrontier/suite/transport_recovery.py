@@ -20,7 +20,7 @@ class EngineeringRecovery:
         self.path=Path(directory)/'recovery'
         for name in ('inbox','accepted','rejected'): (self.path/name).mkdir(parents=True,exist_ok=True)
         self.seen=set();self.external_inputs=[];self.next_poll=0.;self.counter=0
-        self.waiting=False;self.failed_progress={};self.automatic_goals=set()
+        self.waiting=False;self.failed_progress={};self.automatic_progress={}
 
     def observation(self,t,runtime):
         failed={ident:dict(goal=job.get('goal'),object=job.get('object'),error=str(job.get('error')),
@@ -67,13 +67,14 @@ class EngineeringRecovery:
         if not force and time.monotonic()<self.next_poll:return False
         self.next_poll=time.monotonic()+1.;state=self.observation(t,runtime)
         write_json(self.path/'frontier.json',state);changed=False
-        # A single measured-state retry may become worthwhile after unrelated
-        # progress. It is not an identical tight-loop replay of a failed move.
+        # New accepted progress can free a previously unavailable carrier or
+        # route. Admit at most once per goal/progress count, not once forever.
+        # A static blocked frontier cannot trigger an identical retry loop.
         for ident,failed in list(state['failed_jobs'].items()):
             count=len(state['accepted_goals']);baseline=self.failed_progress.setdefault(ident,count)
             goal=failed['goal']['goal_id']
-            if goal not in self.automatic_goals and (count>baseline or goal in state['accepted_goals']):
-                try:self._retry(t,runtime,ident,{});self.automatic_goals.add(goal);changed=True
+            if count>self.automatic_progress.get(goal,-1) and (count>baseline or goal in state['accepted_goals']):
+                try:self._retry(t,runtime,ident,{});self.automatic_progress[goal]=count;changed=True
                 except ValueError:pass
         for file in sorted((self.path/'inbox').glob('*.json')):
             if file.name in self.seen:continue
