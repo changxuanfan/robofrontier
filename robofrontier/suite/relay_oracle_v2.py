@@ -229,7 +229,9 @@ def received_transport_preview(t,ident,senders,receivers,future):
  """Predict the committed post-handover legs in an independent FK state."""
  probe=copy(t);probe.live_preview=False;probe.data=mujoco.MjData(t.model);probe.data.qpos[:]=t.data.qpos
  probe.arms=dict(t.arms)
- probe.held={a:ident for a in receivers}
+ departing=set(senders)-set(receivers)
+ probe.held={a:payload for a,payload in getattr(t,'held',{}).items() if a not in departing}
+ probe.held.update({a:ident for a in receivers})
  preview_released_home(t,probe.data,set(senders)-set(receivers))
  for robot in receivers:
   probe.data.qpos[t.arms[robot].qids]=t.relay_grasp_plan[robot]['contact_q']

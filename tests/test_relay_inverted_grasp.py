@@ -3,7 +3,7 @@ import unittest
 
 import numpy as np
 
-from test_relay_descent_recovery import recorded_world
+from tests.test_relay_descent_recovery import recorded_world
 from robofrontier.suite import relay_oracle_v2 as ref
 
 

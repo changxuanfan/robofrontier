@@ -142,9 +142,11 @@ not inject those recorded states or pretend that a physics restart exists.
 
 The frozen `ab1abec` queue is at
 `runs/oracle/relay-nine-ab1abec-20261026-032833`. Eight-arm L1 passed its full
-native task and all21,863 recorded frames were decoded. Twelve-arm L1 has two
-of three rods released in GOAL and is still being repaired forward for its last
-rod;16-arm L1 is also running. These partial cases are not counted as passes.
+native task and all21,863 recorded frames were decoded. Twelve-arm L1 also
+passed3/3 in the same physical world after explicit assisted forward recovery,
+with no drops, violations or unresolved actions; all299,641 frames were decoded.
+The queue is2/9 passed, with16-arm L1 and8-arm L3 currently running. Partial
+cases and the closed8-arm L2 failure are not counted as passes.
 
 The8-arm L2 episode lost its G grasp during a subsequent carry, then inverted
 on the tabletop after supported opening. The original G/H custody was retained
@@ -163,3 +165,10 @@ These are candidate/controller fixes, not changes to contact physics or task
 acceptance. They are not hot-patched into the already-frozen active episodes.
 The related87 checks pass. Only all nine complete physical successes, including
 any required retries, finish this request; no GPT trial follows this scope.
+
+Sixteen-arm L1 has already executed one real eight-robot carry batch for four
+separate loads (sim66.60s), independently of the measured root-motion metric.
+The receiving lookahead had discarded unrelated loads' occupied hands from its
+scratch custody map, allowing impossible later allocations. A regression now
+reproduces that exact omission; previews preserve unrelated custody and only
+replace this handover's departing members. The live frozen queue is unchanged.

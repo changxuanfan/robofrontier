@@ -11,6 +11,7 @@ import numpy as np
 
 from robofrontier.suite.relay_pipeline import simultaneous_carry_clear,carry_chunk,Frontier,packing_shift,solve,extra_prefix_plan,plan_transfer,route_progress,direct_terminal_plan
 from tests.test_relay_descent_recovery import recorded_world
+from robofrontier.suite import relay_oracle_v2 as ref
 
 
 class RelayPipelineTests(unittest.TestCase):
@@ -46,6 +47,18 @@ class RelayPipelineTests(unittest.TestCase):
     def test_same_robot_cannot_be_reserved_for_two_loads(self):
         requests=self.requests([.4,.4,.5]);requests[1]['team']=['A']
         self.assertFalse(simultaneous_carry_clear(self.world(),requests))
+
+    def test_receiving_lookahead_keeps_other_load_holders_occupied(self):
+        t=recorded_world();t.held={'A':'payload_01','B':'payload_01','C':'payload_02','D':'payload_02'}
+        original=dict(t.held)
+        t.relay_grasp_plan={a:dict(contact_q=t.home_q[a].copy()) for a in ['E','F']}
+        def clear(probe,*args,**kwargs):
+            probe.relay_carry_endpoint=dict(qpos=probe.data.qpos.copy());return True
+        future=dict(future_region=[0.,0.,1.35],future_height=1.35,future_yaw=0.,future_waypoints=[])
+        with patch.object(ref,'carry_clear',side_effect=clear):
+            probe=ref.received_transport_preview(t,'payload_01',['A','B'],['E','F'],future)
+        self.assertEqual(probe.held,{'C':'payload_02','D':'payload_02','E':'payload_01','F':'payload_01'})
+        self.assertEqual(t.held,original)
 
     def test_in_goal_supported_load_can_descend_without_nominal_center_correction(self):
         t=recorded_world();point=t.data.body('payload_02').xpos.copy()
