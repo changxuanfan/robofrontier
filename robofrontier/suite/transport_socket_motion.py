@@ -233,9 +233,10 @@ def guard_contact_moves(trial,board):
                 from ..robot_control import quat_matrix
                 target=np.asarray(params.get('target_m',start+np.asarray(params.get('delta_m',[0,0,0]))))
                 rotation=quat_matrix(params['quaternion_wxyz']) if 'quaternion_wxyz' in params else start_r
-                with ref.socket_contact_clearance(s,name,board):
+                active_board=board(robot) if callable(board) else board
+                with ref.socket_contact_clearance(s,name,active_board):
                     path,why=trace_segment(s,robot,name,start,target,start_r,
-                        rotation,trial.arms[robot].qref,offset,relative,board,fixed_object_pose=fixed)
+                        rotation,trial.arms[robot].qref,offset,relative,active_board,fixed_object_pose=fixed)
                 if path is None:
                     trial.event('socket_motion_rejected',robot=robot,object=name,label=label,diagnostics=why)
                     raise SocketPlanningError(label,why)

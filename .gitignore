@@ -26,3 +26,6 @@ vendor/
 /outputs
 /docs/generated
 /configs/evaluations/private
+
+# Worktree-local cooperative Oracle dependency, never shared runtime state.
+/.oracle-deps/
