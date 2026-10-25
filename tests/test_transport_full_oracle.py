@@ -41,6 +41,18 @@ def recorded_frontier():
 
 
 class TransferCoverageTests(unittest.TestCase):
+    def test_free_release_keeps_original_goal_but_requests_precise_motion(self):
+        from types import SimpleNamespace
+        t=SimpleNamespace(task=dict(family='transport',level=1),transport_release_clearance={'C':.05},event=Mock(),place=Mock())
+        target=np.array([0.,.302,.833]);rotation=np.eye(3)
+        full.place_flat(t,'C',target,rotation,lambda:(target,rotation))
+        args,kw=t.place.call_args
+        np.testing.assert_allclose(args[1],target+[0,0,.035])
+        self.assertFalse(kw['precise']);self.assertTrue(kw['motion_precise'])
+        np.testing.assert_array_equal(target,[0.,.302,.833])
+        t.task['level']=2
+        with self.assertRaises(ValueError):full.place_flat(t,'C',target,rotation,lambda:(target,rotation))
+
     def test_original_blocked_frontier_has_a_receivable_successor_candidate(self):
         t=recorded_frontier();goal=next(g for g in t.task['goals'] if g['goal_id']=='B_slot2')
         class ReachedExecution(Exception):pass

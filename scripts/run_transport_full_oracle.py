@@ -39,6 +39,7 @@ def main():
     from robofrontier.suite.oracle import Trial,ReferenceStopped
     from robofrontier.suite.transport_full_oracle import solve
     from robofrontier.suite.transport_recovery import EngineeringRecovery
+    from robofrontier.suite.oracle_budget import ExplicitPauseBudget
     from robofrontier.run_setup import load_harness,write_json
     cases=json.loads(a.catalog.read_text())['cases'];case=next(c for c in cases if c['id']==a.case)
     if case['family']!='transport':raise ValueError('Transport-only runner')
@@ -47,14 +48,17 @@ def main():
     t=Trial(frozen/case['directory'],out,controller_cfg=load_harness(a.harness),sources=sources)
     t.live_preview=True;t.abort_on_process_violation=True;stopped={'requested':False}
     recovery=EngineeringRecovery(out)
+    budget=ExplicitPauseBudget(out)
     signal.signal(signal.SIGTERM,lambda *_:stopped.update(requested=True))
-    t.stop_requested=lambda:stopped['requested'] or time.monotonic()-t.started>a.wall_s or t.time>a.sim_s or len(t.actions)>10000 or (out.parent.parent/'STOP').exists()
+    stop=lambda:stopped['requested'] or budget.times()['active_wall_s']>a.wall_s or t.time>a.sim_s or len(t.actions)>10000 or (out.parent.parent/'STOP').exists()
+    t.stop_requested=lambda:budget.gate(stop)
     dependency_files={str(f.relative_to(DEPS)):hashlib.sha256(f.read_bytes()).hexdigest() for f in DEPS.rglob('*.so')}
     report=dict(case_id=case['id'],passed=False,full_task_attempt=True,commissioning_only=False,
         git_commit=os.environ['TRANSPORT_ORACLE_COMMIT'],worktree=os.environ['TRANSPORT_ORACLE_WORKTREE'],
         dependencies=dict(greenlet=importlib.metadata.version('greenlet'),binary_sha256=dependency_files),
         scope='Privileged geometry engineering Oracle; one real world, original full-order acceptance',
-        budgets=dict(wall_s=a.wall_s,simulation_s=a.sim_s,action_batches=10000))
+        budgets=dict(wall_s=a.wall_s,simulation_s=a.sim_s,action_batches=10000,
+            wall_protocol='Planning/recovery time counts; only acknowledged engineering pauses excluded'))
     try:
         t.wait(.6);t.snapshot('initial');report['frontier']=solve(t,on_blocked=recovery)
         t.wait(2.);result=t.monitor.result()
@@ -66,6 +70,7 @@ def main():
         report['error']=type(error).__name__+': '+str(error)
         if isinstance(error,(ReferenceStopped,KeyboardInterrupt)):report['interrupted']=True
     finally:
+        report['timing']=budget.times()
         report['evaluation']=t.monitor.result()
         report['unresolved_robot_actions']=[r for r,arm in t.arms.items() if arm.job is not None or arm.uncertainty_reported]
         report['final_robot_states']={r:arm.observe() for r,arm in t.arms.items()}

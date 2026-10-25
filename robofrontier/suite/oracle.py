@@ -360,7 +360,9 @@ class Trial:
         self.move(robot,self.data.site_xpos[arm.site]+np.array([0,0,.14]),rr,'pick-lift');self.wait(.1)
         if self.data.body(name).xpos[2]<p[2]+.08:raise RuntimeError('Payload not retained '+name)
         self.held[robot]=name;self.event('picked',robot=robot,object=name)
-    def place(self,robot,position,object_rotation=None,precise=False,pose_provider=None):
+    def place(self,robot,position,object_rotation=None,precise=False,pose_provider=None,motion_precise=None):
+        approach_precise=False if motion_precise is None else motion_precise
+        motion_precise=precise if motion_precise is None else motion_precise
         name=self.held[robot];arm=self.arms[robot];obj=self.data.body(name);old_r=obj.xmat.reshape(3,3).copy();tcp_r=self.data.site_xmat[arm.site].reshape(3,3).copy()
         offset=old_r.T@(self.data.site_xpos[arm.site]-obj.xpos);relative=old_r.T@tcp_r
         from .scenes import rz
@@ -436,7 +438,7 @@ class Trial:
             raise PlacementPlanningError(robot,name,diagnostics)
         target,rr,r=chosen;symmetry=base_r.T@r
         normal=np.array([0,0,1.]) if self.task['family']=='mosaic' else r[:,2]
-        if not mosaic:self.move(robot,target+np.array([0,0,.14]),rr,'place-approach')
+        if not mosaic:self.move(robot,target+np.array([0,0,.14]),rr,'place-approach',precise=approach_precise)
         buffer=self.task['family']=='transport' and not precise
         heights=() if mosaic else (.07,.035,.015) if buffer else (.07,.035,.015,.005,0)
         # A pocket rim does not admit the complete finger envelope. Release
@@ -450,7 +452,7 @@ class Trial:
             rr=r@relative
             if self.task['family']=='mosaic':height=max(height,self.release_clearance_height(robot,rr,float((r@offset)[2])))
             target=np.asarray(position)+r@offset+normal*height
-            self.move(robot,target,rr,'place-prealign' if height else 'place-seat',precise=precise)
+            self.move(robot,target,rr,'place-prealign' if height else 'place-seat',precise=motion_precise)
         self.wait(.15)
         if self.task['family']=='mosaic' and not pocket and np.linalg.norm(self.data.site_xpos[arm.site,:2]-np.asarray(position)[:2])>.002:
             # A cube can settle along a fingertip during a joint-space carry.

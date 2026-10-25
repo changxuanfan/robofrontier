@@ -130,13 +130,15 @@ def place_flat(t,robot,point,rotation,pose_provider):
     Trial.place's non-precise final command is 15 mm above its input anchor.
     Shift only that command anchor, never the goal or live object state.
     """
+    if t.task['family']!='transport' or t.task['level']!=1:
+        raise ValueError('Free-drop release applies only to Transport L1')
     gap=getattr(t,'transport_release_clearance',{}).get(robot,.015)
     def release_anchor():
         p,r=pose_provider()
         return p+r[:,2]*(gap-.015),r
     p,r=release_anchor()
     t.event('transport_flat_release_plan',robot=robot,goal_position_m=np.asarray(point).tolist(),release_clearance_m=gap)
-    t.place(robot,p,r,precise=False,pose_provider=release_anchor)
+    t.place(robot,p,r,precise=False,pose_provider=release_anchor,motion_precise=True)
 
 
 def execute_job(t,runtime,job,resume=False):

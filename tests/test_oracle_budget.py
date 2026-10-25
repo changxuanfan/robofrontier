@@ -1,6 +1,8 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
+from unittest.mock import patch
+import json
 
 from robofrontier.suite.oracle_budget import ExplicitPauseBudget
 
@@ -24,6 +26,16 @@ class PauseBudgetTests(unittest.TestCase):
             budget.update(dict(paused=True));now[0]=13;budget.update(dict(paused=False))
             self.assertEqual(budget.times()['paused_wall_s'],10)
             self.assertEqual(len((Path(directory)/'pause-events.jsonl').read_text().splitlines()),2)
+
+    def test_stop_remains_effective_inside_explicit_pause(self):
+        with TemporaryDirectory() as directory:
+            root=Path(directory);budget=ExplicitPauseBudget(root)
+            (root/'control.json').write_text(json.dumps(dict(paused=True)))
+            stopped=[False]
+            with patch('robofrontier.suite.oracle_budget.time.sleep',side_effect=lambda _:stopped.__setitem__(0,True)):
+                self.assertTrue(budget.gate(lambda:stopped[0]))
+            self.assertIsNotNone(budget.paused_at)
+            self.assertTrue(json.loads((root/'pause-status.json').read_text())['paused'])
 
 
 if __name__=='__main__':unittest.main()
