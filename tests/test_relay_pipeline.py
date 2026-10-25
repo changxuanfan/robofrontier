@@ -99,6 +99,19 @@ class RelayPipelineTests(unittest.TestCase):
                 with self.assertRaises(LookupError):solve(t)
         self.assertEqual(order,['place','release','plan'])
 
+    def test_arrived_terminal_carry_is_promoted_before_upstream_search(self):
+        t=recorded_world();t.actions=[];t.started=time.monotonic();t.step=Mock();order=[]
+        point=t.data.body('payload_02').xpos.copy()
+        t.relay_frontiers=[Frontier('payload_01',0,2,phase='plan',team=['E','F']),
+            Frontier('payload_02',1,3,phase='carry',team=['G','H'],target=point,following='place')]
+        def record(name):
+            order.append(name);raise LookupError('Stop at first enabled work')
+        with tempfile.TemporaryDirectory() as folder:
+            t.directory=Path(folder)
+            with patch.object(t.monitor,'result',return_value={'payloads':{}}),patch('robofrontier.suite.relay_pipeline.carry_chunk',return_value=None),patch('robofrontier.suite.relay_pipeline.ref.place',side_effect=lambda *a:record('place')),patch('robofrontier.suite.relay_pipeline.ref.handover_plan',side_effect=lambda *a,**k:record('plan')):
+                with self.assertRaises(LookupError):solve(t)
+        self.assertEqual(order,['place'])
+
     def upstream_holder(self):
         t=recorded_world();t.data.joint('payload_02_free').qpos[:3]=[.04,0,1.35];mujoco.mj_forward(t.model,t.data)
         t.held={'A':'payload_01','B':'payload_01','C':'payload_02','D':'payload_02'}

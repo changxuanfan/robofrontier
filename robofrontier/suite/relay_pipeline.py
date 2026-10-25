@@ -337,6 +337,13 @@ def solve(t,*,flexible=False,terminal_observer=None,handover_observer=None):
         return tuple((other.ident,other.phase,other.milestone,tuple(other.team)) for other in frontiers if other is not f)
     while any(f.phase!='done' for f in frontiers) or not t.monitor.result().get('task_success'):
         t.check_stop();progress=False
+        # An already-arrived load may still be labelled carry until the end
+        # of a scheduling pass. Promote its enabled landing before an upstream
+        # receiving search can consume another full planning allowance.
+        for f in frontiers:
+            if f.phase=='carry' and f.following=='place' and carry_chunk(t,f) is None:
+                f.phase='place';f.blocked='';f.blocked_at=None
+                f.milestone+=1;progress=True
         # Downstream terminal work frees scarce hands and goal access first.
         for f in sorted(frontiers,key=lambda item:(0 if item.phase in ('place','release') else 1,-item.index if item.phase=='plan' else 0)):
             if t.monitor.result().get('payloads',{}).get(f.ident,{}).get('completed'):

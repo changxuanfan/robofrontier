@@ -172,3 +172,14 @@ The receiving lookahead had discarded unrelated loads' occupied hands from its
 scratch custody map, allowing impossible later allocations. A regression now
 reproduces that exact omission; previews preserve unrelated custody and only
 replace this handover's departing members. The live frozen queue is unchanged.
+
+The8-arm L3 owner review found P2 already physically in GOAL while its frontier
+still said carry: an upstream planning search ran before the scheduler promoted
+its arrival to place. The new scheduler matures an admitted terminal arrival
+before sorting enabled landings ahead of upstream searches. This does not skip
+an intermediate receiving phase or alter Goal acceptance. The exact two-scope
+ordering regression failed before the fix;89 related checks now pass. In the
+unchanged live world, explicit owner placement completed P2 with its distal
+beam and independent weight supported, while P1 remains held for continuation.
+Sixteen-arm L1 P4 has also been physically delivered, releasing its two terminal
+hands; the other three rods still need completion.
