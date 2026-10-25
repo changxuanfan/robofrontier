@@ -40,11 +40,22 @@ class Frontier:
 
 
 def snapshot(t,frontiers):
+    actual=t.monitor.result().get('payloads',{})
     write_json(t.directory/'frontier.json',dict(sim_time_s=t.time,wall_elapsed_s=time.monotonic()-t.started,
-        scopes=[dict(payload=f.ident,phase=f.phase,holders=f.team,route_index=f.index,
+        scopes=[dict(payload=f.ident,phase=f.phase,assigned_robots=f.team,holders=actual.get(f.ident,{}).get('support',[]),route_index=f.index,
             target_m=None if f.target is None else np.asarray(f.target).tolist(),yaw_rad=f.yaw,following=f.following,
             blocked=f.blocked,milestone=f.milestone,carry_chunks=f.chunks) for f in frontiers],
         payload_motion=getattr(t,'relay_motion_metrics',{})))
+
+
+def finalize_frontier(t):
+    frontiers=getattr(t,'relay_frontiers',None)
+    if frontiers is None:return
+    actual=t.monitor.result().get('payloads',{})
+    for f in frontiers:
+        if actual.get(f.ident,{}).get('completed'):
+            f.phase='done';f.blocked='';f.blocked_at=None
+    snapshot(t,frontiers)
 
 
 def simultaneous_carry_clear(t,requests):
@@ -231,7 +242,10 @@ def solve(t,*,flexible=False,terminal_observer=None,handover_observer=None):
                     else:
                         planner=ref.flexible_handover_plan if flexible else ref.handover_plan
                         shift=packing_shift(t,f,frontiers) if f.index+1==len(route)-1 else 0.
-                        point,yaw,offset,future=planner(t,f.ident,f.team,f.offset,f.index+1,search_budget_s=40.,landing_shift_m=shift)
+                        completed_peer=any(t.monitor.result().get('payloads',{}).get(other.ident,{}).get('completed') for other in frontiers if other is not f)
+                        complex_stage=t.task['level']>1 or t.task['mechanism']['layout']!='straight' or completed_peer
+                        budget=ref.STAGE_SEARCH_WALL_S if complex_stage else min(40.,ref.STAGE_SEARCH_WALL_S)
+                        point,yaw,offset,future=planner(t,f.ident,f.team,f.offset,f.index+1,search_budget_s=budget,landing_shift_m=shift)
                         f.target=point;f.yaw=yaw;f.receiver_offset=offset;f.future=future;f.phase='carry';f.following='receive'
                 elif f.phase=='receive':
                     body=t.data.body(f.ident);receiver=ref.choose_team(t,f.ident,body.xpos.copy(),body.xmat.reshape(3,3).copy(),f.receiver_offset,exclude=f.team,search_budget_s=40.,**f.future)

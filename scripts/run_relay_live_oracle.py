@@ -77,6 +77,7 @@ def main():
     finally:
         report['payload_motion']=t.relay_motion_metrics
         report['scheduling']='rolling-payload-frontier' if a.pipeline else 'sequential-payloads'
+        relay_pipeline.finalize_frontier(t)
         t.close(report)
         if recovery.assisted:
             report.update(llm_used=True,execution_mode='privileged_assisted');write_json(out/'report.json',report)

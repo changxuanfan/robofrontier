@@ -58,3 +58,16 @@ or bounded coupled recovery. Completed rods influence a finite in-region
 packing target; all true goal boundaries and collision checks remain. A further
 left landing preview found a valid first-rod successor after the second rod
 had already arrived. Source revisions and assisted histories stay separate.
+
+The1e0ba2c diagnostic subsequently completed2/2 in the same world, with no drops,
+violations or unresolved jobs. Its model-guided repairs/holding delays are part
+of that episode; it is not a controlled speed comparison. Distinct supported
+loads moved concurrently for73.52 simulation seconds. The same-commit serial
+run passed2/2 with zero multi-load movement,445.46 simulation seconds.
+
+The71bcaf7 automatic trial delivered P2 but hit the40s terminal planning cap
+for P1; the world is kept alive for forward repair. The following version uses
+the original120s stage allowance for complex scenes and productive terminal
+search after a peer finishes. This changes the engineering search budget, not
+physics or acceptance. Frontier exports now distinguish assigned robots from
+actual support and finalize completed scopes after assisted recovery.

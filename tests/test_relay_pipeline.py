@@ -1,12 +1,14 @@
 """Simultaneous sweeps can conflict despite separate path/endpoint checks."""
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import patch,Mock
 import unittest
+import tempfile,time
+from pathlib import Path
 
 import mujoco
 import numpy as np
 
-from robofrontier.suite.relay_pipeline import simultaneous_carry_clear,carry_chunk,Frontier
+from robofrontier.suite.relay_pipeline import simultaneous_carry_clear,carry_chunk,Frontier,packing_shift,solve
 from tests.test_relay_descent_recovery import recorded_world
 
 
@@ -54,6 +56,27 @@ class RelayPipelineTests(unittest.TestCase):
         t=recorded_world();point=t.data.body('payload_02').xpos.copy()
         f=Frontier('payload_02',1,3,phase='carry',team=['G','H'],target=point+[.013,0,0],following='receive')
         self.assertIsNotNone(carry_chunk(t,f))
+
+    def test_landing_candidate_preserves_space_for_an_already_delivered_rod(self):
+        t=recorded_world();t.data.joint('payload_02_free').qpos[0]=1.595;mujoco.mj_forward(t.model,t.data)
+        first=Frontier('payload_01',0,2);second=Frontier('payload_02',1,3)
+        before=t.data.qpos.copy()
+        with patch.object(t.monitor,'result',return_value={'payloads':{'payload_02':{'completed':True}}}):
+            self.assertEqual(packing_shift(t,first,[first,second]),-.12)
+        np.testing.assert_array_equal(t.data.qpos,before)
+
+    def test_enabled_terminal_release_precedes_search_for_its_occupied_hands(self):
+        t=recorded_world();t.actions=[];t.started=time.monotonic();t.step=Mock();order=[]
+        t.relay_frontiers=[Frontier('payload_01',0,2,phase='plan',team=['E','F']),
+            Frontier('payload_02',1,3,phase='place',team=['G','H'])]
+        result={'payloads':{}}
+        def release(*args,**kwargs):order.append('release');result['payloads']['payload_02']={'completed':True}
+        def plan(*args,**kwargs):order.append('plan');raise LookupError('Stop before further planning')
+        with tempfile.TemporaryDirectory() as folder:
+            t.directory=Path(folder)
+            with patch.object(t.monitor,'result',side_effect=lambda:result),patch('robofrontier.suite.relay_pipeline.ref.place',side_effect=lambda *a:order.append('place')),patch('robofrontier.suite.relay_pipeline.ref.release',side_effect=release),patch('robofrontier.suite.relay_pipeline.ref.handover_plan',side_effect=plan):
+                with self.assertRaises(LookupError):solve(t)
+        self.assertEqual(order,['place','release','plan'])
 
 
 if __name__=='__main__':unittest.main()
