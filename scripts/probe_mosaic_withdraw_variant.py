@@ -54,9 +54,22 @@ class WithdrawVariant(Trial):
         return super().close(report)
 
 
+class ScreenedApproach(WithdrawVariant):
+    def execute(self,label,commands,allow_failure=False):
+        if label!='unit-approach':return super().execute(label,commands,allow_failure)
+        robot=next(iter(commands));joints=np.asarray(commands[robot][1]['joint_rad'])
+        target,rotation=self.arms[robot].ik.pose(joints)
+        self.event('unit_slow_screened_approach',robot=robot,joint_speed_rad_s=.2,
+            scope='Fresh canonical unit; full-arm route screening, no replay of old uncertain execution')
+        self.move_free(robot,target,rotation,'unit-screened-approach',target_joints=joints,
+            joint_speed_rad_s=.2,route_joint_step_rad=.005)
+        return {}
+
+
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--case',required=True)
-    p.add_argument('--items',nargs='+',required=True);p.add_argument('--output',required=True,type=Path);a=p.parse_args()
+    p.add_argument('--items',nargs='+',required=True);p.add_argument('--output',required=True,type=Path)
+    p.add_argument('--screened-approach',action='store_true');a=p.parse_args()
     sources={str(p.relative_to(FROZEN)):p.read_bytes() for p in FROZEN.rglob('*') if p.is_file() and p.suffix in ('.py','.json')}
     for name in ('scripts/probe_mosaic_cartesian_approach.py','scripts/probe_mosaic_withdraw_variant.py'):
         sources[name]=(ROOT/name).read_bytes()
@@ -66,7 +79,7 @@ if __name__=='__main__':
         if not dest.exists():dest.write_bytes(payload)
     case=next(c for c in json.loads((ROOT/'configs/suites/frontier-mosaic-r13.json').read_text())['cases'] if c['id']==a.case)
     coverage=json.loads((ROOT/'runs/engineering/mosaic-r13-coverage-20261025'/case['id']/'report.json').read_text())
-    base.Trial=WithdrawVariant
+    base.Trial=ScreenedApproach if a.screened_approach else WithdrawVariant
     rows=[]
     for name in a.items:
         result=base.unit(case,name,a.output.resolve(),sources,coverage)
