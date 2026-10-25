@@ -453,7 +453,7 @@ def plan_air_regrasp(trial, donor, name, diagnostics=None, planning_budget_s=120
 
 
 def regrasp_held_plug(trial, donor, name, *, keep_receiver_held=False,
-                     allowed_receivers=None,candidate_centers=None,receiver_tilt_deg=0.,receiver_depths=None,future_goal=None):
+                     allowed_receivers=None,candidate_centers=None,receiver_tilt_deg=0.,receiver_depths=None,future_goal=None,planning_budget_s=120.):
     """Real handover, optionally retaining its actual carrier for a successor.
 
     Default staging behavior is retained. The optional branch returns only
@@ -463,7 +463,7 @@ def regrasp_held_plug(trial, donor, name, *, keep_receiver_held=False,
     from .placement_oracle import park
     diagnostics = {}
     if candidate_centers is not None or future_goal is not None:
-        plan=plan_air_regrasp(trial,donor,name,diagnostics,
+        plan=plan_air_regrasp(trial,donor,name,diagnostics,planning_budget_s=planning_budget_s,
             allowed_receivers=allowed_receivers,candidate_centers=candidate_centers,receiver_tilt_deg=receiver_tilt_deg,receiver_depths=receiver_depths,future_goal=future_goal)
     elif allowed_receivers is None:
         plan = plan_air_regrasp(trial, donor, name, diagnostics)

@@ -99,17 +99,44 @@ def handover_centers(t,donor,receivers):
 
 def air_transfer(t,robot,name,receivers,goal):
     centers=handover_centers(t,robot,receivers);last=None
-    for tilt,depths in ((0.,(.006,.015,.024)),(-60.,(-.012,.006,.020)),(60.,(-.012,.006,.020))):
-        before=len(t.actions)
-        try:
-            return ref.regrasp_held_plug(t,robot,name,keep_receiver_held=True,
-                allowed_receivers=receivers,candidate_centers=centers,receiver_tilt_deg=tilt,receiver_depths=depths,
-                future_goal=dict(goal,check_socket_path=t.task['level']>1,release_clearance_m=.015))
-        except RuntimeError as error:
-            last=error
-            if len(t.actions)!=before or not str(error).startswith('No bounded physical air-regrasp candidate'):raise
-            t.event('transport_handover_candidate_family_rejected',robot=robot,object=name,tilt_deg=tilt,reason=str(error))
+    width=float(t.task['cube_size_m']);flat=t.task['level']==1
+    # Compare low release first. Higher L1 release is ordinary free fall and
+    # still needs the unchanged physical goal acceptance; never apply to pins.
+    gaps=(.25*width,.5*width,5*width/6,4*width/3) if flat else (.015,)
+    families=((0.,(.006,.015,.024)),(-60.,(-.012,.006,.020)),(60.,(-.012,.006,.020)))
+    families+=tuple((angle,tuple(width*f for f in (13/30,1/3,-13/30,-1/3,-.2,.1))) for angle in (-90.,90.,-120.,120.))
+    for tilt,depths in families:
+        for gap in gaps:
+            t.check_stop()
+            before=len(t.actions)
+            try:
+                receiver=ref.regrasp_held_plug(t,robot,name,keep_receiver_held=True,
+                    allowed_receivers=receivers,candidate_centers=centers,receiver_tilt_deg=tilt,receiver_depths=depths,
+                    future_goal=dict(goal,check_socket_path=not flat,release_clearance_m=gap),planning_budget_s=3.)
+                if flat:
+                    if not hasattr(t,'transport_release_clearance'):t.transport_release_clearance={}
+                    t.transport_release_clearance[receiver]=gap
+                return receiver
+            except RuntimeError as error:
+                last=error
+                if len(t.actions)!=before or not str(error).startswith('No bounded physical air-regrasp candidate'):raise
+                t.event('transport_handover_candidate_family_rejected',robot=robot,object=name,tilt_deg=tilt,release_clearance_m=gap,reason=str(error))
     raise last
+
+
+def place_flat(t,robot,point,rotation,pose_provider):
+    """Preserve the selected receiver grasp's L1 release clearance.
+
+    Trial.place's non-precise final command is 15 mm above its input anchor.
+    Shift only that command anchor, never the goal or live object state.
+    """
+    gap=getattr(t,'transport_release_clearance',{}).get(robot,.015)
+    def release_anchor():
+        p,r=pose_provider()
+        return p+r[:,2]*(gap-.015),r
+    p,r=release_anchor()
+    t.event('transport_flat_release_plan',robot=robot,goal_position_m=np.asarray(point).tolist(),release_clearance_m=gap)
+    t.place(robot,p,r,precise=False,pose_provider=release_anchor)
 
 
 def execute_job(t,runtime,job,resume=False):
@@ -170,7 +197,7 @@ def execute_job(t,runtime,job,resume=False):
         try:
             p,r=pose()
             if t.task['level']>1:place_socket(t,robot,p,r,goal['board'],pose_provider=pose)
-            else:t.place(robot,p,r,precise=False,pose_provider=pose)
+            else:place_flat(t,robot,p,r,pose)
             break
         except (SocketPlanningError,RuntimeError) as error:
             allowed=(isinstance(error,SocketPlanningError) and error.stage in ('seat_release_descent','socket-descend')) or str(error).startswith('No common reachable transit height')
