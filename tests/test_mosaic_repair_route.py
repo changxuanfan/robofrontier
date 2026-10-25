@@ -3,6 +3,14 @@ from scripts.execute_mosaic_repair_route import choose
 
 
 class RepairRouteTests(unittest.TestCase):
+    def test_pose_liftoff_excepts_only_original_horizontal_support(self):
+        from scripts.execute_mosaic_flat_pose_correction import original_support_contact
+        self.assertTrue(original_support_contact('table_0',-.00002,[0,0,1]))
+        self.assertTrue(original_support_contact('pocket_bottom',-.00002,[0,0,-1]))
+        self.assertFalse(original_support_contact('pocket_bottom',0,[1,0,0]))
+        self.assertFalse(original_support_contact('pocket_wall',0,[0,0,1]))
+        self.assertFalse(original_support_contact('pocket_bottom',-.001,[0,0,1]))
+
     def test_flat_pose_selection_requires_free_grippers_and_the_original_named_job(self):
         from scripts.supervise_mosaic_normal_routes import select_flat_pose
         s=dict(phase='review',world_id='w',review_id=1,review_history=[dict(error='RuntimeError: No pickup pose F/E_stock20')])

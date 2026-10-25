@@ -1,4 +1,4 @@
-"""Finite observed-state correction of a slightly yawed, seated flat-table cube.
+"""Finite observed-state correction of a slightly yawed, seated planar cube.
 
 Only ordinary native operations go to the existing frozen owner. Every segment
 is screened and its actual feedback checked. Failure leaves the owner review
@@ -24,10 +24,15 @@ def rz(angle):
     return np.array([[c,-s,0],[s,c,0],[0,0,1.]])
 
 
+def original_support_contact(name,distance,normal):
+    return name in ('table_0','pocket_bottom') and distance>=-.0002 and abs(normal[2])>.99
+
+
 def run(a):
     directory=a.trial.resolve();review=directory/'review';t,initial,_=observed_trial(directory)
     goal=next(g for g in t.task['goals'] if g['goal_id']==a.goal);name=a.object;robot=a.robot
-    if t.task['level']==1:raise ValueError('This finite correction only covers flat-table L2/L3; pocket support needs separate planning')
+    if t.task.get('family')!='mosaic' or abs(t.task['cube_size_m']-.06)>1e-10:
+        raise ValueError('This finite correction covers only the declared60mm Mosaic cubes')
     if any(arm['grasp_force_setpoint_n'] is not None for arm in initial['robots'].values()) or initial['held']:
         raise ValueError('Begin this correction only with released free grippers')
     if a.goal in initial['evaluation']['assignments']:raise ValueError('Do not rework an accepted goal')
@@ -90,7 +95,7 @@ def run(a):
                 if other in gids:continue
                 owner=mirror.model.body(int(mirror.model.geom_bodyid[other])).name
                 if mirror.monitor.geom_owner[other]==rid and owner in (robot+'_left_finger',robot+'_right_finger'):continue
-                if not (mirror.model.geom(other).name=='table_0' and c.dist>=-.0002 and abs(c.frame.reshape(3,3)[0,2])>.99):return False
+                if not original_support_contact(mirror.model.geom(other).name,c.dist,c.frame.reshape(3,3)[0]):return False
             held=mirror.held.pop(robot)
             try:return mirror.pose_clear(robot,value,(name,))
             finally:mirror.held[robot]=held
