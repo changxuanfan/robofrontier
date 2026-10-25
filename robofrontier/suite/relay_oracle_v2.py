@@ -837,6 +837,12 @@ def _handover_plan(t,ident,team,offset,index):
  fit,_,rank,_=np.linalg.lstsq(np.c_[anchors*2,np.ones(len(anchors))],(anchors**2).sum(1),rcond=None)
  curved=rank==3;origin=fit[:2]
  heights=list(dict.fromkeys(([height] if not curved else [])+[t.task['table_height_m']+v for v in (.35,.40,.45,.30,.55)]))
+ terminal=index==len(route)-1
+ if terminal:
+  # A tall transport posture can exhaust receiver wrist room at the goal.
+  # Try the existing lower-clearance candidates first; retain every height
+  # and the unchanged whole-arm/payload screens as fallbacks.
+  heights=list(dict.fromkeys([t.task['table_height_m']+v for v in (.35,.40,.45,.30,.55)]+[height]))
  # Nearby but distinct grasp stations may be feasible with opposed/side
  # wrists. Full geometry, rather than an arbitrary large spacing rule,
  # decides whether the four hands fit during overlap.
@@ -871,7 +877,8 @@ def _handover_plan(t,ident,team,offset,index):
     end=t.relay_carry_endpoint;probe=copy(t);probe.live_preview=False;probe.data=mujoco.MjData(t.model);probe.data.qpos[:]=end['qpos'];mujoco.mj_forward(t.model,probe.data)
     for receiving_offset in offsets:
      if lookahead and grasp_stations(receiving_offset) in t.relay_handover_seen:continue
-     for later_height in (t.task['table_height_m']+.55,t.task['table_height_m']+.45,h):
+     later_heights=(h,t.task['table_height_m']+.45,t.task['table_height_m']+.55) if terminal else (t.task['table_height_m']+.55,t.task['table_height_m']+.45,h)
+     for later_height in dict.fromkeys(later_heights):
       try:
        # Low receiving height and high transport clearance are different
        # constraints. Raise vertically before translating over the bases;
