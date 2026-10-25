@@ -125,6 +125,7 @@ def build_plan(source):
     for j in range(len(jobs)-1,-1,-1):
         for i in pred[j]:critical[i]=max(critical[i],durations[i]+critical[j])
     return dict(source=str(source),case_id=report['case_id'],jobs=jobs,predecessors=pred,critical_path_weights=critical,
+        table_buffers=json.loads((source/'supply-plan.json').read_text())['table_buffers'],
         initial_commands=initial[0]['commands'],source_physical_control_sha256=report['physical_control_sha256'],
         source_environment_logic_sha256=report['environment_logic_sha256'],source_scene_bundle_sha256=report['scene_bundle_sha256'],
         source_report_sha256=hashlib.sha256((source/'report.json').read_bytes()).hexdigest(),
@@ -141,6 +142,7 @@ def execute_plan(trial,plan):
         raise ValueError('Concurrent world must match source control/evaluator/assets')
     trial.execute('clear-idle-arms',deepcopy(plan['initial_commands']));trial.wait(.2)
     trial.parking_q={r:np.asarray(c[1]['joint_rad']) for r,c in plan['initial_commands'].items()}
+    trial.mosaic_edges={frozenset(row['robots']):np.asarray(row['position_m']) for row in plan.get('table_buffers',[])}
     frontier=ReadyFrontier(plan['predecessors'])
     completed=frontier.completed;active={};peak=0;rounds=0;qualified=set();started={}
     jobs=plan['jobs'];trial.mosaic_protected_assignments={}

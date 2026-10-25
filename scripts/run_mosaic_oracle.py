@@ -53,6 +53,9 @@ def run(args):
     trial=Trial(ROOT/case['directory'],args.output,seed=0,record_hz=60,
         controller_cfg=load_harness(args.harness),sources=sources)
     trial.live_preview=True;trial.abort_on_process_violation=True
+    process_identity=dict(pid=os.getpid(),case_id=case['id'],output=str(trial.directory),
+        frozen_root=str(ROOT),git_commit=os.environ.get('ROBOFRONTIER_MOSAIC_COMMIT'),started_unix_s=time.time())
+    write_json(trial.directory/'process.json',dict(process_identity,phase='running'))
     budget_hit=lambda:(time.monotonic()-overall_started>=args.wall_s or trial.time>=args.sim_s or
         len(trial.actions)>=args.action_batches)
     trial.stop_requested=lambda:budget_hit() or (trial.directory/'STOP').exists()
@@ -137,7 +140,9 @@ def run(args):
         report.update(metadata);trial.close(report);report.update(metadata)
         report['total_wall_s_including_planning']=time.monotonic()-overall_started
         write_json(trial.directory/'report.json',report)
-        review._status('passed' if report['passed'] else 'commissioning_complete' if report.get('commissioning_passed') else 'failed')
+        phase='passed' if report['passed'] else 'commissioning_complete' if report.get('commissioning_passed') else 'interrupted' if report.get('interrupted') else 'failed'
+        review._status(phase)
+        write_json(trial.directory/'process.json',dict(process_identity,phase=phase,finished_unix_s=time.time(),report=str(trial.directory/'report.json')))
     print(json.dumps(dict(case_id=case['id'],passed=report['passed'],commissioning_passed=report.get('commissioning_passed'),
         goals=report['evaluation'].get('matched_goals'),error=report.get('error'),report=str(trial.directory/'report.json'))),flush=True)
     return 0 if report['passed'] or report.get('commissioning_passed') else 1

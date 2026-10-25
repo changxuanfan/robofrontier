@@ -18,6 +18,7 @@ def execute_plan(trial,plan):
     trial.execute('clear-idle-arms',deepcopy(plan['initial_commands']));trial.wait(.2)
     trial.mosaic_concurrency_started_sim_s=trial.time
     trial.parking_q={r:np.asarray(c[1]['joint_rad']) for r,c in plan['initial_commands'].items()}
+    trial.mosaic_edges={frozenset(row['robots']):np.asarray(row['position_m']) for row in plan.get('table_buffers',[])}
     jobs=plan['jobs'];last_nodes={int(i):g for i,g in plan['last_goal_nodes'].items()}
     if any(len(j['actions'])!=1 for j in jobs):raise ValueError('Async admission requires operation-level nodes')
     frontier=ReadyFrontier(plan['predecessors'])
