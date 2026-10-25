@@ -61,7 +61,8 @@ def run(a):
 
     ident=a.id+'-pick';path=review/'requests'/f'owner-{ident}.json'
     if path.exists():raise ValueError('Do not rerun a partially executed recovery; inspect its original IDs')
-    plan_pick(SimpleNamespace(trial=directory,robot=a.robot,object=a.object,id=ident,request=path))
+    plan_pick(SimpleNamespace(trial=directory,robot=a.robot,object=a.object,id=ident,request=path,
+        flat_only=getattr(a,'flat_only',False)))
     wait_result(ident,path)
     o=submit('adopt','adopt_hold',robot=a.robot,object=a.object)
     tcp=list(o['robots'][a.robot]['tcp_m']);tcp[2]+=.14
@@ -86,5 +87,6 @@ def run(a):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--trial',required=True,type=Path)
     p.add_argument('--robot',required=True);p.add_argument('--object',required=True);p.add_argument('--id',required=True)
+    p.add_argument('--flat-only',action='store_true')
     target=p.add_mutually_exclusive_group(required=True);target.add_argument('--goal');target.add_argument('--target-m',nargs=3,type=float)
     run(p.parse_args())

@@ -3,6 +3,12 @@ from scripts.execute_mosaic_repair_route import choose
 
 
 class RepairRouteTests(unittest.TestCase):
+    def test_review_completion_uses_normal_staging_before_final_original_goal(self):
+        from scripts.execute_mosaic_remaining_review import legs
+        job=dict(path=['A','D'],goal='g',object='cube');point=[-.8,0,.83]
+        self.assertEqual(legs(job,{frozenset(('A','D')):point},{'goal_id':'g'}),[('A','stage',point),('D','goal','g')])
+        with self.assertRaisesRegex(ValueError,'normal port'):legs(job,{}, {'goal_id':'g'})
+
     def test_pose_liftoff_excepts_only_original_horizontal_support(self):
         from scripts.execute_mosaic_flat_pose_correction import original_support_contact
         self.assertTrue(original_support_contact('table_0',-.00002,[0,0,1]))
