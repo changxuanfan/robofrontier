@@ -206,7 +206,7 @@ class MosaicReview:
             time.sleep(max(0.,.02-(time.monotonic()-now)))
 
 
-def run_reference(trial, review, *, solver=reference.solve, max_goals=None, motion_profile=None, max_reviews=20):
+def run_reference(trial, review, *, solver=reference.solve, max_goals=None, motion_profile=None, max_reviews=20, goal_ids=None):
     resume=False
     while True:
         try:
@@ -214,7 +214,11 @@ def run_reference(trial, review, *, solver=reference.solve, max_goals=None, moti
             if remaining is not None and remaining<=0:
                 return dict(reference_placed=len(trial.monitor.result().get('assignments',{})),
                     total_goals=len(trial.task['goals']),commissioning_only=max_goals<len(trial.task['goals']),resumed=resume)
-            return solver(trial,max_goals=remaining,motion_profile=motion_profile,resume=resume)
+            extra={}
+            if goal_ids is not None:
+                completed=trial.monitor.result().get('assignments',{})
+                extra['goal_ids']=[goal for goal in goal_ids if goal not in completed]
+            return solver(trial,max_goals=remaining,motion_profile=motion_profile,resume=resume,**extra)
         except (ProcessViolation,ReferenceStopped):raise
         except RuntimeError as error:
             require_known_idle(trial)

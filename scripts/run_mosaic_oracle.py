@@ -37,7 +37,7 @@ def run(args):
     def stop(signum,frame):raise ReferenceStopped('External owner stop requested')
     signal.signal(signal.SIGTERM,stop)
     report=dict(case_id=case['id'],passed=False,scope='R13 privileged physical Mosaic Oracle',
-        commissioning_only=args.max_goals is not None,declared_review_after_goals=args.review_after,
+        commissioning_only=args.max_goals is not None,declared_review_after_goals=args.review_after,declared_goal_ids=args.goal_id,
         git_commit=os.environ.get('ROBOFRONTIER_MOSAIC_COMMIT'),
         budgets=dict(wall_s=args.wall_s,simulation_s=args.sim_s,action_batches=args.action_batches,
             review_wall_s=args.review_wall_s,max_reviews=args.max_reviews),
@@ -61,7 +61,7 @@ def run(args):
     trial.mosaic_after_goal=after_goal
     try:
         trial.wait(.6);trial.snapshot('initial');review._status('running')
-        result=run_reference(trial,review,max_goals=args.max_goals,motion_profile=report['motion_profile'],max_reviews=args.max_reviews)
+        result=run_reference(trial,review,max_goals=args.max_goals,motion_profile=report['motion_profile'],max_reviews=args.max_reviews,goal_ids=args.goal_id)
         trial.wait(1.2);require_known_idle(trial)
         evaluation=trial.monitor.result()
         report.update(reference_result=result,evaluation=evaluation,
@@ -101,11 +101,14 @@ def main():
     p.add_argument('--action-batches',type=int,default=20000);p.add_argument('--review-wall-s',type=float,default=300.)
     p.add_argument('--max-reviews',type=int,default=20);p.add_argument('--loaded-speed',type=float,default=.20)
     p.add_argument('--max-goals',type=int);p.add_argument('--review-after',nargs='*',type=int,default=[])
+    p.add_argument('--goal-id',action='append')
     p.add_argument('--auto-resume-reviews',action='store_true');a=p.parse_args()
     if a.review_after and (a.max_goals is None or any(i<1 or i>=a.max_goals for i in a.review_after)):
         p.error('Injected reviews require --max-goals and boundaries below that limit')
     if a.auto_resume_reviews and not a.review_after:p.error('Auto resume is for declared commissioning boundaries only')
     if a.max_goals is not None and a.max_goals<1:p.error('Positive commissioning goal count required')
+    if a.goal_id and (a.max_goals is None or a.max_goals>len(set(a.goal_id))):
+        p.error('Explicit cells require a compatible --max-goals commissioning limit')
     if any(not math.isfinite(v) or v<=0 for v in (a.wall_s,a.sim_s,a.review_wall_s,a.action_batches,a.max_reviews,a.loaded_speed)):
         p.error('Positive finite budgets and speed required')
     a.output=a.output.resolve()
