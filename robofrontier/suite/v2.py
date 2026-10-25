@@ -833,7 +833,9 @@ def public_task(task):
     if task['family']=='transport':
         result['orders']=[{k:deepcopy(g[k]) for k in ('goal_id','robot','requires','target_cue') if k in g} for g in task['goals']]
     if task['family']=='dial':result['dials']=[{k:deepcopy(g[k]) for k in ('id','index','nominal_robots')} for g in task['dials']]
-    if task['family']=='relay':result['route_regions']=deepcopy(task['route'])
+    if task['family']=='relay':
+        result['route_regions']=deepcopy(task['route'])
+        result['completion']=deepcopy(task['completion'])
     return result
 
 

@@ -5,8 +5,9 @@ are scratch-only. Independent payloads may share an actuator submission only
 after simultaneous full-arm/full-payload screening; per-payload milestones
 advance independently. This is an engineering Oracle, not a policy tool.
 """
-from copy import copy
+from copy import copy,deepcopy
 from dataclasses import dataclass, field
+from itertools import combinations
 import math
 import time
 
@@ -37,6 +38,8 @@ class Frontier:
     blocked_at: object=None
     milestone: int=0
     chunks: int=0
+    extra_prefix: bool=False
+    recheck_since: object=None
 
 
 def snapshot(t,frontiers):
@@ -56,6 +59,99 @@ def finalize_frontier(t):
         if actual.get(f.ident,{}).get('completed'):
             f.phase='done';f.blocked='';f.blocked_at=None
     snapshot(t,frontiers)
+
+
+def route_progress(route,point):
+    points=np.array([r['center_m'][:2] for r in route]);point=np.asarray(point)[:2]
+    best=None;length=0.
+    for first,second in zip(points[:-1],points[1:]):
+        delta=second-first;span=float(np.linalg.norm(delta))
+        fraction=float(np.clip(np.dot(point-first,delta)/max(span*span,1e-12),0,1))
+        candidate=(float(np.linalg.norm(point-first-fraction*delta)),length+fraction*span)
+        if best is None or candidate[0]<best[0]:best=candidate
+        length+=span
+    return best[1] if best else 0.
+
+
+def extra_prefix_plan(t,frontier,budget):
+    """Add a private computational anchor when actual custody is upstream.
+
+    The copied task is used only for FK candidate generation. The live task,
+    monitor, public anchors and final GOAL are never mutated or regraded.
+    """
+    f=frontier;root=t.data.body(f.ident).xpos.copy();goal=np.asarray(t.task['route'][-1]['center_m'])
+    free=[a for a in t.arms if a not in f.team and a not in t.held]
+    bases={a:np.asarray(t.task['arms'][a]['base_position_m']) for a in t.arms}
+    current=np.mean([bases[a] for a in f.team],axis=0)
+    anchors=np.array([ref.receiving_anchor(t,r['center_m']) for r in t.task['route']])
+    spacing=float(np.median(np.linalg.norm(np.diff(anchors[:,:2],axis=0),axis=1)))
+    candidates=[]
+    for first,second in combinations(free,2):
+        anchor=(bases[first]+bases[second])/2;anchor[2]=t.task['table_height_m']
+        if np.linalg.norm(anchor[:2]-current[:2])>1.5*spacing+.02:continue
+        if route_progress(t.task['route'],anchor)<=route_progress(t.task['route'],root)+.02:continue
+        if not any(np.linalg.norm(anchor[:2]-old[:2])<.02 for old in candidates):candidates.append(anchor)
+    candidates.sort(key=lambda anchor:np.linalg.norm(anchor[:2]-root[:2]))
+    started=time.monotonic();last=None
+    # Bind the manufactured heading offset once; a computational intermediate
+    # anchor preserves the observed load yaw instead of forcing a reversal.
+    ref.payload_route_yaw(t,f.ident,t.task['route'][f.index])
+    observed=t.data.body(f.ident).xmat.reshape(3,3);yaw=math.atan2(observed[1,0],observed[0,0])-t.relay_payload_heading_offsets[f.ident]
+    for anchor in candidates[:4]:
+        remaining=budget-(time.monotonic()-started)
+        if remaining<=0:break
+        probe=copy(t);probe.task=deepcopy(t.task);index=f.index+1
+        virtual=dict(region_id='private-extra-prefix',center_m=anchor.tolist(),nominal_yaw_rad=yaw,painted=False)
+        probe.task['route']=probe.task['route'][:index]+[virtual]+probe.task['route'][index:]
+        depth=2 if t.task['level']>1 or t.task['mechanism']['layout']!='straight' else 1
+        try:return ref.handover_plan(probe,f.ident,f.team,f.offset,index,search_budget_s=min(remaining,90. if depth==2 else 45.),lookahead_depth=depth)
+        except ReferenceStopped:raise
+        except RuntimeError as error:last=error
+    raise RuntimeError('No bounded extra receiving prefix '+f.ident+': '+str(last))
+
+
+def plan_transfer(t,f,frontiers,flexible):
+    route=t.task['route'];nominal=ref.receiving_anchor(t,route[f.index]['center_m'])
+    current=np.mean([np.asarray(t.task['arms'][a]['base_position_m']) for a in f.team],axis=0)
+    anchors=np.array([ref.receiving_anchor(t,r['center_m'])[:2] for r in route])
+    spacing=float(np.median(np.linalg.norm(np.diff(anchors,axis=0),axis=1)))
+    upstream=route_progress(route,nominal)-route_progress(route,current)>.5*spacing+.02
+    if upstream:
+        try:return extra_prefix_plan(t,f,ref.STAGE_SEARCH_WALL_S),True
+        except ReferenceStopped:raise
+        except RuntimeError:pass
+    planner=ref.flexible_handover_plan if flexible else ref.handover_plan
+    shift=packing_shift(t,f,frontiers) if f.index+1==len(route)-1 else 0.
+    completed_peer=any(t.monitor.result().get('payloads',{}).get(other.ident,{}).get('completed') for other in frontiers if other is not f)
+    complex_stage=t.task['level']>1 or t.task['mechanism']['layout']!='straight' or completed_peer
+    budget=ref.STAGE_SEARCH_WALL_S if complex_stage else min(40.,ref.STAGE_SEARCH_WALL_S)
+    try:return planner(t,f.ident,f.team,f.offset,f.index+1,search_budget_s=budget,landing_shift_m=shift),False
+    except ReferenceStopped:raise
+    except RuntimeError:
+        if upstream:raise
+        return extra_prefix_plan(t,f,ref.STAGE_SEARCH_WALL_S),True
+
+
+def direct_terminal_plan(t,f,frontiers):
+    """A qualified current team may finish without another nominal relay."""
+    if not ref.goal_contact_allowed(t):return None
+    state=t.monitor.relay_v2.states[f.ident]
+    if state['dropped'] or not state['transitions']:return None
+    if not set(f.team)<=t.monitor.bilateral(state['rod_geoms'],positive_force=True):return None
+    body=t.data.body(f.ident);actual=body.xpos.copy();r=body.xmat.reshape(3,3)
+    if t.monitor.relay_v2.inside(state):return actual,math.atan2(r[1,0],r[0,0])
+    region=t.task['route'][-1];frame=rz(region['nominal_yaw_rad']);yaw=ref.payload_route_yaw(t,f.ident,region)
+    nominal=(f.number-(len(frontiers)-1)/2)*.12-.045+packing_shift(t,f,frontiers)
+    for shift in dict.fromkeys([nominal,0.,-.12,.12,-.24,.24]):
+        for height in dict.fromkeys([float(actual[2]),t.task['table_height_m']+.45,t.task['table_height_m']+.55]):
+            point=np.asarray(region['center_m'])+frame@np.array([shift,0,0]);point[2]=height
+            if not ref.carry_clear(t,f.ident,f.team,point,yaw):continue
+            probe=copy(t);probe.live_preview=False;probe.data=mujoco.MjData(t.model)
+            probe.data.qpos[:]=t.relay_carry_endpoint['qpos'];mujoco.mj_forward(t.model,probe.data)
+            if f.ident not in ref.terminal_contact_names(probe,f.ident,probe.data):continue
+            landing=ref.support_approach_point(probe,f.ident,point,yaw)
+            if ref.carry_clear(probe,f.ident,f.team,landing,yaw,landing=True):return point,yaw
+    return None
 
 
 def simultaneous_carry_clear(t,requests):
@@ -95,14 +191,23 @@ def simultaneous_carry_clear(t,requests):
                 payload,team=owned[a] if a in owned else owned[b]
                 other=b if a in owned else a;name=t.model.body(int(t.model.geom_bodyid[other])).name
                 if any(name in (robot+'_left_finger',robot+'_right_finger') for robot in team):continue
+                if ref.allowed_terminal_payload_contact(t,payload,other,scratch):continue
                 return False
             if oa>=0 and ob>=0:
                 if oa!=ob and (oa in moving or ob in moving):return False
                 if oa==ob and oa in moving and contact.dist<-.001:
                     names=[t.model.body(int(t.model.geom_bodyid[g])).name for g in (a,b)]
                     if not all('finger' in name for name in names):return False
-            for geom,owner,other_owner in ((a,oa,ob),(b,ob,oa)):
-                if owner in moving and other_owner<0 and not t.model.body(int(t.model.geom_bodyid[geom])).name.endswith('_link0'):return False
+            for geom,other,owner,other_owner in ((a,b,oa,ob),(b,a,ob,oa)):
+                if owner in moving and other_owner<0:
+                    name=t.model.body(int(t.model.geom_bodyid[geom])).name
+                    if name.endswith('_link0'):continue
+                    permitted=False
+                    for request in requests:
+                        if any(name in (robot+'_left_finger',robot+'_right_finger') for robot in request['team']):
+                            permitted=ref.allowed_terminal_payload_contact(t,request['ident'],other,scratch)
+                            if permitted:break
+                    if not permitted:return False
     return True
 
 
@@ -128,6 +233,16 @@ def packing_shift(t,frontier,frontiers):
     return max(valid)[2] if valid else 0.
 
 
+def terminal_exit_preview(t,ident,team,endpoint):
+    """A lowering forecast must leave room for real opening and withdrawal."""
+    if t.task.get('completion',{}).get('allow_goal_payload_contact'):return True
+    probe=copy(t);probe.live_preview=False;probe.data=mujoco.MjData(t.model)
+    probe.data.qpos[:]=endpoint['qpos'];probe.arms={a:copy(v) for a,v in t.arms.items()}
+    mujoco.mj_forward(t.model,probe.data)
+    for robot in team:probe.arms[robot].qref=probe.data.qpos[t.arms[robot].qids].copy()
+    return ref.donor_exit_routes(probe,ident,[],team,opening_width=.08) is not None
+
+
 def carry_chunk(t,frontier):
     if frontier.following=='place':
         relay=t.monitor.relay_v2;state=relay.states[frontier.ident]
@@ -140,8 +255,15 @@ def carry_chunk(t,frontier):
             gap=t.monitor.bottom(state['all_geoms'])-t.task['table_height_m']
             landing=body.xpos.copy();landing[2]-=max(0.,gap-.01)
             yaw=math.atan2(rotation[1,0],rotation[0,0])
-            if ref.carry_clear(t,frontier.ident,frontier.team,landing,yaw,target_rotation=rotation) or ref.terminal_reposition_plan(t,frontier.ident,frontier.team) is not None:
-                return None
+            if ref.carry_clear(t,frontier.ident,frontier.team,landing,yaw,target_rotation=rotation):
+                if terminal_exit_preview(t,frontier.ident,frontier.team,t.relay_carry_endpoint):return None
+            plan=ref.terminal_reposition_plan(t,frontier.ident,frontier.team)
+            if plan is not None:
+                probe=copy(t);probe.live_preview=False;probe.data=mujoco.MjData(t.model)
+                if ref.carry_clear(t,frontier.ident,frontier.team,plan['target_m'],plan['yaw'],target_rotation=plan['rotation']):
+                    probe.data.qpos[:]=t.relay_carry_endpoint['qpos'];mujoco.mj_forward(t.model,probe.data)
+                    if ref.carry_clear(probe,frontier.ident,frontier.team,plan['predicted_descent_target_m'],plan['yaw'],target_rotation=plan['rotation']):
+                        if terminal_exit_preview(probe,frontier.ident,frontier.team,probe.relay_carry_endpoint):return None
     body=t.data.body(frontier.ident);point=body.xpos.copy();rotation=body.xmat.reshape(3,3).copy()
     desired=rz(frontier.yaw);delta=rotation_vector(desired,rotation);angle=float(np.linalg.norm(delta))
     distance=float(np.linalg.norm(frontier.target-point))
@@ -213,13 +335,15 @@ def solve(t,*,flexible=False,terminal_observer=None,handover_observer=None):
         if terminal_observer is not None:terminal_observer(phase,f.ident,f.team)
     def ready(f):
         return tuple((other.ident,other.phase,other.milestone,tuple(other.team)) for other in frontiers if other is not f)
-    while any(f.phase!='done' for f in frontiers):
+    while any(f.phase!='done' for f in frontiers) or not t.monitor.result().get('task_success'):
         t.check_stop();progress=False
         # Downstream terminal work frees scarce hands and goal access first.
-        for f in sorted(frontiers,key=lambda item:0 if item.phase in ('place','release') else 1):
+        for f in sorted(frontiers,key=lambda item:(0 if item.phase in ('place','release') else 1,-item.index if item.phase=='plan' else 0)):
             if t.monitor.result().get('payloads',{}).get(f.ident,{}).get('completed'):
                 if f.phase!='done':f.phase='done';f.milestone+=1;progress=True
                 continue
+            if f.phase=='done':
+                f.phase='recheck';f.recheck_since=t.time;f.blocked='';f.milestone+=1
             if f.phase in ('done','carry'):continue
             if f.blocked and f.blocked_at==ready(f):continue
             prior_actions=len(t.actions)
@@ -236,21 +360,23 @@ def solve(t,*,flexible=False,terminal_observer=None,handover_observer=None):
                     else:raise RuntimeError('No frontier lift candidate '+f.ident)
                     f.target=target;f.phase='carry';f.following='plan'
                 elif f.phase=='plan':
-                    if f.index>=len(route)-1:
+                    direct=direct_terminal_plan(t,f,frontiers)
+                    if direct is not None:
+                        f.target,f.yaw=direct;f.following='place';f.phase='carry'
+                        t.event('relay_direct_terminal_prefix',payload=f.ident,holders=f.team,target_m=f.target.tolist())
+                    elif f.index>=len(route)-1:
                         final=route[-1];f.target=np.asarray(f.future['landing_point']).copy() if f.future.get('landing_point') is not None else np.asarray(final['center_m'])+rz(final['nominal_yaw_rad'])@np.array([(f.number-(len(assemblies)-1)/2)*.12-.045,0,0]);f.target[2]=t.data.body(f.ident).xpos[2]
                         f.yaw=ref.payload_route_yaw(t,f.ident,final);f.following='place';f.phase='carry'
                     else:
-                        planner=ref.flexible_handover_plan if flexible else ref.handover_plan
-                        shift=packing_shift(t,f,frontiers) if f.index+1==len(route)-1 else 0.
-                        completed_peer=any(t.monitor.result().get('payloads',{}).get(other.ident,{}).get('completed') for other in frontiers if other is not f)
-                        complex_stage=t.task['level']>1 or t.task['mechanism']['layout']!='straight' or completed_peer
-                        budget=ref.STAGE_SEARCH_WALL_S if complex_stage else min(40.,ref.STAGE_SEARCH_WALL_S)
-                        point,yaw,offset,future=planner(t,f.ident,f.team,f.offset,f.index+1,search_budget_s=budget,landing_shift_m=shift)
+                        planned,f.extra_prefix=plan_transfer(t,f,frontiers,flexible)
+                        point,yaw,offset,future=planned
+                        if f.extra_prefix:t.event('relay_extra_prefix_selected',payload=f.ident,holding_team=f.team,target_m=point.tolist(),receiver_offset_m=offset)
                         f.target=point;f.yaw=yaw;f.receiver_offset=offset;f.future=future;f.phase='carry';f.following='receive'
                 elif f.phase=='receive':
                     body=t.data.body(f.ident);receiver=ref.choose_team(t,f.ident,body.xpos.copy(),body.xmat.reshape(3,3).copy(),f.receiver_offset,exclude=f.team,search_budget_s=40.,**f.future)
                     old=list(f.team);ref.grasp(t,f.ident,receiver,f.receiver_offset);t.wait(.25)
-                    ref.release(t,f.ident,[a for a in old if a not in receiver]);f.team=receiver;f.offset=f.receiver_offset;f.index+=1
+                    ref.release(t,f.ident,[a for a in old if a not in receiver]);f.team=receiver;f.offset=f.receiver_offset
+                    if not f.extra_prefix:f.index+=1
                     f.future['previous_team']=old
                     f.target=np.asarray(f.future['future_region']).copy();f.target[2]=f.future['future_height'];f.yaw=f.future['future_yaw'];f.following='transit';f.phase='carry'
                 elif f.phase=='transit':
@@ -264,6 +390,9 @@ def solve(t,*,flexible=False,terminal_observer=None,handover_observer=None):
                     notify(f,'release_started');ref.release(t,f.ident,f.team,terminal=True);t.wait(1.1)
                     if not t.monitor.result()['payloads'][f.ident]['completed']:raise RuntimeError('Frontier final score not established '+f.ident)
                     notify(f,'terminal_complete');f.phase='done'
+                elif f.phase=='recheck':
+                    if t.time-f.recheck_since>=2.5:raise RuntimeError('Previously complete payload disturbed; inspect actual goal '+f.ident)
+                    t.wait(.25)
                 f.blocked='';f.blocked_at=None;f.milestone+=1;progress=True;snapshot(t,frontiers)
                 # Finish enabled landing/release before an upstream search
                 # for the very hands this scope is about to free.

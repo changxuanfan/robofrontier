@@ -533,7 +533,9 @@
     "Unpainted route reference anchors do not prescribe handover locations, grasp points, robot pairs or an execution order. Scheduling and independent concurrent work remain planner choices.",
     "Curved and elbow apparatuses initially open forward along the local route (right on the straight table). The weight, closed eyes and any passive hinge move with the complete apparatus and retain their physical connections.",
     "The twelve-arm layout has seven outer robots A-G and five inner robots H-L. Ring membership identifies physical placement, not fixed collaboration pairs; choose cooperating robots from their actual reach and clearance.",
-    "START/GOAL occupy the two normal end landings within the arc tabletop; there are no external side tables. This layout spans 90 degrees. The inner tabletop opening is 3.20 m in diameter."
+    "START/GOAL occupy the two normal end landings within the arc tabletop; there are no external side tables. This layout spans 90 degrees. The inner tabletop opening is 3.20 m in diameter.",
+    "Within GOAL, payload-to-payload contact is allowed. Any final placement inside the declared region is valid; nominal Oracle packing centers and contact-free cargo separation are not additional task requirements. Verify actual release, stability and all payloads remaining inside GOAL.",
+    "Each payload must undergo a real qualified airborne handover before the final team places and releases it inside GOAL."
   ],
   "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
   "observation_contract": {
@@ -548,7 +550,11 @@
   },
   "completion": {
     "stable_duration_sim_s": 1.0,
-    "scope": "Mechanism-specific commissioning required; no inherited v1 evaluator assumed"
+    "scope": "Mechanism-specific commissioning required; no inherited v1 evaluator assumed",
+    "allow_goal_payload_contact": true,
+    "arbitrary_goal_placement": true,
+    "rule_revision": "relay-goal-contact-20261026",
+    "required_airborne_handover": true
   },
   "execution_readiness": "environment_preview_only",
   "oracle_verified": false,

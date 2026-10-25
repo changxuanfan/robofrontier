@@ -15,14 +15,16 @@ from robofrontier.suite import relay_oracle_v2 as ref
 from robofrontier.suite.v2 import cases,directory
 
 
-def recorded_world():
-    fixture=json.loads((Path(__file__).parent/'fixtures/relay_terminal_local_branch.json').read_text())
+def recorded_world(fixture_name='relay_terminal_local_branch.json'):
+    fixture=json.loads((Path(__file__).parent/'fixtures'/fixture_name).read_text())
     scene=directory(next(c for c in cases() if c['id']==fixture['case_id']))
     t=Trial.__new__(Trial);t.model=mujoco.MjModel.from_xml_path(str(scene/'scene.xml'));t.data=mujoco.MjData(t.model)
     mujoco.mj_resetDataKeyframe(t.model,t.data,t.model.key('initial').id);mujoco.mj_forward(t.model,t.data)
     t.task=json.loads((scene/'task.json').read_text());t.stop_requested=None;t.live_preview=False
+    if t.task['scene_sha256']!=fixture['source_scene_sha256']:raise ValueError('Regression fixture model identity differs')
     t.arms={a:PandaArm(t.model,t.data,a) for a in t.task['arms']}
     t.home_q={a:t.data.qpos[arm.qids].copy() for a,arm in t.arms.items()}
+    t.home={a:(t.data.site_xpos[arm.site].copy(),t.data.site_xmat[arm.site].reshape(3,3).copy()) for a,arm in t.arms.items()}
     t.data.qpos[:]=fixture['qpos'];mujoco.mj_forward(t.model,t.data)
     for arm in t.arms.values():arm.qref=t.data.qpos[arm.qids].copy()
     t.screen_model=copy(t.model);t.screen_model.geom_margin[:]=np.maximum(t.screen_model.geom_margin,.004)

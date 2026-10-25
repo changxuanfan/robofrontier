@@ -16,6 +16,28 @@ from ..run_setup import write_json
 from . import relay_oracle_v2 as ref
 
 
+def continuation_options(value):
+    fields={'future_region','future_yaw','future_fraction','future_height','future_waypoints','landing_point','require_topdown'}
+    if not isinstance(value,dict) or set(value)-fields:raise ValueError('Unsupported receiving continuation field')
+    if value and 'future_region' not in value:raise ValueError('Receiving continuation needs its reference region')
+    def point(v):
+        p=np.asarray(v,dtype=float)
+        if p.shape!=(3,) or not np.isfinite(p).all():raise ValueError('Finite continuation XYZ required')
+    for key in ['future_region','landing_point']:
+        if key in value:point(value[key])
+    for key in ['future_yaw','future_fraction','future_height']:
+        if key in value and not math.isfinite(float(value[key])):raise ValueError('Finite continuation scalar required')
+    if 'future_fraction' in value and not 0<=value['future_fraction']<=1:raise ValueError('Continuation fraction outside0..1')
+    waypoints=value.get('future_waypoints',[])
+    if not isinstance(waypoints,list) or len(waypoints)>4:raise ValueError('At most four finite continuation waypoints')
+    for step in waypoints:
+        if not isinstance(step,(list,tuple)) or len(step)!=2:raise ValueError('Continuation waypoint is XYZ,yaw')
+        point(step[0])
+        if not math.isfinite(float(step[1])):raise ValueError('Finite waypoint yaw required')
+    if 'require_topdown' in value and not isinstance(value['require_topdown'],bool):raise ValueError('Topdown preference must be boolean')
+    return dict(value)
+
+
 class RelayLiveRecovery:
     def __init__(self,trial,report):
         self.trial=trial;self.report=report;self.directory=trial.directory/'recovery'
@@ -49,7 +71,7 @@ class RelayLiveRecovery:
             if old['request_sha256']!=digest:raise ValueError('Repair ID reused with different input')
             return old
         if request.get('world_id')!=self.world_id:raise ValueError('Request belongs to another world')
-        if set(request)-{'id','world_id','op','payload','robots','target_m','yaw_rad','retain_attitude','offset_m','seconds','review','assisted'}:raise ValueError('Unsupported repair field')
+        if set(request)-{'id','world_id','op','payload','robots','target_m','yaw_rad','retain_attitude','offset_m','seconds','review','assisted','retained_side','continuation'}:raise ValueError('Unsupported repair field')
         if not request.get('review') or request.get('assisted') is not True:raise ValueError('External model repair requires review and assisted attestation')
         t=self.trial
         op=request.get('op')
@@ -62,6 +84,10 @@ class RelayLiveRecovery:
             if len(team)<2 or len(set(team))!=len(team) or any(a not in t.arms for a in team):raise ValueError('Use actual existing support robots')
             support=t.monitor.bilateral(t.monitor.relay_v2.states[payload]['rod_geoms'],positive_force=True)
             if op not in {'grasp','open'} and not set(team)<=support:raise ValueError('Declared holders lack actual bilateral support')
+        continuation=continuation_options(request.get('continuation',{}))
+        if continuation and op!='handover':raise ValueError('Receiving continuation applies only to handover')
+        side=request.get('retained_side')
+        if side is not None and (op!='handover' or type(side) is not int or side not in (0,1) or len(team)!=2):raise ValueError('Retain one side of an existing two-holder handover')
         self.assisted=True;self.report['execution_mode']='privileged_assisted';self.report['llm_used']=True
         write_json(self.directory/'accepted'/(ident+'.json'),request)
         t.event('relay_repair_admitted',request=request,request_sha256=digest,world_id=self.world_id)
@@ -81,21 +107,22 @@ class RelayLiveRecovery:
                 ref.release(t,payload,team,terminal=True);t.wait(1.2)
             elif op=='handover':
                 offset=request.get('offset_m',.32);body=t.data.body(payload)
-                receivers=ref.choose_team(t,payload,body.xpos.copy(),body.xmat.reshape(3,3).copy(),offset,exclude=team,search_budget_s=60.)
-                ref.grasp(t,payload,receivers,offset);t.wait(.3);ref.release(t,payload,team)
+                retained={} if side is None else {side:team[side]}
+                receivers=ref.choose_team(t,payload,body.xpos.copy(),body.xmat.reshape(3,3).copy(),offset,exclude=team,search_budget_s=60.,retained=retained,**continuation)
+                ref.grasp(t,payload,receivers,offset);t.wait(.3);ref.release(t,payload,[robot for robot in team if robot not in receivers])
                 result['receivers']=receivers
             elif op=='grasp':
                 state=t.monitor.relay_v2.states[payload]
                 if state['dropped'] and not set(team)<=state['custody']:raise ValueError('Only original custody may recover a drop')
                 body=t.data.body(payload);offset=request.get('offset_m',.44)
-                selected=ref.choose_team(t,payload,body.xpos.copy(),body.xmat.reshape(3,3).copy(),offset,exclude=set(t.arms)-set(team),search_budget_s=60.)
+                selected=ref.choose_team(t,payload,body.xpos.copy(),body.xmat.reshape(3,3).copy(),offset,exclude=set(t.arms)-set(team),departing=(),search_budget_s=60.)
                 ref.grasp(t,payload,selected,offset);result['holders']=selected
             elif op=='open':
                 state=t.monitor.relay_v2.states[payload]
                 if not t.monitor.relay_v2.environment_contact(state['all_geoms']):raise ValueError('Opening recovery requires actual table support')
                 t.execute('recovery-open-supported',{a:('gripper',dict(mode='move',width_m=.08,speed_m_s=.06)) for a in team})
                 for a in team:
-                    if not ref.arm_payload_contact(t,a,payload):t.held.pop(a,None)
+                    if not ref.arm_payload_contact(t,payload,a):t.held.pop(a,None)
             elif op=='stop':
                 original={a:r.job for a,r in t.arms.items() if r.job is not None};feedback={};started=t.time
                 for a in original:t.arms[a].request_stop(t.time,'Owner controlled stop for recovery')

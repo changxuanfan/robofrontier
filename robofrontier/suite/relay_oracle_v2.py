@@ -313,13 +313,14 @@ def terminal_pair_order(pairs,rotation,weighted):
  return preferred+side[:64-len(preferred)]
 
 
-def _choose_team(t,ident,center,rotation,offset,exclude=(),future_region=None,future_yaw=None,future_fraction=.55,future_height=None,future_waypoints=(),landing_point=None,require_topdown=False,retained=None):
+def _choose_team(t,ident,center,rotation,offset,exclude=(),future_region=None,future_yaw=None,future_fraction=.55,future_height=None,future_waypoints=(),landing_point=None,require_topdown=False,retained=None,departing=None):
  # Resolve finite jaw-symmetric IK branches and approach directions before
  # selecting a team. Endpoint reach alone can hide elbow interference.
  points=grasp_targets(t,ident,center,rotation,offset)
  retained={} if retained is None else dict(retained)
  if len(retained)>1 or any(side not in (0,1) or robot not in exclude for side,robot in retained.items()):raise ValueError('Retain at most one existing side holder')
- departing=set(exclude)-set(retained.values())
+ departing=set(exclude)-set(retained.values()) if departing is None else set(departing)
+ if not departing<=set(exclude) or departing&set(retained.values()):raise ValueError('Departure must only contain excluded, non-retained holders')
  robots=[a for a in t.arms if a not in exclude and getattr(t,'held',{}).get(a,ident)==ident];options=[]
  for side,(point,base_r) in enumerate(points):
   if side in retained:
@@ -538,14 +539,38 @@ def beam_table_contact(t,ident):
  return any(contact.dist<=0 and any(int(a) in owned and (t.model.geom(int(b)).name or '').startswith('table_') for a,b in ((contact.geom1,contact.geom2),(contact.geom2,contact.geom1))) for contact in t.data.contact)
 
 
+def goal_contact_allowed(t):
+ return bool(getattr(t,'task',{}).get('completion',{}).get('allow_goal_payload_contact',False))
+
+
+def assembly_table_contact(t,ident):
+ owned=set(t.monitor.relay_v2.states[ident]['all_geoms'])
+ return any(contact.dist<=0 and any(int(a) in owned and (t.model.geom(int(b)).name or '').startswith('table_') for a,b in ((contact.geom1,contact.geom2),(contact.geom2,contact.geom1))) for contact in t.data.contact)
+
+
 def final_support(t,ident,team):
  state=t.monitor.relay_v2.states[ident];relay=t.monitor.relay_v2
  # A pendant weight touching the table cannot certify that the timber no
  # longer depends on the open lower fingers. Require actual beam support
  # before this reference ends descent and releases its two grasps. This is
  # a manipulation policy gate, not a change to benchmark acceptance.
- return bool(relay.inside(state) and beam_table_contact(t,ident)
+ supported=assembly_table_contact(t,ident) if goal_contact_allowed(t) else beam_table_contact(t,ident)
+ return bool(relay.inside(state) and supported
              and set(team)<=t.monitor.bilateral(state['rod_geoms'],positive_force=True))
+
+
+def terminal_contact_names(t,ident,data=None):
+ """Declared final cargo contact is a task permission, not a physics edit."""
+ if not goal_contact_allowed(t):return []
+ monitor=copy(t.monitor);monitor.d=t.data if data is None else data
+ relay=copy(t.monitor.relay_v2);relay.mon=monitor
+ if not relay.inside(relay.states[ident]):return []
+ return [name for name,state in relay.states.items() if relay.inside(state)]
+
+
+def allowed_terminal_payload_contact(t,ident,other,data):
+ return any(name!=ident and other in t.monitor.relay_v2.states[name]['all_geoms']
+            for name in terminal_contact_names(t,ident,data))
 
 
 def execute_landing_increment(t,ident,team,commands):
@@ -604,14 +629,16 @@ def landing_increment_clear(t,ident,team,dz):
   for name in (ident,state['assembly'].get('weight_body'),state['assembly'].get('tray_body')):
    if name:probe.data.joint(name+'_free').qpos[2]-=f*dz
   mujoco.mj_forward(t.model,probe.data)
+  allowed=terminal_contact_names(t,ident,probe.data) or [ident]
   for robot in team:
-   if not probe.pose_clear(robot,probe.data.qpos[t.arms[robot].qids],(ident,),.001):return None
+   if not probe.pose_clear(robot,probe.data.qpos[t.arms[robot].qids],allowed,.001):return None
   for contact in probe.data.contact:
    if contact.dist>=-.0003:continue
    a,b=map(int,contact.geom)
    if (a in owned)==(b in owned):continue
    other=b if a in owned else a;name=t.model.body(int(t.model.geom_bodyid[other])).name or ''
    if name in {robot+'_'+suffix for robot in team for suffix in ('left_finger','right_finger')}:continue
+   if allowed_terminal_payload_contact(t,ident,other,probe.data):continue
    if (t.model.geom(other).name or '').startswith('table_') and contact.dist>=-dz-.001:continue
    return None
  return commands
@@ -720,6 +747,8 @@ def carry_clear(t,ident,team,point,yaw,landing=False,target_rotation=None):
     free[:3]=desired+rotation@r0.T@(old.xpos-p0);free[3:]=matrix_quat(rotation@r0.T@old.xmat.reshape(3,3))
   mujoco.mj_forward(t.model,scratch)
   moving={list(t.arms).index(robot) for robot in team}
+  permitted_names=terminal_contact_names(t,ident,scratch)
+  permitted_geoms={gid for name in permitted_names for gid in t.monitor.relay_v2.states[name]['all_geoms']}
   for contact in scratch.contact:
    if contact.dist>=-.0003:continue
    a,b=map(int,contact.geom)
@@ -735,6 +764,7 @@ def carry_clear(t,ident,team,point,yaw,landing=False,target_rotation=None):
      if rid in moving and other_owner<0:
       name=t.model.body(int(t.model.geom_bodyid[robot_geom])).name
       if name.endswith('_link0'):continue # Fixed bolted mounting contact.
+      if other in permitted_geoms and any(name in (robot+'_left_finger',robot+'_right_finger') for robot in team):continue
       t.relay_screen_reason=dict(kind='robot_world_contact',a=name,b=t.model.geom(other).name,fraction=float(f));return False
     continue
    if a in owned and b in owned:continue
@@ -746,12 +776,13 @@ def carry_clear(t,ident,team,point,yaw,landing=False,target_rotation=None):
    # Timber/table and every robot/world contact remain checked throughout.
    if landing and obj in suspended and (t.model.geom(other).name or '').startswith('table_'):continue
    if any(name in (robot+'_left_finger',robot+'_right_finger') for robot in team):continue
+   if allowed_terminal_payload_contact(t,ident,other,scratch):continue
    t.relay_screen_reason=dict(kind='payload_contact',a=t.model.body(int(t.model.geom_bodyid[a])).name,b=t.model.body(int(t.model.geom_bodyid[b])).name,fraction=float(f));return False
  t.relay_carry_endpoint=dict(q=q,qpos=scratch.qpos.copy(),position=desired,rotation=rotation)
  return True
 
 
-def withdrawal_target(t,robot,ident):
+def withdrawal_target(t,robot,ident,allowed_objects=()):
  arm=t.arms[robot];point=t.data.site_xpos[arm.site].copy();rotation=t.data.site_xmat[arm.site].reshape(3,3).copy()
  outward=point-t.data.body(ident).xpos;outward[2]=0.;outward/=max(np.linalg.norm(outward),1e-8)
  for delta in (-rotation[:,2]*.10,[0,0,.06],outward*.20,[0,0,.10],outward*.24+np.array([0,0,.04])):
@@ -760,7 +791,7 @@ def withdrawal_target(t,robot,ident):
    q=screened_ik(t,robot,point+f*np.asarray(delta),rotation,seed=q)
    # Once the gripper is open, a withdrawal may not sweep either finger
    # through the beam. Allowed grasp contacts would conceal a pushing motion.
-   if q is None or not t.pose_clear(robot,q,(),.001):clear=False;break
+   if q is None or not t.pose_clear(robot,q,allowed_objects,.001):clear=False;break
   if clear:return point+delta,rotation
  return None
 
@@ -831,7 +862,10 @@ def sequential_terminal_release(t,ident,team):
 
 def release(t,ident,team,terminal=False):
  width=.080 if terminal else .075
- if terminal:
+ permitted=terminal and goal_contact_allowed(t)
+ if permitted:width=min(.08,float(t.task['mechanism']['cross_section_m'][0])+.020)
+ if permitted and not final_support(t,ident,team):raise RuntimeError('Terminal release requires actual supported in-goal landing '+ident)
+ if terminal and not permitted:
   exits=donor_exit_routes(t,ident,[],team,opening_width=width)
   if exits is None:
    if len(team)>1 and sequential_terminal_release(t,ident,team):return
@@ -844,6 +878,13 @@ def release(t,ident,team,terminal=False):
  t.wait(.25)
  if t.monitor.relay_v2.states[ident]['dropped']:raise RuntimeError('Independent receiver support lost at release '+ident)
  for a in team:
+  if permitted:
+   allowed=terminal_contact_names(t,ident)
+   withdrawal=withdrawal_target(t,a,ident,allowed_objects=allowed)
+   if withdrawal is None:raise RuntimeError('No bounded terminal withdrawal from actual opened state '+a)
+   t.execute('terminal-contact-withdraw',{a:t.pose_command(a,*withdrawal,.025,.25)})
+   t.move_free(a,*t.home[a],label='terminal-contact-home',target_joints=t.home_q[a])
+   continue
   planned=getattr(t,'relay_release_plan',{}).get(a)
   if planned is not None:
    arm=t.arms[a];valid=True

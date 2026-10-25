@@ -71,3 +71,39 @@ the original120s stage allowance for complex scenes and productive terminal
 search after a peer finishes. This changes the engineering search budget, not
 physics or acceptance. Frontier exports now distinguish assigned robots from
 actual support and finalize completed scopes after assisted recovery.
+
+## User clarification and current contract
+
+The user explicitly permits payload-to-payload contacts inside GOAL and any
+placement within that region. Each payload must first undergo a qualified
+airborne transfer to the placing team. All nine selected task inputs now state
+`relay-goal-contact-20261026`; their scene XML hashes, geometry, masses, contact
+parameters and robot controllers are unchanged. Public Relay inputs expose
+these completion conditions. Reports bind the exact task-contract hash.
+
+Final release no longer requires a zero-contact opening/exit forecast or full
+80mm aperture. The reference verifies actual in-region tabletop support, opens
+to the45mm beam width plus20mm clearance, then performs a bounded actual
+withdrawal. Real actuator failures remain failures; all final payload states
+are rechecked, including previously delivered rods disturbed by contact.
+Robot/table/arm feasibility remains screened; permitted cargo contacts do not
+change collision masks or physics. Older videos show the earlier stricter
+private reference, not this new contact contract.
+
+The weighted8-arm1c462ca trial reached an engineering budget stop with no drops,
+violations or unresolved actions, but0/2 complete. It physically proved the
+extra C/D -> E/F handover and short carry. That missing intermediate is now a
+private FK planning prefix without mutating the actual task/goal. Weighted
+prefixes check the next receiving horizon; qualified current holders may
+deliver directly rather than being forced into another nominal transfer.
+Continuation-aware typed repairs preserve the receiver's chosen successor;
+retained-holder repairs only release the outgoing hand.
+
+Continuous full saved-state videos (4x, no cuts, whole simulation timeline):
+`outputs/oracle/relay-failure-review-20261026/l1-full-4x/global.mp4` and
+`outputs/oracle/relay-failure-review-20261026/l2-full-4x/global.mp4`.
+Earlier150s/180s reviews have explicitly marked idle-only cuts. All exported
+videos were fully decoded. Motion is60Hz float32 plus timestamped appearance
+events, bound to source geometry; it supports rigid factory placement/FK
+replay, not a2ms physics restart. Whole-world historical rollback is not
+implemented. Same-world forward recovery is implemented and demonstrated.

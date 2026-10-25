@@ -58,5 +58,15 @@ class RelayCustodyTests(unittest.TestCase):
         for call in t.execute.call_args_list:self.assertNotIn('G',call.args[1])
         self.assertEqual([call.args[0] for call in t.move.call_args_list],['H'])
 
+    def test_final_placement_requires_a_real_prior_airborne_handover(self):
+        state=self.relay.states['payload_02'];state.update(airborne=True,landed=True,custody={'A','B'})
+        self.t.task['completion']['required_airborne_handover']=True
+        with patch.object(self.relay,'inside',return_value=True),patch.object(self.relay,'environment_contact',return_value=True),patch.object(self.t.monitor,'released',return_value=True):
+            self.sample(2.,set());self.sample(3.2,set())
+            self.assertFalse(self.t.monitor.result_cache['task_success'])
+            state['transitions'].append(dict(sim_time_s=1.,senders=['C','D'],receivers=['A','B']))
+            self.sample(3.3,set());self.sample(4.4,set())
+            self.assertTrue(self.t.monitor.result_cache['task_success'])
+
 
 if __name__=='__main__':unittest.main()

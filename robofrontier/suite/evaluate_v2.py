@@ -144,7 +144,8 @@ class Relay:
                     state['spill']=True;mon.violation('tray_weight_spilled',key=ident)
             velocities=[mon.velocity(mon.m.body(name).id) for name in (ident,a.get('weight_body'),a.get('tray_body')) if name]
             stable=all(np.linalg.norm(v[3:])<.01 and np.linalg.norm(v[:3])<.1 for v in velocities)
-            done=state['landed'] and inside and on_table and mon.released(all_g) and stable and not state['dropped'] and not state['spill']
+            handover_ok=not mon.task['completion'].get('required_airborne_handover',False) or any(set(item['receivers'])-set(item['senders']) for item in state['transitions'])
+            done=state['landed'] and inside and on_table and mon.released(all_g) and stable and not state['dropped'] and not state['spill'] and handover_ok
             state['goal_since']=(t if state['goal_since'] is None else state['goal_since']) if done else None
             qualified=state['goal_since'] is not None and t-state['goal_since']>=mon.task['completion']['stable_duration_sim_s']
             completed+=int(qualified);reports[ident]=dict(completed=qualified,airborne=state['airborne'],drops=state['drops'],custody=sorted(state['custody']),support=sorted(support),handovers=state['transitions'],spill=state['spill'])

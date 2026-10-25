@@ -38,4 +38,29 @@ class RelayLiveRecoveryTests(unittest.TestCase):
             with self.assertRaises(ValueError):self.recovery.process(request)
         self.t.close.assert_not_called()
 
+    def test_retained_handover_preserves_the_other_holder_and_selected_successor(self):
+        self.t.data.body=lambda _:SimpleNamespace(xpos=np.array([0.,0.,1.2]),xmat=np.eye(3))
+        self.t.arms['I']=SimpleNamespace(job=None);self.t.wait=Mock()
+        continuation=dict(future_region=[0.,0.,1.2],future_waypoints=[[[.2,0.,1.2],0.]])
+        request=dict(self.request,op='handover',retained_side=0,continuation=continuation)
+        with patch('robofrontier.suite.relay_live_recovery.ref.choose_team',return_value=['G','I']) as choose,patch('robofrontier.suite.relay_live_recovery.ref.grasp'),patch('robofrontier.suite.relay_live_recovery.ref.release') as release:
+            result=self.recovery.process(request)
+        self.assertEqual(result['status'],'completed')
+        self.assertEqual(choose.call_args.kwargs['retained'],{0:'G'})
+        self.assertEqual(choose.call_args.kwargs['future_waypoints'],continuation['future_waypoints'])
+        release.assert_called_once_with(self.t,'p',['H'])
+
+    def test_unbounded_or_unknown_continuation_is_rejected_before_motion(self):
+        for continuation in [{'execute':'code'},{'future_region':[0,0,1],'future_waypoints':[[[0,0,1],0]]*5}]:
+            with self.assertRaises(ValueError):self.recovery.process(dict(self.request,op='handover',continuation=continuation))
+
+    def test_supported_open_uses_payload_then_robot_contact_arguments(self):
+        self.t.execute=Mock();self.t.held={'G':'p','H':'p'}
+        self.t.monitor.relay_v2.states['p']['all_geoms']={1}
+        self.t.monitor.relay_v2.environment_contact=lambda _:True
+        with patch('robofrontier.suite.relay_live_recovery.ref.arm_payload_contact',return_value=False) as contact:
+            result=self.recovery.process(dict(self.request,op='open'))
+        self.assertEqual(result['status'],'completed');self.assertEqual(self.t.held,{})
+        self.assertEqual([call.args[1:] for call in contact.call_args_list],[('p','G'),('p','H')])
+
 if __name__=='__main__':unittest.main()

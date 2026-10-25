@@ -47,6 +47,8 @@ def main():
     signal.signal(signal.SIGTERM,lambda *_:(_ for _ in ()).throw(ReferenceStopped('Explicit process stop')))
     ref.STAGE_SEARCH_WALL_S=120.
     report=dict(case_id=a.case,passed=False,commissioning_only=bool(a.commission_transfers),git_commit=manifest['git_commit'],source_worktree=manifest['worktree'],scope='Bounded physical handover commissioning; not full task success' if a.commission_transfers else 'One complete canonical episode, including any retained forward recovery history',execution_mode='pure_program',phases=[],handovers=[],handover_protocol='qualified-members-v2' if a.flexible else 'whole-pair-v1')
+    report['task_contract_sha256']=hashlib.sha256((a.scene/'task.json').read_bytes()).hexdigest()
+    report['task_rule_revision']=t.task.get('completion',{}).get('rule_revision')
     recovery=RelayLiveRecovery(t,report)
     def phase(name,ident,team):
         row=dict(phase=name,payload=ident,team=list(team),simulation_time_s=t.time);report['phases'].append(row);t.event('relay_live_phase',detail=row)
@@ -58,6 +60,7 @@ def main():
     try:
         t.wait(.6)
         while not t.monitor.result().get('task_success'):
+            t.check_stop()
             pending=[ident for ident,s in t.monitor.result()['payloads'].items() if not s['completed']]
             try:
                 if a.pipeline:relay_pipeline.solve(t,flexible=a.flexible,terminal_observer=phase,handover_observer=handover)
