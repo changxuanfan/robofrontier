@@ -109,6 +109,7 @@ def main():
         budgets=dict(wall_s=a.wall_s or None,sim_s=a.sim_s or None,action_batches=a.actions or None,explicit_guesses=a.guesses or None),
         new_physics_integration=True,solver_answer_input=False,mechanical_oracle_geometry_privileged=True,
         new_evaluator_sha256=hashlib.sha256(b''.join((root/'robofrontier/suite'/name).read_bytes() for name in (('dial_best_worker.py','dial_feedback.py','dial_best_oracle.py') if a.best5 else ('dial_blind_worker.py','dial_hold_oracle.py')))).hexdigest())
+    write_json(trial.directory/'run-limits.json',report['budgets'])
     try:
         trial.event('blind_protocol_start',protocol=protocol['version'])
         if a.best5:solve(trial,max_guesses=a.guesses or None)

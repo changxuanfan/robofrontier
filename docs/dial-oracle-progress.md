@@ -208,3 +208,32 @@ a management setting. At wall3993 /sim1045 it was progressing normally, guess21,
 If it approaches its original limit, report the actual constraint explicitly;
 future attempts must use the new unlimited defaults unless the user requests
 specific bounds.
+
+## Attempt-002 legacy limit interruption; proceed without budgets
+
+User reiterated to finish all nine dial tasks and then stop. Eight remains
+unfinished; do not mark it passed or finish the task early.
+
+Attempt-002 progressed to guess21,10 candidates,BEST4. D01 blue B then needed
+geometric recovery. Two width-based grasps failed terminally; no violation.
+Temporary red A70N support was established. Opening B32mm was mechanically
+blocked, then a3mm plus6mm measured withdrawal and full80mm opening freed it.
+Fifty finite normal open-hold commands advanced real physics for spring
+settling. Initial wrist-reorientation searches near the payload were blocked by
+the collar; retreating the fully open hand80mm first enabled27 screened new
+capture candidates with joint-limit margin. The now-generalized scratch helper
+accepts `state.json D01 B` as extra arguments. No live object state was assigned.
+
+Before recapture, the unchanged frozen process reached its original5400s wall
+limit. It sealed at sim1123.16 with zero process violations/unknowns and
+assisted=true. This is a management interruption, not a completed goal or a
+proof of mechanical impossibility. Raw report/trace/motion are retained; the
+new defaults do not retroactively change that frozen process. Do not modify a
+frozen process through debugger injection or claim its old limit was removed.
+
+Next attempt-003 must explicitly use --wall-s0 --sim-s0 --actions0 --guesses0
+with the updated runner, which writes run-limits.json at startup. No automatic
+supervisor time kill. Fresh blind solver again; previous posterior is not a
+standard-answer input. Use the proven pressure guard and the learned geometric
+regrasp procedure if necessary, keep the world on recoverable failure, and
+continue until the nine-task objective is fulfilled.
