@@ -16,6 +16,8 @@ from scripts.probe_mosaic_cartesian_approach import base,Trial,FROZEN,ROOT
 from robofrontier.suite.oracle import joint_edge_clear
 from robofrontier.run_setup import write_json
 
+SOURCE_SHA256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+
 
 class WithdrawVariant(Trial):
     def move(self,robot,target,rotation=None,label='move',precise=False,speed_m_s=None):
@@ -29,24 +31,26 @@ class WithdrawVariant(Trial):
         diagonal=np.r_[delta[:2],.10]
         diagonal*=.10/np.linalg.norm(diagonal)
         for kind,offset in [('negative_actual_tool_z',-tool[:,2]*.10),('toward_base_up',diagonal)]:
-            q=self.data.qpos[arm.qids].copy();valid=True
+            q=self.data.qpos[arm.qids].copy();valid=True;minimum=float('inf')
             for fraction in np.linspace(0,1,21)[1:]:
                 point=start+offset*fraction
                 nxt=self.screen_ik(robot,point,tool,seed=q)
-                if (nxt is None or np.min(np.minimum(nxt-arm.ik.limits[:,0],arm.ik.limits[:,1]-nxt))<.01 or
+                if (nxt is None or np.any(nxt<arm.ik.limits[:,0]) or np.any(nxt>arm.ik.limits[:,1]) or
                         not joint_edge_clear(q,nxt,lambda value:Trial.pose_clear(proxy,robot,value,allowed_objects=(name,)),step_rad=.005)):
                     valid=False;break
                 q=nxt
+                minimum=min(minimum,float(np.min(np.minimum(q-arm.ik.limits[:,0],arm.ik.limits[:,1]-q))))
             if not valid:continue
             self.withdraw_variant=dict(kind=kind,actual_start_m=start.tolist(),target_m=(start+offset).tolist(),
-                released_object_screened_as_fixed_world_obstacle=True,samples=20,joint_sample_step_rad=.005)
+                released_object_screened_as_fixed_world_obstacle=True,samples=20,joint_sample_step_rad=.005,
+                minimum_original_ik_margin_rad=minimum,controller_joint_limits_unchanged=True)
             self.event('unit_measured_withdrawal',robot=robot,object=name,**self.withdraw_variant)
             return super().move(robot,start+offset,tool,label,False,.035)
         raise RuntimeError('No screened measured-attitude withdrawal candidate')
 
     def close(self,report):
         report['withdraw_variant']=getattr(self,'withdraw_variant',None)
-        report['withdraw_variant_source_sha256']=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+        report['withdraw_variant_source_sha256']=SOURCE_SHA256
         return super().close(report)
 
 
