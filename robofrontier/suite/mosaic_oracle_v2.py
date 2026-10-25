@@ -363,6 +363,45 @@ def lower_pocket_release(trial, robot, position):
     trial.wait(.10)
 
 
+def execute_loaded_transit(trial, robot, target, rotation, joints):
+    """Recover a task outcome, never rewrite an original failed tool result.
+
+    A controller can report a stopped timeout while the physical endpoint is
+    subsequently satisfied. Only a clean terminal move, stable original joint
+    target and continuously retained payload may pass this independent gate.
+    """
+    try:
+        return trial.move_free(robot,target,rotation,'mosaic-feedback-transit',target_joints=joints,
+            **speed_kwargs(trial,'loaded_joint_speed_rad_s','joint_speed_rad_s'))
+    except RuntimeError:
+        actions=getattr(trial,'actions',[]);arm=trial.arms[robot]
+        last=actions[-1] if actions else {};result=last.get('results',{}).get(robot,{})
+        if (result.get('status')!='failed' or result.get('reason')!='Action timeout; stopped at current reference' or
+                not last.get('label','').startswith('mosaic-feedback-transit') or
+                any(a.job is not None for a in trial.arms.values()) or trial.monitor.violations or
+                trial.held.get(robot) is None or arm.grasp_force is None):raise
+        name=trial.held[robot];observations=[]
+        if not trial.finger_contacts(robot,name):raise
+        for _ in range(20):
+            trial.wait(.02)
+            observations.append(dict(joint_error_rad=float(np.max(abs(trial.data.qpos[arm.qids]-joints))),
+                joint_speed_rad_s=float(np.max(abs(trial.data.qvel[arm.dofs]))),
+                bilateral=bool(trial.finger_contacts(robot,name)),position_m=trial.data.body(name).xpos.copy().tolist()))
+        positions=np.asarray([x['position_m'] for x in observations])
+        verified=bool(all(x['joint_error_rad']<.004 and x['joint_speed_rad_s']<.03 and x['bilateral'] for x in observations) and
+            np.max(np.linalg.norm(positions-positions[0],axis=1))<.002 and
+            positions[:,2].min()>trial.task['table_height_m']+.08 and
+            not trial.monitor.violations and trial.pose_clear(robot,trial.data.qpos[arm.qids]))
+        evidence=dict(robot=robot,object=name,original_call_id=result.get('call_id'),
+            original_status='failed',original_feedback_preserved=True,target_joint_rad=np.asarray(joints).tolist(),
+            observations=observations,verified=verified)
+        trial.event('mosaic_stopped_motion_outcome_review',**evidence)
+        if not verified:raise
+        if not hasattr(trial,'mosaic_recovered_motion_failures'):trial.mosaic_recovered_motion_failures=[]
+        trial.mosaic_recovered_motion_failures.append(evidence)
+        return dict(task_endpoint_verified_after_stop=True,original_feedback=result)
+
+
 def place_cube(trial, robot, position, _grip_replans=0):
     """Transit high, remeasure grip, align before release, then withdraw."""
     from .oracle import CUBE_ROTATIONS
@@ -393,8 +432,7 @@ def place_cube(trial, robot, position, _grip_replans=0):
     candidates.sort(key=lambda c:(-min(c[0],.30),c[1]))
     for margin,_,q,target,tool_r,rotation,hover in candidates:
         try:
-            trial.move_free(robot,target,tool_r,'mosaic-feedback-transit',target_joints=q,
-                            **speed_kwargs(trial,'loaded_joint_speed_rad_s','joint_speed_rad_s'))
+            execute_loaded_transit(trial,robot,target,tool_r,q)
         except RuntimeError as error:
             if str(error).startswith(('No clear free-arm IK','No collision-free sampled free-arm route')):continue
             raise
@@ -906,7 +944,7 @@ def install_process_guard(trial):
     trial.mosaic_process_guard_installed=True
 
 
-def solve(trial, max_goals=None, goal_ids=None, motion_profile=None):
+def solve(trial, max_goals=None, goal_ids=None, motion_profile=None, resume=False):
     """Execute bounded physical placements; max_goals is commissioning only.
 
     A partial witness never constitutes task success. The caller independently
@@ -919,7 +957,19 @@ def solve(trial, max_goals=None, goal_ids=None, motion_profile=None):
     trial.event('mosaic_reference_speed_profile',profile=trial.mosaic_motion_profile,normal_grasp_force_n=50.,repair_grasp_force_n=30.,contact_and_refine_unchanged=True)
     if max_goals is not None and (not isinstance(max_goals, int) or max_goals < 1):
         raise ValueError('max_goals must be a positive commissioning limit')
-    helpers.clear_idle_arms(trial)
+    protected={};available=None
+    if resume:
+        if trial.held:raise RuntimeError('Stage or finish the held payload before rematching remaining work')
+        remaining,available,protected=protected_remaining_inputs(trial,getattr(trial,'mosaic_protected_assignments',{}))
+        trial.event('mosaic_resume_from_actual_progress',protected_assignments=protected,
+            remaining_goals=[g['goal_id'] for g in remaining],scope='Same live world; no reset, initial parking or completed-object reuse')
+    else:
+        helpers.clear_idle_arms(trial)
+        remaining=trial.task['goals']
+    trial.mosaic_protected_assignments=protected
+    if not remaining:
+        trial.wait(1.2)
+        return dict(reference_placed=len(protected),total_goals=len(trial.task['goals']),commissioning_only=False,resumed=resume)
     neighbors, _ = helpers.graph(trial.env)
     coverage = helpers.goal_coverage(trial)
     pickups = pickup_endpoint_candidates(trial)
@@ -927,15 +977,15 @@ def solve(trial, max_goals=None, goal_ids=None, motion_profile=None):
     write_json(trial.directory / 'coverage.json', dict(
         scope='Endpoint candidates only; actual motion and contact remain unproven',
         goals=coverage))
-    goals = sorted(trial.task['goals'],
+    goals = sorted(remaining,
                    key=lambda g: (np.linalg.norm(g['position_m'][:2]), g['goal_id']))
     try:
-        jobs=assign_supply(trial,goals,coverage,pickups,neighbors)
+        jobs=assign_supply(trial,goals,coverage,pickups,neighbors,**({'available_objects':available} if available is not None else {}))
         edges=helpers.graph(trial.env)[1]
     except ValueError as direct_error:
         trial.event('direct_supply_incomplete',reason=str(direct_error))
         neighbors,edges=buffer_graph(trial,neighbors,helpers.graph(trial.env)[1])
-        jobs=assign_supply(trial,goals,coverage,pickups,neighbors)
+        jobs=assign_supply(trial,goals,coverage,pickups,neighbors,**({'available_objects':available} if available is not None else {}))
     trial.mosaic_edges=edges
     jobs.sort(key=lambda job:(-len(job[2]),np.linalg.norm(job[0]['position_m'][:2]),job[0]['goal_id']))
     write_json(trial.directory/'supply-plan.json',dict(
@@ -947,9 +997,10 @@ def solve(trial, max_goals=None, goal_ids=None, motion_profile=None):
         if not set(goal_ids)<=known:raise ValueError('Unknown commissioning goal')
         jobs=[job for job in jobs if job[0]['goal_id'] in goal_ids]
     selected=jobs if max_goals is None else jobs[:max_goals]
-    completed=set();pending=list(selected);deferred={};attempts={}
+    completed=set(protected);pending=list(selected);deferred={};attempts={}
     while pending:
         goal,name,path=pending.pop(0)
+        trial.mosaic_current_job=dict(goal_id=goal['goal_id'],object=name,path=list(path))
         position=np.asarray(goal['position_m'])
         first_action=len(getattr(trial,'actions',[]))
         try:deliver_cube(trial, name, path, position)
@@ -991,9 +1042,11 @@ def solve(trial, max_goals=None, goal_ids=None, motion_profile=None):
         if lost:
             raise RuntimeError('Placement disturbed completed goals: ' + ','.join(sorted(lost)))
         completed.add(goal['goal_id'])
+        trial.mosaic_protected_assignments=dict(trial.monitor.result().get('assignments',{}))
+        trial.mosaic_current_job=None
         trial.event('goal_attempt', goal=goal['goal_id'], object=name, path=path,
                     progress=len(assignments), reference_completed=len(completed))
         print(f"{trial.task['id']} mosaic {len(completed)}/{len(selected)} validated", flush=True)
     trial.wait(1.2)
-    return dict(reference_placed=len(completed), total_goals=len(goals),
-                commissioning_only=len(selected) < len(goals))
+    return dict(reference_placed=len(completed), total_goals=len(trial.task['goals']),
+                commissioning_only=len(selected) < len(goals),resumed=resume)
