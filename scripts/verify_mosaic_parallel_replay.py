@@ -98,6 +98,10 @@ def run(a):
         declared_jobs=[dict(robot=e['path'][0],object=e['object'],goal=e['goal']) for e in jobs],
         sampled_swept_screen=screen,scope='Two-cell command concurrency fixture; not full artwork or GPT performance')
     try:
+        if (t.physical_control_sha256!=source_report['physical_control_sha256'] or
+                t.environment_logic_sha256!=source_report['environment_logic_sha256'] or
+                t.source_bundle['sha256']!=source_report['scene_bundle_sha256']):
+            raise ValueError('Serial and concurrent runs must share physical control, evaluator and source assets')
         t.wait(.6);t.snapshot('initial')
         t.execute('clear-idle-arms',deepcopy(initial['commands']));t.wait(.2)
         began=t.time
@@ -108,7 +112,8 @@ def run(a):
             for actions in streams.values():
                 if index+1<len(actions):delays.append(max(0.,actions[index+1]['start_sim_s']-actions[index]['end_sim_s']))
             if delays:t.wait(max(delays))
-        t.wait(1.9)
+        final_wait=source_report['evaluation']['sim_time_s']-max(actions[-1]['end_sim_s'] for actions in streams.values())
+        t.wait(final_wait)
         result=t.monitor.result()
         report.update(evaluation=result,execution_sim_s=t.time-began,
             serial_execution_sim_s=source_report['evaluation']['sim_time_s']-initial['end_sim_s']-.2,
