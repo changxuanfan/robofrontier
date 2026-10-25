@@ -28,7 +28,7 @@ def execute_plan(trial,plan):
 
     def bookkeeping(robot,command,node):
         operation,parameters=command;name=jobs[node]['object']
-        if operation=='gripper' and parameters.get('mode')=='grasp' and trial.arms[robot].grasp_force is not None and trial.finger_contacts(robot,name):
+        if name is not None and operation=='gripper' and parameters.get('mode')=='grasp' and trial.arms[robot].grasp_force is not None and trial.finger_contacts(robot,name):
             trial.held[robot]=name
         if robot in trial.held and trial.arms[robot].grasp_force is None and trial.monitor.released(trial.monitor.geoms[trial.held[robot]]):
             trial.held.pop(robot)
@@ -44,10 +44,11 @@ def execute_plan(trial,plan):
             waiting.pop(node);frontier.complete(node)
             if node in last_nodes:
                 goal=last_nodes[node]
-                if current.get(goal)!=jobs[node]['object']:
+                pairs=plan.get('last_goal_assignments',{}).get(str(node),plan.get('last_goal_assignments',{}).get(node,{goal:jobs[node]['object']}))
+                if any(current.get(g)!=name for g,name in pairs.items()):
                     failures.append('Async scope did not satisfy original evaluator '+goal)
                 else:
-                    qualified.add(goal);started.pop(goal,None)
+                    qualified.update(pairs);started.pop(goal,None)
                     trial.mosaic_protected_assignments=dict(current)
                     print(f"{trial.task['id']} async {len(qualified)}/{plan['total_goals']} validated",flush=True)
                     callback=getattr(trial,'mosaic_after_goal',None)

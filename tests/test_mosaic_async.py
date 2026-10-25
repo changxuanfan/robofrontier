@@ -53,6 +53,20 @@ def plan():
 
 
 class AsyncExecutionTests(unittest.TestCase):
+    def test_repair_barrier_counts_only_new_original_evaluator_assignments(self):
+        t=Trial();p=plan()
+        for j in p['jobs'][:2]:j.update(goal_id='@repair',object=None)
+        p['last_goal_nodes'][1]='@repair';p['predecessors'][2]=[1]
+        p['last_goal_assignments']={'1':{'A':'A-cube'},'3':{'B':'B-cube'}}
+        result=execute_plan(t,p)
+        self.assertEqual(result['reference_placed'],2)
+        self.assertGreaterEqual(t.arms['B'].started[0][1],t.arms['A'].started[1][1]+1-1e-8)
+        self.assertEqual(t.held,{})
+
+    def test_repair_marker_does_not_copy_an_unobserved_goal_success(self):
+        t=Trial();p=plan();p['last_goal_assignments']={1:{'A':'wrong-object'},3:{'B':'B-cube'}}
+        with self.assertRaisesRegex(RuntimeError,'original evaluator A'):execute_plan(t,p)
+
     def test_short_arm_continues_while_unrelated_long_move_is_active(self):
         t=Trial();result=execute_plan(t,plan())
         self.assertEqual(result['reference_placed'],2)

@@ -16,6 +16,7 @@ import numpy as np
 
 from ..motion_recording import MotionReader
 from .evaluate import Monitor
+from .mosaic_source_scopes import source_scopes
 
 
 def overlap(a,b,reserve=.02):
@@ -27,7 +28,8 @@ def dependencies(jobs):
     result=[]
     for j,job in enumerate(jobs):
         result.append([i for i,earlier in enumerate(jobs[:j])
-            if (set(job['robots'])&set(earlier['robots']) or
+            if (job.get('barrier') or earlier.get('barrier') or
+                set(job['robots'])&set(earlier['robots']) or
                 (job.get('object') is not None and job.get('object')==earlier.get('object')) or
                 overlap(job['bounds_m'],earlier['bounds_m']))])
     return result
@@ -66,43 +68,31 @@ def build_plan(source):
     report=json.loads((source/'report.json').read_text())
     if (not report.get('passed') or report.get('error') or report.get('unresolved_robot_actions') or
             report['evaluation']['violations']):raise ValueError('A complete clean physical source witness is required')
+    if len(report['evaluation']['assignments'])!=report['evaluation']['total_goals']:
+        raise ValueError('Every original source goal must have a physical assignment')
     events=[json.loads(line) for line in (source/'trace.jsonl').read_text().splitlines()]
-    ends=[e for e in events if e['event']=='goal_attempt']
     actions=json.loads((source/'actions.json').read_text())
-    initial=[a for a in actions if a['label']=='clear-idle-arms']
-    if len(initial)!=1 or len(ends)!=report['evaluation']['total_goals']:
-        raise ValueError('Require one initial parking and one completed scope per cell')
-    jobs=[];cursor=1
-    for event in ends:
-        commands=[]
-        while cursor<len(actions) and actions[cursor]['end_sim_s']<=event['sim_time_s']+1e-8:
-            action=actions[cursor];cursor+=1
-            if any(r['status']!='completed' for r in action['results'].values()):
-                raise ValueError('Source needs explicit treatment of failed actions, never blind replay')
-            commands.append(action)
-        if not commands or report['evaluation']['assignments'].get(event['goal'])!=event['object']:
-            raise ValueError('Source scope and actual object pairing disagree')
-        robots=sorted({r for action in commands for r in action['commands']})
-        jobs.append(dict(goal_id=event['goal'],object=event['object'],path=event['path'],robots=robots,
-            actions=commands,end_sim_s=event['sim_time_s'],bounds_m=[np.full(3,np.inf),np.full(3,-np.inf)]))
-    if cursor!=len(actions):raise ValueError('Unassigned trailing physical actions')
+    task=json.loads((source/'task.json').read_text())
+    initial,scopes=source_scopes(actions,events,report['evaluation']['assignments'],[o['id'] for o in task['objects']])
     # Reserve individual finite operations rather than a whole multi-arm job.
     # Object order retains the actual custody/staging chain; disjoint robots
     # can prepare/execute other jobs between its operations.
-    scopes=jobs;last_nodes={};jobs=[]
+    last_nodes={};last_pairs={};jobs=[]
     for scope in scopes:
         for i,action in enumerate(scope['actions']):
             end=(scope['actions'][i+1]['start_sim_s'] if i+1<len(scope['actions']) else scope['end_sim_s'])
             jobs.append(dict(goal_id=scope['goal_id'],object=scope['object'],path=scope['path'],
+                objects=scope['objects'],barrier=scope['barrier'],
                 robots=sorted(action['commands']),actions=[action],end_sim_s=end,
                 bounds_m=[np.full(3,np.inf),np.full(3,-np.inf)]))
         last_nodes[len(jobs)-1]=scope['goal_id']
+        last_pairs[len(jobs)-1]=scope['expected_assignments']
     model=mujoco.MjModel.from_xml_path(str(source/'scene.xml'));data=mujoco.MjData(model)
     task=json.loads((source/'task.json').read_text());monitor=Monitor(SimpleNamespace(model=model,data=data,task=task,arms=task['arms']))
     physical=(model.geom_contype!=0)|(model.geom_conaffinity!=0)
     geom_sets=[]
     for job in jobs:
-        ids=set(monitor.geoms[job['object']])
+        ids={g for name in job['objects'] for g in monitor.geoms[name]}
         for robot in job['robots']:
             ids.update(np.flatnonzero((monitor.geom_owner==monitor.robot_index[robot])&physical))
         geom_sets.append(np.asarray(sorted(ids),int))
@@ -126,11 +116,13 @@ def build_plan(source):
         for i in pred[j]:critical[i]=max(critical[i],durations[i]+critical[j])
     return dict(source=str(source),case_id=report['case_id'],jobs=jobs,predecessors=pred,critical_path_weights=critical,
         table_buffers=json.loads((source/'supply-plan.json').read_text())['table_buffers'],
-        initial_commands=initial[0]['commands'],source_physical_control_sha256=report['physical_control_sha256'],
+        initial_commands=initial['commands'],source_physical_control_sha256=report['physical_control_sha256'],
         source_environment_logic_sha256=report['environment_logic_sha256'],source_scene_bundle_sha256=report['scene_bundle_sha256'],
         source_report_sha256=hashlib.sha256((source/'report.json').read_bytes()).hexdigest(),
+        source_assisted=bool(report.get('assisted') or report.get('llm_used')),
         source_actions_sha256=hashlib.sha256((source/'actions.json').read_bytes()).hexdigest(),
-        last_goal_nodes=last_nodes,total_goals=len(scopes),planning_granularity='ordinary_finite_action',
+        last_goal_nodes=last_nodes,last_goal_assignments=last_pairs,total_goals=report['evaluation']['total_goals'],
+        repair_barrier_count=sum(s['barrier'] for s in scopes),planning_granularity='ordinary_finite_action',
         frames_screened=frames,planning_wall_s=time.monotonic()-began,reserve_per_scope_m=.02,
         scope='Source-order dependencies for shared robots, object custody or overlapping sampled operation envelopes; no continuous safety or optimality certificate')
 
@@ -167,7 +159,7 @@ def execute_plan(trial,plan):
             # Bookkeeping follows measured grasp/release, never attaches a load.
             for robot,(operation,parameters) in commands.items():
                 name=jobs[owners[robot]]['object']
-                if operation=='gripper' and parameters.get('mode')=='grasp' and trial.arms[robot].grasp_force is not None and trial.finger_contacts(robot,name):
+                if name is not None and operation=='gripper' and parameters.get('mode')=='grasp' and trial.arms[robot].grasp_force is not None and trial.finger_contacts(robot,name):
                     trial.held[robot]=name
                 if robot in trial.held and trial.arms[robot].grasp_force is None and trial.monitor.released(trial.monitor.geoms[trial.held[robot]]):
                     trial.held.pop(robot)
@@ -184,9 +176,10 @@ def execute_plan(trial,plan):
             frontier.complete(i);active.pop(i)
             if i in last_goal_nodes:
                 goal=last_goal_nodes[i]
-                if current.get(goal)!=jobs[i]['object']:
+                pairs=plan.get('last_goal_assignments',{}).get(str(i),plan.get('last_goal_assignments',{}).get(i,{goal:jobs[i]['object']}))
+                if any(current.get(g)!=name for g,name in pairs.items()):
                     raise RuntimeError('Concurrent finite command scope did not satisfy original evaluator '+goal)
-                qualified.add(goal);started.pop(goal,None)
+                qualified.update(pairs);started.pop(goal,None)
                 trial.mosaic_protected_assignments=dict(current)
                 print(f"{trial.task['id']} concurrent {len(qualified)}/{plan['total_goals']} validated",flush=True)
                 callback=getattr(trial,'mosaic_after_goal',None)

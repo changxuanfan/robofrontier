@@ -91,6 +91,7 @@ def run(args):
         write_json(trial.directory/'concurrency-plan.json',concurrency)
         report['concurrency_planning_wall_s']=concurrency['planning_wall_s']
         report['concurrency_source']=str(args.concurrency_source.resolve())
+        report['concurrency_source_assisted']=concurrency.get('source_assisted',False)
         report['concurrency_execution']=args.concurrency_execution
         def solve_concurrent(world,**kwargs):
             if kwargs['resume']:
