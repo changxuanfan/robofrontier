@@ -35,7 +35,7 @@ def main():
     t.live_preview=True;t.abort_on_process_violation=True;stop={'requested':False}
     signal.signal(signal.SIGTERM,lambda *_:stop.update(requested=True))
     t.stop_requested=lambda:stop['requested'] or time.monotonic()-t.started>a.wall_s or t.time>400
-    report=dict(passed=False,commissioning_only=True,full_task_attempt=False,
+    report=dict(case_id=case['id'],passed=False,commissioning_only=True,full_task_attempt=False,
         source_snapshot=os.environ[MARKER],goal=a.goal,object=a.object,donor=a.donor,receiver=a.receiver,
         scope='Actual original-order identity; full transfer/release/withdraw/placement in one fresh world')
     try:

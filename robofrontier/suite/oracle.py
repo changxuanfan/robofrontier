@@ -268,7 +268,8 @@ class Trial:
         """Finite robot-joint route, with static full-scene collision screening
         and a kinematic carried-object prediction when applicable. That
         prediction exists only in scratch data; live loads are never attached.
-        Other arms are held during this reference move.
+        The route screen treats other arms at their captured poses. A
+        cooperative runtime must additionally screen concurrent progress.
         Screens are not certificates: the live monitor still audits execution.
         """
         arm=self.arms[robot];start=self.data.qpos[arm.qids].copy();seeds=([np.asarray(preferred_seed)] if preferred_seed is not None else [])+[arm.qref,self.home_q[robot]]

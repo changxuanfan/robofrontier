@@ -212,9 +212,22 @@ def sampled_motion_admission(request,runtime):
                 body=t.data.body(name);br=body.xmat.reshape(3,3);arm=t.arms[r]
                 carried[r]=(name,br.T@(t.data.site_xpos[arm.site]-body.xpos),br.T@t.data.site_xmat[arm.site].reshape(3,3))
     s.held={}
-    for f in np.linspace(0,1,count+1)[1:]:
+    def phase_samples():
+        fractions=np.linspace(0,1,count+1)
+        for f in fractions[1:]:yield {r:f for r in paths}
+        # Independent actions do not share a progress fraction. In particular,
+        # a fast peer can finish while a slow loaded arm is midway through its
+        # route. Check pairwise phase combinations, including idle end poses.
+        # This remains a finite nominal screen, not continuous collision proof.
+        for robot in new:
+            for other in paths:
+                if robot==other:continue
+                for phase in (1.,0.,.5,.25,.75):
+                    for f in fractions:
+                        yield {r:f if r==robot else phase if r==other else 0. for r in paths}
+    for progress in phase_samples():
         s.data.qpos[:]=original
-        for r,(a,b) in paths.items():s.data.qpos[s.arms[r].qids]=a+(b-a)*f
+        for r,(a,b) in paths.items():s.data.qpos[s.arms[r].qids]=a+(b-a)*progress[r]
         mujoco.mj_kinematics(s.model,s.data)
         for r,(name,offset,relative) in carried.items():
             arm=s.arms[r];rr=s.data.site_xmat[arm.site].reshape(3,3)@relative.T

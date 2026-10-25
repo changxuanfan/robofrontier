@@ -16,8 +16,8 @@ from robofrontier.suite import transport_full_oracle as full
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def recorded_frontier():
-    fixture=json.loads((ROOT/'tests/fixtures/transport_air_frontier.json').read_text())
+def recorded_frontier(fixture_name='transport_air_frontier.json'):
+    fixture=json.loads((ROOT/'tests/fixtures'/fixture_name).read_text())
     scene=ROOT/fixture['scene'];t=Trial.__new__(Trial)
     t.task=json.loads((scene/'task.json').read_text());t.env=json.loads((scene/'environment.json').read_text())
     t.model=mujoco.MjModel.from_xml_path(str(scene/'scene.xml'));t.data=mujoco.MjData(t.model)
@@ -41,6 +41,16 @@ def recorded_frontier():
 
 
 class TransferCoverageTests(unittest.TestCase):
+    def test_independent_progress_can_reach_other_arms_finished_pose(self):
+        from types import SimpleNamespace
+        from robofrontier.suite.transport_runtime import sampled_motion_admission
+        fixture=json.loads((ROOT/'tests/fixtures/transport_async_sweep.json').read_text())
+        t=recorded_frontier('transport_async_sweep.json')
+        for r in t.held:t.arms[r].grasp_force=70.
+        runtime=SimpleNamespace(t=t,running={r:dict(commands={r:c}) for r,c in fixture['running'].items()},
+            jobs={r:dict(object=name,robots={r}) for r,name in t.held.items()})
+        self.assertFalse(sampled_motion_admission(dict(commands=fixture['request']),runtime))
+
     def test_free_release_keeps_original_goal_but_requests_precise_motion(self):
         from types import SimpleNamespace
         t=SimpleNamespace(task=dict(family='transport',level=1),transport_release_clearance={'C':.05},event=Mock(),place=Mock())

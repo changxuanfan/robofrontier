@@ -47,3 +47,15 @@ Run the original12-goal four-arm L1 order in one new world, then inspect full
 acceptance, physical overlap, retained resources and final stability. Preserve a
 blocked world for forward recovery. Extend to other scales/levels only after the
 representative gates, and keep Oracle recipes out of GPT policy inputs.
+
+## Full-order attempt001: asynchronous phase regression
+
+The first full order stopped at5/12 with C_hand/D_link5 contact at96.92 simulation
+seconds. The failure and all unresolved actions are retained; it is not resumed.
+The nominal admission screen moved all arms through the same normalized path
+fraction. Actual independent speeds let D finish while C was midway, a combination
+the screen never examined. A recorded92.20-second FK fixture reproduces the bad
+admission in0.43s; the fixed screen rejects it in1.21s. Pairwise independent phase
+samples now include finished/idle peer poses. This is still sampled nominal
+geometry, not a dynamics or continuous-clearance certificate. Process monitoring
+and unchanged original acceptance remain authoritative.
