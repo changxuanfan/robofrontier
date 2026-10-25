@@ -554,7 +554,7 @@ def final_support(t,ident,team):
  # longer depends on the open lower fingers. Require actual beam support
  # before this reference ends descent and releases its two grasps. This is
  # a manipulation policy gate, not a change to benchmark acceptance.
- supported=assembly_table_contact(t,ident) if goal_contact_allowed(t) else beam_table_contact(t,ident)
+ supported=(ident in relay.supported_payloads() if getattr(t,'task',{}).get('completion',{}).get('support_via_goal_payload') else assembly_table_contact(t,ident) if goal_contact_allowed(t) else beam_table_contact(t,ident))
  return bool(relay.inside(state) and supported
              and set(team)<=t.monitor.bilateral(state['rod_geoms'],positive_force=True))
 
@@ -1068,6 +1068,11 @@ def flexible_handover_plan(t,ident,team,offset,index,search_budget_s=None,landin
  budget=STAGE_SEARCH_WALL_S if search_budget_s is None else max(0.,float(search_budget_s))
  started=time.monotonic();mechanism=t.task['mechanism']
  inner=set(mechanism.get('inner_robot_ids',list(t.arms)[mechanism.get('outer_arms',len(t.arms)):]))
+ balanced=mechanism.get('layout')=='straight' or mechanism.get('outer_arms')==mechanism.get('inner_arms')
+ if balanced:
+  try:return handover_plan(t,ident,team,offset,index,search_budget_s=budget*.60,landing_shift_m=landing_shift_m)
+  except ReferenceStopped:raise
+  except RuntimeError:pass
  order=sorted((0,1),key=lambda side:team[side] not in inner)
  for side in order:
   remaining=budget-(time.monotonic()-started)
@@ -1075,6 +1080,7 @@ def flexible_handover_plan(t,ident,team,offset,index,search_budget_s=None,landin
   try:return handover_plan(t,ident,team,offset,index,search_budget_s=min(remaining,budget*.20),retained_side=side,landing_shift_m=landing_shift_m)
   except ReferenceStopped:raise
   except RuntimeError:pass
+ if balanced:raise RuntimeError('Bounded whole/retained receiving search exhausted '+ident)
  return handover_plan(t,ident,team,offset,index,search_budget_s=max(0.,budget-(time.monotonic()-started)),landing_shift_m=landing_shift_m)
 
 

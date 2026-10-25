@@ -381,7 +381,8 @@
     "Curved and elbow apparatuses initially open forward along the local route (right on the straight table). The weight, closed eyes and any passive hinge move with the complete apparatus and retain their physical connections.",
     "START lies entirely left of all robot mounts; GOAL lies entirely right of them. Existing scattered initial apparatus positions are retained; these markers do not relocate every apparatus to START.",
     "Within GOAL, payload-to-payload contact is allowed. Any final placement inside the declared region is valid; nominal Oracle packing centers and contact-free cargo separation are not additional task requirements. Verify actual release, stability and all payloads remaining inside GOAL.",
-    "Each payload must undergo a real qualified airborne handover before the final team places and releases it inside GOAL."
+    "Each payload must undergo a real qualified airborne handover before the final team places and releases it inside GOAL.",
+    "Stable stacking inside GOAL is allowed. Real tabletop support may pass through other payloads entirely inside GOAL. Every complete assembly must remain inside GOAL, released by all robots and stable; floating or robot-held loads are not complete."
   ],
   "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
   "observation_contract": {
@@ -399,8 +400,9 @@
     "scope": "Mechanism-specific commissioning required; no inherited v1 evaluator assumed",
     "allow_goal_payload_contact": true,
     "arbitrary_goal_placement": true,
-    "rule_revision": "relay-goal-contact-20261026",
-    "required_airborne_handover": true
+    "rule_revision": "relay-goal-contact-stack-20261026",
+    "required_airborne_handover": true,
+    "support_via_goal_payload": true
   },
   "execution_readiness": "environment_preview_only",
   "oracle_verified": false,

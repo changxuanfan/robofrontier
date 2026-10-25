@@ -11,6 +11,7 @@ import numpy as np
 class RelayCustodyTests(unittest.TestCase):
     def setUp(self):
         self.t=recorded_world();self.relay=self.t.monitor.relay_v2
+        self.t.task['completion']['support_via_goal_payload']=False # Synthetic support stream below.
         self.relay.states={'payload_02':self.relay.states['payload_02']}
         self.support={'A','B'}
         self.patches=[patch.object(self.t.monitor,'bilateral',side_effect=lambda *a,**k:set(self.support)),
@@ -67,6 +68,12 @@ class RelayCustodyTests(unittest.TestCase):
             state['transitions'].append(dict(sim_time_s=1.,senders=['C','D'],receivers=['A','B']))
             self.sample(3.3,set());self.sample(4.4,set())
             self.assertTrue(self.t.monitor.result_cache['task_success'])
+
+    def test_balanced_layout_can_use_a_whole_pair_without_forced_partial_detour(self):
+        t=recorded_world()
+        with patch.object(ref,'handover_plan',return_value='screened-whole') as planner:
+            self.assertEqual(ref.flexible_handover_plan(t,'payload_02',['G','H'],.44,3,search_budget_s=100.),'screened-whole')
+        self.assertNotIn('retained_side',planner.call_args.kwargs)
 
 
 if __name__=='__main__':unittest.main()

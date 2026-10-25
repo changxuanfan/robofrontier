@@ -340,7 +340,9 @@ def solve(t,*,flexible=False,terminal_observer=None,handover_observer=None):
         # Downstream terminal work frees scarce hands and goal access first.
         for f in sorted(frontiers,key=lambda item:(0 if item.phase in ('place','release') else 1,-item.index if item.phase=='plan' else 0)):
             if t.monitor.result().get('payloads',{}).get(f.ident,{}).get('completed'):
-                if f.phase!='done':f.phase='done';f.milestone+=1;progress=True
+                if f.phase!='done':
+                    if f.phase in ('verify','recheck'):notify(f,'terminal_complete')
+                    f.phase='done';f.milestone+=1;progress=True
                 continue
             if f.phase=='done':
                 f.phase='recheck';f.recheck_since=t.time;f.blocked='';f.milestone+=1
@@ -387,11 +389,11 @@ def solve(t,*,flexible=False,terminal_observer=None,handover_observer=None):
                 elif f.phase=='place':
                     notify(f,'prepared');notify(f,'placement_started');ref.place(t,f.ident,f.team);notify(f,'table_supported');t.wait(.3);f.phase='release'
                 elif f.phase=='release':
-                    notify(f,'release_started');ref.release(t,f.ident,f.team,terminal=True);t.wait(1.1)
-                    if not t.monitor.result()['payloads'][f.ident]['completed']:raise RuntimeError('Frontier final score not established '+f.ident)
-                    notify(f,'terminal_complete');f.phase='done'
-                elif f.phase=='recheck':
-                    if t.time-f.recheck_since>=2.5:raise RuntimeError('Previously complete payload disturbed; inspect actual goal '+f.ident)
+                    notify(f,'release_started');ref.release(t,f.ident,f.team,terminal=True)
+                    f.phase='verify';f.recheck_since=t.time
+                elif f.phase in ('verify','recheck'):
+                    state=t.monitor.relay_v2.states[f.ident]
+                    if not t.monitor.relay_v2.inside(state) or state['dropped']:raise RuntimeError('Released payload needs actual goal recovery '+f.ident)
                     t.wait(.25)
                 f.blocked='';f.blocked_at=None;f.milestone+=1;progress=True;snapshot(t,frontiers)
                 # Finish enabled landing/release before an upstream search

@@ -1,5 +1,5 @@
 """One continuous committed Relay Oracle with a live, typed recovery boundary."""
-import argparse,hashlib,json,os
+import argparse,hashlib,json,os,math
 from pathlib import Path
 import signal,subprocess,sys,time
 
@@ -7,11 +7,15 @@ ROOT=Path(__file__).resolve().parents[1]
 
 class CommissionComplete(Exception):pass
 
+def total_stop_requested(elapsed,limit,explicit_stop=False):
+    return bool(explicit_stop or (limit>0 and elapsed>limit))
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--case',required=True);p.add_argument('--output',type=Path,required=True)
-    p.add_argument('--scene',type=Path);p.add_argument('--harness',type=Path);p.add_argument('--wall-s',type=float,default=3600.);p.add_argument('--frozen',action='store_true')
+    p.add_argument('--scene',type=Path);p.add_argument('--harness',type=Path);p.add_argument('--wall-s',type=float,default=0.,help='Optional explicit total limit;0(default) means no total deadline');p.add_argument('--frozen',action='store_true')
     p.add_argument('--flexible',action='store_true');p.add_argument('--pipeline',action='store_true');p.add_argument('--commission-transfers',type=int,default=0)
     a=p.parse_args();out=a.output.resolve()
+    if not math.isfinite(a.wall_s) or a.wall_s<0:raise ValueError('Total wall limit is nonnegative;0 disables it')
     if a.commission_transfers<0:raise ValueError('Commission transfer count must be nonnegative')
     if a.pipeline and a.commission_transfers:raise ValueError('Pipeline and bounded single-payload commissioning are separate runs')
     from robofrontier.run_setup import write_json,load_harness
@@ -26,7 +30,7 @@ def main():
         parent=out.parent;parent.mkdir(parents=True,exist_ok=True);setup=parent/(out.name+'-source');setup.mkdir(exist_ok=False)
         (setup/'harness.json').write_bytes(harness.read_bytes());write_json(setup/'catalog.json',dict(cases=[case]))
         frozen=freeze_executor(ROOT,setup/'executor',setup/'harness.json',setup/'catalog.json')
-        manifest=dict(git_commit=commit,worktree=str(ROOT),scene=str(scene),case_id=a.case,wall_budget_s=a.wall_s,initialization='Fresh canonical initial state; real actuators execute all prefixes again',runtime_recovery='Typed privileged assisted; no physical rollback/state injection',flexible_handover=a.flexible,commission_transfers=a.commission_transfers,pipeline=a.pipeline)
+        manifest=dict(git_commit=commit,worktree=str(ROOT),scene=str(scene),case_id=a.case,wall_budget_s=a.wall_s or None,initialization='Fresh canonical initial state; real actuators execute all prefixes again',runtime_recovery='Typed privileged assisted; no physical rollback/state injection',flexible_handover=a.flexible,commission_transfers=a.commission_transfers,pipeline=a.pipeline)
         write_json(setup/'run.json',manifest)
         env=os.environ.copy();env.update(PYTHONPATH=str(frozen),ROBOFRONTIER_ORACLE_FROZEN_ROOT=str(frozen),OPENBLAS_NUM_THREADS='1',OMP_NUM_THREADS='1',MKL_NUM_THREADS='1')
         command=[sys.executable,str(frozen/'scripts/run_relay_live_oracle.py'),'--case',a.case,'--output',str(out),'--scene',str(scene),'--harness',str(frozen/'inputs/harness.json'),'--wall-s',str(a.wall_s),'--frozen','--commission-transfers',str(a.commission_transfers)]
@@ -43,12 +47,13 @@ def main():
     t=Trial(a.scene,out,controller_cfg=load_harness(a.harness),sources=sources,record_hz=60.)
     relay_pipeline.install_motion_metrics(t)
     t.live_preview=True;t.abort_on_process_violation=True
-    t.stop_requested=lambda:time.monotonic()-t.started>a.wall_s or (out/'STOP').exists() or (out.parent/'STOP').exists()
+    t.stop_requested=lambda:total_stop_requested(time.monotonic()-t.started,a.wall_s,(out/'STOP').exists() or (out.parent/'STOP').exists())
     signal.signal(signal.SIGTERM,lambda *_:(_ for _ in ()).throw(ReferenceStopped('Explicit process stop')))
     ref.STAGE_SEARCH_WALL_S=120.
     report=dict(case_id=a.case,passed=False,commissioning_only=bool(a.commission_transfers),git_commit=manifest['git_commit'],source_worktree=manifest['worktree'],scope='Bounded physical handover commissioning; not full task success' if a.commission_transfers else 'One complete canonical episode, including any retained forward recovery history',execution_mode='pure_program',phases=[],handovers=[],handover_protocol='qualified-members-v2' if a.flexible else 'whole-pair-v1')
     report['task_contract_sha256']=hashlib.sha256((a.scene/'task.json').read_bytes()).hexdigest()
     report['task_rule_revision']=t.task.get('completion',{}).get('rule_revision')
+    report['total_wall_deadline_s']=a.wall_s or None
     recovery=RelayLiveRecovery(t,report)
     def phase(name,ident,team):
         row=dict(phase=name,payload=ident,team=list(team),simulation_time_s=t.time);report['phases'].append(row);t.event('relay_live_phase',detail=row)

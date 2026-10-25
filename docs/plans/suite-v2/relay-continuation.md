@@ -44,10 +44,9 @@ separately from multiple arms carrying one rod. Physics advances in explicit
 execution/waits, as with the serial Oracle; wall-clock planning is timed but
 does not itself advance physics. Both comparison modes use that clock contract.
 
-Next gates: automatic full8-arm L1; real12-arm retained-holder exchange and
-successor; multi-payload pipelining and serial comparison; full nine-case Oracle;
-integration/freeze/revalidation; clean Adaptive GPT trials. Never import this
-Oracle's state-derived poses/solutions into policy input.
+Current assignment ends after the nine full Relay Oracle cases are complete.
+The user explicitly excluded starting GPT trials in this assignment. Historical
+plans mentioning a later GPT phase are not current authorization to launch it.
 
 The automatic cf7ed45 serial8-arm L1 subsequently passed2/2 without assisted
 requests. The first1e0ba2c rolling trial demonstrated real two-load movement,
@@ -107,3 +106,34 @@ videos were fully decoded. Motion is60Hz float32 plus timestamped appearance
 events, bound to source geometry; it supports rigid factory placement/FK
 replay, not a2ms physics restart. Whole-world historical rollback is not
 implemented. Same-world forward recovery is implemented and demonstrated.
+
+## Current user-authorized stable-stack contract and duration policy
+
+The user explicitly confirmed stable stacking is valid: each entire assembly
+must be inside GOAL, released by robots, stable, and physically supported by
+the tabletop directly or through other cargo in GOAL. The placing team must
+have received the payload through a real qualified airborne handover. Nine
+task inputs now declare `relay-goal-contact-stack-20261026`.
+
+The evaluator follows actual contact paths between free structural components
+and the tabletop. Independent weights are separate nodes; grouping an assembly
+does not manufacture a weld. Robot holds, air gaps, floor contact or support
+through out-of-GOAL cargo do not establish final tabletop support. L3 stability
+also checks the distal beam. Already delivered cargo is reverified if disturbed.
+Normal post-release settling continues rather than failing a fixed short dwell.
+
+Total task deadlines are disabled by default (`--wall-s0`, recorded as null).
+Slow normal progress is never sealed because elapsed time passed. Individual
+finite motions/search reviews remain bounded so known failures return control
+for diagnosis and forward recovery; they do not impose a total task deadline.
+The case supervisor runs at most two independent worlds and advances the queue
+only when a world closes. Only complete native success and verified recordings
+count toward9/9; failed closed episodes are retained for review, never passed.
+
+The8bea8d6 episodes were stopped with zero in-flight actions because their
+frozen direct-table/no-stack criterion and total duration limits were superseded
+by these explicit user clarifications. Their original reports remain unchanged.
+The old L1 geometry was checked read-only: both rods already had a true contact
+chain to the tabletop, demonstrating why direct-table support was the wrong
+gate for the clarified stack task. The new executor starts canonically; it does
+not inject those recorded states or pretend that a physics restart exists.
