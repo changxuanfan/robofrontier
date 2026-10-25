@@ -58,7 +58,7 @@ def plan(a):
     if any(not 0<height<=t.task['cube_size_m']/2+.01 for height in heights):raise ValueError('Unsupported finite top-grasp contact height')
     for height in heights:
         contact=position+up*height
-        for r,tilt in grasp_rotations(up,axes,position-base):
+        for r,tilt in grasp_rotations(up,axes,position-base,tilts=(0,) if getattr(a,'flat_only',False) else (0,15,25)):
             seat=loaded_ik(t,robot,contact,r,(name,))
             if seat is None:continue
             for rise in (.14,.10,.08):
