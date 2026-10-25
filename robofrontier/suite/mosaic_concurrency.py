@@ -113,7 +113,7 @@ def build_plan(source):
 def execute_plan(trial,plan):
     if (trial.physical_control_sha256!=plan['source_physical_control_sha256'] or
             trial.environment_logic_sha256!=plan['source_environment_logic_sha256'] or
-            trial.source_bundle['sha256']!=plan['source_scene_bundle_sha256']):
+            trial.source_bundle['sha256']!=plan.get('target_scene_bundle_sha256',plan['source_scene_bundle_sha256'])):
         raise ValueError('Concurrent world must match source control/evaluator/assets')
     trial.execute('clear-idle-arms',deepcopy(plan['initial_commands']));trial.wait(.2)
     trial.parking_q={r:np.asarray(c[1]['joint_rad']) for r,c in plan['initial_commands'].items()}

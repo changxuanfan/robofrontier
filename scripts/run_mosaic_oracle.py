@@ -30,7 +30,16 @@ def run(args):
     if args.concurrency_source:
         from robofrontier.suite.mosaic_concurrency import build_plan
         concurrency=build_plan(args.concurrency_source)
-        if concurrency['case_id']!=case['id']:raise ValueError('Concurrency source belongs to another case')
+        if concurrency['case_id']!=case['id']:
+            from robofrontier.suite.mosaic_equivalence import check
+            from robofrontier.suite.provenance import bundle_manifest
+            equivalent=check(args.concurrency_source,ROOT/case['directory'])
+            if not equivalent['equivalent_for_command_candidate']:
+                raise ValueError('Cross-case concurrency requires exact L2/L3 physical equivalence')
+            concurrency['source_case_id']=concurrency['case_id']
+            concurrency['case_id']=case['id']
+            concurrency['physical_equivalence']=equivalent
+            concurrency['target_scene_bundle_sha256']=bundle_manifest(ROOT/case['directory'])['sha256']
     replay=None
     if args.equivalent_replay_source:
         from robofrontier.suite.mosaic_replay import prepare
