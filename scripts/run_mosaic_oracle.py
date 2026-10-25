@@ -31,9 +31,16 @@ def run(args):
         from robofrontier.suite.mosaic_concurrency import build_plan
         concurrency=build_plan(args.concurrency_source)
         if concurrency['case_id']!=case['id']:raise ValueError('Concurrency source belongs to another case')
+    replay=None
+    if args.equivalent_replay_source:
+        from robofrontier.suite.mosaic_replay import prepare
+        replay=prepare(args.equivalent_replay_source,ROOT/case['directory'])
     sources={str(p.relative_to(ROOT)):p.read_bytes()
         for folder in ('robofrontier','scripts') for p in (ROOT/folder).rglob('*.py')}
     sources.update({'inputs/harness.json':args.harness.read_bytes(),'inputs/catalog.json':args.catalog.read_bytes()})
+    if replay is not None:
+        sources.update({'private-reference/l2-actions.json':(args.equivalent_replay_source/'actions.json').read_bytes(),
+            'private-reference/l2-report.json':(args.equivalent_replay_source/'report.json').read_bytes()})
     trial=Trial(ROOT/case['directory'],args.output,seed=0,record_hz=60,
         controller_cfg=load_harness(args.harness),sources=sources)
     trial.live_preview=True;trial.abort_on_process_violation=True
@@ -82,6 +89,16 @@ def run(args):
                 from robofrontier.suite.mosaic_concurrency import execute_plan
             return execute_plan(world,concurrency)
         solve_kwargs['solver']=solve_concurrent
+    elif replay is not None:
+        write_json(trial.directory/'physical-equivalence.json',replay['equivalence'])
+        report['equivalent_replay']=dict(source=replay['source'],actions_sha256=replay['actions_sha256'],scope=replay['scope'])
+        def solve_replay(world,**kwargs):
+            if kwargs['resume']:
+                from robofrontier.suite.mosaic_oracle_v2 import solve
+                return solve(world,**kwargs)
+            from robofrontier.suite.mosaic_replay import execute
+            return execute(world,replay)
+        solve_kwargs['solver']=solve_replay
     try:
         trial.wait(.6);trial.snapshot('initial');review._status('running')
         result=run_reference(trial,review,max_goals=args.max_goals,motion_profile=report['motion_profile'],max_reviews=args.max_reviews,goal_ids=args.goal_id,**solve_kwargs)
@@ -128,6 +145,7 @@ def main():
     p.add_argument('--goal-id',action='append')
     p.add_argument('--concurrency-source',type=Path)
     p.add_argument('--concurrency-execution',choices=('barrier','async'),default='barrier')
+    p.add_argument('--equivalent-replay-source',type=Path)
     p.add_argument('--auto-resume-reviews',action='store_true');a=p.parse_args()
     if a.review_after and (a.max_goals is None or any(i<1 or i>=a.max_goals for i in a.review_after)):
         p.error('Injected reviews require --max-goals and boundaries below that limit')
@@ -137,6 +155,8 @@ def main():
         p.error('Explicit cells require a compatible --max-goals commissioning limit')
     if a.concurrency_source and (a.goal_id or a.max_goals or a.review_after):
         p.error('Full source-bound concurrency cannot be mixed with commissioning selectors')
+    if a.equivalent_replay_source and (a.concurrency_source or a.goal_id or a.max_goals or a.review_after):
+        p.error('Equivalent replay is a separate full canonical execution mode')
     if any(not math.isfinite(v) or v<=0 for v in (a.wall_s,a.sim_s,a.review_wall_s,a.action_batches,a.max_reviews,a.loaded_speed)):
         p.error('Positive finite budgets and speed required')
     a.output=a.output.resolve()
