@@ -52,6 +52,18 @@ class MosaicReferenceTests(unittest.TestCase):
              patch('robofrontier.suite.mosaic_oracle_v2.helpers.park'):
             deliver_cube(trial,'cube',['A'],np.array([0.,0.,.83]))
         normal.assert_not_called();self.assertTrue(angled.call_args.kwargs['required_tilt'])
+        self.assertTrue(angled.call_args.kwargs['check_release'])
+
+    def test_transfer_edge_checks_receiving_release_before_committing_the_grasp(self):
+        point=np.array([0.,0.,.83])
+        trial=SimpleNamespace(task={'cube_size_m':.06},env={'stations':[],'edges':[]},
+            data=SimpleNamespace(body=lambda _:SimpleNamespace(xpos=np.array([.5,0.,.83]))),
+            mosaic_edges={frozenset(('A','B')):point},mosaic_angled_edges={frozenset(('A','B')):{'tilt_deg_by_robot':{'A':15,'B':15}}})
+        with patch('robofrontier.suite.mosaic_oracle_v2.pick_transfer') as transfer, \
+             patch('robofrontier.suite.mosaic_oracle_v2.place_cube'), \
+             patch('robofrontier.suite.mosaic_oracle_v2.helpers.park'):
+            deliver_cube(trial,'cube',['A'],point)
+        self.assertTrue(transfer.call_args.kwargs['check_release'])
 
     def test_endpoint_map_keeps_a_supply_reachable_only_with_an_existing_transfer_tilt(self):
         body=SimpleNamespace(xpos=np.array([.5,0.,.83]),xmat=np.eye(3))

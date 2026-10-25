@@ -108,5 +108,13 @@ class MosaicRunTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'held'):
                 review.submit(self.request(review,'resume',1))
 
+    def test_missing_hold_bookkeeping_does_not_release_a_force_held_gripper_for_rematching(self):
+        from robofrontier.suite.mosaic_run import MosaicReview
+        with tempfile.TemporaryDirectory() as directory:
+            trial=self.trial(directory);trial.arms['A'].grasp_force=50.
+            review=MosaicReview(trial,publish=lambda:None);review.epoch=1
+            with self.assertRaisesRegex(ValueError,'force-held'):
+                review.submit(self.request(review,'resume',1))
+
 
 if __name__=='__main__':unittest.main()

@@ -555,7 +555,7 @@ def transfer_continuation_available(trial, robot, name, target):
     return False
 
 
-def pick_transfer(trial,robot,name,target,aperture=None,required_tilt=False):
+def pick_transfer(trial,robot,name,target,aperture=None,required_tilt=False,check_release=False):
     """Finite angled top-grasp candidates, then clear support and retract."""
     from .oracle import CUBE_ROTATIONS
     from ..robot_control import rotation_vector
@@ -585,7 +585,9 @@ def pick_transfer(trial,robot,name,target,aperture=None,required_tilt=False):
         for desired in sorted(CUBE_ROTATIONS,key=lambda rr:np.linalg.norm(rotation_vector(rr,rotation))):
             tool=desired@relative
             if tool[2,2]>-np.cos(np.deg2rad(30)):continue
-            if loaded_ik(trial,robot,np.asarray(target)+[0,0,.08]+desired@offset,tool) is not None:future=True;break
+            future_q=loaded_ik(trial,robot,np.asarray(target)+[0,0,.08]+desired@offset,tool)
+            if future_q is not None and (not check_release or screen_release(trial,robot,target,desired,offset,relative,future_q) is not None):
+                future=True;break
         if not future:continue
         for height in (.04,.08,.12):
             approach=transfer_approach_branch(trial,robot,name,point,r,seat,height)
@@ -607,7 +609,7 @@ def pick_transfer(trial,robot,name,target,aperture=None,required_tilt=False):
         if aperture==default_aperture and narrow<aperture and arm_idle and uncommitted:
             trial.event('transfer_narrow_admission_search',robot=robot,object=name,aperture_m=narrow,
                 scope='Empty-hand geometry search only; unchanged controller, full-arm checks and physical evaluation')
-            return pick_transfer(trial,robot,name,target,aperture=narrow,required_tilt=required_tilt)
+            return pick_transfer(trial,robot,name,target,aperture=narrow,required_tilt=required_tilt,check_release=check_release)
         raise RuntimeError('No transfer pickup with usable continuation '+robot+'/'+name)
     trial.move(robot,point,candidate,'transfer-pick-contact',precise=True)
     trial.execute('transfer-pick-grasp',{robot:('gripper',dict(mode='grasp',width_m=width,force_n=50.,speed_m_s=.04,epsilon_inner_m=.008,epsilon_outer_m=.008))})
@@ -843,7 +845,7 @@ def deliver_cube(trial, name, path, position):
         goal_id=(getattr(trial,'mosaic_current_job',None) or {}).get('goal_id')
         required_tilt=bool(index+1==len(path) and getattr(trial,'mosaic_goal_tilted_coverage',{}).get(goal_id,{}).get(robot))
         if needs_angle or required_tilt:
-            pick_transfer(trial,robot,name,target,**({'required_tilt':True} if required_tilt else {}))
+            pick_transfer(trial,robot,name,target,check_release=True,**({'required_tilt':True} if required_tilt else {}))
         else:
             first_action=len(getattr(trial,'actions',[]))
             try:pick_for_transport(trial,robot,name,target)

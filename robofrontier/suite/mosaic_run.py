@@ -110,7 +110,8 @@ class MosaicReview:
                     if operation not in ('move','gripper') or not isinstance(parameters,dict):
                         raise ValueError('Only ordinary move/gripper commands')
         if op=='resume':
-            if t.held:raise ValueError('Finish or reconcile the held payload before rematching')
+            if t.held or any(getattr(arm,'grasp_force',None) is not None for arm in t.arms.values()):
+                raise ValueError('Finish or reconcile held payloads and force-held grippers before rematching')
             reference.protected_remaining_inputs(t,getattr(t,'mosaic_protected_assignments',{}))
         if op in ('finish_held','adopt_hold','reconcile_released') and request.get('robot') not in t.arms:
             raise ValueError('Select an actual robot')
