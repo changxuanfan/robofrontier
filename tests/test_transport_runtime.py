@@ -71,11 +71,15 @@ class TransportRuntimeTests(unittest.TestCase):
 
     def test_nominal_conflict_delays_only_new_motion(self):
         t=trial()
-        runtime=TransportRuntime(t,admission=lambda req,rt: req['job']!='b' or not rt.running)
+        checks=[]
+        def admission(req,rt):
+            checks.append(req['job']);return req['job']!='b' or not rt.running
+        runtime=TransportRuntime(t,admission=admission)
         runtime.add('a',['A'],lambda:t.execute('a',{'A':command(.2)}))
         runtime.add('b',['B'],lambda:t.execute('b',{'B':command(.1)}));self.drain(runtime)
         self.assertEqual(t.arms['B'].starts[0][1],.2)
         self.assertEqual(t.time,.3)
+        self.assertEqual(checks.count('b'),2)
 
     def test_unknown_action_result_does_not_release_control_or_retry(self):
         t=trial();runtime=TransportRuntime(t)
@@ -88,6 +92,34 @@ class TransportRuntimeTests(unittest.TestCase):
         runtime.add('a',['A'],lambda:t.execute('a',{'A':command(.1)}));self.drain(runtime)
         self.assertEqual(runtime.jobs['a']['status'],'failed')
         self.assertEqual(runtime.leases,{'A':'a'});self.assertEqual(len(t.arms['A'].starts),1)
+
+    def test_live_repair_continues_while_independent_job_keeps_running(self):
+        t=trial();runtime=TransportRuntime(t)
+        def first():
+            t.execute('a-first',{'A':command(.1)})
+            t.arms['A'].grasp_force=70.;t.held['A']='part'
+            raise RuntimeError('Needs a different placement plan')
+        runtime.add('a',['A'],first);runtime.add('b',['B'],lambda:t.execute('b',{'B':command(.5)}))
+        while runtime.jobs['a']['status']!='failed':runtime.cycle()
+        self.assertEqual(runtime.jobs['b']['status'],'executing')
+        def repair():
+            t.execute('a-repair',{'A':command(.1)})
+            t.arms['A'].grasp_force=None;t.held.pop('A')
+        self.assertTrue(runtime.recover('a','a-repair',['A'],repair));self.drain(runtime)
+        self.assertEqual(runtime.jobs['a']['status'],'failed')
+        self.assertEqual(runtime.jobs['a-repair']['status'],'done')
+        self.assertEqual(runtime.jobs['a']['recovered_by'],'a-repair')
+        self.assertEqual(len(t.arms['B'].starts),1);self.assertEqual(t.time,.5)
+        self.assertFalse(runtime.leases)
+
+    def test_rejected_command_fails_only_its_own_job(self):
+        t=trial();runtime=TransportRuntime(t)
+        t.arms['A'].validate=Mock(side_effect=ValueError('Invalid target'))
+        runtime.add('a',['A'],lambda:t.execute('bad',{'A':command(.1)}))
+        runtime.add('b',['B'],lambda:t.execute('good',{'B':command(.2)}));self.drain(runtime)
+        self.assertEqual(runtime.jobs['a']['status'],'failed')
+        self.assertEqual(runtime.jobs['b']['status'],'done');self.assertEqual(t.time,.2)
+        self.assertFalse(t.arms['A'].starts)
 
 
 if __name__=='__main__':unittest.main()

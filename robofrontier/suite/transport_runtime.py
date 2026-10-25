@@ -33,6 +33,22 @@ class TransportRuntime:
         for r in robots:self.leases[r]=ident
         job['robots'].update(robots);return True
 
+    def recover(self,ident,new_ident,robots,callback):
+        """Transfer a failed, known-idle frontier without clearing its history."""
+        old=self.jobs[ident];robots=set(robots)
+        if old['status']!='failed':raise ValueError('Recovery requires a failed job boundary')
+        retained={r for r,owner in self.leases.items() if owner==ident}
+        if retained-robots:raise ValueError('Recovery must account for every retained robot')
+        if any(r in self.leases and self.leases[r]!=ident for r in robots):return False
+        if any(self.t.arms[r].job is not None or getattr(self.t.arms[r],'uncertainty_reported',False) for r in robots):
+            raise ValueError('Unknown or active actions cannot be adopted or replayed')
+        for r in retained:self.leases.pop(r)
+        if not self.add(new_ident,robots,callback):raise RuntimeError('Recovery admission unexpectedly changed')
+        self.jobs[new_ident].update(object=old.get('object'),goal=old.get('goal'),recovery_of=ident)
+        old['recovered_by']=new_ident
+        self.t.event('transport_recovery_admitted',previous_job=ident,job=new_ident,robots=sorted(robots))
+        return True
+
     def step(self):
         if getcurrent() is not self.owner or threading.get_ident()!=self.thread:
             raise RuntimeError('Only the Oracle runtime owner may step physics')
@@ -79,7 +95,10 @@ class TransportRuntime:
         self.t.event('transport_resources_released',job=ident,robots=sorted(robots))
 
     def _resume(self,ident,value=None):
-        job=self.jobs[ident];message=job['fiber'].switch(value)
+        self._handle(ident,self.jobs[ident]['fiber'].switch(value))
+
+    def _handle(self,ident,message):
+        job=self.jobs[ident]
         kind=message['kind']
         if kind in ('done','failed'):
             job.update(status=kind,result=message.get('result'),error=message.get('error'))
@@ -108,21 +127,25 @@ class TransportRuntime:
                     self.requests.pop(ident);self._resume(ident);changed=True;continue
                 commands=request['commands']
                 if any(r in self.running for r in commands):continue
+                # A denied nominal sweep waits for a running action boundary.
+                # Retesting the identical request every 2 ms wastes wall time
+                # without admitting it any earlier under this policy.
+                running_revision=tuple(sorted((r,id(rec)) for r,rec in self.running.items()))
+                if request.get('blocked_on')==running_revision:continue
                 if self.admission is not None and not self.admission(request,self):
-                    if self.running:continue
-                    job=self.jobs[ident];self.requests.pop(ident)
+                    if self.running:
+                        request['blocked_on']=running_revision;continue
+                    self.requests.pop(ident)
                     error=RuntimeError('No collision-free sampled free-arm route '+request['label']+' [runtime admission]')
                     # Throw at execute(), preserving the planner's ordinary
                     # bounded alternative-route handling.
-                    message=job['fiber'].throw(error)
-                    if message['kind'] in ('done','failed'):
-                        job.update(status=message['kind'],error=message.get('error'))
-                        for r in job['robots']:
-                            if self.settled(r):self.leases.pop(r,None)
-                    else:self.requests[ident]=message
+                    self._handle(ident,self.jobs[ident]['fiber'].throw(error))
                     changed=True;continue
-                prepared={r:t.arms[r].validate(op,p,t.cfg,t.task['workspace_world_m']['lower'],
-                    t.task['workspace_world_m']['upper']) for r,(op,p) in commands.items()}
+                try:
+                    prepared={r:t.arms[r].validate(op,p,t.cfg,t.task['workspace_world_m']['lower'],
+                        t.task['workspace_world_m']['upper']) for r,(op,p) in commands.items()}
+                except (ValueError,TypeError,KeyError) as error:
+                    self.requests.pop(ident);self._handle(ident,self.jobs[ident]['fiber'].throw(error));changed=True;continue
                 self.requests.pop(ident);self.sequence+=1;call=f'transport-{self.sequence}'
                 record=dict(label=request['label'],commands=commands,start_sim_s=t.time,
                     pending=set(commands),results={},allow_failure=request['allow_failure'],job=ident)
@@ -144,12 +167,7 @@ class TransportRuntime:
             rec={k:record[k] for k in ('label','commands','results','start_sim_s')};rec['end_sim_s']=t.time
             t.actions.append(rec);t.event('action_end',label=rec['label'],results=rec['results'],oracle_job=record['job'])
             if not record['allow_failure'] and any(r['status']!='completed' for r in rec['results'].values()):
-                message=self.jobs[record['job']]['fiber'].throw(RuntimeError(rec['label']+': '+str(rec['results'])))
-                if message['kind'] in ('done','failed'):
-                    self.jobs[record['job']].update(status=message['kind'],error=message.get('error'))
-                    for r in self.jobs[record['job']]['robots']:
-                        if self.settled(r):self.leases.pop(r,None)
-                else:self.requests[record['job']]=message
+                self._handle(record['job'],self.jobs[record['job']]['fiber'].throw(RuntimeError(rec['label']+': '+str(rec['results']))))
             else:self._resume(record['job'],rec['results'])
 
     @property

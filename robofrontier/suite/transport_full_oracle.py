@@ -112,13 +112,49 @@ def air_transfer(t,robot,name,receivers,goal):
     raise last
 
 
-def execute_job(t,runtime,job):
+def execute_job(t,runtime,job,resume=False):
     name=job['object'];goal=job['goal'];path=job['path'];robot=path[0]
     obj=next(o for o in t.env['objects'] if o['id']==name)
     def pose():return goal_pose(t,goal)
+    accepted=t.monitor.result().get('assignments',{})
+    if goal['goal_id'] in accepted:
+        if t.monitor.released(t.monitor.geoms[name]):
+            for owner in list(runtime._current()[1]['robots']):
+                if t.held.get(owner)==name or t.arms[owner].grasp_force is not None:
+                    result=t.execute('settle-completed-gripper',{owner:('gripper',dict(mode='move',width_m=min(t.arms[owner].grip_max,float(t.task['cube_size_m'])+.012),speed_m_s=.05))},allow_failure=True)[owner]
+                    if result['status']=='uncertain':raise RuntimeError('Completed goal has unresolved gripper stop')
+                    t.held.pop(owner,None);park(t,owner)
+        return dict(goal=goal['goal_id'],object=accepted[goal['goal_id']],already_accepted=True)
+    if resume:
+        allowed=runtime._current()[1]['robots']
+        holders=[r for r in allowed if t.arms[r].grasp_force is not None and t.finger_contacts(r,name)]
+        if len(holders)>1:raise RuntimeError('Dual grasp frontier needs an explicit release/withdraw repair')
+        if holders:
+            robot=holders[0];t.held[robot]=name
+            paths=[p for dest in goal_coverage(t,goal) if (p:=path_between({r:[s for s in ns if s in allowed] for r,ns in candidate_graph(t).items() if r in allowed},robot,dest))]
+            if not paths:raise RuntimeError('Retained carrier has no finite remaining route')
+            path=min(paths,key=len)
+        else:
+            if name in accepted.values():
+                candidates=[o for o in t.env['objects'] if o['identity']==obj['identity'] and o['id'] not in accepted.values()]
+                if not candidates:raise RuntimeError('No remaining free matching object')
+                obj=candidates[0];name=obj['id'];job=dict(job,object=name)
+            for owner,held in list(t.held.items()):
+                if held==name and t.arms[owner].grasp_force is None and not ref._robot_payload_contacts(t,owner,name):t.held.pop(owner)
+            options=[];starts=ref._pickup_coverage(t,[obj])[name]
+            for source in starts:
+                if source not in allowed:continue
+                for dest in goal_coverage(t,goal):
+                    route=path_between({r:[s for s in ns if s in allowed] for r,ns in candidate_graph(t).items() if r in allowed},source,dest)
+                    if route:options.append(route)
+            if not options:raise RuntimeError('No current-state pickup and delivery route')
+            path=min(options,key=len);robot=path[0]
+        runtime._current()[1]['object']=name
     p,r=pose();rotation=t.data.body(name).xmat.reshape(3,3).copy()
     height=ref._pickup_height(t.task,rotation,.006,obj['shape'])
-    if t.task['level']>1 and len(path)==1:
+    if resume and t.held.get(robot)==name and t.finger_contacts(robot,name):
+        t.event('transport_resume_retained_load',robot=robot,object=name,goal=goal['goal_id'])
+    elif t.task['level']>1 and len(path)==1:
         from .transport_unit_motion import direct_pick,DirectGraspPlanningError
         try:direct_pick(t,robot,name,(p,r),goal['board'],budget_s=12.,check_seating=True)
         except DirectGraspPlanningError:
@@ -141,7 +177,8 @@ def execute_job(t,runtime,job):
             if attempt or not allowed or not t.finger_contacts(robot,name) or not payload_clear_of_board(t,name,goal['board']):raise
             # Choose a free nearby receiver rather than waiting on an unrelated
             # job or treating a sent plan as an accepted shared commitment.
-            candidates=sorted((s for s in t.arms if s!=robot and s not in runtime.leases),
+            ident=runtime._current()[0]
+            candidates=sorted((s for s in t.arms if s!=robot and (s not in runtime.leases or runtime.leases[s]==ident)),
                 key=lambda s:np.linalg.norm(np.asarray(t.stations[s]['base_position_m'])[:2]-p[:2]))
             candidates=[s for s in candidates if np.linalg.norm(np.asarray(t.stations[s]['base_position_m'])[:2]-p[:2])<1.0][:2]
             if not candidates or not runtime.acquire(candidates):raise
@@ -149,17 +186,17 @@ def execute_job(t,runtime,job):
             runtime.release([donor])
     park(t,robot);t.wait(1.2)
     accepted=t.monitor.result().get('assignments',{})
-    if accepted.get(goal['goal_id'])!=name and t.task['level']==1:
+    if goal['goal_id'] not in accepted and t.task['level']==1:
         ref._repair_small_l1_placement(t,dict(goal,robot=robot),name)
         accepted=t.monitor.result().get('assignments',{})
-    if accepted.get(goal['goal_id'])!=name:
+    if goal['goal_id'] not in accepted:
         raise RuntimeError('Original goal not accepted after delivery '+goal['goal_id'])
     t.event('transport_goal_completed',goal=goal['goal_id'],object=name,operator=robot,
         progress=t.monitor.result().get('matched_goals',0))
     return dict(goal=goal['goal_id'],object=name,operator=robot)
 
 
-def solve(t):
+def solve(t,on_blocked=None):
     if t.task['family']!='transport':raise ValueError('Transport-only reference')
     clear_idle_arms(t);jobs=plan_jobs(t)
     runtime=TransportRuntime(t,admission=sampled_motion_admission)
@@ -180,17 +217,23 @@ def solve(t):
         guard_contact_moves(t,lambda _robot:runtime._current()[1]['goal']['board'])
     pending=list(jobs)
     try:
-        while pending or runtime.active:
+        while True:
             t.check_stop()
+            if on_blocked is not None and hasattr(on_blocked,'poll'):on_blocked.poll(t,runtime,jobs,pending)
             for job in list(pending):
                 if set(job['path']) & set(runtime.leases):continue
                 if runtime.add(job['id'],job['path'],lambda job=job:execute_job(t,runtime,job)):
                     runtime.jobs[job['id']].update(object=job['object'],goal=job['goal'])
                     pending.remove(job)
-            if not runtime.active:break
+            if not runtime.active:
+                unfinished=[g for g in t.task['goals'] if g['goal_id'] not in t.monitor.result().get('assignments',{})]
+                if (unfinished or runtime.leases) and on_blocked is not None and on_blocked(t,runtime,jobs,pending):continue
+                break
             runtime.cycle()
-        result=dict(completed=[i for i,j in runtime.jobs.items() if j['status']=='done'],
-            failed=[dict(job=i,error=str(j.get('error'))) for i,j in runtime.jobs.items() if j['status']=='failed'],
+        accepted=t.monitor.result().get('assignments',{})
+        history=[dict(job=i,goal=j.get('goal',{}).get('goal_id'),error=str(j.get('error'))) for i,j in runtime.jobs.items() if j['status']=='failed']
+        result=dict(completed=list(accepted),
+            failed=[row for row in history if row['goal'] not in accepted],failures_history=history,
             pending=[j['id'] for j in pending],retained_resources=dict(runtime.leases),
             scope='One real world; no score stitching, state rewind or forced staging regions')
         t.event('transport_full_frontier',**result)

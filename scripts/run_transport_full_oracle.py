@@ -38,6 +38,7 @@ def main():
         os.execve(sys.executable,args,env)
     from robofrontier.suite.oracle import Trial,ReferenceStopped
     from robofrontier.suite.transport_full_oracle import solve
+    from robofrontier.suite.transport_recovery import EngineeringRecovery
     from robofrontier.run_setup import load_harness,write_json
     cases=json.loads(a.catalog.read_text())['cases'];case=next(c for c in cases if c['id']==a.case)
     if case['family']!='transport':raise ValueError('Transport-only runner')
@@ -45,6 +46,7 @@ def main():
     sources={str(f.relative_to(frozen)):f.read_bytes() for f in files}
     t=Trial(frozen/case['directory'],out,controller_cfg=load_harness(a.harness),sources=sources)
     t.live_preview=True;t.abort_on_process_violation=True;stopped={'requested':False}
+    recovery=EngineeringRecovery(out)
     signal.signal(signal.SIGTERM,lambda *_:stopped.update(requested=True))
     t.stop_requested=lambda:stopped['requested'] or time.monotonic()-t.started>a.wall_s or t.time>a.sim_s or len(t.actions)>10000 or (out.parent.parent/'STOP').exists()
     dependency_files={str(f.relative_to(DEPS)):hashlib.sha256(f.read_bytes()).hexdigest() for f in DEPS.rglob('*.so')}
@@ -54,11 +56,11 @@ def main():
         scope='Privileged geometry engineering Oracle; one real world, original full-order acceptance',
         budgets=dict(wall_s=a.wall_s,simulation_s=a.sim_s,action_batches=10000))
     try:
-        t.wait(.6);t.snapshot('initial');report['frontier']=solve(t)
+        t.wait(.6);t.snapshot('initial');report['frontier']=solve(t,on_blocked=recovery)
         t.wait(2.);result=t.monitor.result()
         unresolved=[r for r,arm in t.arms.items() if arm.job is not None or arm.uncertainty_reported]
         report.update(evaluation=result,unresolved_robot_actions=unresolved)
-        report['passed']=bool(result.get('task_success') and not result['violations'] and not unresolved and not report['frontier']['pending'] and not report['frontier']['failed'])
+        report['passed']=bool(result.get('task_success') and not result['violations'] and not unresolved and not report['frontier']['pending'] and not report['frontier']['failed'] and not report['frontier']['retained_resources'])
         if not report['passed']:report['error']='Full original order not completed; inspect preserved frontier'
     except (Exception,KeyboardInterrupt) as error:
         report['error']=type(error).__name__+': '+str(error)
@@ -66,9 +68,17 @@ def main():
     finally:
         report['evaluation']=t.monitor.result()
         report['unresolved_robot_actions']=[r for r,arm in t.arms.items() if arm.job is not None or arm.uncertainty_reported]
+        report['final_robot_states']={r:arm.observe() for r,arm in t.arms.items()}
         try:t.snapshot('final')
         except Exception as error:report['snapshot_error']=str(error)
+        if recovery.external_inputs:
+            report.update(llm_used=True,engineering_assisted=True,engineering_inputs=recovery.external_inputs)
         t.close(report)
+        if recovery.external_inputs:
+            # Trial.close describes the frozen executor by default. Explicit
+            # owner-authored live repairs must not be mislabeled as pure code.
+            report.update(llm_used=True,engineering_assisted=True,engineering_inputs=recovery.external_inputs)
+            write_json(out/'report.json',report)
         write_json(out/'status.json',dict(phase='passed' if report['passed'] else 'failed',report=str(out/'report.json'),updated_at_unix_s=time.time()))
     print(json.dumps(dict(case_id=case['id'],passed=report['passed'],matched_goals=report['evaluation'].get('matched_goals'),
         error=report.get('error'),report=str(out/'report.json'))),flush=True)
