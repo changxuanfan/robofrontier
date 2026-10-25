@@ -52,6 +52,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--case',required=True);p.add_argument('--output',required=True,type=Path)
     p.add_argument('--dial',action='append');p.add_argument('--marks',default='1,2,3,4,5,1');p.add_argument('--wall-s',type=float,default=240)
     p.add_argument('--harness',type=Path);p.add_argument('--release',action='store_true');p.add_argument('--grasp-force',type=float,default=30.)
+    p.add_argument('--blue-capture',choices=('stem','shoulder'),default='stem')
     args=p.parse_args();root=Path(__file__).resolve().parents[1]
     harness=args.harness or root/'runs/oracle/suite-v2-r10-closure-20261025/inputs/harness.json'
     catalog=root/'configs/suites/dial-best5-r11.json'
@@ -74,10 +75,10 @@ def main():
         mechanical_geometry_privileged=True,grasp_force_n=args.grasp_force)
     try:
         if not cfg['allowed_grasp_force_n'][0]<=args.grasp_force<=cfg['allowed_grasp_force_n'][1]:raise ValueError('Force outside existing robot limits')
-        m=BestManipulator(t);m.red_grasp_force_n=args.grasp_force
+        m=BestManipulator(t);m.red_grasp_force_n=args.grasp_force;m.blue_capture_mode=args.blue_capture
         entries=[a for a in m.dials if not args.dial or a['id'] in args.dial]
         if not entries or (args.dial and len(entries)!=len(set(args.dial))):raise ValueError('Unknown commissioning dial')
-        report['devices']=[a['id'] for a in entries];m.lift();t.snapshot('supported')
+        report['devices']=[a['id'] for a in entries];m.lift(entries);t.snapshot('supported')
         for mark in map(int,args.marks.split(',')):
             if not 1<=mark<=5:raise ValueError('Invalid mark')
             symbols=[mark]*len(m.dials);turn(m,entries,symbols)

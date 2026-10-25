@@ -71,6 +71,7 @@ class BestManipulator(HoldingManipulator):
     # Release requires measured separation and a clear spring sweep, not an
     # expensive return to an unrelated historical arm posture.
     home_after_release=False
+    blue_capture_mode='stem'
     def __init__(self,trial,decoder=None):
         if trial.task['mechanism']['feedback']['symbol_count']!=5:raise ValueError('BEST5 reference requires five symbols')
         super().__init__(trial,decoder=decoder if decoder is not None else MechanicalDecoder())
@@ -79,9 +80,40 @@ class BestManipulator(HoldingManipulator):
         self.red_capture_offset_m=0.;self.red_grasp_force_n=30.
         self.robot_geometry=None
         self.hold_recoveries={}
+    def blue_capture_options(self,a,mr,point):
+        if self.t.task['level']!=3 or self.blue_capture_mode!='shoulder':return super().blue_capture_options(a,mr,point)
+        t=self.t;geoms=[t.model.geom(a['id']+'_handle_shoulder'+str(i)) for i in (0,1)]
+        centers=[t.data.geom(g.id).xpos.copy() for g in geoms];center=sum(centers)/2
+        width=float(np.linalg.norm(centers[1]-centers[0])+sum(g.size[2] for g in geoms))
+        if not .005<width<t.arms[a['nominal_robots'][1]].grip_max-.005:raise RuntimeError('Blue shoulder span outside gripper range')
+        t.event('reference_blue_shoulder_capture',dial=a['id'],width_m=width,scope='Pinch existing blue stop faces using normal gripper commands; geometry and force limits unchanged')
+        return [(np.column_stack((sign*mr[:,1],mr[:,2],sign*mr[:,0])),center,width) for sign in (1,-1)]
+    def blue_approach_aperture(self,width):
+        return min(.08,width+.012) if self.t.task['level']==3 else None
     def set_symbols(self,symbols,finish_when_solved=False):
         self.hold_recoveries={}
         return super().set_symbols(symbols,finish_when_solved)
+    def release(self,entries):
+        for attempt in range(3):
+            try:return super().release(entries)
+            except RuntimeError as error:
+                message=str(error);t=self.t
+                if attempt==2 or not message.startswith(('No reachable small open-crank exit','No reachable clear released-crank exit')):raise
+                robot=message.rsplit(' ',1)[-1]
+                dial=next((a for a in entries if self.grips.get(a['id'],{}).get('robot')==robot),None)
+                if dial is None or t.arms[robot].grasp_force is not None or any(a.job is not None for a in t.arms.values()):raise
+                if not t.monitor.dial_ready[dial['index']]:raise
+                blue=dial['nominal_robots'][1];arm=t.arms[blue]
+                # Relative withdrawal can be made by the supported apparatus,
+                # rather than extending an already stretched open red arm.
+                delta=t.data.site_xmat[t.arms[robot].site].reshape(3,3)[:,2]*.012
+                point=t.data.site_xpos[arm.site]+delta;rotation=t.data.site_xmat[arm.site].reshape(3,3).copy()
+                q=t.screen_ik(blue,point,rotation)
+                if q is None or not self.arc_joint_clear(blue,t.data.qpos[arm.qids],q):raise
+                t.event('reference_cooperative_release',dial=dial['id'],red_robot=robot,blue_robot=blue,delta_m=delta.tolist(),
+                        scope='Real supported module translation against an open, force-off red gripper; no pose assignments')
+                t.execute('blue-free-open-crank',{blue:t.pose_command(blue,point,rotation,.015,.2)})
+                t.wait(.1)
     def maintain_holds(self,symbols):
         # An unchanged angle is not proof that its gripper is still holding.
         t=self.t;lost=[]
@@ -155,14 +187,25 @@ def solve(trial,max_guesses=48):
     decoder=BestDecoder(len(trial.task['dials']),trial.directory)
     trial.monitor.game.observer=decoder.observe
     m=BestManipulator(trial,decoder)
+    from .dial_live_repair import LiveRepair
+    from .oracle import ReferenceStopped
+    repair=LiveRepair(trial,m)
     try:
-        m.lift()
+        try:m.lift()
+        except ReferenceStopped:raise
+        except (RuntimeError,ValueError) as error:
+            repair.recover(error,None)
+            while trial.task['level']>1 and not all(trial.monitor.dial_ready):
+                repair.recover(RuntimeError('Initial supports still need repair; partial lift is not replayed'),None)
         for index in range(max_guesses):
             if trial.monitor.game.won:break
             current=[round(math.degrees(float(trial.data.joint(a['id']+'_hinge').qpos[0]))/60)%6 for a in m.dials]
             guess=decoder.choose(current)
             trial.event('blind_best_guess',attempt=index+1,requested=guess,candidates=len(decoder.candidates))
-            m.set_symbols(guess,finish_when_solved=True)
+            while True:
+                try:m.set_symbols(guess,finish_when_solved=True);break
+                except ReferenceStopped:raise
+                except (RuntimeError,ValueError) as error:repair.recover(error,guess)
         if not trial.monitor.game.won:raise RuntimeError('BEST-only guess budget exhausted')
         trial.wait(.3)
         trial.event('blind_best_solved',trials=trial.monitor.game.queries)

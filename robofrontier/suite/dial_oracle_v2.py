@@ -120,7 +120,7 @@ class Manipulator(BaselineManipulator):
                         v['status']=='completed' or (v['status']=='failed' and
                         v.get('reason')=='Action timeout; stopped at current reference')
                         for v in last['results'].values())
-                if (retry==2 or not known or not active or t.monitor.violations or
+                if (retry==2 or not known or not active or self.rule_failure() or
                     any(arm.job is not None for arm in t.arms.values()) or
                     not all(t.monitor.dial_ready[a['index']] for a in active)):
                     raise
@@ -247,7 +247,7 @@ class Manipulator(BaselineManipulator):
             if not commands:break
             t.execute('red-contact-'+str(refinement),commands);t.wait(.10)
         closed=t.execute('red-grasp',{p['robot']:('gripper',dict(mode='grasp',width_m=grip_width(t, next(a for a in entries if a['id']==name)),force_n=self.red_grasp_force_n if t.task['level']==3 else 30.,speed_m_s=.08,epsilon_inner_m=.004 if t.task['level']==3 else .008,epsilon_outer_m=.004 if t.task['level']==3 else .008)) for name,p in plans.items()},allow_failure=True);t.wait(.25)
-        if t.monitor.violations:raise RuntimeError('Process violation during red capture '+str(t.monitor.violations))
+        if self.rule_failure():raise RuntimeError('Process violation during red capture '+str(t.monitor.violations))
         bad=[]
         for a in entries:
             robot=plans[a['id']]['robot'];value=closed[robot]

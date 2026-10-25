@@ -37,6 +37,21 @@ class OracleRecoveryTests(unittest.TestCase):
         return dict(owner='owner', world_id='world-1', id=ident, robot=robot,
                     sequence=sequence, review='Independent empty-hand gripper test', **extra)
 
+    def test_repeated_known_idle_handover_reuses_one_execution_owner(self):
+        rec=self.adapter.recover(RecoverablePlanError('Review A'),['A'])
+        self.adapter.acknowledge('owner',rec['id'],'No action needed after review')
+        self.adapter.handoff('owner')
+        with self.assertRaises(ValueError):self.adapter.reattach('other')
+        self.adapter.reattach('owner')
+        rec=self.adapter.recover(RecoverablePlanError('Review B'),['B'])
+        self.adapter.submit(self.request('cycle-2','B',[
+            {'op':'gripper','parameters':{'width_m':.06,'speed_m_s':.05}},
+        ],recovery_id=rec['id']))
+        self.adapter.advance(1.5)
+        self.assertEqual(self.adapter.status('cycle-2')['status'],'completed')
+        self.adapter.handoff('owner');self.adapter.reattach('owner')
+        self.assertEqual(len(self.adapter.recoveries),2)
+
     def test_other_admitted_sequence_advances_during_scoped_plan_recovery(self):
         self.adapter.submit(self.request('b-sequence', 'B', [
             {'op':'gripper','parameters':{'width_m':.02,'speed_m_s':.01}},

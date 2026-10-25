@@ -17,6 +17,44 @@ def final_success(report):
                 and not report.get('unresolved_robot_actions'))
 
 
+def close_trial(trial,report):
+    """Only the current execution owner may drain its submitted actions."""
+    adapter=getattr(trial,'_oracle_recovery_attachment',None)
+    cleanup=[]
+    trial.stop_requested=None;trial.abort_on_process_violation=False
+    try:
+        if adapter is not None and adapter.attached:
+            adapter.pause(adapter.owner)
+            for _ in range(800):
+                if not adapter.running:break
+                adapter.advance(.02)
+            cleanup=[feedback for request in adapter.requests.values() for feedback in request['feedback']]
+        else:
+            for arm in trial.arms.values():
+                if arm.job is not None:arm.request_stop(trial.time,reason='oracle_episode_closing')
+            for _ in range(round(16./trial.model.opt.timestep)):
+                busy=[arm for arm in trial.arms.values() if arm.job is not None]
+                if not busy:break
+                trial.step()
+                for arm in busy:
+                    feedback=arm.poll(trial.time,15.)
+                    if feedback:cleanup.append(feedback)
+    except Exception as error:
+        report['cleanup_error']=type(error).__name__+': '+str(error)
+        report['passed']=False
+    report['terminal_cleanup_feedback']=cleanup
+    report['unresolved_robot_actions']=sorted(
+        {r for r,arm in trial.arms.items() if arm.job is not None} |
+        (set(adapter.unknown) if adapter is not None else set()))
+    report['evaluation']=trial.monitor.result()
+    report['goal_reached']=bool(report['evaluation'].get('solved'))
+    report['online_repair_interventions']=getattr(trial,'oracle_repair_interventions',0)
+    report['continued_after_violation']=getattr(trial,'continued_after_violation',False)
+    report['passed']=final_success(report)
+    if adapter is not None:adapter.close(report)
+    else:trial.close(report)
+
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--case',required=True);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--codebook',type=Path,required=True);p.add_argument('--wall-s',type=float,default=1800)
@@ -45,10 +83,11 @@ def main():
     if not a.best5:
         trial.monitor.close();trial.monitor=HoldMonitor(trial,a.codebook.resolve())
         (trial.directory/'private-code.json').rename(trial.directory/'unused-r10-initializer-code.json')
-    protocol=dict(version='dial-best5-continuous-grasp-v1' if a.best5 else 'dial-continuous-grasp-v1',geometry_revision='R11' if a.best5 else 'R10',
+    protocol=dict(version='dial-best5-continuous-grasp-repair-v2' if a.best5 else 'dial-continuous-grasp-v1',geometry_revision='R11' if a.best5 else 'R10',
         feedback='All nonzero detents within4deg for250ms, real red bilateral force-held contact and separate airborne blue support forL2/L3',
         solver=('Separate -I -S process; N,K,current inputs and timestamped observed inputs/BEST only; no current score or private evaluator history' if a.best5 else 'Separate -I -S process; N and current/guess/visible-count only; private code loaded in different evaluator process'),
         mechanical_warmup_in_episode=False,physics_timestep_s=float(trial.model.opt.timestep))
+    if a.best5:protocol['failure_handling']='Retain world/solver for forward actuator repair; keep all failures and violations; no checkpoint splicing'
     write_json(trial.directory/'protocol.json',protocol)
     trial.task['rules'].append('Feedback also requires sustained real red-handle grasp on every device; release invalidates the current combination until re-established. No mandatory release between attempts.')
     write_json(trial.directory/'task.json',trial.task)
@@ -62,27 +101,11 @@ def main():
     try:
         trial.event('blind_protocol_start',protocol=protocol['version']);solve(trial)
         report['evaluation']=trial.monitor.result();report['passed']=bool(report['evaluation']['task_success'])
+        report['goal_reached']=bool(report['evaluation'].get('solved'))
     except Exception as error:
         report['error']=type(error).__name__+': '+str(error);report['evaluation']=trial.monitor.result()
     finally:
-        # Settle original known actions; unresolved outcomes stay explicit.
-        stopping={r:arm.job for r,arm in trial.arms.items() if arm.job is not None}
-        cleanup=[]
-        for r in stopping:trial.arms[r].request_stop(trial.time,reason='oracle_episode_closing')
-        for _ in range(round(16./trial.model.opt.timestep)):
-            busy=[arm for arm in trial.arms.values() if arm.job is not None]
-            if not busy:break
-            try:
-                trial.stop_requested=None;trial.abort_on_process_violation=False;trial.step()
-                for arm in busy:
-                    feedback=arm.poll(trial.time,15.)
-                    if feedback:cleanup.append(feedback)
-            except Exception:break
-        report['terminal_cleanup_feedback']=cleanup
-        report['unresolved_robot_actions']=[r for r,arm in trial.arms.items() if arm.job is not None]
-        report['evaluation']=trial.monitor.result()
-        report['passed']=final_success(report)
-        try:trial.close(report)
+        try:close_trial(trial,report)
         finally:trial.monitor.game.close()
     print(json.dumps(dict(case_id=a.case,passed=report['passed'],error=report.get('error'),report=str(trial.directory/'report.json'))),flush=True)
     return 0 if report['passed'] else 1
