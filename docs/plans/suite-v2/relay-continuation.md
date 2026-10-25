@@ -28,8 +28,21 @@ Flexible planning may retain one actual holder and only open/approach the new
 receiver. Only outgoing holders withdraw. On unequal rings, inner retention is
 a search preference, not a prescribed team. Intermediate reference anchors
 allow a useful shorter prefix rather than demanding an inaccessible full leg.
-Whole-pair transfer remains a bounded fallback. Real single-side commissioning
-is required before claiming this capability.
+Whole-pair transfer remains a bounded fallback. Real12-arm L1 commissioning
+from cf7ed45 passed H/A -> H/B with H retained, donor exit and further carry,
+then H/B -> I/C with subsequent carry. This is a two-transfer unit, not a full
+case. Evidence: `runs/oracle/relay-flexible-cf7ed45-20261026-010335/relay-a12-d1/attempt-001/report.json`.
+
+The rolling frontier keeps separate pickup/carry/receive/terminal milestones
+per payload, excludes hands holding other loads, and selects compatible finite
+carry chunks with simultaneous whole-arm/whole-payload sweeps. Failed planning
+defers the affected scope until another milestone changes; any error after
+physical work or unknown execution returns to the existing live recovery
+boundary. Static sampled sweeps are advisory; physical process scoring remains
+authoritative. New20ms motion metrics count distinct supported moving payloads,
+separately from multiple arms carrying one rod. Physics advances in explicit
+execution/waits, as with the serial Oracle; wall-clock planning is timed but
+does not itself advance physics. Both comparison modes use that clock contract.
 
 Next gates: automatic full8-arm L1; real12-arm retained-holder exchange and
 successor; multi-payload pipelining and serial comparison; full nine-case Oracle;

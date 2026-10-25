@@ -320,7 +320,7 @@ def _choose_team(t,ident,center,rotation,offset,exclude=(),future_region=None,fu
  retained={} if retained is None else dict(retained)
  if len(retained)>1 or any(side not in (0,1) or robot not in exclude for side,robot in retained.items()):raise ValueError('Retain at most one existing side holder')
  departing=set(exclude)-set(retained.values())
- robots=[a for a in t.arms if a not in exclude];options=[]
+ robots=[a for a in t.arms if a not in exclude and getattr(t,'held',{}).get(a,ident)==ident];options=[]
  for side,(point,base_r) in enumerate(points):
   if side in retained:
    robot=retained[side];arm=t.arms[robot];q=t.data.qpos[arm.qids].copy()
