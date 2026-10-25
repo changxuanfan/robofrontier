@@ -3,6 +3,23 @@ from scripts.execute_mosaic_repair_route import choose
 
 
 class RepairRouteTests(unittest.TestCase):
+    def test_known_route_supervisor_requires_actual_custody_and_completed_feedback(self):
+        from scripts.supervise_mosaic_normal_routes import select
+        s=dict(phase='review',world_id='w',review_id=1,review_history=[dict(error='RuntimeError: No reachable loaded mosaic hover C/C_stock27')])
+        o=dict(world_id='w',review_id=1,evaluation=dict(violations=[]),job=dict(goal_id='g',object='C_stock27'),
+            held={'C':'C_stock27'},last_actions=[dict(results={'C':dict(status='completed')})])
+        self.assertEqual(select(s,o),('g','C_stock27'))
+        o['held']={}
+        with self.assertRaisesRegex(ValueError,'custody'):select(s,o)
+        o['held']={'C':'C_stock27'};o['last_actions'][0]['results']['C']['status']='uncertain'
+        with self.assertRaisesRegex(ValueError,'feedback'):select(s,o)
+
+    def test_supervisor_does_not_generalize_to_a_new_failure_class(self):
+        from scripts.supervise_mosaic_normal_routes import select
+        s=dict(phase='review',world_id='w',review_id=1,review_history=[dict(error='RuntimeError: Payload not retained')])
+        o=dict(world_id='w',review_id=1,evaluation=dict(violations=[]))
+        with self.assertRaisesRegex(ValueError,'New error class'):select(s,o)
+
     def rows(self):
         return [dict(robots=['C','A'],position_m=[0,0,0],angled_grasp={'C':15}),
             dict(robots=['C','B'],position_m=[1,0,0],angled_grasp=None),
