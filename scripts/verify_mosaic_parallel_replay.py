@@ -103,19 +103,38 @@ def run(a):
                 t.source_bundle['sha256']!=source_report['scene_bundle_sha256']):
             raise ValueError('Serial and concurrent runs must share physical control, evaluator and source assets')
         t.wait(.6);t.snapshot('initial')
-        t.execute('clear-idle-arms',deepcopy(initial['commands']));t.wait(.2)
-        began=t.time
-        for index in range(max(map(len,streams.values()))):
-            commands={r:deepcopy(actions[index]['commands'][r]) for r,actions in streams.items() if index<len(actions)}
-            t.execute(f'parallel-local-{index:03d}',commands)
-            delays=[]
-            for actions in streams.values():
-                if index+1<len(actions):delays.append(max(0.,actions[index+1]['start_sim_s']-actions[index]['end_sim_s']))
-            if delays:t.wait(max(delays))
-        final_wait=source_report['evaluation']['sim_time_s']-max(actions[-1]['end_sim_s'] for actions in streams.values())
-        t.wait(final_wait)
+        if a.execution=='async':
+            from robofrontier.suite.mosaic_async import execute_plan
+            nodes=[];pred=[];last={};weights=[]
+            for event in jobs:
+                robot=event['path'][0];actions=streams[robot];previous=None
+                for index,action in enumerate(actions):
+                    end=actions[index+1]['start_sim_s'] if index+1<len(actions) else event['sim_time_s']
+                    node=len(nodes)
+                    nodes.append(dict(goal_id=event['goal'],object=event['object'],path=[robot],actions=[action],end_sim_s=end))
+                    pred.append([] if previous is None else [previous]);previous=node
+                    weights.append(event['sim_time_s']-action['start_sim_s'])
+                last[previous]=event['goal']
+            plan=dict(source_physical_control_sha256=source_report['physical_control_sha256'],
+                source_environment_logic_sha256=source_report['environment_logic_sha256'],
+                source_scene_bundle_sha256=source_report['scene_bundle_sha256'],initial_commands=initial['commands'],
+                jobs=nodes,predecessors=pred,critical_path_weights=weights,last_goal_nodes=last,total_goals=2)
+            report['async_reference_result']=execute_plan(t,plan)
+            began=t.mosaic_concurrency_started_sim_s
+        else:
+            t.execute('clear-idle-arms',deepcopy(initial['commands']));t.wait(.2)
+            began=t.time
+            for index in range(max(map(len,streams.values()))):
+                commands={r:deepcopy(actions[index]['commands'][r]) for r,actions in streams.items() if index<len(actions)}
+                t.execute(f'parallel-local-{index:03d}',commands)
+                delays=[]
+                for actions in streams.values():
+                    if index+1<len(actions):delays.append(max(0.,actions[index+1]['start_sim_s']-actions[index]['end_sim_s']))
+                if delays:t.wait(max(delays))
+            final_wait=source_report['evaluation']['sim_time_s']-max(actions[-1]['end_sim_s'] for actions in streams.values())
+            t.wait(final_wait)
         result=t.monitor.result()
-        report.update(evaluation=result,execution_sim_s=t.time-began,
+        report.update(evaluation=result,execution_sim_s=t.time-began,execution_mode=a.execution,
             serial_execution_sim_s=source_report['evaluation']['sim_time_s']-initial['end_sim_s']-.2,
             parallel_commissioning_passed=bool(all(result.get('assignments',{}).get(e['goal'])==e['object'] for e in jobs) and not t.monitor.violations))
         t.snapshot('final')
@@ -133,6 +152,7 @@ def run(a):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--source',required=True,type=Path);p.add_argument('--output',required=True,type=Path)
+    p.add_argument('--execution',choices=('barrier','async'),default='barrier')
     p.add_argument('--harness',type=Path,default=ROOT/'configs/harness-frontier-v2-servo2.json')
     p.add_argument('--catalog',type=Path,default=ROOT/'configs/suites/frontier-mosaic-r13.json');a=p.parse_args()
     if os.environ.get(MARKER)!=str(ROOT):

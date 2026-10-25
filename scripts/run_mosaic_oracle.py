@@ -70,12 +70,16 @@ def run(args):
         write_json(trial.directory/'concurrency-plan.json',concurrency)
         report['concurrency_planning_wall_s']=concurrency['planning_wall_s']
         report['concurrency_source']=str(args.concurrency_source.resolve())
+        report['concurrency_execution']=args.concurrency_execution
         def solve_concurrent(world,**kwargs):
             if kwargs['resume']:
                 from robofrontier.suite.mosaic_oracle_v2 import solve
                 world.event('mosaic_concurrency_replanned_from_actual_state',scope='Owner reviewed physical repair; remaining matching uses actual state, no failed command stream replay')
                 return solve(world,**kwargs)
-            from robofrontier.suite.mosaic_concurrency import execute_plan
+            if args.concurrency_execution=='async':
+                from robofrontier.suite.mosaic_async import execute_plan
+            else:
+                from robofrontier.suite.mosaic_concurrency import execute_plan
             return execute_plan(world,concurrency)
         solve_kwargs['solver']=solve_concurrent
     try:
@@ -123,6 +127,7 @@ def main():
     p.add_argument('--max-goals',type=int);p.add_argument('--review-after',nargs='*',type=int,default=[])
     p.add_argument('--goal-id',action='append')
     p.add_argument('--concurrency-source',type=Path)
+    p.add_argument('--concurrency-execution',choices=('barrier','async'),default='barrier')
     p.add_argument('--auto-resume-reviews',action='store_true');a=p.parse_args()
     if a.review_after and (a.max_goals is None or any(i<1 or i>=a.max_goals for i in a.review_after)):
         p.error('Injected reviews require --max-goals and boundaries below that limit')
