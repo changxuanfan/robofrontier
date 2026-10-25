@@ -15,6 +15,18 @@ def task():
 
 
 class MosaicReferenceTests(unittest.TestCase):
+    def test_narrow_margin_empty_route_selects_a_slower_command_without_overriding_loaded_speed(self):
+        from unittest.mock import Mock
+        from robofrontier.suite.mosaic_oracle_v2 import install_fine_route_screen
+        original=Mock();trial=SimpleNamespace(move_free=original,held={},event=Mock(),
+            arms={'A':SimpleNamespace(ik=SimpleNamespace(limits=np.array([[-1.,1.]]*7)))})
+        install_fine_route_screen(trial)
+        trial.move_free('A',np.zeros(3),np.eye(3),target_joints=np.full(7,.95))
+        self.assertEqual(original.call_args.kwargs['joint_speed_rad_s'],.2)
+        trial.held['A']='cube'
+        trial.move_free('A',np.zeros(3),np.eye(3),target_joints=np.full(7,.95),joint_speed_rad_s=.35)
+        self.assertEqual(original.call_args.kwargs['joint_speed_rad_s'],.35)
+
     def test_goal_access_can_use_the_references_actual_release_height_and_keep_tilt_requirement(self):
         from unittest.mock import Mock
         from robofrontier.suite.mosaic_oracle_v2 import goal_endpoint_candidates

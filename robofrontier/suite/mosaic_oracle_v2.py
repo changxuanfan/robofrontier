@@ -989,6 +989,14 @@ def install_fine_route_screen(trial):
     if previous is None:return
     def fine_route(*args,**kwargs):
         kwargs.setdefault('route_joint_step_rad',.005)
+        robot=args[0] if args else kwargs.get('robot')
+        q=kwargs.get('target_joints')
+        if (q is not None and robot in getattr(trial,'arms',{}) and
+                robot not in getattr(trial,'held',{}) and 'joint_speed_rad_s' not in kwargs and
+                joint_margin(trial,robot,q)<.10):
+            kwargs['joint_speed_rad_s']=.20
+            trial.event('mosaic_empty_narrow_margin_speed',robot=robot,joint_margin_rad=joint_margin(trial,robot,q),
+                joint_speed_rad_s=.20,scope='Private command choice based on actual joint margin; original limits and feedback unchanged')
         return previous(*args,**kwargs)
     trial.move_free=fine_route
     trial.mosaic_fine_route_installed=True
