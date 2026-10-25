@@ -1,0 +1,1250 @@
+{
+  "schema": "robofrontier.mosaic.environment.v1",
+  "rules_version": 1,
+  "id": "mosaic-four-arm-7x7",
+  "collection": "mosaic",
+  "arm_count": 4,
+  "topology": "shared_table",
+  "side_counts_south_east_north_west": [
+    1,
+    1,
+    1,
+    1
+  ],
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "cylinder_radius_m": 0.02,
+    "cylinder_height_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "appearance": "light",
+  "background_palette": "pale_blue_ground_and_sky",
+  "floor_rgba": [
+    0.72,
+    0.86,
+    0.98,
+    1
+  ],
+  "table_finish": "matte_oak",
+  "table_rgba": [
+    0.76,
+    0.51,
+    0.29,
+    1
+  ],
+  "stations": [
+    {
+      "id": "A",
+      "side": "south",
+      "base_position_m": [
+        0.0,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "home_tcp_m": [
+        0.0,
+        -0.37,
+        0.72
+      ],
+      "source_positions_m": [
+        [
+          0.21,
+          -0.3,
+          0.42
+        ],
+        [
+          0.15,
+          -0.3,
+          0.42
+        ],
+        [
+          0.09,
+          -0.3,
+          0.42
+        ],
+        [
+          0.03,
+          -0.3,
+          0.42
+        ],
+        [
+          -0.03,
+          -0.3,
+          0.42
+        ],
+        [
+          -0.09,
+          -0.3,
+          0.42
+        ],
+        [
+          -0.15,
+          -0.3,
+          0.42
+        ],
+        [
+          -0.21,
+          -0.3,
+          0.42
+        ],
+        [
+          0.27,
+          -0.36,
+          0.42
+        ],
+        [
+          0.21,
+          -0.36,
+          0.42
+        ],
+        [
+          0.15,
+          -0.36,
+          0.42
+        ]
+      ],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "supply_color": "blue"
+    },
+    {
+      "id": "B",
+      "side": "east",
+      "base_position_m": [
+        0.65,
+        0.0,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793,
+      "home_tcp_m": [
+        0.37,
+        0.0,
+        0.72
+      ],
+      "source_positions_m": [
+        [
+          0.3,
+          0.21,
+          0.42
+        ],
+        [
+          0.3,
+          0.15,
+          0.42
+        ],
+        [
+          0.3,
+          0.09,
+          0.42
+        ],
+        [
+          0.3,
+          0.03,
+          0.42
+        ],
+        [
+          0.3,
+          -0.03,
+          0.42
+        ],
+        [
+          0.3,
+          -0.09,
+          0.42
+        ],
+        [
+          0.3,
+          -0.15,
+          0.42
+        ],
+        [
+          0.3,
+          -0.21,
+          0.42
+        ],
+        [
+          0.36,
+          0.27,
+          0.42
+        ],
+        [
+          0.36,
+          0.21,
+          0.42
+        ],
+        [
+          0.36,
+          0.15,
+          0.42
+        ],
+        [
+          0.36,
+          0.09,
+          0.42
+        ],
+        [
+          0.36,
+          0.03,
+          0.42
+        ],
+        [
+          0.36,
+          -0.03,
+          0.42
+        ],
+        [
+          0.36,
+          -0.09,
+          0.42
+        ]
+      ],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "supply_color": "red"
+    },
+    {
+      "id": "C",
+      "side": "north",
+      "base_position_m": [
+        -0.0,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "home_tcp_m": [
+        0.0,
+        0.37,
+        0.72
+      ],
+      "source_positions_m": [
+        [
+          -0.21,
+          0.3,
+          0.42
+        ],
+        [
+          -0.15,
+          0.3,
+          0.42
+        ],
+        [
+          -0.09,
+          0.3,
+          0.42
+        ],
+        [
+          -0.03,
+          0.3,
+          0.42
+        ],
+        [
+          0.03,
+          0.3,
+          0.42
+        ]
+      ],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "supply_color": "yellow"
+    },
+    {
+      "id": "D",
+      "side": "west",
+      "base_position_m": [
+        -0.65,
+        -0.0,
+        0.4
+      ],
+      "yaw_rad": 0,
+      "home_tcp_m": [
+        -0.37,
+        0.0,
+        0.72
+      ],
+      "source_positions_m": [
+        [
+          -0.3,
+          -0.21,
+          0.42
+        ],
+        [
+          -0.3,
+          -0.15,
+          0.42
+        ],
+        [
+          -0.3,
+          -0.09,
+          0.42
+        ],
+        [
+          -0.3,
+          -0.03,
+          0.42
+        ],
+        [
+          -0.3,
+          0.03,
+          0.42
+        ],
+        [
+          -0.3,
+          0.09,
+          0.42
+        ],
+        [
+          -0.3,
+          0.15,
+          0.42
+        ],
+        [
+          -0.3,
+          0.21,
+          0.42
+        ],
+        [
+          -0.36,
+          -0.27,
+          0.42
+        ],
+        [
+          -0.36,
+          -0.21,
+          0.42
+        ],
+        [
+          -0.36,
+          -0.15,
+          0.42
+        ],
+        [
+          -0.36,
+          -0.09,
+          0.42
+        ],
+        [
+          -0.36,
+          -0.03,
+          0.42
+        ],
+        [
+          -0.36,
+          0.03,
+          0.42
+        ],
+        [
+          -0.36,
+          0.09,
+          0.42
+        ],
+        [
+          -0.36,
+          0.15,
+          0.42
+        ],
+        [
+          -0.36,
+          0.21,
+          0.42
+        ],
+        [
+          -0.36,
+          0.27,
+          0.42
+        ]
+      ],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "supply_color": "white"
+    }
+  ],
+  "tables": [
+    {
+      "center_m": [
+        0,
+        0,
+        0.375
+      ],
+      "half_size_m": [
+        0.8,
+        0.8,
+        0.025
+      ]
+    }
+  ],
+  "edges": [],
+  "objects": [
+    {
+      "id": "A_blue_01",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "a",
+      "initial_position_m": [
+        0.21,
+        -0.3,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_02",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "a",
+      "initial_position_m": [
+        0.15,
+        -0.3,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_03",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "a",
+      "initial_position_m": [
+        0.09,
+        -0.3,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_04",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "a",
+      "initial_position_m": [
+        0.03,
+        -0.3,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_05",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "a",
+      "initial_position_m": [
+        -0.03,
+        -0.3,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_06",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "a",
+      "initial_position_m": [
+        -0.09,
+        -0.3,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_07",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "a",
+      "initial_position_m": [
+        -0.15,
+        -0.3,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_08",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "a",
+      "initial_position_m": [
+        -0.21,
+        -0.3,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_09",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "a",
+      "initial_position_m": [
+        0.27,
+        -0.36,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_10",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "a",
+      "initial_position_m": [
+        0.21,
+        -0.36,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_11",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "a",
+      "initial_position_m": [
+        0.15,
+        -0.36,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_01",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.3,
+        0.21,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_02",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.3,
+        0.15,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_03",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.3,
+        0.09,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_04",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.3,
+        0.03,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_05",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.3,
+        -0.03,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_06",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.3,
+        -0.09,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_07",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.3,
+        -0.15,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_08",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.3,
+        -0.21,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_09",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.36,
+        0.27,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_10",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.36,
+        0.21,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_11",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.36,
+        0.15,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_12",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.36,
+        0.09,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_13",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.36,
+        0.03,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_14",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.36,
+        -0.03,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_15",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.36,
+        -0.09,
+        0.42
+      ]
+    },
+    {
+      "id": "C_yellow_01",
+      "source": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.08
+      ],
+      "shape": "cube",
+      "type_code": "c",
+      "initial_position_m": [
+        -0.21,
+        0.3,
+        0.42
+      ]
+    },
+    {
+      "id": "C_yellow_02",
+      "source": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.08
+      ],
+      "shape": "cube",
+      "type_code": "c",
+      "initial_position_m": [
+        -0.15,
+        0.3,
+        0.42
+      ]
+    },
+    {
+      "id": "C_yellow_03",
+      "source": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.08
+      ],
+      "shape": "cube",
+      "type_code": "c",
+      "initial_position_m": [
+        -0.09,
+        0.3,
+        0.42
+      ]
+    },
+    {
+      "id": "C_yellow_04",
+      "source": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.08
+      ],
+      "shape": "cube",
+      "type_code": "c",
+      "initial_position_m": [
+        -0.03,
+        0.3,
+        0.42
+      ]
+    },
+    {
+      "id": "C_yellow_05",
+      "source": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.08
+      ],
+      "shape": "cube",
+      "type_code": "c",
+      "initial_position_m": [
+        0.03,
+        0.3,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_01",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.93,
+        0.93,
+        0.9
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        -0.3,
+        -0.21,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_02",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.93,
+        0.93,
+        0.9
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        -0.3,
+        -0.15,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_03",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.93,
+        0.93,
+        0.9
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        -0.3,
+        -0.09,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_04",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.93,
+        0.93,
+        0.9
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        -0.3,
+        -0.03,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_05",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.93,
+        0.93,
+        0.9
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        -0.3,
+        0.03,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_06",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.93,
+        0.93,
+        0.9
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        -0.3,
+        0.09,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_07",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.93,
+        0.93,
+        0.9
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        -0.3,
+        0.15,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_08",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.93,
+        0.93,
+        0.9
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        -0.3,
+        0.21,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_09",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.93,
+        0.93,
+        0.9
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        -0.36,
+        -0.27,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_10",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.93,
+        0.93,
+        0.9
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        -0.36,
+        -0.21,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_11",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.93,
+        0.93,
+        0.9
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        -0.36,
+        -0.15,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_12",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.93,
+        0.93,
+        0.9
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        -0.36,
+        -0.09,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_13",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.93,
+        0.93,
+        0.9
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        -0.36,
+        -0.03,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_14",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.93,
+        0.93,
+        0.9
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        -0.36,
+        0.03,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_15",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.93,
+        0.93,
+        0.9
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        -0.36,
+        0.09,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_16",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.93,
+        0.93,
+        0.9
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        -0.36,
+        0.15,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_17",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.93,
+        0.93,
+        0.9
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        -0.36,
+        0.21,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_18",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.93,
+        0.93,
+        0.9
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        -0.36,
+        0.27,
+        0.42
+      ]
+    }
+  ],
+  "observation_contract": {
+    "initial_positions_public": true,
+    "runtime": [
+      "RGB",
+      "robot_proprioception",
+      "action_status"
+    ],
+    "live_object_truth_for_policy": false
+  },
+  "grid": {
+    "rows": 7,
+    "columns": 7,
+    "cell_side_m": 0.04,
+    "cube_side_m": 0.04,
+    "center_world_m": [
+      0,
+      0,
+      0.4
+    ],
+    "row1": "north",
+    "column1": "west",
+    "lines": "visual texture only; no collision, snap or physical partitions"
+  },
+  "scene": "scene.xml",
+  "initial_keyframe": "initial"
+}

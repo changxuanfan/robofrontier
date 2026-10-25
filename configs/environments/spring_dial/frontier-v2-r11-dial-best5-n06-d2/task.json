@@ -1,0 +1,579 @@
+{
+  "kind": "frontier_suite",
+  "suite_version": 2,
+  "id": "dial-best5-n06-d2",
+  "family": "dial",
+  "level": 2,
+  "scale": {
+    "family": "dial",
+    "level": 2,
+    "suite_version": 2,
+    "scene_revision": 11,
+    "scale_index": 1,
+    "arms": 12,
+    "dials": 6,
+    "id": "dial-best5-n06-d2",
+    "ring_radius_m": 1.55,
+    "source_scene_revision": 10,
+    "table_height_m": 0.8,
+    "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n06-d2"
+  },
+  "scene_asset": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n06-d2",
+  "scene_sha256": "9080640b0f841605d62fa7ec808e8f4b9ee0fb13c0a8d6a9cf3c24c15c4f4e37",
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -1.08,
+        -0.24999999999999983,
+        0.8
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    "B": {
+      "base_position_m": [
+        -2.38,
+        2.516649172247811e-16,
+        0.8
+      ],
+      "yaw_rad": 0.0
+    },
+    "C": {
+      "base_position_m": [
+        -1.0206846669980614,
+        0.43255382388213426,
+        0.8
+      ],
+      "yaw_rad": 2.5132741228718345
+    },
+    "D": {
+      "base_position_m": [
+        -1.9254604466123748,
+        1.3989289004560863,
+        0.8
+      ],
+      "yaw_rad": -0.6283185307179586
+    },
+    "E": {
+      "base_position_m": [
+        -0.5715024829987315,
+        0.9498867890050291,
+        0.8
+      ],
+      "yaw_rad": 1.8849555921538759
+    },
+    "F": {
+      "base_position_m": [
+        -0.7354604466123748,
+        2.2635145087824657,
+        0.8
+      ],
+      "yaw_rad": -1.2566370614359172
+    },
+    "G": {
+      "base_position_m": [
+        0.09597422485115481,
+        1.1043952861925026,
+        0.8
+      ],
+      "yaw_rad": 1.2566370614359172
+    },
+    "H": {
+      "base_position_m": [
+        0.7354604466123749,
+        2.2635145087824653,
+        0.8
+      ],
+      "yaw_rad": -1.8849555921538759
+    },
+    "I": {
+      "base_position_m": [
+        0.7267920408518249,
+        0.8370623210696078,
+        0.8
+      ],
+      "yaw_rad": 0.6283185307179586
+    },
+    "J": {
+      "base_position_m": [
+        1.925460446612375,
+        1.398928900456086,
+        0.8
+      ],
+      "yaw_rad": -2.5132741228718345
+    },
+    "K": {
+      "base_position_m": [
+        1.08,
+        0.24999999999999997,
+        0.8
+      ],
+      "yaw_rad": 0.0
+    },
+    "L": {
+      "base_position_m": [
+        2.38,
+        3.9801020972288984e-17,
+        0.8
+      ],
+      "yaw_rad": -3.141592653589793
+    }
+  },
+  "objects": [
+    {
+      "id": "D01_module",
+      "source": "B",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        -1.73,
+        2.118638962524921e-16,
+        0.9342352941176472
+      ],
+      "initial_quaternion_wxyz": [
+        0.6063390625908325,
+        0.3638034375544994,
+        0.3638034375544994,
+        0.6063390625908325
+      ]
+    },
+    {
+      "id": "D02_module",
+      "source": "D",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        -1.399599400268659,
+        1.0168684864659787,
+        0.9342352941176472
+      ],
+      "initial_quaternion_wxyz": [
+        0.7640317912552483,
+        0.4584190747531489,
+        0.23357618512041842,
+        0.389293641867364
+      ]
+    },
+    {
+      "id": "D03_module",
+      "source": "F",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        -0.5345994002686589,
+        1.6453277731906157,
+        0.9342352941176472
+      ],
+      "initial_quaternion_wxyz": [
+        0.8469357648690925,
+        0.5081614589214555,
+        0.08048486826577457,
+        0.13414144710962425
+      ]
+    },
+    {
+      "id": "D04_module",
+      "source": "H",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        0.534599400268659,
+        1.6453277731906155,
+        0.9342352941176472
+      ],
+      "initial_quaternion_wxyz": [
+        0.8469357648690925,
+        0.5081614589214555,
+        -0.08048486826577457,
+        -0.13414144710962425
+      ]
+    },
+    {
+      "id": "D05_module",
+      "source": "J",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        1.3995994002686591,
+        1.0168684864659785,
+        0.9342352941176472
+      ],
+      "initial_quaternion_wxyz": [
+        0.7640317912552483,
+        0.4584190747531489,
+        -0.23357618512041842,
+        -0.389293641867364
+      ]
+    },
+    {
+      "id": "D06_module",
+      "source": "L",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        1.73,
+        0.0,
+        0.9342352941176472
+      ],
+      "initial_quaternion_wxyz": [
+        0.6063390625908325,
+        0.3638034375544994,
+        -0.3638034375544994,
+        -0.6063390625908325
+      ]
+    }
+  ],
+  "table_height_m": 0.8,
+  "cube_size_m": null,
+  "physics": {
+    "table_height_m": 0.8,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 20,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "material_scope": "Disk material density retained; enlarged disk mass/inertia and tabletop rest recomputed. Rotor geometry and calibrated assumptions are declared in mechanism metadata; visual markers carry no mass."
+  },
+  "mechanism": {
+    "dial_count": 6,
+    "interface": "gear",
+    "free_modules": true,
+    "handle_material": "anodized aluminium",
+    "handle_mass_kg": 0.2882304,
+    "spring_nm_rad": 0.03,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      0.0,
+      2.5
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "feedback_rule_version": 3,
+    "feedback_dwell_sim_s": 0.25,
+    "feedback_stability": "same nonzero 4-degree detent band throughout the dwell; in-band vibration allowed",
+    "handle_stem_mass_kg": 0.2592,
+    "parking_fixture": "None; visible disk rim and blue handle tip rest directly on tabletop",
+    "handle_cross_section_m": [
+      0.016,
+      0.02
+    ],
+    "handle_attachment_local_m": [
+      0,
+      0.02,
+      -0.154
+    ],
+    "handle_neck_clear_length_m": 0.024,
+    "handle_shoulders": "Two visible passive stop shoulders. They transmit load by real contact and release when the gripper opens; no hand attachment.",
+    "white_disk_diameter_m": 0.3,
+    "white_disk_diameter_scale": 1.3043478260869563,
+    "digit_height_m": 0.04,
+    "digit_radius_m": 0.122,
+    "digit_outer_rim_clearance_m": 0.007999999999999997,
+    "detent_labels": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "direction_indicator": "Orange arrow",
+    "layout": "upper_semicircle",
+    "module_arc_radius_m": 1.73,
+    "feedback": {
+      "version": "best5-v1",
+      "mode": "best_so_far",
+      "symbol_count": 5,
+      "total_marks": 6,
+      "step_deg": 60.0,
+      "angle_tolerance_deg": 4.0,
+      "dwell_sim_s": 0.25,
+      "zero_valid": false,
+      "require_red_grasp": true,
+      "initial_best": 0,
+      "display_digits": 1,
+      "display_brightness": "Bright only when READY is green; otherwise dim but readable",
+      "record_scope": "episode",
+      "settlement": "automatic_stable_configuration",
+      "readiness": "Grey invalid, amber qualifying, green ready; readiness is not password correctness"
+    },
+    "score_label": "BEST",
+    "symbol_to_angle_deg": {
+      "0": 0,
+      "1": 60,
+      "2": 120,
+      "3": 180,
+      "4": 240,
+      "5": 300
+    },
+    "score_panel_scale": 1.5
+  },
+  "goals": [],
+  "grid": null,
+  "route": null,
+  "pairs": null,
+  "dials": [
+    {
+      "id": "D01",
+      "index": 0,
+      "nominal_robots": [
+        "A",
+        "B"
+      ],
+      "initial_center_m": [
+        -1.73,
+        2.118638962524921e-16,
+        0.9342352941176472
+      ],
+      "layout_yaw_rad": 1.5707963267948966,
+      "initial_quaternion_wxyz": [
+        0.6063390625908325,
+        0.3638034375544994,
+        0.3638034375544994,
+        0.6063390625908325
+      ]
+    },
+    {
+      "id": "D02",
+      "index": 1,
+      "nominal_robots": [
+        "C",
+        "D"
+      ],
+      "initial_center_m": [
+        -1.399599400268659,
+        1.0168684864659787,
+        0.9342352941176472
+      ],
+      "layout_yaw_rad": 0.9424777960769379,
+      "initial_quaternion_wxyz": [
+        0.7640317912552483,
+        0.4584190747531489,
+        0.23357618512041842,
+        0.389293641867364
+      ]
+    },
+    {
+      "id": "D03",
+      "index": 2,
+      "nominal_robots": [
+        "E",
+        "F"
+      ],
+      "initial_center_m": [
+        -0.5345994002686589,
+        1.6453277731906157,
+        0.9342352941176472
+      ],
+      "layout_yaw_rad": 0.3141592653589793,
+      "initial_quaternion_wxyz": [
+        0.8469357648690925,
+        0.5081614589214555,
+        0.08048486826577457,
+        0.13414144710962425
+      ]
+    },
+    {
+      "id": "D04",
+      "index": 3,
+      "nominal_robots": [
+        "G",
+        "H"
+      ],
+      "initial_center_m": [
+        0.534599400268659,
+        1.6453277731906155,
+        0.9342352941176472
+      ],
+      "layout_yaw_rad": -0.3141592653589793,
+      "initial_quaternion_wxyz": [
+        0.8469357648690925,
+        0.5081614589214555,
+        -0.08048486826577457,
+        -0.13414144710962425
+      ]
+    },
+    {
+      "id": "D05",
+      "index": 4,
+      "nominal_robots": [
+        "I",
+        "J"
+      ],
+      "initial_center_m": [
+        1.3995994002686591,
+        1.0168684864659785,
+        0.9342352941176472
+      ],
+      "layout_yaw_rad": -0.9424777960769379,
+      "initial_quaternion_wxyz": [
+        0.7640317912552483,
+        0.4584190747531489,
+        -0.23357618512041842,
+        -0.389293641867364
+      ]
+    },
+    {
+      "id": "D06",
+      "index": 5,
+      "nominal_robots": [
+        "K",
+        "L"
+      ],
+      "initial_center_m": [
+        1.73,
+        0.0,
+        0.9342352941176472
+      ],
+      "layout_yaw_rad": -1.5707963267948966,
+      "initial_quaternion_wxyz": [
+        0.6063390625908325,
+        0.3638034375544994,
+        -0.3638034375544994,
+        -0.6063390625908325
+      ]
+    }
+  ],
+  "gripper_profile": "standard-panda",
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "rules": [
+    "The face has0,1,2,3,4,5 at60-degree intervals. Each private password digit is1..5;0 is an invalid initial position. Clockwise labels4 and5 may be reached as-120 and-60degrees; +180 and-180 are the same mark3.",
+    "BEST starts at0 and shows the largest correct-count achieved by any one complete valid input in this episode. It is not the current correct-count. An unchanged record can mean equal or worse; never combine per-dial results from different attempts.",
+    "READY is grey when the current input is invalid, amber while qualifying and green after every dial is within4degrees of a nonzero mark, actually grasped, and stable for0.25seconds. Green means a valid input, not a correct password.",
+    "The BEST digit is bright only when READY is green. Otherwise its retained value stays visible in dim grey-brown, including while the amber lamp is qualifying. Brightness does not change the record or disclose current correctness.",
+    "Only a complete valid input updates BEST. Off-mark, zero or lost grasp makes READY invalid while BEST remains. New stable configurations are evaluated automatically, including intermediate configurations during movement; bind a record change to an actually observed configuration, not an assumed target.",
+    "L2/L3 require a separate robot to hold each blue handle with the whole module at least20mm clear of external supports. Maintain that support during red operation. A crank grip moves around the axle and may require coordinated translation.",
+    "Unlock occurs only when all digits of one simultaneous valid input are correct. Success latches, while physical springs and support remain active. Inputs and actuation choices are Agent decisions.",
+    "Only robot actuators and real contacts may affect the live world. Use RGB and permitted robot feedback; hidden passwords, per-dial correctness and live object truth are not policy inputs."
+  ],
+  "objective": "Unlock the spring dial code by finding and simultaneously holding one correct nonzero input. Minimize execution time and valid attempts using only historical BEST feedback; preserve real grasps and required airborne support.",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB including BEST and READY",
+      "Robot proprioception and geometry",
+      "Action feedback"
+    ]
+  },
+  "completion": {
+    "mode": "historical_best_count_latch",
+    "feedback_rule_version": 3,
+    "angle_tolerance_deg": 4,
+    "stable_duration_sim_s": 0.25
+  },
+  "execution_readiness": "environment_preview_only",
+  "oracle_verified": false,
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "G_front",
+    "G_side",
+    "H_front",
+    "H_side",
+    "I_front",
+    "I_side",
+    "J_front",
+    "J_side",
+    "K_front",
+    "K_side",
+    "L_front",
+    "L_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "D01_front",
+    "D01_side",
+    "D01_high",
+    "D02_front",
+    "D02_side",
+    "D02_high",
+    "D03_front",
+    "D03_side",
+    "D03_high",
+    "D04_front",
+    "D04_side",
+    "D04_high",
+    "D05_front",
+    "D05_side",
+    "D05_high",
+    "D06_front",
+    "D06_side",
+    "D06_high",
+    "board",
+    "D01_face",
+    "D02_face",
+    "D03_face",
+    "D04_face",
+    "D05_face",
+    "D06_face"
+  ],
+  "view_camera": "global",
+  "recording_camera": "global",
+  "workspace_world_m": {
+    "lower": [
+      -3.23,
+      -1.0999999999999999,
+      0.42500000000000004
+    ],
+    "upper": [
+      3.23,
+      3.113514508782466,
+      2.1
+    ]
+  }
+}

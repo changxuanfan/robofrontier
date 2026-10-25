@@ -1,0 +1,14 @@
+{
+  "status": "engineering_initial_state_checked",
+  "oracle_verified": false,
+  "policy_verified": false,
+  "scope": "Static geometry, optional passive settle and endpoint IK only; no robot task commands",
+  "robot_count": 6,
+  "nq": 1062,
+  "nv": 918,
+  "ngeom": 610,
+  "physics_sha256": "0133367e350f7089ba66733dfa373b6f93d7935c8749824e19a257d03fc8712a",
+  "engineering_passed": true,
+  "check_duration_sim_s": 3.0,
+  "endpoint_coverage_checked": true
+}

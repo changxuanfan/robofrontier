@@ -1,0 +1,41 @@
+{
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.1,
+    "object_mass_kg": 0.7812500000000001,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0
+  },
+  "mechanism": {
+    "chord_m": 1.2,
+    "mass_kg": 1.458,
+    "cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "kind": "straight_beam",
+    "minimum_supporting_robots": 2,
+    "flexible_teams": true,
+    "layout": "semicircle",
+    "outer_arms": 12,
+    "inner_arms": 6,
+    "curve_radius_m": 1.85,
+    "finish": "Tabletop destination region; no cradle; beam and suspended assembly must land stably"
+  },
+  "grid": null,
+  "scope": "Declared geometry/material and engineering parameters; not a task success proof"
+}

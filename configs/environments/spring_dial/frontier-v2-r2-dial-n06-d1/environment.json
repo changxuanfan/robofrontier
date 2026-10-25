@@ -1,0 +1,283 @@
+{
+  "schema": "robofrontier.workstation.v2",
+  "id": "dial-n06-d1",
+  "collection": "frontier_suite",
+  "arm_count": 6,
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 20,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "material_scope": "Original dial assembly properties retained; initial rest reconfigured without parking blocks"
+  },
+  "stations": [
+    {
+      "id": "A",
+      "base_position_m": [
+        7.83773951454306e-17,
+        1.28,
+        0.4
+      ],
+      "yaw_rad": 4.71238898038469,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.0,
+        1.04,
+        0.88
+      ]
+    },
+    {
+      "id": "B",
+      "base_position_m": [
+        1.1085125168440815,
+        0.64,
+        0.4
+      ],
+      "yaw_rad": 3.6651914291880923,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.90066642,
+        0.52,
+        0.88
+      ]
+    },
+    {
+      "id": "C",
+      "base_position_m": [
+        1.1085125168440815,
+        -0.6399999999999998,
+        0.4
+      ],
+      "yaw_rad": 2.6179938779914944,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.90066642,
+        -0.52,
+        0.88
+      ]
+    },
+    {
+      "id": "D",
+      "base_position_m": [
+        7.83773951454306e-17,
+        -1.28,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.0,
+        -1.04,
+        0.88
+      ]
+    },
+    {
+      "id": "E",
+      "base_position_m": [
+        -1.1085125168440813,
+        -0.6400000000000005,
+        0.4
+      ],
+      "yaw_rad": 0.5235987755982991,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.90066642,
+        -0.52,
+        0.88
+      ]
+    },
+    {
+      "id": "F",
+      "base_position_m": [
+        -1.1085125168440815,
+        0.6400000000000001,
+        0.4
+      ],
+      "yaw_rad": -0.5235987755982991,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.90066642,
+        0.52,
+        0.88
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "center_m": [
+        0.0,
+        0.0,
+        0.375
+      ],
+      "half_size_m": [
+        1.3485125168440815,
+        1.52,
+        0.025
+      ]
+    }
+  ],
+  "edges": [],
+  "objects": [],
+  "floor_rgba": [
+    0.84,
+    0.9,
+    0.95,
+    1
+  ],
+  "table_rgba": [
+    0.604,
+    0.459,
+    0.345,
+    1
+  ],
+  "initial_keyframe": "initial",
+  "scene": "scene.xml",
+  "suite_case": {
+    "family": "dial",
+    "level": 1,
+    "suite_version": 2,
+    "scene_revision": 2,
+    "scale_index": 1,
+    "arms": 6,
+    "dials": 6,
+    "id": "dial-n06-d1",
+    "ring_radius_m": 1.55,
+    "directory": "configs/environments/spring_dial/frontier-v2-r2-dial-n06-d1"
+  },
+  "dials": [
+    {
+      "id": "D01",
+      "index": 0,
+      "nominal_robots": [
+        "A"
+      ],
+      "initial_center_m": [
+        4.7761225166746774e-17,
+        0.78,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D02",
+      "index": 1,
+      "nominal_robots": [
+        "B"
+      ],
+      "initial_center_m": [
+        0.6754998149518622,
+        0.39,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D03",
+      "index": 2,
+      "nominal_robots": [
+        "C"
+      ],
+      "initial_center_m": [
+        0.6754998149518622,
+        -0.3899999999999999,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D04",
+      "index": 3,
+      "nominal_robots": [
+        "D"
+      ],
+      "initial_center_m": [
+        4.7761225166746774e-17,
+        -0.78,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D05",
+      "index": 4,
+      "nominal_robots": [
+        "E"
+      ],
+      "initial_center_m": [
+        -0.6754998149518621,
+        -0.3900000000000003,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D06",
+      "index": 5,
+      "nominal_robots": [
+        "F"
+      ],
+      "initial_center_m": [
+        -0.6754998149518622,
+        0.3900000000000001,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    }
+  ],
+  "mechanism": {
+    "dial_count": 6,
+    "interface": "gear",
+    "free_modules": false,
+    "handle_material": null,
+    "handle_mass_kg": 0,
+    "spring_nm_rad": 0.03,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      0.5649999999999998,
+      -0.9786087062764156
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "feedback_rule_version": 2,
+    "feedback_dwell_sim_s": 0.25,
+    "feedback_stability": "same nonzero 4-degree detent band throughout the dwell; in-band vibration allowed",
+    "layout": "concentric_ring",
+    "table_inner_radius_m": 0.51,
+    "table_outer_radius_m": 1.55
+  },
+  "gripper_profile": "standard-panda"
+}

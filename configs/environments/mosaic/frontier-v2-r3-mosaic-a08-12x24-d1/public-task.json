@@ -1,0 +1,542 @@
+{
+  "kind": "frontier_suite",
+  "id": "mosaic-a08-12x24-d1",
+  "suite_version": 2,
+  "family": "mosaic",
+  "level": 1,
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -0.887,
+        -0.7909999999999999,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "B": {
+      "base_position_m": [
+        -0.2956666666666667,
+        -0.7909999999999999,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "C": {
+      "base_position_m": [
+        0.2956666666666667,
+        -0.7909999999999999,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "D": {
+      "base_position_m": [
+        0.887,
+        -0.7909999999999999,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "E": {
+      "base_position_m": [
+        -0.887,
+        0.7909999999999999,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "F": {
+      "base_position_m": [
+        -0.2956666666666667,
+        0.7909999999999999,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "G": {
+      "base_position_m": [
+        0.2956666666666667,
+        0.7909999999999999,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "H": {
+      "base_position_m": [
+        0.887,
+        0.7909999999999999,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    }
+  },
+  "rules": [
+    "Build the exact supplied Tulip reference, including background cells, one released cube per pixel. The original portrait grid is rotated clockwise 90 degrees as a whole on the horizontal workstation, without resizing or changing cells.",
+    "Cube side is 60 mm and common cell-center pitch is 81 mm. L1 has 80 mm clear square pockets, L2 3 mm red printed lines, L3 no visible grid. The four colors are cream, navy, coral and sage. The target image matches world north-up, centered on the declared assembly origin.",
+    "Stock allocations do not restrict which robot can use an item. Preserve completed placements and account for finger release/withdrawal clearance.",
+    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits."
+  ],
+  "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB",
+      "Robot proprioception and robot geometry",
+      "Action feedback",
+      "Visible dial count"
+    ]
+  },
+  "gripper_profile": "standard-panda",
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "G_front",
+    "G_side",
+    "H_front",
+    "H_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "assembly_01",
+    "assembly_02",
+    "assembly_03",
+    "assembly_04"
+  ],
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "execution_readiness": "environment_preview_only",
+  "initial_supplies": [
+    {
+      "source": "A",
+      "color": "cream",
+      "count": 36
+    },
+    {
+      "source": "B",
+      "color": "cream",
+      "count": 36
+    },
+    {
+      "source": "C",
+      "color": "cream",
+      "count": 30
+    },
+    {
+      "source": "C",
+      "color": "navy",
+      "count": 6
+    },
+    {
+      "source": "D",
+      "color": "navy",
+      "count": 36
+    },
+    {
+      "source": "E",
+      "color": "coral",
+      "count": 20
+    },
+    {
+      "source": "E",
+      "color": "navy",
+      "count": 16
+    },
+    {
+      "source": "F",
+      "color": "coral",
+      "count": 36
+    },
+    {
+      "source": "G",
+      "color": "coral",
+      "count": 14
+    },
+    {
+      "source": "G",
+      "color": "sage",
+      "count": 22
+    },
+    {
+      "source": "H",
+      "color": "sage",
+      "count": 36
+    }
+  ],
+  "mechanism": {
+    "kind": "recessed_grid",
+    "stock_packing": "Single layer; non-exclusive station allocation",
+    "stock_count": 288,
+    "robot_to_grid_edge_m": 0.305,
+    "stock_edge_clearance_m": 0.055,
+    "station_pitch_m": 0.5913333333333334,
+    "outer_base_axis_inset_from_grid_end_m": 0.085
+  },
+  "target": {
+    "rows": 12,
+    "columns": 24,
+    "colors": 4,
+    "pitch_m": 0.081,
+    "cube_side_m": 0.06,
+    "pattern": [
+      [
+        "navy",
+        "navy",
+        "sage",
+        "navy",
+        "navy",
+        "navy",
+        "cream",
+        "navy",
+        "cream",
+        "navy",
+        "navy",
+        "navy",
+        "navy",
+        "sage",
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "navy",
+        "navy",
+        "navy",
+        "navy",
+        "navy"
+      ],
+      [
+        "navy",
+        "navy",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "cream",
+        "sage",
+        "cream",
+        "cream",
+        "sage",
+        "cream",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "cream"
+      ],
+      [
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "sage",
+        "cream",
+        "cream",
+        "sage",
+        "sage",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream"
+      ],
+      [
+        "cream",
+        "navy",
+        "navy",
+        "navy",
+        "navy",
+        "cream",
+        "sage",
+        "cream",
+        "cream",
+        "sage",
+        "sage",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "sage"
+      ],
+      [
+        "cream",
+        "navy",
+        "sage",
+        "sage",
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "sage",
+        "sage",
+        "sage",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream",
+        "cream",
+        "navy"
+      ],
+      [
+        "cream",
+        "navy",
+        "sage",
+        "sage",
+        "navy",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "coral",
+        "coral",
+        "navy",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream",
+        "cream",
+        "cream"
+      ],
+      [
+        "cream",
+        "navy",
+        "sage",
+        "sage",
+        "navy",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "coral",
+        "coral",
+        "navy",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream",
+        "cream",
+        "sage"
+      ],
+      [
+        "cream",
+        "navy",
+        "sage",
+        "sage",
+        "navy",
+        "cream",
+        "sage",
+        "sage",
+        "sage",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream",
+        "cream",
+        "navy"
+      ],
+      [
+        "cream",
+        "navy",
+        "navy",
+        "navy",
+        "navy",
+        "cream",
+        "cream",
+        "sage",
+        "sage",
+        "cream",
+        "cream",
+        "sage",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream"
+      ],
+      [
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "sage",
+        "sage",
+        "cream",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "sage"
+      ],
+      [
+        "navy",
+        "navy",
+        "sage",
+        "sage",
+        "sage",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "sage",
+        "cream",
+        "sage",
+        "cream",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "navy"
+      ],
+      [
+        "navy",
+        "navy",
+        "navy",
+        "navy",
+        "navy",
+        "navy",
+        "navy",
+        "navy",
+        "cream",
+        "navy",
+        "navy",
+        "navy",
+        "cream",
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "navy",
+        "cream",
+        "navy",
+        "navy",
+        "navy"
+      ]
+    ],
+    "pocket_opening_m": 0.08,
+    "depth_m": 0.02,
+    "center_world_m": [
+      0,
+      0,
+      0.4
+    ],
+    "row1": "north",
+    "column1": "west",
+    "reference_image": "target-pattern.png",
+    "palette": {
+      "cream": "#F4E7D5",
+      "navy": "#263C4C",
+      "coral": "#EF7180",
+      "sage": "#4C9B87"
+    },
+    "reference": {
+      "name": "Tulip",
+      "original_width": 12,
+      "original_height": 24,
+      "rotation_clockwise_deg": 90,
+      "source_sha256": "e0e1ec10ac1b4c68e41e1ab4016bcd7633bf69bf55aa432df749541faf374956",
+      "source_file": "assets/tulip_parameters.json",
+      "color_hex": {
+        "cream": "#F4E7D5",
+        "navy": "#263C4C",
+        "coral": "#EF7180",
+        "sage": "#4C9B87"
+      },
+      "counts": {
+        "navy": 58,
+        "sage": 58,
+        "cream": 102,
+        "coral": 70
+      }
+    }
+  }
+}

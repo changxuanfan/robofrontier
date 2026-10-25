@@ -1,0 +1,6 @@
+# Factory authoring/viewing environment; keep task execution dependencies separate.
+mujoco==3.16.0
+numpy>=2,<3
+Pillow>=11,<13
+scipy>=1.13
+glfw>=2.8,<3

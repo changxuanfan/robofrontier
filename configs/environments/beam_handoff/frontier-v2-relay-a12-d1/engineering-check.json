@@ -1,0 +1,23 @@
+{
+  "case_id": "relay-a12-d1",
+  "scope": "Static geometry, optional passive settle and endpoint IK only; no robot task commands",
+  "oracle_verified": false,
+  "static_robot_contacts": [],
+  "static_robot_apparatus_contacts": [],
+  "initial_equality_residual_m": 0.0,
+  "settle_duration_sim_s": 3.0,
+  "settle_robot_contacts": [],
+  "settle_robot_apparatus_contacts": [],
+  "max_main_object_drift_m": 5.03310053345174e-05,
+  "main_object_drift_m": {
+    "payload": 5.03310053345174e-05
+  },
+  "free_body_drift_m": {
+    "payload": 5.03310053345174e-05
+  },
+  "initial_table_supported_assembly_remains_above_table": true,
+  "tray_check": null,
+  "endpoint_coverage": null,
+  "finite_state": true,
+  "passed": true
+}

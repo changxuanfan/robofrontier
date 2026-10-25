@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "robot_count": 2,
+  "module_count": 1,
+  "module_is_free_body": true,
+  "dial_hinge_actuators": 0,
+  "total_actuators": 16,
+  "initial_penetrations_over_1mm": [],
+  "settling_duration_s": 60.0,
+  "settling": {
+    "module_translation_from_start_m": 0.028086181904407342,
+    "module_max_translation_during_settle_m": 0.02841570641650641,
+    "module_final_position_m": [
+      1.5811801455643525e-07,
+      0.027977859132996018,
+      0.5125356517541775
+    ],
+    "module_orientation_change_deg": 14.03611884632485,
+    "module_max_orientation_change_during_settle_deg": 14.198687169354232,
+    "disk_rim_contacts_table": true,
+    "stem_contacts_table": true,
+    "stem_end_contact_seen": true,
+    "stem_end_contact_first_time_s": 0.12600000000000008,
+    "stem_contact_local_z_m": -0.14999996884931804,
+    "stem_minimum_table_clearance_m": -0.0008777931452327303,
+    "dial_angle_after_settle_deg": -3.3014862758940704e-08
+  },
+  "scope": "Scene-load, contact and passive-settling check only; no arm manipulation or LLM policy trial."
+}

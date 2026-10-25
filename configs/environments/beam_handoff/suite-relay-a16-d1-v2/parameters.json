@@ -1,0 +1,70 @@
+{
+  "case": {
+    "id": "relay-a16-d1",
+    "family": "relay",
+    "level": 1,
+    "arms": 16,
+    "pairs": 8,
+    "layout": "closed_loop",
+    "payload": "bare_timber",
+    "status": "planned",
+    "directory": "configs/environments/beam_handoff/suite-relay-a16-d1-v2",
+    "scene_sha256": null,
+    "layout_report": "configs/environments/beam_handoff/suite-relay-a16-d1/layout-validation.json",
+    "verification_results": {},
+    "last_oracle_report": null,
+    "scene_revision": 2,
+    "history": [
+      {
+        "directory": "configs/environments/beam_handoff/suite-relay-a16-d1",
+        "scene_sha256": "ab1c2d139367a8f3061486dd1c54910f6fa1437f435f0e6c5579e92d3bf6cbc9",
+        "status": "oracle_failed",
+        "verification_results": {
+          "0": {
+            "passed": false,
+            "scene_sha256": "ab1c2d139367a8f3061486dd1c54910f6fa1437f435f0e6c5579e92d3bf6cbc9",
+            "executor_sha256": "db44f77fa30453a161739620c554f4579ef657bccf31bbf0b8061833c891748f",
+            "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-007/report.json"
+          }
+        },
+        "last_oracle_report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-007/report.json",
+        "superseded_reason": "Align beam with transport direction and stagger opposed bases, preserving old normal-to-path layouts and witnesses"
+      }
+    ]
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "beam_length_m": 1.2,
+    "beam_cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "beam_mass_kg": 1.458,
+    "weight_mass_kg": 0,
+    "suspension_length_m": 0,
+    "suspension_segments": 0,
+    "opposed_base_spacing_m": 1.118033988749895,
+    "cross_track_base_spacing_m": 1.0,
+    "longitudinal_pair_stagger_m": 0.5,
+    "minimum_supporting_robots": 2,
+    "loop_radius_m": 1.1,
+    "beam_alignment": "tangent"
+  },
+  "grid": null
+}

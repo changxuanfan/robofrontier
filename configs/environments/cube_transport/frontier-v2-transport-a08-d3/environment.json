@@ -1,0 +1,1409 @@
+{
+  "schema": "robofrontier.workstation.v2",
+  "id": "transport-a08-d3",
+  "collection": "frontier_suite",
+  "arm_count": 8,
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.1,
+    "object_mass_kg": 0.7812500000000001,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0
+  },
+  "stations": [
+    {
+      "id": "A",
+      "base_position_m": [
+        -0.42,
+        -1.44,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.42,
+        -1.16,
+        0.94
+      ]
+    },
+    {
+      "id": "B",
+      "base_position_m": [
+        0.42,
+        -1.44,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.42,
+        -1.16,
+        0.94
+      ]
+    },
+    {
+      "id": "C",
+      "base_position_m": [
+        1.44,
+        -0.42,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.16,
+        -0.42,
+        0.94
+      ]
+    },
+    {
+      "id": "D",
+      "base_position_m": [
+        1.44,
+        0.42,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.16,
+        0.42,
+        0.94
+      ]
+    },
+    {
+      "id": "E",
+      "base_position_m": [
+        0.42,
+        1.44,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.42,
+        1.16,
+        0.94
+      ]
+    },
+    {
+      "id": "F",
+      "base_position_m": [
+        -0.42,
+        1.44,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.42,
+        1.16,
+        0.94
+      ]
+    },
+    {
+      "id": "G",
+      "base_position_m": [
+        -1.44,
+        0.42,
+        0.4
+      ],
+      "yaw_rad": 0,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.16,
+        0.42,
+        0.94
+      ]
+    },
+    {
+      "id": "H",
+      "base_position_m": [
+        -1.44,
+        -0.42,
+        0.4
+      ],
+      "yaw_rad": 0,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.16,
+        -0.42,
+        0.94
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "center_m": [
+        0,
+        -1.16,
+        0.375
+      ],
+      "half_size_m": [
+        1.66,
+        0.5,
+        0.025
+      ]
+    },
+    {
+      "center_m": [
+        0,
+        1.16,
+        0.375
+      ],
+      "half_size_m": [
+        1.66,
+        0.5,
+        0.025
+      ]
+    },
+    {
+      "center_m": [
+        -1.16,
+        0,
+        0.375
+      ],
+      "half_size_m": [
+        0.5,
+        0.6599999999999999,
+        0.025
+      ]
+    },
+    {
+      "center_m": [
+        1.16,
+        0,
+        0.375
+      ],
+      "half_size_m": [
+        0.5,
+        0.6599999999999999,
+        0.025
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "A_B",
+      "stations": [
+        "A",
+        "B"
+      ],
+      "position_m": [
+        0.0,
+        -1.24,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "B_C",
+      "stations": [
+        "B",
+        "C"
+      ],
+      "position_m": [
+        0.83,
+        -0.83,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "C_D",
+      "stations": [
+        "C",
+        "D"
+      ],
+      "position_m": [
+        1.24,
+        0.0,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "D_E",
+      "stations": [
+        "D",
+        "E"
+      ],
+      "position_m": [
+        0.83,
+        0.83,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "E_F",
+      "stations": [
+        "E",
+        "F"
+      ],
+      "position_m": [
+        0.0,
+        1.24,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "F_G",
+      "stations": [
+        "F",
+        "G"
+      ],
+      "position_m": [
+        -0.83,
+        0.83,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "G_H",
+      "stations": [
+        "G",
+        "H"
+      ],
+      "position_m": [
+        -1.24,
+        0.0,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "H_A",
+      "stations": [
+        "H",
+        "A"
+      ],
+      "position_m": [
+        -0.83,
+        -0.83,
+        0.45
+      ],
+      "capacity": 1
+    }
+  ],
+  "objects": [
+    {
+      "id": "A_item1",
+      "source": "A",
+      "identity": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.17,
+        -1.24,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        0.7071067811865476,
+        0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "A_item2",
+      "source": "A",
+      "identity": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.42,
+        -1.14,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        6.123233995736766e-17,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "id": "A_item3",
+      "source": "A",
+      "identity": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.67,
+        -1.24,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        -0.7071067811865475,
+        0.7071067811865476,
+        0.0
+      ]
+    },
+    {
+      "id": "B_item1",
+      "source": "B",
+      "identity": "B",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.67,
+        -1.24,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        0.7071067811865476,
+        0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "B_item2",
+      "source": "B",
+      "identity": "B",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.42,
+        -1.14,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        6.123233995736766e-17,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "id": "B_item3",
+      "source": "B",
+      "identity": "B",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.17,
+        -1.24,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        -0.7071067811865475,
+        0.7071067811865476,
+        0.0
+      ]
+    },
+    {
+      "id": "C_item1",
+      "source": "C",
+      "identity": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.1
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.24,
+        -0.17,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        6.123233995736766e-17,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "id": "C_item2",
+      "source": "C",
+      "identity": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.1
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.14,
+        -0.42,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        -0.7071067811865475,
+        0.7071067811865476,
+        0.0
+      ]
+    },
+    {
+      "id": "C_item3",
+      "source": "C",
+      "identity": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.1
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.24,
+        -0.67,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        1.0,
+        -1.2246467991473532e-16,
+        0.0
+      ]
+    },
+    {
+      "id": "D_item1",
+      "source": "D",
+      "identity": "D",
+      "color": "white",
+      "rgb": [
+        0.95,
+        0.95,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.24,
+        0.67,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        6.123233995736766e-17,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "id": "D_item2",
+      "source": "D",
+      "identity": "D",
+      "color": "white",
+      "rgb": [
+        0.95,
+        0.95,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.14,
+        0.42,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        -0.7071067811865475,
+        0.7071067811865476,
+        0.0
+      ]
+    },
+    {
+      "id": "D_item3",
+      "source": "D",
+      "identity": "D",
+      "color": "white",
+      "rgb": [
+        0.95,
+        0.95,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.24,
+        0.17,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        1.0,
+        -1.2246467991473532e-16,
+        0.0
+      ]
+    },
+    {
+      "id": "E_item1",
+      "source": "E",
+      "identity": "E",
+      "color": "cyan",
+      "rgb": [
+        0.08,
+        0.66,
+        0.68
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.17,
+        1.24,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        0.7071067811865476,
+        -0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "E_item2",
+      "source": "E",
+      "identity": "E",
+      "color": "cyan",
+      "rgb": [
+        0.08,
+        0.66,
+        0.68
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.42,
+        1.14,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "E_item3",
+      "source": "E",
+      "identity": "E",
+      "color": "cyan",
+      "rgb": [
+        0.08,
+        0.66,
+        0.68
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.67,
+        1.24,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        0.7071067811865476,
+        0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "F_item1",
+      "source": "F",
+      "identity": "F",
+      "color": "purple",
+      "rgb": [
+        0.49,
+        0.27,
+        0.69
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.67,
+        1.24,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        0.7071067811865476,
+        -0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "F_item2",
+      "source": "F",
+      "identity": "F",
+      "color": "purple",
+      "rgb": [
+        0.49,
+        0.27,
+        0.69
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.42,
+        1.14,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "F_item3",
+      "source": "F",
+      "identity": "F",
+      "color": "purple",
+      "rgb": [
+        0.49,
+        0.27,
+        0.69
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.17,
+        1.24,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        0.7071067811865476,
+        0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "G_item1",
+      "source": "G",
+      "identity": "G",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -1.24,
+        0.17,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "G_item2",
+      "source": "G",
+      "identity": "G",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -1.14,
+        0.42,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        0.7071067811865476,
+        0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "G_item3",
+      "source": "G",
+      "identity": "G",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -1.24,
+        0.67,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        6.123233995736766e-17,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "id": "H_item1",
+      "source": "H",
+      "identity": "H",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -1.24,
+        -0.67,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "H_item2",
+      "source": "H",
+      "identity": "H",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -1.14,
+        -0.42,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        0.7071067811865476,
+        0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "H_item3",
+      "source": "H",
+      "identity": "H",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -1.24,
+        -0.17,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        6.123233995736766e-17,
+        1.0,
+        0.0
+      ]
+    }
+  ],
+  "floor_rgba": [
+    0.84,
+    0.9,
+    0.95,
+    1
+  ],
+  "table_rgba": [
+    0.604,
+    0.459,
+    0.345,
+    1
+  ],
+  "initial_keyframe": "initial",
+  "scene": "scene.xml",
+  "suite_case": {
+    "family": "transport",
+    "level": 3,
+    "suite_version": 2,
+    "scene_revision": 1,
+    "scale_index": 1,
+    "arms": 8,
+    "id": "transport-a08-d3",
+    "directory": "configs/environments/cube_transport/frontier-v2-transport-a08-d3"
+  },
+  "gripper_profile": "offset-aluminium-40-120mm",
+  "goals": [
+    {
+      "goal_id": "A_slot1",
+      "robot": "A",
+      "board": "board_A",
+      "local_position_m": [
+        -0.1,
+        -0.115,
+        0.058
+      ],
+      "position_m": [
+        -0.305,
+        -0.95,
+        0.638
+      ],
+      "requires": {
+        "identity": "A"
+      },
+      "latch_slider": "A_slot1_slider_joint"
+    },
+    {
+      "goal_id": "A_slot2",
+      "robot": "A",
+      "board": "board_A",
+      "local_position_m": [
+        -0.1,
+        0.115,
+        0.058
+      ],
+      "position_m": [
+        -0.535,
+        -0.95,
+        0.638
+      ],
+      "requires": {
+        "identity": "B"
+      },
+      "latch_slider": "A_slot2_slider_joint"
+    },
+    {
+      "goal_id": "A_slot3",
+      "robot": "A",
+      "board": "board_A",
+      "local_position_m": [
+        0.12,
+        0,
+        0.058
+      ],
+      "position_m": [
+        -0.42,
+        -0.73,
+        0.638
+      ],
+      "requires": {
+        "identity": "E"
+      },
+      "latch_slider": "A_slot3_slider_joint"
+    },
+    {
+      "goal_id": "B_slot1",
+      "robot": "B",
+      "board": "board_B",
+      "local_position_m": [
+        -0.1,
+        -0.115,
+        0.058
+      ],
+      "position_m": [
+        0.535,
+        -0.95,
+        0.638
+      ],
+      "requires": {
+        "identity": "B"
+      },
+      "latch_slider": "B_slot1_slider_joint"
+    },
+    {
+      "goal_id": "B_slot2",
+      "robot": "B",
+      "board": "board_B",
+      "local_position_m": [
+        -0.1,
+        0.115,
+        0.058
+      ],
+      "position_m": [
+        0.305,
+        -0.95,
+        0.638
+      ],
+      "requires": {
+        "identity": "C"
+      },
+      "latch_slider": "B_slot2_slider_joint"
+    },
+    {
+      "goal_id": "B_slot3",
+      "robot": "B",
+      "board": "board_B",
+      "local_position_m": [
+        0.12,
+        0,
+        0.058
+      ],
+      "position_m": [
+        0.42,
+        -0.73,
+        0.638
+      ],
+      "requires": {
+        "identity": "G"
+      },
+      "latch_slider": "B_slot3_slider_joint"
+    },
+    {
+      "goal_id": "C_slot1",
+      "robot": "C",
+      "board": "board_C",
+      "local_position_m": [
+        -0.1,
+        -0.115,
+        0.058
+      ],
+      "position_m": [
+        0.95,
+        -0.305,
+        0.638
+      ],
+      "requires": {
+        "identity": "D"
+      },
+      "latch_slider": "C_slot1_slider_joint"
+    },
+    {
+      "goal_id": "C_slot2",
+      "robot": "C",
+      "board": "board_C",
+      "local_position_m": [
+        -0.1,
+        0.115,
+        0.058
+      ],
+      "position_m": [
+        0.95,
+        -0.535,
+        0.638
+      ],
+      "requires": {
+        "identity": "E"
+      },
+      "latch_slider": "C_slot2_slider_joint"
+    },
+    {
+      "goal_id": "C_slot3",
+      "robot": "C",
+      "board": "board_C",
+      "local_position_m": [
+        0.12,
+        0,
+        0.058
+      ],
+      "position_m": [
+        0.73,
+        -0.42,
+        0.638
+      ],
+      "requires": {
+        "identity": "F"
+      },
+      "latch_slider": "C_slot3_slider_joint"
+    },
+    {
+      "goal_id": "D_slot1",
+      "robot": "D",
+      "board": "board_D",
+      "local_position_m": [
+        -0.1,
+        -0.115,
+        0.058
+      ],
+      "position_m": [
+        0.95,
+        0.5349999999999999,
+        0.638
+      ],
+      "requires": {
+        "identity": "D"
+      },
+      "latch_slider": "D_slot1_slider_joint"
+    },
+    {
+      "goal_id": "D_slot2",
+      "robot": "D",
+      "board": "board_D",
+      "local_position_m": [
+        -0.1,
+        0.115,
+        0.058
+      ],
+      "position_m": [
+        0.95,
+        0.30499999999999994,
+        0.638
+      ],
+      "requires": {
+        "identity": "H"
+      },
+      "latch_slider": "D_slot2_slider_joint"
+    },
+    {
+      "goal_id": "D_slot3",
+      "robot": "D",
+      "board": "board_D",
+      "local_position_m": [
+        0.12,
+        0,
+        0.058
+      ],
+      "position_m": [
+        0.73,
+        0.42,
+        0.638
+      ],
+      "requires": {
+        "identity": "H"
+      },
+      "latch_slider": "D_slot3_slider_joint"
+    },
+    {
+      "goal_id": "E_slot1",
+      "robot": "E",
+      "board": "board_E",
+      "local_position_m": [
+        -0.1,
+        -0.115,
+        0.058
+      ],
+      "position_m": [
+        0.305,
+        0.95,
+        0.638
+      ],
+      "requires": {
+        "identity": "A"
+      },
+      "latch_slider": "E_slot1_slider_joint"
+    },
+    {
+      "goal_id": "E_slot2",
+      "robot": "E",
+      "board": "board_E",
+      "local_position_m": [
+        -0.1,
+        0.115,
+        0.058
+      ],
+      "position_m": [
+        0.535,
+        0.95,
+        0.638
+      ],
+      "requires": {
+        "identity": "E"
+      },
+      "latch_slider": "E_slot2_slider_joint"
+    },
+    {
+      "goal_id": "E_slot3",
+      "robot": "E",
+      "board": "board_E",
+      "local_position_m": [
+        0.12,
+        0,
+        0.058
+      ],
+      "position_m": [
+        0.42,
+        0.73,
+        0.638
+      ],
+      "requires": {
+        "identity": "G"
+      },
+      "latch_slider": "E_slot3_slider_joint"
+    },
+    {
+      "goal_id": "F_slot1",
+      "robot": "F",
+      "board": "board_F",
+      "local_position_m": [
+        -0.1,
+        -0.115,
+        0.058
+      ],
+      "position_m": [
+        -0.535,
+        0.95,
+        0.638
+      ],
+      "requires": {
+        "identity": "C"
+      },
+      "latch_slider": "F_slot1_slider_joint"
+    },
+    {
+      "goal_id": "F_slot2",
+      "robot": "F",
+      "board": "board_F",
+      "local_position_m": [
+        -0.1,
+        0.115,
+        0.058
+      ],
+      "position_m": [
+        -0.305,
+        0.95,
+        0.638
+      ],
+      "requires": {
+        "identity": "F"
+      },
+      "latch_slider": "F_slot2_slider_joint"
+    },
+    {
+      "goal_id": "F_slot3",
+      "robot": "F",
+      "board": "board_F",
+      "local_position_m": [
+        0.12,
+        0,
+        0.058
+      ],
+      "position_m": [
+        -0.42,
+        0.73,
+        0.638
+      ],
+      "requires": {
+        "identity": "H"
+      },
+      "latch_slider": "F_slot3_slider_joint"
+    },
+    {
+      "goal_id": "G_slot1",
+      "robot": "G",
+      "board": "board_G",
+      "local_position_m": [
+        -0.1,
+        -0.115,
+        0.058
+      ],
+      "position_m": [
+        -0.95,
+        0.305,
+        0.638
+      ],
+      "requires": {
+        "identity": "B"
+      },
+      "latch_slider": "G_slot1_slider_joint"
+    },
+    {
+      "goal_id": "G_slot2",
+      "robot": "G",
+      "board": "board_G",
+      "local_position_m": [
+        -0.1,
+        0.115,
+        0.058
+      ],
+      "position_m": [
+        -0.95,
+        0.535,
+        0.638
+      ],
+      "requires": {
+        "identity": "C"
+      },
+      "latch_slider": "G_slot2_slider_joint"
+    },
+    {
+      "goal_id": "G_slot3",
+      "robot": "G",
+      "board": "board_G",
+      "local_position_m": [
+        0.12,
+        0,
+        0.058
+      ],
+      "position_m": [
+        -0.73,
+        0.42,
+        0.638
+      ],
+      "requires": {
+        "identity": "D"
+      },
+      "latch_slider": "G_slot3_slider_joint"
+    },
+    {
+      "goal_id": "H_slot1",
+      "robot": "H",
+      "board": "board_H",
+      "local_position_m": [
+        -0.1,
+        -0.115,
+        0.058
+      ],
+      "position_m": [
+        -0.95,
+        -0.535,
+        0.638
+      ],
+      "requires": {
+        "identity": "A"
+      },
+      "latch_slider": "H_slot1_slider_joint"
+    },
+    {
+      "goal_id": "H_slot2",
+      "robot": "H",
+      "board": "board_H",
+      "local_position_m": [
+        -0.1,
+        0.115,
+        0.058
+      ],
+      "position_m": [
+        -0.95,
+        -0.305,
+        0.638
+      ],
+      "requires": {
+        "identity": "F"
+      },
+      "latch_slider": "H_slot2_slider_joint"
+    },
+    {
+      "goal_id": "H_slot3",
+      "robot": "H",
+      "board": "board_H",
+      "local_position_m": [
+        0.12,
+        0,
+        0.058
+      ],
+      "position_m": [
+        -0.73,
+        -0.42,
+        0.638
+      ],
+      "requires": {
+        "identity": "G"
+      },
+      "latch_slider": "H_slot3_slider_joint"
+    }
+  ],
+  "mechanism": {
+    "kind": "spring_board_dual_pockets",
+    "cube_side_m": 0.1,
+    "cube_body_mass_kg": 0.7812500000000001,
+    "cube_material": "Solid wood; inherited nominal density",
+    "blade_size_m": null,
+    "blade_spacing_m": null,
+    "slot_opening_m": null,
+    "slot_depth_m": null,
+    "bottom_bar_size_m": [
+      0.136,
+      0.1,
+      0.006
+    ],
+    "latch": {
+      "left": "Fixed five-sided sleeve",
+      "right": "Passive spring-return five-sided slider",
+      "entry_face": "towards the cube",
+      "mouth_spacing_m": 0.116,
+      "engagement_each_m": 0.01,
+      "pocket_depth_m": 0.012,
+      "inside_width_m": 0.102,
+      "inside_height_left_m": 0.011,
+      "inside_height_right_m": 0.008,
+      "slider_travel_m": 0.013,
+      "slider_k_n_m": 100.0,
+      "slider_preload_n": 0.4,
+      "slider_damping_ns_m": 0.7
+    },
+    "spring_board": {
+      "translation_k_n_m": 5000.0,
+      "translation_damping_ns_m": 150.0,
+      "roll_pitch_k_nm_rad": 3.0,
+      "roll_pitch_damping_nms_rad": 0.3,
+      "per_axis_limit_rad": 0.35,
+      "translation_limit_m": [
+        -0.004,
+        0.02
+      ],
+      "support": "Equivalent central passive z/roll/pitch mechanism; cosmetic coil is not FEA"
+    },
+    "supplies": "Tabletop; no pedestals. Plug blades initially up/sideways; latch bars initially up with varied yaw."
+  }
+}

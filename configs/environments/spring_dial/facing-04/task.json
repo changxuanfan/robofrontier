@@ -1,0 +1,218 @@
+{
+  "kind": "spring_dial",
+  "id": "spring-dial-facing-04-policy-v1",
+  "status": "Policy adapter v1; engineering validated separately from model performance",
+  "scene_asset": "configs/environments/spring_dial/facing-04",
+  "scene_sha256": "0624fe17a33263dd9d3dff102d64a95bac811c1137e69be369c0339b6cfac3f6",
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -0.43,
+        -0.86,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "B": {
+      "base_position_m": [
+        -0.43,
+        0.86,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "C": {
+      "base_position_m": [
+        0.43,
+        -0.86,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "D": {
+      "base_position_m": [
+        0.43,
+        0.86,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    }
+  },
+  "objects": [],
+  "dials": [
+    {
+      "id": "A",
+      "nominal_robot": "A",
+      "center_m": [
+        -0.43,
+        -0.32,
+        0.461
+      ]
+    },
+    {
+      "id": "B",
+      "nominal_robot": "B",
+      "center_m": [
+        -0.43,
+        0.32,
+        0.461
+      ]
+    },
+    {
+      "id": "C",
+      "nominal_robot": "C",
+      "center_m": [
+        0.43,
+        -0.32,
+        0.461
+      ]
+    },
+    {
+      "id": "D",
+      "nominal_robot": "D",
+      "center_m": [
+        0.43,
+        0.32,
+        0.461
+      ]
+    }
+  ],
+  "table_height_m": 0.4,
+  "mechanism": {
+    "knob_core_diameter_m": 0.048,
+    "knob_overall_diameter_m": 0.054,
+    "knob_height_m": 0.044,
+    "rotation_range_deg": [
+      -180,
+      180
+    ],
+    "return_mechanism": "passive spring"
+  },
+  "physics": {
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 0
+  },
+  "goal": "Discover the hidden code and simultaneously hold its four dial settings until the display reads 4.",
+  "objective": "Succeed, and reduce valid code trials, unnecessary robot actions and total completion time. Compare information gain with physical execution and coordination cost; these metrics are reported separately.",
+  "coordinate_frame": "World +X right, +Y north, +Z up; degree labels use the common north-up top view.",
+  "allowed_code_angles_deg": [
+    90,
+    180,
+    270
+  ],
+  "allowed_code_symbols": [
+    1,
+    2,
+    3
+  ],
+  "symbol_to_angle_deg": {
+    "0": 0,
+    "1": 90,
+    "2": 180,
+    "3": 270
+  },
+  "candidate_codes": 81,
+  "rules": [
+    "All four dials start at symbol 0. Each hidden code entry is sampled independently and uniformly from symbols 1, 2, 3; repetitions are allowed and zero is never a code entry.",
+    "Top view: symbol 0 north, 1 east (90 degrees), 2 south (180 degrees), 3 west (270 degrees). Clockwise is positive; left 90 reaches symbol 3. Mechanical range is -180 to +180 degrees, not continuous winding; either endpoint represents symbol 2.",
+    "Rotate and hold through real robot/gripper contact. The spring returns an unrestrained dial toward zero. Direct dial-state writes, attachments, simulator resets and physics-parameter changes are unavailable policy actions.",
+    "Automatic feedback requires all four dials near nonzero marks and slow/stable for the declared duration. The display gives only the total correct count, not the identities of correct entries. Invalid/transient inputs display a dash; a valid zero score displays 0.",
+    "Every newly entered stable configuration counts as a trial, including intermediate configurations formed while adjusting. Continued holding and repeated observation do not create extra trials; leaving and re-entering can. There is no separate submit button.",
+    "The first valid score 4 wins. The visible 4 and private success record then latch; physical springs remain active. Post-success cleanup does not create more trials or erase success.",
+    "Robot motion completion is not proof of dial alignment. Pose and established grasp holding persist across tool calls, waits and normal control handback until changed by an explicit command.",
+    "Nominal robot/dial labels identify the initial arrangement, not an extra exclusive reservation. Use permitted ownership and actual reachability when choosing allocation."
+  ],
+  "planning_hints": [
+    "Compare the information value of a proposed trial with its required angle changes, execution time and coordination cost. Separate confirmed deductions from hypotheses.",
+    "You can retain some settings while changing others; a release/regrasp of every dial is not required for each trial.",
+    "A grasp pose and current joint configuration affect subsequent rotation range. Interpret feedback against an observed configuration, accounting for slip, tracking error and stale views.",
+    "When multiple roles operate one apparatus, coordinate the input configuration being tested so the aggregate feedback can be interpreted. Choose the communication and execution granularity yourself."
+  ],
+  "feedback": {
+    "angle_tolerance_deg": 4.0,
+    "max_speed_deg_s": 5.0,
+    "stable_duration_s": 0.25,
+    "max_sample_gap_s": 0.03
+  },
+  "completion": {
+    "stable_duration_sim_s": 0.25,
+    "max_sample_gap_sim_s": 0.03,
+    "success_latched": true,
+    "complete_sampling_required": true
+  },
+  "workspace_world_m": {
+    "lower": [
+      -0.95,
+      -1.03,
+      0.42500000000000004
+    ],
+    "upper": [
+      0.95,
+      1.03,
+      1.3
+    ]
+  },
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "dial_A",
+    "dial_B",
+    "dial_C",
+    "dial_D",
+    "global",
+    "global_side",
+    "top",
+    "board"
+  ],
+  "view_camera": "global",
+  "recording_camera": "board",
+  "camera_roles": {
+    "overview": "global",
+    "game_feedback": "board",
+    "dial_details": {
+      "A": "dial_A",
+      "B": "dial_B",
+      "C": "dial_C",
+      "D": "dial_D"
+    }
+  },
+  "observation_contract": {
+    "initial_positions_public": false,
+    "initial_geometry_public": true,
+    "policy": [
+      "RGB including the instrument display",
+      "robot_proprioception",
+      "action_status"
+    ],
+    "live_object_truth_for_policy": false,
+    "fixture_geometry": "Fixed fixture dimensions and initial axis locations are declared public; live dial angles and individual correctness are not.",
+    "motion_screen": "Optional nominal robot-only geometry; does not certify contact manipulation or dial state."
+  },
+  "metrics": [
+    "success",
+    "valid_trials",
+    "robot_action_count",
+    "absolute_dial_travel_rad",
+    "wall_time",
+    "simulation_time",
+    "holding_departures",
+    "zero_entries",
+    "sampling_gaps"
+  ]
+}

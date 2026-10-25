@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "id": "robo-factory-v3",
+  "units": "metres",
+  "coordinate_frame": "+X east, +Y north, +Z up",
+  "seed": 1729,
+  "building": {
+    "width_m": 48.0,
+    "depth_m": 42.0,
+    "eave_height_m": 7.2,
+    "roof_rise_m": 1.0,
+    "wall_thickness_m": 0.18,
+    "service_strip_m": 2.0,
+    "column_spacing_target_m": 6.0
+  },
+  "regions": [
+    {
+      "id": "transport",
+      "label": "TRANSPORT",
+      "bounds_xy_m": [
+        -21.0,
+        3.8,
+        -1.5,
+        18.0
+      ]
+    },
+    {
+      "id": "mosaic",
+      "label": "MOSAIC",
+      "bounds_xy_m": [
+        1.5,
+        3.8,
+        21.0,
+        18.0
+      ]
+    },
+    {
+      "id": "relay",
+      "label": "AIR RELAY",
+      "bounds_xy_m": [
+        -21.0,
+        -18.0,
+        -1.5,
+        0.8
+      ]
+    },
+    {
+      "id": "dial",
+      "label": "DIAL LAB",
+      "bounds_xy_m": [
+        1.5,
+        -18.0,
+        21.0,
+        0.8
+      ]
+    }
+  ],
+  "appearance": {
+    "floor_tile_m": 4.0,
+    "floor_joint_spacing_m": 6.0,
+    "region_line_width_m": 0.065,
+    "material_budget_texture_mib": 256,
+    "material_budget_mesh_triangles": 300000,
+    "include_perimeter_storage": true,
+    "include_plants": true,
+    "perimeter_detail": true,
+    "batch_static_geometry": true,
+    "whole_floor_finish": true
+  },
+  "lighting": {
+    "environment_intensity": 1350,
+    "sun_intensity": 10000,
+    "ceiling_cluster_intensity": 16000,
+    "exposure": 4.3,
+    "shadow_map_size": 2048,
+    "ambient_occlusion_quality": "medium",
+    "fill_positions_m": [
+      [
+        -21,
+        -10,
+        4.7
+      ],
+      [
+        21,
+        -10,
+        4.7
+      ],
+      [
+        -21,
+        10,
+        4.7
+      ],
+      [
+        21,
+        10,
+        4.7
+      ]
+    ]
+  },
+  "render_profiles": {
+    "preview": {
+      "width": 1280,
+      "height": 720,
+      "fps_cap": 15
+    },
+    "inspection": {
+      "width": 1920,
+      "height": 1080,
+      "fps_cap": 15
+    }
+  }
+}

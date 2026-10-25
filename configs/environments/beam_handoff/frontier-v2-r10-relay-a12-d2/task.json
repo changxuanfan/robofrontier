@@ -1,0 +1,496 @@
+{
+  "kind": "frontier_suite",
+  "suite_version": 2,
+  "id": "relay-a12-d2",
+  "family": "relay",
+  "level": 2,
+  "scale": {
+    "family": "relay",
+    "level": 2,
+    "suite_version": 2,
+    "scene_revision": 10,
+    "scale_index": 1,
+    "arms": 12,
+    "id": "relay-a12-d2",
+    "source_scene_revision": 8,
+    "table_height_m": 0.8,
+    "directory": "configs/environments/beam_handoff/frontier-v2-r10-relay-a12-d2"
+  },
+  "scene_asset": "configs/environments/beam_handoff/frontier-v2-r10-relay-a12-d2",
+  "scene_sha256": "2670775000829baef6ef1a839ca657b049b1cbd42ee376b42ac12aba1bb01d67",
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -1.08,
+        1.7206287528020313e-16,
+        0.8
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    "B": {
+      "base_position_m": [
+        -2.38,
+        2.516649172247811e-16,
+        0.8
+      ],
+      "yaw_rad": 0.0
+    },
+    "C": {
+      "base_position_m": [
+        -0.873738353924943,
+        0.6348080724758711,
+        0.8
+      ],
+      "yaw_rad": 2.5132741228718345
+    },
+    "D": {
+      "base_position_m": [
+        -1.9254604466123748,
+        1.3989289004560863,
+        0.8
+      ],
+      "yaw_rad": -0.6283185307179586
+    },
+    "E": {
+      "base_position_m": [
+        -0.3337383539249431,
+        1.027141037598766,
+        0.8
+      ],
+      "yaw_rad": 1.8849555921538759
+    },
+    "F": {
+      "base_position_m": [
+        -0.7354604466123748,
+        2.2635145087824657,
+        0.8
+      ],
+      "yaw_rad": -1.2566370614359172
+    },
+    "G": {
+      "base_position_m": [
+        0.3337383539249432,
+        1.0271410375987657,
+        0.8
+      ],
+      "yaw_rad": 1.2566370614359172
+    },
+    "H": {
+      "base_position_m": [
+        0.7354604466123749,
+        2.2635145087824653,
+        0.8
+      ],
+      "yaw_rad": -1.8849555921538759
+    },
+    "I": {
+      "base_position_m": [
+        0.8737383539249433,
+        0.6348080724758709,
+        0.8
+      ],
+      "yaw_rad": 0.6283185307179586
+    },
+    "J": {
+      "base_position_m": [
+        1.925460446612375,
+        1.398928900456086,
+        0.8
+      ],
+      "yaw_rad": -2.5132741228718345
+    },
+    "K": {
+      "base_position_m": [
+        1.08,
+        -3.9801020972288984e-17,
+        0.8
+      ],
+      "yaw_rad": 0.0
+    },
+    "L": {
+      "base_position_m": [
+        2.38,
+        3.9801020972288984e-17,
+        0.8
+      ],
+      "yaw_rad": -3.141592653589793
+    }
+  },
+  "objects": [
+    {
+      "id": "payload_01",
+      "display_id": "1",
+      "source": "A",
+      "shape": "arc_beam",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "initial_position_m": [
+        -1.73,
+        -0.3799999999999998,
+        0.8225
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        0.7071067811865475
+      ],
+      "start_region_id": "pickup_01"
+    },
+    {
+      "id": "payload_02",
+      "display_id": "2",
+      "source": "E",
+      "shape": "arc_beam",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "initial_position_m": [
+        -0.8389374854831081,
+        1.5464423349906327,
+        0.8225
+      ],
+      "initial_quaternion_wxyz": [
+        0.9876883405951378,
+        0.0,
+        0.0,
+        0.15643446504023084
+      ],
+      "start_region_id": "pickup_02"
+    },
+    {
+      "id": "payload_03",
+      "display_id": "3",
+      "source": "I",
+      "shape": "arc_beam",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "initial_position_m": [
+        1.2115081195350677,
+        1.2757539246659617,
+        0.8225
+      ],
+      "initial_quaternion_wxyz": [
+        0.8910065241883679,
+        0.0,
+        0.0,
+        -0.4539904997395468
+      ],
+      "start_region_id": "pickup_03"
+    }
+  ],
+  "table_height_m": 0.8,
+  "cube_size_m": null,
+  "physics": {
+    "table_height_m": 0.8,
+    "cube_size_m": 0.06,
+    "object_mass_kg": 0.16874999999999996,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0,
+    "rigid_suspension_contact_time_constant_s": 0.004
+  },
+  "mechanism": {
+    "chord_m": 1.2,
+    "circular_angle_deg": 90,
+    "radius_m": 0.848528137423857,
+    "arc_length_m": 1.33286488144751,
+    "mass_kg": 1.6194308309587244,
+    "cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "collision": "32 tangent convex segments; smooth visual sweep; analytic arc mass distributed over segments",
+    "kind": "arc_closed_eye_weight",
+    "suspension": "Two closed, perpendicular steel eyes linked by real contact; no weld or cable",
+    "weight_mass_kg": 0.6,
+    "suspended_mass_kg": 0.6273211557239118,
+    "weight_body_free": true,
+    "cable_model": null,
+    "cable_count": 0,
+    "beam_bodies": [
+      "payload"
+    ],
+    "tray": null,
+    "rigid_suspension_profile": {
+      "weight_mass_kg": 0.6,
+      "weight_material": "Steel calibration-weight form; nominal manufactured mass, not a measured specimen",
+      "hook_centerline_radius_m": 0.022,
+      "eye_centerline_radius_m": 0.018,
+      "ring_stock_radius_m": 0.0025,
+      "ring_segments": 20,
+      "pendulum_shaft_length_m": 0.12,
+      "pendulum_shaft_radius_m": 0.005,
+      "beam_hinge_stiffness_nm_rad": 18.0,
+      "beam_hinge_damping_nms_rad": 0.55,
+      "beam_hinge_limit_rad": 0.4363323129985824,
+      "timestep_s": 0.002,
+      "contact_time_constant_s": 0.004,
+      "material_calibration_verified": false
+    },
+    "initial_condition": "Beam and weight are table-supported; closed eyes start interlinked, with clearance",
+    "pendulum": null,
+    "elastic_hinge": null,
+    "minimum_supporting_robots": 2,
+    "flexible_teams": true,
+    "layout": "upper_semicircle",
+    "outer_arms": null,
+    "inner_arms": null,
+    "inner_robot_radius_m": null,
+    "outer_robot_radius_m": null,
+    "curve_radius_m": 1.73,
+    "table_end_extension_m": 0.38,
+    "finish": "Tabletop destination region; no cradle; beam and suspended assembly must land stably",
+    "payload_count": 3,
+    "payload_assemblies": [
+      {
+        "id": "payload_01",
+        "beam_body": "payload_01",
+        "beam_bodies": [
+          "payload_01"
+        ],
+        "weight_body": "payload_01_weight",
+        "tray_body": null,
+        "source_region_id": "pickup_01",
+        "initial_route_stage_id": "zone_01",
+        "pickup_center_m": [
+          -1.73,
+          -0.3199999999999998,
+          0.8
+        ],
+        "pickup_half_size_m": [
+          0.24,
+          0.65
+        ],
+        "pickup_yaw_rad": 1.5707963267948966,
+        "destination_region_id": "zone_06",
+        "initial_position_m": [
+          -1.73,
+          -0.3799999999999998,
+          0.8225
+        ]
+      },
+      {
+        "id": "payload_02",
+        "beam_body": "payload_02",
+        "beam_bodies": [
+          "payload_02"
+        ],
+        "weight_body": "payload_02_weight",
+        "tray_body": null,
+        "source_region_id": "pickup_02",
+        "initial_route_stage_id": "zone_03",
+        "pickup_center_m": [
+          -0.7818740945053989,
+          1.5649833546531295,
+          0.8
+        ],
+        "pickup_half_size_m": [
+          0.24,
+          0.65
+        ],
+        "pickup_yaw_rad": 0.3141592653589793,
+        "destination_region_id": "zone_06",
+        "initial_position_m": [
+          -0.8389374854831081,
+          1.5464423349906327,
+          0.8225
+        ]
+      },
+      {
+        "id": "payload_03",
+        "beam_body": "payload_03",
+        "beam_bodies": [
+          "payload_03"
+        ],
+        "weight_body": "payload_03_weight",
+        "tray_body": null,
+        "source_region_id": "pickup_03",
+        "initial_route_stage_id": "zone_05",
+        "pickup_center_m": [
+          1.246775234672616,
+          1.2272129050034648,
+          0.8
+        ],
+        "pickup_half_size_m": [
+          0.24,
+          0.65
+        ],
+        "pickup_yaw_rad": -0.9424777960769379,
+        "destination_region_id": "zone_06",
+        "initial_position_m": [
+          1.2115081195350677,
+          1.2757539246659617,
+          0.8225
+        ]
+      }
+    ],
+    "initial_distribution": "Separate positions along the route; each travels rightward to the common destination",
+    "cable_to_cable_collision": false
+  },
+  "goals": [],
+  "grid": null,
+  "route": [
+    {
+      "region_id": "zone_01",
+      "center_m": [
+        -1.73,
+        -0.3799999999999998,
+        0.8
+      ],
+      "nominal_yaw_rad": 1.5707963267948966
+    },
+    {
+      "region_id": "zone_02",
+      "center_m": [
+        -1.399599400268659,
+        1.0168684864659787,
+        0.8
+      ],
+      "nominal_yaw_rad": 0.9424777960769379
+    },
+    {
+      "region_id": "zone_03",
+      "center_m": [
+        -0.5345994002686589,
+        1.6453277731906157,
+        0.8
+      ],
+      "nominal_yaw_rad": 0.3141592653589793
+    },
+    {
+      "region_id": "zone_04",
+      "center_m": [
+        0.534599400268659,
+        1.6453277731906155,
+        0.8
+      ],
+      "nominal_yaw_rad": -0.3141592653589793
+    },
+    {
+      "region_id": "zone_05",
+      "center_m": [
+        1.3995994002686591,
+        1.0168684864659785,
+        0.8
+      ],
+      "nominal_yaw_rad": -0.9424777960769379
+    },
+    {
+      "region_id": "zone_06",
+      "center_m": [
+        1.73,
+        -0.38,
+        0.8
+      ],
+      "nominal_yaw_rad": -1.5707963267948966,
+      "half_size_m": [
+        0.42,
+        0.95
+      ]
+    }
+  ],
+  "pairs": null,
+  "dials": null,
+  "gripper_profile": "standard-panda",
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "rules": [
+    "Move every numbered payload from its own initial route region rightward to the common destination. The 8/12/16-arm cases contain 2/3/4 independent payload assemblies. Regions indicate progress, not prescribed grasp points or fixed robot pairs.",
+    "Airborne transport needs at least two real beam grasps. Establish receiving support before sender release. Teams may change dynamically; the 16-arm half-ring contains 10 outer and 6 inner robots.",
+    "After pickup keep the whole transported assembly clear of table/floor until final landing. The 600 g weight is suspended through physically closed interlinked eyes, not a cable. Grasp the red beam, not the weight, eye or shaft. L3 adds a passive spring-return beam hinge and a short rigid pendulum; maintain support while accounting for flexion, swing, release and future receiving grasps. No stabilizing robot attachments.",
+    "Drops are recorded. The last established sending team may recover; a receiver cannot retrieve a dropped object to bypass a handover. No reset or respawn.",
+    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits."
+  ],
+  "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB",
+      "Robot proprioception and robot geometry",
+      "Action feedback",
+      "Visible dial count"
+    ]
+  },
+  "completion": {
+    "stable_duration_sim_s": 1.0,
+    "scope": "Mechanism-specific commissioning required; no inherited v1 evaluator assumed"
+  },
+  "execution_readiness": "environment_preview_only",
+  "oracle_verified": false,
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "G_front",
+    "G_side",
+    "H_front",
+    "H_side",
+    "I_front",
+    "I_side",
+    "J_front",
+    "J_side",
+    "K_front",
+    "K_side",
+    "L_front",
+    "L_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "payload_close",
+    "payload_01_close",
+    "payload_01_weight_close",
+    "payload_02_close",
+    "payload_02_weight_close",
+    "payload_03_close",
+    "payload_03_weight_close"
+  ],
+  "view_camera": "global",
+  "recording_camera": "global",
+  "workspace_world_m": {
+    "lower": [
+      -3.23,
+      -0.85,
+      0.42500000000000004
+    ],
+    "upper": [
+      3.23,
+      3.113514508782466,
+      2.1
+    ]
+  }
+}

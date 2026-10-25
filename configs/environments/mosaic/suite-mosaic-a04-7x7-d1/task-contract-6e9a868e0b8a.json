@@ -1,0 +1,1587 @@
+{
+  "kind": "frontier_suite",
+  "id": "mosaic-a04-7x7-d1",
+  "suite_version": 1,
+  "family": "mosaic",
+  "level": 1,
+  "scale": {
+    "id": "mosaic-a04-7x7-d1",
+    "family": "mosaic",
+    "level": 1,
+    "arms": 4,
+    "rows": 7,
+    "columns": 7
+  },
+  "scene_asset": "configs/environments/mosaic/suite-mosaic-a04-7x7-d1",
+  "scene_sha256": "b0ac88d889e3b185522accaebb9589fd966fa9dc1e20f8cd7f22afa901ca7bae",
+  "arms": {
+    "A": {
+      "base_position_m": [
+        0,
+        -0.68,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "B": {
+      "base_position_m": [
+        0.68,
+        0,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    "C": {
+      "base_position_m": [
+        0,
+        0.68,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "D": {
+      "base_position_m": [
+        -0.68,
+        0,
+        0.4
+      ],
+      "yaw_rad": 0
+    }
+  },
+  "objects": [
+    {
+      "id": "A_blue_1",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.16,
+        -0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_2",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.32,
+        -0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_3",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.4,
+        -0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_4",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.08,
+        -0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_5",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.24,
+        -0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_6",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.16,
+        -0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_7",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.24,
+        -0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_8",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.4,
+        -0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_9",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.4,
+        -0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_10",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.16,
+        -0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_11",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.08,
+        -0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_1",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.32,
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_2",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.32,
+        0.08,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_3",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.32,
+        -0.08,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_4",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.24,
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_5",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.32,
+        0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_6",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.32,
+        -0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_7",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.24,
+        0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_8",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.16,
+        0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_9",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.16,
+        0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_10",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.24,
+        0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_11",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.32,
+        -0.4,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_12",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.32,
+        0.4,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_13",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.32,
+        0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_14",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.24,
+        -0.4,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_15",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.24,
+        0.4,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_1",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_2",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        -0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_3",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        -0.08,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_4",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.24,
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_5",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.24,
+        0.16,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_6",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        0.4,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_7",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        0.08,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_8",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        -0.16,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_9",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.24,
+        0.08,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_10",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.24,
+        -0.16,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_11",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        -0.4,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_12",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        -0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_13",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.24,
+        -0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_14",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_15",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        0.16,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_16",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_17",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.24,
+        -0.08,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_18",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.24,
+        0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "C_yellow_1",
+      "source": "C",
+      "color": "yellow",
+      "rgb": [
+        0.97,
+        0.75,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.0,
+        0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "C_yellow_2",
+      "source": "C",
+      "color": "yellow",
+      "rgb": [
+        0.97,
+        0.75,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.08,
+        0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "C_yellow_3",
+      "source": "C",
+      "color": "yellow",
+      "rgb": [
+        0.97,
+        0.75,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.08,
+        0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "C_yellow_4",
+      "source": "C",
+      "color": "yellow",
+      "rgb": [
+        0.97,
+        0.75,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.0,
+        0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "C_yellow_5",
+      "source": "C",
+      "color": "yellow",
+      "rgb": [
+        0.97,
+        0.75,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.08,
+        0.24,
+        0.42
+      ]
+    }
+  ],
+  "table_height_m": 0.4,
+  "cube_size_m": 0.04,
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "cube_contact_time_constant_s": 0.004
+  },
+  "mechanism": {},
+  "goals": [
+    {
+      "goal_id": "r1c1",
+      "row": 1,
+      "column": 1,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        -0.153,
+        0.153,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r1c2",
+      "row": 1,
+      "column": 2,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        -0.102,
+        0.153,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r1c3",
+      "row": 1,
+      "column": 3,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        -0.051,
+        0.153,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r1c4",
+      "row": 1,
+      "column": 4,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.0,
+        0.153,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r1c5",
+      "row": 1,
+      "column": 5,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.051,
+        0.153,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r1c6",
+      "row": 1,
+      "column": 6,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.102,
+        0.153,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r1c7",
+      "row": 1,
+      "column": 7,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.153,
+        0.153,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r2c1",
+      "row": 2,
+      "column": 1,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        -0.153,
+        0.102,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r2c2",
+      "row": 2,
+      "column": 2,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        -0.102,
+        0.102,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r2c3",
+      "row": 2,
+      "column": 3,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        -0.051,
+        0.102,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r2c4",
+      "row": 2,
+      "column": 4,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        0.0,
+        0.102,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r2c5",
+      "row": 2,
+      "column": 5,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        0.051,
+        0.102,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r2c6",
+      "row": 2,
+      "column": 6,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.102,
+        0.102,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r2c7",
+      "row": 2,
+      "column": 7,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.153,
+        0.102,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r3c1",
+      "row": 3,
+      "column": 1,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        -0.153,
+        0.051,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r3c2",
+      "row": 3,
+      "column": 2,
+      "requires": {
+        "color": "yellow"
+      },
+      "position_m": [
+        -0.102,
+        0.051,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r3c3",
+      "row": 3,
+      "column": 3,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        -0.051,
+        0.051,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r3c4",
+      "row": 3,
+      "column": 4,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        0.0,
+        0.051,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r3c5",
+      "row": 3,
+      "column": 5,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        0.051,
+        0.051,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r3c6",
+      "row": 3,
+      "column": 6,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        0.102,
+        0.051,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r3c7",
+      "row": 3,
+      "column": 7,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.153,
+        0.051,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r4c1",
+      "row": 4,
+      "column": 1,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        -0.153,
+        0.0,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r4c2",
+      "row": 4,
+      "column": 2,
+      "requires": {
+        "color": "yellow"
+      },
+      "position_m": [
+        -0.102,
+        0.0,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r4c3",
+      "row": 4,
+      "column": 3,
+      "requires": {
+        "color": "yellow"
+      },
+      "position_m": [
+        -0.051,
+        0.0,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r4c4",
+      "row": 4,
+      "column": 4,
+      "requires": {
+        "color": "yellow"
+      },
+      "position_m": [
+        0.0,
+        0.0,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r4c5",
+      "row": 4,
+      "column": 5,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        0.051,
+        0.0,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r4c6",
+      "row": 4,
+      "column": 6,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        0.102,
+        0.0,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r4c7",
+      "row": 4,
+      "column": 7,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        0.153,
+        0.0,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r5c1",
+      "row": 5,
+      "column": 1,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        -0.153,
+        -0.051,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r5c2",
+      "row": 5,
+      "column": 2,
+      "requires": {
+        "color": "yellow"
+      },
+      "position_m": [
+        -0.102,
+        -0.051,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r5c3",
+      "row": 5,
+      "column": 3,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        -0.051,
+        -0.051,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r5c4",
+      "row": 5,
+      "column": 4,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        0.0,
+        -0.051,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r5c5",
+      "row": 5,
+      "column": 5,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        0.051,
+        -0.051,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r5c6",
+      "row": 5,
+      "column": 6,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        0.102,
+        -0.051,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r5c7",
+      "row": 5,
+      "column": 7,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.153,
+        -0.051,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r6c1",
+      "row": 6,
+      "column": 1,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        -0.153,
+        -0.102,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r6c2",
+      "row": 6,
+      "column": 2,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        -0.102,
+        -0.102,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r6c3",
+      "row": 6,
+      "column": 3,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        -0.051,
+        -0.102,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r6c4",
+      "row": 6,
+      "column": 4,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        0.0,
+        -0.102,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r6c5",
+      "row": 6,
+      "column": 5,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        0.051,
+        -0.102,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r6c6",
+      "row": 6,
+      "column": 6,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.102,
+        -0.102,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r6c7",
+      "row": 6,
+      "column": 7,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.153,
+        -0.102,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r7c1",
+      "row": 7,
+      "column": 1,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        -0.153,
+        -0.153,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r7c2",
+      "row": 7,
+      "column": 2,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        -0.102,
+        -0.153,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r7c3",
+      "row": 7,
+      "column": 3,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        -0.051,
+        -0.153,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r7c4",
+      "row": 7,
+      "column": 4,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.0,
+        -0.153,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r7c5",
+      "row": 7,
+      "column": 5,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.051,
+        -0.153,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r7c6",
+      "row": 7,
+      "column": 6,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.102,
+        -0.153,
+        0.40666666666666673
+      ]
+    },
+    {
+      "goal_id": "r7c7",
+      "row": 7,
+      "column": 7,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.153,
+        -0.153,
+        0.40666666666666673
+      ]
+    }
+  ],
+  "grid": {
+    "rows": 7,
+    "columns": 7,
+    "pitch_m": 0.051,
+    "cube_side_m": 0.04,
+    "pattern": [
+      "RBBWWWW",
+      "WRBBBWW",
+      "WYRRRRW",
+      "BYYYRRR",
+      "WYRRRRW",
+      "WRBBBWW",
+      "RBBWWWW"
+    ],
+    "floor_z_m": 0.3866666666666667,
+    "rim_z_m": 0.4,
+    "pocket_opening_m": 0.05
+  },
+  "route": null,
+  "pairs": null,
+  "dials": null,
+  "workspace_world_m": {
+    "lower": [
+      -1.01,
+      -1.01,
+      0.39
+    ],
+    "upper": [
+      1.01,
+      1.01,
+      1.35
+    ]
+  },
+  "coordinate_frame": "World +X right/east, +Y north, +Z up. Device marks belong to the movable device frame.",
+  "rules": [
+    "Assemble every pixel of the reference, including white cells, with one released stable cube per cell. Supply color does not assign permanent ownership.",
+    "The reference is north-up in the common world frame, centered at the declared assembly origin, with 51 mm cell-center spacing. The three versions share horizontal centers.",
+    "Pockets require physical seating. Printed and unmarked versions have the same target pattern. Previously correct cells can be disturbed by later contact.",
+    "Use robot actuation and real physical contact. No attachments to hands, state writes, teleportation, simulator reset, material edits or hidden evaluator access."
+  ],
+  "objective": "Complete the task correctly and efficiently; account for planning, observation, communication, recovery and useful holding as well as simultaneous motion.",
+  "completion": {
+    "stable_duration_sim_s": 0.6,
+    "max_sample_gap_sim_s": 0.03,
+    "xy_tolerance_m": 0.005,
+    "z_tolerance_m": 0.003,
+    "linear_speed_m_s": 0.01,
+    "angular_speed_rad_s": 0.1
+  },
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "assembly_close"
+  ],
+  "view_camera": "global",
+  "recording_camera": "global",
+  "observation_contract": {
+    "initial_positions_public": false,
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "selected timestamped RGB",
+      "robot proprioception",
+      "action status",
+      "visible aggregate dial score"
+    ],
+    "motion_screen": "Robot-only geometry. Does not certify apparatus contact, insertion, shared load or cable clearance."
+  },
+  "status": "Suite development task; per-scene Oracle evidence is separate from policy performance.",
+  "process_contract": {
+    "collision_sampling": "every physics step",
+    "inter_robot_penetration_limit_m": 0.0002,
+    "self_robot_penetration_limit_m": 0.001,
+    "expected_finger_to_finger_closure_excluded": true,
+    "relay_receiving_overlap_sim_s": 0.2,
+    "relay_support_gap_sim_s": 0.2,
+    "relay_positive_contact_force_threshold_n": 0.02,
+    "relay_support_proxy": "Bilateral force-bearing finger contact; not an individual load-share measurement",
+    "driven_red_support_gap_sim_s": 0.05
+  }
+}

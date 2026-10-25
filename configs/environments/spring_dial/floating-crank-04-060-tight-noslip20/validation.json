@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "scope": "Eight-arm contact-dynamics Oracle: blue support, airborne prerequisite, eccentric crank marks 1/2/3, physical withdrawal and passive return.",
+  "llm_used": false,
+  "scene_sha256": "7930f511d25336f123f796d3246410fee8aa2ded6a721e0f08c81f3065e8d4f4",
+  "oracle_report": "runs/floating-crank-oracle-20261024/r3/report.json",
+  "minimum_airborne_clearance_m": 0.044625874969449586,
+  "maximum_nonzero_mark_error_deg": 2.6871023207996814,
+  "maximum_return_error_deg": 0.11675559589257387,
+  "inter_robot_contacts": 0,
+  "maximum_support_contact_gap_s": 0.0,
+  "early_crank_contacts": 0,
+  "release_passed": true,
+  "known_limits": [
+    "One support/grasp trajectory, not all configurations or hardware equivalence.",
+    "In-place full opening failed in r2 with unchanged NoSlip=20; r3 cancels force hold, withdraws axially, then verifies full opening. No controller gain, friction, spring or solver change was used to obtain the pass."
+  ],
+  "earlier_attempts": [
+    "r1: support pose IK limit",
+    "r2: all marks passed; in-place opening failed"
+  ],
+  "recordings": {
+    "global_front": "runs/floating-crank-oracle-20261024/r3/oracle-eight-arm.mp4",
+    "global_rear": "runs/floating-crank-oracle-20261024/r3/oracle-global-rear.mp4",
+    "synchronized_capture": true,
+    "all_frames_decoded": true
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "case": {
+    "id": "mosaic-a06-7x14-d3",
+    "family": "mosaic",
+    "level": 3,
+    "arms": 6,
+    "rows": 7,
+    "columns": 14,
+    "objects": 98,
+    "pitch_m": 0.051,
+    "guidance": "unmarked",
+    "status": "generated",
+    "directory": "configs/environments/mosaic/suite-mosaic-a06-7x14-d3",
+    "scene_sha256": "5b0aa56b2210a383ccbd2d6ec345a78522ab332cbf1bd18ada2b978475092bd2",
+    "layout_report": "configs/environments/mosaic/suite-mosaic-a06-7x14-d3/layout-validation.json"
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "cube_contact_time_constant_s": 0.004
+  },
+  "mechanism": null,
+  "grid": {
+    "rows": 7,
+    "columns": 14,
+    "pitch_m": 0.051,
+    "cube_side_m": 0.04,
+    "pattern": [
+      "RBBWWWWWWWWWWW",
+      "WRBBBBBBBBBBWW",
+      "WYRRRRRRRRRRRW",
+      "BYYYYBYYYBYRRR",
+      "WYRRRRRRRRRRRW",
+      "WRBBBBBBBBBBWW",
+      "RBBWWWWWWWWWWW"
+    ],
+    "floor_z_m": 0.4,
+    "rim_z_m": 0.4,
+    "pocket_opening_m": null
+  }
+}

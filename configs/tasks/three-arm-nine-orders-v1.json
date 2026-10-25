@@ -1,0 +1,247 @@
+{
+  "id": "three-arm-nine-orders-v1",
+  "description": "各臂将三个指定来源及颜色的方块放入目标槽，释放夹爪并让出接收路径。来源按开局区域定义，接力不改变来源；任务不规定运输顺序或暂放点。",
+  "table_height_m": 0.4,
+  "cube_size_m": 0.04,
+  "cube_mass_kg": 0.05,
+  "contact_friction": [
+    1.0,
+    0.005,
+    0.0001
+  ],
+  "noslip_iterations": 10,
+  "arms": {
+    "A": -0.65,
+    "B": 0.0,
+    "C": 0.65
+  },
+  "objects": [
+    {
+      "id": "A_red_1",
+      "color": "red",
+      "pattern": "plain",
+      "region": "A",
+      "initial_position_m": [
+        0.42,
+        -0.75,
+        0.42
+      ]
+    },
+    {
+      "id": "A_red_2",
+      "color": "red",
+      "pattern": "plain",
+      "region": "A",
+      "initial_position_m": [
+        0.42,
+        -0.65,
+        0.42
+      ]
+    },
+    {
+      "id": "A_red_3",
+      "color": "red",
+      "pattern": "plain",
+      "region": "A",
+      "initial_position_m": [
+        0.42,
+        -0.55,
+        0.42
+      ]
+    },
+    {
+      "id": "B_blue_1",
+      "color": "blue",
+      "pattern": "plain",
+      "region": "B",
+      "initial_position_m": [
+        0.42,
+        -0.1,
+        0.42
+      ]
+    },
+    {
+      "id": "B_blue_2",
+      "color": "blue",
+      "pattern": "plain",
+      "region": "B",
+      "initial_position_m": [
+        0.42,
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "id": "B_blue_3",
+      "color": "blue",
+      "pattern": "plain",
+      "region": "B",
+      "initial_position_m": [
+        0.42,
+        0.1,
+        0.42
+      ]
+    },
+    {
+      "id": "C_green_1",
+      "color": "green",
+      "pattern": "plain",
+      "region": "C",
+      "initial_position_m": [
+        0.42,
+        0.55,
+        0.42
+      ]
+    },
+    {
+      "id": "C_green_2",
+      "color": "green",
+      "pattern": "plain",
+      "region": "C",
+      "initial_position_m": [
+        0.42,
+        0.65,
+        0.42
+      ]
+    },
+    {
+      "id": "C_green_3",
+      "color": "green",
+      "pattern": "plain",
+      "region": "C",
+      "initial_position_m": [
+        0.42,
+        0.75,
+        0.42
+      ]
+    }
+  ],
+  "goals": {
+    "A": [
+      {
+        "slot": "slot1",
+        "position_m": [
+          0.57,
+          -0.75,
+          0.42
+        ],
+        "requires": {
+          "color": "red",
+          "region": "A"
+        }
+      },
+      {
+        "slot": "slot2",
+        "position_m": [
+          0.57,
+          -0.65,
+          0.42
+        ],
+        "requires": {
+          "color": "green",
+          "region": "C"
+        }
+      },
+      {
+        "slot": "slot3",
+        "position_m": [
+          0.57,
+          -0.55,
+          0.42
+        ],
+        "requires": {
+          "color": "green",
+          "region": "C"
+        }
+      }
+    ],
+    "B": [
+      {
+        "slot": "slot1",
+        "position_m": [
+          0.57,
+          -0.1,
+          0.42
+        ],
+        "requires": {
+          "color": "blue",
+          "region": "B"
+        }
+      },
+      {
+        "slot": "slot2",
+        "position_m": [
+          0.57,
+          0.0,
+          0.42
+        ],
+        "requires": {
+          "color": "red",
+          "region": "A"
+        }
+      },
+      {
+        "slot": "slot3",
+        "position_m": [
+          0.57,
+          0.1,
+          0.42
+        ],
+        "requires": {
+          "color": "green",
+          "region": "C"
+        }
+      }
+    ],
+    "C": [
+      {
+        "slot": "slot1",
+        "position_m": [
+          0.57,
+          0.55,
+          0.42
+        ],
+        "requires": {
+          "color": "red",
+          "region": "A"
+        }
+      },
+      {
+        "slot": "slot2",
+        "position_m": [
+          0.57,
+          0.65,
+          0.42
+        ],
+        "requires": {
+          "color": "blue",
+          "region": "B"
+        }
+      },
+      {
+        "slot": "slot3",
+        "position_m": [
+          0.57,
+          0.75,
+          0.42
+        ],
+        "requires": {
+          "color": "blue",
+          "region": "B"
+        }
+      }
+    ]
+  },
+  "evaluation": {
+    "xy_tolerance_m": 0.025,
+    "z_tolerance_m": 0.012
+  },
+  "observation_contract": {
+    "initial_positions_public": true,
+    "runtime": "RGB + robot proprioception + execution status; no dynamic object truth",
+    "camera_selection": "agent",
+    "image_loading": "agent; returning a path does not prove viewing"
+  },
+  "objective": "完成全部目标，并尽量缩短全队完成时间，减少无效搬运、无必要的等待与重复观察。碰撞和操作失误应避免，发生时如实报告。",
+  "execution_context": "独立 MuJoCo 仿真实验。关节、工作空间及运动限值由执行器约束；Agent 在这些硬边界内，根据可用证据自主权衡剩余不确定性并选择并行候选。允许尝试有依据的并行安排，不要求逐动作先取得形式化的完整碰撞认证。"
+}

@@ -1,0 +1,20 @@
+{
+  "status": "static_checks_passed",
+  "endpoint_square_side_m": 1.4,
+  "tabletop_samples": 1250,
+  "endpoint_regions_fully_supported": true,
+  "complete_assembly_footprint_tabletop_samples": 27,
+  "first_complete_assembly_inside_start": true,
+  "complete_rigid_transform_checked": [
+    "payload_01",
+    "payload_02",
+    "payload_03"
+  ],
+  "original_mechanics_and_robot_table_geometry_preserved": true,
+  "initial_robot_payload_or_different_payload_penetrations_over_1mm": [],
+  "source_directory": "configs/environments/beam_handoff/frontier-v2-r10-relay-a12-d3",
+  "physics_steps": 0,
+  "oracle_verified": false,
+  "policy_verified": false,
+  "scope": "Static initial geometry and metadata only; no grasp, dynamics, collision-free motion or complete-task feasibility claim"
+}

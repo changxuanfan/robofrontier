@@ -1,0 +1,75 @@
+{
+  "case": {
+    "id": "dial-n06-d1",
+    "family": "dial",
+    "level": 1,
+    "arms": 6,
+    "dials": 6,
+    "mechanism": "fixed_gear",
+    "candidate_codes": 729,
+    "status": "generated",
+    "layout": "3_rows_2_columns",
+    "directory": "configs/environments/spring_dial/suite-dial-n06-d1-v2",
+    "scene_sha256": "1790465b6f3fb4fe13df2610ea88f6c19416b331aee8a2ef2d5d7a4308447aef",
+    "layout_report": "configs/environments/spring_dial/suite-dial-n06-d1-v2/layout-validation.json",
+    "verification_results": {},
+    "last_oracle_report": null,
+    "scene_revision": 2,
+    "history": [
+      {
+        "directory": "configs/environments/spring_dial/suite-dial-n06-d1",
+        "scene_sha256": "afacd74f30356a3c9a34211899fce3b0906ccd069d3c1866fa8ea33887df8d0f",
+        "status": "oracle_witness_passed",
+        "verification_results": {
+          "0": {
+            "passed": true,
+            "scene_sha256": "afacd74f30356a3c9a34211899fce3b0906ccd069d3c1866fa8ea33887df8d0f",
+            "report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-001/report.json"
+          }
+        },
+        "last_oracle_report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-001/report.json",
+        "superseded_reason": "Freeze a common 0.03 Nm/rad spring, physical crank balance and calibrated hard contacts; earlier scenes and witness records remain unchanged"
+      }
+    ],
+    "contract_sha256": "d5d4e90999f75614e96bef2f0b0909fc84bffd7a290f65b05edf4fd01b4ee085",
+    "previous_contract_sha256": "efd6f0a5351d381e879d9ccb0d6214f84acafee10a1fd1906bcee6b8141d5d73"
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 20,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "dial_count": 6,
+    "interface": "gear",
+    "free_modules": false,
+    "handle_material": null,
+    "handle_mass_kg": 0,
+    "spring_nm_rad": 0.03,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      0.0,
+      -1.2000000000000002
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ]
+  },
+  "grid": null
+}

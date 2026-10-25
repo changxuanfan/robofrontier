@@ -1,0 +1,93 @@
+{
+  "scope": "Compiled mass/inertia plus static F/k estimates; no dynamics or manipulation test",
+  "boards": {
+    "board_A": {
+      "previous_mass_kg": 0.7253154999999999,
+      "mass_kg": 1.2305059000000003,
+      "previous_principal_inertia_kg_m2": [
+        0.006939271174197917,
+        0.00626403689699343,
+        0.0007992940732746785
+      ],
+      "principal_inertia_kg_m2": [
+        0.01990603527019792,
+        0.017903623951648358,
+        0.002212690753529602
+      ],
+      "com_body_m": [
+        3.359346321911188e-20,
+        -9.732391789544668e-18,
+        -0.016016687039046296
+      ],
+      "unloaded_linear_sag_estimate_m": null,
+      "three_cube_sag_upper_estimate_m": null
+    },
+    "board_B": {
+      "previous_mass_kg": 0.7253154999999999,
+      "mass_kg": 1.2305059000000003,
+      "previous_principal_inertia_kg_m2": [
+        0.006939271174197917,
+        0.00626403689699343,
+        0.0007992940732746785
+      ],
+      "principal_inertia_kg_m2": [
+        0.01990603527019792,
+        0.017903623951648358,
+        0.002212690753529602
+      ],
+      "com_body_m": [
+        3.359346321911188e-20,
+        -9.732391789544668e-18,
+        -0.016016687039046296
+      ],
+      "unloaded_linear_sag_estimate_m": null,
+      "three_cube_sag_upper_estimate_m": null
+    },
+    "board_C": {
+      "previous_mass_kg": 0.7253154999999999,
+      "mass_kg": 1.2305059000000003,
+      "previous_principal_inertia_kg_m2": [
+        0.006939271174197917,
+        0.00626403689699343,
+        0.0007992940732746785
+      ],
+      "principal_inertia_kg_m2": [
+        0.01990603527019792,
+        0.017903623951648358,
+        0.002212690753529602
+      ],
+      "com_body_m": [
+        3.359346321911188e-20,
+        -9.732391789544668e-18,
+        -0.016016687039046296
+      ],
+      "unloaded_linear_sag_estimate_m": null,
+      "three_cube_sag_upper_estimate_m": null
+    },
+    "board_D": {
+      "previous_mass_kg": 0.7253154999999999,
+      "mass_kg": 1.2305059000000003,
+      "previous_principal_inertia_kg_m2": [
+        0.006939271174197917,
+        0.00626403689699343,
+        0.0007992940732746785
+      ],
+      "principal_inertia_kg_m2": [
+        0.01990603527019792,
+        0.017903623951648358,
+        0.002212690753529602
+      ],
+      "com_body_m": [
+        3.359346321911188e-20,
+        -9.732391789544668e-18,
+        -0.016016687039046296
+      ],
+      "unloaded_linear_sag_estimate_m": null,
+      "three_cube_sag_upper_estimate_m": null
+    }
+  },
+  "spring_changed": false,
+  "contact_material_changed": false,
+  "physics_timestep_s": 0.002,
+  "estimate_limits": "Sag ignores tilt, contacts and loading transients; it is not an insertion/reachability guarantee."
+}

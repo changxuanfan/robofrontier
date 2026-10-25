@@ -1,0 +1,1207 @@
+{
+  "kind": "frontier_suite",
+  "suite_version": 2,
+  "id": "transport-a08-d1",
+  "family": "transport",
+  "level": 1,
+  "scale": {
+    "family": "transport",
+    "level": 1,
+    "suite_version": 2,
+    "scene_revision": 1,
+    "scale_index": 1,
+    "arms": 8,
+    "id": "transport-a08-d1",
+    "directory": "configs/environments/cube_transport/frontier-v2-transport-a08-d1"
+  },
+  "scene_asset": "configs/environments/cube_transport/frontier-v2-transport-a08-d1",
+  "scene_sha256": "d23f05df76fbbb80663f6334a62b2d700aaa08e2629ce2fb69f636c06cde6199",
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -0.42,
+        -1.44,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "B": {
+      "base_position_m": [
+        0.42,
+        -1.44,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "C": {
+      "base_position_m": [
+        1.44,
+        -0.42,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    "D": {
+      "base_position_m": [
+        1.44,
+        0.42,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    "E": {
+      "base_position_m": [
+        0.42,
+        1.44,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "F": {
+      "base_position_m": [
+        -0.42,
+        1.44,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "G": {
+      "base_position_m": [
+        -1.44,
+        0.42,
+        0.4
+      ],
+      "yaw_rad": 0
+    },
+    "H": {
+      "base_position_m": [
+        -1.44,
+        -0.42,
+        0.4
+      ],
+      "yaw_rad": 0
+    }
+  },
+  "objects": [
+    {
+      "id": "A_item1",
+      "source": "A",
+      "identity": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.17,
+        -1.24,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        0.7071067811865475
+      ]
+    },
+    {
+      "id": "A_item2",
+      "source": "A",
+      "identity": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.42,
+        -1.14,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        0.7071067811865475
+      ]
+    },
+    {
+      "id": "A_item3",
+      "source": "A",
+      "identity": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.67,
+        -1.24,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        0.7071067811865475
+      ]
+    },
+    {
+      "id": "B_item1",
+      "source": "B",
+      "identity": "B",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.67,
+        -1.24,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        0.7071067811865475
+      ]
+    },
+    {
+      "id": "B_item2",
+      "source": "B",
+      "identity": "B",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.42,
+        -1.14,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        0.7071067811865475
+      ]
+    },
+    {
+      "id": "B_item3",
+      "source": "B",
+      "identity": "B",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.17,
+        -1.24,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        0.7071067811865475
+      ]
+    },
+    {
+      "id": "C_item1",
+      "source": "C",
+      "identity": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.1
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.24,
+        -0.17,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        6.123233995736766e-17,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "C_item2",
+      "source": "C",
+      "identity": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.1
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.14,
+        -0.42,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        6.123233995736766e-17,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "C_item3",
+      "source": "C",
+      "identity": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.1
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.24,
+        -0.67,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        6.123233995736766e-17,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "D_item1",
+      "source": "D",
+      "identity": "D",
+      "color": "white",
+      "rgb": [
+        0.95,
+        0.95,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.24,
+        0.67,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        6.123233995736766e-17,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "D_item2",
+      "source": "D",
+      "identity": "D",
+      "color": "white",
+      "rgb": [
+        0.95,
+        0.95,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.14,
+        0.42,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        6.123233995736766e-17,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "D_item3",
+      "source": "D",
+      "identity": "D",
+      "color": "white",
+      "rgb": [
+        0.95,
+        0.95,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.24,
+        0.17,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        6.123233995736766e-17,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "E_item1",
+      "source": "E",
+      "identity": "E",
+      "color": "cyan",
+      "rgb": [
+        0.08,
+        0.66,
+        0.68
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.17,
+        1.24,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        -0.7071067811865475
+      ]
+    },
+    {
+      "id": "E_item2",
+      "source": "E",
+      "identity": "E",
+      "color": "cyan",
+      "rgb": [
+        0.08,
+        0.66,
+        0.68
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.42,
+        1.14,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        -0.7071067811865475
+      ]
+    },
+    {
+      "id": "E_item3",
+      "source": "E",
+      "identity": "E",
+      "color": "cyan",
+      "rgb": [
+        0.08,
+        0.66,
+        0.68
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.67,
+        1.24,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        -0.7071067811865475
+      ]
+    },
+    {
+      "id": "F_item1",
+      "source": "F",
+      "identity": "F",
+      "color": "purple",
+      "rgb": [
+        0.49,
+        0.27,
+        0.69
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.67,
+        1.24,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        -0.7071067811865475
+      ]
+    },
+    {
+      "id": "F_item2",
+      "source": "F",
+      "identity": "F",
+      "color": "purple",
+      "rgb": [
+        0.49,
+        0.27,
+        0.69
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.42,
+        1.14,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        -0.7071067811865475
+      ]
+    },
+    {
+      "id": "F_item3",
+      "source": "F",
+      "identity": "F",
+      "color": "purple",
+      "rgb": [
+        0.49,
+        0.27,
+        0.69
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.17,
+        1.24,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        -0.7071067811865475
+      ]
+    },
+    {
+      "id": "G_item1",
+      "source": "G",
+      "identity": "G",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -1.24,
+        0.17,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "G_item2",
+      "source": "G",
+      "identity": "G",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -1.14,
+        0.42,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "G_item3",
+      "source": "G",
+      "identity": "G",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -1.24,
+        0.67,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "H_item1",
+      "source": "H",
+      "identity": "H",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -1.24,
+        -0.67,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "H_item2",
+      "source": "H",
+      "identity": "H",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -1.14,
+        -0.42,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "H_item3",
+      "source": "H",
+      "identity": "H",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -1.24,
+        -0.17,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "table_height_m": 0.4,
+  "cube_size_m": 0.1,
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.1,
+    "object_mass_kg": 0.7812500000000001,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0
+  },
+  "mechanism": {
+    "kind": "flat_placement",
+    "cube_side_m": 0.1,
+    "cube_body_mass_kg": 0.7812500000000001,
+    "cube_material": "Solid wood; inherited nominal density",
+    "blade_size_m": null,
+    "blade_spacing_m": null,
+    "slot_opening_m": null,
+    "slot_depth_m": null,
+    "bottom_bar_size_m": null,
+    "latch": null,
+    "spring_board": null,
+    "supplies": "Tabletop; no pedestals. Plug blades initially up/sideways; latch bars initially up with varied yaw."
+  },
+  "goals": [
+    {
+      "goal_id": "A_slot1",
+      "robot": "A",
+      "board": "board_A",
+      "local_position_m": [
+        0,
+        -0.15,
+        0.05
+      ],
+      "position_m": [
+        -0.27,
+        -0.91,
+        0.453
+      ],
+      "requires": {
+        "identity": "A"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "A_slot2",
+      "robot": "A",
+      "board": "board_A",
+      "local_position_m": [
+        0,
+        0,
+        0.05
+      ],
+      "position_m": [
+        -0.42,
+        -0.91,
+        0.453
+      ],
+      "requires": {
+        "identity": "B"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "A_slot3",
+      "robot": "A",
+      "board": "board_A",
+      "local_position_m": [
+        0,
+        0.15,
+        0.05
+      ],
+      "position_m": [
+        -0.57,
+        -0.91,
+        0.453
+      ],
+      "requires": {
+        "identity": "E"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "B_slot1",
+      "robot": "B",
+      "board": "board_B",
+      "local_position_m": [
+        0,
+        -0.15,
+        0.05
+      ],
+      "position_m": [
+        0.57,
+        -0.91,
+        0.453
+      ],
+      "requires": {
+        "identity": "B"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "B_slot2",
+      "robot": "B",
+      "board": "board_B",
+      "local_position_m": [
+        0,
+        0,
+        0.05
+      ],
+      "position_m": [
+        0.42,
+        -0.91,
+        0.453
+      ],
+      "requires": {
+        "identity": "C"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "B_slot3",
+      "robot": "B",
+      "board": "board_B",
+      "local_position_m": [
+        0,
+        0.15,
+        0.05
+      ],
+      "position_m": [
+        0.27,
+        -0.91,
+        0.453
+      ],
+      "requires": {
+        "identity": "G"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "C_slot1",
+      "robot": "C",
+      "board": "board_C",
+      "local_position_m": [
+        0,
+        -0.15,
+        0.05
+      ],
+      "position_m": [
+        0.91,
+        -0.27,
+        0.453
+      ],
+      "requires": {
+        "identity": "D"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "C_slot2",
+      "robot": "C",
+      "board": "board_C",
+      "local_position_m": [
+        0,
+        0,
+        0.05
+      ],
+      "position_m": [
+        0.91,
+        -0.42,
+        0.453
+      ],
+      "requires": {
+        "identity": "E"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "C_slot3",
+      "robot": "C",
+      "board": "board_C",
+      "local_position_m": [
+        0,
+        0.15,
+        0.05
+      ],
+      "position_m": [
+        0.91,
+        -0.57,
+        0.453
+      ],
+      "requires": {
+        "identity": "F"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "D_slot1",
+      "robot": "D",
+      "board": "board_D",
+      "local_position_m": [
+        0,
+        -0.15,
+        0.05
+      ],
+      "position_m": [
+        0.91,
+        0.57,
+        0.453
+      ],
+      "requires": {
+        "identity": "D"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "D_slot2",
+      "robot": "D",
+      "board": "board_D",
+      "local_position_m": [
+        0,
+        0,
+        0.05
+      ],
+      "position_m": [
+        0.91,
+        0.42,
+        0.453
+      ],
+      "requires": {
+        "identity": "H"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "D_slot3",
+      "robot": "D",
+      "board": "board_D",
+      "local_position_m": [
+        0,
+        0.15,
+        0.05
+      ],
+      "position_m": [
+        0.91,
+        0.27,
+        0.453
+      ],
+      "requires": {
+        "identity": "H"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "E_slot1",
+      "robot": "E",
+      "board": "board_E",
+      "local_position_m": [
+        0,
+        -0.15,
+        0.05
+      ],
+      "position_m": [
+        0.27,
+        0.91,
+        0.453
+      ],
+      "requires": {
+        "identity": "A"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "E_slot2",
+      "robot": "E",
+      "board": "board_E",
+      "local_position_m": [
+        0,
+        0,
+        0.05
+      ],
+      "position_m": [
+        0.42,
+        0.91,
+        0.453
+      ],
+      "requires": {
+        "identity": "E"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "E_slot3",
+      "robot": "E",
+      "board": "board_E",
+      "local_position_m": [
+        0,
+        0.15,
+        0.05
+      ],
+      "position_m": [
+        0.57,
+        0.91,
+        0.453
+      ],
+      "requires": {
+        "identity": "G"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "F_slot1",
+      "robot": "F",
+      "board": "board_F",
+      "local_position_m": [
+        0,
+        -0.15,
+        0.05
+      ],
+      "position_m": [
+        -0.57,
+        0.91,
+        0.453
+      ],
+      "requires": {
+        "identity": "C"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "F_slot2",
+      "robot": "F",
+      "board": "board_F",
+      "local_position_m": [
+        0,
+        0,
+        0.05
+      ],
+      "position_m": [
+        -0.42,
+        0.91,
+        0.453
+      ],
+      "requires": {
+        "identity": "F"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "F_slot3",
+      "robot": "F",
+      "board": "board_F",
+      "local_position_m": [
+        0,
+        0.15,
+        0.05
+      ],
+      "position_m": [
+        -0.27,
+        0.91,
+        0.453
+      ],
+      "requires": {
+        "identity": "H"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "G_slot1",
+      "robot": "G",
+      "board": "board_G",
+      "local_position_m": [
+        0,
+        -0.15,
+        0.05
+      ],
+      "position_m": [
+        -0.91,
+        0.27,
+        0.453
+      ],
+      "requires": {
+        "identity": "B"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "G_slot2",
+      "robot": "G",
+      "board": "board_G",
+      "local_position_m": [
+        0,
+        0,
+        0.05
+      ],
+      "position_m": [
+        -0.91,
+        0.42,
+        0.453
+      ],
+      "requires": {
+        "identity": "C"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "G_slot3",
+      "robot": "G",
+      "board": "board_G",
+      "local_position_m": [
+        0,
+        0.15,
+        0.05
+      ],
+      "position_m": [
+        -0.91,
+        0.57,
+        0.453
+      ],
+      "requires": {
+        "identity": "D"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "H_slot1",
+      "robot": "H",
+      "board": "board_H",
+      "local_position_m": [
+        0,
+        -0.15,
+        0.05
+      ],
+      "position_m": [
+        -0.91,
+        -0.57,
+        0.453
+      ],
+      "requires": {
+        "identity": "A"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "H_slot2",
+      "robot": "H",
+      "board": "board_H",
+      "local_position_m": [
+        0,
+        0,
+        0.05
+      ],
+      "position_m": [
+        -0.91,
+        -0.42,
+        0.453
+      ],
+      "requires": {
+        "identity": "F"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "H_slot3",
+      "robot": "H",
+      "board": "board_H",
+      "local_position_m": [
+        0,
+        0.15,
+        0.05
+      ],
+      "position_m": [
+        -0.91,
+        -0.27,
+        0.453
+      ],
+      "requires": {
+        "identity": "G"
+      },
+      "latch_slider": null
+    }
+  ],
+  "grid": null,
+  "route": null,
+  "pairs": null,
+  "dials": null,
+  "gripper_profile": "offset-aluminium-40-120mm",
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "rules": [
+    "Deliver three source-identity items to each destination board; station IDs identify inventory, not exclusive manipulator ownership. Tabletop transfers are allowed.",
+    "L1: release stably in marked white-board areas. L2: both flat blades must physically enter the rectangular blind slots, with the cube seated on the board.",
+    "L3: the bottom crossbar must engage both opposing five-sided sleeves. Left sleeve is fixed; right sleeve is a passive spring-return slider with an accessible release tab. Board and latches respond to real load. Engagement, retention, stable release and correct identity are required; no snap or attachments.",
+    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits."
+  ],
+  "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB",
+      "Robot proprioception and robot geometry",
+      "Action feedback",
+      "Visible dial count"
+    ]
+  },
+  "completion": {
+    "stable_duration_sim_s": 1.0,
+    "scope": "Mechanism-specific commissioning required; no inherited v1 evaluator assumed"
+  },
+  "execution_readiness": "environment_preview_only",
+  "oracle_verified": false,
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "G_front",
+    "G_side",
+    "H_front",
+    "H_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "board_A_close",
+    "board_B_close",
+    "board_C_close",
+    "board_D_close",
+    "board_E_close",
+    "board_F_close",
+    "board_G_close",
+    "board_H_close"
+  ],
+  "view_camera": "global",
+  "recording_camera": "global",
+  "workspace_world_m": {
+    "lower": [
+      -2.29,
+      -2.29,
+      0.025
+    ],
+    "upper": [
+      2.29,
+      2.29,
+      1.7
+    ]
+  }
+}

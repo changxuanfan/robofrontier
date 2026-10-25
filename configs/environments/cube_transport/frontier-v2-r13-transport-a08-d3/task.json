@@ -1,0 +1,1375 @@
+{
+  "kind": "frontier_suite",
+  "suite_version": 2,
+  "id": "transport-a08-d3",
+  "family": "transport",
+  "level": 3,
+  "scale": {
+    "family": "transport",
+    "level": 3,
+    "suite_version": 2,
+    "scene_revision": 13,
+    "scale_index": 1,
+    "arms": 8,
+    "id": "transport-a08-d3",
+    "source_scene_revision": 10,
+    "table_height_m": 0.8,
+    "directory": "configs/environments/cube_transport/frontier-v2-r13-transport-a08-d3"
+  },
+  "scene_asset": "configs/environments/cube_transport/frontier-v2-r13-transport-a08-d3",
+  "scene_sha256": "453173efe683dee32d02a78f0c980a89b9c2330833659d839f96b67b0398864f",
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -0.357,
+        -1.1729999999999998,
+        0.8
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "B": {
+      "base_position_m": [
+        0.357,
+        -1.1729999999999998,
+        0.8
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "C": {
+      "base_position_m": [
+        1.1729999999999998,
+        -0.357,
+        0.8
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    "D": {
+      "base_position_m": [
+        1.1729999999999998,
+        0.357,
+        0.8
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    "E": {
+      "base_position_m": [
+        0.357,
+        1.1729999999999998,
+        0.8
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "F": {
+      "base_position_m": [
+        -0.357,
+        1.1729999999999998,
+        0.8
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "G": {
+      "base_position_m": [
+        -1.1729999999999998,
+        0.357,
+        0.8
+      ],
+      "yaw_rad": 0
+    },
+    "H": {
+      "base_position_m": [
+        -1.1729999999999998,
+        -0.357,
+        0.8
+      ],
+      "yaw_rad": 0
+    }
+  },
+  "objects": [
+    {
+      "id": "A_item1",
+      "source": "A",
+      "identity": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.107,
+        -0.973,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        0.7071067811865476,
+        0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "A_item2",
+      "source": "A",
+      "identity": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.357,
+        -0.873,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        -0.5,
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "A_item3",
+      "source": "A",
+      "identity": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.607,
+        -0.973,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        0.5,
+        -0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "B_item1",
+      "source": "B",
+      "identity": "B",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.607,
+        -0.973,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        0.7071067811865476,
+        0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "B_item2",
+      "source": "B",
+      "identity": "B",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.357,
+        -0.873,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        -0.5,
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "B_item3",
+      "source": "B",
+      "identity": "B",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.107,
+        -0.973,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        0.5,
+        -0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "C_item1",
+      "source": "C",
+      "identity": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.1
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.973,
+        -0.107,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        6.123233995736766e-17,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "id": "C_item2",
+      "source": "C",
+      "identity": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.1
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.873,
+        -0.357,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        4.3297802811774664e-17,
+        -0.7071067811865475,
+        4.3297802811774664e-17,
+        0.7071067811865476
+      ]
+    },
+    {
+      "id": "C_item3",
+      "source": "C",
+      "identity": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.1
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.973,
+        -0.607,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        4.3297802811774664e-17,
+        0.7071067811865475,
+        -4.3297802811774664e-17,
+        0.7071067811865476
+      ]
+    },
+    {
+      "id": "D_item1",
+      "source": "D",
+      "identity": "D",
+      "color": "white",
+      "rgb": [
+        0.95,
+        0.95,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.973,
+        0.607,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        6.123233995736766e-17,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "id": "D_item2",
+      "source": "D",
+      "identity": "D",
+      "color": "white",
+      "rgb": [
+        0.95,
+        0.95,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.873,
+        0.357,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        4.3297802811774664e-17,
+        -0.7071067811865475,
+        4.3297802811774664e-17,
+        0.7071067811865476
+      ]
+    },
+    {
+      "id": "D_item3",
+      "source": "D",
+      "identity": "D",
+      "color": "white",
+      "rgb": [
+        0.95,
+        0.95,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.973,
+        0.107,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        4.3297802811774664e-17,
+        0.7071067811865475,
+        -4.3297802811774664e-17,
+        0.7071067811865476
+      ]
+    },
+    {
+      "id": "E_item1",
+      "source": "E",
+      "identity": "E",
+      "color": "cyan",
+      "rgb": [
+        0.08,
+        0.66,
+        0.68
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.107,
+        0.973,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        0.7071067811865476,
+        -0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "E_item2",
+      "source": "E",
+      "identity": "E",
+      "color": "cyan",
+      "rgb": [
+        0.08,
+        0.66,
+        0.68
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.357,
+        0.873,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        0.5,
+        0.5,
+        -0.5
+      ]
+    },
+    {
+      "id": "E_item3",
+      "source": "E",
+      "identity": "E",
+      "color": "cyan",
+      "rgb": [
+        0.08,
+        0.66,
+        0.68
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.607,
+        0.973,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        -0.5,
+        -0.5,
+        -0.5
+      ]
+    },
+    {
+      "id": "F_item1",
+      "source": "F",
+      "identity": "F",
+      "color": "purple",
+      "rgb": [
+        0.49,
+        0.27,
+        0.69
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.607,
+        0.973,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        0.7071067811865476,
+        -0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "F_item2",
+      "source": "F",
+      "identity": "F",
+      "color": "purple",
+      "rgb": [
+        0.49,
+        0.27,
+        0.69
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.357,
+        0.873,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        0.5,
+        0.5,
+        -0.5
+      ]
+    },
+    {
+      "id": "F_item3",
+      "source": "F",
+      "identity": "F",
+      "color": "purple",
+      "rgb": [
+        0.49,
+        0.27,
+        0.69
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.107,
+        0.973,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        -0.5,
+        -0.5,
+        -0.5
+      ]
+    },
+    {
+      "id": "G_item1",
+      "source": "G",
+      "identity": "G",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -0.973,
+        0.107,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "G_item2",
+      "source": "G",
+      "identity": "G",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -0.873,
+        0.357,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "G_item3",
+      "source": "G",
+      "identity": "G",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -0.973,
+        0.607,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        -0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "H_item1",
+      "source": "H",
+      "identity": "H",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -0.973,
+        -0.607,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "H_item2",
+      "source": "H",
+      "identity": "H",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -0.873,
+        -0.357,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "H_item3",
+      "source": "H",
+      "identity": "H",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -0.973,
+        -0.107,
+        0.8300000000000001
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        -0.7071067811865475,
+        0.0
+      ]
+    }
+  ],
+  "table_height_m": 0.8,
+  "cube_size_m": 0.06,
+  "physics": {
+    "table_height_m": 0.8,
+    "cube_size_m": 0.06,
+    "object_mass_kg": 0.16874999999999996,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0
+  },
+  "mechanism": {
+    "kind": "spring_board_two_flat_blades",
+    "cube_side_m": 0.06,
+    "cylinder_diameter_m": 0.06,
+    "cylinder_height_m": 0.06,
+    "table_side_scale_from_r3": 0.85,
+    "mount_layout_scale_from_r3": 0.85,
+    "cube_body_mass_kg": 0.16874999999999996,
+    "cube_material": "Solid wood; inherited nominal density",
+    "cylinder_body_mass_kg": 0.13253594007331937,
+    "blade_size_m": [
+      0.0025,
+      0.012,
+      0.024
+    ],
+    "blade_spacing_m": 0.024,
+    "slot_opening_m": [
+      0.0045,
+      0.015
+    ],
+    "slot_depth_m": 0.026,
+    "board_thickness_m": 0.032,
+    "spring_board": {
+      "translation_k_n_m": 1400.0,
+      "translation_damping_ns_m": 45.0,
+      "roll_pitch_k_nm_rad": 0.6,
+      "roll_pitch_damping_nms_rad": 0.075,
+      "per_axis_limit_rad": 0.35,
+      "translation_limit_m": [
+        -0.003,
+        0.018
+      ],
+      "support": "Equivalent central passive z/roll/pitch mechanism; cosmetic coil is not FEA"
+    },
+    "supplies": "Tabletop; no pedestals. Plug blades initially up/sideways. First six stock identities are cubes, subsequent identities are cylinders.",
+    "board_size_m": [
+      0.14300000000000002,
+      0.396
+    ],
+    "board_outline_scale_from_r10": [
+      1.3,
+      1.2375
+    ],
+    "board_material_density_kg_m3": 650.0,
+    "board_outward_shift_from_r10_m": 0.05,
+    "target_cue_span_m": 0.08399999999999999,
+    "target_cue_scale": 1.4,
+    "target_center_pitch_m": 0.12,
+    "target_cue_gap_m": 0.036000000000000004,
+    "transfer": {
+      "marked_intermediate_regions": false,
+      "predefined_buffers": false,
+      "choice": "Planner chooses direct airborne handover, safe tabletop staging or waiting; no fixed routes/pairs"
+    },
+    "revision_scope": "Board outline/order paint and 50 mm outward board/support translation. R12 increases target/socket pitch by20mm fromR11; R13 shortens the board by20mm symmetrically. Socket dimensions, springs, robots, supply poses and acceptance preserved; real board mass/inertia recomputed at unchanged density."
+  },
+  "goals": [
+    {
+      "goal_id": "A_slot1",
+      "robot": "A",
+      "board": "board_A",
+      "local_position_m": [
+        0,
+        -0.12,
+        0.03
+      ],
+      "position_m": [
+        -0.237,
+        -0.6930000000000001,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "A"
+      },
+      "target_cue": {
+        "color": "red",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "A_slot2",
+      "robot": "A",
+      "board": "board_A",
+      "local_position_m": [
+        0,
+        0.0,
+        0.03
+      ],
+      "position_m": [
+        -0.357,
+        -0.6930000000000001,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "B"
+      },
+      "target_cue": {
+        "color": "blue",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "A_slot3",
+      "robot": "A",
+      "board": "board_A",
+      "local_position_m": [
+        0,
+        0.12,
+        0.03
+      ],
+      "position_m": [
+        -0.477,
+        -0.6930000000000001,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "E"
+      },
+      "target_cue": {
+        "color": "cyan",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "B_slot1",
+      "robot": "B",
+      "board": "board_B",
+      "local_position_m": [
+        0,
+        -0.12,
+        0.03
+      ],
+      "position_m": [
+        0.477,
+        -0.6930000000000001,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "B"
+      },
+      "target_cue": {
+        "color": "blue",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "B_slot2",
+      "robot": "B",
+      "board": "board_B",
+      "local_position_m": [
+        0,
+        0.0,
+        0.03
+      ],
+      "position_m": [
+        0.357,
+        -0.6930000000000001,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "C"
+      },
+      "target_cue": {
+        "color": "yellow",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "B_slot3",
+      "robot": "B",
+      "board": "board_B",
+      "local_position_m": [
+        0,
+        0.12,
+        0.03
+      ],
+      "position_m": [
+        0.237,
+        -0.6930000000000001,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "G"
+      },
+      "target_cue": {
+        "color": "red",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "C_slot1",
+      "robot": "C",
+      "board": "board_C",
+      "local_position_m": [
+        0,
+        -0.12,
+        0.03
+      ],
+      "position_m": [
+        0.6930000000000001,
+        -0.237,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "D"
+      },
+      "target_cue": {
+        "color": "white",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "C_slot2",
+      "robot": "C",
+      "board": "board_C",
+      "local_position_m": [
+        0,
+        0.0,
+        0.03
+      ],
+      "position_m": [
+        0.6930000000000001,
+        -0.357,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "E"
+      },
+      "target_cue": {
+        "color": "cyan",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "C_slot3",
+      "robot": "C",
+      "board": "board_C",
+      "local_position_m": [
+        0,
+        0.12,
+        0.03
+      ],
+      "position_m": [
+        0.6930000000000001,
+        -0.477,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "F"
+      },
+      "target_cue": {
+        "color": "purple",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "D_slot1",
+      "robot": "D",
+      "board": "board_D",
+      "local_position_m": [
+        0,
+        -0.12,
+        0.03
+      ],
+      "position_m": [
+        0.6930000000000001,
+        0.477,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "D"
+      },
+      "target_cue": {
+        "color": "white",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "D_slot2",
+      "robot": "D",
+      "board": "board_D",
+      "local_position_m": [
+        0,
+        0.0,
+        0.03
+      ],
+      "position_m": [
+        0.6930000000000001,
+        0.357,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "H"
+      },
+      "target_cue": {
+        "color": "blue",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "D_slot3",
+      "robot": "D",
+      "board": "board_D",
+      "local_position_m": [
+        0,
+        0.12,
+        0.03
+      ],
+      "position_m": [
+        0.6930000000000001,
+        0.237,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "H"
+      },
+      "target_cue": {
+        "color": "blue",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "E_slot1",
+      "robot": "E",
+      "board": "board_E",
+      "local_position_m": [
+        0,
+        -0.12,
+        0.03
+      ],
+      "position_m": [
+        0.237,
+        0.6930000000000001,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "A"
+      },
+      "target_cue": {
+        "color": "red",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "E_slot2",
+      "robot": "E",
+      "board": "board_E",
+      "local_position_m": [
+        0,
+        0.0,
+        0.03
+      ],
+      "position_m": [
+        0.357,
+        0.6930000000000001,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "E"
+      },
+      "target_cue": {
+        "color": "cyan",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "E_slot3",
+      "robot": "E",
+      "board": "board_E",
+      "local_position_m": [
+        0,
+        0.12,
+        0.03
+      ],
+      "position_m": [
+        0.477,
+        0.6930000000000001,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "G"
+      },
+      "target_cue": {
+        "color": "red",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "F_slot1",
+      "robot": "F",
+      "board": "board_F",
+      "local_position_m": [
+        0,
+        -0.12,
+        0.03
+      ],
+      "position_m": [
+        -0.477,
+        0.6930000000000001,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "C"
+      },
+      "target_cue": {
+        "color": "yellow",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "F_slot2",
+      "robot": "F",
+      "board": "board_F",
+      "local_position_m": [
+        0,
+        0.0,
+        0.03
+      ],
+      "position_m": [
+        -0.357,
+        0.6930000000000001,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "F"
+      },
+      "target_cue": {
+        "color": "purple",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "F_slot3",
+      "robot": "F",
+      "board": "board_F",
+      "local_position_m": [
+        0,
+        0.12,
+        0.03
+      ],
+      "position_m": [
+        -0.237,
+        0.6930000000000001,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "H"
+      },
+      "target_cue": {
+        "color": "blue",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "G_slot1",
+      "robot": "G",
+      "board": "board_G",
+      "local_position_m": [
+        0,
+        -0.12,
+        0.03
+      ],
+      "position_m": [
+        -0.6930000000000001,
+        0.237,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "B"
+      },
+      "target_cue": {
+        "color": "blue",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "G_slot2",
+      "robot": "G",
+      "board": "board_G",
+      "local_position_m": [
+        0,
+        0.0,
+        0.03
+      ],
+      "position_m": [
+        -0.6930000000000001,
+        0.357,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "C"
+      },
+      "target_cue": {
+        "color": "yellow",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "G_slot3",
+      "robot": "G",
+      "board": "board_G",
+      "local_position_m": [
+        0,
+        0.12,
+        0.03
+      ],
+      "position_m": [
+        -0.6930000000000001,
+        0.477,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "D"
+      },
+      "target_cue": {
+        "color": "white",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "H_slot1",
+      "robot": "H",
+      "board": "board_H",
+      "local_position_m": [
+        0,
+        -0.12,
+        0.03
+      ],
+      "position_m": [
+        -0.6930000000000001,
+        -0.477,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "A"
+      },
+      "target_cue": {
+        "color": "red",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "H_slot2",
+      "robot": "H",
+      "board": "board_H",
+      "local_position_m": [
+        0,
+        0.0,
+        0.03
+      ],
+      "position_m": [
+        -0.6930000000000001,
+        -0.357,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "F"
+      },
+      "target_cue": {
+        "color": "purple",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "H_slot3",
+      "robot": "H",
+      "board": "board_H",
+      "local_position_m": [
+        0,
+        0.12,
+        0.03
+      ],
+      "position_m": [
+        -0.6930000000000001,
+        -0.237,
+        0.9700000000000001
+      ],
+      "requires": {
+        "identity": "G"
+      },
+      "target_cue": {
+        "color": "red",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    }
+  ],
+  "grid": null,
+  "route": null,
+  "pairs": null,
+  "dials": null,
+  "gripper_profile": "standard-panda",
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "rules": [
+    "Deliver the three requested source-identity items to each destination board. Station IDs identify inventory and destination orders, not exclusive robot ownership.",
+    "Transfers may be direct airborne handovers or safe stable tabletop staging. There are no marked or mandatory intermediate regions, predefined buffer positions, prescribed routes or fixed transfer pairs. The planner chooses whether to wait, stage or hand over. Establish receiving support before releasing an airborne item.",
+    "Each final position shows the required color and shape: a square for a cube and a circle for a cylinder, 1.4 times the object width or diameter. These are visual identity cues, not enlarged acceptance tolerances. Slot numbers and source identities disambiguate orders.",
+    "L1: release stably at the final board targets. L2 and L3: both flat blades must enter the real blind slots and the item must be released, seated and stable. L2 has a fixed board; L3 has the same three inline sockets on a passive spring-supported z/roll/pitch board. Preserve prior placements and allow gripper opening and withdrawal clearance.",
+    "Cubes have 60 mm sides; cylinders have 60 mm diameter and height. Blades initially point up or sideways. Grasp, airborne reorientation, receiving grasp and subsequent insertion must form a feasible continuous sequence. Allocation, routes and independent concurrent work are planner choices; minimize unnecessary cycling, staging and regrasping while maintaining real support and collision clearance.",
+    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits."
+  ],
+  "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB",
+      "Robot proprioception and robot geometry",
+      "Action feedback",
+      "Visible dial count"
+    ]
+  },
+  "completion": {
+    "stable_duration_sim_s": 1.0,
+    "scope": "Mechanism-specific commissioning required; no inherited v1 evaluator assumed"
+  },
+  "execution_readiness": "environment_preview_only",
+  "oracle_verified": false,
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "G_front",
+    "G_side",
+    "H_front",
+    "H_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "board_A_close",
+    "board_B_close",
+    "board_C_close",
+    "board_D_close",
+    "board_E_close",
+    "board_F_close",
+    "board_G_close",
+    "board_H_close",
+    "plug_close",
+    "socket_close"
+  ],
+  "view_camera": "global",
+  "recording_camera": "global",
+  "workspace_world_m": {
+    "lower": [
+      -2.0229999999999997,
+      -2.0229999999999997,
+      0.42500000000000004
+    ],
+    "upper": [
+      2.0229999999999997,
+      2.0229999999999997,
+      2.1
+    ]
+  }
+}

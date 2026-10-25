@@ -1,0 +1,453 @@
+{
+  "schema": "robofrontier.suite.environment.v1",
+  "id": "relay-a12-d2",
+  "collection": "frontier_suite",
+  "arm_count": 12,
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "stations": [
+    {
+      "id": "A",
+      "base_position_m": [
+        -1.834646161512926,
+        -1.515353838487074,
+        0.4
+      ],
+      "yaw_rad": 1.1071487177940904,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.71389849,
+        -1.2738585,
+        1.0
+      ]
+    },
+    {
+      "id": "B",
+      "base_position_m": [
+        -1.334646161512926,
+        -0.515353838487074,
+        0.4
+      ],
+      "yaw_rad": 4.2487413713838835,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.45539383,
+        -0.75684918,
+        1.0
+      ]
+    },
+    {
+      "id": "C",
+      "base_position_m": [
+        -0.8644576080243773,
+        -1.4408832875957867,
+        0.4
+      ],
+      "yaw_rad": 1.4213079831530697,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.82424591,
+        -1.17389449,
+        1.0
+      ]
+    },
+    {
+      "id": "D",
+      "base_position_m": [
+        -0.697946344251748,
+        -0.3353182741131595,
+        0.4
+      ],
+      "yaw_rad": 4.562900636742863,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.73815804,
+        -0.60230707,
+        1.0
+      ]
+    },
+    {
+      "id": "E",
+      "base_position_m": [
+        0.03523387200000394,
+        -1.0702528341225293,
+        0.4
+      ],
+      "yaw_rad": 1.735467248512049,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.00902661,
+        -0.8039053,
+        1.0
+      ]
+    },
+    {
+      "id": "F",
+      "base_position_m": [
+        -0.14804288310499547,
+        0.03265678639865477,
+        0.4
+      ],
+      "yaw_rad": 4.877059902101842,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.1037824,
+        -0.23369075,
+        1.0
+      ]
+    },
+    {
+      "id": "G",
+      "base_position_m": [
+        0.776360207976293,
+        -0.43974236918747744,
+        0.4
+      ],
+      "yaw_rad": 2.0496265138710283,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.65196007,
+        -0.20010805,
+        1.0
+      ]
+    },
+    {
+      "id": "H",
+      "base_position_m": [
+        0.2612358397475822,
+        0.5525513802924694,
+        0.4
+      ],
+      "yaw_rad": 5.1912191674608215,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.38563598,
+        0.31291706,
+        1.0
+      ]
+    },
+    {
+      "id": "I",
+      "base_position_m": [
+        1.2863747904083132,
+        0.3889293498768005,
+        0.4
+      ],
+      "yaw_rad": 2.3637857792300077,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.09401215,
+        0.57839337,
+        1.0
+      ]
+    },
+    {
+      "id": "J",
+      "base_position_m": [
+        0.4898267713006333,
+        1.1734746023993248,
+        0.4
+      ],
+      "yaw_rad": 5.505378432819801,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.68218941,
+        0.98401058,
+        1.0
+      ]
+    },
+    {
+      "id": "K",
+      "base_position_m": [
+        1.5153538384870742,
+        1.3346461615129257,
+        0.4
+      ],
+      "yaw_rad": 2.677945044588987,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.2738585,
+        1.45539383,
+        1.0
+      ]
+    },
+    {
+      "id": "L",
+      "base_position_m": [
+        0.5153538384870742,
+        1.8346461615129257,
+        0.4
+      ],
+      "yaw_rad": 5.81953769817878,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.75684918,
+        1.71389849,
+        1.0
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "center_m": [
+        0,
+        0,
+        0.375
+      ],
+      "half_size_m": [
+        2.074646161512926,
+        2.0746461615129257,
+        0.025
+      ]
+    }
+  ],
+  "edges": [],
+  "objects": [
+    {
+      "id": "payload",
+      "shape": "beam",
+      "initial_position_m": [
+        -1.584646161512926,
+        -1.015353838487074,
+        0.72
+      ],
+      "color": "wood",
+      "rgb": [
+        0.52,
+        0.29,
+        0.16
+      ]
+    }
+  ],
+  "floor_rgba": [
+    0.84,
+    0.9,
+    0.95,
+    1
+  ],
+  "table_rgba": [
+    0.604,
+    0.459,
+    0.345,
+    1
+  ],
+  "initial_keyframe": "initial",
+  "scene": "scene.xml",
+  "suite_case": {
+    "id": "relay-a12-d2",
+    "family": "relay",
+    "level": 2,
+    "arms": 12,
+    "pairs": 6,
+    "layout": "bend",
+    "scene_revision": 2
+  },
+  "route": [
+    {
+      "center_m": [
+        -1.584646161512926,
+        -1.015353838487074,
+        0.72
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    {
+      "center_m": [
+        -0.7812019761380626,
+        -0.8881007808544731,
+        0.72
+      ],
+      "yaw_rad": -1.2566370614359172
+    },
+    {
+      "center_m": [
+        -0.056404505552495765,
+        -0.5187980238619373,
+        0.72
+      ],
+      "yaw_rad": -0.9424777960769379
+    },
+    {
+      "center_m": [
+        0.5187980238619376,
+        0.05640450555249599,
+        0.72
+      ],
+      "yaw_rad": -0.6283185307179586
+    },
+    {
+      "center_m": [
+        0.8881007808544732,
+        0.7812019761380626,
+        0.72
+      ],
+      "yaw_rad": -0.3141592653589793
+    },
+    {
+      "center_m": [
+        1.0153538384870742,
+        1.5846461615129257,
+        0.72
+      ],
+      "yaw_rad": 0.0
+    }
+  ],
+  "pairs": [
+    {
+      "robots": [
+        "A",
+        "B"
+      ],
+      "center_m": [
+        -1.584646161512926,
+        -1.015353838487074,
+        0.72
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    {
+      "robots": [
+        "C",
+        "D"
+      ],
+      "center_m": [
+        -0.7812019761380626,
+        -0.8881007808544731,
+        0.72
+      ],
+      "yaw_rad": -1.2566370614359172
+    },
+    {
+      "robots": [
+        "E",
+        "F"
+      ],
+      "center_m": [
+        -0.056404505552495765,
+        -0.5187980238619373,
+        0.72
+      ],
+      "yaw_rad": -0.9424777960769379
+    },
+    {
+      "robots": [
+        "G",
+        "H"
+      ],
+      "center_m": [
+        0.5187980238619376,
+        0.05640450555249599,
+        0.72
+      ],
+      "yaw_rad": -0.6283185307179586
+    },
+    {
+      "robots": [
+        "I",
+        "J"
+      ],
+      "center_m": [
+        0.8881007808544732,
+        0.7812019761380626,
+        0.72
+      ],
+      "yaw_rad": -0.3141592653589793
+    },
+    {
+      "robots": [
+        "K",
+        "L"
+      ],
+      "center_m": [
+        1.0153538384870742,
+        1.5846461615129257,
+        0.72
+      ],
+      "yaw_rad": 0.0
+    }
+  ],
+  "mechanism": {
+    "beam_length_m": 1.2,
+    "beam_cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "beam_mass_kg": 1.458,
+    "weight_mass_kg": 0.25,
+    "suspension_length_m": 0.018,
+    "suspension_segments": 1,
+    "opposed_base_spacing_m": 1.118033988749895,
+    "cross_track_base_spacing_m": 1.0,
+    "longitudinal_pair_stagger_m": 0.5,
+    "minimum_supporting_robots": 2,
+    "loop_radius_m": null,
+    "beam_alignment": "tangent"
+  },
+  "compiled_mass_kg": {
+    "D_link0": 0.629769,
+    "D_link1": 4.970684,
+    "D_link2": 0.646926,
+    "D_link3": 3.228604,
+    "D_link4": 3.587895,
+    "D_link5": 1.225946,
+    "D_link6": 1.666555,
+    "D_link7": 0.735522,
+    "D_hand": 0.73,
+    "D_left_finger": 0.015,
+    "D_right_finger": 0.015,
+    "payload": 1.458,
+    "suspension_0": 0.0015,
+    "weight": 0.25
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "case": {
+    "id": "mosaic-a08-7x21-d1",
+    "family": "mosaic",
+    "level": 1,
+    "arms": 8,
+    "rows": 7,
+    "columns": 21,
+    "objects": 147,
+    "pitch_m": 0.051,
+    "guidance": "recessed",
+    "status": "layout_checked",
+    "directory": "configs/environments/mosaic/suite-mosaic-a08-7x21-d1",
+    "scene_sha256": "7fbfd0cebfd630f58b1d75d8de04091796569d710a561d78d0a571842a077bd4",
+    "layout_report": "configs/environments/mosaic/suite-mosaic-a08-7x21-d1/layout-validation.json"
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "cube_contact_time_constant_s": 0.004
+  },
+  "mechanism": null,
+  "grid": {
+    "rows": 7,
+    "columns": 21,
+    "pitch_m": 0.051,
+    "cube_side_m": 0.04,
+    "pattern": [
+      "RBBWWWWWWWWWWWWWWWWWW",
+      "WRBBBBBBBBBBBBBBBBBWW",
+      "WYRRRRRRRRRRRRRRRRRRW",
+      "BYYYYBYYYBYYYBYYYBRRR",
+      "WYRRRRRRRRRRRRRRRRRRW",
+      "WRBBBBBBBBBBBBBBBBBWW",
+      "RBBWWWWWWWWWWWWWWWWWW"
+    ],
+    "floor_z_m": 0.3866666666666667,
+    "rim_z_m": 0.4,
+    "pocket_opening_m": 0.05
+  }
+}

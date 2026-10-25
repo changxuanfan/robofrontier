@@ -1,0 +1,103 @@
+{
+  "case": {
+    "id": "relay-a12-d2",
+    "family": "relay",
+    "level": 2,
+    "arms": 12,
+    "pairs": 6,
+    "layout": "bend",
+    "payload": "short_link_weight",
+    "status": "planned",
+    "directory": "configs/environments/beam_handoff/suite-relay-a12-d2-v4",
+    "scene_sha256": null,
+    "layout_report": "configs/environments/beam_handoff/suite-relay-a12-d2-v3/layout-validation.json",
+    "verification_results": {},
+    "last_oracle_report": null,
+    "scene_revision": 4,
+    "history": [
+      {
+        "directory": "configs/environments/beam_handoff/suite-relay-a12-d2",
+        "scene_sha256": "6ab504b7afe6d029768be762883c09766e0d4bbb5a5618e28e2745c9212c8f4a",
+        "status": "oracle_witness_passed",
+        "verification_results": {
+          "0": {
+            "passed": true,
+            "scene_sha256": "6ab504b7afe6d029768be762883c09766e0d4bbb5a5618e28e2745c9212c8f4a",
+            "executor_sha256": "db44f77fa30453a161739620c554f4579ef657bccf31bbf0b8061833c891748f",
+            "report": "runs/oracle/frontier-v1/relay-a12-d2/seed-0/attempt-002/report.json"
+          }
+        },
+        "last_oracle_report": "runs/oracle/frontier-v1/relay-a12-d2/seed-0/attempt-002/report.json",
+        "superseded_reason": "Align beam with transport direction and stagger opposed bases, preserving old normal-to-path layouts and witnesses"
+      },
+      {
+        "directory": "configs/environments/beam_handoff/suite-relay-a12-d2-v2",
+        "scene_revision": 2,
+        "scene_sha256": "1ff341b930ceffd2aa1334192d02254c3c86765ca31ef3967f92696c37d3132e",
+        "status": "generated",
+        "verification_results": {},
+        "last_oracle_report": null,
+        "superseded_reason": "Restore the physically demonstrated normal beam orientation for straight/quarter-turn layouts; isolate tangent experiment to the closed ring"
+      },
+      {
+        "directory": "configs/environments/beam_handoff/suite-relay-a12-d2-v3",
+        "scene_revision": 3,
+        "scene_sha256": "a5eb9c9e7d6dfcd5b8f5d800ba8662bde8873317416832e2e1b8e4b87fc6000a",
+        "status": "generated",
+        "verification_results": {},
+        "last_oracle_report": "runs/oracle/frontier-v1/relay-a12-d2/seed-0/attempt-003/report.json",
+        "superseded_reason": "Freeze explicit staged-handover rules and admit physically reachable floor recovery by the sending team; do not force released arms to return HOME"
+      }
+    ],
+    "oracle_attempts": [
+      {
+        "passed": true,
+        "verification_seed": 0,
+        "scene_sha256": "a5eb9c9e7d6dfcd5b8f5d800ba8662bde8873317416832e2e1b8e4b87fc6000a",
+        "scene_bundle_sha256": "47f666cf9c69914a1ae0021be0c20c1287c8b7b82088fbbc25bb9a949230f930",
+        "executor_sha256": "8fd580ba923f877f63a9c19dd4e295ec04dd3c4368951dad0eb2372b2e5a8ae5",
+        "finished_at_unix_s": 1792809320.853934,
+        "report": "runs/oracle/frontier-v1/relay-a12-d2/seed-0/attempt-003/report.json"
+      }
+    ],
+    "legacy_verification_results": {},
+    "last_oracle_passed": true,
+    "best_oracle_witness": "runs/oracle/frontier-v1/relay-a12-d2/seed-0/attempt-003/report.json",
+    "contract_sha256": "ef533a9c2ed0763857f35237e7eba5398c1677d6cd683897635e88bdfd64c2fd"
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "beam_length_m": 1.2,
+    "beam_cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "beam_mass_kg": 1.458,
+    "weight_mass_kg": 0.25,
+    "suspension_length_m": 0.018,
+    "suspension_segments": 1,
+    "opposed_base_spacing_m": 1.3,
+    "cross_track_base_spacing_m": 1.3,
+    "longitudinal_pair_stagger_m": 0.0,
+    "minimum_supporting_robots": 2,
+    "loop_radius_m": null,
+    "beam_alignment": "normal"
+  },
+  "grid": null
+}

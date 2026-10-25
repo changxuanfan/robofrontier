@@ -1,0 +1,340 @@
+{
+  "kind": "frontier_suite",
+  "id": "relay-a08-d2",
+  "suite_version": 2,
+  "family": "relay",
+  "level": 2,
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -1.08,
+        -0.65,
+        0.8
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "B": {
+      "base_position_m": [
+        -1.08,
+        0.65,
+        0.8
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "C": {
+      "base_position_m": [
+        -0.36,
+        -0.65,
+        0.8
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "D": {
+      "base_position_m": [
+        -0.36,
+        0.65,
+        0.8
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "E": {
+      "base_position_m": [
+        0.36,
+        -0.65,
+        0.8
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "F": {
+      "base_position_m": [
+        0.36,
+        0.65,
+        0.8
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "G": {
+      "base_position_m": [
+        1.08,
+        -0.65,
+        0.8
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "H": {
+      "base_position_m": [
+        1.08,
+        0.65,
+        0.8
+      ],
+      "yaw_rad": -1.5707963267948966
+    }
+  },
+  "rules": [
+    "Move every numbered payload from its own initial route region rightward to the common destination. The 8/12/16-arm cases contain 2/3/4 independent payload assemblies. Regions indicate progress, not prescribed grasp points or fixed robot pairs.",
+    "Airborne transport needs at least two real beam grasps. Establish receiving support before sender release. Teams may change dynamically; the 16-arm half-ring contains 10 outer and 6 inner robots.",
+    "After pickup keep the whole transported assembly clear of table/floor until final landing. The 600 g weight is suspended through physically closed interlinked eyes, not a cable. Grasp the red beam, not the weight, eye or shaft. L3 adds a passive spring-return beam hinge and a short rigid pendulum; maintain support while accounting for flexion, swing, release and future receiving grasps. No stabilizing robot attachments.",
+    "Drops are recorded. The last established sending team may recover; a receiver cannot retrieve a dropped object to bypass a handover. No reset or respawn.",
+    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits.",
+    "Only START and GOAL are painted square regions; each is 1.40 m by 1.40 m. The GOAL outline is the actual final acceptance boundary, not decoration.",
+    "Numbered apparatuses still start at separate positions along the route. START marks the route origin; it does not require all apparatuses to start there or return there. Follow the sparse arrows toward GOAL.",
+    "Unpainted route reference anchors do not prescribe handover locations, grasp points, robot pairs or an execution order. Scheduling and independent concurrent work remain planner choices.",
+    "Curved and elbow apparatuses initially open forward along the local route (right on the straight table). The weight, closed eyes and any passive hinge move with the complete apparatus and retain their physical connections."
+  ],
+  "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB",
+      "Robot proprioception and robot geometry",
+      "Action feedback",
+      "Visible dial count"
+    ]
+  },
+  "gripper_profile": "standard-panda",
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "G_front",
+    "G_side",
+    "H_front",
+    "H_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "payload_close",
+    "payload_01_close",
+    "payload_01_weight_close",
+    "payload_02_close",
+    "payload_02_weight_close"
+  ],
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "execution_readiness": "environment_preview_only",
+  "initial_supplies": [
+    {
+      "source": "A",
+      "color": "red",
+      "count": 1
+    },
+    {
+      "source": "E",
+      "color": "red",
+      "count": 1
+    }
+  ],
+  "mechanism": {
+    "chord_m": 1.2,
+    "circular_angle_deg": 90,
+    "radius_m": 0.848528137423857,
+    "arc_length_m": 1.33286488144751,
+    "mass_kg": 1.6194308309587244,
+    "cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "collision": "32 tangent convex segments; smooth visual sweep; analytic arc mass distributed over segments",
+    "kind": "arc_closed_eye_weight",
+    "suspension": "Two closed, perpendicular steel eyes linked by real contact; no weld or cable",
+    "weight_mass_kg": 0.6,
+    "suspended_mass_kg": 0.6273211557239118,
+    "weight_body_free": true,
+    "cable_model": null,
+    "cable_count": 0,
+    "beam_bodies": [
+      "payload"
+    ],
+    "tray": null,
+    "rigid_suspension_profile": {
+      "weight_mass_kg": 0.6,
+      "weight_material": "Steel calibration-weight form; nominal manufactured mass, not a measured specimen",
+      "hook_centerline_radius_m": 0.022,
+      "eye_centerline_radius_m": 0.018,
+      "ring_stock_radius_m": 0.0025,
+      "ring_segments": 20,
+      "pendulum_shaft_length_m": 0.12,
+      "pendulum_shaft_radius_m": 0.005,
+      "beam_hinge_stiffness_nm_rad": 18.0,
+      "beam_hinge_damping_nms_rad": 0.55,
+      "beam_hinge_limit_rad": 0.4363323129985824,
+      "timestep_s": 0.002,
+      "contact_time_constant_s": 0.004,
+      "material_calibration_verified": false
+    },
+    "initial_condition": "Beam and weight are table-supported; closed eyes start interlinked, with clearance",
+    "pendulum": null,
+    "elastic_hinge": null,
+    "minimum_supporting_robots": 2,
+    "flexible_teams": true,
+    "layout": "straight",
+    "outer_arms": null,
+    "inner_arms": null,
+    "inner_robot_radius_m": null,
+    "outer_robot_radius_m": null,
+    "curve_radius_m": null,
+    "table_end_extension_m": 0.38,
+    "finish": "Tabletop destination region; no cradle; beam and suspended assembly must land stably",
+    "payload_count": 2,
+    "payload_assemblies": [
+      {
+        "id": "payload_01",
+        "beam_body": "payload_01",
+        "beam_bodies": [
+          "payload_01"
+        ],
+        "weight_body": "payload_01_weight",
+        "tray_body": null,
+        "source_region_id": "pickup_01",
+        "initial_route_stage_id": "zone_01",
+        "pickup_center_m": [
+          -1.52,
+          7.347880794884126e-18,
+          0.8
+        ],
+        "pickup_half_size_m": [
+          0.24,
+          0.65
+        ],
+        "pickup_yaw_rad": 3.141592653589793,
+        "destination_region_id": "zone_04",
+        "initial_opening_direction_world_xyz": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "initial_assembly_yaw_change_rad": 3.141592653589793,
+        "source_region_painted": false
+      },
+      {
+        "id": "payload_02",
+        "beam_body": "payload_02",
+        "beam_bodies": [
+          "payload_02"
+        ],
+        "weight_body": "payload_02_weight",
+        "tray_body": null,
+        "source_region_id": "pickup_02",
+        "initial_route_stage_id": "zone_03",
+        "pickup_center_m": [
+          -0.020000000000000018,
+          7.347880794884118e-18,
+          0.8
+        ],
+        "pickup_half_size_m": [
+          0.24,
+          0.65
+        ],
+        "pickup_yaw_rad": 3.141592653589793,
+        "destination_region_id": "zone_04",
+        "initial_opening_direction_world_xyz": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "initial_assembly_yaw_change_rad": 3.141592653589793,
+        "source_region_painted": false
+      }
+    ],
+    "initial_distribution": "Separate positions along the route; each travels rightward to the common destination",
+    "cable_to_cable_collision": false,
+    "presentation": {
+      "revision": 11,
+      "endpoint_square_side_m": 1.4,
+      "start_center_world_m": [
+        -1.3,
+        0.0,
+        0.8
+      ],
+      "goal_center_world_m": [
+        1.3,
+        0.0,
+        0.8
+      ],
+      "intermediate_region_frames": false,
+      "per_payload_pickup_frames": false,
+      "arrows": [
+        {
+          "center_world_m": [
+            -0.3,
+            0.0,
+            0.8
+          ],
+          "yaw_rad": 0.0
+        },
+        {
+          "center_world_m": [
+            0.3,
+            0.0,
+            0.8
+          ],
+          "yaw_rad": 0.0
+        }
+      ],
+      "opening": "L2/L3 whole assembly yaw reversed by180 degrees; opening faces the original local route-forward direction",
+      "physics_scope": "No solver, mechanism/material, robot, table or controller changes; complete assembly initial yaw and endpoint regions changed"
+    }
+  },
+  "route_regions": [
+    {
+      "region_id": "zone_01",
+      "center_m": [
+        -1.3,
+        0.0,
+        0.8
+      ],
+      "nominal_yaw_rad": 0.0,
+      "half_size_m": [
+        0.7,
+        0.7
+      ],
+      "painted": true,
+      "label": "START"
+    },
+    {
+      "region_id": "zone_02",
+      "center_m": [
+        -0.36,
+        0.0,
+        0.8
+      ],
+      "nominal_yaw_rad": 0.0,
+      "painted": false
+    },
+    {
+      "region_id": "zone_03",
+      "center_m": [
+        0.36,
+        0.0,
+        0.8
+      ],
+      "nominal_yaw_rad": 0.0,
+      "painted": false
+    },
+    {
+      "region_id": "zone_04",
+      "center_m": [
+        1.3,
+        0.0,
+        0.8
+      ],
+      "nominal_yaw_rad": 0.0,
+      "half_size_m": [
+        0.7,
+        0.7
+      ],
+      "painted": true,
+      "label": "GOAL"
+    }
+  ]
+}

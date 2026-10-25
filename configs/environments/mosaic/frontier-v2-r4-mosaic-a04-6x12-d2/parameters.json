@@ -1,0 +1,165 @@
+{
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.06,
+    "object_mass_kg": 0.16874999999999996,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0
+  },
+  "mechanism": {
+    "kind": "printed_grid",
+    "stock_packing": "Single layer; non-exclusive station allocation",
+    "stock_count": 72,
+    "robot_to_grid_edge_m": 0.34,
+    "stock_edge_clearance_m": 0.055,
+    "station_pitch_m": 0.7618999999999999,
+    "row_spacing_scale_from_r3": 0.95,
+    "table_side_scale_from_r3": 1.25,
+    "outer_base_axis_inset_from_grid_end_m": 0.10505000000000003
+  },
+  "grid": {
+    "rows": 6,
+    "columns": 12,
+    "colors": 4,
+    "pitch_m": 0.081,
+    "cube_side_m": 0.06,
+    "pattern": [
+      [
+        "navy",
+        "sage",
+        "sage",
+        "navy",
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "cream",
+        "navy"
+      ],
+      [
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "sage",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream"
+      ],
+      [
+        "navy",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream"
+      ],
+      [
+        "navy",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream"
+      ],
+      [
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "sage",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream"
+      ],
+      [
+        "navy",
+        "navy",
+        "sage",
+        "navy",
+        "navy",
+        "navy",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "cream",
+        "navy"
+      ]
+    ],
+    "pocket_opening_m": null,
+    "depth_m": 0,
+    "floor_z_m": 0.4,
+    "rim_z_m": 0.4,
+    "color_counts": {
+      "navy": 14,
+      "sage": 15,
+      "cream": 21,
+      "coral": 22
+    },
+    "palette": {
+      "cream": "#F4E7D5",
+      "navy": "#263C4C",
+      "coral": "#EF7180",
+      "sage": "#4C9B87"
+    },
+    "reference": {
+      "name": "Tulip",
+      "original_width": 6,
+      "original_height": 12,
+      "rotation_clockwise_deg": 90,
+      "source_sha256": "e0e1ec10ac1b4c68e41e1ab4016bcd7633bf69bf55aa432df749541faf374956",
+      "source_file": "assets/tulip_parameters.json",
+      "color_hex": {
+        "cream": "#F4E7D5",
+        "navy": "#263C4C",
+        "coral": "#EF7180",
+        "sage": "#4C9B87"
+      },
+      "counts": {
+        "navy": 14,
+        "sage": 15,
+        "cream": 21,
+        "coral": 22
+      }
+    },
+    "printed_line_width_m": 0.003
+  },
+  "scope": "Declared geometry/material and engineering parameters; not a task success proof"
+}

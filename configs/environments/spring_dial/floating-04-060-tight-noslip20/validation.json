@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "status": "contact_dynamics_validated",
+  "oracle_report_ref": "/Users/fanchangxuan/Repos/roomscript2/runs/floating-puzzle-060-tight-noslip20-oracle-20261024-r2/report.json",
+  "failed_reference_ref": "/Users/fanchangxuan/Repos/roomscript2/runs/floating-puzzle-060-tight-noslip20-oracle-20261024-r1/report.json",
+  "minimum_clearance_m": [
+    0.17915202875882252,
+    0.17900555023284614,
+    0.17915962254488604,
+    0.1791626542449387
+  ],
+  "premature_knob_contacts": [],
+  "inter_robot_contacts": {},
+  "arm_environment_penetrations": {},
+  "scope": "A feasible full-contact reference, not a policy result, guarantee for every trajectory or hardware validation."
+}

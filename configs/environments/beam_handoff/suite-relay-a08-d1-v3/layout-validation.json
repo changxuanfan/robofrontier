@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "scope": "Initial geometry, stationary dynamics and endpoint IK only; no full trajectory or manipulation proof.",
+  "robot_count": 8,
+  "inter_robot_contacts": [],
+  "max_home_tcp_error_m": 4.329317236093165e-06,
+  "max_object_drift_m": 3.637535527012403e-05,
+  "endpoint_coverage": null,
+  "sim_duration_s": 1,
+  "wall_time_s": 0.044287667027674615,
+  "scene_sha256": "81aee20c89efa85c8cebf84681ceede991edbb857a2385e3d9c774485ffaea8e"
+}

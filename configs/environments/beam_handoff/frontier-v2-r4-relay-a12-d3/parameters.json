@@ -1,0 +1,70 @@
+{
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.06,
+    "object_mass_kg": 0.16874999999999996,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0
+  },
+  "mechanism": {
+    "chord_m": 1.2,
+    "circular_angle_deg": 90,
+    "radius_m": 0.848528137423857,
+    "arc_length_m": 1.33286488144751,
+    "mass_kg": 1.6194308309587244,
+    "cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "collision": "32 tangent convex segments; smooth visual sweep; analytic arc mass distributed over segments",
+    "kind": "arc_three_cable_tray",
+    "tray": {
+      "outer_diameter_m": 0.1,
+      "flat_floor_diameter_m": 0.07,
+      "clear_diameter_m": 0.1,
+      "depth_m": 0.01,
+      "rim_profile": "Gentle outward slope; 10 mm rise over 15 mm run, 2 mm material thickness",
+      "weight_diameter_m": 0.05,
+      "weight_height_m": 0.05,
+      "weight_mass_kg": 0.25,
+      "cable_attachments": 3,
+      "attachment_angle_spacing_deg": 120,
+      "free_weight": true,
+      "weight_tray_sliding_friction": 0.25
+    },
+    "cable_length_m": 0.2,
+    "cable_segments_each": 8,
+    "cable_segment_mass_kg": 0.001,
+    "cable_radius_m": 0.002,
+    "cable_model": "Ball-jointed rigid links with true end connections; equal-length initial slack arches",
+    "cable_self_collision": false,
+    "cable_environment_collision": true,
+    "initial_condition": "All components table-supported; initially slack",
+    "minimum_supporting_robots": 2,
+    "flexible_teams": true,
+    "layout": "upper_semicircle",
+    "outer_arms": null,
+    "inner_arms": null,
+    "inner_robot_radius_m": null,
+    "outer_robot_radius_m": null,
+    "curve_radius_m": 1.73,
+    "table_end_extension_m": 0.38,
+    "finish": "Tabletop destination region; no cradle; beam and suspended assembly must land stably"
+  },
+  "grid": null,
+  "scope": "Declared geometry/material and engineering parameters; not a task success proof"
+}

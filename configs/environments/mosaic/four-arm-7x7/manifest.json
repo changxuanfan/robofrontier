@@ -1,0 +1,9 @@
+{
+  "scene_sha256": "6a74b09f7adcff009db30df8461db56f1c5bb5ff5c82aad33d746b3673db57cb",
+  "task_sha256": "30468d7074fb777b2e58d17eff94662612da122543449c9e7ada18d5e63f4757",
+  "source_sha256": {
+    "robofrontier/mosaic.py": "ca8962a0c731222829a733cce3b0ab5706a414d9fd8883845b082a454ffaa047",
+    "scripts/build_mosaic.py": "be50550de15f1091fa4922cfca410e336f00c1f319ca8889892626c794e6d144",
+    "robofrontier/cube_transport.py": "a5dea01963b0efb11aa976c9464aa6e14c42d9ba9cb61cb90a9b80a69eb9b4d1"
+  }
+}

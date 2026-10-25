@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "robot_count": 2,
+  "module_count": 1,
+  "module_is_free_body": true,
+  "dial_hinge_actuators": 0,
+  "total_actuators": 16,
+  "disk_orientation": "horizontal_face_up",
+  "stem_table_contact": true,
+  "stem_minimum_table_clearance_m": -9.809999999998986e-06,
+  "module_max_translation_during_settle_m": 9.809999999998986e-06,
+  "module_orientation_change_during_settle_deg": 0.0,
+  "initial_penetrations_over_1mm": [],
+  "settling_duration_s": 5.0,
+  "scope": "Scene-load and passive settling only; no arm manipulation or LLM policy trial."
+}

@@ -1,0 +1,761 @@
+{
+  "schema": "robofrontier.workstation.v2",
+  "id": "dial-n08-d3",
+  "collection": "frontier_suite",
+  "arm_count": 16,
+  "physics": {
+    "table_height_m": 0.8,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 20,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "material_scope": "Disk material density retained; enlarged disk mass/inertia and tabletop rest recomputed. Rotor geometry and calibrated assumptions are declared in mechanism metadata; visual markers carry no mass."
+  },
+  "stations": [
+    {
+      "id": "A",
+      "base_position_m": [
+        0.9,
+        0.24999999999999997,
+        0.8
+      ],
+      "yaw_rad": 0.0,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.13,
+        0.25,
+        1.26
+      ]
+    },
+    {
+      "id": "B",
+      "base_position_m": [
+        2.2,
+        3.9801020972288984e-17,
+        0.8
+      ],
+      "yaw_rad": -3.141592653589793,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.97,
+        0.0,
+        1.26
+      ]
+    },
+    {
+      "id": "C",
+      "base_position_m": [
+        0.459619407771256,
+        0.8131727983645294,
+        0.8
+      ],
+      "yaw_rad": 0.7853981633974483,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.62225397,
+        0.97580736,
+        1.26
+      ]
+    },
+    {
+      "id": "D",
+      "base_position_m": [
+        1.5556349186104046,
+        1.5556349186104044,
+        0.8
+      ],
+      "yaw_rad": -2.356194490192345,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.39300036,
+        1.39300036,
+        1.26
+      ]
+    },
+    {
+      "id": "E",
+      "base_position_m": [
+        -0.24999999999999992,
+        0.9,
+        0.8
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.25,
+        1.13,
+        1.26
+      ]
+    },
+    {
+      "id": "F",
+      "base_position_m": [
+        9.491012693391987e-17,
+        2.2,
+        0.8
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.0,
+        1.97,
+        1.26
+      ]
+    },
+    {
+      "id": "G",
+      "base_position_m": [
+        -0.8131727983645295,
+        0.4596194077712559,
+        0.8
+      ],
+      "yaw_rad": 2.356194490192345,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.97580736,
+        0.62225397,
+        1.26
+      ]
+    },
+    {
+      "id": "H",
+      "base_position_m": [
+        -1.5556349186104044,
+        1.5556349186104046,
+        0.8
+      ],
+      "yaw_rad": -0.7853981633974483,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.39300036,
+        1.39300036,
+        1.26
+      ]
+    },
+    {
+      "id": "I",
+      "base_position_m": [
+        -0.9,
+        -0.24999999999999986,
+        0.8
+      ],
+      "yaw_rad": 3.141592653589793,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.13,
+        -0.25,
+        1.26
+      ]
+    },
+    {
+      "id": "J",
+      "base_position_m": [
+        -2.2,
+        2.2962127484012875e-16,
+        0.8
+      ],
+      "yaw_rad": 0.0,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.97,
+        0.0,
+        1.26
+      ]
+    },
+    {
+      "id": "K",
+      "base_position_m": [
+        -0.4596194077712561,
+        -0.8131727983645295,
+        0.8
+      ],
+      "yaw_rad": 3.9269908169872414,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.62225397,
+        -0.97580736,
+        1.26
+      ]
+    },
+    {
+      "id": "L",
+      "base_position_m": [
+        -1.5556349186104048,
+        -1.5556349186104044,
+        0.8
+      ],
+      "yaw_rad": 0.7853981633974483,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.39300036,
+        -1.39300036,
+        1.26
+      ]
+    },
+    {
+      "id": "M",
+      "base_position_m": [
+        0.24999999999999978,
+        -0.9,
+        0.8
+      ],
+      "yaw_rad": 4.71238898038469,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.25,
+        -1.13,
+        1.26
+      ]
+    },
+    {
+      "id": "N",
+      "base_position_m": [
+        -3.6433242274633755e-16,
+        -2.2,
+        0.8
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.0,
+        -1.97,
+        1.26
+      ]
+    },
+    {
+      "id": "O",
+      "base_position_m": [
+        0.8131727983645296,
+        -0.4596194077712561,
+        0.8
+      ],
+      "yaw_rad": 5.497787143782138,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.97580736,
+        -0.62225397,
+        1.26
+      ]
+    },
+    {
+      "id": "P",
+      "base_position_m": [
+        1.5556349186104044,
+        -1.555634918610405,
+        0.8
+      ],
+      "yaw_rad": 2.356194490192345,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.39300036,
+        -1.39300036,
+        1.26
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "center_m": [
+        0.0,
+        0.0,
+        0.775
+      ],
+      "half_size_m": [
+        2.4400000000000004,
+        2.4400000000000004,
+        0.025
+      ]
+    }
+  ],
+  "edges": [],
+  "objects": [
+    {
+      "id": "D01_module",
+      "source": "B",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        1.55,
+        0.0,
+        0.9342352941176472
+      ],
+      "initial_quaternion_wxyz": [
+        0.6063390625908325,
+        0.3638034375544994,
+        -0.3638034375544994,
+        -0.6063390625908325
+      ]
+    },
+    {
+      "id": "D02_module",
+      "source": "D",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        1.0960155108391487,
+        1.0960155108391485,
+        0.9342352941176472
+      ],
+      "initial_quaternion_wxyz": [
+        0.7922201633390409,
+        0.4753320980034246,
+        -0.19688900162427558,
+        -0.32814833604045934
+      ]
+    },
+    {
+      "id": "D03_module",
+      "source": "F",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        9.491012693391987e-17,
+        1.55,
+        0.9342352941176472
+      ],
+      "initial_quaternion_wxyz": [
+        0.8574929257125442,
+        0.5144957554275265,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "D04_module",
+      "source": "H",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        -1.0960155108391485,
+        1.0960155108391487,
+        0.9342352941176472
+      ],
+      "initial_quaternion_wxyz": [
+        0.7922201633390409,
+        0.4753320980034246,
+        0.19688900162427558,
+        0.32814833604045934
+      ]
+    },
+    {
+      "id": "D05_module",
+      "source": "J",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        -1.55,
+        1.8982025386783975e-16,
+        0.9342352941176472
+      ],
+      "initial_quaternion_wxyz": [
+        0.6063390625908325,
+        0.3638034375544994,
+        0.3638034375544994,
+        0.6063390625908325
+      ]
+    },
+    {
+      "id": "D06_module",
+      "source": "L",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        -1.096015510839149,
+        -1.0960155108391485,
+        0.9342352941176472
+      ],
+      "initial_quaternion_wxyz": [
+        0.32814833604045934,
+        0.1968890016242756,
+        0.47533209800342446,
+        0.7922201633390409
+      ]
+    },
+    {
+      "id": "D07_module",
+      "source": "N",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        -2.847303808017596e-16,
+        -1.55,
+        0.9342352941176472
+      ],
+      "initial_quaternion_wxyz": [
+        5.2506298338268314e-17,
+        3.150377900296099e-17,
+        0.5144957554275265,
+        0.8574929257125442
+      ]
+    },
+    {
+      "id": "D08_module",
+      "source": "P",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        1.0960155108391485,
+        -1.096015510839149,
+        0.9342352941176472
+      ],
+      "initial_quaternion_wxyz": [
+        -0.3281483360404593,
+        -0.19688900162427556,
+        0.47533209800342446,
+        0.792220163339041
+      ]
+    }
+  ],
+  "floor_rgba": [
+    0.84,
+    0.9,
+    0.95,
+    1
+  ],
+  "table_rgba": [
+    0.604,
+    0.459,
+    0.345,
+    1
+  ],
+  "initial_keyframe": "initial",
+  "scene": "scene.xml",
+  "suite_case": {
+    "family": "dial",
+    "level": 3,
+    "suite_version": 2,
+    "scene_revision": 10,
+    "scale_index": 2,
+    "arms": 16,
+    "dials": 8,
+    "id": "dial-n08-d3",
+    "ring_radius_m": 1.55,
+    "source_scene_revision": 6,
+    "table_height_m": 0.8,
+    "directory": "configs/environments/spring_dial/frontier-v2-r10-dial-n08-d3"
+  },
+  "dials": [
+    {
+      "id": "D01",
+      "index": 0,
+      "nominal_robots": [
+        "A",
+        "B"
+      ],
+      "initial_center_m": [
+        1.55,
+        0.0,
+        0.9342352941176472
+      ],
+      "layout_yaw_rad": -1.5707963267948966,
+      "initial_quaternion_wxyz": [
+        0.6063390625908325,
+        0.3638034375544994,
+        -0.3638034375544994,
+        -0.6063390625908325
+      ]
+    },
+    {
+      "id": "D02",
+      "index": 1,
+      "nominal_robots": [
+        "C",
+        "D"
+      ],
+      "initial_center_m": [
+        1.0960155108391487,
+        1.0960155108391485,
+        0.9342352941176472
+      ],
+      "layout_yaw_rad": -0.7853981633974483,
+      "initial_quaternion_wxyz": [
+        0.7922201633390409,
+        0.4753320980034246,
+        -0.19688900162427558,
+        -0.32814833604045934
+      ]
+    },
+    {
+      "id": "D03",
+      "index": 2,
+      "nominal_robots": [
+        "E",
+        "F"
+      ],
+      "initial_center_m": [
+        9.491012693391987e-17,
+        1.55,
+        0.9342352941176472
+      ],
+      "layout_yaw_rad": 0.0,
+      "initial_quaternion_wxyz": [
+        0.8574929257125442,
+        0.5144957554275265,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "D04",
+      "index": 3,
+      "nominal_robots": [
+        "G",
+        "H"
+      ],
+      "initial_center_m": [
+        -1.0960155108391485,
+        1.0960155108391487,
+        0.9342352941176472
+      ],
+      "layout_yaw_rad": 0.7853981633974483,
+      "initial_quaternion_wxyz": [
+        0.7922201633390409,
+        0.4753320980034246,
+        0.19688900162427558,
+        0.32814833604045934
+      ]
+    },
+    {
+      "id": "D05",
+      "index": 4,
+      "nominal_robots": [
+        "I",
+        "J"
+      ],
+      "initial_center_m": [
+        -1.55,
+        1.8982025386783975e-16,
+        0.9342352941176472
+      ],
+      "layout_yaw_rad": 1.5707963267948966,
+      "initial_quaternion_wxyz": [
+        0.6063390625908325,
+        0.3638034375544994,
+        0.3638034375544994,
+        0.6063390625908325
+      ]
+    },
+    {
+      "id": "D06",
+      "index": 5,
+      "nominal_robots": [
+        "K",
+        "L"
+      ],
+      "initial_center_m": [
+        -1.096015510839149,
+        -1.0960155108391485,
+        0.9342352941176472
+      ],
+      "layout_yaw_rad": 2.356194490192345,
+      "initial_quaternion_wxyz": [
+        0.32814833604045934,
+        0.1968890016242756,
+        0.47533209800342446,
+        0.7922201633390409
+      ]
+    },
+    {
+      "id": "D07",
+      "index": 6,
+      "nominal_robots": [
+        "M",
+        "N"
+      ],
+      "initial_center_m": [
+        -2.847303808017596e-16,
+        -1.55,
+        0.9342352941176472
+      ],
+      "layout_yaw_rad": 3.141592653589793,
+      "initial_quaternion_wxyz": [
+        5.2506298338268314e-17,
+        3.150377900296099e-17,
+        0.5144957554275265,
+        0.8574929257125442
+      ]
+    },
+    {
+      "id": "D08",
+      "index": 7,
+      "nominal_robots": [
+        "O",
+        "P"
+      ],
+      "initial_center_m": [
+        1.0960155108391485,
+        -1.096015510839149,
+        0.9342352941176472
+      ],
+      "layout_yaw_rad": 3.9269908169872414,
+      "initial_quaternion_wxyz": [
+        -0.3281483360404593,
+        -0.19688900162427556,
+        0.47533209800342446,
+        0.792220163339041
+      ]
+    }
+  ],
+  "mechanism": {
+    "dial_count": 8,
+    "interface": "crank",
+    "free_modules": true,
+    "handle_material": "anodized aluminium",
+    "handle_mass_kg": 0.2882304,
+    "spring_nm_rad": 0.12,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      0.8342498825558959,
+      -2.0140573808746054
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "feedback_rule_version": 2,
+    "feedback_dwell_sim_s": 0.25,
+    "feedback_stability": "same nonzero 4-degree detent band throughout the dwell; in-band vibration allowed",
+    "rotor_counterbalanced": false,
+    "handle_stem_mass_kg": 0.2592,
+    "parking_fixture": "None; visible disk rim and blue handle tip rest directly on tabletop",
+    "handle_cross_section_m": [
+      0.016,
+      0.02
+    ],
+    "handle_attachment_local_m": [
+      0,
+      0.02,
+      -0.154
+    ],
+    "handle_neck_clear_length_m": 0.024,
+    "handle_shoulders": "Two visible passive stop shoulders. They transmit load by real contact and release when the gripper opens; no hand attachment.",
+    "white_disk_diameter_m": 0.3,
+    "white_disk_diameter_scale": 1.3043478260869563,
+    "digit_height_m": 0.04,
+    "digit_radius_m": 0.122,
+    "digit_outer_rim_clearance_m": 0.007999999999999997,
+    "detent_labels": [
+      "0",
+      "1",
+      "2",
+      "3"
+    ],
+    "direction_indicator": "Crank itself",
+    "single_sided_crank": true,
+    "crank_arm_shape": "round capsule",
+    "crank_arm_radius_m": 0.01,
+    "crank_arm_length_m": 0.083,
+    "crank_grip_radius_m": 0.01375,
+    "crank_arm_mass_kg": 0.05271157587548639,
+    "return_dynamics_verified": false
+  },
+  "gripper_profile": "standard-panda",
+  "source_frame_revision": {
+    "source_directory": "configs/environments/spring_dial/frontier-v2-r6-dial-n08-d3",
+    "source_scene_sha256": "68ad7b12c75706f5c817e318e4410b4ba75a10731d3bbc7915628b4d03709723",
+    "vertical_translation_m": 0.4,
+    "floor_unchanged": true,
+    "geometry_scaled": false
+  }
+}

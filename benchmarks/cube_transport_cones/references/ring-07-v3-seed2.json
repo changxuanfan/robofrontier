@@ -1,0 +1,698 @@
+{
+  "task": "ring-07-v3-seed2",
+  "scope": "unit pick-clear/place-clear resource abstraction",
+  "route_rule": "shortest hop; increasing station IDs for an equal-length ring route",
+  "method": "deterministic multistart no-wait insertion",
+  "trials_used": 256,
+  "serial_phase_slots": 102,
+  "parallel_feasible_phase_slots": 20,
+  "lower_bound_phase_slots_for_fixed_routes": 18,
+  "optimality_proven": false,
+  "arm_phase_load": {
+    "A": 14,
+    "E": 18,
+    "F": 18,
+    "G": 14,
+    "B": 14,
+    "D": 12,
+    "C": 12
+  },
+  "edge_phase_load": {
+    "E-F": 16,
+    "F-G": 8,
+    "A-G": 8,
+    "A-B": 8,
+    "C-D": 4,
+    "B-C": 8,
+    "D-E": 8
+  },
+  "hop_histogram": {
+    "0": 6,
+    "1": 5,
+    "2": 5,
+    "3": 5
+  },
+  "assumptions": [
+    "unit phase durations",
+    "one held object per robot",
+    "edge capacity one; receiver picks in slot after sender places",
+    "phase finishes with arm clear",
+    "no geometric trajectory constraints",
+    "all grasps succeed; no model, image or communication latency"
+  ],
+  "schedule": [
+    [
+      {
+        "object": "B_item2",
+        "arm": "B",
+        "phase": "pick_clear",
+        "route_index": 0
+      },
+      {
+        "object": "G_item3",
+        "arm": "G",
+        "phase": "pick_clear",
+        "route_index": 0
+      },
+      {
+        "object": "C_item3",
+        "arm": "C",
+        "phase": "pick_clear",
+        "route_index": 0
+      },
+      {
+        "object": "A_item2",
+        "arm": "A",
+        "phase": "pick_clear",
+        "route_index": 0
+      },
+      {
+        "object": "F_item1",
+        "arm": "F",
+        "phase": "pick_clear",
+        "route_index": 0
+      },
+      {
+        "object": "E_item2",
+        "arm": "E",
+        "phase": "pick_clear",
+        "route_index": 0
+      }
+    ],
+    [
+      {
+        "object": "B_item2",
+        "arm": "B",
+        "phase": "place_clear",
+        "route_index": 0
+      },
+      {
+        "object": "G_item3",
+        "arm": "G",
+        "phase": "place_clear",
+        "route_index": 0
+      },
+      {
+        "object": "C_item3",
+        "arm": "C",
+        "phase": "place_clear",
+        "route_index": 0
+      },
+      {
+        "object": "A_item2",
+        "arm": "A",
+        "phase": "place_clear",
+        "route_index": 0
+      },
+      {
+        "object": "F_item1",
+        "arm": "F",
+        "phase": "place_clear",
+        "route_index": 0
+      },
+      {
+        "object": "E_item2",
+        "arm": "E",
+        "phase": "place_clear",
+        "route_index": 0
+      }
+    ],
+    [
+      {
+        "object": "B_item2",
+        "arm": "C",
+        "phase": "pick_clear",
+        "route_index": 1
+      },
+      {
+        "object": "G_item3",
+        "arm": "A",
+        "phase": "pick_clear",
+        "route_index": 1
+      },
+      {
+        "object": "A_item2",
+        "arm": "B",
+        "phase": "pick_clear",
+        "route_index": 1
+      },
+      {
+        "object": "F_item1",
+        "arm": "E",
+        "phase": "pick_clear",
+        "route_index": 1
+      },
+      {
+        "object": "G_item1",
+        "arm": "G",
+        "phase": "pick_clear",
+        "route_index": 0
+      },
+      {
+        "object": "F_item2",
+        "arm": "F",
+        "phase": "pick_clear",
+        "route_index": 0
+      }
+    ],
+    [
+      {
+        "object": "B_item2",
+        "arm": "C",
+        "phase": "place_clear",
+        "route_index": 1
+      },
+      {
+        "object": "G_item3",
+        "arm": "A",
+        "phase": "place_clear",
+        "route_index": 1
+      },
+      {
+        "object": "A_item2",
+        "arm": "B",
+        "phase": "place_clear",
+        "route_index": 1
+      },
+      {
+        "object": "F_item1",
+        "arm": "E",
+        "phase": "place_clear",
+        "route_index": 1
+      },
+      {
+        "object": "G_item1",
+        "arm": "G",
+        "phase": "place_clear",
+        "route_index": 0
+      },
+      {
+        "object": "F_item2",
+        "arm": "F",
+        "phase": "place_clear",
+        "route_index": 0
+      }
+    ],
+    [
+      {
+        "object": "B_item2",
+        "arm": "D",
+        "phase": "pick_clear",
+        "route_index": 2
+      },
+      {
+        "object": "C_item1",
+        "arm": "C",
+        "phase": "pick_clear",
+        "route_index": 0
+      },
+      {
+        "object": "G_item2",
+        "arm": "G",
+        "phase": "pick_clear",
+        "route_index": 0
+      },
+      {
+        "object": "B_item1",
+        "arm": "B",
+        "phase": "pick_clear",
+        "route_index": 0
+      },
+      {
+        "object": "F_item2",
+        "arm": "E",
+        "phase": "pick_clear",
+        "route_index": 1
+      },
+      {
+        "object": "F_item3",
+        "arm": "F",
+        "phase": "pick_clear",
+        "route_index": 0
+      },
+      {
+        "object": "A_item3",
+        "arm": "A",
+        "phase": "pick_clear",
+        "route_index": 0
+      }
+    ],
+    [
+      {
+        "object": "B_item2",
+        "arm": "D",
+        "phase": "place_clear",
+        "route_index": 2
+      },
+      {
+        "object": "C_item1",
+        "arm": "C",
+        "phase": "place_clear",
+        "route_index": 0
+      },
+      {
+        "object": "G_item2",
+        "arm": "G",
+        "phase": "place_clear",
+        "route_index": 0
+      },
+      {
+        "object": "B_item1",
+        "arm": "B",
+        "phase": "place_clear",
+        "route_index": 0
+      },
+      {
+        "object": "F_item2",
+        "arm": "E",
+        "phase": "place_clear",
+        "route_index": 1
+      },
+      {
+        "object": "F_item3",
+        "arm": "F",
+        "phase": "place_clear",
+        "route_index": 0
+      },
+      {
+        "object": "A_item3",
+        "arm": "A",
+        "phase": "place_clear",
+        "route_index": 0
+      }
+    ],
+    [
+      {
+        "object": "C_item1",
+        "arm": "B",
+        "phase": "pick_clear",
+        "route_index": 1
+      },
+      {
+        "object": "G_item2",
+        "arm": "F",
+        "phase": "pick_clear",
+        "route_index": 1
+      },
+      {
+        "object": "C_item2",
+        "arm": "C",
+        "phase": "pick_clear",
+        "route_index": 0
+      },
+      {
+        "object": "D_item3",
+        "arm": "D",
+        "phase": "pick_clear",
+        "route_index": 0
+      },
+      {
+        "object": "B_item1",
+        "arm": "A",
+        "phase": "pick_clear",
+        "route_index": 1
+      },
+      {
+        "object": "F_item3",
+        "arm": "E",
+        "phase": "pick_clear",
+        "route_index": 1
+      }
+    ],
+    [
+      {
+        "object": "C_item1",
+        "arm": "B",
+        "phase": "place_clear",
+        "route_index": 1
+      },
+      {
+        "object": "G_item2",
+        "arm": "F",
+        "phase": "place_clear",
+        "route_index": 1
+      },
+      {
+        "object": "C_item2",
+        "arm": "C",
+        "phase": "place_clear",
+        "route_index": 0
+      },
+      {
+        "object": "D_item3",
+        "arm": "D",
+        "phase": "place_clear",
+        "route_index": 0
+      },
+      {
+        "object": "B_item1",
+        "arm": "A",
+        "phase": "place_clear",
+        "route_index": 1
+      },
+      {
+        "object": "F_item3",
+        "arm": "E",
+        "phase": "place_clear",
+        "route_index": 1
+      }
+    ],
+    [
+      {
+        "object": "C_item1",
+        "arm": "A",
+        "phase": "pick_clear",
+        "route_index": 2
+      },
+      {
+        "object": "G_item2",
+        "arm": "E",
+        "phase": "pick_clear",
+        "route_index": 2
+      },
+      {
+        "object": "D_item3",
+        "arm": "C",
+        "phase": "pick_clear",
+        "route_index": 1
+      },
+      {
+        "object": "B_item1",
+        "arm": "G",
+        "phase": "pick_clear",
+        "route_index": 2
+      },
+      {
+        "object": "F_item3",
+        "arm": "D",
+        "phase": "pick_clear",
+        "route_index": 2
+      },
+      {
+        "object": "B_item3",
+        "arm": "B",
+        "phase": "pick_clear",
+        "route_index": 0
+      }
+    ],
+    [
+      {
+        "object": "C_item1",
+        "arm": "A",
+        "phase": "place_clear",
+        "route_index": 2
+      },
+      {
+        "object": "G_item2",
+        "arm": "E",
+        "phase": "place_clear",
+        "route_index": 2
+      },
+      {
+        "object": "D_item3",
+        "arm": "C",
+        "phase": "place_clear",
+        "route_index": 1
+      },
+      {
+        "object": "B_item1",
+        "arm": "G",
+        "phase": "place_clear",
+        "route_index": 2
+      },
+      {
+        "object": "F_item3",
+        "arm": "D",
+        "phase": "place_clear",
+        "route_index": 2
+      },
+      {
+        "object": "B_item3",
+        "arm": "B",
+        "phase": "place_clear",
+        "route_index": 0
+      }
+    ],
+    [
+      {
+        "object": "C_item1",
+        "arm": "G",
+        "phase": "pick_clear",
+        "route_index": 3
+      },
+      {
+        "object": "G_item2",
+        "arm": "D",
+        "phase": "pick_clear",
+        "route_index": 3
+      },
+      {
+        "object": "D_item3",
+        "arm": "B",
+        "phase": "pick_clear",
+        "route_index": 2
+      },
+      {
+        "object": "E_item1",
+        "arm": "E",
+        "phase": "pick_clear",
+        "route_index": 0
+      },
+      {
+        "object": "B_item1",
+        "arm": "F",
+        "phase": "pick_clear",
+        "route_index": 3
+      },
+      {
+        "object": "A_item1",
+        "arm": "A",
+        "phase": "pick_clear",
+        "route_index": 0
+      }
+    ],
+    [
+      {
+        "object": "C_item1",
+        "arm": "G",
+        "phase": "place_clear",
+        "route_index": 3
+      },
+      {
+        "object": "G_item2",
+        "arm": "D",
+        "phase": "place_clear",
+        "route_index": 3
+      },
+      {
+        "object": "D_item3",
+        "arm": "B",
+        "phase": "place_clear",
+        "route_index": 2
+      },
+      {
+        "object": "E_item1",
+        "arm": "E",
+        "phase": "place_clear",
+        "route_index": 0
+      },
+      {
+        "object": "B_item1",
+        "arm": "F",
+        "phase": "place_clear",
+        "route_index": 3
+      },
+      {
+        "object": "A_item1",
+        "arm": "A",
+        "phase": "place_clear",
+        "route_index": 0
+      }
+    ],
+    [
+      {
+        "object": "E_item1",
+        "arm": "F",
+        "phase": "pick_clear",
+        "route_index": 1
+      },
+      {
+        "object": "A_item1",
+        "arm": "B",
+        "phase": "pick_clear",
+        "route_index": 1
+      },
+      {
+        "object": "E_item3",
+        "arm": "E",
+        "phase": "pick_clear",
+        "route_index": 0
+      },
+      {
+        "object": "D_item1",
+        "arm": "D",
+        "phase": "pick_clear",
+        "route_index": 0
+      }
+    ],
+    [
+      {
+        "object": "E_item1",
+        "arm": "F",
+        "phase": "place_clear",
+        "route_index": 1
+      },
+      {
+        "object": "A_item1",
+        "arm": "B",
+        "phase": "place_clear",
+        "route_index": 1
+      },
+      {
+        "object": "E_item3",
+        "arm": "E",
+        "phase": "place_clear",
+        "route_index": 0
+      },
+      {
+        "object": "D_item1",
+        "arm": "D",
+        "phase": "place_clear",
+        "route_index": 0
+      }
+    ],
+    [
+      {
+        "object": "A_item1",
+        "arm": "C",
+        "phase": "pick_clear",
+        "route_index": 2
+      },
+      {
+        "object": "E_item3",
+        "arm": "F",
+        "phase": "pick_clear",
+        "route_index": 1
+      },
+      {
+        "object": "D_item1",
+        "arm": "E",
+        "phase": "pick_clear",
+        "route_index": 1
+      },
+      {
+        "object": "D_item2",
+        "arm": "D",
+        "phase": "pick_clear",
+        "route_index": 0
+      }
+    ],
+    [
+      {
+        "object": "A_item1",
+        "arm": "C",
+        "phase": "place_clear",
+        "route_index": 2
+      },
+      {
+        "object": "E_item3",
+        "arm": "F",
+        "phase": "place_clear",
+        "route_index": 1
+      },
+      {
+        "object": "D_item1",
+        "arm": "E",
+        "phase": "place_clear",
+        "route_index": 1
+      },
+      {
+        "object": "D_item2",
+        "arm": "D",
+        "phase": "place_clear",
+        "route_index": 0
+      }
+    ],
+    [
+      {
+        "object": "E_item3",
+        "arm": "G",
+        "phase": "pick_clear",
+        "route_index": 2
+      },
+      {
+        "object": "D_item1",
+        "arm": "F",
+        "phase": "pick_clear",
+        "route_index": 2
+      },
+      {
+        "object": "D_item2",
+        "arm": "E",
+        "phase": "pick_clear",
+        "route_index": 1
+      }
+    ],
+    [
+      {
+        "object": "E_item3",
+        "arm": "G",
+        "phase": "place_clear",
+        "route_index": 2
+      },
+      {
+        "object": "D_item1",
+        "arm": "F",
+        "phase": "place_clear",
+        "route_index": 2
+      },
+      {
+        "object": "D_item2",
+        "arm": "E",
+        "phase": "place_clear",
+        "route_index": 1
+      }
+    ],
+    [
+      {
+        "object": "E_item3",
+        "arm": "A",
+        "phase": "pick_clear",
+        "route_index": 3
+      },
+      {
+        "object": "D_item1",
+        "arm": "G",
+        "phase": "pick_clear",
+        "route_index": 3
+      },
+      {
+        "object": "D_item2",
+        "arm": "F",
+        "phase": "pick_clear",
+        "route_index": 2
+      }
+    ],
+    [
+      {
+        "object": "E_item3",
+        "arm": "A",
+        "phase": "place_clear",
+        "route_index": 3
+      },
+      {
+        "object": "D_item1",
+        "arm": "G",
+        "phase": "place_clear",
+        "route_index": 3
+      },
+      {
+        "object": "D_item2",
+        "arm": "F",
+        "phase": "place_clear",
+        "route_index": 2
+      }
+    ]
+  ],
+  "schedule_replay_passed": true
+}

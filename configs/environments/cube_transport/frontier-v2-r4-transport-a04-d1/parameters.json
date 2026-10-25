@@ -1,0 +1,42 @@
+{
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.06,
+    "object_mass_kg": 0.16874999999999996,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0
+  },
+  "mechanism": {
+    "kind": "flat_placement",
+    "cube_side_m": 0.06,
+    "cylinder_diameter_m": 0.06,
+    "cylinder_height_m": 0.06,
+    "table_side_scale_from_r3": 0.85,
+    "mount_layout_scale_from_r3": 0.85,
+    "cube_body_mass_kg": 0.16874999999999996,
+    "cube_material": "Solid wood; inherited nominal density",
+    "cylinder_body_mass_kg": 0.13253594007331937,
+    "blade_size_m": null,
+    "blade_spacing_m": null,
+    "slot_opening_m": null,
+    "slot_depth_m": null,
+    "spring_board": null,
+    "supplies": "Tabletop; no pedestals. Plug blades initially up/sideways. First six stock identities are cubes, subsequent identities are cylinders."
+  },
+  "grid": null,
+  "scope": "Declared geometry/material and engineering parameters; not a task success proof"
+}

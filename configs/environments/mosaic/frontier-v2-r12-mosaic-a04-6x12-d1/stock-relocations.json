@@ -1,0 +1,4 @@
+{
+  "scope": "Static initial layout construction only; no live object writes",
+  "changes": []
+}

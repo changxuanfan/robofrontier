@@ -1,0 +1,72 @@
+[
+  {
+    "environment": "line-03",
+    "arms": 3,
+    "free_objects": 9,
+    "cameras": 9,
+    "passed": true
+  },
+  {
+    "environment": "ring-04",
+    "arms": 4,
+    "free_objects": 12,
+    "cameras": 11,
+    "passed": true
+  },
+  {
+    "environment": "ring-05",
+    "arms": 5,
+    "free_objects": 15,
+    "cameras": 13,
+    "passed": true
+  },
+  {
+    "environment": "ring-06",
+    "arms": 6,
+    "free_objects": 18,
+    "cameras": 15,
+    "passed": true
+  },
+  {
+    "environment": "ring-07",
+    "arms": 7,
+    "free_objects": 21,
+    "cameras": 17,
+    "passed": true
+  },
+  {
+    "environment": "ring-08",
+    "arms": 8,
+    "free_objects": 24,
+    "cameras": 19,
+    "passed": true
+  },
+  {
+    "environment": "ring-09",
+    "arms": 9,
+    "free_objects": 27,
+    "cameras": 21,
+    "passed": true
+  },
+  {
+    "environment": "ring-10",
+    "arms": 10,
+    "free_objects": 30,
+    "cameras": 23,
+    "passed": true
+  },
+  {
+    "environment": "ring-11",
+    "arms": 11,
+    "free_objects": 33,
+    "cameras": 25,
+    "passed": true
+  },
+  {
+    "environment": "ring-12",
+    "arms": 12,
+    "free_objects": 36,
+    "cameras": 27,
+    "passed": true
+  }
+]

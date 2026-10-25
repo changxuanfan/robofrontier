@@ -1,0 +1,289 @@
+{
+  "kind": "frontier_suite",
+  "suite_version": 2,
+  "id": "dial-n06-d1",
+  "family": "dial",
+  "level": 1,
+  "scale": {
+    "family": "dial",
+    "level": 1,
+    "suite_version": 2,
+    "scene_revision": 5,
+    "scale_index": 1,
+    "arms": 6,
+    "dials": 6,
+    "id": "dial-n06-d1",
+    "ring_radius_m": 1.55,
+    "directory": "configs/environments/spring_dial/frontier-v2-r5-dial-n06-d1"
+  },
+  "scene_asset": "configs/environments/spring_dial/frontier-v2-r5-dial-n06-d1",
+  "scene_sha256": "131b77c60708648d7c871ed4826c365f3745cd255ea1ec67dd4b6dc109ad5dfc",
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -0.58,
+        0.75,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "B": {
+      "base_position_m": [
+        0.0,
+        0.75,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "C": {
+      "base_position_m": [
+        0.58,
+        0.75,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "D": {
+      "base_position_m": [
+        -0.58,
+        -0.75,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "E": {
+      "base_position_m": [
+        0.0,
+        -0.75,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "F": {
+      "base_position_m": [
+        0.58,
+        -0.75,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    }
+  },
+  "objects": [],
+  "table_height_m": 0.4,
+  "cube_size_m": null,
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 20,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "material_scope": "Original dial assembly properties retained; initial rest reconfigured without parking blocks"
+  },
+  "mechanism": {
+    "dial_count": 6,
+    "interface": "gear",
+    "free_modules": false,
+    "handle_material": null,
+    "handle_mass_kg": 0,
+    "spring_nm_rad": 0.03,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      0.94,
+      0.0
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "feedback_rule_version": 2,
+    "feedback_dwell_sim_s": 0.25,
+    "feedback_stability": "same nonzero 4-degree detent band throughout the dwell; in-band vibration allowed",
+    "white_disk_diameter_m": 0.2438,
+    "white_disk_diameter_scale": 1.06,
+    "digit_height_m": 0.02,
+    "digit_radius_m": 0.1097,
+    "detent_labels": [
+      "0",
+      "1",
+      "2",
+      "3"
+    ],
+    "layout": "rectangular_opposed_rows",
+    "table_inner_radius_m": 0,
+    "row_spacing_m": 0.46
+  },
+  "goals": [],
+  "grid": null,
+  "route": null,
+  "pairs": null,
+  "dials": [
+    {
+      "id": "D01",
+      "index": 0,
+      "nominal_robots": [
+        "A"
+      ],
+      "initial_center_m": [
+        -0.58,
+        0.23,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D02",
+      "index": 1,
+      "nominal_robots": [
+        "B"
+      ],
+      "initial_center_m": [
+        0.0,
+        0.23,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D03",
+      "index": 2,
+      "nominal_robots": [
+        "C"
+      ],
+      "initial_center_m": [
+        0.58,
+        0.23,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D04",
+      "index": 3,
+      "nominal_robots": [
+        "D"
+      ],
+      "initial_center_m": [
+        -0.58,
+        -0.23,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D05",
+      "index": 4,
+      "nominal_robots": [
+        "E"
+      ],
+      "initial_center_m": [
+        0.0,
+        -0.23,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D06",
+      "index": 5,
+      "nominal_robots": [
+        "F"
+      ],
+      "initial_center_m": [
+        0.58,
+        -0.23,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    }
+  ],
+  "gripper_profile": "standard-panda",
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "rules": [
+    "Each private code digit is independently 1,2,3. Relative disk positions are zero, clockwise quarter-turn, half-turn and counterclockwise quarter-turn; -180 and +180 are the same half-turn symbol.",
+    "All disks must stay within 4 degrees of a nonzero detent for 0.25 simulated seconds for a valid count. Only aggregate correct count is visible; no individual matches. Zero is invalid.",
+    "Movable modules start naturally on the tabletop, without parking racks. Establish blue-handle support and full-module 20 mm clearance before red operation; sustain support and stop after loss.",
+    "A crank contact point moves around its axle; rotation can require coordinated translation. Reach a valid count equal to the number of disks.",
+    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits."
+  ],
+  "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB",
+      "Robot proprioception and robot geometry",
+      "Action feedback",
+      "Visible dial count"
+    ]
+  },
+  "completion": {
+    "stable_duration_sim_s": 1.0,
+    "scope": "Mechanism-specific commissioning required; no inherited v1 evaluator assumed"
+  },
+  "execution_readiness": "environment_preview_only",
+  "oracle_verified": false,
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "D01_front",
+    "D01_side",
+    "D01_high",
+    "D02_front",
+    "D02_side",
+    "D02_high",
+    "D03_front",
+    "D03_side",
+    "D03_high",
+    "D04_front",
+    "D04_side",
+    "D04_high",
+    "D05_front",
+    "D05_side",
+    "D05_high",
+    "D06_front",
+    "D06_side",
+    "D06_high",
+    "board"
+  ],
+  "view_camera": "global",
+  "recording_camera": "global",
+  "workspace_world_m": {
+    "lower": [
+      -1.43,
+      -1.6,
+      0.025
+    ],
+    "upper": [
+      1.43,
+      1.6,
+      1.7
+    ]
+  }
+}

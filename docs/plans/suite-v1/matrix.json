@@ -1,0 +1,385 @@
+{
+  "version": 1,
+  "status": "planning catalogue only; no generated-scene or Oracle-pass claim",
+  "case_count": 36,
+  "cases": [
+    {
+      "id": "transport-a04-d1",
+      "family": "transport",
+      "level": 1,
+      "arms": 4,
+      "objects": 12,
+      "mechanism": "cube",
+      "status": "planned"
+    },
+    {
+      "id": "transport-a04-d2",
+      "family": "transport",
+      "level": 2,
+      "arms": 4,
+      "objects": 12,
+      "mechanism": "double_peg_fixed_socket",
+      "status": "planned"
+    },
+    {
+      "id": "transport-a04-d3",
+      "family": "transport",
+      "level": 3,
+      "arms": 4,
+      "objects": 12,
+      "mechanism": "double_peg_compliant_socket",
+      "status": "planned"
+    },
+    {
+      "id": "transport-a08-d1",
+      "family": "transport",
+      "level": 1,
+      "arms": 8,
+      "objects": 24,
+      "mechanism": "cube",
+      "status": "planned"
+    },
+    {
+      "id": "transport-a08-d2",
+      "family": "transport",
+      "level": 2,
+      "arms": 8,
+      "objects": 24,
+      "mechanism": "double_peg_fixed_socket",
+      "status": "planned"
+    },
+    {
+      "id": "transport-a08-d3",
+      "family": "transport",
+      "level": 3,
+      "arms": 8,
+      "objects": 24,
+      "mechanism": "double_peg_compliant_socket",
+      "status": "planned"
+    },
+    {
+      "id": "transport-a12-d1",
+      "family": "transport",
+      "level": 1,
+      "arms": 12,
+      "objects": 36,
+      "mechanism": "cube",
+      "status": "planned"
+    },
+    {
+      "id": "transport-a12-d2",
+      "family": "transport",
+      "level": 2,
+      "arms": 12,
+      "objects": 36,
+      "mechanism": "double_peg_fixed_socket",
+      "status": "planned"
+    },
+    {
+      "id": "transport-a12-d3",
+      "family": "transport",
+      "level": 3,
+      "arms": 12,
+      "objects": 36,
+      "mechanism": "double_peg_compliant_socket",
+      "status": "planned"
+    },
+    {
+      "id": "mosaic-a04-7x7-d1",
+      "family": "mosaic",
+      "level": 1,
+      "arms": 4,
+      "rows": 7,
+      "columns": 7,
+      "objects": 49,
+      "pitch_m": 0.051,
+      "guidance": "recessed",
+      "status": "planned"
+    },
+    {
+      "id": "mosaic-a04-7x7-d2",
+      "family": "mosaic",
+      "level": 2,
+      "arms": 4,
+      "rows": 7,
+      "columns": 7,
+      "objects": 49,
+      "pitch_m": 0.051,
+      "guidance": "printed_grid",
+      "status": "planned"
+    },
+    {
+      "id": "mosaic-a04-7x7-d3",
+      "family": "mosaic",
+      "level": 3,
+      "arms": 4,
+      "rows": 7,
+      "columns": 7,
+      "objects": 49,
+      "pitch_m": 0.051,
+      "guidance": "unmarked",
+      "status": "planned"
+    },
+    {
+      "id": "mosaic-a06-7x14-d1",
+      "family": "mosaic",
+      "level": 1,
+      "arms": 6,
+      "rows": 7,
+      "columns": 14,
+      "objects": 98,
+      "pitch_m": 0.051,
+      "guidance": "recessed",
+      "status": "planned"
+    },
+    {
+      "id": "mosaic-a06-7x14-d2",
+      "family": "mosaic",
+      "level": 2,
+      "arms": 6,
+      "rows": 7,
+      "columns": 14,
+      "objects": 98,
+      "pitch_m": 0.051,
+      "guidance": "printed_grid",
+      "status": "planned"
+    },
+    {
+      "id": "mosaic-a06-7x14-d3",
+      "family": "mosaic",
+      "level": 3,
+      "arms": 6,
+      "rows": 7,
+      "columns": 14,
+      "objects": 98,
+      "pitch_m": 0.051,
+      "guidance": "unmarked",
+      "status": "planned"
+    },
+    {
+      "id": "mosaic-a08-7x21-d1",
+      "family": "mosaic",
+      "level": 1,
+      "arms": 8,
+      "rows": 7,
+      "columns": 21,
+      "objects": 147,
+      "pitch_m": 0.051,
+      "guidance": "recessed",
+      "status": "planned"
+    },
+    {
+      "id": "mosaic-a08-7x21-d2",
+      "family": "mosaic",
+      "level": 2,
+      "arms": 8,
+      "rows": 7,
+      "columns": 21,
+      "objects": 147,
+      "pitch_m": 0.051,
+      "guidance": "printed_grid",
+      "status": "planned"
+    },
+    {
+      "id": "mosaic-a08-7x21-d3",
+      "family": "mosaic",
+      "level": 3,
+      "arms": 8,
+      "rows": 7,
+      "columns": 21,
+      "objects": 147,
+      "pitch_m": 0.051,
+      "guidance": "unmarked",
+      "status": "planned"
+    },
+    {
+      "id": "relay-a08-d1",
+      "family": "relay",
+      "level": 1,
+      "arms": 8,
+      "pairs": 4,
+      "layout": "straight",
+      "payload": "bare_timber",
+      "status": "planned"
+    },
+    {
+      "id": "relay-a08-d2",
+      "family": "relay",
+      "level": 2,
+      "arms": 8,
+      "pairs": 4,
+      "layout": "straight",
+      "payload": "short_link_weight",
+      "status": "planned"
+    },
+    {
+      "id": "relay-a08-d3",
+      "family": "relay",
+      "level": 3,
+      "arms": 8,
+      "pairs": 4,
+      "layout": "straight",
+      "payload": "flexible_cable_weight",
+      "status": "planned"
+    },
+    {
+      "id": "relay-a12-d1",
+      "family": "relay",
+      "level": 1,
+      "arms": 12,
+      "pairs": 6,
+      "layout": "bend",
+      "payload": "bare_timber",
+      "status": "planned"
+    },
+    {
+      "id": "relay-a12-d2",
+      "family": "relay",
+      "level": 2,
+      "arms": 12,
+      "pairs": 6,
+      "layout": "bend",
+      "payload": "short_link_weight",
+      "status": "planned"
+    },
+    {
+      "id": "relay-a12-d3",
+      "family": "relay",
+      "level": 3,
+      "arms": 12,
+      "pairs": 6,
+      "layout": "bend",
+      "payload": "flexible_cable_weight",
+      "status": "planned"
+    },
+    {
+      "id": "relay-a16-d1",
+      "family": "relay",
+      "level": 1,
+      "arms": 16,
+      "pairs": 8,
+      "layout": "closed_loop",
+      "payload": "bare_timber",
+      "status": "planned"
+    },
+    {
+      "id": "relay-a16-d2",
+      "family": "relay",
+      "level": 2,
+      "arms": 16,
+      "pairs": 8,
+      "layout": "closed_loop",
+      "payload": "short_link_weight",
+      "status": "planned"
+    },
+    {
+      "id": "relay-a16-d3",
+      "family": "relay",
+      "level": 3,
+      "arms": 16,
+      "pairs": 8,
+      "layout": "closed_loop",
+      "payload": "flexible_cable_weight",
+      "status": "planned"
+    },
+    {
+      "id": "dial-n04-d1",
+      "family": "dial",
+      "level": 1,
+      "arms": 4,
+      "dials": 4,
+      "mechanism": "fixed_gear",
+      "candidate_codes": 81,
+      "status": "planned",
+      "layout": "2_rows_2_columns"
+    },
+    {
+      "id": "dial-n04-d2",
+      "family": "dial",
+      "level": 2,
+      "arms": 8,
+      "dials": 4,
+      "mechanism": "airborne_gear",
+      "candidate_codes": 81,
+      "status": "planned",
+      "layout": "linear_facing_pairs_0.70m"
+    },
+    {
+      "id": "dial-n04-d3",
+      "family": "dial",
+      "level": 3,
+      "arms": 8,
+      "dials": 4,
+      "mechanism": "airborne_crank",
+      "candidate_codes": 81,
+      "status": "planned",
+      "layout": "linear_facing_pairs_0.70m"
+    },
+    {
+      "id": "dial-n06-d1",
+      "family": "dial",
+      "level": 1,
+      "arms": 6,
+      "dials": 6,
+      "mechanism": "fixed_gear",
+      "candidate_codes": 729,
+      "status": "planned",
+      "layout": "3_rows_2_columns"
+    },
+    {
+      "id": "dial-n06-d2",
+      "family": "dial",
+      "level": 2,
+      "arms": 12,
+      "dials": 6,
+      "mechanism": "airborne_gear",
+      "candidate_codes": 729,
+      "status": "planned",
+      "layout": "2_rows_3_modules_with_facing_pairs"
+    },
+    {
+      "id": "dial-n06-d3",
+      "family": "dial",
+      "level": 3,
+      "arms": 12,
+      "dials": 6,
+      "mechanism": "airborne_crank",
+      "candidate_codes": 729,
+      "status": "planned",
+      "layout": "2_rows_3_modules_with_facing_pairs"
+    },
+    {
+      "id": "dial-n08-d1",
+      "family": "dial",
+      "level": 1,
+      "arms": 8,
+      "dials": 8,
+      "mechanism": "fixed_gear",
+      "candidate_codes": 6561,
+      "status": "planned",
+      "layout": "3_2_3_perimeter"
+    },
+    {
+      "id": "dial-n08-d2",
+      "family": "dial",
+      "level": 2,
+      "arms": 16,
+      "dials": 8,
+      "mechanism": "airborne_gear",
+      "candidate_codes": 6561,
+      "status": "planned",
+      "layout": "annular_inner_outer_facing_pairs"
+    },
+    {
+      "id": "dial-n08-d3",
+      "family": "dial",
+      "level": 3,
+      "arms": 16,
+      "dials": 8,
+      "mechanism": "airborne_crank",
+      "candidate_codes": 6561,
+      "status": "planned",
+      "layout": "annular_inner_outer_facing_pairs"
+    }
+  ]
+}

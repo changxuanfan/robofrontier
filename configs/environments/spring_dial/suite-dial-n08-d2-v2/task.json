@@ -1,0 +1,429 @@
+{
+  "kind": "frontier_suite",
+  "id": "dial-n08-d2",
+  "suite_version": 1,
+  "family": "dial",
+  "level": 2,
+  "scale": {
+    "id": "dial-n08-d2",
+    "family": "dial",
+    "level": 2,
+    "arms": 16,
+    "dials": 8,
+    "layout": "annular_inner_outer_facing_pairs",
+    "scene_revision": 2
+  },
+  "scene_asset": "configs/environments/spring_dial/suite-dial-n08-d2-v2",
+  "scene_sha256": "18c0783e8feace8efaca83ba28899a4f6698054b5dc1aa9979a8f363946dc604",
+  "arms": {
+    "A": {
+      "base_position_m": [
+        0.9999999999999999,
+        0.24999999999999997,
+        0.4
+      ],
+      "yaw_rad": 0.0
+    },
+    "B": {
+      "base_position_m": [
+        2.3,
+        3.9801020972288984e-17,
+        0.4
+      ],
+      "yaw_rad": -3.141592653589793
+    },
+    "C": {
+      "base_position_m": [
+        0.5303300858899106,
+        0.8838834764831842,
+        0.4
+      ],
+      "yaw_rad": 0.7853981633974483
+    },
+    "D": {
+      "base_position_m": [
+        1.6263455967290592,
+        1.6263455967290592,
+        0.4
+      ],
+      "yaw_rad": -2.356194490192345
+    },
+    "E": {
+      "base_position_m": [
+        -0.2499999999999999,
+        0.9999999999999999,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "F": {
+      "base_position_m": [
+        1.0103336092965664e-16,
+        2.3,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "G": {
+      "base_position_m": [
+        -0.8838834764831843,
+        0.5303300858899105,
+        0.4
+      ],
+      "yaw_rad": 2.356194490192345
+    },
+    "H": {
+      "base_position_m": [
+        -1.6263455967290592,
+        1.6263455967290592,
+        0.4
+      ],
+      "yaw_rad": -0.7853981633974483
+    },
+    "I": {
+      "base_position_m": [
+        -0.9999999999999999,
+        -0.24999999999999986,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    "J": {
+      "base_position_m": [
+        -2.3,
+        2.4186774283160225e-16,
+        0.4
+      ],
+      "yaw_rad": 0.0
+    },
+    "K": {
+      "base_position_m": [
+        -0.5303300858899107,
+        -0.8838834764831843,
+        0.4
+      ],
+      "yaw_rad": 3.9269908169872414
+    },
+    "L": {
+      "base_position_m": [
+        -1.6263455967290594,
+        -1.6263455967290592,
+        0.4
+      ],
+      "yaw_rad": 0.7853981633974483
+    },
+    "M": {
+      "base_position_m": [
+        0.24999999999999975,
+        -0.9999999999999999,
+        0.4
+      ],
+      "yaw_rad": 4.71238898038469
+    },
+    "N": {
+      "base_position_m": [
+        -3.8270212473354783e-16,
+        -2.3,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "O": {
+      "base_position_m": [
+        0.8838834764831842,
+        -0.5303300858899107,
+        0.4
+      ],
+      "yaw_rad": 5.497787143782138
+    },
+    "P": {
+      "base_position_m": [
+        1.626345596729059,
+        -1.6263455967290597,
+        0.4
+      ],
+      "yaw_rad": 2.356194490192345
+    }
+  },
+  "objects": [],
+  "table_height_m": 0.4,
+  "cube_size_m": 0.04,
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 20,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "dial_count": 8,
+    "interface": "gear",
+    "free_modules": true,
+    "handle_material": "anodized aluminium",
+    "handle_mass_kg": 0.2592,
+    "spring_nm_rad": 0.03,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      0.8725182257924048,
+      -2.1064453341257336
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ]
+  },
+  "goals": [],
+  "grid": null,
+  "route": null,
+  "pairs": null,
+  "dials": [
+    {
+      "id": "D01",
+      "index": 0,
+      "nominal_robots": [
+        "A",
+        "B"
+      ],
+      "initial_center_m": [
+        1.65,
+        0.0,
+        0.52
+      ],
+      "layout_yaw_rad": -1.5707963267948966
+    },
+    {
+      "id": "D02",
+      "index": 1,
+      "nominal_robots": [
+        "C",
+        "D"
+      ],
+      "initial_center_m": [
+        1.1667261889578033,
+        1.1667261889578033,
+        0.52
+      ],
+      "layout_yaw_rad": -0.7853981633974483
+    },
+    {
+      "id": "D03",
+      "index": 2,
+      "nominal_robots": [
+        "E",
+        "F"
+      ],
+      "initial_center_m": [
+        1.0103336092965664e-16,
+        1.65,
+        0.52
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D04",
+      "index": 3,
+      "nominal_robots": [
+        "G",
+        "H"
+      ],
+      "initial_center_m": [
+        -1.1667261889578033,
+        1.1667261889578033,
+        0.52
+      ],
+      "layout_yaw_rad": 0.7853981633974483
+    },
+    {
+      "id": "D05",
+      "index": 4,
+      "nominal_robots": [
+        "I",
+        "J"
+      ],
+      "initial_center_m": [
+        -1.65,
+        2.0206672185931328e-16,
+        0.52
+      ],
+      "layout_yaw_rad": 1.5707963267948966
+    },
+    {
+      "id": "D06",
+      "index": 5,
+      "nominal_robots": [
+        "K",
+        "L"
+      ],
+      "initial_center_m": [
+        -1.1667261889578036,
+        -1.1667261889578033,
+        0.52
+      ],
+      "layout_yaw_rad": 2.356194490192345
+    },
+    {
+      "id": "D07",
+      "index": 6,
+      "nominal_robots": [
+        "M",
+        "N"
+      ],
+      "initial_center_m": [
+        -3.031000827889699e-16,
+        -1.65,
+        0.52
+      ],
+      "layout_yaw_rad": 3.141592653589793
+    },
+    {
+      "id": "D08",
+      "index": 7,
+      "nominal_robots": [
+        "O",
+        "P"
+      ],
+      "initial_center_m": [
+        1.1667261889578031,
+        -1.1667261889578036,
+        0.52
+      ],
+      "layout_yaw_rad": 3.9269908169872414
+    }
+  ],
+  "workspace_world_m": {
+    "lower": [
+      -2.64,
+      -2.64,
+      0.425
+    ],
+    "upper": [
+      2.64,
+      2.64,
+      1.35
+    ]
+  },
+  "coordinate_frame": "World +X right/east, +Y north, +Z up. Device marks belong to the movable device frame.",
+  "rules": [
+    "Each hidden code digit is independently chosen from 1,2,3; zero is excluded. Digits may repeat. The code cannot be derived from the public scene seed.",
+    "Relative to the printed white disk, 0/1/2/3 are zero, clockwise quarter-turn, half-turn and counterclockwise quarter-turn. Mechanical range is -180 to +180 degrees; either endpoint is digit 2.",
+    "Only a stable nonzero configuration on all disks yields a count of correct digits. The display reveals no individual matches; transient/invalid input is a dash. Every newly stable configuration counts, including intermediate configurations.",
+    "For movable modules, another robot must establish a two-finger blue-handle hold and full-module clearance of at least 20 mm for 0.25 simulated seconds before red contact. Retain support while manipulating; stop and re-establish it after loss.",
+    "A crank grip is rigid and eccentric. Its contact point travels around the axle; in-place wrist rotation alone does not follow that path. Frame orientation and gravity affect manipulation.",
+    "Reach CORRECT equal to the number of disks. Success latches visibly, but physical support and springs remain active.",
+    "Use robot actuation and real physical contact. No attachments to hands, state writes, teleportation, simulator reset, material edits or hidden evaluator access."
+  ],
+  "objective": "Complete the task correctly and efficiently; account for planning, observation, communication, recovery and useful holding as well as simultaneous motion.",
+  "completion": {
+    "stable_duration_sim_s": 0.25,
+    "max_sample_gap_sim_s": 0.03,
+    "xy_tolerance_m": 0.005,
+    "z_tolerance_m": 0.003,
+    "linear_speed_m_s": 0.01,
+    "angular_speed_rad_s": 0.08726646259971647,
+    "angle_tolerance_deg": 4,
+    "mode": "aggregate_count_latch"
+  },
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "G_front",
+    "G_side",
+    "H_front",
+    "H_side",
+    "I_front",
+    "I_side",
+    "J_front",
+    "J_side",
+    "K_front",
+    "K_side",
+    "L_front",
+    "L_side",
+    "M_front",
+    "M_side",
+    "N_front",
+    "N_side",
+    "O_front",
+    "O_side",
+    "P_front",
+    "P_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "D01_front",
+    "D01_side",
+    "D01_high",
+    "D02_front",
+    "D02_side",
+    "D02_high",
+    "D03_front",
+    "D03_side",
+    "D03_high",
+    "D04_front",
+    "D04_side",
+    "D04_high",
+    "D05_front",
+    "D05_side",
+    "D05_high",
+    "D06_front",
+    "D06_side",
+    "D06_high",
+    "D07_front",
+    "D07_side",
+    "D07_high",
+    "D08_front",
+    "D08_side",
+    "D08_high",
+    "board"
+  ],
+  "view_camera": "global",
+  "recording_camera": "global",
+  "observation_contract": {
+    "initial_positions_public": false,
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "selected timestamped RGB",
+      "robot proprioception",
+      "action status",
+      "visible aggregate dial score"
+    ],
+    "motion_screen": "Robot-only geometry. Does not certify apparatus contact, insertion, shared load or cable clearance."
+  },
+  "status": "Suite development task; per-scene Oracle evidence is separate from policy performance.",
+  "process_contract": {
+    "collision_sampling": "every physics step",
+    "inter_robot_penetration_limit_m": 0.0002,
+    "self_robot_penetration_limit_m": 0.001,
+    "expected_finger_to_finger_closure_excluded": true,
+    "relay_receiving_overlap_sim_s": 0.2,
+    "relay_support_gap_sim_s": 0.2,
+    "grasp_proximity_tolerance_m": 0.0002,
+    "relay_positive_contact_force_threshold_n": 0.02,
+    "relay_support_proxy": "Opposed jaw proximity within 0.2 mm and at least one actual force-bearing finger contact per gripper; not an individual load-share measurement",
+    "driven_red_support_gap_sim_s": 0.05
+  }
+}

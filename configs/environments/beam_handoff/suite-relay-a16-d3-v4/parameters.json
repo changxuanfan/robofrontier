@@ -1,0 +1,80 @@
+{
+  "case": {
+    "id": "relay-a16-d3",
+    "family": "relay",
+    "level": 3,
+    "arms": 16,
+    "pairs": 8,
+    "layout": "closed_loop",
+    "payload": "flexible_cable_weight",
+    "status": "planned",
+    "directory": "configs/environments/beam_handoff/suite-relay-a16-d3-v4",
+    "scene_sha256": null,
+    "layout_report": "configs/environments/beam_handoff/suite-relay-a16-d3-v2/layout-validation.json",
+    "scene_revision": 4,
+    "history": [
+      {
+        "directory": "configs/environments/beam_handoff/suite-relay-a16-d3",
+        "scene_sha256": "f223eb48afa0332f02ef60c1ec5981df4e2a82e0b222997264300134bdcfa536",
+        "status": "generated",
+        "superseded_reason": "Align beam with transport direction and stagger opposed bases, preserving old normal-to-path layouts and witnesses"
+      },
+      {
+        "directory": "configs/environments/beam_handoff/suite-relay-a16-d3-v2",
+        "scene_revision": 2,
+        "scene_sha256": "d6ec8251f80694d4f348606f1739637746b5ac3e8a808f0e598ec394fdf8caad",
+        "status": "generated",
+        "verification_results": {},
+        "last_oracle_report": null,
+        "superseded_reason": "Reduce longitudinal base stagger to 0.30 m per opposing pair so a COM-spanning staged handover can use reachable top grasps; keep previous ring prototypes"
+      },
+      {
+        "directory": "configs/environments/beam_handoff/suite-relay-a16-d3-v3",
+        "scene_revision": 3,
+        "scene_sha256": "8247c04f5e6090883f88fb73a70498889d1a99e68b8745d9aba6d0e50189c8bf",
+        "status": "generated",
+        "verification_results": {},
+        "last_oracle_report": null,
+        "superseded_reason": "Freeze explicit staged-handover rules and admit physically reachable floor recovery by the sending team; do not force released arms to return HOME"
+      }
+    ],
+    "verification_results": {},
+    "last_oracle_report": null,
+    "contract_sha256": "1f1b3134f15e1aae3f4c20fca850f4238787da578509e0f20eb31a3413c083d0"
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "beam_length_m": 1.2,
+    "beam_cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "beam_mass_kg": 1.458,
+    "weight_mass_kg": 0.25,
+    "suspension_length_m": 0.2,
+    "suspension_segments": 8,
+    "opposed_base_spacing_m": 1.044030650891055,
+    "cross_track_base_spacing_m": 1.0,
+    "longitudinal_pair_stagger_m": 0.3,
+    "minimum_supporting_robots": 2,
+    "loop_radius_m": 1.1,
+    "beam_alignment": "tangent"
+  },
+  "grid": null
+}

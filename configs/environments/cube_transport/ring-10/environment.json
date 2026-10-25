@@ -1,0 +1,1363 @@
+{
+  "schema": "robofrontier.cube_transport.environment.v2",
+  "rules_version": 2,
+  "id": "ring-10",
+  "arm_count": 10,
+  "topology": "ring",
+  "side_counts_south_east_north_west": [
+    3,
+    2,
+    3,
+    2
+  ],
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "sphere_radius_m": 0.02,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "appearance": "light",
+  "background_palette": "pale_blue_ground_and_sky",
+  "floor_rgba": [
+    0.72,
+    0.86,
+    0.98,
+    1
+  ],
+  "table_finish": "matte_oak",
+  "table_rgba": [
+    0.76,
+    0.51,
+    0.29,
+    1
+  ],
+  "stations": [
+    {
+      "id": "A",
+      "side": "south",
+      "base_position_m": [
+        -0.72,
+        -1.01,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "home_tcp_m": [
+        -0.72,
+        -0.67,
+        0.7
+      ],
+      "source_positions_m": [
+        [
+          -0.615,
+          -0.71,
+          0.42
+        ],
+        [
+          -0.72,
+          -0.71,
+          0.42
+        ],
+        [
+          -0.825,
+          -0.71,
+          0.42
+        ]
+      ],
+      "goal_positions_m": [
+        [
+          -0.615,
+          -0.59,
+          0.42
+        ],
+        [
+          -0.72,
+          -0.59,
+          0.42
+        ],
+        [
+          -0.825,
+          -0.59,
+          0.42
+        ]
+      ],
+      "parking_positions_m": [
+        [
+          -0.49,
+          -0.69,
+          0.42
+        ],
+        [
+          -0.95,
+          -0.69,
+          0.42
+        ]
+      ]
+    },
+    {
+      "id": "B",
+      "side": "south",
+      "base_position_m": [
+        0.0,
+        -1.01,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "home_tcp_m": [
+        0.0,
+        -0.67,
+        0.7
+      ],
+      "source_positions_m": [
+        [
+          0.105,
+          -0.71,
+          0.42
+        ],
+        [
+          0.0,
+          -0.71,
+          0.42
+        ],
+        [
+          -0.105,
+          -0.71,
+          0.42
+        ]
+      ],
+      "goal_positions_m": [
+        [
+          0.105,
+          -0.59,
+          0.42
+        ],
+        [
+          0.0,
+          -0.59,
+          0.42
+        ],
+        [
+          -0.105,
+          -0.59,
+          0.42
+        ]
+      ],
+      "parking_positions_m": [
+        [
+          0.23,
+          -0.69,
+          0.42
+        ],
+        [
+          -0.23,
+          -0.69,
+          0.42
+        ]
+      ]
+    },
+    {
+      "id": "C",
+      "side": "south",
+      "base_position_m": [
+        0.72,
+        -1.01,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "home_tcp_m": [
+        0.72,
+        -0.67,
+        0.7
+      ],
+      "source_positions_m": [
+        [
+          0.825,
+          -0.71,
+          0.42
+        ],
+        [
+          0.72,
+          -0.71,
+          0.42
+        ],
+        [
+          0.615,
+          -0.71,
+          0.42
+        ]
+      ],
+      "goal_positions_m": [
+        [
+          0.825,
+          -0.59,
+          0.42
+        ],
+        [
+          0.72,
+          -0.59,
+          0.42
+        ],
+        [
+          0.615,
+          -0.59,
+          0.42
+        ]
+      ],
+      "parking_positions_m": [
+        [
+          0.95,
+          -0.69,
+          0.42
+        ],
+        [
+          0.49,
+          -0.69,
+          0.42
+        ]
+      ]
+    },
+    {
+      "id": "D",
+      "side": "east",
+      "base_position_m": [
+        1.37,
+        -0.36,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793,
+      "home_tcp_m": [
+        1.03,
+        -0.36,
+        0.7
+      ],
+      "source_positions_m": [
+        [
+          1.07,
+          -0.255,
+          0.42
+        ],
+        [
+          1.07,
+          -0.36,
+          0.42
+        ],
+        [
+          1.07,
+          -0.465,
+          0.42
+        ]
+      ],
+      "goal_positions_m": [
+        [
+          0.95,
+          -0.255,
+          0.42
+        ],
+        [
+          0.95,
+          -0.36,
+          0.42
+        ],
+        [
+          0.95,
+          -0.465,
+          0.42
+        ]
+      ],
+      "parking_positions_m": [
+        [
+          1.05,
+          -0.13,
+          0.42
+        ],
+        [
+          1.05,
+          -0.59,
+          0.42
+        ]
+      ]
+    },
+    {
+      "id": "E",
+      "side": "east",
+      "base_position_m": [
+        1.37,
+        0.36,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793,
+      "home_tcp_m": [
+        1.03,
+        0.36,
+        0.7
+      ],
+      "source_positions_m": [
+        [
+          1.07,
+          0.465,
+          0.42
+        ],
+        [
+          1.07,
+          0.36,
+          0.42
+        ],
+        [
+          1.07,
+          0.255,
+          0.42
+        ]
+      ],
+      "goal_positions_m": [
+        [
+          0.95,
+          0.465,
+          0.42
+        ],
+        [
+          0.95,
+          0.36,
+          0.42
+        ],
+        [
+          0.95,
+          0.255,
+          0.42
+        ]
+      ],
+      "parking_positions_m": [
+        [
+          1.05,
+          0.59,
+          0.42
+        ],
+        [
+          1.05,
+          0.13,
+          0.42
+        ]
+      ]
+    },
+    {
+      "id": "F",
+      "side": "north",
+      "base_position_m": [
+        0.72,
+        1.01,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "home_tcp_m": [
+        0.72,
+        0.67,
+        0.7
+      ],
+      "source_positions_m": [
+        [
+          0.615,
+          0.71,
+          0.42
+        ],
+        [
+          0.72,
+          0.71,
+          0.42
+        ],
+        [
+          0.825,
+          0.71,
+          0.42
+        ]
+      ],
+      "goal_positions_m": [
+        [
+          0.615,
+          0.59,
+          0.42
+        ],
+        [
+          0.72,
+          0.59,
+          0.42
+        ],
+        [
+          0.825,
+          0.59,
+          0.42
+        ]
+      ],
+      "parking_positions_m": [
+        [
+          0.49,
+          0.69,
+          0.42
+        ],
+        [
+          0.95,
+          0.69,
+          0.42
+        ]
+      ]
+    },
+    {
+      "id": "G",
+      "side": "north",
+      "base_position_m": [
+        -0.0,
+        1.01,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "home_tcp_m": [
+        0.0,
+        0.67,
+        0.7
+      ],
+      "source_positions_m": [
+        [
+          -0.105,
+          0.71,
+          0.42
+        ],
+        [
+          0.0,
+          0.71,
+          0.42
+        ],
+        [
+          0.105,
+          0.71,
+          0.42
+        ]
+      ],
+      "goal_positions_m": [
+        [
+          -0.105,
+          0.59,
+          0.42
+        ],
+        [
+          0.0,
+          0.59,
+          0.42
+        ],
+        [
+          0.105,
+          0.59,
+          0.42
+        ]
+      ],
+      "parking_positions_m": [
+        [
+          -0.23,
+          0.69,
+          0.42
+        ],
+        [
+          0.23,
+          0.69,
+          0.42
+        ]
+      ]
+    },
+    {
+      "id": "H",
+      "side": "north",
+      "base_position_m": [
+        -0.72,
+        1.01,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "home_tcp_m": [
+        -0.72,
+        0.67,
+        0.7
+      ],
+      "source_positions_m": [
+        [
+          -0.825,
+          0.71,
+          0.42
+        ],
+        [
+          -0.72,
+          0.71,
+          0.42
+        ],
+        [
+          -0.615,
+          0.71,
+          0.42
+        ]
+      ],
+      "goal_positions_m": [
+        [
+          -0.825,
+          0.59,
+          0.42
+        ],
+        [
+          -0.72,
+          0.59,
+          0.42
+        ],
+        [
+          -0.615,
+          0.59,
+          0.42
+        ]
+      ],
+      "parking_positions_m": [
+        [
+          -0.95,
+          0.69,
+          0.42
+        ],
+        [
+          -0.49,
+          0.69,
+          0.42
+        ]
+      ]
+    },
+    {
+      "id": "I",
+      "side": "west",
+      "base_position_m": [
+        -1.37,
+        0.36,
+        0.4
+      ],
+      "yaw_rad": 0,
+      "home_tcp_m": [
+        -1.03,
+        0.36,
+        0.7
+      ],
+      "source_positions_m": [
+        [
+          -1.07,
+          0.255,
+          0.42
+        ],
+        [
+          -1.07,
+          0.36,
+          0.42
+        ],
+        [
+          -1.07,
+          0.465,
+          0.42
+        ]
+      ],
+      "goal_positions_m": [
+        [
+          -0.95,
+          0.255,
+          0.42
+        ],
+        [
+          -0.95,
+          0.36,
+          0.42
+        ],
+        [
+          -0.95,
+          0.465,
+          0.42
+        ]
+      ],
+      "parking_positions_m": [
+        [
+          -1.05,
+          0.13,
+          0.42
+        ],
+        [
+          -1.05,
+          0.59,
+          0.42
+        ]
+      ]
+    },
+    {
+      "id": "J",
+      "side": "west",
+      "base_position_m": [
+        -1.37,
+        -0.36,
+        0.4
+      ],
+      "yaw_rad": 0,
+      "home_tcp_m": [
+        -1.03,
+        -0.36,
+        0.7
+      ],
+      "source_positions_m": [
+        [
+          -1.07,
+          -0.465,
+          0.42
+        ],
+        [
+          -1.07,
+          -0.36,
+          0.42
+        ],
+        [
+          -1.07,
+          -0.255,
+          0.42
+        ]
+      ],
+      "goal_positions_m": [
+        [
+          -0.95,
+          -0.465,
+          0.42
+        ],
+        [
+          -0.95,
+          -0.36,
+          0.42
+        ],
+        [
+          -0.95,
+          -0.255,
+          0.42
+        ]
+      ],
+      "parking_positions_m": [
+        [
+          -1.05,
+          -0.59,
+          0.42
+        ],
+        [
+          -1.05,
+          -0.13,
+          0.42
+        ]
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "center_m": [
+        0,
+        -0.83,
+        0.375
+      ],
+      "half_size_m": [
+        1.57,
+        0.38,
+        0.025
+      ]
+    },
+    {
+      "center_m": [
+        0,
+        0.83,
+        0.375
+      ],
+      "half_size_m": [
+        1.57,
+        0.38,
+        0.025
+      ]
+    },
+    {
+      "center_m": [
+        -1.19,
+        0,
+        0.375
+      ],
+      "half_size_m": [
+        0.38,
+        0.44999999999999996,
+        0.025
+      ]
+    },
+    {
+      "center_m": [
+        1.19,
+        0,
+        0.375
+      ],
+      "half_size_m": [
+        0.38,
+        0.44999999999999996,
+        0.025
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "A_B",
+      "stations": [
+        "A",
+        "B"
+      ],
+      "position_m": [
+        -0.36,
+        -0.67,
+        0.42
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "B_C",
+      "stations": [
+        "B",
+        "C"
+      ],
+      "position_m": [
+        0.36,
+        -0.67,
+        0.42
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "C_D",
+      "stations": [
+        "C",
+        "D"
+      ],
+      "position_m": [
+        0.875,
+        -0.515,
+        0.42
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "D_E",
+      "stations": [
+        "D",
+        "E"
+      ],
+      "position_m": [
+        1.03,
+        0.0,
+        0.42
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "E_F",
+      "stations": [
+        "E",
+        "F"
+      ],
+      "position_m": [
+        0.875,
+        0.515,
+        0.42
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "F_G",
+      "stations": [
+        "F",
+        "G"
+      ],
+      "position_m": [
+        0.36,
+        0.67,
+        0.42
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "G_H",
+      "stations": [
+        "G",
+        "H"
+      ],
+      "position_m": [
+        -0.36,
+        0.67,
+        0.42
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "H_I",
+      "stations": [
+        "H",
+        "I"
+      ],
+      "position_m": [
+        -0.875,
+        0.515,
+        0.42
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "I_J",
+      "stations": [
+        "I",
+        "J"
+      ],
+      "position_m": [
+        -1.03,
+        0.0,
+        0.42
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "J_A",
+      "stations": [
+        "J",
+        "A"
+      ],
+      "position_m": [
+        -0.875,
+        -0.515,
+        0.42
+      ],
+      "capacity": 1
+    }
+  ],
+  "objects": [
+    {
+      "id": "A_item1",
+      "source": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "a",
+      "initial_position_m": [
+        -0.615,
+        -0.71,
+        0.42
+      ]
+    },
+    {
+      "id": "A_item2",
+      "source": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "a",
+      "initial_position_m": [
+        -0.72,
+        -0.71,
+        0.42
+      ]
+    },
+    {
+      "id": "A_item3",
+      "source": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "a",
+      "initial_position_m": [
+        -0.825,
+        -0.71,
+        0.42
+      ]
+    },
+    {
+      "id": "B_item1",
+      "source": "B",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.105,
+        -0.71,
+        0.42
+      ]
+    },
+    {
+      "id": "B_item2",
+      "source": "B",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.0,
+        -0.71,
+        0.42
+      ]
+    },
+    {
+      "id": "B_item3",
+      "source": "B",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        -0.105,
+        -0.71,
+        0.42
+      ]
+    },
+    {
+      "id": "C_item1",
+      "source": "C",
+      "color": "green",
+      "rgb": [
+        0.12,
+        0.62,
+        0.25
+      ],
+      "shape": "cube",
+      "type_code": "c",
+      "initial_position_m": [
+        0.825,
+        -0.71,
+        0.42
+      ]
+    },
+    {
+      "id": "C_item2",
+      "source": "C",
+      "color": "green",
+      "rgb": [
+        0.12,
+        0.62,
+        0.25
+      ],
+      "shape": "cube",
+      "type_code": "c",
+      "initial_position_m": [
+        0.72,
+        -0.71,
+        0.42
+      ]
+    },
+    {
+      "id": "C_item3",
+      "source": "C",
+      "color": "green",
+      "rgb": [
+        0.12,
+        0.62,
+        0.25
+      ],
+      "shape": "cube",
+      "type_code": "c",
+      "initial_position_m": [
+        0.615,
+        -0.71,
+        0.42
+      ]
+    },
+    {
+      "id": "D_item1",
+      "source": "D",
+      "color": "orange",
+      "rgb": [
+        0.95,
+        0.43,
+        0.08
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        1.07,
+        -0.255,
+        0.42
+      ]
+    },
+    {
+      "id": "D_item2",
+      "source": "D",
+      "color": "orange",
+      "rgb": [
+        0.95,
+        0.43,
+        0.08
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        1.07,
+        -0.36,
+        0.42
+      ]
+    },
+    {
+      "id": "D_item3",
+      "source": "D",
+      "color": "orange",
+      "rgb": [
+        0.95,
+        0.43,
+        0.08
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        1.07,
+        -0.465,
+        0.42
+      ]
+    },
+    {
+      "id": "E_item1",
+      "source": "E",
+      "color": "purple",
+      "rgb": [
+        0.52,
+        0.23,
+        0.76
+      ],
+      "shape": "cube",
+      "type_code": "e",
+      "initial_position_m": [
+        1.07,
+        0.465,
+        0.42
+      ]
+    },
+    {
+      "id": "E_item2",
+      "source": "E",
+      "color": "purple",
+      "rgb": [
+        0.52,
+        0.23,
+        0.76
+      ],
+      "shape": "cube",
+      "type_code": "e",
+      "initial_position_m": [
+        1.07,
+        0.36,
+        0.42
+      ]
+    },
+    {
+      "id": "E_item3",
+      "source": "E",
+      "color": "purple",
+      "rgb": [
+        0.52,
+        0.23,
+        0.76
+      ],
+      "shape": "cube",
+      "type_code": "e",
+      "initial_position_m": [
+        1.07,
+        0.255,
+        0.42
+      ]
+    },
+    {
+      "id": "F_item1",
+      "source": "F",
+      "color": "cyan",
+      "rgb": [
+        0.05,
+        0.68,
+        0.79
+      ],
+      "shape": "cube",
+      "type_code": "f",
+      "initial_position_m": [
+        0.615,
+        0.71,
+        0.42
+      ]
+    },
+    {
+      "id": "F_item2",
+      "source": "F",
+      "color": "cyan",
+      "rgb": [
+        0.05,
+        0.68,
+        0.79
+      ],
+      "shape": "cube",
+      "type_code": "f",
+      "initial_position_m": [
+        0.72,
+        0.71,
+        0.42
+      ]
+    },
+    {
+      "id": "F_item3",
+      "source": "F",
+      "color": "cyan",
+      "rgb": [
+        0.05,
+        0.68,
+        0.79
+      ],
+      "shape": "cube",
+      "type_code": "f",
+      "initial_position_m": [
+        0.825,
+        0.71,
+        0.42
+      ]
+    },
+    {
+      "id": "G_item1",
+      "source": "G",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "sphere",
+      "type_code": "g",
+      "initial_position_m": [
+        -0.105,
+        0.71,
+        0.42
+      ]
+    },
+    {
+      "id": "G_item2",
+      "source": "G",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "sphere",
+      "type_code": "g",
+      "initial_position_m": [
+        0.0,
+        0.71,
+        0.42
+      ]
+    },
+    {
+      "id": "G_item3",
+      "source": "G",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "sphere",
+      "type_code": "g",
+      "initial_position_m": [
+        0.105,
+        0.71,
+        0.42
+      ]
+    },
+    {
+      "id": "H_item1",
+      "source": "H",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "sphere",
+      "type_code": "h",
+      "initial_position_m": [
+        -0.825,
+        0.71,
+        0.42
+      ]
+    },
+    {
+      "id": "H_item2",
+      "source": "H",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "sphere",
+      "type_code": "h",
+      "initial_position_m": [
+        -0.72,
+        0.71,
+        0.42
+      ]
+    },
+    {
+      "id": "H_item3",
+      "source": "H",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "sphere",
+      "type_code": "h",
+      "initial_position_m": [
+        -0.615,
+        0.71,
+        0.42
+      ]
+    },
+    {
+      "id": "I_item1",
+      "source": "I",
+      "color": "green",
+      "rgb": [
+        0.12,
+        0.62,
+        0.25
+      ],
+      "shape": "sphere",
+      "type_code": "i",
+      "initial_position_m": [
+        -1.07,
+        0.255,
+        0.42
+      ]
+    },
+    {
+      "id": "I_item2",
+      "source": "I",
+      "color": "green",
+      "rgb": [
+        0.12,
+        0.62,
+        0.25
+      ],
+      "shape": "sphere",
+      "type_code": "i",
+      "initial_position_m": [
+        -1.07,
+        0.36,
+        0.42
+      ]
+    },
+    {
+      "id": "I_item3",
+      "source": "I",
+      "color": "green",
+      "rgb": [
+        0.12,
+        0.62,
+        0.25
+      ],
+      "shape": "sphere",
+      "type_code": "i",
+      "initial_position_m": [
+        -1.07,
+        0.465,
+        0.42
+      ]
+    },
+    {
+      "id": "J_item1",
+      "source": "J",
+      "color": "orange",
+      "rgb": [
+        0.95,
+        0.43,
+        0.08
+      ],
+      "shape": "sphere",
+      "type_code": "j",
+      "initial_position_m": [
+        -1.07,
+        -0.465,
+        0.42
+      ]
+    },
+    {
+      "id": "J_item2",
+      "source": "J",
+      "color": "orange",
+      "rgb": [
+        0.95,
+        0.43,
+        0.08
+      ],
+      "shape": "sphere",
+      "type_code": "j",
+      "initial_position_m": [
+        -1.07,
+        -0.36,
+        0.42
+      ]
+    },
+    {
+      "id": "J_item3",
+      "source": "J",
+      "color": "orange",
+      "rgb": [
+        0.95,
+        0.43,
+        0.08
+      ],
+      "shape": "sphere",
+      "type_code": "j",
+      "initial_position_m": [
+        -1.07,
+        -0.255,
+        0.42
+      ]
+    }
+  ],
+  "observation_contract": {
+    "initial_positions_public": true,
+    "runtime": [
+      "RGB",
+      "robot_proprioception",
+      "action_status"
+    ],
+    "live_object_truth_for_policy": false
+  },
+  "scene": "scene.xml",
+  "initial_keyframe": "initial"
+}

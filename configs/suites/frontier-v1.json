@@ -1,0 +1,3316 @@
+{
+  "version": 1,
+  "status": "development; per-case evidence required",
+  "case_count": 36,
+  "cases": [
+    {
+      "id": "transport-a04-d1",
+      "family": "transport",
+      "level": 1,
+      "arms": 4,
+      "objects": 12,
+      "mechanism": "cube",
+      "status": "oracle_witness_passed",
+      "directory": "configs/environments/cube_transport/suite-transport-a04-d1-v2",
+      "scene_sha256": "9a3822591a716814c8afeae14affbf613784e5eb7685583f4c9d0f6f5945d7d2",
+      "layout_report": "configs/environments/cube_transport/suite-transport-a04-d1-v2/layout-validation.json",
+      "verification_results": {
+        "0": {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "9a3822591a716814c8afeae14affbf613784e5eb7685583f4c9d0f6f5945d7d2",
+          "scene_bundle_sha256": "024bd90169f2fa4d868cc1d8977ab38ca248c9364d44170c574f9fa74f83e685",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792822762.1608782,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/transport-a04-d1/seed-0/attempt-009/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/transport-a04-d1/seed-0/attempt-009/report.json",
+      "scene_revision": 2,
+      "history": [
+        {
+          "directory": "configs/environments/cube_transport/suite-transport-a04-d1",
+          "scene_sha256": "95eae3c02da18a5ef592394ca04841a699f50b698a1c8eb1f0fe80098e0ced10",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "scene_sha256": "95eae3c02da18a5ef592394ca04841a699f50b698a1c8eb1f0fe80098e0ced10",
+              "report": "runs/oracle/frontier-v1/transport-a04-d1/seed-0/attempt-007/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/transport-a04-d1/seed-0/attempt-007/report.json",
+          "superseded_reason": "Use four corner docking pads so both physical pegs clear the buffer at quarter-turn orientations; preserve earlier rail-supported scenes"
+        }
+      ],
+      "contract_sha256": "2923de09b0b57cf1f2ba600eb6c33ccd2d557e812b18a2a195d1b67416582f2f",
+      "previous_contract_sha256": "c4e44ac9372a526a93f58c12a59b06ba5a81aaf71a9157d5c88e47447d49a14e",
+      "oracle_attempts": [
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "9a3822591a716814c8afeae14affbf613784e5eb7685583f4c9d0f6f5945d7d2",
+          "scene_bundle_sha256": "024bd90169f2fa4d868cc1d8977ab38ca248c9364d44170c574f9fa74f83e685",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792822762.1608782,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/transport-a04-d1/seed-0/attempt-009/report.json"
+        }
+      ],
+      "legacy_verification_results": {},
+      "last_oracle_passed": true,
+      "best_oracle_witness": "runs/oracle/frontier-v1/transport-a04-d1/seed-0/attempt-009/report.json"
+    },
+    {
+      "id": "transport-a04-d2",
+      "family": "transport",
+      "level": 2,
+      "arms": 4,
+      "objects": 12,
+      "mechanism": "double_peg_fixed_socket",
+      "status": "oracle_witness_passed",
+      "directory": "configs/environments/cube_transport/suite-transport-a04-d2-v2",
+      "scene_sha256": "2944feb6986e27cc5a3c062de683438319f813cc68def4b4946ad9e5d3167dcd",
+      "layout_report": "configs/environments/cube_transport/suite-transport-a04-d2-v2/layout-validation.json",
+      "verification_results": {
+        "0": {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "2944feb6986e27cc5a3c062de683438319f813cc68def4b4946ad9e5d3167dcd",
+          "scene_bundle_sha256": "d0a62e4834a26e048b1014fbac693ee9732702ddfdb1d267b0b598f1749484ab",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792822838.4126878,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/transport-a04-d2/seed-0/attempt-010/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/transport-a04-d2/seed-0/attempt-010/report.json",
+      "scene_revision": 2,
+      "history": [
+        {
+          "directory": "configs/environments/cube_transport/suite-transport-a04-d2",
+          "scene_sha256": "0cae25d658a29d1e457e61ebed5f07170f59e693f8afa46ecca6591356071d18",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "scene_sha256": "0cae25d658a29d1e457e61ebed5f07170f59e693f8afa46ecca6591356071d18",
+              "report": "runs/oracle/frontier-v1/transport-a04-d2/seed-0/attempt-006/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/transport-a04-d2/seed-0/attempt-006/report.json",
+          "superseded_reason": "Use four corner docking pads so both physical pegs clear the buffer at quarter-turn orientations; preserve earlier rail-supported scenes"
+        }
+      ],
+      "contract_sha256": "2c0670cc56bd18d3a411f874318eadc26112c42ee5cf457c54e4b596edeeee11",
+      "previous_contract_sha256": "962bf7475be1d3230bcb8c71595a4439c735cb15f93a2003d6615a5267803ab6",
+      "oracle_attempts": [
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "2944feb6986e27cc5a3c062de683438319f813cc68def4b4946ad9e5d3167dcd",
+          "scene_bundle_sha256": "d0a62e4834a26e048b1014fbac693ee9732702ddfdb1d267b0b598f1749484ab",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792822838.4126878,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/transport-a04-d2/seed-0/attempt-010/report.json"
+        }
+      ],
+      "legacy_verification_results": {},
+      "last_oracle_passed": true,
+      "best_oracle_witness": "runs/oracle/frontier-v1/transport-a04-d2/seed-0/attempt-010/report.json"
+    },
+    {
+      "id": "transport-a04-d3",
+      "family": "transport",
+      "level": 3,
+      "arms": 4,
+      "objects": 12,
+      "mechanism": "double_peg_compliant_socket",
+      "status": "oracle_failed",
+      "directory": "configs/environments/cube_transport/suite-transport-a04-d3-v2",
+      "scene_sha256": "c456c8af2bb74144588cf4b198714fdc4bce7b72ec141c3e989f624a4d4447c6",
+      "layout_report": "configs/environments/cube_transport/suite-transport-a04-d3-v2/layout-validation.json",
+      "verification_results": {
+        "0": {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "c456c8af2bb74144588cf4b198714fdc4bce7b72ec141c3e989f624a4d4447c6",
+          "scene_bundle_sha256": "77ffaffe26c37e2a134459ef7e87746534422c208ea6bb8639b7088db57126ee",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792822928.460124,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/transport-a04-d3/seed-0/attempt-008/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/transport-a04-d3/seed-0/attempt-008/report.json",
+      "scene_revision": 2,
+      "history": [
+        {
+          "directory": "configs/environments/cube_transport/suite-transport-a04-d3",
+          "scene_sha256": "07a30f57a324763ed7af16e69e032a93986d0fac5ef5cb20dc598727c8a73e00",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "scene_sha256": "07a30f57a324763ed7af16e69e032a93986d0fac5ef5cb20dc598727c8a73e00",
+              "report": "runs/oracle/frontier-v1/transport-a04-d3/seed-0/attempt-006/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/transport-a04-d3/seed-0/attempt-006/report.json",
+          "superseded_reason": "Use four corner docking pads so both physical pegs clear the buffer at quarter-turn orientations; preserve earlier rail-supported scenes"
+        }
+      ],
+      "contract_sha256": "8b0fca40a9e118111aed9f4e5fbe07c6d4b32e56b05af2a96ba89d4078e13434",
+      "previous_contract_sha256": "b4818618fa7d1446f16d931fd3d9166ea151c19d9c3a1b01843664af9fab5074",
+      "oracle_attempts": [
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "c456c8af2bb74144588cf4b198714fdc4bce7b72ec141c3e989f624a4d4447c6",
+          "scene_bundle_sha256": "77ffaffe26c37e2a134459ef7e87746534422c208ea6bb8639b7088db57126ee",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792822928.460124,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/transport-a04-d3/seed-0/attempt-008/report.json"
+        }
+      ],
+      "legacy_verification_results": {},
+      "last_oracle_passed": false
+    },
+    {
+      "id": "transport-a08-d1",
+      "family": "transport",
+      "level": 1,
+      "arms": 8,
+      "objects": 24,
+      "mechanism": "cube",
+      "status": "layout_checked",
+      "directory": "configs/environments/cube_transport/suite-transport-a08-d1-v2",
+      "scene_sha256": "b9f81035b033def8b3d95c78c341f45d4366c23000966749e6cedc0e39147ca1",
+      "layout_report": "configs/environments/cube_transport/suite-transport-a08-d1-v2/layout-validation.json",
+      "verification_results": {},
+      "last_oracle_report": "runs/oracle/frontier-v1/transport-a08-d1/seed-0/attempt-002/report.json",
+      "scene_revision": 2,
+      "history": [
+        {
+          "directory": "configs/environments/cube_transport/suite-transport-a08-d1",
+          "scene_sha256": "f75f9762743f36c49e4d4a464b65e968d8550132d8d68a0fb6ac2b900d34f0c4",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "scene_sha256": "f75f9762743f36c49e4d4a464b65e968d8550132d8d68a0fb6ac2b900d34f0c4",
+              "report": "runs/oracle/frontier-v1/transport-a08-d1/seed-0/attempt-001/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/transport-a08-d1/seed-0/attempt-001/report.json",
+          "superseded_reason": "Use four corner docking pads so both physical pegs clear the buffer at quarter-turn orientations; preserve earlier rail-supported scenes"
+        }
+      ],
+      "contract_sha256": "40234c8b4b2064802040650a4729cc0616b17de07a204e84bcca05b0523b0025",
+      "previous_contract_sha256": "6ee553b13fafc545e3ee0f71cd4785e9a8b7130c8bb6fe10dbe479fde76c56d4",
+      "oracle_attempts": [
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "b9f81035b033def8b3d95c78c341f45d4366c23000966749e6cedc0e39147ca1",
+          "scene_bundle_sha256": "7bf3c97610e2682604ce25b46056108c61f92f1d1418caf279c6c19b1bfb3fe2",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792823230.7311969,
+          "interrupted": true,
+          "report": "runs/oracle/frontier-v1/transport-a08-d1/seed-0/attempt-003/report.json"
+        }
+      ],
+      "last_interrupted_reference": "runs/oracle/frontier-v1/transport-a08-d1/seed-0/attempt-003/report.json"
+    },
+    {
+      "id": "transport-a08-d2",
+      "family": "transport",
+      "level": 2,
+      "arms": 8,
+      "objects": 24,
+      "mechanism": "double_peg_fixed_socket",
+      "status": "oracle_witness_passed",
+      "directory": "configs/environments/cube_transport/suite-transport-a08-d2-v2",
+      "scene_sha256": "760e270f58e0b4648cebc89c2da4ea0a6cb0fa8d600e8136688e3ed5a792b70e",
+      "layout_report": "configs/environments/cube_transport/suite-transport-a08-d2-v2/layout-validation.json",
+      "verification_results": {
+        "0": {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "760e270f58e0b4648cebc89c2da4ea0a6cb0fa8d600e8136688e3ed5a792b70e",
+          "scene_bundle_sha256": "fdf30597047e100f9d9d861ed6d74619813e9ec671a9b384a314f958e73c2270",
+          "executor_sha256": "137c2f685226a0acb98f36c5a070be9b12eb14cf238a70839d56d946f9225b4e",
+          "finished_at_unix_s": 1792819888.746227,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/transport-a08-d2/seed-0/attempt-005/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/transport-a08-d2/seed-0/attempt-005/report.json",
+      "scene_revision": 2,
+      "history": [
+        {
+          "directory": "configs/environments/cube_transport/suite-transport-a08-d2",
+          "scene_sha256": "a2750d1bb23de9b2dbcf3eebd36a25ee50e3f90321083adcd338ed54e03671dc",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "scene_sha256": "a2750d1bb23de9b2dbcf3eebd36a25ee50e3f90321083adcd338ed54e03671dc",
+              "report": "runs/oracle/frontier-v1/transport-a08-d2/seed-0/attempt-001/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/transport-a08-d2/seed-0/attempt-001/report.json",
+          "superseded_reason": "Use four corner docking pads so both physical pegs clear the buffer at quarter-turn orientations; preserve earlier rail-supported scenes"
+        }
+      ],
+      "contract_sha256": "0ce55349d46aceb3d3a04404ef4983bba2b39c3a3a8e1a725c5052fee72526ac",
+      "previous_contract_sha256": "e1b2a1e316755a4dec3342c9e51732c6fd39e8f4d75bff6911cbd1746178e8a5",
+      "oracle_attempts": [
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "760e270f58e0b4648cebc89c2da4ea0a6cb0fa8d600e8136688e3ed5a792b70e",
+          "scene_bundle_sha256": "fdf30597047e100f9d9d861ed6d74619813e9ec671a9b384a314f958e73c2270",
+          "executor_sha256": "d86ce4e8765d6e038acc8667ba551000a1ec97d0707f49bc5cec983d74982ae7",
+          "finished_at_unix_s": 1792814014.7211032,
+          "report": "runs/oracle/frontier-v1/transport-a08-d2/seed-0/attempt-004/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "760e270f58e0b4648cebc89c2da4ea0a6cb0fa8d600e8136688e3ed5a792b70e",
+          "scene_bundle_sha256": "fdf30597047e100f9d9d861ed6d74619813e9ec671a9b384a314f958e73c2270",
+          "executor_sha256": "137c2f685226a0acb98f36c5a070be9b12eb14cf238a70839d56d946f9225b4e",
+          "finished_at_unix_s": 1792819888.746227,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/transport-a08-d2/seed-0/attempt-005/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "760e270f58e0b4648cebc89c2da4ea0a6cb0fa8d600e8136688e3ed5a792b70e",
+          "scene_bundle_sha256": "fdf30597047e100f9d9d861ed6d74619813e9ec671a9b384a314f958e73c2270",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792823230.625278,
+          "interrupted": true,
+          "report": "runs/oracle/frontier-v1/transport-a08-d2/seed-0/attempt-006/report.json"
+        }
+      ],
+      "legacy_verification_results": {
+        "0": {
+          "passed": false,
+          "scene_sha256": "760e270f58e0b4648cebc89c2da4ea0a6cb0fa8d600e8136688e3ed5a792b70e",
+          "executor_sha256": "fd85f97c910d7706e218623376a4ee6d4185a37066306f6d1b5f6eba9120e831",
+          "report": "runs/oracle/frontier-v1/transport-a08-d2/seed-0/attempt-003/report.json"
+        }
+      },
+      "last_oracle_passed": true,
+      "best_oracle_witness": "runs/oracle/frontier-v1/transport-a08-d2/seed-0/attempt-005/report.json",
+      "last_interrupted_reference": "runs/oracle/frontier-v1/transport-a08-d2/seed-0/attempt-006/report.json"
+    },
+    {
+      "id": "transport-a08-d3",
+      "family": "transport",
+      "level": 3,
+      "arms": 8,
+      "objects": 24,
+      "mechanism": "double_peg_compliant_socket",
+      "status": "layout_checked",
+      "directory": "configs/environments/cube_transport/suite-transport-a08-d3-v2",
+      "scene_sha256": "efd6e984ee9073835a846a416f4f5147beadf24f210c5e4d555dfb110c94dbcd",
+      "layout_report": "configs/environments/cube_transport/suite-transport-a08-d3-v2/layout-validation.json",
+      "verification_results": {},
+      "last_oracle_report": "runs/oracle/frontier-v1/transport-a08-d3/seed-0/attempt-002/report.json",
+      "scene_revision": 2,
+      "history": [
+        {
+          "directory": "configs/environments/cube_transport/suite-transport-a08-d3",
+          "scene_sha256": "d1078921dc9d93b3ded88cf712684864ce5bea05d6210bcd61d9bc9d049dc38b",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "scene_sha256": "d1078921dc9d93b3ded88cf712684864ce5bea05d6210bcd61d9bc9d049dc38b",
+              "report": "runs/oracle/frontier-v1/transport-a08-d3/seed-0/attempt-001/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/transport-a08-d3/seed-0/attempt-001/report.json",
+          "superseded_reason": "Use four corner docking pads so both physical pegs clear the buffer at quarter-turn orientations; preserve earlier rail-supported scenes"
+        }
+      ],
+      "contract_sha256": "da92e3d849094bb96f3c225d142d2c57c54db64c6e83fa4fb5fedf83bfcb5797",
+      "previous_contract_sha256": "0a608e71dc4146f5ce51bbdd4b48215255f467980fdd1de0cc30c25c4e0fb578"
+    },
+    {
+      "id": "transport-a12-d1",
+      "family": "transport",
+      "level": 1,
+      "arms": 12,
+      "objects": 36,
+      "mechanism": "cube",
+      "status": "oracle_witness_passed",
+      "directory": "configs/environments/cube_transport/suite-transport-a12-d1-v2",
+      "scene_sha256": "f7cb51e0159f6a661cdfdb18cbb912d8421c97c6662fc03db0b06c832961f2cf",
+      "layout_report": "configs/environments/cube_transport/suite-transport-a12-d1-v2/layout-validation.json",
+      "verification_results": {
+        "0": {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "f7cb51e0159f6a661cdfdb18cbb912d8421c97c6662fc03db0b06c832961f2cf",
+          "scene_bundle_sha256": "329484a0d3c0351db87463cf6bbda2be0ed953567d6a3d9bacf1938758c74119",
+          "executor_sha256": "d86ce4e8765d6e038acc8667ba551000a1ec97d0707f49bc5cec983d74982ae7",
+          "finished_at_unix_s": 1792816171.494556,
+          "report": "runs/oracle/frontier-v1/transport-a12-d1/seed-0/attempt-003/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/transport-a12-d1/seed-0/attempt-003/report.json",
+      "scene_revision": 2,
+      "history": [
+        {
+          "directory": "configs/environments/cube_transport/suite-transport-a12-d1",
+          "scene_sha256": "6ac989419d50939aa8e8641601aca3788279a2835f4d838b605949594aa980f2",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "scene_sha256": "6ac989419d50939aa8e8641601aca3788279a2835f4d838b605949594aa980f2",
+              "report": "runs/oracle/frontier-v1/transport-a12-d1/seed-0/attempt-001/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/transport-a12-d1/seed-0/attempt-001/report.json",
+          "superseded_reason": "Use four corner docking pads so both physical pegs clear the buffer at quarter-turn orientations; preserve earlier rail-supported scenes"
+        }
+      ],
+      "contract_sha256": "b6d32cb3c67ffc9c8434bb3e5acdde1659db442d1a366a5a7bd88f7d7dc6d40f",
+      "previous_contract_sha256": "39470e7c96dcad83f4e130544982bccffa58387052c3f5e4be27df623c8f450f",
+      "oracle_attempts": [
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "f7cb51e0159f6a661cdfdb18cbb912d8421c97c6662fc03db0b06c832961f2cf",
+          "scene_bundle_sha256": "329484a0d3c0351db87463cf6bbda2be0ed953567d6a3d9bacf1938758c74119",
+          "executor_sha256": "d86ce4e8765d6e038acc8667ba551000a1ec97d0707f49bc5cec983d74982ae7",
+          "finished_at_unix_s": 1792816171.494556,
+          "report": "runs/oracle/frontier-v1/transport-a12-d1/seed-0/attempt-003/report.json"
+        }
+      ],
+      "legacy_verification_results": {
+        "0": {
+          "passed": false,
+          "scene_sha256": "f7cb51e0159f6a661cdfdb18cbb912d8421c97c6662fc03db0b06c832961f2cf",
+          "executor_sha256": "fd85f97c910d7706e218623376a4ee6d4185a37066306f6d1b5f6eba9120e831",
+          "report": "runs/oracle/frontier-v1/transport-a12-d1/seed-0/attempt-002/report.json"
+        }
+      },
+      "last_oracle_passed": true,
+      "best_oracle_witness": "runs/oracle/frontier-v1/transport-a12-d1/seed-0/attempt-003/report.json"
+    },
+    {
+      "id": "transport-a12-d2",
+      "family": "transport",
+      "level": 2,
+      "arms": 12,
+      "objects": 36,
+      "mechanism": "double_peg_fixed_socket",
+      "status": "oracle_witness_passed",
+      "directory": "configs/environments/cube_transport/suite-transport-a12-d2-v2",
+      "scene_sha256": "c85a24002230545f9525ce089f80bb0c8e92b44b74557673667017b7f1895adb",
+      "layout_report": "configs/environments/cube_transport/suite-transport-a12-d2-v2/layout-validation.json",
+      "verification_results": {
+        "0": {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "c85a24002230545f9525ce089f80bb0c8e92b44b74557673667017b7f1895adb",
+          "scene_bundle_sha256": "49e3c32c9cc1ed6d68fc91cfa40f9af9184e787f3d5fa94638f68c7f52c43cb8",
+          "executor_sha256": "137c2f685226a0acb98f36c5a070be9b12eb14cf238a70839d56d946f9225b4e",
+          "finished_at_unix_s": 1792822305.294785,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/transport-a12-d2/seed-0/attempt-010/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/transport-a12-d2/seed-0/attempt-010/report.json",
+      "scene_revision": 2,
+      "history": [
+        {
+          "directory": "configs/environments/cube_transport/suite-transport-a12-d2",
+          "scene_sha256": "b2817fd6d21487a5e21cdd5d96bb3e43b0005daf00be3de60e746f8b9abf717f",
+          "status": "oracle_failed",
+          "verification_results": {
+            "0": {
+              "passed": false,
+              "scene_sha256": "b2817fd6d21487a5e21cdd5d96bb3e43b0005daf00be3de60e746f8b9abf717f",
+              "executor_sha256": "3e4cc2bfe4a9c1bce3a0923a8fe3e23a49588176cc986436718dcfbd8eaeae49",
+              "report": "runs/oracle/frontier-v1/transport-a12-d2/seed-0/attempt-006/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/transport-a12-d2/seed-0/attempt-006/report.json",
+          "superseded_reason": "Use four corner docking pads so both physical pegs clear the buffer at quarter-turn orientations; preserve earlier rail-supported scenes"
+        }
+      ],
+      "contract_sha256": "cdc4e47a48620a833698cdaa815d6f379320b24991b110b0218544d2f6136804",
+      "previous_contract_sha256": "3057e357bfb447201c072df80ba389a96f1ca09ab926734bf049a7ad2a59cd05",
+      "oracle_attempts": [
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "c85a24002230545f9525ce089f80bb0c8e92b44b74557673667017b7f1895adb",
+          "scene_bundle_sha256": "49e3c32c9cc1ed6d68fc91cfa40f9af9184e787f3d5fa94638f68c7f52c43cb8",
+          "executor_sha256": "137c2f685226a0acb98f36c5a070be9b12eb14cf238a70839d56d946f9225b4e",
+          "finished_at_unix_s": 1792822305.294785,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/transport-a12-d2/seed-0/attempt-010/report.json"
+        }
+      ],
+      "legacy_verification_results": {
+        "0": {
+          "passed": false,
+          "scene_sha256": "c85a24002230545f9525ce089f80bb0c8e92b44b74557673667017b7f1895adb",
+          "executor_sha256": "fd85f97c910d7706e218623376a4ee6d4185a37066306f6d1b5f6eba9120e831",
+          "report": "runs/oracle/frontier-v1/transport-a12-d2/seed-0/attempt-009/report.json"
+        }
+      },
+      "last_oracle_passed": true,
+      "best_oracle_witness": "runs/oracle/frontier-v1/transport-a12-d2/seed-0/attempt-010/report.json"
+    },
+    {
+      "id": "transport-a12-d3",
+      "family": "transport",
+      "level": 3,
+      "arms": 12,
+      "objects": 36,
+      "mechanism": "double_peg_compliant_socket",
+      "status": "layout_checked",
+      "directory": "configs/environments/cube_transport/suite-transport-a12-d3-v2",
+      "scene_sha256": "82997b5860e9c624eabc6e11a60ee64ad5c52c73517559e360c2b410b439b0eb",
+      "layout_report": "configs/environments/cube_transport/suite-transport-a12-d3-v2/layout-validation.json",
+      "verification_results": {},
+      "last_oracle_report": "runs/oracle/frontier-v1/transport-a12-d3/seed-0/attempt-007/report.json",
+      "scene_revision": 2,
+      "history": [
+        {
+          "directory": "configs/environments/cube_transport/suite-transport-a12-d3",
+          "scene_sha256": "b27c3b1aa5226cfec91548b9d65976ac015042b7f39e9b88582bb82d80c8ed3c",
+          "status": "oracle_failed",
+          "verification_results": {
+            "0": {
+              "passed": false,
+              "scene_sha256": "b27c3b1aa5226cfec91548b9d65976ac015042b7f39e9b88582bb82d80c8ed3c",
+              "executor_sha256": "3e4cc2bfe4a9c1bce3a0923a8fe3e23a49588176cc986436718dcfbd8eaeae49",
+              "report": "runs/oracle/frontier-v1/transport-a12-d3/seed-0/attempt-006/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/transport-a12-d3/seed-0/attempt-006/report.json",
+          "superseded_reason": "Use four corner docking pads so both physical pegs clear the buffer at quarter-turn orientations; preserve earlier rail-supported scenes"
+        }
+      ],
+      "contract_sha256": "627d2a0be86be38326c34e7d8ed874ae59ef60f2d60c67be274bfb26d0fbf559",
+      "previous_contract_sha256": "2241e29bda915fe436f0bd43dd54db0d39a95a3014661200ed9b33136d5d6505"
+    },
+    {
+      "id": "mosaic-a04-7x7-d1",
+      "family": "mosaic",
+      "level": 1,
+      "arms": 4,
+      "rows": 7,
+      "columns": 7,
+      "objects": 49,
+      "pitch_m": 0.051,
+      "guidance": "recessed",
+      "status": "oracle_failed",
+      "directory": "configs/environments/mosaic/suite-mosaic-a04-7x7-d1",
+      "scene_sha256": "b0ac88d889e3b185522accaebb9589fd966fa9dc1e20f8cd7f22afa901ca7bae",
+      "layout_report": "configs/environments/mosaic/suite-mosaic-a04-7x7-d1/layout-validation.json",
+      "verification_results": {
+        "0": {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "b0ac88d889e3b185522accaebb9589fd966fa9dc1e20f8cd7f22afa901ca7bae",
+          "scene_bundle_sha256": "b6692f1281f319fe198dc7ce38f555cec954ff8ee3fbe0dd229c7efde027ca5c",
+          "executor_sha256": "19b58c64713479106def8867b7dac49e1e78fc527a500e0ccbf77a94da6cbe17",
+          "finished_at_unix_s": 1792821574.480949,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d1/seed-0/attempt-028/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d1/seed-0/attempt-028/report.json",
+      "contract_sha256": "3fe40e7f7303ed7d24da8a07392fcfa98f152213c8ee5dd7f96b4e6ac1749055",
+      "previous_contract_sha256": "6e9a868e0b8aa6c5ec26f2f8aef3c2a7f757dc30d624255bc95a75068598b93d",
+      "oracle_attempts": [
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "b0ac88d889e3b185522accaebb9589fd966fa9dc1e20f8cd7f22afa901ca7bae",
+          "scene_bundle_sha256": "b6692f1281f319fe198dc7ce38f555cec954ff8ee3fbe0dd229c7efde027ca5c",
+          "executor_sha256": "19b58c64713479106def8867b7dac49e1e78fc527a500e0ccbf77a94da6cbe17",
+          "finished_at_unix_s": 1792821574.480949,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d1/seed-0/attempt-028/report.json"
+        }
+      ],
+      "legacy_verification_results": {
+        "0": {
+          "passed": true,
+          "scene_sha256": "b0ac88d889e3b185522accaebb9589fd966fa9dc1e20f8cd7f22afa901ca7bae",
+          "executor_sha256": "78d3b649f616531cd7485f763a4b2e624dcc29d4b3f9c3ac83018c74f0e8df5c",
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d1/seed-0/attempt-027/report.json"
+        }
+      },
+      "last_oracle_passed": false
+    },
+    {
+      "id": "mosaic-a04-7x7-d2",
+      "family": "mosaic",
+      "level": 2,
+      "arms": 4,
+      "rows": 7,
+      "columns": 7,
+      "objects": 49,
+      "pitch_m": 0.051,
+      "guidance": "printed_grid",
+      "status": "oracle_failed",
+      "directory": "configs/environments/mosaic/suite-mosaic-a04-7x7-d2",
+      "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+      "layout_report": "configs/environments/mosaic/suite-mosaic-a04-7x7-d2/layout-validation.json",
+      "verification_results": {
+        "0": {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "99ab5ec5eb9a8c3abf63d6a6b930959c6d43d3f2d6c9cd9a188121392951d800",
+          "executor_sha256": "19b58c64713479106def8867b7dac49e1e78fc527a500e0ccbf77a94da6cbe17",
+          "finished_at_unix_s": 1792821538.368354,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-019/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-019/report.json",
+      "oracle_attempts": [
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "68fc598831f2e44815c59a7c9ab86862f8913fca2ef12ec9e8846d8fc13501c8",
+          "executor_sha256": "b31731f5b949fae5b786768ca7b1ffdd91d0091a8666810afbb375ee3b271a07",
+          "finished_at_unix_s": 1792808401.0594912,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-003/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "c02abe5fa2e12f3e31c0d01f73030d5db64bdbb6474285b83e7a8a8369180cfc",
+          "executor_sha256": "bbe6f55e259c5596b2002a3147222d8459408e25c665490b4a139b669b4e1e53",
+          "finished_at_unix_s": 1792808517.891619,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-004/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "c02abe5fa2e12f3e31c0d01f73030d5db64bdbb6474285b83e7a8a8369180cfc",
+          "executor_sha256": "ce5e13249c4ef6b2d8a73494476b457e1490a8636408df9e3f6c628c2d3638a6",
+          "finished_at_unix_s": 1792808663.1268811,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-005/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "c02abe5fa2e12f3e31c0d01f73030d5db64bdbb6474285b83e7a8a8369180cfc",
+          "executor_sha256": "63b5b1a7313097bd15113b46b845fdbb9295c572fafd30e40ee34b1b960bacb9",
+          "finished_at_unix_s": 1792808813.4784598,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-006/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "c02abe5fa2e12f3e31c0d01f73030d5db64bdbb6474285b83e7a8a8369180cfc",
+          "executor_sha256": "b151a40cdf5e2fdfa45af10a5d1d17d4e9588b02e9478665839f3f62b69a14f7",
+          "finished_at_unix_s": 1792809197.7574642,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-007/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "c02abe5fa2e12f3e31c0d01f73030d5db64bdbb6474285b83e7a8a8369180cfc",
+          "executor_sha256": "4ebe188add063cc830e4d8ec2cd892a1ded1b6d613f34c8762927f99d6ea68d4",
+          "finished_at_unix_s": 1792809360.858507,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-008/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "c02abe5fa2e12f3e31c0d01f73030d5db64bdbb6474285b83e7a8a8369180cfc",
+          "executor_sha256": "bbfeff964b5869b60e37647dad5b89afa65ad1a953520e0fa1c20b209600b399",
+          "finished_at_unix_s": 1792809942.791841,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-009/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "c02abe5fa2e12f3e31c0d01f73030d5db64bdbb6474285b83e7a8a8369180cfc",
+          "executor_sha256": "47e0a038aaaef3bdc60ada47627205d0f183f8d6e1f457adcbf1230f239d44ea",
+          "finished_at_unix_s": 1792810942.6704278,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-010/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "c02abe5fa2e12f3e31c0d01f73030d5db64bdbb6474285b83e7a8a8369180cfc",
+          "executor_sha256": "9d5d0cbf58432bc5c0c964b93ef417a94486a3c2489a7e1b0bd0faf44122caa7",
+          "finished_at_unix_s": 1792812940.623302,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-011/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "c02abe5fa2e12f3e31c0d01f73030d5db64bdbb6474285b83e7a8a8369180cfc",
+          "executor_sha256": "ee26314aa11206110c3b1892342accd639894ec8447b57297f70ace5264c699f",
+          "finished_at_unix_s": 1792813701.2461529,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-012/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "c02abe5fa2e12f3e31c0d01f73030d5db64bdbb6474285b83e7a8a8369180cfc",
+          "executor_sha256": "2fa8f079a318c7ab284e97eadf25e0a7f09554471a41b22e6c5b5735a98bad1f",
+          "finished_at_unix_s": 1792813871.382098,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-013/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "c02abe5fa2e12f3e31c0d01f73030d5db64bdbb6474285b83e7a8a8369180cfc",
+          "executor_sha256": "08ec4e12ddec65854b05af0f4aa73ede4b03f44037b2150a530fa4b5268adffc",
+          "finished_at_unix_s": 1792814224.9791172,
+          "interrupted": true,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-015/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 1,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "c02abe5fa2e12f3e31c0d01f73030d5db64bdbb6474285b83e7a8a8369180cfc",
+          "executor_sha256": "08ec4e12ddec65854b05af0f4aa73ede4b03f44037b2150a530fa4b5268adffc",
+          "finished_at_unix_s": 1792814224.99522,
+          "interrupted": true,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-1/attempt-001/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "c02abe5fa2e12f3e31c0d01f73030d5db64bdbb6474285b83e7a8a8369180cfc",
+          "executor_sha256": "d86ce4e8765d6e038acc8667ba551000a1ec97d0707f49bc5cec983d74982ae7",
+          "finished_at_unix_s": 1792814471.9446,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-014/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "c02abe5fa2e12f3e31c0d01f73030d5db64bdbb6474285b83e7a8a8369180cfc",
+          "executor_sha256": "6905e054d811bfd50dcdb6643f49ada60424d8d6915b781f417fcf76d18513bb",
+          "finished_at_unix_s": 1792814962.45396,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-016/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "c02abe5fa2e12f3e31c0d01f73030d5db64bdbb6474285b83e7a8a8369180cfc",
+          "executor_sha256": "9249384688d959e76b326a4537d2cbd721b58153f69aadada5eddfb2bf918263",
+          "finished_at_unix_s": 1792816718.429721,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-017/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "c02abe5fa2e12f3e31c0d01f73030d5db64bdbb6474285b83e7a8a8369180cfc",
+          "executor_sha256": "137c2f685226a0acb98f36c5a070be9b12eb14cf238a70839d56d946f9225b4e",
+          "finished_at_unix_s": 1792819036.906504,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-018/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "scene_bundle_sha256": "99ab5ec5eb9a8c3abf63d6a6b930959c6d43d3f2d6c9cd9a188121392951d800",
+          "executor_sha256": "19b58c64713479106def8867b7dac49e1e78fc527a500e0ccbf77a94da6cbe17",
+          "finished_at_unix_s": 1792821538.368354,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-019/report.json"
+        }
+      ],
+      "legacy_verification_results": {
+        "0": {
+          "passed": false,
+          "scene_sha256": "254e23640f7f74e414c62753b9a365ace06ac7b0d12d8132738d543ef6be5956",
+          "executor_sha256": "3338cb7b55a1a11be6fa41b5331dfbcc0348aca3453a6582b26c0daa2f2efaf7",
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-0/attempt-002/report.json"
+        }
+      },
+      "last_oracle_passed": false,
+      "contract_sha256": "fee6f81b365236188d9b2caaafefb7204baa38338a2f701829e19e2e7b7e77b7",
+      "previous_contract_sha256": "a8d930f97e77916c9b248220023cd175b622b84c2e67993915d1cfc814e1247d",
+      "last_interrupted_reference": "runs/oracle/frontier-v1/mosaic-a04-7x7-d2/seed-1/attempt-001/report.json"
+    },
+    {
+      "id": "mosaic-a04-7x7-d3",
+      "family": "mosaic",
+      "level": 3,
+      "arms": 4,
+      "rows": 7,
+      "columns": 7,
+      "objects": 49,
+      "pitch_m": 0.051,
+      "guidance": "unmarked",
+      "status": "oracle_failed",
+      "directory": "configs/environments/mosaic/suite-mosaic-a04-7x7-d3",
+      "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+      "layout_report": "configs/environments/mosaic/suite-mosaic-a04-7x7-d3/layout-validation.json",
+      "verification_results": {
+        "0": {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+          "scene_bundle_sha256": "424bae8bff69e0e3bbdeb3d1d79a0202fd5d18ab0a6790a3fa9263f65409b1f0",
+          "executor_sha256": "19b58c64713479106def8867b7dac49e1e78fc527a500e0ccbf77a94da6cbe17",
+          "finished_at_unix_s": 1792821538.381378,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-018/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-018/report.json",
+      "oracle_attempts": [
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+          "scene_bundle_sha256": "2dff66404a23fbabd5f6cff0168a6dbb7ea24f5f8256e83e3d8ad8741947b231",
+          "executor_sha256": "b31731f5b949fae5b786768ca7b1ffdd91d0091a8666810afbb375ee3b271a07",
+          "finished_at_unix_s": 1792808404.532081,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-003/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+          "scene_bundle_sha256": "63f05fabbaab196e9d7df8dd48d7b5858fee0aacc32823c156865189d9dd1348",
+          "executor_sha256": "bbe6f55e259c5596b2002a3147222d8459408e25c665490b4a139b669b4e1e53",
+          "finished_at_unix_s": 1792808583.179178,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-004/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+          "scene_bundle_sha256": "63f05fabbaab196e9d7df8dd48d7b5858fee0aacc32823c156865189d9dd1348",
+          "executor_sha256": "ce5e13249c4ef6b2d8a73494476b457e1490a8636408df9e3f6c628c2d3638a6",
+          "finished_at_unix_s": 1792808697.4388402,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-005/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+          "scene_bundle_sha256": "63f05fabbaab196e9d7df8dd48d7b5858fee0aacc32823c156865189d9dd1348",
+          "executor_sha256": "63b5b1a7313097bd15113b46b845fdbb9295c572fafd30e40ee34b1b960bacb9",
+          "finished_at_unix_s": 1792808887.311496,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-006/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+          "scene_bundle_sha256": "63f05fabbaab196e9d7df8dd48d7b5858fee0aacc32823c156865189d9dd1348",
+          "executor_sha256": "b151a40cdf5e2fdfa45af10a5d1d17d4e9588b02e9478665839f3f62b69a14f7",
+          "finished_at_unix_s": 1792809249.4833322,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-007/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+          "scene_bundle_sha256": "63f05fabbaab196e9d7df8dd48d7b5858fee0aacc32823c156865189d9dd1348",
+          "executor_sha256": "4ebe188add063cc830e4d8ec2cd892a1ded1b6d613f34c8762927f99d6ea68d4",
+          "finished_at_unix_s": 1792809469.244282,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-008/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+          "scene_bundle_sha256": "63f05fabbaab196e9d7df8dd48d7b5858fee0aacc32823c156865189d9dd1348",
+          "executor_sha256": "bbfeff964b5869b60e37647dad5b89afa65ad1a953520e0fa1c20b209600b399",
+          "finished_at_unix_s": 1792809942.870923,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-009/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+          "scene_bundle_sha256": "63f05fabbaab196e9d7df8dd48d7b5858fee0aacc32823c156865189d9dd1348",
+          "executor_sha256": "47e0a038aaaef3bdc60ada47627205d0f183f8d6e1f457adcbf1230f239d44ea",
+          "finished_at_unix_s": 1792811123.180256,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-010/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+          "scene_bundle_sha256": "63f05fabbaab196e9d7df8dd48d7b5858fee0aacc32823c156865189d9dd1348",
+          "executor_sha256": "9d5d0cbf58432bc5c0c964b93ef417a94486a3c2489a7e1b0bd0faf44122caa7",
+          "finished_at_unix_s": 1792812940.598145,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-011/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+          "scene_bundle_sha256": "63f05fabbaab196e9d7df8dd48d7b5858fee0aacc32823c156865189d9dd1348",
+          "executor_sha256": "ee26314aa11206110c3b1892342accd639894ec8447b57297f70ace5264c699f",
+          "finished_at_unix_s": 1792813701.154984,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-012/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+          "scene_bundle_sha256": "63f05fabbaab196e9d7df8dd48d7b5858fee0aacc32823c156865189d9dd1348",
+          "executor_sha256": "2fa8f079a318c7ab284e97eadf25e0a7f09554471a41b22e6c5b5735a98bad1f",
+          "finished_at_unix_s": 1792813871.309142,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-013/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+          "scene_bundle_sha256": "63f05fabbaab196e9d7df8dd48d7b5858fee0aacc32823c156865189d9dd1348",
+          "executor_sha256": "d86ce4e8765d6e038acc8667ba551000a1ec97d0707f49bc5cec983d74982ae7",
+          "finished_at_unix_s": 1792814944.5372832,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-014/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+          "scene_bundle_sha256": "63f05fabbaab196e9d7df8dd48d7b5858fee0aacc32823c156865189d9dd1348",
+          "executor_sha256": "6905e054d811bfd50dcdb6643f49ada60424d8d6915b781f417fcf76d18513bb",
+          "finished_at_unix_s": 1792814962.1027079,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-015/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+          "scene_bundle_sha256": "63f05fabbaab196e9d7df8dd48d7b5858fee0aacc32823c156865189d9dd1348",
+          "executor_sha256": "9249384688d959e76b326a4537d2cbd721b58153f69aadada5eddfb2bf918263",
+          "finished_at_unix_s": 1792816718.41188,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-016/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+          "scene_bundle_sha256": "63f05fabbaab196e9d7df8dd48d7b5858fee0aacc32823c156865189d9dd1348",
+          "executor_sha256": "137c2f685226a0acb98f36c5a070be9b12eb14cf238a70839d56d946f9225b4e",
+          "finished_at_unix_s": 1792819036.959014,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-017/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+          "scene_bundle_sha256": "424bae8bff69e0e3bbdeb3d1d79a0202fd5d18ab0a6790a3fa9263f65409b1f0",
+          "executor_sha256": "19b58c64713479106def8867b7dac49e1e78fc527a500e0ccbf77a94da6cbe17",
+          "finished_at_unix_s": 1792821538.381378,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-018/report.json"
+        }
+      ],
+      "legacy_verification_results": {
+        "0": {
+          "passed": false,
+          "scene_sha256": "8a4a4e0b6344aac2fff47a928d900fa2ed62003903656009b77e8e841fdfc202",
+          "executor_sha256": "3338cb7b55a1a11be6fa41b5331dfbcc0348aca3453a6582b26c0daa2f2efaf7",
+          "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-002/report.json"
+        }
+      },
+      "last_oracle_passed": false,
+      "contract_sha256": "f747a8cb9fc4dd4a94174188536a59f173681b77dc51568f596fa8ba497ecbc1",
+      "previous_contract_sha256": "e83f488221aba5af534cf288f883e656fb1ed16cf45870c1c50de7b234d453d4"
+    },
+    {
+      "id": "mosaic-a06-7x14-d1",
+      "family": "mosaic",
+      "level": 1,
+      "arms": 6,
+      "rows": 7,
+      "columns": 14,
+      "objects": 98,
+      "pitch_m": 0.051,
+      "guidance": "recessed",
+      "status": "oracle_failed",
+      "directory": "configs/environments/mosaic/suite-mosaic-a06-7x14-d1",
+      "scene_sha256": "c697b3c31ea2697da76e0adcef25e272e58640533a6d052db524c6fbbfa32431",
+      "layout_report": "configs/environments/mosaic/suite-mosaic-a06-7x14-d1/layout-validation.json",
+      "contract_sha256": "12e2a97e57f2b7d4c5a8c5e69d1f7f87ffae79fae9bdf98860648aacbb4f75ec",
+      "verification_results": {
+        "0": {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "c697b3c31ea2697da76e0adcef25e272e58640533a6d052db524c6fbbfa32431",
+          "scene_bundle_sha256": "7cc56611a5cfb89a132e9d29abbf76679cab9eb0680d4f6c3a16695c91c0f0ae",
+          "executor_sha256": "9249384688d959e76b326a4537d2cbd721b58153f69aadada5eddfb2bf918263",
+          "finished_at_unix_s": 1792816975.222749,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a06-7x14-d1/seed-0/attempt-006/report.json"
+        }
+      },
+      "previous_contract_sha256": "1e0501968fe9bdc98d953af123cf8d97f41fdb577f826a59d3a13ce705f44b20",
+      "oracle_attempts": [
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "c697b3c31ea2697da76e0adcef25e272e58640533a6d052db524c6fbbfa32431",
+          "scene_bundle_sha256": "7cc56611a5cfb89a132e9d29abbf76679cab9eb0680d4f6c3a16695c91c0f0ae",
+          "executor_sha256": "63b5b1a7313097bd15113b46b845fdbb9295c572fafd30e40ee34b1b960bacb9",
+          "finished_at_unix_s": 1792808987.2115998,
+          "report": "runs/oracle/frontier-v1/mosaic-a06-7x14-d1/seed-0/attempt-001/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "c697b3c31ea2697da76e0adcef25e272e58640533a6d052db524c6fbbfa32431",
+          "scene_bundle_sha256": "7cc56611a5cfb89a132e9d29abbf76679cab9eb0680d4f6c3a16695c91c0f0ae",
+          "executor_sha256": "bbfeff964b5869b60e37647dad5b89afa65ad1a953520e0fa1c20b209600b399",
+          "finished_at_unix_s": 1792810619.2058098,
+          "report": "runs/oracle/frontier-v1/mosaic-a06-7x14-d1/seed-0/attempt-002/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "c697b3c31ea2697da76e0adcef25e272e58640533a6d052db524c6fbbfa32431",
+          "scene_bundle_sha256": "7cc56611a5cfb89a132e9d29abbf76679cab9eb0680d4f6c3a16695c91c0f0ae",
+          "executor_sha256": "9d5d0cbf58432bc5c0c964b93ef417a94486a3c2489a7e1b0bd0faf44122caa7",
+          "finished_at_unix_s": 1792813963.699318,
+          "report": "runs/oracle/frontier-v1/mosaic-a06-7x14-d1/seed-0/attempt-003/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "c697b3c31ea2697da76e0adcef25e272e58640533a6d052db524c6fbbfa32431",
+          "scene_bundle_sha256": "7cc56611a5cfb89a132e9d29abbf76679cab9eb0680d4f6c3a16695c91c0f0ae",
+          "executor_sha256": "2fa8f079a318c7ab284e97eadf25e0a7f09554471a41b22e6c5b5735a98bad1f",
+          "finished_at_unix_s": 1792814028.243476,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a06-7x14-d1/seed-0/attempt-004/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "c697b3c31ea2697da76e0adcef25e272e58640533a6d052db524c6fbbfa32431",
+          "scene_bundle_sha256": "7cc56611a5cfb89a132e9d29abbf76679cab9eb0680d4f6c3a16695c91c0f0ae",
+          "executor_sha256": "6905e054d811bfd50dcdb6643f49ada60424d8d6915b781f417fcf76d18513bb",
+          "finished_at_unix_s": 1792815465.491553,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a06-7x14-d1/seed-0/attempt-005/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "c697b3c31ea2697da76e0adcef25e272e58640533a6d052db524c6fbbfa32431",
+          "scene_bundle_sha256": "7cc56611a5cfb89a132e9d29abbf76679cab9eb0680d4f6c3a16695c91c0f0ae",
+          "executor_sha256": "9249384688d959e76b326a4537d2cbd721b58153f69aadada5eddfb2bf918263",
+          "finished_at_unix_s": 1792816975.222749,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a06-7x14-d1/seed-0/attempt-006/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "c697b3c31ea2697da76e0adcef25e272e58640533a6d052db524c6fbbfa32431",
+          "scene_bundle_sha256": "9d72fe76df1a1cd1d89c77114e9f9c1cfc8251c2d9a8de6eda0be6dadf597903",
+          "executor_sha256": "19b58c64713479106def8867b7dac49e1e78fc527a500e0ccbf77a94da6cbe17",
+          "finished_at_unix_s": 1792823236.550241,
+          "interrupted": true,
+          "report": "runs/oracle/frontier-v1/mosaic-a06-7x14-d1/seed-0/attempt-007/report.json"
+        }
+      ],
+      "legacy_verification_results": {},
+      "last_oracle_report": "runs/oracle/frontier-v1/mosaic-a06-7x14-d1/seed-0/attempt-006/report.json",
+      "last_oracle_passed": false,
+      "last_interrupted_reference": "runs/oracle/frontier-v1/mosaic-a06-7x14-d1/seed-0/attempt-007/report.json"
+    },
+    {
+      "id": "mosaic-a06-7x14-d2",
+      "family": "mosaic",
+      "level": 2,
+      "arms": 6,
+      "rows": 7,
+      "columns": 14,
+      "objects": 98,
+      "pitch_m": 0.051,
+      "guidance": "printed_grid",
+      "status": "layout_checked",
+      "directory": "configs/environments/mosaic/suite-mosaic-a06-7x14-d2",
+      "scene_sha256": "5336e5d9f221d84f8cd6c51f970184d3f7934c4db256083e4ad69e72f0b5e2e6",
+      "layout_report": "configs/environments/mosaic/suite-mosaic-a06-7x14-d2/layout-validation.json",
+      "contract_sha256": "58072970f40b71a73c75707e6b33189580c3d9ce29537e528e99f577dc782143",
+      "verification_results": {},
+      "previous_contract_sha256": "8c1f647c011120c9c0c449c5788392cf27c3c479b41f5778d0b79e6654bc2025",
+      "oracle_attempts": [
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "5336e5d9f221d84f8cd6c51f970184d3f7934c4db256083e4ad69e72f0b5e2e6",
+          "scene_bundle_sha256": "df8a19d6e037026e4ce7ae44f1b24999a2e5088e1147ed7fa32df794e55b94f2",
+          "executor_sha256": "19b58c64713479106def8867b7dac49e1e78fc527a500e0ccbf77a94da6cbe17",
+          "finished_at_unix_s": 1792823237.065544,
+          "interrupted": true,
+          "report": "runs/oracle/frontier-v1/mosaic-a06-7x14-d2/seed-0/attempt-001/report.json"
+        }
+      ],
+      "last_interrupted_reference": "runs/oracle/frontier-v1/mosaic-a06-7x14-d2/seed-0/attempt-001/report.json"
+    },
+    {
+      "id": "mosaic-a06-7x14-d3",
+      "family": "mosaic",
+      "level": 3,
+      "arms": 6,
+      "rows": 7,
+      "columns": 14,
+      "objects": 98,
+      "pitch_m": 0.051,
+      "guidance": "unmarked",
+      "status": "layout_checked",
+      "directory": "configs/environments/mosaic/suite-mosaic-a06-7x14-d3",
+      "scene_sha256": "bf28594496aaffa5a8c1cc263b9b923b3e8bce84b3c92472754c8298fa82f512",
+      "layout_report": "configs/environments/mosaic/suite-mosaic-a06-7x14-d3/layout-validation.json",
+      "contract_sha256": "9c98aac5106c256062fd397991daee78c6fe9f10923942703e30f89b2bd5e48b",
+      "verification_results": {},
+      "previous_contract_sha256": "f3e54127284abc0cfab3315b4d1be339ad9d3f380943ed1c05f4084fec823a66",
+      "oracle_attempts": [
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "bf28594496aaffa5a8c1cc263b9b923b3e8bce84b3c92472754c8298fa82f512",
+          "scene_bundle_sha256": "98c1a27bb9ae7bb4a62ad18639effd1b4e5fa255d914daded434bb50f25fa5a1",
+          "executor_sha256": "19b58c64713479106def8867b7dac49e1e78fc527a500e0ccbf77a94da6cbe17",
+          "finished_at_unix_s": 1792823236.834172,
+          "interrupted": true,
+          "report": "runs/oracle/frontier-v1/mosaic-a06-7x14-d3/seed-0/attempt-001/report.json"
+        }
+      ],
+      "last_interrupted_reference": "runs/oracle/frontier-v1/mosaic-a06-7x14-d3/seed-0/attempt-001/report.json"
+    },
+    {
+      "id": "mosaic-a08-7x21-d1",
+      "family": "mosaic",
+      "level": 1,
+      "arms": 8,
+      "rows": 7,
+      "columns": 21,
+      "objects": 147,
+      "pitch_m": 0.051,
+      "guidance": "recessed",
+      "status": "oracle_failed",
+      "directory": "configs/environments/mosaic/suite-mosaic-a08-7x21-d1",
+      "scene_sha256": "3385a0e6d307815a729a0a3a743ea80e20f2a49e15fd79ab7a93f07877182ea3",
+      "layout_report": "configs/environments/mosaic/suite-mosaic-a08-7x21-d1/layout-validation.json",
+      "contract_sha256": "73a93afeb90dc2880417a0dbe0f89367649bd5194e6f3de8d4cb467861bcec4c",
+      "verification_results": {
+        "0": {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "3385a0e6d307815a729a0a3a743ea80e20f2a49e15fd79ab7a93f07877182ea3",
+          "scene_bundle_sha256": "05e628ef1142d29fb2ae7a6763a0437aaa07cd088c401852c92c28a10358a218",
+          "executor_sha256": "9249384688d959e76b326a4537d2cbd721b58153f69aadada5eddfb2bf918263",
+          "finished_at_unix_s": 1792818065.312524,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a08-7x21-d1/seed-0/attempt-006/report.json"
+        }
+      },
+      "previous_contract_sha256": "a5519691b7ed66e3de9d2eea7fdc1bac7bf9e30fc28d6e3c4f9932c4b78aa265",
+      "oracle_attempts": [
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "3385a0e6d307815a729a0a3a743ea80e20f2a49e15fd79ab7a93f07877182ea3",
+          "scene_bundle_sha256": "05e628ef1142d29fb2ae7a6763a0437aaa07cd088c401852c92c28a10358a218",
+          "executor_sha256": "63b5b1a7313097bd15113b46b845fdbb9295c572fafd30e40ee34b1b960bacb9",
+          "finished_at_unix_s": 1792809322.2884421,
+          "report": "runs/oracle/frontier-v1/mosaic-a08-7x21-d1/seed-0/attempt-001/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "3385a0e6d307815a729a0a3a743ea80e20f2a49e15fd79ab7a93f07877182ea3",
+          "scene_bundle_sha256": "05e628ef1142d29fb2ae7a6763a0437aaa07cd088c401852c92c28a10358a218",
+          "executor_sha256": "bbfeff964b5869b60e37647dad5b89afa65ad1a953520e0fa1c20b209600b399",
+          "finished_at_unix_s": 1792810971.338832,
+          "report": "runs/oracle/frontier-v1/mosaic-a08-7x21-d1/seed-0/attempt-002/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "3385a0e6d307815a729a0a3a743ea80e20f2a49e15fd79ab7a93f07877182ea3",
+          "scene_bundle_sha256": "05e628ef1142d29fb2ae7a6763a0437aaa07cd088c401852c92c28a10358a218",
+          "executor_sha256": "9d5d0cbf58432bc5c0c964b93ef417a94486a3c2489a7e1b0bd0faf44122caa7",
+          "finished_at_unix_s": 1792813649.159449,
+          "report": "runs/oracle/frontier-v1/mosaic-a08-7x21-d1/seed-0/attempt-003/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "3385a0e6d307815a729a0a3a743ea80e20f2a49e15fd79ab7a93f07877182ea3",
+          "scene_bundle_sha256": "05e628ef1142d29fb2ae7a6763a0437aaa07cd088c401852c92c28a10358a218",
+          "executor_sha256": "2fa8f079a318c7ab284e97eadf25e0a7f09554471a41b22e6c5b5735a98bad1f",
+          "finished_at_unix_s": 1792814364.1784692,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a08-7x21-d1/seed-0/attempt-004/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "3385a0e6d307815a729a0a3a743ea80e20f2a49e15fd79ab7a93f07877182ea3",
+          "scene_bundle_sha256": "05e628ef1142d29fb2ae7a6763a0437aaa07cd088c401852c92c28a10358a218",
+          "executor_sha256": "6905e054d811bfd50dcdb6643f49ada60424d8d6915b781f417fcf76d18513bb",
+          "finished_at_unix_s": 1792816284.207289,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a08-7x21-d1/seed-0/attempt-005/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "3385a0e6d307815a729a0a3a743ea80e20f2a49e15fd79ab7a93f07877182ea3",
+          "scene_bundle_sha256": "05e628ef1142d29fb2ae7a6763a0437aaa07cd088c401852c92c28a10358a218",
+          "executor_sha256": "9249384688d959e76b326a4537d2cbd721b58153f69aadada5eddfb2bf918263",
+          "finished_at_unix_s": 1792818065.312524,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/mosaic-a08-7x21-d1/seed-0/attempt-006/report.json"
+        }
+      ],
+      "legacy_verification_results": {},
+      "last_oracle_report": "runs/oracle/frontier-v1/mosaic-a08-7x21-d1/seed-0/attempt-006/report.json",
+      "last_oracle_passed": false
+    },
+    {
+      "id": "mosaic-a08-7x21-d2",
+      "family": "mosaic",
+      "level": 2,
+      "arms": 8,
+      "rows": 7,
+      "columns": 21,
+      "objects": 147,
+      "pitch_m": 0.051,
+      "guidance": "printed_grid",
+      "status": "layout_checked",
+      "directory": "configs/environments/mosaic/suite-mosaic-a08-7x21-d2",
+      "scene_sha256": "acc40e11d148a7fb4318feb6008439947309c893ff2c89e6ac72ea6d89d68b95",
+      "layout_report": "configs/environments/mosaic/suite-mosaic-a08-7x21-d2/layout-validation.json",
+      "contract_sha256": "a70386890d15a520e8513785eb4a876de38d1124d4d2a5b125ac3678f9a851fa",
+      "verification_results": {},
+      "previous_contract_sha256": "c01376dc01cc002fec887b3777ade44aff4ba7affedeb7f4e5e730b3ce505cc3"
+    },
+    {
+      "id": "mosaic-a08-7x21-d3",
+      "family": "mosaic",
+      "level": 3,
+      "arms": 8,
+      "rows": 7,
+      "columns": 21,
+      "objects": 147,
+      "pitch_m": 0.051,
+      "guidance": "unmarked",
+      "status": "layout_checked",
+      "directory": "configs/environments/mosaic/suite-mosaic-a08-7x21-d3",
+      "scene_sha256": "d7970dc0b1b385cdfb8eb7d99426cd6301d376ac75e46cef51996bb71edf0acb",
+      "layout_report": "configs/environments/mosaic/suite-mosaic-a08-7x21-d3/layout-validation.json",
+      "contract_sha256": "34de3ea35897f414a9e75dc0ff2b7df23fb6c99b6c34f1c5a0aa4e0af9c96e61",
+      "verification_results": {},
+      "previous_contract_sha256": "28d71b6fcb13d8b3623319083af99cfbbba535620f8f4b9c2fbd47c185b4e03b"
+    },
+    {
+      "id": "relay-a08-d1",
+      "family": "relay",
+      "level": 1,
+      "arms": 8,
+      "pairs": 4,
+      "layout": "straight",
+      "payload": "bare_timber",
+      "status": "generated",
+      "directory": "configs/environments/beam_handoff/suite-relay-a08-d1-v4",
+      "scene_sha256": "24aa589dc647cb4e7927f97c6f85dc13c76197b4644dcd3ce0ff050658cf7758",
+      "layout_report": "configs/environments/beam_handoff/suite-relay-a08-d1-v3/layout-validation.json",
+      "verification_results": {},
+      "last_oracle_report": null,
+      "scene_revision": 4,
+      "history": [
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a08-d1",
+          "scene_sha256": "b935266eff970828b28ee05619b48fc94cbfe729a405124ae0b00a7a93502517",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "scene_sha256": "b935266eff970828b28ee05619b48fc94cbfe729a405124ae0b00a7a93502517",
+              "report": "runs/oracle/frontier-v1/relay-a08-d1/seed-0/attempt-011/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/relay-a08-d1/seed-0/attempt-011/report.json",
+          "superseded_reason": "Align beam with transport direction and stagger opposed bases, preserving old normal-to-path layouts and witnesses"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a08-d1-v2",
+          "scene_revision": 2,
+          "scene_sha256": "d750b327ec362b1b9d7b2f4c393d6a1caa65a70f84df8493d34e73c512b541f4",
+          "status": "oracle_failed",
+          "verification_results": {
+            "0": {
+              "passed": false,
+              "verification_seed": 0,
+              "scene_sha256": "d750b327ec362b1b9d7b2f4c393d6a1caa65a70f84df8493d34e73c512b541f4",
+              "scene_bundle_sha256": "6d7da425720433a89de643ded590f8f0d021a6efdb71845d18babed8e29dcf0b",
+              "executor_sha256": "a295cb7b0e626ec18a5cef6d56a4a8b62eb43124ebea6f515739bdc1416b4d66",
+              "finished_at_unix_s": 1792808343.0120478,
+              "report": "runs/oracle/frontier-v1/relay-a08-d1/seed-0/attempt-017/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/relay-a08-d1/seed-0/attempt-017/report.json",
+          "superseded_reason": "Restore the physically demonstrated normal beam orientation for straight/quarter-turn layouts; isolate tangent experiment to the closed ring"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a08-d1-v3",
+          "scene_revision": 3,
+          "scene_sha256": "81aee20c89efa85c8cebf84681ceede991edbb857a2385e3d9c774485ffaea8e",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "verification_seed": 0,
+              "scene_sha256": "81aee20c89efa85c8cebf84681ceede991edbb857a2385e3d9c774485ffaea8e",
+              "scene_bundle_sha256": "911578cbd9aa527f035a3dbaca6ce1615b9fd1a5104e7827e0e6ea295d71598d",
+              "executor_sha256": "5065175728796a987136a1665bfa25c27e6410110966af9af3133780066296d8",
+              "finished_at_unix_s": 1792810292.036364,
+              "report": "runs/oracle/frontier-v1/relay-a08-d1/seed-0/attempt-020/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/relay-a08-d1/seed-0/attempt-020/report.json",
+          "superseded_reason": "Freeze explicit staged-handover rules and admit physically reachable floor recovery by the sending team; do not force released arms to return HOME"
+        }
+      ],
+      "oracle_attempts": [
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "d750b327ec362b1b9d7b2f4c393d6a1caa65a70f84df8493d34e73c512b541f4",
+          "scene_bundle_sha256": "6d7da425720433a89de643ded590f8f0d021a6efdb71845d18babed8e29dcf0b",
+          "executor_sha256": "a295cb7b0e626ec18a5cef6d56a4a8b62eb43124ebea6f515739bdc1416b4d66",
+          "finished_at_unix_s": 1792808343.0120478,
+          "report": "runs/oracle/frontier-v1/relay-a08-d1/seed-0/attempt-017/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "81aee20c89efa85c8cebf84681ceede991edbb857a2385e3d9c774485ffaea8e",
+          "scene_bundle_sha256": "e42a57c34e2eb4631bb3dc7f8d7d6f39cda964651306bbb8d366935ec4457fd3",
+          "executor_sha256": "8fd580ba923f877f63a9c19dd4e295ec04dd3c4368951dad0eb2372b2e5a8ae5",
+          "finished_at_unix_s": 1792808611.143648,
+          "report": "runs/oracle/frontier-v1/relay-a08-d1/seed-0/attempt-018/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "81aee20c89efa85c8cebf84681ceede991edbb857a2385e3d9c774485ffaea8e",
+          "scene_bundle_sha256": "e42a57c34e2eb4631bb3dc7f8d7d6f39cda964651306bbb8d366935ec4457fd3",
+          "executor_sha256": "bc64386eb38ac6a1f731ce61e1cbfb5d52ddeab064030b9fb5485f7e3d1fdfa3",
+          "finished_at_unix_s": 1792808792.335077,
+          "report": "runs/oracle/frontier-v1/relay-a08-d1/seed-0/attempt-019/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "81aee20c89efa85c8cebf84681ceede991edbb857a2385e3d9c774485ffaea8e",
+          "scene_bundle_sha256": "911578cbd9aa527f035a3dbaca6ce1615b9fd1a5104e7827e0e6ea295d71598d",
+          "executor_sha256": "5065175728796a987136a1665bfa25c27e6410110966af9af3133780066296d8",
+          "finished_at_unix_s": 1792810292.036364,
+          "report": "runs/oracle/frontier-v1/relay-a08-d1/seed-0/attempt-020/report.json"
+        }
+      ],
+      "legacy_verification_results": {
+        "0": {
+          "passed": false,
+          "scene_sha256": "d750b327ec362b1b9d7b2f4c393d6a1caa65a70f84df8493d34e73c512b541f4",
+          "executor_sha256": "e9d6d342651b1b600a5584ea67139a82eec5821ee1e507d7f22fe2bb73d103c9",
+          "report": "runs/oracle/frontier-v1/relay-a08-d1/seed-0/attempt-016/report.json"
+        }
+      },
+      "last_oracle_passed": true,
+      "contract_sha256": "4eb2e5b999dcf6f28e94db5ee27c056b84518eb26c8a0da4c495c1a2d273213e",
+      "best_oracle_witness": "runs/oracle/frontier-v1/relay-a08-d1/seed-0/attempt-020/report.json"
+    },
+    {
+      "id": "relay-a08-d2",
+      "family": "relay",
+      "level": 2,
+      "arms": 8,
+      "pairs": 4,
+      "layout": "straight",
+      "payload": "short_link_weight",
+      "status": "generated",
+      "directory": "configs/environments/beam_handoff/suite-relay-a08-d2-v4",
+      "scene_sha256": "84cabc201a1f29ecbc1f0f6b063a70e16b010c2f219b3c661841747f730d65a8",
+      "layout_report": "configs/environments/beam_handoff/suite-relay-a08-d2-v3/layout-validation.json",
+      "verification_results": {},
+      "last_oracle_report": null,
+      "scene_revision": 4,
+      "history": [
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a08-d2",
+          "scene_sha256": "fd3a539ddb3fd1a73923ee6a2d46a78efcb7a99f205de0447ec26d63256a9766",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "scene_sha256": "fd3a539ddb3fd1a73923ee6a2d46a78efcb7a99f205de0447ec26d63256a9766",
+              "executor_sha256": "838db2fb9587bda029113c1d025812ae6780b2c1b9c26c315dbde3d9edf32c27",
+              "report": "runs/oracle/frontier-v1/relay-a08-d2/seed-0/attempt-001/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/relay-a08-d2/seed-0/attempt-001/report.json",
+          "superseded_reason": "Align beam with transport direction and stagger opposed bases, preserving old normal-to-path layouts and witnesses"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a08-d2-v2",
+          "scene_revision": 2,
+          "scene_sha256": "432178d7ac14844f8b1a65ea2cfba35eb29761a6423ba3123f570ce0b8727b60",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Restore the physically demonstrated normal beam orientation for straight/quarter-turn layouts; isolate tangent experiment to the closed ring"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a08-d2-v3",
+          "scene_revision": 3,
+          "scene_sha256": "c59458b65cff1a3593b82312445cdb689d8cf4c5ab9c158896ed474a91396228",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": "runs/oracle/frontier-v1/relay-a08-d2/seed-0/attempt-002/report.json",
+          "superseded_reason": "Freeze explicit staged-handover rules and admit physically reachable floor recovery by the sending team; do not force released arms to return HOME"
+        }
+      ],
+      "oracle_attempts": [
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "c59458b65cff1a3593b82312445cdb689d8cf4c5ab9c158896ed474a91396228",
+          "scene_bundle_sha256": "36c1d2802ac936e829a611b9d995e10ca7f3994e5da0782759c83076a4a68a56",
+          "executor_sha256": "8fd580ba923f877f63a9c19dd4e295ec04dd3c4368951dad0eb2372b2e5a8ae5",
+          "finished_at_unix_s": 1792808737.700295,
+          "report": "runs/oracle/frontier-v1/relay-a08-d2/seed-0/attempt-002/report.json"
+        }
+      ],
+      "legacy_verification_results": {},
+      "last_oracle_passed": true,
+      "best_oracle_witness": "runs/oracle/frontier-v1/relay-a08-d2/seed-0/attempt-002/report.json",
+      "contract_sha256": "e2911e84b753754fcacd244de149c4b1814708f3e219939558a97324e17f12b0"
+    },
+    {
+      "id": "relay-a08-d3",
+      "family": "relay",
+      "level": 3,
+      "arms": 8,
+      "pairs": 4,
+      "layout": "straight",
+      "payload": "flexible_cable_weight",
+      "status": "generated",
+      "directory": "configs/environments/beam_handoff/suite-relay-a08-d3-v4",
+      "scene_sha256": "524b980a8eb221b1960795e38a4c8d7a380bee3bd4fa42d5c3ddd59c5d2e2838",
+      "layout_report": "configs/environments/beam_handoff/suite-relay-a08-d3-v3/layout-validation.json",
+      "verification_results": {},
+      "last_oracle_report": null,
+      "scene_revision": 4,
+      "history": [
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a08-d3",
+          "scene_sha256": "e4bd0d13b5399ef6ce8201c2243f08d58ae19374e2ab17d70d51638969c68a64",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "scene_sha256": "e4bd0d13b5399ef6ce8201c2243f08d58ae19374e2ab17d70d51638969c68a64",
+              "executor_sha256": "838db2fb9587bda029113c1d025812ae6780b2c1b9c26c315dbde3d9edf32c27",
+              "report": "runs/oracle/frontier-v1/relay-a08-d3/seed-0/attempt-001/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/relay-a08-d3/seed-0/attempt-001/report.json",
+          "superseded_reason": "Align beam with transport direction and stagger opposed bases, preserving old normal-to-path layouts and witnesses"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a08-d3-v2",
+          "scene_revision": 2,
+          "scene_sha256": "e1a08c2f0ff061745e52c32a338e172ab5fe6f1e16051af8f4e8a570677302b8",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Restore the physically demonstrated normal beam orientation for straight/quarter-turn layouts; isolate tangent experiment to the closed ring"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a08-d3-v3",
+          "scene_revision": 3,
+          "scene_sha256": "d87d7f1f8e516421ab03d02c9735d2d345ae783ced5f44355fb8dc1d67365b3f",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": "runs/oracle/frontier-v1/relay-a08-d3/seed-0/attempt-002/report.json",
+          "superseded_reason": "Freeze explicit staged-handover rules and admit physically reachable floor recovery by the sending team; do not force released arms to return HOME"
+        }
+      ],
+      "oracle_attempts": [
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "d87d7f1f8e516421ab03d02c9735d2d345ae783ced5f44355fb8dc1d67365b3f",
+          "scene_bundle_sha256": "76238c81190cd9103862b30546a746eceb0083e24a091fc10c94228907fa26a9",
+          "executor_sha256": "8fd580ba923f877f63a9c19dd4e295ec04dd3c4368951dad0eb2372b2e5a8ae5",
+          "finished_at_unix_s": 1792808876.350519,
+          "report": "runs/oracle/frontier-v1/relay-a08-d3/seed-0/attempt-002/report.json"
+        }
+      ],
+      "legacy_verification_results": {},
+      "last_oracle_passed": true,
+      "best_oracle_witness": "runs/oracle/frontier-v1/relay-a08-d3/seed-0/attempt-002/report.json",
+      "contract_sha256": "464a9468bce92ecb949884a8c921141b8d10e4f7807f127f6636a551d84b5306"
+    },
+    {
+      "id": "relay-a12-d1",
+      "family": "relay",
+      "level": 1,
+      "arms": 12,
+      "pairs": 6,
+      "layout": "bend",
+      "payload": "bare_timber",
+      "status": "generated",
+      "directory": "configs/environments/beam_handoff/suite-relay-a12-d1-v4",
+      "scene_sha256": "e5576fe886f19ff71573a44f01fbcd691e61d2c30a9c23b60d2b58bff86e7dcf",
+      "layout_report": "configs/environments/beam_handoff/suite-relay-a12-d1-v3/layout-validation.json",
+      "verification_results": {},
+      "last_oracle_report": null,
+      "scene_revision": 4,
+      "history": [
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a12-d1",
+          "scene_sha256": "ecf74059366174a82e477dec4fc8d16eb8ebdf6b024701f34b419543c334d045",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "scene_sha256": "ecf74059366174a82e477dec4fc8d16eb8ebdf6b024701f34b419543c334d045",
+              "executor_sha256": "3e4cc2bfe4a9c1bce3a0923a8fe3e23a49588176cc986436718dcfbd8eaeae49",
+              "report": "runs/oracle/frontier-v1/relay-a12-d1/seed-0/attempt-004/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/relay-a12-d1/seed-0/attempt-004/report.json",
+          "superseded_reason": "Align beam with transport direction and stagger opposed bases, preserving old normal-to-path layouts and witnesses"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a12-d1-v2",
+          "scene_revision": 2,
+          "scene_sha256": "05002b22da2131f1bb4e18b93aac9e103c6edbdbbcb12f36ab93a984f6ee0170",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Restore the physically demonstrated normal beam orientation for straight/quarter-turn layouts; isolate tangent experiment to the closed ring"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a12-d1-v3",
+          "scene_revision": 3,
+          "scene_sha256": "f146cb9621fd3dbd1c4e0a95fbc84fb468dc487063ebca15844980aba841cc42",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": "runs/oracle/frontier-v1/relay-a12-d1/seed-0/attempt-006/report.json",
+          "superseded_reason": "Freeze explicit staged-handover rules and admit physically reachable floor recovery by the sending team; do not force released arms to return HOME"
+        }
+      ],
+      "oracle_attempts": [
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "f146cb9621fd3dbd1c4e0a95fbc84fb468dc487063ebca15844980aba841cc42",
+          "scene_bundle_sha256": "4d748fa06014686771d9ae5d6a3805ddfabc4ff52ff75280eed432da62e42d5f",
+          "executor_sha256": "bc64386eb38ac6a1f731ce61e1cbfb5d52ddeab064030b9fb5485f7e3d1fdfa3",
+          "finished_at_unix_s": 1792808989.0244071,
+          "report": "runs/oracle/frontier-v1/relay-a12-d1/seed-0/attempt-005/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "f146cb9621fd3dbd1c4e0a95fbc84fb468dc487063ebca15844980aba841cc42",
+          "scene_bundle_sha256": "4d748fa06014686771d9ae5d6a3805ddfabc4ff52ff75280eed432da62e42d5f",
+          "executor_sha256": "8fd580ba923f877f63a9c19dd4e295ec04dd3c4368951dad0eb2372b2e5a8ae5",
+          "finished_at_unix_s": 1792809097.512727,
+          "report": "runs/oracle/frontier-v1/relay-a12-d1/seed-0/attempt-006/report.json"
+        }
+      ],
+      "legacy_verification_results": {},
+      "last_oracle_passed": true,
+      "best_oracle_witness": "runs/oracle/frontier-v1/relay-a12-d1/seed-0/attempt-006/report.json",
+      "contract_sha256": "ca24f90fe019e90703bbab72abb6a3fab0d955f60b35abf1010ee3e7311756e3"
+    },
+    {
+      "id": "relay-a12-d2",
+      "family": "relay",
+      "level": 2,
+      "arms": 12,
+      "pairs": 6,
+      "layout": "bend",
+      "payload": "short_link_weight",
+      "status": "generated",
+      "directory": "configs/environments/beam_handoff/suite-relay-a12-d2-v4",
+      "scene_sha256": "250d03963b059b2bed1758516d1dfd0a74b80968b8798c0dfd9f639cb23cbaa4",
+      "layout_report": "configs/environments/beam_handoff/suite-relay-a12-d2-v3/layout-validation.json",
+      "verification_results": {},
+      "last_oracle_report": null,
+      "scene_revision": 4,
+      "history": [
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a12-d2",
+          "scene_sha256": "6ab504b7afe6d029768be762883c09766e0d4bbb5a5618e28e2745c9212c8f4a",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "scene_sha256": "6ab504b7afe6d029768be762883c09766e0d4bbb5a5618e28e2745c9212c8f4a",
+              "executor_sha256": "db44f77fa30453a161739620c554f4579ef657bccf31bbf0b8061833c891748f",
+              "report": "runs/oracle/frontier-v1/relay-a12-d2/seed-0/attempt-002/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/relay-a12-d2/seed-0/attempt-002/report.json",
+          "superseded_reason": "Align beam with transport direction and stagger opposed bases, preserving old normal-to-path layouts and witnesses"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a12-d2-v2",
+          "scene_revision": 2,
+          "scene_sha256": "1ff341b930ceffd2aa1334192d02254c3c86765ca31ef3967f92696c37d3132e",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Restore the physically demonstrated normal beam orientation for straight/quarter-turn layouts; isolate tangent experiment to the closed ring"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a12-d2-v3",
+          "scene_revision": 3,
+          "scene_sha256": "a5eb9c9e7d6dfcd5b8f5d800ba8662bde8873317416832e2e1b8e4b87fc6000a",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": "runs/oracle/frontier-v1/relay-a12-d2/seed-0/attempt-003/report.json",
+          "superseded_reason": "Freeze explicit staged-handover rules and admit physically reachable floor recovery by the sending team; do not force released arms to return HOME"
+        }
+      ],
+      "oracle_attempts": [
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "a5eb9c9e7d6dfcd5b8f5d800ba8662bde8873317416832e2e1b8e4b87fc6000a",
+          "scene_bundle_sha256": "47f666cf9c69914a1ae0021be0c20c1287c8b7b82088fbbc25bb9a949230f930",
+          "executor_sha256": "8fd580ba923f877f63a9c19dd4e295ec04dd3c4368951dad0eb2372b2e5a8ae5",
+          "finished_at_unix_s": 1792809320.853934,
+          "report": "runs/oracle/frontier-v1/relay-a12-d2/seed-0/attempt-003/report.json"
+        }
+      ],
+      "legacy_verification_results": {},
+      "last_oracle_passed": true,
+      "best_oracle_witness": "runs/oracle/frontier-v1/relay-a12-d2/seed-0/attempt-003/report.json",
+      "contract_sha256": "ef533a9c2ed0763857f35237e7eba5398c1677d6cd683897635e88bdfd64c2fd"
+    },
+    {
+      "id": "relay-a12-d3",
+      "family": "relay",
+      "level": 3,
+      "arms": 12,
+      "pairs": 6,
+      "layout": "bend",
+      "payload": "flexible_cable_weight",
+      "status": "generated",
+      "directory": "configs/environments/beam_handoff/suite-relay-a12-d3-v4",
+      "scene_sha256": "eab82894204de9db45509f1ff6e05e479d2f5847136884c612103e40d6f6191f",
+      "layout_report": "configs/environments/beam_handoff/suite-relay-a12-d3-v3/layout-validation.json",
+      "verification_results": {},
+      "last_oracle_report": null,
+      "scene_revision": 4,
+      "history": [
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a12-d3",
+          "scene_sha256": "68f1940fccbc4dd703f6c4b2cc77f31eda159b77c5c203584a4a506966030e82",
+          "status": "oracle_failed",
+          "verification_results": {
+            "0": {
+              "passed": false,
+              "scene_sha256": "68f1940fccbc4dd703f6c4b2cc77f31eda159b77c5c203584a4a506966030e82",
+              "executor_sha256": "db44f77fa30453a161739620c554f4579ef657bccf31bbf0b8061833c891748f",
+              "report": "runs/oracle/frontier-v1/relay-a12-d3/seed-0/attempt-002/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/relay-a12-d3/seed-0/attempt-002/report.json",
+          "superseded_reason": "Align beam with transport direction and stagger opposed bases, preserving old normal-to-path layouts and witnesses"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a12-d3-v2",
+          "scene_revision": 2,
+          "scene_sha256": "0fff4358faf5cee562e64c2877e7b8557db069a122c3e29d1d2a9530272bb98e",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Restore the physically demonstrated normal beam orientation for straight/quarter-turn layouts; isolate tangent experiment to the closed ring"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a12-d3-v3",
+          "scene_revision": 3,
+          "scene_sha256": "363f3d9974cb22ba69bf8c9d1dd63f12ba2d10d7347220d8ea58c873afb7ab3b",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "verification_seed": 0,
+              "scene_sha256": "363f3d9974cb22ba69bf8c9d1dd63f12ba2d10d7347220d8ea58c873afb7ab3b",
+              "scene_bundle_sha256": "8ef50bf01fefbef179084f468237d0aa8582aadba973bcea222bc904019bc1f5",
+              "executor_sha256": "5065175728796a987136a1665bfa25c27e6410110966af9af3133780066296d8",
+              "finished_at_unix_s": 1792810359.968223,
+              "report": "runs/oracle/frontier-v1/relay-a12-d3/seed-0/attempt-004/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/relay-a12-d3/seed-0/attempt-004/report.json",
+          "superseded_reason": "Freeze explicit staged-handover rules and admit physically reachable floor recovery by the sending team; do not force released arms to return HOME"
+        }
+      ],
+      "oracle_attempts": [
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "363f3d9974cb22ba69bf8c9d1dd63f12ba2d10d7347220d8ea58c873afb7ab3b",
+          "scene_bundle_sha256": "847a2b803fdb382c88877b32d4c4e4d305e6bd38c91add96c30f00afc94cfa9a",
+          "executor_sha256": "8fd580ba923f877f63a9c19dd4e295ec04dd3c4368951dad0eb2372b2e5a8ae5",
+          "finished_at_unix_s": 1792809350.53591,
+          "report": "runs/oracle/frontier-v1/relay-a12-d3/seed-0/attempt-003/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "363f3d9974cb22ba69bf8c9d1dd63f12ba2d10d7347220d8ea58c873afb7ab3b",
+          "scene_bundle_sha256": "8ef50bf01fefbef179084f468237d0aa8582aadba973bcea222bc904019bc1f5",
+          "executor_sha256": "5065175728796a987136a1665bfa25c27e6410110966af9af3133780066296d8",
+          "finished_at_unix_s": 1792810359.968223,
+          "report": "runs/oracle/frontier-v1/relay-a12-d3/seed-0/attempt-004/report.json"
+        }
+      ],
+      "legacy_verification_results": {},
+      "last_oracle_passed": true,
+      "contract_sha256": "dff4279f2cec79ac08e265e949bddfa6dbe0b916e572b303cd0128f41bdff490",
+      "best_oracle_witness": "runs/oracle/frontier-v1/relay-a12-d3/seed-0/attempt-004/report.json"
+    },
+    {
+      "id": "relay-a16-d1",
+      "family": "relay",
+      "level": 1,
+      "arms": 16,
+      "pairs": 8,
+      "layout": "closed_loop",
+      "payload": "bare_timber",
+      "status": "oracle_failed",
+      "directory": "configs/environments/beam_handoff/suite-relay-a16-d1-v5",
+      "scene_sha256": "315c6b125e1a534c47487957835b3d8442dbd3e5db88c8c164130f16929ed100",
+      "layout_report": "configs/environments/beam_handoff/suite-relay-a16-d1-v2/layout-validation.json",
+      "verification_results": {
+        "0": {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "315c6b125e1a534c47487957835b3d8442dbd3e5db88c8c164130f16929ed100",
+          "scene_bundle_sha256": "5071c1066e35b85f1ea01d6d0e6704b95147f4015597f960282c659edfb4d08a",
+          "executor_sha256": "74392fb907ce286cf2a796da081c8838e82ed9b0b4d2ef8c8a03a1f7174eb9a1",
+          "finished_at_unix_s": 1792821582.4328809,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-024/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-024/report.json",
+      "scene_revision": 5,
+      "history": [
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a16-d1",
+          "scene_sha256": "ab1c2d139367a8f3061486dd1c54910f6fa1437f435f0e6c5579e92d3bf6cbc9",
+          "status": "oracle_failed",
+          "verification_results": {
+            "0": {
+              "passed": false,
+              "scene_sha256": "ab1c2d139367a8f3061486dd1c54910f6fa1437f435f0e6c5579e92d3bf6cbc9",
+              "executor_sha256": "db44f77fa30453a161739620c554f4579ef657bccf31bbf0b8061833c891748f",
+              "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-007/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-007/report.json",
+          "superseded_reason": "Align beam with transport direction and stagger opposed bases, preserving old normal-to-path layouts and witnesses"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a16-d1-v2",
+          "scene_revision": 2,
+          "scene_sha256": "1916c9aed89d51cd8ca07a09b83f524c4a6d8fe5548ec230096f5d6a8b19a02d",
+          "status": "oracle_failed",
+          "verification_results": {
+            "0": {
+              "passed": false,
+              "verification_seed": 0,
+              "scene_sha256": "1916c9aed89d51cd8ca07a09b83f524c4a6d8fe5548ec230096f5d6a8b19a02d",
+              "scene_bundle_sha256": "2be97dbf67026ce7abcd95768f5b09dec4481ca2bd16bdfad54ecb6034239850",
+              "executor_sha256": "0be8bd1a6feb24049f4530de796620502e8575889e9ad6d5dac18b121f7719dc",
+              "finished_at_unix_s": 1792811262.8052108,
+              "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-016/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-016/report.json",
+          "superseded_reason": "Reduce longitudinal base stagger to 0.30 m per opposing pair so a COM-spanning staged handover can use reachable top grasps; keep previous ring prototypes"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a16-d1-v3",
+          "scene_revision": 3,
+          "scene_sha256": "66b2e0d55ee27fac0568037c742bfa89b5761b250b1807b88910a81528e4a400",
+          "status": "oracle_failed",
+          "verification_results": {
+            "0": {
+              "passed": false,
+              "verification_seed": 0,
+              "scene_sha256": "66b2e0d55ee27fac0568037c742bfa89b5761b250b1807b88910a81528e4a400",
+              "scene_bundle_sha256": "f36403b94e43944d0f7534c9bc7a3a5e6173d860545cd6fc7dbfa74133d4e6e8",
+              "executor_sha256": "89d320f300a92be3420d31349098a9bc19301258479c906e5085cceb73386784",
+              "finished_at_unix_s": 1792818946.784915,
+              "interrupted": null,
+              "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-019/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-019/report.json",
+          "superseded_reason": "Freeze explicit staged-handover rules and admit physically reachable floor recovery by the sending team; do not force released arms to return HOME"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a16-d1-v4",
+          "scene_revision": 4,
+          "scene_sha256": "66b2e0d55ee27fac0568037c742bfa89b5761b250b1807b88910a81528e4a400",
+          "status": "oracle_failed",
+          "verification_results": {
+            "0": {
+              "passed": false,
+              "verification_seed": 0,
+              "scene_sha256": "66b2e0d55ee27fac0568037c742bfa89b5761b250b1807b88910a81528e4a400",
+              "scene_bundle_sha256": "f30106afcf44aa02a6f5dac67aeeb4d328a8de8df0d6b290b65d81f0ddab38e6",
+              "executor_sha256": "f935b69004145d94382faac2fcfafa4211237d7ac3983839a519c40bf39568fe",
+              "finished_at_unix_s": 1792821035.268199,
+              "interrupted": null,
+              "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-022/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-022/report.json",
+          "superseded_reason": "Increase ring radius to 1.25 m to open inner-arm elbow routing space while keeping adjacent cooperative reach; no robot contact geometry or force changes"
+        }
+      ],
+      "oracle_attempts": [
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "1916c9aed89d51cd8ca07a09b83f524c4a6d8fe5548ec230096f5d6a8b19a02d",
+          "scene_bundle_sha256": "c5d653575d3ee45b1af0e8edd771678a80e1a9355b7ca201fd4a1de63ed5537d",
+          "executor_sha256": "a295cb7b0e626ec18a5cef6d56a4a8b62eb43124ebea6f515739bdc1416b4d66",
+          "finished_at_unix_s": 1792808462.966065,
+          "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-012/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "1916c9aed89d51cd8ca07a09b83f524c4a6d8fe5548ec230096f5d6a8b19a02d",
+          "scene_bundle_sha256": "c5d653575d3ee45b1af0e8edd771678a80e1a9355b7ca201fd4a1de63ed5537d",
+          "executor_sha256": "8fd580ba923f877f63a9c19dd4e295ec04dd3c4368951dad0eb2372b2e5a8ae5",
+          "finished_at_unix_s": 1792808689.47555,
+          "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-013/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "1916c9aed89d51cd8ca07a09b83f524c4a6d8fe5548ec230096f5d6a8b19a02d",
+          "scene_bundle_sha256": "c5d653575d3ee45b1af0e8edd771678a80e1a9355b7ca201fd4a1de63ed5537d",
+          "executor_sha256": "bbfeff964b5869b60e37647dad5b89afa65ad1a953520e0fa1c20b209600b399",
+          "finished_at_unix_s": 1792809979.1479318,
+          "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-014/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "1916c9aed89d51cd8ca07a09b83f524c4a6d8fe5548ec230096f5d6a8b19a02d",
+          "scene_bundle_sha256": "2be97dbf67026ce7abcd95768f5b09dec4481ca2bd16bdfad54ecb6034239850",
+          "executor_sha256": "47e0a038aaaef3bdc60ada47627205d0f183f8d6e1f457adcbf1230f239d44ea",
+          "finished_at_unix_s": 1792810839.475494,
+          "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-015/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "1916c9aed89d51cd8ca07a09b83f524c4a6d8fe5548ec230096f5d6a8b19a02d",
+          "scene_bundle_sha256": "2be97dbf67026ce7abcd95768f5b09dec4481ca2bd16bdfad54ecb6034239850",
+          "executor_sha256": "0be8bd1a6feb24049f4530de796620502e8575889e9ad6d5dac18b121f7719dc",
+          "finished_at_unix_s": 1792811262.8052108,
+          "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-016/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "66b2e0d55ee27fac0568037c742bfa89b5761b250b1807b88910a81528e4a400",
+          "scene_bundle_sha256": "f36403b94e43944d0f7534c9bc7a3a5e6173d860545cd6fc7dbfa74133d4e6e8",
+          "executor_sha256": "b4bf378a9a0cfc40d58b130c2ef19ee328412139dc38b54b57974c2a3f1c5599",
+          "finished_at_unix_s": 1792815773.533356,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-017/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "66b2e0d55ee27fac0568037c742bfa89b5761b250b1807b88910a81528e4a400",
+          "scene_bundle_sha256": "f36403b94e43944d0f7534c9bc7a3a5e6173d860545cd6fc7dbfa74133d4e6e8",
+          "executor_sha256": "56bea0cb72858678289666bf62fa546ff6b66402687cd88c56c94cd22683b2a8",
+          "finished_at_unix_s": 1792816151.348067,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-018/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "66b2e0d55ee27fac0568037c742bfa89b5761b250b1807b88910a81528e4a400",
+          "scene_bundle_sha256": "f36403b94e43944d0f7534c9bc7a3a5e6173d860545cd6fc7dbfa74133d4e6e8",
+          "executor_sha256": "89d320f300a92be3420d31349098a9bc19301258479c906e5085cceb73386784",
+          "finished_at_unix_s": 1792818946.784915,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-019/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "66b2e0d55ee27fac0568037c742bfa89b5761b250b1807b88910a81528e4a400",
+          "scene_bundle_sha256": "f30106afcf44aa02a6f5dac67aeeb4d328a8de8df0d6b290b65d81f0ddab38e6",
+          "executor_sha256": "b6d1db053d576a04798e5efa200c936aa57e518bf07173fcbce496e303b2a585",
+          "finished_at_unix_s": 1792819363.999377,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-020/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "66b2e0d55ee27fac0568037c742bfa89b5761b250b1807b88910a81528e4a400",
+          "scene_bundle_sha256": "f30106afcf44aa02a6f5dac67aeeb4d328a8de8df0d6b290b65d81f0ddab38e6",
+          "executor_sha256": "d71d0f41d85badf02e3d3735c9f187e9974b182e4f823ffcf40241e7271d786d",
+          "finished_at_unix_s": 1792820777.651575,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-021/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "66b2e0d55ee27fac0568037c742bfa89b5761b250b1807b88910a81528e4a400",
+          "scene_bundle_sha256": "f30106afcf44aa02a6f5dac67aeeb4d328a8de8df0d6b290b65d81f0ddab38e6",
+          "executor_sha256": "f935b69004145d94382faac2fcfafa4211237d7ac3983839a519c40bf39568fe",
+          "finished_at_unix_s": 1792821035.268199,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-022/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "315c6b125e1a534c47487957835b3d8442dbd3e5db88c8c164130f16929ed100",
+          "scene_bundle_sha256": "5071c1066e35b85f1ea01d6d0e6704b95147f4015597f960282c659edfb4d08a",
+          "executor_sha256": "faab6715c325d9a56455270f5f46a013d7d88269ce8036f57f27dd757abdecb8",
+          "finished_at_unix_s": 1792821479.097932,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-023/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "315c6b125e1a534c47487957835b3d8442dbd3e5db88c8c164130f16929ed100",
+          "scene_bundle_sha256": "5071c1066e35b85f1ea01d6d0e6704b95147f4015597f960282c659edfb4d08a",
+          "executor_sha256": "74392fb907ce286cf2a796da081c8838e82ed9b0b4d2ef8c8a03a1f7174eb9a1",
+          "finished_at_unix_s": 1792821582.4328809,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-024/report.json"
+        }
+      ],
+      "legacy_verification_results": {
+        "0": {
+          "passed": false,
+          "scene_sha256": "1916c9aed89d51cd8ca07a09b83f524c4a6d8fe5548ec230096f5d6a8b19a02d",
+          "executor_sha256": "e9d6d342651b1b600a5584ea67139a82eec5821ee1e507d7f22fe2bb73d103c9",
+          "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-011/report.json"
+        }
+      },
+      "last_oracle_passed": false,
+      "contract_sha256": "0c878e0d23e5146329972a95702ac417594bc27d8ba04964167ae7dfb19f8d9d"
+    },
+    {
+      "id": "relay-a16-d2",
+      "family": "relay",
+      "level": 2,
+      "arms": 16,
+      "pairs": 8,
+      "layout": "closed_loop",
+      "payload": "short_link_weight",
+      "status": "generated",
+      "directory": "configs/environments/beam_handoff/suite-relay-a16-d2-v5",
+      "scene_sha256": "a415446e2f89eea1d2e4c1c33a04eb83f7c9188bea0b264d7e9d691d00a5b8da",
+      "layout_report": "configs/environments/beam_handoff/suite-relay-a16-d2-v2/layout-validation.json",
+      "scene_revision": 5,
+      "history": [
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a16-d2",
+          "scene_sha256": "a1d72652d916aba4d34687648d3ed21d076631a22fa2d2779da8fff200b15dd5",
+          "status": "generated",
+          "superseded_reason": "Align beam with transport direction and stagger opposed bases, preserving old normal-to-path layouts and witnesses"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a16-d2-v2",
+          "scene_revision": 2,
+          "scene_sha256": "7d2cb4c2a2676f18e30d134007d88c39832dd953ed4aa963b12c3f7d728a16e8",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Reduce longitudinal base stagger to 0.30 m per opposing pair so a COM-spanning staged handover can use reachable top grasps; keep previous ring prototypes"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a16-d2-v3",
+          "scene_revision": 3,
+          "scene_sha256": "14949546d60c2ce641933f1ce80d3feaef49d05d673579c8eb45b588ac4c44c8",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Freeze explicit staged-handover rules and admit physically reachable floor recovery by the sending team; do not force released arms to return HOME"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a16-d2-v4",
+          "scene_revision": 4,
+          "scene_sha256": "14949546d60c2ce641933f1ce80d3feaef49d05d673579c8eb45b588ac4c44c8",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Increase ring radius to 1.25 m to open inner-arm elbow routing space while keeping adjacent cooperative reach; no robot contact geometry or force changes"
+        }
+      ],
+      "verification_results": {},
+      "last_oracle_report": null,
+      "contract_sha256": "9d572476c0a7802f03cc15c3f044fc41b33f7c2ef060f9b50811cc6cc8b118ce"
+    },
+    {
+      "id": "relay-a16-d3",
+      "family": "relay",
+      "level": 3,
+      "arms": 16,
+      "pairs": 8,
+      "layout": "closed_loop",
+      "payload": "flexible_cable_weight",
+      "status": "generated",
+      "directory": "configs/environments/beam_handoff/suite-relay-a16-d3-v5",
+      "scene_sha256": "eafae95146613840e6082122fa60eb0d75cd9d1e9c12511a9c945d821bb0931c",
+      "layout_report": "configs/environments/beam_handoff/suite-relay-a16-d3-v2/layout-validation.json",
+      "scene_revision": 5,
+      "history": [
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a16-d3",
+          "scene_sha256": "f223eb48afa0332f02ef60c1ec5981df4e2a82e0b222997264300134bdcfa536",
+          "status": "generated",
+          "superseded_reason": "Align beam with transport direction and stagger opposed bases, preserving old normal-to-path layouts and witnesses"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a16-d3-v2",
+          "scene_revision": 2,
+          "scene_sha256": "d6ec8251f80694d4f348606f1739637746b5ac3e8a808f0e598ec394fdf8caad",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Reduce longitudinal base stagger to 0.30 m per opposing pair so a COM-spanning staged handover can use reachable top grasps; keep previous ring prototypes"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a16-d3-v3",
+          "scene_revision": 3,
+          "scene_sha256": "8247c04f5e6090883f88fb73a70498889d1a99e68b8745d9aba6d0e50189c8bf",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Freeze explicit staged-handover rules and admit physically reachable floor recovery by the sending team; do not force released arms to return HOME"
+        },
+        {
+          "directory": "configs/environments/beam_handoff/suite-relay-a16-d3-v4",
+          "scene_revision": 4,
+          "scene_sha256": "8247c04f5e6090883f88fb73a70498889d1a99e68b8745d9aba6d0e50189c8bf",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Increase ring radius to 1.25 m to open inner-arm elbow routing space while keeping adjacent cooperative reach; no robot contact geometry or force changes"
+        }
+      ],
+      "verification_results": {},
+      "last_oracle_report": null,
+      "contract_sha256": "1f1b3134f15e1aae3f4c20fca850f4238787da578509e0f20eb31a3413c083d0"
+    },
+    {
+      "id": "dial-n04-d1",
+      "family": "dial",
+      "level": 1,
+      "arms": 4,
+      "dials": 4,
+      "mechanism": "fixed_gear",
+      "candidate_codes": 81,
+      "status": "repeatability_checked",
+      "layout": "2_rows_2_columns",
+      "directory": "configs/environments/spring_dial/suite-dial-n04-d1-v4",
+      "scene_sha256": "34b5bd0b347f5766e68763806b930a6fb888fd4568d307bdc6b2276b20d3b4d0",
+      "layout_report": "configs/environments/spring_dial/suite-dial-n04-d1-v2/layout-validation.json",
+      "verification_results": {
+        "1": {
+          "passed": true,
+          "verification_seed": 1,
+          "scene_sha256": "34b5bd0b347f5766e68763806b930a6fb888fd4568d307bdc6b2276b20d3b4d0",
+          "scene_bundle_sha256": "c40f30955cbe162d8d653ccdb3502e2dcd5af40fd68d9556c6f6892e563dd660",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792822700.991969,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d1/seed-1/attempt-002/report.json"
+        },
+        "0": {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "34b5bd0b347f5766e68763806b930a6fb888fd4568d307bdc6b2276b20d3b4d0",
+          "scene_bundle_sha256": "c40f30955cbe162d8d653ccdb3502e2dcd5af40fd68d9556c6f6892e563dd660",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792822706.619256,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d1/seed-0/attempt-005/report.json"
+        },
+        "2": {
+          "passed": true,
+          "verification_seed": 2,
+          "scene_sha256": "34b5bd0b347f5766e68763806b930a6fb888fd4568d307bdc6b2276b20d3b4d0",
+          "scene_bundle_sha256": "c40f30955cbe162d8d653ccdb3502e2dcd5af40fd68d9556c6f6892e563dd660",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792822752.300354,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d1/seed-2/attempt-002/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d1/seed-2/attempt-002/report.json",
+      "scene_revision": 4,
+      "history": [
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n04-d1",
+          "scene_sha256": "6a2f2632fc68d1f1a3752c0af525ec1f6b48b9dd04972bf0cbd979f0df1bde00",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "scene_sha256": "6a2f2632fc68d1f1a3752c0af525ec1f6b48b9dd04972bf0cbd979f0df1bde00",
+              "report": "runs/oracle/frontier-v1/dial-n04-d1/seed-0/attempt-001/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d1/seed-0/attempt-001/report.json",
+          "superseded_reason": "Freeze a common 0.03 Nm/rad spring, physical crank balance and calibrated hard contacts; earlier scenes and witness records remain unchanged"
+        },
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n04-d1-v2",
+          "scene_revision": 2,
+          "scene_sha256": "8763a4a6b2bbf3a547468236ace73eff255100aa2553a18c6a520a74ad99949b",
+          "status": "oracle_witness_passed",
+          "verification_results": {},
+          "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d1/seed-0/attempt-002/report.json",
+          "superseded_reason": "Deterministic asset ordering and current public contract; validated prior scene restored byte-for-byte and retained"
+        },
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n04-d1-v3",
+          "scene_revision": 3,
+          "scene_sha256": "c4d09995f2b63f82d906f08a7491fe3f29f45f26c5fabcbdb7e2f1fe72cbd738",
+          "status": "repeatability_checked",
+          "verification_results": {
+            "1": {
+              "passed": true,
+              "verification_seed": 1,
+              "scene_sha256": "c4d09995f2b63f82d906f08a7491fe3f29f45f26c5fabcbdb7e2f1fe72cbd738",
+              "scene_bundle_sha256": "6ec78eec511a68496ec3142cad46ebb424da5a4657ed4d8dd24efd88dff4b8b8",
+              "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+              "finished_at_unix_s": 1792809566.283811,
+              "report": "runs/oracle/frontier-v1/dial-n04-d1/seed-1/attempt-001/report.json"
+            },
+            "0": {
+              "passed": true,
+              "verification_seed": 0,
+              "scene_sha256": "c4d09995f2b63f82d906f08a7491fe3f29f45f26c5fabcbdb7e2f1fe72cbd738",
+              "scene_bundle_sha256": "6ec78eec511a68496ec3142cad46ebb424da5a4657ed4d8dd24efd88dff4b8b8",
+              "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+              "finished_at_unix_s": 1792809570.3276072,
+              "report": "runs/oracle/frontier-v1/dial-n04-d1/seed-0/attempt-003/report.json"
+            },
+            "2": {
+              "passed": true,
+              "verification_seed": 2,
+              "scene_sha256": "c4d09995f2b63f82d906f08a7491fe3f29f45f26c5fabcbdb7e2f1fe72cbd738",
+              "scene_bundle_sha256": "6ec78eec511a68496ec3142cad46ebb424da5a4657ed4d8dd24efd88dff4b8b8",
+              "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+              "finished_at_unix_s": 1792809619.788219,
+              "report": "runs/oracle/frontier-v1/dial-n04-d1/seed-2/attempt-001/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d1/seed-2/attempt-001/report.json",
+          "superseded_reason": "Freeze detent-band feedback rule v2 matching the requested angular tolerance, two-phase bounded grasp driver validation, and a common 2 ms physics step; keep all previous rules and assets archived"
+        }
+      ],
+      "contract_sha256": "f5a93076d65afd7abe226c1564f05bf8ca452b1ec95c8308b3f7622b38490b5f",
+      "previous_contract_sha256": "edfe42d5b8c703b955e64989f0da8ed1b18b7cbbebb8dc5de7aca05baa4cf4a7",
+      "oracle_attempts": [
+        {
+          "passed": true,
+          "verification_seed": 1,
+          "scene_sha256": "c4d09995f2b63f82d906f08a7491fe3f29f45f26c5fabcbdb7e2f1fe72cbd738",
+          "scene_bundle_sha256": "6ec78eec511a68496ec3142cad46ebb424da5a4657ed4d8dd24efd88dff4b8b8",
+          "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+          "finished_at_unix_s": 1792809566.283811,
+          "report": "runs/oracle/frontier-v1/dial-n04-d1/seed-1/attempt-001/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "c4d09995f2b63f82d906f08a7491fe3f29f45f26c5fabcbdb7e2f1fe72cbd738",
+          "scene_bundle_sha256": "6ec78eec511a68496ec3142cad46ebb424da5a4657ed4d8dd24efd88dff4b8b8",
+          "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+          "finished_at_unix_s": 1792809570.3276072,
+          "report": "runs/oracle/frontier-v1/dial-n04-d1/seed-0/attempt-003/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 2,
+          "scene_sha256": "c4d09995f2b63f82d906f08a7491fe3f29f45f26c5fabcbdb7e2f1fe72cbd738",
+          "scene_bundle_sha256": "6ec78eec511a68496ec3142cad46ebb424da5a4657ed4d8dd24efd88dff4b8b8",
+          "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+          "finished_at_unix_s": 1792809619.788219,
+          "report": "runs/oracle/frontier-v1/dial-n04-d1/seed-2/attempt-001/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "34b5bd0b347f5766e68763806b930a6fb888fd4568d307bdc6b2276b20d3b4d0",
+          "scene_bundle_sha256": "c40f30955cbe162d8d653ccdb3502e2dcd5af40fd68d9556c6f6892e563dd660",
+          "executor_sha256": "fc031d3b8861d8b18a1123b7c31e350e5808200c01e17f608a1ab275d566e79a",
+          "finished_at_unix_s": 1792815784.26622,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d1/seed-0/attempt-004/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 1,
+          "scene_sha256": "34b5bd0b347f5766e68763806b930a6fb888fd4568d307bdc6b2276b20d3b4d0",
+          "scene_bundle_sha256": "c40f30955cbe162d8d653ccdb3502e2dcd5af40fd68d9556c6f6892e563dd660",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792822700.991969,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d1/seed-1/attempt-002/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "34b5bd0b347f5766e68763806b930a6fb888fd4568d307bdc6b2276b20d3b4d0",
+          "scene_bundle_sha256": "c40f30955cbe162d8d653ccdb3502e2dcd5af40fd68d9556c6f6892e563dd660",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792822706.619256,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d1/seed-0/attempt-005/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 2,
+          "scene_sha256": "34b5bd0b347f5766e68763806b930a6fb888fd4568d307bdc6b2276b20d3b4d0",
+          "scene_bundle_sha256": "c40f30955cbe162d8d653ccdb3502e2dcd5af40fd68d9556c6f6892e563dd660",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792822752.300354,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d1/seed-2/attempt-002/report.json"
+        }
+      ],
+      "legacy_verification_results": {},
+      "last_oracle_passed": true,
+      "best_oracle_witness": "runs/oracle/frontier-v1/dial-n04-d1/seed-0/attempt-005/report.json"
+    },
+    {
+      "id": "dial-n04-d2",
+      "family": "dial",
+      "level": 2,
+      "arms": 8,
+      "dials": 4,
+      "mechanism": "airborne_gear",
+      "candidate_codes": 81,
+      "status": "oracle_witness_passed",
+      "layout": "linear_facing_pairs_0.70m",
+      "directory": "configs/environments/spring_dial/suite-dial-n04-d2-v4",
+      "scene_sha256": "5b80ac3be6faa099d985e90dc9d887cfa0b1dd535470a8c09292bdb3773eb10f",
+      "layout_report": "configs/environments/spring_dial/suite-dial-n04-d2-v2/layout-validation.json",
+      "verification_results": {
+        "1": {
+          "passed": true,
+          "verification_seed": 1,
+          "scene_sha256": "5b80ac3be6faa099d985e90dc9d887cfa0b1dd535470a8c09292bdb3773eb10f",
+          "scene_bundle_sha256": "f16aafb86863e55a5031b6c75b164dfb9dea1aeeb92d0a7cc35fbfa8393da5d8",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792823134.866015,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d2/seed-1/attempt-002/report.json"
+        },
+        "0": {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "5b80ac3be6faa099d985e90dc9d887cfa0b1dd535470a8c09292bdb3773eb10f",
+          "scene_bundle_sha256": "f16aafb86863e55a5031b6c75b164dfb9dea1aeeb92d0a7cc35fbfa8393da5d8",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792823146.363827,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d2/seed-0/attempt-016/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d2/seed-0/attempt-016/report.json",
+      "scene_revision": 4,
+      "history": [
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n04-d2",
+          "scene_sha256": "20b014b111152d9f38e18420a77dd63e19ffdc6cc3c26350c98b24e8194827dc",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "scene_sha256": "20b014b111152d9f38e18420a77dd63e19ffdc6cc3c26350c98b24e8194827dc",
+              "report": "runs/oracle/frontier-v1/dial-n04-d2/seed-0/attempt-007/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d2/seed-0/attempt-007/report.json",
+          "superseded_reason": "Freeze a common 0.03 Nm/rad spring, physical crank balance and calibrated hard contacts; earlier scenes and witness records remain unchanged"
+        },
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n04-d2-v2",
+          "scene_revision": 2,
+          "scene_sha256": "34e14398ef30066def048094c8e625c5e992b1521b1fbe76ad15077548fca59a",
+          "status": "layout_checked",
+          "verification_results": {},
+          "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d2/seed-0/attempt-013/report.json",
+          "superseded_reason": "Freeze the successful 0.5 ms floating-module integration profile without changing robot drive inertia/force; include all free module roots and complete handle mass in metadata"
+        },
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n04-d2-v3",
+          "scene_revision": 3,
+          "scene_sha256": "c9261079c0e9e2aa64cc3d0d271fe8753a3cfef2a2b30670c7d26b1bda5b4fb3",
+          "status": "repeatability_checked",
+          "verification_results": {
+            "1": {
+              "passed": true,
+              "verification_seed": 1,
+              "scene_sha256": "c9261079c0e9e2aa64cc3d0d271fe8753a3cfef2a2b30670c7d26b1bda5b4fb3",
+              "scene_bundle_sha256": "3865a8a01583f2fa80a6728f2c2142878c3e421dea827127102fbce3ccaa2239",
+              "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+              "finished_at_unix_s": 1792810631.157622,
+              "report": "runs/oracle/frontier-v1/dial-n04-d2/seed-1/attempt-001/report.json"
+            },
+            "0": {
+              "passed": true,
+              "verification_seed": 0,
+              "scene_sha256": "c9261079c0e9e2aa64cc3d0d271fe8753a3cfef2a2b30670c7d26b1bda5b4fb3",
+              "scene_bundle_sha256": "3865a8a01583f2fa80a6728f2c2142878c3e421dea827127102fbce3ccaa2239",
+              "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+              "finished_at_unix_s": 1792810741.7851489,
+              "report": "runs/oracle/frontier-v1/dial-n04-d2/seed-0/attempt-014/report.json"
+            },
+            "2": {
+              "passed": true,
+              "verification_seed": 2,
+              "scene_sha256": "c9261079c0e9e2aa64cc3d0d271fe8753a3cfef2a2b30670c7d26b1bda5b4fb3",
+              "scene_bundle_sha256": "3865a8a01583f2fa80a6728f2c2142878c3e421dea827127102fbce3ccaa2239",
+              "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+              "finished_at_unix_s": 1792811090.732644,
+              "report": "runs/oracle/frontier-v1/dial-n04-d2/seed-2/attempt-001/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d2/seed-2/attempt-001/report.json",
+          "superseded_reason": "Freeze detent-band feedback rule v2 matching the requested angular tolerance, two-phase bounded grasp driver validation, and a common 2 ms physics step; keep all previous rules and assets archived"
+        }
+      ],
+      "contract_sha256": "dc11823c87d3c3c0bb7e190c31933cc4c9963add96d194929e7c838cabc44fe9",
+      "previous_contract_sha256": "1b8b72ddb900a36731a8b2c17d0f592e3d70769485b6f9c732d8809c6e1f9e84",
+      "oracle_attempts": [
+        {
+          "passed": true,
+          "verification_seed": 1,
+          "scene_sha256": "c9261079c0e9e2aa64cc3d0d271fe8753a3cfef2a2b30670c7d26b1bda5b4fb3",
+          "scene_bundle_sha256": "3865a8a01583f2fa80a6728f2c2142878c3e421dea827127102fbce3ccaa2239",
+          "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+          "finished_at_unix_s": 1792810631.157622,
+          "report": "runs/oracle/frontier-v1/dial-n04-d2/seed-1/attempt-001/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "c9261079c0e9e2aa64cc3d0d271fe8753a3cfef2a2b30670c7d26b1bda5b4fb3",
+          "scene_bundle_sha256": "3865a8a01583f2fa80a6728f2c2142878c3e421dea827127102fbce3ccaa2239",
+          "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+          "finished_at_unix_s": 1792810741.7851489,
+          "report": "runs/oracle/frontier-v1/dial-n04-d2/seed-0/attempt-014/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 2,
+          "scene_sha256": "c9261079c0e9e2aa64cc3d0d271fe8753a3cfef2a2b30670c7d26b1bda5b4fb3",
+          "scene_bundle_sha256": "3865a8a01583f2fa80a6728f2c2142878c3e421dea827127102fbce3ccaa2239",
+          "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+          "finished_at_unix_s": 1792811090.732644,
+          "report": "runs/oracle/frontier-v1/dial-n04-d2/seed-2/attempt-001/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "5b80ac3be6faa099d985e90dc9d887cfa0b1dd535470a8c09292bdb3773eb10f",
+          "scene_bundle_sha256": "f16aafb86863e55a5031b6c75b164dfb9dea1aeeb92d0a7cc35fbfa8393da5d8",
+          "executor_sha256": "fc031d3b8861d8b18a1123b7c31e350e5808200c01e17f608a1ab275d566e79a",
+          "finished_at_unix_s": 1792815958.9647229,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d2/seed-0/attempt-015/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 1,
+          "scene_sha256": "5b80ac3be6faa099d985e90dc9d887cfa0b1dd535470a8c09292bdb3773eb10f",
+          "scene_bundle_sha256": "f16aafb86863e55a5031b6c75b164dfb9dea1aeeb92d0a7cc35fbfa8393da5d8",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792823134.866015,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d2/seed-1/attempt-002/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "5b80ac3be6faa099d985e90dc9d887cfa0b1dd535470a8c09292bdb3773eb10f",
+          "scene_bundle_sha256": "f16aafb86863e55a5031b6c75b164dfb9dea1aeeb92d0a7cc35fbfa8393da5d8",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792823146.363827,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d2/seed-0/attempt-016/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 2,
+          "scene_sha256": "5b80ac3be6faa099d985e90dc9d887cfa0b1dd535470a8c09292bdb3773eb10f",
+          "scene_bundle_sha256": "f16aafb86863e55a5031b6c75b164dfb9dea1aeeb92d0a7cc35fbfa8393da5d8",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792823230.693604,
+          "interrupted": true,
+          "report": "runs/oracle/frontier-v1/dial-n04-d2/seed-2/attempt-002/report.json"
+        }
+      ],
+      "legacy_verification_results": {},
+      "last_oracle_passed": true,
+      "best_oracle_witness": "runs/oracle/frontier-v1/dial-n04-d2/seed-0/attempt-016/report.json",
+      "last_interrupted_reference": "runs/oracle/frontier-v1/dial-n04-d2/seed-2/attempt-002/report.json"
+    },
+    {
+      "id": "dial-n04-d3",
+      "family": "dial",
+      "level": 3,
+      "arms": 8,
+      "dials": 4,
+      "mechanism": "airborne_crank",
+      "candidate_codes": 81,
+      "status": "oracle_witness_passed",
+      "layout": "linear_facing_pairs_0.70m",
+      "directory": "configs/environments/spring_dial/suite-dial-n04-d3-v5",
+      "scene_sha256": "8a3e878d5c8d364d9e7e5b251b9259f3a8b95b17b20ef6dd409950522db27b0e",
+      "layout_report": "configs/environments/spring_dial/suite-dial-n04-d3-v3/layout-validation.json",
+      "verification_results": {
+        "0": {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "8a3e878d5c8d364d9e7e5b251b9259f3a8b95b17b20ef6dd409950522db27b0e",
+          "scene_bundle_sha256": "22261424acb60cdc56c1dcf37b745b27dfa80287115f2f6a45ed8ee9bc957260",
+          "executor_sha256": "a2770093983ca008dc1774899685d0cbcaa39f75f925d00425b0e3f6ced53521",
+          "finished_at_unix_s": 1792820048.624002,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-024/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-024/report.json",
+      "scene_revision": 5,
+      "history": [
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n04-d3",
+          "scene_sha256": "3b894115c6b5df77d1825d2c5b4cd5f11bd9c8ac8fa95668bb8e343dea2970f8",
+          "status": "oracle_failed",
+          "verification_results": {
+            "0": {
+              "passed": false,
+              "scene_sha256": "3b894115c6b5df77d1825d2c5b4cd5f11bd9c8ac8fa95668bb8e343dea2970f8",
+              "executor_sha256": "68fc902cc1d00b72c95f58c9926ab4d94d949505a831724315b9db58004cf705",
+              "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-005/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-005/report.json",
+          "superseded_reason": "Freeze a common 0.03 Nm/rad spring, physical crank balance and calibrated hard contacts; earlier scenes and witness records remain unchanged"
+        },
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n04-d3-v2",
+          "scene_revision": 2,
+          "scene_sha256": "7b27086e2a7a87165fb72768eef7dd2c735ede1582a5a735337cc97aaf18f25b",
+          "status": "oracle_failed",
+          "verification_results": {
+            "0": {
+              "passed": false,
+              "scene_sha256": "7b27086e2a7a87165fb72768eef7dd2c735ede1582a5a735337cc97aaf18f25b",
+              "executor_sha256": "2a3e0def6f7452f4ac01d168d12423be7abd3fc2140378953ea153069759a9e3",
+              "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-011/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-011/report.json",
+          "superseded_reason": "Engineering prototype of an upright parked module and side-accessible gravity-bearing blue grip; real rack contacts must clear before operation"
+        },
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n04-d3-v3",
+          "scene_revision": 3,
+          "scene_sha256": "31474578e60f1a636d7287985c7dd05d385fb5e560e18ee030c5441fb44bfc5e",
+          "status": "layout_checked",
+          "verification_results": {},
+          "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-017/report.json",
+          "superseded_reason": "Freeze the successful 0.5 ms floating-module integration profile without changing robot drive inertia/force; include all free module roots and complete handle mass in metadata"
+        },
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n04-d3-v4",
+          "scene_revision": 4,
+          "scene_sha256": "e5d20a2328efdaab709e4bbf18cb0de48181cc506e73b424a9bb0dbe08b3b902",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "2": {
+              "passed": false,
+              "verification_seed": 2,
+              "scene_sha256": "e5d20a2328efdaab709e4bbf18cb0de48181cc506e73b424a9bb0dbe08b3b902",
+              "scene_bundle_sha256": "56a39b82fc1caff0a7e6529ed6cf06458de1185c61fbc87b65352edb40f51aed",
+              "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+              "finished_at_unix_s": 1792811207.668345,
+              "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-2/attempt-001/report.json"
+            },
+            "0": {
+              "passed": true,
+              "verification_seed": 0,
+              "scene_sha256": "e5d20a2328efdaab709e4bbf18cb0de48181cc506e73b424a9bb0dbe08b3b902",
+              "scene_bundle_sha256": "56a39b82fc1caff0a7e6529ed6cf06458de1185c61fbc87b65352edb40f51aed",
+              "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+              "finished_at_unix_s": 1792811619.764071,
+              "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-018/report.json"
+            },
+            "1": {
+              "passed": true,
+              "verification_seed": 1,
+              "scene_sha256": "e5d20a2328efdaab709e4bbf18cb0de48181cc506e73b424a9bb0dbe08b3b902",
+              "scene_bundle_sha256": "56a39b82fc1caff0a7e6529ed6cf06458de1185c61fbc87b65352edb40f51aed",
+              "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+              "finished_at_unix_s": 1792811847.7933178,
+              "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-1/attempt-001/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d3/seed-1/attempt-001/report.json",
+          "superseded_reason": "Freeze detent-band feedback rule v2 matching the requested angular tolerance, two-phase bounded grasp driver validation, and a common 2 ms physics step; keep all previous rules and assets archived"
+        }
+      ],
+      "contract_sha256": "ad8938a28fcba344e32516d3e72b9f23ab1911453cd3658bc60c679349114375",
+      "previous_contract_sha256": "3c7b898ddd3e728d362ba930aabd444c736cfdae2925ce89f47774680b8b84d6",
+      "oracle_attempts": [
+        {
+          "passed": false,
+          "verification_seed": 2,
+          "scene_sha256": "e5d20a2328efdaab709e4bbf18cb0de48181cc506e73b424a9bb0dbe08b3b902",
+          "scene_bundle_sha256": "56a39b82fc1caff0a7e6529ed6cf06458de1185c61fbc87b65352edb40f51aed",
+          "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+          "finished_at_unix_s": 1792811207.668345,
+          "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-2/attempt-001/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "e5d20a2328efdaab709e4bbf18cb0de48181cc506e73b424a9bb0dbe08b3b902",
+          "scene_bundle_sha256": "56a39b82fc1caff0a7e6529ed6cf06458de1185c61fbc87b65352edb40f51aed",
+          "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+          "finished_at_unix_s": 1792811619.764071,
+          "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-018/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 1,
+          "scene_sha256": "e5d20a2328efdaab709e4bbf18cb0de48181cc506e73b424a9bb0dbe08b3b902",
+          "scene_bundle_sha256": "56a39b82fc1caff0a7e6529ed6cf06458de1185c61fbc87b65352edb40f51aed",
+          "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+          "finished_at_unix_s": 1792811847.7933178,
+          "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-1/attempt-001/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a3e878d5c8d364d9e7e5b251b9259f3a8b95b17b20ef6dd409950522db27b0e",
+          "scene_bundle_sha256": "22261424acb60cdc56c1dcf37b745b27dfa80287115f2f6a45ed8ee9bc957260",
+          "executor_sha256": "fc031d3b8861d8b18a1123b7c31e350e5808200c01e17f608a1ab275d566e79a",
+          "finished_at_unix_s": 1792815906.556952,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-019/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a3e878d5c8d364d9e7e5b251b9259f3a8b95b17b20ef6dd409950522db27b0e",
+          "scene_bundle_sha256": "22261424acb60cdc56c1dcf37b745b27dfa80287115f2f6a45ed8ee9bc957260",
+          "executor_sha256": "9249384688d959e76b326a4537d2cbd721b58153f69aadada5eddfb2bf918263",
+          "finished_at_unix_s": 1792816595.469579,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-020/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 1,
+          "scene_sha256": "8a3e878d5c8d364d9e7e5b251b9259f3a8b95b17b20ef6dd409950522db27b0e",
+          "scene_bundle_sha256": "22261424acb60cdc56c1dcf37b745b27dfa80287115f2f6a45ed8ee9bc957260",
+          "executor_sha256": "9249384688d959e76b326a4537d2cbd721b58153f69aadada5eddfb2bf918263",
+          "finished_at_unix_s": 1792816681.472733,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-1/attempt-002/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 2,
+          "scene_sha256": "8a3e878d5c8d364d9e7e5b251b9259f3a8b95b17b20ef6dd409950522db27b0e",
+          "scene_bundle_sha256": "22261424acb60cdc56c1dcf37b745b27dfa80287115f2f6a45ed8ee9bc957260",
+          "executor_sha256": "9249384688d959e76b326a4537d2cbd721b58153f69aadada5eddfb2bf918263",
+          "finished_at_unix_s": 1792816990.442262,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-2/attempt-002/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a3e878d5c8d364d9e7e5b251b9259f3a8b95b17b20ef6dd409950522db27b0e",
+          "scene_bundle_sha256": "22261424acb60cdc56c1dcf37b745b27dfa80287115f2f6a45ed8ee9bc957260",
+          "executor_sha256": "3634b615b670e268adea30485d2a7af7a677e73303a8b0694d8453416ef373ac",
+          "finished_at_unix_s": 1792817330.115614,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-021/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "8a3e878d5c8d364d9e7e5b251b9259f3a8b95b17b20ef6dd409950522db27b0e",
+          "scene_bundle_sha256": "22261424acb60cdc56c1dcf37b745b27dfa80287115f2f6a45ed8ee9bc957260",
+          "executor_sha256": "89d320f300a92be3420d31349098a9bc19301258479c906e5085cceb73386784",
+          "finished_at_unix_s": 1792819128.6202939,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-022/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "8a3e878d5c8d364d9e7e5b251b9259f3a8b95b17b20ef6dd409950522db27b0e",
+          "scene_bundle_sha256": "22261424acb60cdc56c1dcf37b745b27dfa80287115f2f6a45ed8ee9bc957260",
+          "executor_sha256": "191ab7b5912efe7e033acd87786f96039499ab894d80097ecac972003692799c",
+          "finished_at_unix_s": 1792819678.498846,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-023/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "8a3e878d5c8d364d9e7e5b251b9259f3a8b95b17b20ef6dd409950522db27b0e",
+          "scene_bundle_sha256": "22261424acb60cdc56c1dcf37b745b27dfa80287115f2f6a45ed8ee9bc957260",
+          "executor_sha256": "a2770093983ca008dc1774899685d0cbcaa39f75f925d00425b0e3f6ced53521",
+          "finished_at_unix_s": 1792820048.624002,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-024/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "8a3e878d5c8d364d9e7e5b251b9259f3a8b95b17b20ef6dd409950522db27b0e",
+          "scene_bundle_sha256": "22261424acb60cdc56c1dcf37b745b27dfa80287115f2f6a45ed8ee9bc957260",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792823228.1752949,
+          "interrupted": true,
+          "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-025/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 1,
+          "scene_sha256": "8a3e878d5c8d364d9e7e5b251b9259f3a8b95b17b20ef6dd409950522db27b0e",
+          "scene_bundle_sha256": "22261424acb60cdc56c1dcf37b745b27dfa80287115f2f6a45ed8ee9bc957260",
+          "executor_sha256": "31700eb35a61560398bdd22a5372e358fd6fab39d2f332a804ef0a3e3a0dbe5e",
+          "physical_control_sha256": "1088f09af4e64fed9eccdb8a021ccc7b2872436d3c653aba2b26ddcee9c5f0aa",
+          "environment_logic_sha256": "92781d0139c33b7bde1c9a4585b65d016145b05ee1867d1aa8670f998aac81ba",
+          "finished_at_unix_s": 1792823228.192408,
+          "interrupted": true,
+          "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-1/attempt-003/report.json"
+        }
+      ],
+      "legacy_verification_results": {},
+      "last_oracle_passed": true,
+      "best_oracle_witness": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-024/report.json",
+      "last_interrupted_reference": "runs/oracle/frontier-v1/dial-n04-d3/seed-1/attempt-003/report.json"
+    },
+    {
+      "id": "dial-n06-d1",
+      "family": "dial",
+      "level": 1,
+      "arms": 6,
+      "dials": 6,
+      "mechanism": "fixed_gear",
+      "candidate_codes": 729,
+      "status": "oracle_witness_passed",
+      "layout": "3_rows_2_columns",
+      "directory": "configs/environments/spring_dial/suite-dial-n06-d1-v3",
+      "scene_sha256": "dbc7d634d0b9964c02333ad61d4b22a3d14455a8acbc33ec5f71b6926ed2d9d0",
+      "layout_report": "configs/environments/spring_dial/suite-dial-n06-d1-v2/layout-validation.json",
+      "verification_results": {
+        "0": {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "dbc7d634d0b9964c02333ad61d4b22a3d14455a8acbc33ec5f71b6926ed2d9d0",
+          "scene_bundle_sha256": "b61f97d24e33c50e3e40d4a7d6c1d34393a6f00c092051dd42c080ff60d5499e",
+          "executor_sha256": "fc031d3b8861d8b18a1123b7c31e350e5808200c01e17f608a1ab275d566e79a",
+          "finished_at_unix_s": 1792816030.9615748,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-005/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-005/report.json",
+      "scene_revision": 3,
+      "history": [
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n06-d1",
+          "scene_sha256": "afacd74f30356a3c9a34211899fce3b0906ccd069d3c1866fa8ea33887df8d0f",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "scene_sha256": "afacd74f30356a3c9a34211899fce3b0906ccd069d3c1866fa8ea33887df8d0f",
+              "report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-001/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-001/report.json",
+          "superseded_reason": "Freeze a common 0.03 Nm/rad spring, physical crank balance and calibrated hard contacts; earlier scenes and witness records remain unchanged"
+        },
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n06-d1-v2",
+          "scene_revision": 2,
+          "scene_sha256": "3e9370df55603246314a2b81250a31ae7893ef89f4ef9c4fc798f86ea4c8328d",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "verification_seed": 0,
+              "scene_sha256": "3e9370df55603246314a2b81250a31ae7893ef89f4ef9c4fc798f86ea4c8328d",
+              "scene_bundle_sha256": "6d76bd6ff17476cfba200a6e4a89ecc58fa6e732e514fd56514a615f452b44cb",
+              "executor_sha256": "ee26314aa11206110c3b1892342accd639894ec8447b57297f70ace5264c699f",
+              "finished_at_unix_s": 1792813832.8996139,
+              "interrupted": null,
+              "report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-004/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-004/report.json",
+          "superseded_reason": "Freeze detent-band feedback rule v2 matching the requested angular tolerance, two-phase bounded grasp driver validation, and a common 2 ms physics step; keep all previous rules and assets archived"
+        }
+      ],
+      "contract_sha256": "d5d4e90999f75614e96bef2f0b0909fc84bffd7a290f65b05edf4fd01b4ee085",
+      "previous_contract_sha256": "efd6f0a5351d381e879d9ccb0d6214f84acafee10a1fd1906bcee6b8141d5d73",
+      "oracle_attempts": [
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "3e9370df55603246314a2b81250a31ae7893ef89f4ef9c4fc798f86ea4c8328d",
+          "scene_bundle_sha256": "6d76bd6ff17476cfba200a6e4a89ecc58fa6e732e514fd56514a615f452b44cb",
+          "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+          "finished_at_unix_s": 1792811329.222602,
+          "report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-003/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 1,
+          "scene_sha256": "3e9370df55603246314a2b81250a31ae7893ef89f4ef9c4fc798f86ea4c8328d",
+          "scene_bundle_sha256": "6d76bd6ff17476cfba200a6e4a89ecc58fa6e732e514fd56514a615f452b44cb",
+          "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+          "finished_at_unix_s": 1792811449.358728,
+          "report": "runs/oracle/frontier-v1/dial-n06-d1/seed-1/attempt-001/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 2,
+          "scene_sha256": "3e9370df55603246314a2b81250a31ae7893ef89f4ef9c4fc798f86ea4c8328d",
+          "scene_bundle_sha256": "6d76bd6ff17476cfba200a6e4a89ecc58fa6e732e514fd56514a615f452b44cb",
+          "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+          "finished_at_unix_s": 1792811646.587352,
+          "report": "runs/oracle/frontier-v1/dial-n06-d1/seed-2/attempt-001/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "3e9370df55603246314a2b81250a31ae7893ef89f4ef9c4fc798f86ea4c8328d",
+          "scene_bundle_sha256": "6d76bd6ff17476cfba200a6e4a89ecc58fa6e732e514fd56514a615f452b44cb",
+          "executor_sha256": "ee26314aa11206110c3b1892342accd639894ec8447b57297f70ace5264c699f",
+          "finished_at_unix_s": 1792813832.8996139,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-004/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "dbc7d634d0b9964c02333ad61d4b22a3d14455a8acbc33ec5f71b6926ed2d9d0",
+          "scene_bundle_sha256": "b61f97d24e33c50e3e40d4a7d6c1d34393a6f00c092051dd42c080ff60d5499e",
+          "executor_sha256": "fc031d3b8861d8b18a1123b7c31e350e5808200c01e17f608a1ab275d566e79a",
+          "finished_at_unix_s": 1792816030.9615748,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-005/report.json"
+        }
+      ],
+      "legacy_verification_results": {
+        "0": {
+          "passed": false,
+          "scene_sha256": "3e9370df55603246314a2b81250a31ae7893ef89f4ef9c4fc798f86ea4c8328d",
+          "executor_sha256": "fd85f97c910d7706e218623376a4ee6d4185a37066306f6d1b5f6eba9120e831",
+          "report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-002/report.json"
+        }
+      },
+      "last_oracle_passed": true,
+      "best_oracle_witness": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-005/report.json"
+    },
+    {
+      "id": "dial-n06-d2",
+      "family": "dial",
+      "level": 2,
+      "arms": 12,
+      "dials": 6,
+      "mechanism": "airborne_gear",
+      "candidate_codes": 729,
+      "status": "oracle_witness_passed",
+      "layout": "2_rows_3_modules_with_facing_pairs",
+      "directory": "configs/environments/spring_dial/suite-dial-n06-d2-v4",
+      "scene_sha256": "5aa4070f82bc7805fe3753544f421b0a81b72d0492ad41da59dc6874481c271d",
+      "layout_report": "configs/environments/spring_dial/suite-dial-n06-d2-v2/layout-validation.json",
+      "verification_results": {
+        "0": {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "5aa4070f82bc7805fe3753544f421b0a81b72d0492ad41da59dc6874481c271d",
+          "scene_bundle_sha256": "03b237e7cdc259e5521e47675c0d4ddc37693d914203fc4dab2f644d414e8f7f",
+          "executor_sha256": "fc031d3b8861d8b18a1123b7c31e350e5808200c01e17f608a1ab275d566e79a",
+          "finished_at_unix_s": 1792816709.008522,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n06-d2/seed-0/attempt-004/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/dial-n06-d2/seed-0/attempt-004/report.json",
+      "scene_revision": 4,
+      "history": [
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n06-d2",
+          "scene_sha256": "b22046c9b5cc3121366b31d62fcbf5cfcef1b1700e6582b24932027c9b386759",
+          "status": "oracle_failed",
+          "verification_results": {
+            "0": {
+              "passed": false,
+              "scene_sha256": "b22046c9b5cc3121366b31d62fcbf5cfcef1b1700e6582b24932027c9b386759",
+              "executor_sha256": "95c74f8fd7677e904097a8e1c9fc98017b4fa83256306e25b50f14e67a1c2994",
+              "report": "runs/oracle/frontier-v1/dial-n06-d2/seed-0/attempt-002/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/dial-n06-d2/seed-0/attempt-002/report.json",
+          "superseded_reason": "Freeze a common 0.03 Nm/rad spring, physical crank balance and calibrated hard contacts; earlier scenes and witness records remain unchanged"
+        },
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n06-d2-v2",
+          "scene_revision": 2,
+          "scene_sha256": "f8cc26f6ea147f9a086463b0e7cee18bd7e636906038fd96301a7823e0efa8d7",
+          "status": "layout_checked",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Freeze the successful 0.5 ms floating-module integration profile without changing robot drive inertia/force; include all free module roots and complete handle mass in metadata"
+        },
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n06-d2-v3",
+          "scene_revision": 3,
+          "scene_sha256": "cdc77a49ca75553135fcd3d1449f5f5c2c0402ea6b644bf0bffb7d223e91df28",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Freeze detent-band feedback rule v2 matching the requested angular tolerance, two-phase bounded grasp driver validation, and a common 2 ms physics step; keep all previous rules and assets archived"
+        }
+      ],
+      "contract_sha256": "30d031821583a45c1be37ff12afcc3e8a83d251a87adfbaf7de9f104ab27d6ba",
+      "previous_contract_sha256": "1c119f8f0b8ee8bf7b07a5d5a689e9bae45ccdcf9b0dd12ce3afd8c722f30c60",
+      "oracle_attempts": [
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "5aa4070f82bc7805fe3753544f421b0a81b72d0492ad41da59dc6874481c271d",
+          "scene_bundle_sha256": "03b237e7cdc259e5521e47675c0d4ddc37693d914203fc4dab2f644d414e8f7f",
+          "executor_sha256": "fc031d3b8861d8b18a1123b7c31e350e5808200c01e17f608a1ab275d566e79a",
+          "finished_at_unix_s": 1792816709.008522,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n06-d2/seed-0/attempt-004/report.json"
+        }
+      ],
+      "legacy_verification_results": {},
+      "last_oracle_passed": true,
+      "best_oracle_witness": "runs/oracle/frontier-v1/dial-n06-d2/seed-0/attempt-004/report.json"
+    },
+    {
+      "id": "dial-n06-d3",
+      "family": "dial",
+      "level": 3,
+      "arms": 12,
+      "dials": 6,
+      "mechanism": "airborne_crank",
+      "candidate_codes": 729,
+      "status": "oracle_witness_passed",
+      "layout": "2_rows_3_modules_with_facing_pairs",
+      "directory": "configs/environments/spring_dial/suite-dial-n06-d3-v4",
+      "scene_sha256": "cb30185bc517cccde86ebd500bb54be3da42f1296724b44bf583db16dccdc77b",
+      "layout_report": "configs/environments/spring_dial/suite-dial-n06-d3-v2/layout-validation.json",
+      "scene_revision": 4,
+      "history": [
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n06-d3",
+          "scene_sha256": "a920fa5bc55add78f6941b3eaa3d7cdeef43542fcea19f469597b7f82bb18865",
+          "status": "generated",
+          "superseded_reason": "Freeze a common 0.03 Nm/rad spring, physical crank balance and calibrated hard contacts; earlier scenes and witness records remain unchanged"
+        },
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n06-d3-v2",
+          "scene_revision": 2,
+          "scene_sha256": "f1f6174d4e20b51fabe6a0c8e5e1a5fc26cc243c0d937943ceb3d1f930b7853a",
+          "status": "layout_checked",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Freeze the successful 0.5 ms floating-module integration profile without changing robot drive inertia/force; include all free module roots and complete handle mass in metadata"
+        },
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n06-d3-v3",
+          "scene_revision": 3,
+          "scene_sha256": "4d5d61c425b5c9d8ae12a1accd2246d32f5b18d8d42a46c5f8eb2375a592bc97",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Freeze detent-band feedback rule v2 matching the requested angular tolerance, two-phase bounded grasp driver validation, and a common 2 ms physics step; keep all previous rules and assets archived"
+        }
+      ],
+      "verification_results": {
+        "0": {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "cb30185bc517cccde86ebd500bb54be3da42f1296724b44bf583db16dccdc77b",
+          "scene_bundle_sha256": "718ba143f8543ec227a0020e23110c7aba5380fa638051f1f59f74d82c94ec4d",
+          "executor_sha256": "191ab7b5912efe7e033acd87786f96039499ab894d80097ecac972003692799c",
+          "finished_at_unix_s": 1792820122.187039,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n06-d3/seed-0/attempt-004/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/dial-n06-d3/seed-0/attempt-004/report.json",
+      "contract_sha256": "8bf2ed3f44f9bca31a1ac17d7264569f337e0059d82dfc46876305a26cd286de",
+      "previous_contract_sha256": "448ad79daa9f8f686dcfdc26ae6986c31d9dfa3b507216ed08bd5cb598200dc2",
+      "oracle_attempts": [
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "cb30185bc517cccde86ebd500bb54be3da42f1296724b44bf583db16dccdc77b",
+          "scene_bundle_sha256": "718ba143f8543ec227a0020e23110c7aba5380fa638051f1f59f74d82c94ec4d",
+          "executor_sha256": "fc031d3b8861d8b18a1123b7c31e350e5808200c01e17f608a1ab275d566e79a",
+          "finished_at_unix_s": 1792816525.665899,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n06-d3/seed-0/attempt-001/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "cb30185bc517cccde86ebd500bb54be3da42f1296724b44bf583db16dccdc77b",
+          "scene_bundle_sha256": "718ba143f8543ec227a0020e23110c7aba5380fa638051f1f59f74d82c94ec4d",
+          "executor_sha256": "3634b615b670e268adea30485d2a7af7a677e73303a8b0694d8453416ef373ac",
+          "finished_at_unix_s": 1792817280.950546,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n06-d3/seed-0/attempt-002/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "cb30185bc517cccde86ebd500bb54be3da42f1296724b44bf583db16dccdc77b",
+          "scene_bundle_sha256": "718ba143f8543ec227a0020e23110c7aba5380fa638051f1f59f74d82c94ec4d",
+          "executor_sha256": "89d320f300a92be3420d31349098a9bc19301258479c906e5085cceb73386784",
+          "finished_at_unix_s": 1792819137.478349,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n06-d3/seed-0/attempt-003/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "cb30185bc517cccde86ebd500bb54be3da42f1296724b44bf583db16dccdc77b",
+          "scene_bundle_sha256": "718ba143f8543ec227a0020e23110c7aba5380fa638051f1f59f74d82c94ec4d",
+          "executor_sha256": "a2770093983ca008dc1774899685d0cbcaa39f75f925d00425b0e3f6ced53521",
+          "finished_at_unix_s": 1792820069.2686331,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n06-d3/seed-0/attempt-005/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "cb30185bc517cccde86ebd500bb54be3da42f1296724b44bf583db16dccdc77b",
+          "scene_bundle_sha256": "718ba143f8543ec227a0020e23110c7aba5380fa638051f1f59f74d82c94ec4d",
+          "executor_sha256": "191ab7b5912efe7e033acd87786f96039499ab894d80097ecac972003692799c",
+          "finished_at_unix_s": 1792820122.187039,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n06-d3/seed-0/attempt-004/report.json"
+        }
+      ],
+      "legacy_verification_results": {},
+      "last_oracle_passed": true,
+      "best_oracle_witness": "runs/oracle/frontier-v1/dial-n06-d3/seed-0/attempt-004/report.json"
+    },
+    {
+      "id": "dial-n08-d1",
+      "family": "dial",
+      "level": 1,
+      "arms": 8,
+      "dials": 8,
+      "mechanism": "fixed_gear",
+      "candidate_codes": 6561,
+      "status": "oracle_witness_passed",
+      "layout": "3_2_3_perimeter",
+      "directory": "configs/environments/spring_dial/suite-dial-n08-d1-v3",
+      "scene_sha256": "d9d679be1fbf9ae36d941a03f681ee54eedf7b452ea1063277b4e7dab0a0d3a2",
+      "layout_report": "configs/environments/spring_dial/suite-dial-n08-d1-v2/layout-validation.json",
+      "verification_results": {
+        "0": {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "d9d679be1fbf9ae36d941a03f681ee54eedf7b452ea1063277b4e7dab0a0d3a2",
+          "scene_bundle_sha256": "8a613c954af337345c396fd96a9d69f6f87245d0be9565bb566b4b545ea18c8e",
+          "executor_sha256": "fc031d3b8861d8b18a1123b7c31e350e5808200c01e17f608a1ab275d566e79a",
+          "finished_at_unix_s": 1792816690.197264,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n08-d1/seed-0/attempt-003/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/dial-n08-d1/seed-0/attempt-003/report.json",
+      "scene_revision": 3,
+      "history": [
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n08-d1",
+          "scene_sha256": "549a6e59d17cb48e2afbe8716ab6cfe4c34e20c01ec30e6b3148efa8a65814d8",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "scene_sha256": "549a6e59d17cb48e2afbe8716ab6cfe4c34e20c01ec30e6b3148efa8a65814d8",
+              "report": "runs/oracle/frontier-v1/dial-n08-d1/seed-0/attempt-001/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/dial-n08-d1/seed-0/attempt-001/report.json",
+          "superseded_reason": "Freeze a common 0.03 Nm/rad spring, physical crank balance and calibrated hard contacts; earlier scenes and witness records remain unchanged"
+        },
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n08-d1-v2",
+          "scene_revision": 2,
+          "scene_sha256": "57f6fa023f8b4e099c6372515bd2a466377c1ee1ba18864701c686ace9a7017a",
+          "status": "oracle_witness_passed",
+          "verification_results": {
+            "0": {
+              "passed": true,
+              "scene_sha256": "57f6fa023f8b4e099c6372515bd2a466377c1ee1ba18864701c686ace9a7017a",
+              "executor_sha256": "fd85f97c910d7706e218623376a4ee6d4185a37066306f6d1b5f6eba9120e831",
+              "report": "runs/oracle/frontier-v1/dial-n08-d1/seed-0/attempt-002/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/dial-n08-d1/seed-0/attempt-002/report.json",
+          "superseded_reason": "Freeze detent-band feedback rule v2 matching the requested angular tolerance, two-phase bounded grasp driver validation, and a common 2 ms physics step; keep all previous rules and assets archived"
+        }
+      ],
+      "contract_sha256": "6402312fbec50a1bbf927fa93790b5509eeec3bc6bd206687b17dd77cf16ff1a",
+      "previous_contract_sha256": "da97228c82db4697b2fedd3c237baea5c7f01bfd3aa9967583458d7910e857fb",
+      "oracle_attempts": [
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "d9d679be1fbf9ae36d941a03f681ee54eedf7b452ea1063277b4e7dab0a0d3a2",
+          "scene_bundle_sha256": "8a613c954af337345c396fd96a9d69f6f87245d0be9565bb566b4b545ea18c8e",
+          "executor_sha256": "fc031d3b8861d8b18a1123b7c31e350e5808200c01e17f608a1ab275d566e79a",
+          "finished_at_unix_s": 1792816690.197264,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n08-d1/seed-0/attempt-003/report.json"
+        }
+      ],
+      "legacy_verification_results": {},
+      "last_oracle_passed": true,
+      "best_oracle_witness": "runs/oracle/frontier-v1/dial-n08-d1/seed-0/attempt-003/report.json"
+    },
+    {
+      "id": "dial-n08-d2",
+      "family": "dial",
+      "level": 2,
+      "arms": 16,
+      "dials": 8,
+      "mechanism": "airborne_gear",
+      "candidate_codes": 6561,
+      "status": "oracle_witness_passed",
+      "layout": "annular_inner_outer_facing_pairs",
+      "directory": "configs/environments/spring_dial/suite-dial-n08-d2-v4",
+      "scene_sha256": "e5db7bdb7ac677d8508b129c3b17eacba981057d0f841805475045c422956847",
+      "layout_report": "configs/environments/spring_dial/suite-dial-n08-d2-v2/layout-validation.json",
+      "verification_results": {
+        "0": {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "e5db7bdb7ac677d8508b129c3b17eacba981057d0f841805475045c422956847",
+          "scene_bundle_sha256": "ada98168a36000da5aad17663a182a5c142375c6db9f2923f3eeb05cf0755047",
+          "executor_sha256": "fc031d3b8861d8b18a1123b7c31e350e5808200c01e17f608a1ab275d566e79a",
+          "finished_at_unix_s": 1792817598.151262,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n08-d2/seed-0/attempt-003/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/dial-n08-d2/seed-0/attempt-003/report.json",
+      "scene_revision": 4,
+      "history": [
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n08-d2",
+          "scene_sha256": "6d8a5e6a2b43fc56d347d2eddf46505298659969ea0837e3fe84cd5ba14484b6",
+          "status": "oracle_failed",
+          "verification_results": {
+            "0": {
+              "passed": false,
+              "scene_sha256": "6d8a5e6a2b43fc56d347d2eddf46505298659969ea0837e3fe84cd5ba14484b6",
+              "executor_sha256": "95c74f8fd7677e904097a8e1c9fc98017b4fa83256306e25b50f14e67a1c2994",
+              "report": "runs/oracle/frontier-v1/dial-n08-d2/seed-0/attempt-002/report.json"
+            }
+          },
+          "last_oracle_report": "runs/oracle/frontier-v1/dial-n08-d2/seed-0/attempt-002/report.json",
+          "superseded_reason": "Freeze a common 0.03 Nm/rad spring, physical crank balance and calibrated hard contacts; earlier scenes and witness records remain unchanged"
+        },
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n08-d2-v2",
+          "scene_revision": 2,
+          "scene_sha256": "18c0783e8feace8efaca83ba28899a4f6698054b5dc1aa9979a8f363946dc604",
+          "status": "layout_checked",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Freeze the successful 0.5 ms floating-module integration profile without changing robot drive inertia/force; include all free module roots and complete handle mass in metadata"
+        },
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n08-d2-v3",
+          "scene_revision": 3,
+          "scene_sha256": "22a5b5670f0b1c7d3717e02240efa430cf25cbb31e27b3aa81087865e6a0e67e",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Freeze detent-band feedback rule v2 matching the requested angular tolerance, two-phase bounded grasp driver validation, and a common 2 ms physics step; keep all previous rules and assets archived"
+        }
+      ],
+      "contract_sha256": "664cd359551199fa0f002be13adaeebac3206a3be7115e33fefed42961214edd",
+      "previous_contract_sha256": "f3c7f090f40503464b1c0f51f2c2a9b86417b852460a13a360ece82d37c51d1a",
+      "oracle_attempts": [
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "e5db7bdb7ac677d8508b129c3b17eacba981057d0f841805475045c422956847",
+          "scene_bundle_sha256": "ada98168a36000da5aad17663a182a5c142375c6db9f2923f3eeb05cf0755047",
+          "executor_sha256": "fc031d3b8861d8b18a1123b7c31e350e5808200c01e17f608a1ab275d566e79a",
+          "finished_at_unix_s": 1792817598.151262,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n08-d2/seed-0/attempt-003/report.json"
+        }
+      ],
+      "legacy_verification_results": {},
+      "last_oracle_passed": true,
+      "best_oracle_witness": "runs/oracle/frontier-v1/dial-n08-d2/seed-0/attempt-003/report.json"
+    },
+    {
+      "id": "dial-n08-d3",
+      "family": "dial",
+      "level": 3,
+      "arms": 16,
+      "dials": 8,
+      "mechanism": "airborne_crank",
+      "candidate_codes": 6561,
+      "status": "oracle_witness_passed",
+      "layout": "annular_inner_outer_facing_pairs",
+      "directory": "configs/environments/spring_dial/suite-dial-n08-d3-v4",
+      "scene_sha256": "0e4818e4d6921d7944466a5ca7aa0e1f7d5128cfd3f5c62b9d6fe7aa9929b2c5",
+      "layout_report": "configs/environments/spring_dial/suite-dial-n08-d3-v2/layout-validation.json",
+      "scene_revision": 4,
+      "history": [
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n08-d3",
+          "scene_sha256": "7b7539f8bc0154554e744cc64a0ce2b8702482dd7bfe4af4c33bda58332743ae",
+          "status": "generated",
+          "superseded_reason": "Freeze a common 0.03 Nm/rad spring, physical crank balance and calibrated hard contacts; earlier scenes and witness records remain unchanged"
+        },
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n08-d3-v2",
+          "scene_revision": 2,
+          "scene_sha256": "1d3f30be76cbf01561887b363f7706950a475b596657b70b19c22305d50ab151",
+          "status": "layout_checked",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Freeze the successful 0.5 ms floating-module integration profile without changing robot drive inertia/force; include all free module roots and complete handle mass in metadata"
+        },
+        {
+          "directory": "configs/environments/spring_dial/suite-dial-n08-d3-v3",
+          "scene_revision": 3,
+          "scene_sha256": "1acbd6312db6e7af06f0cf23dd592489190b59182acd350bb99bb544bea49ba8",
+          "status": "generated",
+          "verification_results": {},
+          "last_oracle_report": null,
+          "superseded_reason": "Freeze detent-band feedback rule v2 matching the requested angular tolerance, two-phase bounded grasp driver validation, and a common 2 ms physics step; keep all previous rules and assets archived"
+        }
+      ],
+      "verification_results": {
+        "0": {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "0e4818e4d6921d7944466a5ca7aa0e1f7d5128cfd3f5c62b9d6fe7aa9929b2c5",
+          "scene_bundle_sha256": "6a846263da64d50d6606c0f86ecb2e551c964b886cb1a73319a23b8e5b185271",
+          "executor_sha256": "289291b06690c04e7e32120f6be17a260783adb989d08932763a16da9b403eca",
+          "finished_at_unix_s": 1792821825.4638982,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n08-d3/seed-0/attempt-006/report.json"
+        }
+      },
+      "last_oracle_report": "runs/oracle/frontier-v1/dial-n08-d3/seed-0/attempt-006/report.json",
+      "contract_sha256": "f6602f05db5097730ac2c9247bdf306caff2275d294a042dc06dfe671637be31",
+      "previous_contract_sha256": "90ec0fd372176588c8f7900d5dffbc19b94a99c93a52f726a176a313f117e30d",
+      "oracle_attempts": [
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "0e4818e4d6921d7944466a5ca7aa0e1f7d5128cfd3f5c62b9d6fe7aa9929b2c5",
+          "scene_bundle_sha256": "6a846263da64d50d6606c0f86ecb2e551c964b886cb1a73319a23b8e5b185271",
+          "executor_sha256": "fc031d3b8861d8b18a1123b7c31e350e5808200c01e17f608a1ab275d566e79a",
+          "finished_at_unix_s": 1792817000.793232,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n08-d3/seed-0/attempt-001/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "0e4818e4d6921d7944466a5ca7aa0e1f7d5128cfd3f5c62b9d6fe7aa9929b2c5",
+          "scene_bundle_sha256": "6a846263da64d50d6606c0f86ecb2e551c964b886cb1a73319a23b8e5b185271",
+          "executor_sha256": "3634b615b670e268adea30485d2a7af7a677e73303a8b0694d8453416ef373ac",
+          "finished_at_unix_s": 1792817562.1686459,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n08-d3/seed-0/attempt-002/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "0e4818e4d6921d7944466a5ca7aa0e1f7d5128cfd3f5c62b9d6fe7aa9929b2c5",
+          "scene_bundle_sha256": "6a846263da64d50d6606c0f86ecb2e551c964b886cb1a73319a23b8e5b185271",
+          "executor_sha256": "89d320f300a92be3420d31349098a9bc19301258479c906e5085cceb73386784",
+          "finished_at_unix_s": 1792819275.61917,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n08-d3/seed-0/attempt-003/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "0e4818e4d6921d7944466a5ca7aa0e1f7d5128cfd3f5c62b9d6fe7aa9929b2c5",
+          "scene_bundle_sha256": "6a846263da64d50d6606c0f86ecb2e551c964b886cb1a73319a23b8e5b185271",
+          "executor_sha256": "191ab7b5912efe7e033acd87786f96039499ab894d80097ecac972003692799c",
+          "finished_at_unix_s": 1792819856.912098,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n08-d3/seed-0/attempt-004/report.json"
+        },
+        {
+          "passed": false,
+          "verification_seed": 0,
+          "scene_sha256": "0e4818e4d6921d7944466a5ca7aa0e1f7d5128cfd3f5c62b9d6fe7aa9929b2c5",
+          "scene_bundle_sha256": "6a846263da64d50d6606c0f86ecb2e551c964b886cb1a73319a23b8e5b185271",
+          "executor_sha256": "a2770093983ca008dc1774899685d0cbcaa39f75f925d00425b0e3f6ced53521",
+          "finished_at_unix_s": 1792820518.926671,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n08-d3/seed-0/attempt-005/report.json"
+        },
+        {
+          "passed": true,
+          "verification_seed": 0,
+          "scene_sha256": "0e4818e4d6921d7944466a5ca7aa0e1f7d5128cfd3f5c62b9d6fe7aa9929b2c5",
+          "scene_bundle_sha256": "6a846263da64d50d6606c0f86ecb2e551c964b886cb1a73319a23b8e5b185271",
+          "executor_sha256": "289291b06690c04e7e32120f6be17a260783adb989d08932763a16da9b403eca",
+          "finished_at_unix_s": 1792821825.4638982,
+          "interrupted": null,
+          "report": "runs/oracle/frontier-v1/dial-n08-d3/seed-0/attempt-006/report.json"
+        }
+      ],
+      "legacy_verification_results": {},
+      "last_oracle_passed": true,
+      "best_oracle_witness": "runs/oracle/frontier-v1/dial-n08-d3/seed-0/attempt-006/report.json"
+    }
+  ]
+}

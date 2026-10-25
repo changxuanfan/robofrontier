@@ -1,0 +1,16 @@
+{
+  "status": "engineering_initial_state_checked",
+  "oracle_verified": false,
+  "policy_verified": false,
+  "scope": "Static geometry, optional passive settle and endpoint IK only; no robot task commands",
+  "robot_count": 4,
+  "nq": 540,
+  "nv": 468,
+  "ngeom": 426,
+  "physics_sha256": "cbb2939fa5f2095d76171123975aa5b3f4862a5246028be68dc8bae6beb8696b",
+  "engineering_passed": true,
+  "check_duration_sim_s": 0,
+  "endpoint_coverage_checked": true,
+  "frozen_input": true,
+  "freeze_scope": "Pre-Oracle physical candidate. No full-task success or real-material calibration is claimed."
+}

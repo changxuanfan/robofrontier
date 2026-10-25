@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "frames": 373,
+  "pair_spacing_m": 1.1,
+  "table_length_m": 5.4,
+  "inter_robot_contacts": [],
+  "scope": "Geometric replay of the prior Oracle at 4Hz with translated bases/modules; no physics stepping, no continuous collision or dynamic-success certification."
+}

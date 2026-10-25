@@ -1,0 +1,89 @@
+{
+  "case_id": "relay-a12-d3",
+  "scope": "Static geometry, optional passive settle and endpoint IK only; no robot task commands",
+  "oracle_verified": false,
+  "static_robot_contacts": [],
+  "static_robot_apparatus_contacts": [],
+  "robot_mount_footprints_on_table": {
+    "A": true,
+    "B": true,
+    "C": true,
+    "D": true,
+    "E": true,
+    "F": true,
+    "G": true,
+    "H": true,
+    "I": true,
+    "J": true,
+    "K": true,
+    "L": true
+  },
+  "route_region_footprints_on_table": {
+    "zone_01": true,
+    "zone_02": true,
+    "zone_03": true,
+    "zone_04": true,
+    "zone_05": true,
+    "zone_06": true,
+    "pickup_01": true,
+    "pickup_02": true,
+    "pickup_03": true
+  },
+  "payload_initial_footprint_on_table": {
+    "payload_01": true,
+    "payload_02": true,
+    "payload_03": true
+  },
+  "inter_payload_penetrations": [],
+  "initial_equality_residual_m": 8.881784197001252e-16,
+  "settle_duration_sim_s": 0,
+  "settle_robot_contacts": [],
+  "settle_robot_apparatus_contacts": [],
+  "max_main_object_drift_m": 0.0,
+  "main_object_drift_m": {
+    "payload_01": 0.0,
+    "payload_02": 0.0,
+    "payload_03": 0.0
+  },
+  "free_body_drift_m": {
+    "payload_01": 0.0,
+    "payload_01_tray": 0.0,
+    "payload_01_weight": 0.0,
+    "payload_02": 0.0,
+    "payload_02_tray": 0.0,
+    "payload_02_weight": 0.0,
+    "payload_03": 0.0,
+    "payload_03_tray": 0.0,
+    "payload_03_weight": 0.0
+  },
+  "initial_table_supported_assembly_remains_above_table": true,
+  "tray_check": {
+    "payload_01": {
+      "weight_center_tray_m": [
+        0.0,
+        0.0,
+        0.026000000000000023
+      ],
+      "weight_in_tray": true
+    },
+    "payload_02": {
+      "weight_center_tray_m": [
+        0.0,
+        0.0,
+        0.026000000000000023
+      ],
+      "weight_in_tray": true
+    },
+    "payload_03": {
+      "weight_center_tray_m": [
+        0.0,
+        0.0,
+        0.02600000000000002
+      ],
+      "weight_in_tray": true
+    }
+  },
+  "endpoint_coverage": null,
+  "finite_state": true,
+  "passed": true
+}

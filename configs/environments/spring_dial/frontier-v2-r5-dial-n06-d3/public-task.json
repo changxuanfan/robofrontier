@@ -1,0 +1,319 @@
+{
+  "kind": "frontier_suite",
+  "id": "dial-n06-d3",
+  "suite_version": 2,
+  "family": "dial",
+  "level": 3,
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -1.08,
+        -0.24999999999999983,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    "B": {
+      "base_position_m": [
+        -2.38,
+        2.516649172247811e-16,
+        0.4
+      ],
+      "yaw_rad": 0.0
+    },
+    "C": {
+      "base_position_m": [
+        -1.0206846669980614,
+        0.43255382388213426,
+        0.4
+      ],
+      "yaw_rad": 2.5132741228718345
+    },
+    "D": {
+      "base_position_m": [
+        -1.9254604466123748,
+        1.3989289004560863,
+        0.4
+      ],
+      "yaw_rad": -0.6283185307179586
+    },
+    "E": {
+      "base_position_m": [
+        -0.5715024829987315,
+        0.9498867890050291,
+        0.4
+      ],
+      "yaw_rad": 1.8849555921538759
+    },
+    "F": {
+      "base_position_m": [
+        -0.7354604466123748,
+        2.2635145087824657,
+        0.4
+      ],
+      "yaw_rad": -1.2566370614359172
+    },
+    "G": {
+      "base_position_m": [
+        0.09597422485115481,
+        1.1043952861925026,
+        0.4
+      ],
+      "yaw_rad": 1.2566370614359172
+    },
+    "H": {
+      "base_position_m": [
+        0.7354604466123749,
+        2.2635145087824653,
+        0.4
+      ],
+      "yaw_rad": -1.8849555921538759
+    },
+    "I": {
+      "base_position_m": [
+        0.7267920408518249,
+        0.8370623210696078,
+        0.4
+      ],
+      "yaw_rad": 0.6283185307179586
+    },
+    "J": {
+      "base_position_m": [
+        1.925460446612375,
+        1.398928900456086,
+        0.4
+      ],
+      "yaw_rad": -2.5132741228718345
+    },
+    "K": {
+      "base_position_m": [
+        1.08,
+        0.24999999999999997,
+        0.4
+      ],
+      "yaw_rad": 0.0
+    },
+    "L": {
+      "base_position_m": [
+        2.38,
+        3.9801020972288984e-17,
+        0.4
+      ],
+      "yaw_rad": -3.141592653589793
+    }
+  },
+  "rules": [
+    "Each private code digit is independently 1,2,3. Relative disk positions are zero, clockwise quarter-turn, half-turn and counterclockwise quarter-turn; -180 and +180 are the same half-turn symbol.",
+    "All disks must stay within 4 degrees of a nonzero detent for 0.25 simulated seconds for a valid count. Only aggregate correct count is visible; no individual matches. Zero is invalid.",
+    "Movable modules start naturally on the tabletop, without parking racks. Establish blue-handle support and full-module 20 mm clearance before red operation; sustain support and stop after loss.",
+    "A crank contact point moves around its axle; rotation can require coordinated translation. Reach a valid count equal to the number of disks.",
+    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits."
+  ],
+  "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB",
+      "Robot proprioception and robot geometry",
+      "Action feedback",
+      "Visible dial count"
+    ]
+  },
+  "gripper_profile": "standard-panda",
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "G_front",
+    "G_side",
+    "H_front",
+    "H_side",
+    "I_front",
+    "I_side",
+    "J_front",
+    "J_side",
+    "K_front",
+    "K_side",
+    "L_front",
+    "L_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "D01_front",
+    "D01_side",
+    "D01_high",
+    "D02_front",
+    "D02_side",
+    "D02_high",
+    "D03_front",
+    "D03_side",
+    "D03_high",
+    "D04_front",
+    "D04_side",
+    "D04_high",
+    "D05_front",
+    "D05_side",
+    "D05_high",
+    "D06_front",
+    "D06_side",
+    "D06_high",
+    "board",
+    "D01_face",
+    "D02_face",
+    "D03_face",
+    "D04_face",
+    "D05_face",
+    "D06_face"
+  ],
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "execution_readiness": "environment_preview_only",
+  "initial_supplies": [
+    {
+      "source": "B",
+      "color": "white",
+      "count": 1
+    },
+    {
+      "source": "D",
+      "color": "white",
+      "count": 1
+    },
+    {
+      "source": "F",
+      "color": "white",
+      "count": 1
+    },
+    {
+      "source": "H",
+      "color": "white",
+      "count": 1
+    },
+    {
+      "source": "J",
+      "color": "white",
+      "count": 1
+    },
+    {
+      "source": "L",
+      "color": "white",
+      "count": 1
+    }
+  ],
+  "mechanism": {
+    "dial_count": 6,
+    "interface": "crank",
+    "free_modules": true,
+    "handle_material": "anodized aluminium",
+    "handle_mass_kg": 0.2882304,
+    "spring_nm_rad": 0.12,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      0.0,
+      2.57
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "feedback_rule_version": 2,
+    "feedback_dwell_sim_s": 0.25,
+    "feedback_stability": "same nonzero 4-degree detent band throughout the dwell; in-band vibration allowed",
+    "rotor_counterbalanced": false,
+    "handle_stem_mass_kg": 0.2592,
+    "parking_fixture": "None; visible disk rim and blue handle tip rest directly on tabletop",
+    "handle_cross_section_m": [
+      0.016,
+      0.02
+    ],
+    "handle_attachment_local_m": [
+      0,
+      0.02,
+      -0.154
+    ],
+    "handle_neck_clear_length_m": 0.024,
+    "handle_shoulders": "Two visible passive stop shoulders. They transmit load by real contact and release when the gripper opens; no hand attachment.",
+    "white_disk_diameter_m": 0.2438,
+    "white_disk_diameter_scale": 1.06,
+    "digit_height_m": 0.02,
+    "digit_radius_m": 0.1097,
+    "detent_labels": [
+      "0",
+      "1",
+      "2",
+      "3"
+    ],
+    "layout": "upper_semicircle",
+    "module_arc_radius_m": 1.73,
+    "single_sided_crank": true,
+    "crank_arm_shape": "round capsule",
+    "crank_arm_radius_m": 0.01,
+    "crank_arm_length_m": 0.083,
+    "crank_grip_radius_m": 0.01375,
+    "crank_arm_mass_kg": 0.05271157587548639,
+    "return_dynamics_verified": false
+  },
+  "dials": [
+    {
+      "id": "D01",
+      "index": 0,
+      "nominal_robots": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "id": "D02",
+      "index": 1,
+      "nominal_robots": [
+        "C",
+        "D"
+      ]
+    },
+    {
+      "id": "D03",
+      "index": 2,
+      "nominal_robots": [
+        "E",
+        "F"
+      ]
+    },
+    {
+      "id": "D04",
+      "index": 3,
+      "nominal_robots": [
+        "G",
+        "H"
+      ]
+    },
+    {
+      "id": "D05",
+      "index": 4,
+      "nominal_robots": [
+        "I",
+        "J"
+      ]
+    },
+    {
+      "id": "D06",
+      "index": 5,
+      "nominal_robots": [
+        "K",
+        "L"
+      ]
+    }
+  ]
+}

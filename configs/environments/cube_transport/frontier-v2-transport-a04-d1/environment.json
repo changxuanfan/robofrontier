@@ -1,0 +1,752 @@
+{
+  "schema": "robofrontier.workstation.v2",
+  "id": "transport-a04-d1",
+  "collection": "frontier_suite",
+  "arm_count": 4,
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.1,
+    "object_mass_kg": 0.7812500000000001,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0
+  },
+  "stations": [
+    {
+      "id": "A",
+      "base_position_m": [
+        0.0,
+        -1.02,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.0,
+        -0.74,
+        0.94
+      ]
+    },
+    {
+      "id": "B",
+      "base_position_m": [
+        1.02,
+        0.0,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.74,
+        0.0,
+        0.94
+      ]
+    },
+    {
+      "id": "C",
+      "base_position_m": [
+        -0.0,
+        1.02,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.0,
+        0.74,
+        0.94
+      ]
+    },
+    {
+      "id": "D",
+      "base_position_m": [
+        -1.02,
+        -0.0,
+        0.4
+      ],
+      "yaw_rad": 0,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.74,
+        0.0,
+        0.94
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "center_m": [
+        0,
+        -0.74,
+        0.375
+      ],
+      "half_size_m": [
+        1.24,
+        0.5,
+        0.025
+      ]
+    },
+    {
+      "center_m": [
+        0,
+        0.74,
+        0.375
+      ],
+      "half_size_m": [
+        1.24,
+        0.5,
+        0.025
+      ]
+    },
+    {
+      "center_m": [
+        -0.74,
+        0,
+        0.375
+      ],
+      "half_size_m": [
+        0.5,
+        0.24,
+        0.025
+      ]
+    },
+    {
+      "center_m": [
+        0.74,
+        0,
+        0.375
+      ],
+      "half_size_m": [
+        0.5,
+        0.24,
+        0.025
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "A_B",
+      "stations": [
+        "A",
+        "B"
+      ],
+      "position_m": [
+        0.41,
+        -0.41,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "B_C",
+      "stations": [
+        "B",
+        "C"
+      ],
+      "position_m": [
+        0.41,
+        0.41,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "C_D",
+      "stations": [
+        "C",
+        "D"
+      ],
+      "position_m": [
+        -0.41,
+        0.41,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "D_A",
+      "stations": [
+        "D",
+        "A"
+      ],
+      "position_m": [
+        -0.41,
+        -0.41,
+        0.45
+      ],
+      "capacity": 1
+    }
+  ],
+  "objects": [
+    {
+      "id": "A_item1",
+      "source": "A",
+      "identity": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.25,
+        -0.82,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        0.7071067811865475
+      ]
+    },
+    {
+      "id": "A_item2",
+      "source": "A",
+      "identity": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.0,
+        -0.72,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        0.7071067811865475
+      ]
+    },
+    {
+      "id": "A_item3",
+      "source": "A",
+      "identity": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.25,
+        -0.82,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        0.7071067811865475
+      ]
+    },
+    {
+      "id": "B_item1",
+      "source": "B",
+      "identity": "B",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.82,
+        0.25,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        6.123233995736766e-17,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "B_item2",
+      "source": "B",
+      "identity": "B",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.72,
+        0.0,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        6.123233995736766e-17,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "B_item3",
+      "source": "B",
+      "identity": "B",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.82,
+        -0.25,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        6.123233995736766e-17,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "C_item1",
+      "source": "C",
+      "identity": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.1
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.25,
+        0.82,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        -0.7071067811865475
+      ]
+    },
+    {
+      "id": "C_item2",
+      "source": "C",
+      "identity": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.1
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.0,
+        0.72,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        -0.7071067811865475
+      ]
+    },
+    {
+      "id": "C_item3",
+      "source": "C",
+      "identity": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.1
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.25,
+        0.82,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        -0.7071067811865475
+      ]
+    },
+    {
+      "id": "D_item1",
+      "source": "D",
+      "identity": "D",
+      "color": "white",
+      "rgb": [
+        0.95,
+        0.95,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.82,
+        -0.25,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "D_item2",
+      "source": "D",
+      "identity": "D",
+      "color": "white",
+      "rgb": [
+        0.95,
+        0.95,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.72,
+        0.0,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "D_item3",
+      "source": "D",
+      "identity": "D",
+      "color": "white",
+      "rgb": [
+        0.95,
+        0.95,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.82,
+        0.25,
+        0.45
+      ],
+      "initial_quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "floor_rgba": [
+    0.84,
+    0.9,
+    0.95,
+    1
+  ],
+  "table_rgba": [
+    0.604,
+    0.459,
+    0.345,
+    1
+  ],
+  "initial_keyframe": "initial",
+  "scene": "scene.xml",
+  "suite_case": {
+    "family": "transport",
+    "level": 1,
+    "suite_version": 2,
+    "scene_revision": 1,
+    "scale_index": 0,
+    "arms": 4,
+    "id": "transport-a04-d1",
+    "directory": "configs/environments/cube_transport/frontier-v2-transport-a04-d1"
+  },
+  "gripper_profile": "offset-aluminium-40-120mm",
+  "goals": [
+    {
+      "goal_id": "A_slot1",
+      "robot": "A",
+      "board": "board_A",
+      "local_position_m": [
+        0,
+        -0.15,
+        0.05
+      ],
+      "position_m": [
+        0.15,
+        -0.49,
+        0.453
+      ],
+      "requires": {
+        "identity": "B"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "A_slot2",
+      "robot": "A",
+      "board": "board_A",
+      "local_position_m": [
+        0,
+        0,
+        0.05
+      ],
+      "position_m": [
+        0.0,
+        -0.49,
+        0.453
+      ],
+      "requires": {
+        "identity": "C"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "A_slot3",
+      "robot": "A",
+      "board": "board_A",
+      "local_position_m": [
+        0,
+        0.15,
+        0.05
+      ],
+      "position_m": [
+        -0.15,
+        -0.49,
+        0.453
+      ],
+      "requires": {
+        "identity": "C"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "B_slot1",
+      "robot": "B",
+      "board": "board_B",
+      "local_position_m": [
+        0,
+        -0.15,
+        0.05
+      ],
+      "position_m": [
+        0.49,
+        0.15,
+        0.453
+      ],
+      "requires": {
+        "identity": "B"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "B_slot2",
+      "robot": "B",
+      "board": "board_B",
+      "local_position_m": [
+        0,
+        0,
+        0.05
+      ],
+      "position_m": [
+        0.49,
+        0.0,
+        0.453
+      ],
+      "requires": {
+        "identity": "D"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "B_slot3",
+      "robot": "B",
+      "board": "board_B",
+      "local_position_m": [
+        0,
+        0.15,
+        0.05
+      ],
+      "position_m": [
+        0.49,
+        -0.15,
+        0.453
+      ],
+      "requires": {
+        "identity": "D"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "C_slot1",
+      "robot": "C",
+      "board": "board_C",
+      "local_position_m": [
+        0,
+        -0.15,
+        0.05
+      ],
+      "position_m": [
+        -0.15,
+        0.49,
+        0.453
+      ],
+      "requires": {
+        "identity": "A"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "C_slot2",
+      "robot": "C",
+      "board": "board_C",
+      "local_position_m": [
+        0,
+        0,
+        0.05
+      ],
+      "position_m": [
+        0.0,
+        0.49,
+        0.453
+      ],
+      "requires": {
+        "identity": "A"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "C_slot3",
+      "robot": "C",
+      "board": "board_C",
+      "local_position_m": [
+        0,
+        0.15,
+        0.05
+      ],
+      "position_m": [
+        0.15,
+        0.49,
+        0.453
+      ],
+      "requires": {
+        "identity": "D"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "D_slot1",
+      "robot": "D",
+      "board": "board_D",
+      "local_position_m": [
+        0,
+        -0.15,
+        0.05
+      ],
+      "position_m": [
+        -0.49,
+        -0.15,
+        0.453
+      ],
+      "requires": {
+        "identity": "A"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "D_slot2",
+      "robot": "D",
+      "board": "board_D",
+      "local_position_m": [
+        0,
+        0,
+        0.05
+      ],
+      "position_m": [
+        -0.49,
+        0.0,
+        0.453
+      ],
+      "requires": {
+        "identity": "B"
+      },
+      "latch_slider": null
+    },
+    {
+      "goal_id": "D_slot3",
+      "robot": "D",
+      "board": "board_D",
+      "local_position_m": [
+        0,
+        0.15,
+        0.05
+      ],
+      "position_m": [
+        -0.49,
+        0.15,
+        0.453
+      ],
+      "requires": {
+        "identity": "C"
+      },
+      "latch_slider": null
+    }
+  ],
+  "mechanism": {
+    "kind": "flat_placement",
+    "cube_side_m": 0.1,
+    "cube_body_mass_kg": 0.7812500000000001,
+    "cube_material": "Solid wood; inherited nominal density",
+    "blade_size_m": null,
+    "blade_spacing_m": null,
+    "slot_opening_m": null,
+    "slot_depth_m": null,
+    "bottom_bar_size_m": null,
+    "latch": null,
+    "spring_board": null,
+    "supplies": "Tabletop; no pedestals. Plug blades initially up/sideways; latch bars initially up with varied yaw."
+  }
+}

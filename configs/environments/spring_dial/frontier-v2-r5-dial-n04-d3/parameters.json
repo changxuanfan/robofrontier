@@ -1,0 +1,76 @@
+{
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 20,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "material_scope": "Original dial assembly properties retained; initial rest reconfigured without parking blocks"
+  },
+  "mechanism": {
+    "dial_count": 4,
+    "interface": "crank",
+    "free_modules": true,
+    "handle_material": "anodized aluminium",
+    "handle_mass_kg": 0.2882304,
+    "spring_nm_rad": 0.12,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      -0.25,
+      -0.69
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "feedback_rule_version": 2,
+    "feedback_dwell_sim_s": 0.25,
+    "feedback_stability": "same nonzero 4-degree detent band throughout the dwell; in-band vibration allowed",
+    "rotor_counterbalanced": false,
+    "handle_stem_mass_kg": 0.2592,
+    "parking_fixture": "None; visible disk rim and blue handle tip rest directly on tabletop",
+    "handle_cross_section_m": [
+      0.016,
+      0.02
+    ],
+    "handle_attachment_local_m": [
+      0,
+      0.02,
+      -0.154
+    ],
+    "handle_neck_clear_length_m": 0.024,
+    "handle_shoulders": "Two visible passive stop shoulders. They transmit load by real contact and release when the gripper opens; no hand attachment.",
+    "white_disk_diameter_m": 0.2438,
+    "white_disk_diameter_scale": 1.06,
+    "digit_height_m": 0.02,
+    "digit_radius_m": 0.1097,
+    "detent_labels": [
+      "0",
+      "1",
+      "2",
+      "3"
+    ],
+    "single_sided_crank": true,
+    "crank_arm_shape": "round capsule",
+    "crank_arm_radius_m": 0.01,
+    "crank_arm_length_m": 0.083,
+    "crank_grip_radius_m": 0.01375,
+    "crank_arm_mass_kg": 0.05271157587548639,
+    "return_dynamics_verified": false
+  },
+  "grid": null,
+  "scope": "Declared geometry/material and engineering parameters; not a task success proof"
+}

@@ -1,0 +1,334 @@
+{
+  "kind": "frontier_suite",
+  "id": "mosaic-a06-8x18-d3",
+  "suite_version": 2,
+  "family": "mosaic",
+  "level": 3,
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -0.756,
+        -0.804,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "B": {
+      "base_position_m": [
+        0.0,
+        -0.804,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "C": {
+      "base_position_m": [
+        0.756,
+        -0.804,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "D": {
+      "base_position_m": [
+        -0.756,
+        0.804,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "E": {
+      "base_position_m": [
+        0.0,
+        0.804,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "F": {
+      "base_position_m": [
+        0.756,
+        0.804,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    }
+  },
+  "rules": [
+    "Build the entire single right-pointing rocket reference, including background cells, one released cube per pixel.",
+    "Cube side is 100 mm and common cell-center pitch is 126 mm. L1 has 125 mm clear square pockets, L2 printed lines, L3 no visible grid. The reference is north-up, centered on the declared assembly origin.",
+    "Stock allocations do not restrict which robot can use an item. Preserve completed placements and account for finger release/withdrawal clearance.",
+    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits."
+  ],
+  "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB",
+      "Robot proprioception and robot geometry",
+      "Action feedback",
+      "Visible dial count"
+    ]
+  },
+  "gripper_profile": "offset-aluminium-40-120mm",
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "assembly_01",
+    "assembly_02",
+    "assembly_03"
+  ],
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "execution_readiness": "environment_preview_only",
+  "initial_supplies": [
+    {
+      "source": "A",
+      "color": "red",
+      "count": 24
+    },
+    {
+      "source": "B",
+      "color": "blue",
+      "count": 18
+    },
+    {
+      "source": "B",
+      "color": "red",
+      "count": 6
+    },
+    {
+      "source": "C",
+      "color": "blue",
+      "count": 12
+    },
+    {
+      "source": "C",
+      "color": "yellow",
+      "count": 12
+    },
+    {
+      "source": "D",
+      "color": "white",
+      "count": 8
+    },
+    {
+      "source": "D",
+      "color": "yellow",
+      "count": 16
+    },
+    {
+      "source": "E",
+      "color": "cyan",
+      "count": 4
+    },
+    {
+      "source": "E",
+      "color": "white",
+      "count": 20
+    },
+    {
+      "source": "F",
+      "color": "cyan",
+      "count": 24
+    }
+  ],
+  "mechanism": {
+    "kind": "unmarked_table",
+    "stock_packing": "Single layer; non-exclusive station allocation",
+    "stock_count": 144
+  },
+  "target": {
+    "rows": 8,
+    "columns": 18,
+    "colors": 5,
+    "pitch_m": 0.126,
+    "cube_side_m": 0.1,
+    "pattern": [
+      [
+        "cyan",
+        "cyan",
+        "cyan",
+        "cyan",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "blue",
+        "red",
+        "cyan",
+        "cyan",
+        "cyan",
+        "cyan",
+        "cyan",
+        "cyan"
+      ],
+      [
+        "yellow",
+        "yellow",
+        "yellow",
+        "yellow",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "blue",
+        "red",
+        "red",
+        "red",
+        "white",
+        "white",
+        "cyan",
+        "cyan",
+        "cyan"
+      ],
+      [
+        "yellow",
+        "yellow",
+        "yellow",
+        "yellow",
+        "yellow",
+        "white",
+        "white",
+        "white",
+        "white",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "white",
+        "blue",
+        "white",
+        "white",
+        "cyan"
+      ],
+      [
+        "yellow",
+        "yellow",
+        "yellow",
+        "yellow",
+        "yellow",
+        "white",
+        "white",
+        "white",
+        "white",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "white",
+        "blue",
+        "blue",
+        "blue",
+        "blue"
+      ],
+      [
+        "yellow",
+        "yellow",
+        "yellow",
+        "yellow",
+        "yellow",
+        "white",
+        "white",
+        "white",
+        "white",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "white",
+        "blue",
+        "blue",
+        "blue",
+        "blue"
+      ],
+      [
+        "yellow",
+        "yellow",
+        "yellow",
+        "yellow",
+        "yellow",
+        "white",
+        "white",
+        "white",
+        "white",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "white",
+        "blue",
+        "white",
+        "white",
+        "cyan"
+      ],
+      [
+        "yellow",
+        "yellow",
+        "yellow",
+        "yellow",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "blue",
+        "red",
+        "red",
+        "red",
+        "white",
+        "white",
+        "cyan",
+        "cyan",
+        "cyan"
+      ],
+      [
+        "cyan",
+        "cyan",
+        "cyan",
+        "cyan",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "blue",
+        "red",
+        "cyan",
+        "cyan",
+        "cyan",
+        "cyan",
+        "cyan",
+        "cyan"
+      ]
+    ],
+    "pocket_opening_m": null,
+    "depth_m": 0,
+    "center_world_m": [
+      0,
+      0,
+      0.4
+    ],
+    "row1": "north",
+    "column1": "west",
+    "reference_image": "target-pattern.png"
+  }
+}

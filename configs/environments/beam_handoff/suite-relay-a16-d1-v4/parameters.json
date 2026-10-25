@@ -1,0 +1,196 @@
+{
+  "case": {
+    "id": "relay-a16-d1",
+    "family": "relay",
+    "level": 1,
+    "arms": 16,
+    "pairs": 8,
+    "layout": "closed_loop",
+    "payload": "bare_timber",
+    "status": "planned",
+    "directory": "configs/environments/beam_handoff/suite-relay-a16-d1-v4",
+    "scene_sha256": null,
+    "layout_report": "configs/environments/beam_handoff/suite-relay-a16-d1-v2/layout-validation.json",
+    "verification_results": {},
+    "last_oracle_report": null,
+    "scene_revision": 4,
+    "history": [
+      {
+        "directory": "configs/environments/beam_handoff/suite-relay-a16-d1",
+        "scene_sha256": "ab1c2d139367a8f3061486dd1c54910f6fa1437f435f0e6c5579e92d3bf6cbc9",
+        "status": "oracle_failed",
+        "verification_results": {
+          "0": {
+            "passed": false,
+            "scene_sha256": "ab1c2d139367a8f3061486dd1c54910f6fa1437f435f0e6c5579e92d3bf6cbc9",
+            "executor_sha256": "db44f77fa30453a161739620c554f4579ef657bccf31bbf0b8061833c891748f",
+            "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-007/report.json"
+          }
+        },
+        "last_oracle_report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-007/report.json",
+        "superseded_reason": "Align beam with transport direction and stagger opposed bases, preserving old normal-to-path layouts and witnesses"
+      },
+      {
+        "directory": "configs/environments/beam_handoff/suite-relay-a16-d1-v2",
+        "scene_revision": 2,
+        "scene_sha256": "1916c9aed89d51cd8ca07a09b83f524c4a6d8fe5548ec230096f5d6a8b19a02d",
+        "status": "oracle_failed",
+        "verification_results": {
+          "0": {
+            "passed": false,
+            "verification_seed": 0,
+            "scene_sha256": "1916c9aed89d51cd8ca07a09b83f524c4a6d8fe5548ec230096f5d6a8b19a02d",
+            "scene_bundle_sha256": "2be97dbf67026ce7abcd95768f5b09dec4481ca2bd16bdfad54ecb6034239850",
+            "executor_sha256": "0be8bd1a6feb24049f4530de796620502e8575889e9ad6d5dac18b121f7719dc",
+            "finished_at_unix_s": 1792811262.8052108,
+            "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-016/report.json"
+          }
+        },
+        "last_oracle_report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-016/report.json",
+        "superseded_reason": "Reduce longitudinal base stagger to 0.30 m per opposing pair so a COM-spanning staged handover can use reachable top grasps; keep previous ring prototypes"
+      },
+      {
+        "directory": "configs/environments/beam_handoff/suite-relay-a16-d1-v3",
+        "scene_revision": 3,
+        "scene_sha256": "66b2e0d55ee27fac0568037c742bfa89b5761b250b1807b88910a81528e4a400",
+        "status": "oracle_failed",
+        "verification_results": {
+          "0": {
+            "passed": false,
+            "verification_seed": 0,
+            "scene_sha256": "66b2e0d55ee27fac0568037c742bfa89b5761b250b1807b88910a81528e4a400",
+            "scene_bundle_sha256": "f36403b94e43944d0f7534c9bc7a3a5e6173d860545cd6fc7dbfa74133d4e6e8",
+            "executor_sha256": "89d320f300a92be3420d31349098a9bc19301258479c906e5085cceb73386784",
+            "finished_at_unix_s": 1792818946.784915,
+            "interrupted": null,
+            "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-019/report.json"
+          }
+        },
+        "last_oracle_report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-019/report.json",
+        "superseded_reason": "Freeze explicit staged-handover rules and admit physically reachable floor recovery by the sending team; do not force released arms to return HOME"
+      }
+    ],
+    "oracle_attempts": [
+      {
+        "passed": false,
+        "verification_seed": 0,
+        "scene_sha256": "1916c9aed89d51cd8ca07a09b83f524c4a6d8fe5548ec230096f5d6a8b19a02d",
+        "scene_bundle_sha256": "c5d653575d3ee45b1af0e8edd771678a80e1a9355b7ca201fd4a1de63ed5537d",
+        "executor_sha256": "a295cb7b0e626ec18a5cef6d56a4a8b62eb43124ebea6f515739bdc1416b4d66",
+        "finished_at_unix_s": 1792808462.966065,
+        "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-012/report.json"
+      },
+      {
+        "passed": false,
+        "verification_seed": 0,
+        "scene_sha256": "1916c9aed89d51cd8ca07a09b83f524c4a6d8fe5548ec230096f5d6a8b19a02d",
+        "scene_bundle_sha256": "c5d653575d3ee45b1af0e8edd771678a80e1a9355b7ca201fd4a1de63ed5537d",
+        "executor_sha256": "8fd580ba923f877f63a9c19dd4e295ec04dd3c4368951dad0eb2372b2e5a8ae5",
+        "finished_at_unix_s": 1792808689.47555,
+        "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-013/report.json"
+      },
+      {
+        "passed": false,
+        "verification_seed": 0,
+        "scene_sha256": "1916c9aed89d51cd8ca07a09b83f524c4a6d8fe5548ec230096f5d6a8b19a02d",
+        "scene_bundle_sha256": "c5d653575d3ee45b1af0e8edd771678a80e1a9355b7ca201fd4a1de63ed5537d",
+        "executor_sha256": "bbfeff964b5869b60e37647dad5b89afa65ad1a953520e0fa1c20b209600b399",
+        "finished_at_unix_s": 1792809979.1479318,
+        "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-014/report.json"
+      },
+      {
+        "passed": false,
+        "verification_seed": 0,
+        "scene_sha256": "1916c9aed89d51cd8ca07a09b83f524c4a6d8fe5548ec230096f5d6a8b19a02d",
+        "scene_bundle_sha256": "2be97dbf67026ce7abcd95768f5b09dec4481ca2bd16bdfad54ecb6034239850",
+        "executor_sha256": "47e0a038aaaef3bdc60ada47627205d0f183f8d6e1f457adcbf1230f239d44ea",
+        "finished_at_unix_s": 1792810839.475494,
+        "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-015/report.json"
+      },
+      {
+        "passed": false,
+        "verification_seed": 0,
+        "scene_sha256": "1916c9aed89d51cd8ca07a09b83f524c4a6d8fe5548ec230096f5d6a8b19a02d",
+        "scene_bundle_sha256": "2be97dbf67026ce7abcd95768f5b09dec4481ca2bd16bdfad54ecb6034239850",
+        "executor_sha256": "0be8bd1a6feb24049f4530de796620502e8575889e9ad6d5dac18b121f7719dc",
+        "finished_at_unix_s": 1792811262.8052108,
+        "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-016/report.json"
+      },
+      {
+        "passed": false,
+        "verification_seed": 0,
+        "scene_sha256": "66b2e0d55ee27fac0568037c742bfa89b5761b250b1807b88910a81528e4a400",
+        "scene_bundle_sha256": "f36403b94e43944d0f7534c9bc7a3a5e6173d860545cd6fc7dbfa74133d4e6e8",
+        "executor_sha256": "b4bf378a9a0cfc40d58b130c2ef19ee328412139dc38b54b57974c2a3f1c5599",
+        "finished_at_unix_s": 1792815773.533356,
+        "interrupted": null,
+        "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-017/report.json"
+      },
+      {
+        "passed": false,
+        "verification_seed": 0,
+        "scene_sha256": "66b2e0d55ee27fac0568037c742bfa89b5761b250b1807b88910a81528e4a400",
+        "scene_bundle_sha256": "f36403b94e43944d0f7534c9bc7a3a5e6173d860545cd6fc7dbfa74133d4e6e8",
+        "executor_sha256": "56bea0cb72858678289666bf62fa546ff6b66402687cd88c56c94cd22683b2a8",
+        "finished_at_unix_s": 1792816151.348067,
+        "interrupted": null,
+        "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-018/report.json"
+      },
+      {
+        "passed": false,
+        "verification_seed": 0,
+        "scene_sha256": "66b2e0d55ee27fac0568037c742bfa89b5761b250b1807b88910a81528e4a400",
+        "scene_bundle_sha256": "f36403b94e43944d0f7534c9bc7a3a5e6173d860545cd6fc7dbfa74133d4e6e8",
+        "executor_sha256": "89d320f300a92be3420d31349098a9bc19301258479c906e5085cceb73386784",
+        "finished_at_unix_s": 1792818946.784915,
+        "interrupted": null,
+        "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-019/report.json"
+      }
+    ],
+    "legacy_verification_results": {
+      "0": {
+        "passed": false,
+        "scene_sha256": "1916c9aed89d51cd8ca07a09b83f524c4a6d8fe5548ec230096f5d6a8b19a02d",
+        "executor_sha256": "e9d6d342651b1b600a5584ea67139a82eec5821ee1e507d7f22fe2bb73d103c9",
+        "report": "runs/oracle/frontier-v1/relay-a16-d1/seed-0/attempt-011/report.json"
+      }
+    },
+    "last_oracle_passed": false,
+    "contract_sha256": "0c878e0d23e5146329972a95702ac417594bc27d8ba04964167ae7dfb19f8d9d"
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "beam_length_m": 1.2,
+    "beam_cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "beam_mass_kg": 1.458,
+    "weight_mass_kg": 0,
+    "suspension_length_m": 0,
+    "suspension_segments": 0,
+    "opposed_base_spacing_m": 1.044030650891055,
+    "cross_track_base_spacing_m": 1.0,
+    "longitudinal_pair_stagger_m": 0.3,
+    "minimum_supporting_robots": 2,
+    "loop_radius_m": 1.1,
+    "beam_alignment": "tangent"
+  },
+  "grid": null
+}

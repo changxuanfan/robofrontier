@@ -1,0 +1,28 @@
+{
+  "id": "three-arm-v1",
+  "description": "将正确属性的方块放入各区域目标槽，释放夹爪并让出空间。剩余物料可留在不妨碍任务的位置。",
+  "table_height_m": 0.4,
+  "cube_size_m": 0.04,
+  "cube_mass_kg": 0.05,
+  "contact_friction": [1.0, 0.005, 0.0001],
+  "noslip_iterations": 10,
+  "arms": {"A": -0.65, "B": 0.0, "C": 0.65},
+  "objects": [
+    {"id":"A_gray","color":"gray","pattern":"plain","region":"A","initial_position_m":[0.42,-0.75,0.42]},
+    {"id":"A_blue","color":"blue","pattern":"plain","region":"A","initial_position_m":[0.42,-0.65,0.42]},
+    {"id":"A_red_dots","color":"red","pattern":"dots","region":"A","initial_position_m":[0.42,-0.55,0.42]},
+    {"id":"B_gray","color":"gray","pattern":"plain","region":"B","initial_position_m":[0.42,-0.1,0.42]},
+    {"id":"B_blue_checker","color":"blue","pattern":"checker","region":"B","initial_position_m":[0.42,0.0,0.42]},
+    {"id":"B_red","color":"red","pattern":"plain","region":"B","initial_position_m":[0.42,0.1,0.42]},
+    {"id":"C_gray","color":"gray","pattern":"plain","region":"C","initial_position_m":[0.42,0.55,0.42]},
+    {"id":"C_green","color":"green","pattern":"plain","region":"C","initial_position_m":[0.42,0.65,0.42]},
+    {"id":"C_blue","color":"blue","pattern":"plain","region":"C","initial_position_m":[0.42,0.75,0.42]}
+  ],
+  "goals": {
+    "A": [{"slot":"slot1","position_m":[0.57,-0.75,0.42],"requires":{"color":"gray"}},{"slot":"slot2","position_m":[0.57,-0.55,0.42],"requires":{"color":"blue","pattern":"checker"}}],
+    "B": [{"slot":"slot1","position_m":[0.57,-0.1,0.42],"requires":{"color":"gray"}},{"slot":"slot2","position_m":[0.57,0.1,0.42],"requires":{"color":"blue"}}],
+    "C": [{"slot":"slot1","position_m":[0.57,0.55,0.42],"requires":{"color":"gray"}},{"slot":"slot2","position_m":[0.57,0.75,0.42],"requires":{"color":"red","pattern":"dots"}}]
+  },
+  "evaluation": {"xy_tolerance_m":0.025,"z_tolerance_m":0.012},
+  "observation_contract": {"initial_positions_public":true,"runtime":"RGB + robot proprioception + execution status; no dynamic object truth","camera_selection":"agent","image_loading":"agent; returning a path does not prove viewing"}
+}

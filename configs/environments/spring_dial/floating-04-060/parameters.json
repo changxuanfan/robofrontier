@@ -1,0 +1,209 @@
+{
+  "id": "spring-dial-floating-04-060",
+  "table": {
+    "length_m": 3.9,
+    "width_m": 2.06,
+    "height_m": 0.4,
+    "thickness_m": 0.05
+  },
+  "arms": [
+    {
+      "id": "A",
+      "side": "south-west",
+      "base_position_m": [
+        -1.15,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "home_tcp_m": [
+        -1.15,
+        -0.42,
+        0.82
+      ]
+    },
+    {
+      "id": "B",
+      "side": "north",
+      "base_position_m": [
+        -0.8999999999999999,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "home_tcp_m": [
+        -0.8999999999999999,
+        0.42,
+        0.82
+      ]
+    },
+    {
+      "id": "C",
+      "side": "south-west",
+      "base_position_m": [
+        -0.55,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "home_tcp_m": [
+        -0.55,
+        -0.42,
+        0.82
+      ]
+    },
+    {
+      "id": "D",
+      "side": "north",
+      "base_position_m": [
+        -0.3,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "home_tcp_m": [
+        -0.3,
+        0.42,
+        0.82
+      ]
+    },
+    {
+      "id": "E",
+      "side": "south-west",
+      "base_position_m": [
+        0.04999999999999999,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "home_tcp_m": [
+        0.04999999999999999,
+        -0.42,
+        0.82
+      ]
+    },
+    {
+      "id": "F",
+      "side": "north",
+      "base_position_m": [
+        0.3,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "home_tcp_m": [
+        0.3,
+        0.42,
+        0.82
+      ]
+    },
+    {
+      "id": "G",
+      "side": "south-west",
+      "base_position_m": [
+        0.6499999999999999,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "home_tcp_m": [
+        0.6499999999999999,
+        -0.42,
+        0.82
+      ]
+    },
+    {
+      "id": "H",
+      "side": "north",
+      "base_position_m": [
+        0.8999999999999999,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "home_tcp_m": [
+        0.8999999999999999,
+        0.42,
+        0.82
+      ]
+    }
+  ],
+  "module": {
+    "center_xy_m": [
+      0.0,
+      0.0
+    ],
+    "stem_length_m": 0.3,
+    "stem_width_m": [
+      0.016,
+      0.02
+    ],
+    "stem_offset_y_m": -0.03,
+    "stem_mass_kg": 0.75,
+    "face_radius_m": 0.115,
+    "face_thickness_m": 0.008,
+    "face_mass_kg": 0.3,
+    "knob_radius_m": 0.027,
+    "knob_height_m": 0.04,
+    "knob_mass_kg": 0.12,
+    "spring_nm_per_rad": 0.03,
+    "damping_nm_s_per_rad": 0.003,
+    "range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "friction": [
+      0.8,
+      0.005,
+      0.0001
+    ],
+    "stem_rgba": [
+      0.045,
+      0.34,
+      0.92,
+      1.0
+    ],
+    "knob_rgba": [
+      0.78,
+      0.035,
+      0.025,
+      1.0
+    ],
+    "assembled_mass_kg": 1.1903552420800265,
+    "hinge_axis_local": [
+      0,
+      0,
+      -1
+    ]
+  },
+  "physics": {
+    "timestep_s": 0.001,
+    "gravity_m_s2": [
+      0.0,
+      0.0,
+      -9.81
+    ],
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 0
+  },
+  "pair_spacing_m": 0.6,
+  "contact_sequence": {
+    "kind": "lift_before_knob_contact",
+    "airborne_duration_s": 0.25,
+    "contact_tolerance_m": 0.0002
+  },
+  "feedback": {
+    "angle_tolerance_deg": 4.0,
+    "max_speed_deg_s": 5.0,
+    "stable_duration_s": 0.25,
+    "max_sample_gap_s": 0.03
+  },
+  "airborne": {
+    "minimum_clearance_m": 0.02
+  },
+  "apparatus": "floating"
+}

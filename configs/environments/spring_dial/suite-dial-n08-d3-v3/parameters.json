@@ -1,0 +1,93 @@
+{
+  "case": {
+    "id": "dial-n08-d3",
+    "family": "dial",
+    "level": 3,
+    "arms": 16,
+    "dials": 8,
+    "mechanism": "airborne_crank",
+    "candidate_codes": 6561,
+    "status": "generated",
+    "layout": "annular_inner_outer_facing_pairs",
+    "directory": "configs/environments/spring_dial/suite-dial-n08-d3-v3",
+    "scene_sha256": "b4ddede4b94b01fbc50c60bc73492bfc0534dffe02ea6a5e125e3778b3af7b93",
+    "layout_report": "configs/environments/spring_dial/suite-dial-n08-d3-v2/layout-validation.json",
+    "scene_revision": 3,
+    "history": [
+      {
+        "directory": "configs/environments/spring_dial/suite-dial-n08-d3",
+        "scene_sha256": "7b7539f8bc0154554e744cc64a0ce2b8702482dd7bfe4af4c33bda58332743ae",
+        "status": "generated",
+        "superseded_reason": "Freeze a common 0.03 Nm/rad spring, physical crank balance and calibrated hard contacts; earlier scenes and witness records remain unchanged"
+      },
+      {
+        "directory": "configs/environments/spring_dial/suite-dial-n08-d3-v2",
+        "scene_revision": 2,
+        "scene_sha256": "1d3f30be76cbf01561887b363f7706950a475b596657b70b19c22305d50ab151",
+        "status": "layout_checked",
+        "verification_results": {},
+        "last_oracle_report": null,
+        "superseded_reason": "Freeze the successful 0.5 ms floating-module integration profile without changing robot drive inertia/force; include all free module roots and complete handle mass in metadata"
+      }
+    ],
+    "verification_results": {},
+    "last_oracle_report": null,
+    "contract_sha256": "f6602f05db5097730ac2c9247bdf306caff2275d294a042dc06dfe671637be31",
+    "previous_contract_sha256": "90ec0fd372176588c8f7900d5dffbc19b94a99c93a52f726a176a313f117e30d"
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 20,
+    "timestep_s": 0.0005,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "dial_count": 8,
+    "interface": "crank",
+    "free_modules": true,
+    "handle_material": "anodized aluminium",
+    "handle_mass_kg": 0.2882304,
+    "spring_nm_rad": 0.03,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      0.8725182257924048,
+      -2.1064453341257336
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "rotor_counterbalanced": true,
+    "balance_mass_kg": 0.04575,
+    "balance_arm_mass_kg": 0.015,
+    "balance_radius_m": 0.06,
+    "handle_stem_mass_kg": 0.2592,
+    "parking_fixture": "Passive rear rack; the complete module must leave all external supports before red operation",
+    "handle_cross_section_m": [
+      0.016,
+      0.02
+    ],
+    "handle_attachment_local_m": [
+      0,
+      0.02,
+      -0.154
+    ],
+    "handle_neck_clear_length_m": 0.024,
+    "handle_shoulders": "Two visible passive stop shoulders. They transmit load by real contact and release when the gripper opens; no hand attachment."
+  },
+  "grid": null
+}

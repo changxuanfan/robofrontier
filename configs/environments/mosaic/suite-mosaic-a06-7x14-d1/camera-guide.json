@@ -1,0 +1,278 @@
+{
+  "scope": "Fixed camera calibration; no object tracking",
+  "robot_layout": "robot-layout.png",
+  "cameras": [
+    {
+      "name": "A_front",
+      "position_world_m": [
+        -0.32,
+        0.42,
+        1.25
+      ],
+      "quaternion_wxyz": [
+        0.0,
+        0.0,
+        0.367738219294592,
+        0.9299293532683235
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed": true
+    },
+    {
+      "name": "A_side",
+      "position_world_m": [
+        0.53,
+        -0.03,
+        1.15
+      ],
+      "quaternion_wxyz": [
+        0.518747390600064,
+        0.25395095171716875,
+        0.3589336235087454,
+        0.7331962307475749
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed": true
+    },
+    {
+      "name": "B_front",
+      "position_world_m": [
+        0.32,
+        0.42,
+        1.25
+      ],
+      "quaternion_wxyz": [
+        0.0,
+        0.0,
+        0.367738219294592,
+        0.9299293532683235
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed": true
+    },
+    {
+      "name": "B_side",
+      "position_world_m": [
+        1.17,
+        -0.03,
+        1.15
+      ],
+      "quaternion_wxyz": [
+        0.5187473906000641,
+        0.2539509517171687,
+        0.3589336235087453,
+        0.7331962307475747
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed": true
+    },
+    {
+      "name": "C_front",
+      "position_world_m": [
+        -0.14,
+        0.0,
+        1.25
+      ],
+      "quaternion_wxyz": [
+        0.6575593517204521,
+        0.2600301885646717,
+        -0.2600301885646717,
+        -0.6575593517204521
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed": true
+    },
+    {
+      "name": "C_side",
+      "position_world_m": [
+        0.31,
+        0.85,
+        1.15
+      ],
+      "quaternion_wxyz": [
+        -0.15163822908589472,
+        -0.07423395913090548,
+        0.4333748392268806,
+        0.8852578243181587
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed": true
+    },
+    {
+      "name": "D_front",
+      "position_world_m": [
+        0.32,
+        -0.42,
+        1.25
+      ],
+      "quaternion_wxyz": [
+        0.9299293532683235,
+        0.367738219294592,
+        0.0,
+        0.0
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed": true
+    },
+    {
+      "name": "D_side",
+      "position_world_m": [
+        -0.53,
+        0.03,
+        1.15
+      ],
+      "quaternion_wxyz": [
+        0.7331962307475748,
+        0.3589336235087453,
+        -0.25395095171716875,
+        -0.5187473906000641
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed": true
+    },
+    {
+      "name": "E_front",
+      "position_world_m": [
+        -0.32,
+        -0.42,
+        1.25
+      ],
+      "quaternion_wxyz": [
+        0.9299293532683235,
+        0.367738219294592,
+        0.0,
+        0.0
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed": true
+    },
+    {
+      "name": "E_side",
+      "position_world_m": [
+        -1.17,
+        0.03,
+        1.15
+      ],
+      "quaternion_wxyz": [
+        0.7331962307475748,
+        0.3589336235087453,
+        -0.25395095171716875,
+        -0.5187473906000641
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed": true
+    },
+    {
+      "name": "F_front",
+      "position_world_m": [
+        0.14,
+        0.0,
+        1.25
+      ],
+      "quaternion_wxyz": [
+        0.6575593517204521,
+        0.2600301885646717,
+        0.2600301885646717,
+        0.6575593517204521
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed": true
+    },
+    {
+      "name": "F_side",
+      "position_world_m": [
+        -0.31,
+        -0.85,
+        1.15
+      ],
+      "quaternion_wxyz": [
+        0.8852578243181587,
+        0.4333748392268806,
+        0.07423395913090548,
+        0.15163822908589472
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed": true
+    },
+    {
+      "name": "global",
+      "position_world_m": [
+        0.0,
+        -2.1759999999999997,
+        2.336
+      ],
+      "quaternion_wxyz": [
+        0.9068822799045593,
+        0.4213840651888827,
+        0.0,
+        0.0
+      ],
+      "vertical_fov_deg": 43.0,
+      "fixed": true
+    },
+    {
+      "name": "global_rear",
+      "position_world_m": [
+        0.0,
+        2.1759999999999997,
+        2.336
+      ],
+      "quaternion_wxyz": [
+        0.0,
+        0.0,
+        0.4213840651888827,
+        0.9068822799045593
+      ],
+      "vertical_fov_deg": 43.0,
+      "fixed": true
+    },
+    {
+      "name": "global_side",
+      "position_world_m": [
+        -2.04,
+        -1.632,
+        1.996
+      ],
+      "quaternion_wxyz": [
+        0.7797521554885997,
+        0.45203329499948874,
+        -0.21725843346798088,
+        -0.37476826080903225
+      ],
+      "vertical_fov_deg": 48.0,
+      "fixed": true
+    },
+    {
+      "name": "top",
+      "position_world_m": [
+        0.0,
+        0.0,
+        4.072
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "vertical_fov_deg": 48.0,
+      "fixed": true
+    },
+    {
+      "name": "assembly_close",
+      "position_world_m": [
+        0.0,
+        -0.4,
+        1.35
+      ],
+      "quaternion_wxyz": [
+        0.9802130827371325,
+        0.19794522583524807,
+        0.0,
+        0.0
+      ],
+      "vertical_fov_deg": 48.0,
+      "fixed": true
+    }
+  ]
+}

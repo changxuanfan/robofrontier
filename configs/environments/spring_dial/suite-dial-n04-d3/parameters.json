@@ -1,0 +1,66 @@
+{
+  "case": {
+    "id": "dial-n04-d3",
+    "family": "dial",
+    "level": 3,
+    "arms": 8,
+    "dials": 4,
+    "mechanism": "airborne_crank",
+    "candidate_codes": 81,
+    "status": "oracle_failed",
+    "layout": "linear_facing_pairs_0.70m",
+    "directory": "configs/environments/spring_dial/suite-dial-n04-d3",
+    "scene_sha256": "f177746af0d43d99a33dd627e82f7da8ff1b62a4d7b053afbf6748ac80cf7c79",
+    "layout_report": "configs/environments/spring_dial/suite-dial-n04-d3/layout-validation.json",
+    "verification_results": {
+      "0": {
+        "passed": false,
+        "scene_sha256": "f177746af0d43d99a33dd627e82f7da8ff1b62a4d7b053afbf6748ac80cf7c79",
+        "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-004/report.json"
+      }
+    },
+    "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-004/report.json"
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 20,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "dial_count": 4,
+    "interface": "crank",
+    "free_modules": true,
+    "handle_material": "anodized aluminium",
+    "handle_mass_kg": 0.2592,
+    "spring_nm_rad": 0.06,
+    "damping_nm_s_rad": 0.006,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      -0.25,
+      -0.69
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "rotor_counterbalanced": true,
+    "balance_mass_kg": 0.04575,
+    "balance_arm_mass_kg": 0.015,
+    "balance_radius_m": 0.06
+  },
+  "grid": null
+}

@@ -1,0 +1,73 @@
+{
+  "status": "design draft, not a built environment",
+  "scale_pairing": "4 arms:7x7, 6 arms:7x14, 8 arms:7x21",
+  "shared_pitch_m": 0.051,
+  "targets": [
+    {
+      "arms": 4,
+      "rows": 7,
+      "columns": 7,
+      "pattern": [
+        "RBBWWWW",
+        "WRBBBWW",
+        "WYRRRRW",
+        "BYYYRRR",
+        "WYRRRRW",
+        "WRBBBWW",
+        "RBBWWWW"
+      ],
+      "inventory_counts": {
+        "R": 15,
+        "B": 11,
+        "W": 18,
+        "Y": 5
+      },
+      "status": "design draft",
+      "physical_pitch_m": 0.051
+    },
+    {
+      "arms": 6,
+      "rows": 7,
+      "columns": 14,
+      "pattern": [
+        "RBBWWWWWWWWWWW",
+        "WRBBBBBBBBBBWW",
+        "WYRRRRRRRRRRRW",
+        "BYYYYBYYYBYRRR",
+        "WYRRRRRRRRRRRW",
+        "WRBBBBBBBBBBWW",
+        "RBBWWWWWWWWWWW"
+      ],
+      "inventory_counts": {
+        "R": 29,
+        "B": 27,
+        "W": 32,
+        "Y": 10
+      },
+      "status": "design draft",
+      "physical_pitch_m": 0.051
+    },
+    {
+      "arms": 8,
+      "rows": 7,
+      "columns": 21,
+      "pattern": [
+        "RBBWWWWWWWWWWWWWWWWWW",
+        "WRBBBBBBBBBBBBBBBBBWW",
+        "WYRRRRRRRRRRRRRRRRRRW",
+        "BYYYYBYYYBYYYBYYYBRRR",
+        "WYRRRRRRRRRRRRRRRRRRW",
+        "WRBBBBBBBBBBBBBBBBBWW",
+        "RBBWWWWWWWWWWWWWWWWWW"
+      ],
+      "inventory_counts": {
+        "R": 43,
+        "B": 43,
+        "W": 46,
+        "Y": 15
+      },
+      "status": "design draft",
+      "physical_pitch_m": 0.051
+    }
+  ]
+}

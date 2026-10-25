@@ -1,0 +1,190 @@
+{
+  "case": {
+    "id": "dial-n04-d3",
+    "family": "dial",
+    "level": 3,
+    "arms": 8,
+    "dials": 4,
+    "mechanism": "airborne_crank",
+    "candidate_codes": 81,
+    "status": "planned",
+    "layout": "linear_facing_pairs_0.70m",
+    "directory": "configs/environments/spring_dial/suite-dial-n04-d3-v5",
+    "scene_sha256": null,
+    "layout_report": "configs/environments/spring_dial/suite-dial-n04-d3-v3/layout-validation.json",
+    "verification_results": {},
+    "last_oracle_report": null,
+    "scene_revision": 5,
+    "history": [
+      {
+        "directory": "configs/environments/spring_dial/suite-dial-n04-d3",
+        "scene_sha256": "3b894115c6b5df77d1825d2c5b4cd5f11bd9c8ac8fa95668bb8e343dea2970f8",
+        "status": "oracle_failed",
+        "verification_results": {
+          "0": {
+            "passed": false,
+            "scene_sha256": "3b894115c6b5df77d1825d2c5b4cd5f11bd9c8ac8fa95668bb8e343dea2970f8",
+            "executor_sha256": "68fc902cc1d00b72c95f58c9926ab4d94d949505a831724315b9db58004cf705",
+            "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-005/report.json"
+          }
+        },
+        "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-005/report.json",
+        "superseded_reason": "Freeze a common 0.03 Nm/rad spring, physical crank balance and calibrated hard contacts; earlier scenes and witness records remain unchanged"
+      },
+      {
+        "directory": "configs/environments/spring_dial/suite-dial-n04-d3-v2",
+        "scene_revision": 2,
+        "scene_sha256": "7b27086e2a7a87165fb72768eef7dd2c735ede1582a5a735337cc97aaf18f25b",
+        "status": "oracle_failed",
+        "verification_results": {
+          "0": {
+            "passed": false,
+            "scene_sha256": "7b27086e2a7a87165fb72768eef7dd2c735ede1582a5a735337cc97aaf18f25b",
+            "executor_sha256": "2a3e0def6f7452f4ac01d168d12423be7abd3fc2140378953ea153069759a9e3",
+            "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-011/report.json"
+          }
+        },
+        "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-011/report.json",
+        "superseded_reason": "Engineering prototype of an upright parked module and side-accessible gravity-bearing blue grip; real rack contacts must clear before operation"
+      },
+      {
+        "directory": "configs/environments/spring_dial/suite-dial-n04-d3-v3",
+        "scene_revision": 3,
+        "scene_sha256": "31474578e60f1a636d7287985c7dd05d385fb5e560e18ee030c5441fb44bfc5e",
+        "status": "layout_checked",
+        "verification_results": {},
+        "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-017/report.json",
+        "superseded_reason": "Freeze the successful 0.5 ms floating-module integration profile without changing robot drive inertia/force; include all free module roots and complete handle mass in metadata"
+      },
+      {
+        "directory": "configs/environments/spring_dial/suite-dial-n04-d3-v4",
+        "scene_revision": 4,
+        "scene_sha256": "e5d20a2328efdaab709e4bbf18cb0de48181cc506e73b424a9bb0dbe08b3b902",
+        "status": "oracle_witness_passed",
+        "verification_results": {
+          "2": {
+            "passed": false,
+            "verification_seed": 2,
+            "scene_sha256": "e5d20a2328efdaab709e4bbf18cb0de48181cc506e73b424a9bb0dbe08b3b902",
+            "scene_bundle_sha256": "56a39b82fc1caff0a7e6529ed6cf06458de1185c61fbc87b65352edb40f51aed",
+            "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+            "finished_at_unix_s": 1792811207.668345,
+            "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-2/attempt-001/report.json"
+          },
+          "0": {
+            "passed": true,
+            "verification_seed": 0,
+            "scene_sha256": "e5d20a2328efdaab709e4bbf18cb0de48181cc506e73b424a9bb0dbe08b3b902",
+            "scene_bundle_sha256": "56a39b82fc1caff0a7e6529ed6cf06458de1185c61fbc87b65352edb40f51aed",
+            "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+            "finished_at_unix_s": 1792811619.764071,
+            "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-018/report.json"
+          },
+          "1": {
+            "passed": true,
+            "verification_seed": 1,
+            "scene_sha256": "e5d20a2328efdaab709e4bbf18cb0de48181cc506e73b424a9bb0dbe08b3b902",
+            "scene_bundle_sha256": "56a39b82fc1caff0a7e6529ed6cf06458de1185c61fbc87b65352edb40f51aed",
+            "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+            "finished_at_unix_s": 1792811847.7933178,
+            "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-1/attempt-001/report.json"
+          }
+        },
+        "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d3/seed-1/attempt-001/report.json",
+        "superseded_reason": "Freeze detent-band feedback rule v2 matching the requested angular tolerance, two-phase bounded grasp driver validation, and a common 2 ms physics step; keep all previous rules and assets archived"
+      }
+    ],
+    "contract_sha256": "ad8938a28fcba344e32516d3e72b9f23ab1911453cd3658bc60c679349114375",
+    "previous_contract_sha256": "3c7b898ddd3e728d362ba930aabd444c736cfdae2925ce89f47774680b8b84d6",
+    "oracle_attempts": [
+      {
+        "passed": false,
+        "verification_seed": 2,
+        "scene_sha256": "e5d20a2328efdaab709e4bbf18cb0de48181cc506e73b424a9bb0dbe08b3b902",
+        "scene_bundle_sha256": "56a39b82fc1caff0a7e6529ed6cf06458de1185c61fbc87b65352edb40f51aed",
+        "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+        "finished_at_unix_s": 1792811207.668345,
+        "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-2/attempt-001/report.json"
+      },
+      {
+        "passed": true,
+        "verification_seed": 0,
+        "scene_sha256": "e5d20a2328efdaab709e4bbf18cb0de48181cc506e73b424a9bb0dbe08b3b902",
+        "scene_bundle_sha256": "56a39b82fc1caff0a7e6529ed6cf06458de1185c61fbc87b65352edb40f51aed",
+        "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+        "finished_at_unix_s": 1792811619.764071,
+        "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-018/report.json"
+      },
+      {
+        "passed": true,
+        "verification_seed": 1,
+        "scene_sha256": "e5d20a2328efdaab709e4bbf18cb0de48181cc506e73b424a9bb0dbe08b3b902",
+        "scene_bundle_sha256": "56a39b82fc1caff0a7e6529ed6cf06458de1185c61fbc87b65352edb40f51aed",
+        "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+        "finished_at_unix_s": 1792811847.7933178,
+        "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-1/attempt-001/report.json"
+      }
+    ],
+    "legacy_verification_results": {},
+    "last_oracle_passed": true,
+    "best_oracle_witness": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-018/report.json"
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 20,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "dial_count": 4,
+    "interface": "crank",
+    "free_modules": true,
+    "handle_material": "anodized aluminium",
+    "handle_mass_kg": 0.2882304,
+    "spring_nm_rad": 0.03,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      -0.25,
+      -0.69
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "feedback_rule_version": 2,
+    "feedback_dwell_sim_s": 0.25,
+    "feedback_stability": "same nonzero 4-degree detent band throughout the dwell; in-band vibration allowed",
+    "rotor_counterbalanced": true,
+    "balance_mass_kg": 0.04575,
+    "balance_arm_mass_kg": 0.015,
+    "balance_radius_m": 0.06,
+    "handle_stem_mass_kg": 0.2592,
+    "parking_fixture": "Passive rear rack; the complete module must leave all external supports before red operation",
+    "handle_cross_section_m": [
+      0.016,
+      0.02
+    ],
+    "handle_attachment_local_m": [
+      0,
+      0.02,
+      -0.154
+    ],
+    "handle_neck_clear_length_m": 0.024,
+    "handle_shoulders": "Two visible passive stop shoulders. They transmit load by real contact and release when the gripper opens; no hand attachment."
+  },
+  "grid": null
+}

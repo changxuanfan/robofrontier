@@ -1,0 +1,192 @@
+{
+  "schema": "robofrontier.static_preview.v2",
+  "camera_id": "global",
+  "sim_time_s": 1.0000000000000007,
+  "frame_scope": "initialization preview; not live",
+  "image_size_pixel": [
+    1536,
+    1152
+  ],
+  "robot_labels": [
+    {
+      "robot_id": "A",
+      "base_anchor_pixel": [
+        478.25638839617164,
+        668.4381422476748
+      ],
+      "label_box_pixel": [
+        37,
+        646.9381422476748,
+        91,
+        689.9381422476748
+      ],
+      "overlap_area_pixel2": 0.0
+    },
+    {
+      "robot_id": "B",
+      "base_anchor_pixel": [
+        586.1604873425742,
+        746.0370630810389
+      ],
+      "label_box_pixel": [
+        37,
+        724.5370630810389,
+        91,
+        767.5370630810389
+      ],
+      "overlap_area_pixel2": 0
+    },
+    {
+      "robot_id": "C",
+      "base_anchor_pixel": [
+        708.4173600643182,
+        833.9577396846369
+      ],
+      "label_box_pixel": [
+        681.4173600643182,
+        1068.5,
+        735.4173600643182,
+        1111.5
+      ],
+      "overlap_area_pixel2": 0.0
+    },
+    {
+      "robot_id": "D",
+      "base_anchor_pixel": [
+        918.8364845558825,
+        807.5280245345738
+      ],
+      "label_box_pixel": [
+        891.8364845558825,
+        1068.5,
+        945.8364845558825,
+        1111.5
+      ],
+      "overlap_area_pixel2": 0.0
+    },
+    {
+      "robot_id": "E",
+      "base_anchor_pixel": [
+        998.97713594026,
+        697.9424845313755
+      ],
+      "label_box_pixel": [
+        1445,
+        676.4424845313755,
+        1499,
+        719.4424845313755
+      ],
+      "overlap_area_pixel2": 0.0
+    },
+    {
+      "robot_id": "F",
+      "base_anchor_pixel": [
+        1067.3536134344017,
+        604.4434540109831
+      ],
+      "label_box_pixel": [
+        1445,
+        582.9434540109831,
+        1499,
+        625.9434540109831
+      ],
+      "overlap_area_pixel2": 0
+    },
+    {
+      "robot_id": "G",
+      "base_anchor_pixel": [
+        1014.1584826000008,
+        481.25101002854393
+      ],
+      "label_box_pixel": [
+        1445,
+        459.75101002854393,
+        1499,
+        502.75101002854393
+      ],
+      "overlap_area_pixel2": 0
+    },
+    {
+      "robot_id": "H",
+      "base_anchor_pixel": [
+        906.5103901889153,
+        431.03401600632037
+      ],
+      "label_box_pixel": [
+        879.5103901889153,
+        64.5,
+        933.5103901889153,
+        107.5
+      ],
+      "overlap_area_pixel2": 0.0
+    },
+    {
+      "robot_id": "I",
+      "base_anchor_pixel": [
+        808.6252315458973,
+        385.3713543061059
+      ],
+      "label_box_pixel": [
+        781.6252315458973,
+        64.5,
+        835.6252315458973,
+        107.5
+      ],
+      "overlap_area_pixel2": 0.0
+    },
+    {
+      "robot_id": "J",
+      "base_anchor_pixel": [
+        661.8071792100691,
+        398.05830772008756
+      ],
+      "label_box_pixel": [
+        634.8071792100691,
+        64.5,
+        688.8071792100691,
+        107.5
+      ],
+      "overlap_area_pixel2": 0.0
+    },
+    {
+      "robot_id": "K",
+      "base_anchor_pixel": [
+        580.0119235544728,
+        460.8501635933238
+      ],
+      "label_box_pixel": [
+        553.0119235544728,
+        64.5,
+        607.0119235544728,
+        107.5
+      ],
+      "overlap_area_pixel2": 0.0
+    },
+    {
+      "robot_id": "L",
+      "base_anchor_pixel": [
+        486.94350446106307,
+        532.2961015175182
+      ],
+      "label_box_pixel": [
+        37,
+        510.7961015175182,
+        91,
+        553.7961015175182
+      ],
+      "overlap_area_pixel2": 0
+    }
+  ],
+  "render_size_pixel": [
+    1280,
+    900
+  ],
+  "scene_viewport_pixel": [
+    128,
+    126,
+    1408,
+    1026
+  ],
+  "label_boxes_outside_scene": true,
+  "annotation_source": "fixed robot base geometry only; no object annotations"
+}

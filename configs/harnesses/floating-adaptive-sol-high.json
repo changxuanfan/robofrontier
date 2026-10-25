@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "topology": "adaptive",
+  "manager": "Meta",
+  "coordinator": "Coordinator",
+  "model": "gpt-6.1-sol",
+  "effort": "high",
+  "poll_interval_s": 2.0,
+  "integrity_check_interval_s": 30.0,
+  "session_observation_ttl_s": 6.0,
+  "manager_lease_s": 15.0,
+  "max_unacknowledged_wakes": 3,
+  "max_batch_messages": 32,
+  "max_batch_bytes": 32768,
+  "max_message_chars": 8000,
+  "min_check_interval_s": 1.0,
+  "max_check_interval_s": 600.0,
+  "action_timeout_sim_s": 15.0,
+  "max_action_timeout_sim_s": 600.0,
+  "allowed_tcp_speed_m_s": [
+    0.005,
+    0.15
+  ],
+  "default_tcp_speed_m_s": 0.06,
+  "workspace_x_m": [
+    0.25,
+    0.64
+  ],
+  "workspace_y_radius_m": 0.4,
+  "workspace_z_m": [
+    0.415,
+    0.9
+  ],
+  "video_fps": 15,
+  "motion_check": {
+    "max_horizon_s": 15.0,
+    "default_sample_dt_s": 0.1,
+    "max_sample_dt_s": 0.2,
+    "clearance_m": 0.02
+  },
+  "allowed_angular_speed_rad_s": [
+    0.05,
+    1.5
+  ],
+  "default_angular_speed_rad_s": 0.6,
+  "allowed_gripper_speed_m_s": [
+    0.005,
+    0.1
+  ],
+  "allowed_grasp_force_n": [
+    30.0,
+    70.0
+  ],
+  "default_gripper_speed_m_s": 0.08
+}

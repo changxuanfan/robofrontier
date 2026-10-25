@@ -1,0 +1,345 @@
+{
+  "schema": "robofrontier.cube_transport.startup.v2",
+  "environment": "line-03",
+  "scope": "public initialization and fixed robot/camera configuration; not live object state",
+  "coordinate_frame": {
+    "world": "+X east, +Y north, +Z up",
+    "robot_local": "+X inward, +Y robot left, +Z up",
+    "top_image": "right=east, up=north"
+  },
+  "robots": [
+    {
+      "robot_id": "A",
+      "side": "line",
+      "base_position_world_m": [
+        0,
+        -0.72,
+        0.4
+      ],
+      "yaw_rad": 0
+    },
+    {
+      "robot_id": "B",
+      "side": "line",
+      "base_position_world_m": [
+        0,
+        0.0,
+        0.4
+      ],
+      "yaw_rad": 0
+    },
+    {
+      "robot_id": "C",
+      "side": "line",
+      "base_position_world_m": [
+        0,
+        0.72,
+        0.4
+      ],
+      "yaw_rad": 0
+    }
+  ],
+  "neighbors": [
+    [
+      "A",
+      "B"
+    ],
+    [
+      "B",
+      "C"
+    ]
+  ],
+  "initial_inventory": [
+    {
+      "station": "A",
+      "type_code": "a",
+      "color": "red",
+      "shape": "cube",
+      "count": 3,
+      "initial_positions_m": [
+        [
+          0.3,
+          -0.825,
+          0.42
+        ],
+        [
+          0.3,
+          -0.72,
+          0.42
+        ],
+        [
+          0.3,
+          -0.615,
+          0.42
+        ]
+      ]
+    },
+    {
+      "station": "B",
+      "type_code": "b",
+      "color": "blue",
+      "shape": "cube",
+      "count": 3,
+      "initial_positions_m": [
+        [
+          0.3,
+          -0.105,
+          0.42
+        ],
+        [
+          0.3,
+          0.0,
+          0.42
+        ],
+        [
+          0.3,
+          0.105,
+          0.42
+        ]
+      ]
+    },
+    {
+      "station": "C",
+      "type_code": "c",
+      "color": "green",
+      "shape": "cube",
+      "count": 3,
+      "initial_positions_m": [
+        [
+          0.3,
+          0.615,
+          0.42
+        ],
+        [
+          0.3,
+          0.72,
+          0.42
+        ],
+        [
+          0.3,
+          0.825,
+          0.42
+        ]
+      ]
+    }
+  ],
+  "cameras": [
+    {
+      "id": "A_front",
+      "station_id": "A",
+      "kind": "fixed_oblique",
+      "position_world_m": [
+        1.1,
+        -0.72,
+        1.25
+      ],
+      "rotation_camera_to_world_row_major": [
+        0.0,
+        -0.7295372041400849,
+        0.6839411288813299,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.6839411288813299,
+        0.7295372041400849
+      ],
+      "fovy_deg": 50.0
+    },
+    {
+      "id": "A_side",
+      "station_id": "A",
+      "kind": "fixed_oblique",
+      "position_world_m": [
+        0.65,
+        -1.57,
+        1.15
+      ],
+      "rotation_camera_to_world_row_major": [
+        0.9429903335828893,
+        -0.20413559732101352,
+        0.2628647726029941,
+        0.33282011773513753,
+        0.5783841924095383,
+        -0.7447835223751498,
+        0.0,
+        0.7898103467777307,
+        0.613351136073653
+      ],
+      "fovy_deg": 50.0
+    },
+    {
+      "id": "B_front",
+      "station_id": "B",
+      "kind": "fixed_oblique",
+      "position_world_m": [
+        1.1,
+        0.0,
+        1.25
+      ],
+      "rotation_camera_to_world_row_major": [
+        0.0,
+        -0.7295372041400849,
+        0.6839411288813299,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.6839411288813299,
+        0.7295372041400849
+      ],
+      "fovy_deg": 50.0
+    },
+    {
+      "id": "B_side",
+      "station_id": "B",
+      "kind": "fixed_oblique",
+      "position_world_m": [
+        0.65,
+        -0.85,
+        1.15
+      ],
+      "rotation_camera_to_world_row_major": [
+        0.9429903335828893,
+        -0.20413559732101344,
+        0.262864772602994,
+        0.33282011773513737,
+        0.5783841924095379,
+        -0.7447835223751498,
+        2.7755575615628914e-17,
+        0.7898103467777307,
+        0.6133511360736528
+      ],
+      "fovy_deg": 50.0
+    },
+    {
+      "id": "C_front",
+      "station_id": "C",
+      "kind": "fixed_oblique",
+      "position_world_m": [
+        1.1,
+        0.72,
+        1.25
+      ],
+      "rotation_camera_to_world_row_major": [
+        0.0,
+        -0.7295372041400849,
+        0.6839411288813299,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.6839411288813299,
+        0.7295372041400849
+      ],
+      "fovy_deg": 50.0
+    },
+    {
+      "id": "C_side",
+      "station_id": "C",
+      "kind": "fixed_oblique",
+      "position_world_m": [
+        0.65,
+        -0.13,
+        1.15
+      ],
+      "rotation_camera_to_world_row_major": [
+        0.9429903335828893,
+        -0.20413559732101344,
+        0.262864772602994,
+        0.33282011773513737,
+        0.5783841924095379,
+        -0.7447835223751498,
+        2.7755575615628914e-17,
+        0.7898103467777307,
+        0.6133511360736528
+      ],
+      "fovy_deg": 50.0
+    },
+    {
+      "id": "global",
+      "station_id": null,
+      "kind": "fixed_oblique",
+      "position_world_m": [
+        1.2320000000000002,
+        -1.624,
+        2.7520000000000002
+      ],
+      "rotation_camera_to_world_row_major": [
+        0.7966912709023963,
+        -0.4524837455614697,
+        0.40067627690017765,
+        0.6043864813742319,
+        0.5964558464219372,
+        -0.5281641831865977,
+        0.0,
+        0.6629471195138823,
+        0.7486662251819876
+      ],
+      "fovy_deg": 48.0
+    },
+    {
+      "id": "global_side",
+      "station_id": null,
+      "kind": "fixed_oblique",
+      "position_world_m": [
+        -1.9040000000000001,
+        -1.288,
+        2.192
+      ],
+      "rotation_camera_to_world_row_major": [
+        0.5603093677042106,
+        0.4909981155444737,
+        -0.66706391222632,
+        -0.8282834131279632,
+        0.33214578404479117,
+        -0.4512491170942754,
+        5.551115123125783e-17,
+        0.805357081469485,
+        0.5927899892263309
+      ],
+      "fovy_deg": 48.0
+    },
+    {
+      "id": "top",
+      "station_id": null,
+      "kind": "top_down_north_up",
+      "position_world_m": [
+        0.0,
+        0.0,
+        3.7600000000000002
+      ],
+      "rotation_camera_to_world_row_major": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "fovy_deg": 48.0
+    }
+  ],
+  "raw_render_size_pixel": [
+    1280,
+    900
+  ],
+  "annotated_image": {
+    "size_pixel": [
+      1536,
+      1152
+    ],
+    "scene_viewport_pixel": [
+      128,
+      126,
+      1408,
+      1026
+    ],
+    "calibration": "camera intrinsics use raw render size; add viewport origin for annotated pixels"
+  },
+  "initial_top_image": "../../../../benchmarks/cube_transport/previews/line-03-top.png",
+  "adapter_status": "offline assets; robot_id names are not yet bound to the live action service"
+}

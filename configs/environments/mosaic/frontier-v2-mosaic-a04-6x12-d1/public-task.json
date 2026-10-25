@@ -1,0 +1,207 @@
+{
+  "kind": "frontier_suite",
+  "id": "mosaic-a04-6x12-d1",
+  "suite_version": 2,
+  "family": "mosaic",
+  "level": 1,
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -0.378,
+        -0.6779999999999999,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "B": {
+      "base_position_m": [
+        0.378,
+        -0.6779999999999999,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "C": {
+      "base_position_m": [
+        -0.378,
+        0.6779999999999999,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "D": {
+      "base_position_m": [
+        0.378,
+        0.6779999999999999,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    }
+  },
+  "rules": [
+    "Build the entire single right-pointing rocket reference, including background cells, one released cube per pixel.",
+    "Cube side is 100 mm and common cell-center pitch is 126 mm. L1 has 125 mm clear square pockets, L2 printed lines, L3 no visible grid. The reference is north-up, centered on the declared assembly origin.",
+    "Stock allocations do not restrict which robot can use an item. Preserve completed placements and account for finger release/withdrawal clearance.",
+    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits."
+  ],
+  "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB",
+      "Robot proprioception and robot geometry",
+      "Action feedback",
+      "Visible dial count"
+    ]
+  },
+  "gripper_profile": "offset-aluminium-40-120mm",
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "assembly_01",
+    "assembly_02"
+  ],
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "execution_readiness": "environment_preview_only",
+  "initial_supplies": [
+    {
+      "source": "A",
+      "color": "red",
+      "count": 18
+    },
+    {
+      "source": "B",
+      "color": "blue",
+      "count": 18
+    },
+    {
+      "source": "C",
+      "color": "yellow",
+      "count": 18
+    },
+    {
+      "source": "D",
+      "color": "white",
+      "count": 18
+    }
+  ],
+  "mechanism": {
+    "kind": "recessed_grid",
+    "stock_packing": "Single layer; non-exclusive station allocation",
+    "stock_count": 72
+  },
+  "target": {
+    "rows": 6,
+    "columns": 12,
+    "colors": 4,
+    "pitch_m": 0.126,
+    "cube_side_m": 0.1,
+    "pattern": [
+      [
+        "blue",
+        "blue",
+        "blue",
+        "yellow",
+        "yellow",
+        "yellow",
+        "red",
+        "red",
+        "blue",
+        "blue",
+        "blue",
+        "blue"
+      ],
+      [
+        "yellow",
+        "yellow",
+        "yellow",
+        "white",
+        "white",
+        "white",
+        "red",
+        "red",
+        "white",
+        "red",
+        "blue",
+        "blue"
+      ],
+      [
+        "yellow",
+        "yellow",
+        "yellow",
+        "white",
+        "white",
+        "white",
+        "red",
+        "red",
+        "white",
+        "red",
+        "white",
+        "red"
+      ],
+      [
+        "yellow",
+        "yellow",
+        "yellow",
+        "white",
+        "white",
+        "white",
+        "red",
+        "red",
+        "white",
+        "red",
+        "white",
+        "red"
+      ],
+      [
+        "yellow",
+        "yellow",
+        "yellow",
+        "white",
+        "white",
+        "white",
+        "red",
+        "red",
+        "white",
+        "red",
+        "blue",
+        "blue"
+      ],
+      [
+        "blue",
+        "blue",
+        "blue",
+        "yellow",
+        "yellow",
+        "yellow",
+        "red",
+        "red",
+        "blue",
+        "blue",
+        "blue",
+        "blue"
+      ]
+    ],
+    "pocket_opening_m": 0.125,
+    "depth_m": 0.03333333333333333,
+    "center_world_m": [
+      0,
+      0,
+      0.4
+    ],
+    "row1": "north",
+    "column1": "west",
+    "reference_image": "target-pattern.png"
+  }
+}

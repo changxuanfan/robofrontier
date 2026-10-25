@@ -1,0 +1,19 @@
+{
+  "schema": "robofrontier.beam_handoff.task.v1",
+  "id": "beam-handoff-facing-08-red-draft",
+  "status": "design draft; frozen policy task and evaluator are provided through task.json; engineering references are separate",
+  "goal": "Lift the timber at the left start and cooperatively hand it to the far-right finish zone.",
+  "coordinate_frame": "+X rightward transport, +Y north, +Z up; beam initially spans north/south",
+  "rules": [
+    "Use real gripper contact; no welding, snapping, teleportation or simulator reset.",
+    "During transport keep the timber off the table and floor, supported by at least two robots; initial pickup, final placement and declared drop recovery are separate phases.",
+    "Receiving robots establish their support before the current sending robots release. Grasp locations, poses, arm grouping and motion order are policy choices.",
+    "The initial sending pair is A/B. Custody advances only after a verified airborne handover, not merely because the timber moves into another region.",
+    "A drop counts as a failed transfer attempt. Only the last established sending team may retrieve it and retry; the intended receiving team must not pick it up to bypass the handover.",
+    "If the sending team cannot physically retrieve a drop, stop and report failure; do not reset or use the receiver as an undeclared recovery shortcut.",
+    "Finish by releasing the timber stably inside the marked right-hand zone."
+  ],
+  "planning_note": "Choose grasp spacing that permits simultaneous sender/receiver access and withdrawal. This is a general geometry consideration, not a prescribed alternating-grasp solution.",
+  "implementation_boundary": "The passive preview does not enforce rules. task.json selects the shared policy runtime and private process evaluator; Oracle engineering commands remain separate from policy inputs.",
+  "two_arm_requirement": "Explicit task rule. The preview does not prove that a single Panda is physically incapable of carrying this timber."
+}

@@ -1,0 +1,16 @@
+{
+  "status": "engineering_initial_state_checked",
+  "oracle_verified": false,
+  "policy_verified": false,
+  "frozen_input": false,
+  "robot_count": 8,
+  "nq": 240,
+  "nv": 216,
+  "ngeom": 841,
+  "physics_sha256": "46ce26e740d0cc1bddda813f03fa57731973684d5f8feec32324ebcc5c38688e",
+  "scope": "Static geometry, optional passive settle and endpoint IK only; no robot task commands",
+  "oracle_adapter_status": "Existing staged reference not qualified for unrestricted r11 transport; deferred until unit checks and replanning",
+  "engineering_passed": true,
+  "check_duration_sim_s": 0.0,
+  "endpoint_coverage_checked": false
+}

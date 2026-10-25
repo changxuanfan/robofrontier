@@ -1,0 +1,47 @@
+{
+  "case": {
+    "id": "relay-a16-d2",
+    "family": "relay",
+    "level": 2,
+    "arms": 16,
+    "pairs": 8,
+    "layout": "closed_loop",
+    "payload": "short_link_weight",
+    "status": "generated",
+    "directory": "configs/environments/beam_handoff/suite-relay-a16-d2",
+    "scene_sha256": "837bb00a7c6f8519b30f41a4952b99b1cd48c55fa2cdcfc624af5cf76ae7d0f9",
+    "layout_report": "configs/environments/beam_handoff/suite-relay-a16-d2/layout-validation.json"
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "beam_length_m": 1.2,
+    "beam_cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "beam_mass_kg": 1.458,
+    "weight_mass_kg": 0.25,
+    "suspension_length_m": 0.018,
+    "suspension_segments": 1,
+    "opposed_base_spacing_m": 1.3,
+    "minimum_supporting_robots": 2,
+    "loop_radius_m": 1.4
+  },
+  "grid": null
+}

@@ -1,0 +1,112 @@
+{
+  "case": {
+    "id": "relay-a12-d1",
+    "family": "relay",
+    "level": 1,
+    "arms": 12,
+    "pairs": 6,
+    "layout": "bend",
+    "payload": "bare_timber",
+    "status": "planned",
+    "directory": "configs/environments/beam_handoff/suite-relay-a12-d1-v4",
+    "scene_sha256": null,
+    "layout_report": "configs/environments/beam_handoff/suite-relay-a12-d1-v3/layout-validation.json",
+    "verification_results": {},
+    "last_oracle_report": null,
+    "scene_revision": 4,
+    "history": [
+      {
+        "directory": "configs/environments/beam_handoff/suite-relay-a12-d1",
+        "scene_sha256": "ecf74059366174a82e477dec4fc8d16eb8ebdf6b024701f34b419543c334d045",
+        "status": "oracle_witness_passed",
+        "verification_results": {
+          "0": {
+            "passed": true,
+            "scene_sha256": "ecf74059366174a82e477dec4fc8d16eb8ebdf6b024701f34b419543c334d045",
+            "executor_sha256": "3e4cc2bfe4a9c1bce3a0923a8fe3e23a49588176cc986436718dcfbd8eaeae49",
+            "report": "runs/oracle/frontier-v1/relay-a12-d1/seed-0/attempt-004/report.json"
+          }
+        },
+        "last_oracle_report": "runs/oracle/frontier-v1/relay-a12-d1/seed-0/attempt-004/report.json",
+        "superseded_reason": "Align beam with transport direction and stagger opposed bases, preserving old normal-to-path layouts and witnesses"
+      },
+      {
+        "directory": "configs/environments/beam_handoff/suite-relay-a12-d1-v2",
+        "scene_revision": 2,
+        "scene_sha256": "05002b22da2131f1bb4e18b93aac9e103c6edbdbbcb12f36ab93a984f6ee0170",
+        "status": "generated",
+        "verification_results": {},
+        "last_oracle_report": null,
+        "superseded_reason": "Restore the physically demonstrated normal beam orientation for straight/quarter-turn layouts; isolate tangent experiment to the closed ring"
+      },
+      {
+        "directory": "configs/environments/beam_handoff/suite-relay-a12-d1-v3",
+        "scene_revision": 3,
+        "scene_sha256": "f146cb9621fd3dbd1c4e0a95fbc84fb468dc487063ebca15844980aba841cc42",
+        "status": "generated",
+        "verification_results": {},
+        "last_oracle_report": "runs/oracle/frontier-v1/relay-a12-d1/seed-0/attempt-006/report.json",
+        "superseded_reason": "Freeze explicit staged-handover rules and admit physically reachable floor recovery by the sending team; do not force released arms to return HOME"
+      }
+    ],
+    "oracle_attempts": [
+      {
+        "passed": true,
+        "verification_seed": 0,
+        "scene_sha256": "f146cb9621fd3dbd1c4e0a95fbc84fb468dc487063ebca15844980aba841cc42",
+        "scene_bundle_sha256": "4d748fa06014686771d9ae5d6a3805ddfabc4ff52ff75280eed432da62e42d5f",
+        "executor_sha256": "bc64386eb38ac6a1f731ce61e1cbfb5d52ddeab064030b9fb5485f7e3d1fdfa3",
+        "finished_at_unix_s": 1792808989.0244071,
+        "report": "runs/oracle/frontier-v1/relay-a12-d1/seed-0/attempt-005/report.json"
+      },
+      {
+        "passed": true,
+        "verification_seed": 0,
+        "scene_sha256": "f146cb9621fd3dbd1c4e0a95fbc84fb468dc487063ebca15844980aba841cc42",
+        "scene_bundle_sha256": "4d748fa06014686771d9ae5d6a3805ddfabc4ff52ff75280eed432da62e42d5f",
+        "executor_sha256": "8fd580ba923f877f63a9c19dd4e295ec04dd3c4368951dad0eb2372b2e5a8ae5",
+        "finished_at_unix_s": 1792809097.512727,
+        "report": "runs/oracle/frontier-v1/relay-a12-d1/seed-0/attempt-006/report.json"
+      }
+    ],
+    "legacy_verification_results": {},
+    "last_oracle_passed": true,
+    "best_oracle_witness": "runs/oracle/frontier-v1/relay-a12-d1/seed-0/attempt-006/report.json",
+    "contract_sha256": "ca24f90fe019e90703bbab72abb6a3fab0d955f60b35abf1010ee3e7311756e3"
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "beam_length_m": 1.2,
+    "beam_cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "beam_mass_kg": 1.458,
+    "weight_mass_kg": 0,
+    "suspension_length_m": 0,
+    "suspension_segments": 0,
+    "opposed_base_spacing_m": 1.3,
+    "cross_track_base_spacing_m": 1.3,
+    "longitudinal_pair_stagger_m": 0.0,
+    "minimum_supporting_robots": 2,
+    "loop_radius_m": null,
+    "beam_alignment": "normal"
+  },
+  "grid": null
+}

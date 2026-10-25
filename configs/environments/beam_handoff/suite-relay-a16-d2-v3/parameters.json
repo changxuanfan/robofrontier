@@ -1,0 +1,71 @@
+{
+  "case": {
+    "id": "relay-a16-d2",
+    "family": "relay",
+    "level": 2,
+    "arms": 16,
+    "pairs": 8,
+    "layout": "closed_loop",
+    "payload": "short_link_weight",
+    "status": "planned",
+    "directory": "configs/environments/beam_handoff/suite-relay-a16-d2-v3",
+    "scene_sha256": null,
+    "layout_report": "configs/environments/beam_handoff/suite-relay-a16-d2-v2/layout-validation.json",
+    "scene_revision": 3,
+    "history": [
+      {
+        "directory": "configs/environments/beam_handoff/suite-relay-a16-d2",
+        "scene_sha256": "a1d72652d916aba4d34687648d3ed21d076631a22fa2d2779da8fff200b15dd5",
+        "status": "generated",
+        "superseded_reason": "Align beam with transport direction and stagger opposed bases, preserving old normal-to-path layouts and witnesses"
+      },
+      {
+        "directory": "configs/environments/beam_handoff/suite-relay-a16-d2-v2",
+        "scene_revision": 2,
+        "scene_sha256": "7d2cb4c2a2676f18e30d134007d88c39832dd953ed4aa963b12c3f7d728a16e8",
+        "status": "generated",
+        "verification_results": {},
+        "last_oracle_report": null,
+        "superseded_reason": "Reduce longitudinal base stagger to 0.30 m per opposing pair so a COM-spanning staged handover can use reachable top grasps; keep previous ring prototypes"
+      }
+    ],
+    "verification_results": {},
+    "last_oracle_report": null,
+    "contract_sha256": "9d572476c0a7802f03cc15c3f044fc41b33f7c2ef060f9b50811cc6cc8b118ce"
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "beam_length_m": 1.2,
+    "beam_cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "beam_mass_kg": 1.458,
+    "weight_mass_kg": 0.25,
+    "suspension_length_m": 0.018,
+    "suspension_segments": 1,
+    "opposed_base_spacing_m": 1.044030650891055,
+    "cross_track_base_spacing_m": 1.0,
+    "longitudinal_pair_stagger_m": 0.3,
+    "minimum_supporting_robots": 2,
+    "loop_radius_m": 1.1,
+    "beam_alignment": "tangent"
+  },
+  "grid": null
+}

@@ -1,0 +1,1911 @@
+{
+  "schema": "robofrontier.suite.environment.v1",
+  "id": "mosaic-a04-7x7-d2",
+  "collection": "frontier_suite",
+  "arm_count": 4,
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "cube_contact_time_constant_s": 0.004
+  },
+  "stations": [
+    {
+      "id": "A",
+      "base_position_m": [
+        0,
+        -0.68,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [
+        [
+          0.16,
+          -0.24,
+          0.42
+        ],
+        [
+          0.32,
+          -0.32,
+          0.42
+        ],
+        [
+          0.4,
+          -0.32,
+          0.42
+        ],
+        [
+          0.08,
+          -0.24,
+          0.42
+        ],
+        [
+          0.24,
+          -0.32,
+          0.42
+        ],
+        [
+          0.16,
+          -0.32,
+          0.42
+        ],
+        [
+          -0.24,
+          -0.32,
+          0.42
+        ],
+        [
+          -0.4,
+          -0.32,
+          0.42
+        ],
+        [
+          -0.4,
+          -0.24,
+          0.42
+        ],
+        [
+          -0.16,
+          -0.24,
+          0.42
+        ],
+        [
+          0.08,
+          -0.32,
+          0.42
+        ]
+      ],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.0,
+        -0.41,
+        0.8
+      ]
+    },
+    {
+      "id": "B",
+      "base_position_m": [
+        0.68,
+        0,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793,
+      "side": "suite",
+      "source_positions_m": [
+        [
+          0.32,
+          0.0,
+          0.42
+        ],
+        [
+          0.32,
+          0.08,
+          0.42
+        ],
+        [
+          0.32,
+          -0.08,
+          0.42
+        ],
+        [
+          0.24,
+          0.0,
+          0.42
+        ],
+        [
+          0.32,
+          0.32,
+          0.42
+        ],
+        [
+          0.32,
+          -0.24,
+          0.42
+        ],
+        [
+          0.24,
+          0.24,
+          0.42
+        ],
+        [
+          0.16,
+          0.24,
+          0.42
+        ],
+        [
+          0.16,
+          0.32,
+          0.42
+        ],
+        [
+          0.24,
+          0.32,
+          0.42
+        ],
+        [
+          0.32,
+          -0.4,
+          0.42
+        ],
+        [
+          0.32,
+          0.4,
+          0.42
+        ],
+        [
+          0.32,
+          0.24,
+          0.42
+        ],
+        [
+          0.24,
+          -0.4,
+          0.42
+        ],
+        [
+          0.24,
+          0.4,
+          0.42
+        ]
+      ],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.41,
+        0.0,
+        0.8
+      ]
+    },
+    {
+      "id": "C",
+      "base_position_m": [
+        0,
+        0.68,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [
+        [
+          0.0,
+          0.32,
+          0.42
+        ],
+        [
+          -0.08,
+          0.32,
+          0.42
+        ],
+        [
+          0.08,
+          0.32,
+          0.42
+        ],
+        [
+          0.0,
+          0.24,
+          0.42
+        ],
+        [
+          0.08,
+          0.24,
+          0.42
+        ]
+      ],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.0,
+        0.41,
+        0.8
+      ]
+    },
+    {
+      "id": "D",
+      "base_position_m": [
+        -0.68,
+        0,
+        0.4
+      ],
+      "yaw_rad": 0,
+      "side": "suite",
+      "source_positions_m": [
+        [
+          -0.32,
+          0.0,
+          0.42
+        ],
+        [
+          -0.32,
+          -0.32,
+          0.42
+        ],
+        [
+          -0.32,
+          -0.08,
+          0.42
+        ],
+        [
+          -0.24,
+          0.0,
+          0.42
+        ],
+        [
+          -0.24,
+          0.16,
+          0.42
+        ],
+        [
+          -0.32,
+          0.4,
+          0.42
+        ],
+        [
+          -0.32,
+          0.08,
+          0.42
+        ],
+        [
+          -0.32,
+          -0.16,
+          0.42
+        ],
+        [
+          -0.24,
+          0.08,
+          0.42
+        ],
+        [
+          -0.24,
+          -0.16,
+          0.42
+        ],
+        [
+          -0.32,
+          -0.4,
+          0.42
+        ],
+        [
+          -0.32,
+          -0.24,
+          0.42
+        ],
+        [
+          -0.24,
+          -0.24,
+          0.42
+        ],
+        [
+          -0.32,
+          0.32,
+          0.42
+        ],
+        [
+          -0.32,
+          0.16,
+          0.42
+        ],
+        [
+          -0.32,
+          0.24,
+          0.42
+        ],
+        [
+          -0.24,
+          -0.08,
+          0.42
+        ],
+        [
+          -0.24,
+          0.32,
+          0.42
+        ]
+      ],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.41,
+        0.0,
+        0.8
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "center_m": [
+        0,
+        0,
+        0.375
+      ],
+      "half_size_m": [
+        0.91,
+        0.91,
+        0.025
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "A_B",
+      "stations": [
+        "A",
+        "B"
+      ],
+      "position_m": [
+        0.23000000000000087,
+        -0.15999999999999948,
+        0.6
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "B_C",
+      "stations": [
+        "B",
+        "C"
+      ],
+      "position_m": [
+        0.23000000000000087,
+        0.1400000000000008,
+        0.6
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "C_D",
+      "stations": [
+        "C",
+        "D"
+      ],
+      "position_m": [
+        -0.15999999999999948,
+        0.23000000000000087,
+        0.6
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "D_A",
+      "stations": [
+        "D",
+        "A"
+      ],
+      "position_m": [
+        -0.0699999999999994,
+        -0.3099999999999996,
+        0.6
+      ],
+      "capacity": 1
+    }
+  ],
+  "objects": [
+    {
+      "id": "A_blue_1",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.16,
+        -0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_2",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.32,
+        -0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_3",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.4,
+        -0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_4",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.08,
+        -0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_5",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.24,
+        -0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_6",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.16,
+        -0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_7",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.24,
+        -0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_8",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.4,
+        -0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_9",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.4,
+        -0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_10",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.16,
+        -0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "A_blue_11",
+      "source": "A",
+      "color": "blue",
+      "rgb": [
+        0.07,
+        0.39,
+        0.78
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.08,
+        -0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_1",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.32,
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_2",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.32,
+        0.08,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_3",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.32,
+        -0.08,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_4",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.24,
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_5",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.32,
+        0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_6",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.32,
+        -0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_7",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.24,
+        0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_8",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.16,
+        0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_9",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.16,
+        0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_10",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.24,
+        0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_11",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.32,
+        -0.4,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_12",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.32,
+        0.4,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_13",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.32,
+        0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_14",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.24,
+        -0.4,
+        0.42
+      ]
+    },
+    {
+      "id": "B_red_15",
+      "source": "B",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.24,
+        0.4,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_1",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_2",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        -0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_3",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        -0.08,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_4",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.24,
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_5",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.24,
+        0.16,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_6",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        0.4,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_7",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        0.08,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_8",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        -0.16,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_9",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.24,
+        0.08,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_10",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.24,
+        -0.16,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_11",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        -0.4,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_12",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        -0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_13",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.24,
+        -0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_14",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_15",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        0.16,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_16",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.32,
+        0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_17",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.24,
+        -0.08,
+        0.42
+      ]
+    },
+    {
+      "id": "D_white_18",
+      "source": "D",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.24,
+        0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "C_yellow_1",
+      "source": "C",
+      "color": "yellow",
+      "rgb": [
+        0.97,
+        0.75,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.0,
+        0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "C_yellow_2",
+      "source": "C",
+      "color": "yellow",
+      "rgb": [
+        0.97,
+        0.75,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.08,
+        0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "C_yellow_3",
+      "source": "C",
+      "color": "yellow",
+      "rgb": [
+        0.97,
+        0.75,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.08,
+        0.32,
+        0.42
+      ]
+    },
+    {
+      "id": "C_yellow_4",
+      "source": "C",
+      "color": "yellow",
+      "rgb": [
+        0.97,
+        0.75,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.0,
+        0.24,
+        0.42
+      ]
+    },
+    {
+      "id": "C_yellow_5",
+      "source": "C",
+      "color": "yellow",
+      "rgb": [
+        0.97,
+        0.75,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.08,
+        0.24,
+        0.42
+      ]
+    }
+  ],
+  "floor_rgba": [
+    0.84,
+    0.9,
+    0.95,
+    1
+  ],
+  "table_rgba": [
+    0.604,
+    0.459,
+    0.345,
+    1
+  ],
+  "initial_keyframe": "initial",
+  "scene": "scene.xml",
+  "suite_case": {
+    "id": "mosaic-a04-7x7-d2",
+    "family": "mosaic",
+    "level": 2,
+    "arms": 4,
+    "rows": 7,
+    "columns": 7
+  },
+  "goals": [
+    {
+      "goal_id": "r1c1",
+      "row": 1,
+      "column": 1,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        -0.153,
+        0.153,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r1c2",
+      "row": 1,
+      "column": 2,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        -0.102,
+        0.153,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r1c3",
+      "row": 1,
+      "column": 3,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        -0.051,
+        0.153,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r1c4",
+      "row": 1,
+      "column": 4,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.0,
+        0.153,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r1c5",
+      "row": 1,
+      "column": 5,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.051,
+        0.153,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r1c6",
+      "row": 1,
+      "column": 6,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.102,
+        0.153,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r1c7",
+      "row": 1,
+      "column": 7,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.153,
+        0.153,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r2c1",
+      "row": 2,
+      "column": 1,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        -0.153,
+        0.102,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r2c2",
+      "row": 2,
+      "column": 2,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        -0.102,
+        0.102,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r2c3",
+      "row": 2,
+      "column": 3,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        -0.051,
+        0.102,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r2c4",
+      "row": 2,
+      "column": 4,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        0.0,
+        0.102,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r2c5",
+      "row": 2,
+      "column": 5,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        0.051,
+        0.102,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r2c6",
+      "row": 2,
+      "column": 6,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.102,
+        0.102,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r2c7",
+      "row": 2,
+      "column": 7,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.153,
+        0.102,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r3c1",
+      "row": 3,
+      "column": 1,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        -0.153,
+        0.051,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r3c2",
+      "row": 3,
+      "column": 2,
+      "requires": {
+        "color": "yellow"
+      },
+      "position_m": [
+        -0.102,
+        0.051,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r3c3",
+      "row": 3,
+      "column": 3,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        -0.051,
+        0.051,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r3c4",
+      "row": 3,
+      "column": 4,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        0.0,
+        0.051,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r3c5",
+      "row": 3,
+      "column": 5,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        0.051,
+        0.051,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r3c6",
+      "row": 3,
+      "column": 6,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        0.102,
+        0.051,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r3c7",
+      "row": 3,
+      "column": 7,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.153,
+        0.051,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r4c1",
+      "row": 4,
+      "column": 1,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        -0.153,
+        0.0,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r4c2",
+      "row": 4,
+      "column": 2,
+      "requires": {
+        "color": "yellow"
+      },
+      "position_m": [
+        -0.102,
+        0.0,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r4c3",
+      "row": 4,
+      "column": 3,
+      "requires": {
+        "color": "yellow"
+      },
+      "position_m": [
+        -0.051,
+        0.0,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r4c4",
+      "row": 4,
+      "column": 4,
+      "requires": {
+        "color": "yellow"
+      },
+      "position_m": [
+        0.0,
+        0.0,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r4c5",
+      "row": 4,
+      "column": 5,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        0.051,
+        0.0,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r4c6",
+      "row": 4,
+      "column": 6,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        0.102,
+        0.0,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r4c7",
+      "row": 4,
+      "column": 7,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        0.153,
+        0.0,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r5c1",
+      "row": 5,
+      "column": 1,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        -0.153,
+        -0.051,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r5c2",
+      "row": 5,
+      "column": 2,
+      "requires": {
+        "color": "yellow"
+      },
+      "position_m": [
+        -0.102,
+        -0.051,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r5c3",
+      "row": 5,
+      "column": 3,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        -0.051,
+        -0.051,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r5c4",
+      "row": 5,
+      "column": 4,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        0.0,
+        -0.051,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r5c5",
+      "row": 5,
+      "column": 5,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        0.051,
+        -0.051,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r5c6",
+      "row": 5,
+      "column": 6,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        0.102,
+        -0.051,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r5c7",
+      "row": 5,
+      "column": 7,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.153,
+        -0.051,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r6c1",
+      "row": 6,
+      "column": 1,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        -0.153,
+        -0.102,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r6c2",
+      "row": 6,
+      "column": 2,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        -0.102,
+        -0.102,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r6c3",
+      "row": 6,
+      "column": 3,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        -0.051,
+        -0.102,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r6c4",
+      "row": 6,
+      "column": 4,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        0.0,
+        -0.102,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r6c5",
+      "row": 6,
+      "column": 5,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        0.051,
+        -0.102,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r6c6",
+      "row": 6,
+      "column": 6,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.102,
+        -0.102,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r6c7",
+      "row": 6,
+      "column": 7,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.153,
+        -0.102,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r7c1",
+      "row": 7,
+      "column": 1,
+      "requires": {
+        "color": "red"
+      },
+      "position_m": [
+        -0.153,
+        -0.153,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r7c2",
+      "row": 7,
+      "column": 2,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        -0.102,
+        -0.153,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r7c3",
+      "row": 7,
+      "column": 3,
+      "requires": {
+        "color": "blue"
+      },
+      "position_m": [
+        -0.051,
+        -0.153,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r7c4",
+      "row": 7,
+      "column": 4,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.0,
+        -0.153,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r7c5",
+      "row": 7,
+      "column": 5,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.051,
+        -0.153,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r7c6",
+      "row": 7,
+      "column": 6,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.102,
+        -0.153,
+        0.42000000000000004
+      ]
+    },
+    {
+      "goal_id": "r7c7",
+      "row": 7,
+      "column": 7,
+      "requires": {
+        "color": "white"
+      },
+      "position_m": [
+        0.153,
+        -0.153,
+        0.42000000000000004
+      ]
+    }
+  ],
+  "grid": {
+    "rows": 7,
+    "columns": 7,
+    "pitch_m": 0.051,
+    "cube_side_m": 0.04,
+    "pattern": [
+      "RBBWWWW",
+      "WRBBBWW",
+      "WYRRRRW",
+      "BYYYRRR",
+      "WYRRRRW",
+      "WRBBBWW",
+      "RBBWWWW"
+    ],
+    "floor_z_m": 0.4,
+    "rim_z_m": 0.4,
+    "pocket_opening_m": null
+  },
+  "compiled_mass_kg": {
+    "D_link0": 0.629769,
+    "D_link1": 4.970684,
+    "D_link2": 0.646926,
+    "D_link3": 3.228604,
+    "D_link4": 3.587895,
+    "D_link5": 1.225946,
+    "D_link6": 1.666555,
+    "D_link7": 0.735522,
+    "D_hand": 0.73,
+    "D_left_finger": 0.015,
+    "D_right_finger": 0.015,
+    "D_white_1": 0.05,
+    "D_white_2": 0.05,
+    "D_white_3": 0.05,
+    "D_white_4": 0.05,
+    "D_white_5": 0.05,
+    "D_white_6": 0.05,
+    "D_white_7": 0.05,
+    "D_white_8": 0.05,
+    "D_white_9": 0.05,
+    "D_white_10": 0.05,
+    "D_white_11": 0.05,
+    "D_white_12": 0.05,
+    "D_white_13": 0.05,
+    "D_white_14": 0.05,
+    "D_white_15": 0.05,
+    "D_white_16": 0.05,
+    "D_white_17": 0.05,
+    "D_white_18": 0.05
+  }
+}

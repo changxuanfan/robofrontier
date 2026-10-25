@@ -1,0 +1,147 @@
+{
+  "case": {
+    "id": "dial-n06-d1",
+    "family": "dial",
+    "level": 1,
+    "arms": 6,
+    "dials": 6,
+    "mechanism": "fixed_gear",
+    "candidate_codes": 729,
+    "status": "planned",
+    "layout": "3_rows_2_columns",
+    "directory": "configs/environments/spring_dial/suite-dial-n06-d1-v3",
+    "scene_sha256": null,
+    "layout_report": "configs/environments/spring_dial/suite-dial-n06-d1-v2/layout-validation.json",
+    "verification_results": {},
+    "last_oracle_report": null,
+    "scene_revision": 3,
+    "history": [
+      {
+        "directory": "configs/environments/spring_dial/suite-dial-n06-d1",
+        "scene_sha256": "afacd74f30356a3c9a34211899fce3b0906ccd069d3c1866fa8ea33887df8d0f",
+        "status": "oracle_witness_passed",
+        "verification_results": {
+          "0": {
+            "passed": true,
+            "scene_sha256": "afacd74f30356a3c9a34211899fce3b0906ccd069d3c1866fa8ea33887df8d0f",
+            "report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-001/report.json"
+          }
+        },
+        "last_oracle_report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-001/report.json",
+        "superseded_reason": "Freeze a common 0.03 Nm/rad spring, physical crank balance and calibrated hard contacts; earlier scenes and witness records remain unchanged"
+      },
+      {
+        "directory": "configs/environments/spring_dial/suite-dial-n06-d1-v2",
+        "scene_revision": 2,
+        "scene_sha256": "3e9370df55603246314a2b81250a31ae7893ef89f4ef9c4fc798f86ea4c8328d",
+        "status": "oracle_witness_passed",
+        "verification_results": {
+          "0": {
+            "passed": true,
+            "verification_seed": 0,
+            "scene_sha256": "3e9370df55603246314a2b81250a31ae7893ef89f4ef9c4fc798f86ea4c8328d",
+            "scene_bundle_sha256": "6d76bd6ff17476cfba200a6e4a89ecc58fa6e732e514fd56514a615f452b44cb",
+            "executor_sha256": "ee26314aa11206110c3b1892342accd639894ec8447b57297f70ace5264c699f",
+            "finished_at_unix_s": 1792813832.8996139,
+            "interrupted": null,
+            "report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-004/report.json"
+          }
+        },
+        "last_oracle_report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-004/report.json",
+        "superseded_reason": "Freeze detent-band feedback rule v2 matching the requested angular tolerance, two-phase bounded grasp driver validation, and a common 2 ms physics step; keep all previous rules and assets archived"
+      }
+    ],
+    "contract_sha256": "d5d4e90999f75614e96bef2f0b0909fc84bffd7a290f65b05edf4fd01b4ee085",
+    "previous_contract_sha256": "efd6f0a5351d381e879d9ccb0d6214f84acafee10a1fd1906bcee6b8141d5d73",
+    "oracle_attempts": [
+      {
+        "passed": false,
+        "verification_seed": 0,
+        "scene_sha256": "3e9370df55603246314a2b81250a31ae7893ef89f4ef9c4fc798f86ea4c8328d",
+        "scene_bundle_sha256": "6d76bd6ff17476cfba200a6e4a89ecc58fa6e732e514fd56514a615f452b44cb",
+        "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+        "finished_at_unix_s": 1792811329.222602,
+        "report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-003/report.json"
+      },
+      {
+        "passed": false,
+        "verification_seed": 1,
+        "scene_sha256": "3e9370df55603246314a2b81250a31ae7893ef89f4ef9c4fc798f86ea4c8328d",
+        "scene_bundle_sha256": "6d76bd6ff17476cfba200a6e4a89ecc58fa6e732e514fd56514a615f452b44cb",
+        "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+        "finished_at_unix_s": 1792811449.358728,
+        "report": "runs/oracle/frontier-v1/dial-n06-d1/seed-1/attempt-001/report.json"
+      },
+      {
+        "passed": false,
+        "verification_seed": 2,
+        "scene_sha256": "3e9370df55603246314a2b81250a31ae7893ef89f4ef9c4fc798f86ea4c8328d",
+        "scene_bundle_sha256": "6d76bd6ff17476cfba200a6e4a89ecc58fa6e732e514fd56514a615f452b44cb",
+        "executor_sha256": "1a0e40bf7b1946e1c8f89647a5d96e129f45d73f94a1e5ac63e15b133d9a15a0",
+        "finished_at_unix_s": 1792811646.587352,
+        "report": "runs/oracle/frontier-v1/dial-n06-d1/seed-2/attempt-001/report.json"
+      },
+      {
+        "passed": true,
+        "verification_seed": 0,
+        "scene_sha256": "3e9370df55603246314a2b81250a31ae7893ef89f4ef9c4fc798f86ea4c8328d",
+        "scene_bundle_sha256": "6d76bd6ff17476cfba200a6e4a89ecc58fa6e732e514fd56514a615f452b44cb",
+        "executor_sha256": "ee26314aa11206110c3b1892342accd639894ec8447b57297f70ace5264c699f",
+        "finished_at_unix_s": 1792813832.8996139,
+        "interrupted": null,
+        "report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-004/report.json"
+      }
+    ],
+    "legacy_verification_results": {
+      "0": {
+        "passed": false,
+        "scene_sha256": "3e9370df55603246314a2b81250a31ae7893ef89f4ef9c4fc798f86ea4c8328d",
+        "executor_sha256": "fd85f97c910d7706e218623376a4ee6d4185a37066306f6d1b5f6eba9120e831",
+        "report": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-002/report.json"
+      }
+    },
+    "last_oracle_passed": true,
+    "best_oracle_witness": "runs/oracle/frontier-v1/dial-n06-d1/seed-0/attempt-004/report.json"
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 20,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "dial_count": 6,
+    "interface": "gear",
+    "free_modules": false,
+    "handle_material": null,
+    "handle_mass_kg": 0,
+    "spring_nm_rad": 0.03,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      0.0,
+      -1.2000000000000002
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "feedback_rule_version": 2,
+    "feedback_dwell_sim_s": 0.25,
+    "feedback_stability": "same nonzero 4-degree detent band throughout the dwell; in-band vibration allowed"
+  },
+  "grid": null
+}

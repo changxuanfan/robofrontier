@@ -1,0 +1,24 @@
+{
+  "publisher": "Poly Haven",
+  "asset": "concrete_floor_02",
+  "source_page": "https://polyhaven.com/a/concrete_floor_02",
+  "license": "CC0 1.0",
+  "license_page": "https://polyhaven.com/license",
+  "maps": {
+    "concrete-color.jpg": {
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/concrete_floor_02/concrete_floor_02_diff_2k.jpg",
+      "role": "Diffuse",
+      "resolution": "2k"
+    },
+    "concrete-roughness.jpg": {
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/concrete_floor_02/concrete_floor_02_rough_2k.jpg",
+      "role": "Rough",
+      "resolution": "2k"
+    },
+    "concrete-normal.jpg": {
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/concrete_floor_02/concrete_floor_02_nor_gl_2k.jpg",
+      "role": "nor_gl",
+      "resolution": "2k"
+    }
+  }
+}

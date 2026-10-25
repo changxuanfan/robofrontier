@@ -1,0 +1,11 @@
+{
+  "status": "static_layout_preview",
+  "oracle_verified": false,
+  "policy_verified": false,
+  "frozen_input": false,
+  "robot_count": 4,
+  "physics_sha256": "af1294f50d50ea9aaff4bf21282d6248017831d925908d61c927954034f62e22",
+  "initial_robot_penetrations": [],
+  "physics_steps": 0,
+  "scope": "Static compilation and initial contact screen only; no manipulation or all-cell reachability certification"
+}

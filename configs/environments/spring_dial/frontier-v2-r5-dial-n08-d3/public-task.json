@@ -1,0 +1,391 @@
+{
+  "kind": "frontier_suite",
+  "id": "dial-n08-d3",
+  "suite_version": 2,
+  "family": "dial",
+  "level": 3,
+  "arms": {
+    "A": {
+      "base_position_m": [
+        0.9,
+        0.24999999999999997,
+        0.4
+      ],
+      "yaw_rad": 0.0
+    },
+    "B": {
+      "base_position_m": [
+        2.2,
+        3.9801020972288984e-17,
+        0.4
+      ],
+      "yaw_rad": -3.141592653589793
+    },
+    "C": {
+      "base_position_m": [
+        0.459619407771256,
+        0.8131727983645294,
+        0.4
+      ],
+      "yaw_rad": 0.7853981633974483
+    },
+    "D": {
+      "base_position_m": [
+        1.5556349186104046,
+        1.5556349186104044,
+        0.4
+      ],
+      "yaw_rad": -2.356194490192345
+    },
+    "E": {
+      "base_position_m": [
+        -0.24999999999999992,
+        0.9,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "F": {
+      "base_position_m": [
+        9.491012693391987e-17,
+        2.2,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "G": {
+      "base_position_m": [
+        -0.8131727983645295,
+        0.4596194077712559,
+        0.4
+      ],
+      "yaw_rad": 2.356194490192345
+    },
+    "H": {
+      "base_position_m": [
+        -1.5556349186104044,
+        1.5556349186104046,
+        0.4
+      ],
+      "yaw_rad": -0.7853981633974483
+    },
+    "I": {
+      "base_position_m": [
+        -0.9,
+        -0.24999999999999986,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    "J": {
+      "base_position_m": [
+        -2.2,
+        2.2962127484012875e-16,
+        0.4
+      ],
+      "yaw_rad": 0.0
+    },
+    "K": {
+      "base_position_m": [
+        -0.4596194077712561,
+        -0.8131727983645295,
+        0.4
+      ],
+      "yaw_rad": 3.9269908169872414
+    },
+    "L": {
+      "base_position_m": [
+        -1.5556349186104048,
+        -1.5556349186104044,
+        0.4
+      ],
+      "yaw_rad": 0.7853981633974483
+    },
+    "M": {
+      "base_position_m": [
+        0.24999999999999978,
+        -0.9,
+        0.4
+      ],
+      "yaw_rad": 4.71238898038469
+    },
+    "N": {
+      "base_position_m": [
+        -3.6433242274633755e-16,
+        -2.2,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "O": {
+      "base_position_m": [
+        0.8131727983645296,
+        -0.4596194077712561,
+        0.4
+      ],
+      "yaw_rad": 5.497787143782138
+    },
+    "P": {
+      "base_position_m": [
+        1.5556349186104044,
+        -1.555634918610405,
+        0.4
+      ],
+      "yaw_rad": 2.356194490192345
+    }
+  },
+  "rules": [
+    "Each private code digit is independently 1,2,3. Relative disk positions are zero, clockwise quarter-turn, half-turn and counterclockwise quarter-turn; -180 and +180 are the same half-turn symbol.",
+    "All disks must stay within 4 degrees of a nonzero detent for 0.25 simulated seconds for a valid count. Only aggregate correct count is visible; no individual matches. Zero is invalid.",
+    "Movable modules start naturally on the tabletop, without parking racks. Establish blue-handle support and full-module 20 mm clearance before red operation; sustain support and stop after loss.",
+    "A crank contact point moves around its axle; rotation can require coordinated translation. Reach a valid count equal to the number of disks.",
+    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits."
+  ],
+  "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB",
+      "Robot proprioception and robot geometry",
+      "Action feedback",
+      "Visible dial count"
+    ]
+  },
+  "gripper_profile": "standard-panda",
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "G_front",
+    "G_side",
+    "H_front",
+    "H_side",
+    "I_front",
+    "I_side",
+    "J_front",
+    "J_side",
+    "K_front",
+    "K_side",
+    "L_front",
+    "L_side",
+    "M_front",
+    "M_side",
+    "N_front",
+    "N_side",
+    "O_front",
+    "O_side",
+    "P_front",
+    "P_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "D01_front",
+    "D01_side",
+    "D01_high",
+    "D02_front",
+    "D02_side",
+    "D02_high",
+    "D03_front",
+    "D03_side",
+    "D03_high",
+    "D04_front",
+    "D04_side",
+    "D04_high",
+    "D05_front",
+    "D05_side",
+    "D05_high",
+    "D06_front",
+    "D06_side",
+    "D06_high",
+    "D07_front",
+    "D07_side",
+    "D07_high",
+    "D08_front",
+    "D08_side",
+    "D08_high",
+    "board",
+    "D01_face",
+    "D02_face",
+    "D03_face",
+    "D04_face",
+    "D05_face",
+    "D06_face",
+    "D07_face",
+    "D08_face"
+  ],
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "execution_readiness": "environment_preview_only",
+  "initial_supplies": [
+    {
+      "source": "B",
+      "color": "white",
+      "count": 1
+    },
+    {
+      "source": "D",
+      "color": "white",
+      "count": 1
+    },
+    {
+      "source": "F",
+      "color": "white",
+      "count": 1
+    },
+    {
+      "source": "H",
+      "color": "white",
+      "count": 1
+    },
+    {
+      "source": "J",
+      "color": "white",
+      "count": 1
+    },
+    {
+      "source": "L",
+      "color": "white",
+      "count": 1
+    },
+    {
+      "source": "N",
+      "color": "white",
+      "count": 1
+    },
+    {
+      "source": "P",
+      "color": "white",
+      "count": 1
+    }
+  ],
+  "mechanism": {
+    "dial_count": 8,
+    "interface": "crank",
+    "free_modules": true,
+    "handle_material": "anodized aluminium",
+    "handle_mass_kg": 0.2882304,
+    "spring_nm_rad": 0.12,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      0.8342498825558959,
+      -2.0140573808746054
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "feedback_rule_version": 2,
+    "feedback_dwell_sim_s": 0.25,
+    "feedback_stability": "same nonzero 4-degree detent band throughout the dwell; in-band vibration allowed",
+    "rotor_counterbalanced": false,
+    "handle_stem_mass_kg": 0.2592,
+    "parking_fixture": "None; visible disk rim and blue handle tip rest directly on tabletop",
+    "handle_cross_section_m": [
+      0.016,
+      0.02
+    ],
+    "handle_attachment_local_m": [
+      0,
+      0.02,
+      -0.154
+    ],
+    "handle_neck_clear_length_m": 0.024,
+    "handle_shoulders": "Two visible passive stop shoulders. They transmit load by real contact and release when the gripper opens; no hand attachment.",
+    "white_disk_diameter_m": 0.2438,
+    "white_disk_diameter_scale": 1.06,
+    "digit_height_m": 0.02,
+    "digit_radius_m": 0.1097,
+    "detent_labels": [
+      "0",
+      "1",
+      "2",
+      "3"
+    ],
+    "single_sided_crank": true,
+    "crank_arm_shape": "round capsule",
+    "crank_arm_radius_m": 0.01,
+    "crank_arm_length_m": 0.083,
+    "crank_grip_radius_m": 0.01375,
+    "crank_arm_mass_kg": 0.05271157587548639,
+    "return_dynamics_verified": false
+  },
+  "dials": [
+    {
+      "id": "D01",
+      "index": 0,
+      "nominal_robots": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "id": "D02",
+      "index": 1,
+      "nominal_robots": [
+        "C",
+        "D"
+      ]
+    },
+    {
+      "id": "D03",
+      "index": 2,
+      "nominal_robots": [
+        "E",
+        "F"
+      ]
+    },
+    {
+      "id": "D04",
+      "index": 3,
+      "nominal_robots": [
+        "G",
+        "H"
+      ]
+    },
+    {
+      "id": "D05",
+      "index": 4,
+      "nominal_robots": [
+        "I",
+        "J"
+      ]
+    },
+    {
+      "id": "D06",
+      "index": 5,
+      "nominal_robots": [
+        "K",
+        "L"
+      ]
+    },
+    {
+      "id": "D07",
+      "index": 6,
+      "nominal_robots": [
+        "M",
+        "N"
+      ]
+    },
+    {
+      "id": "D08",
+      "index": 7,
+      "nominal_robots": [
+        "O",
+        "P"
+      ]
+    }
+  ]
+}

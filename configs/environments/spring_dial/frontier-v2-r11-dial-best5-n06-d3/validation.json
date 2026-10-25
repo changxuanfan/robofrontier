@@ -1,0 +1,11 @@
+{
+  "status": "generated",
+  "oracle_verified": false,
+  "policy_verified": false,
+  "frozen_input": false,
+  "robot_and_dial_physics_equal_to_r10": true,
+  "panel_footprint_supported": true,
+  "score_panel_scale": 1.5,
+  "physics_sha256": "7a912f8c0969be73f1b5a5d70730bb1c7417579e087be4adac9251f339fc4423",
+  "scope": "Static compilation; only score panel collider relocated/resized; no grasp/rotation run"
+}

@@ -1,0 +1,217 @@
+{
+  "kind": "beam_handoff",
+  "id": "beam-handoff-facing-08-red-policy-v1",
+  "status": "policy task v1; engineering integration, not a model result",
+  "scene_asset": "configs/environments/beam_handoff/facing-08-red",
+  "scene_sha256": "c0937f90220adb667270b57757f20ea1b7d6e91f4734e65cfc2a87b6d896f3fa",
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -1.08,
+        -0.85,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "B": {
+      "base_position_m": [
+        -1.08,
+        0.85,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "C": {
+      "base_position_m": [
+        -0.36,
+        -0.85,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "D": {
+      "base_position_m": [
+        -0.36,
+        0.85,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "E": {
+      "base_position_m": [
+        0.36,
+        -0.85,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "F": {
+      "base_position_m": [
+        0.36,
+        0.85,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "G": {
+      "base_position_m": [
+        1.08,
+        -0.85,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "H": {
+      "base_position_m": [
+        1.08,
+        0.85,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    }
+  },
+  "objects": [
+    {
+      "id": "timber",
+      "shape": "box",
+      "dimensions_m": [
+        0.045,
+        1.2,
+        0.045
+      ],
+      "mass_kg": 1.458,
+      "initial_position_m": [
+        -1.25,
+        0.0,
+        0.42250000000000004
+      ]
+    }
+  ],
+  "beam": {
+    "length_m": 1.2,
+    "width_m": 0.045,
+    "height_m": 0.045,
+    "density_kg_m3": 600.0,
+    "initial_center_xy_m": [
+      -1.25,
+      0.0
+    ],
+    "long_axis_world": "+Y",
+    "id": "timber",
+    "mass_kg": 1.458,
+    "initial_center_world_m": [
+      -1.25,
+      0.0,
+      0.42250000000000004
+    ]
+  },
+  "goal": {
+    "center_xy_m": [
+      1.48,
+      0.0
+    ],
+    "zone_length_x_m": 0.22,
+    "zone_width_y_m": 1.36
+  },
+  "table_height_m": 0.4,
+  "initial_custody": [
+    "A",
+    "B"
+  ],
+  "rules": [
+    "Use real gripper contact; no welding, snapping, teleportation or simulator reset.",
+    "During transport keep the timber off the table and floor, supported by at least two robots; initial pickup, final placement and declared drop recovery are separate phases.",
+    "Receiving robots establish their support before the current sending robots release. Grasp locations, poses, arm grouping and motion order are policy choices.",
+    "The initial sending pair is A/B. Custody advances only after a verified airborne handover, not merely because the timber moves into another region.",
+    "A drop counts as a failed transfer attempt. Only the last established sending team may retrieve it and retry; the intended receiving team must not pick it up to bypass the handover.",
+    "If the sending team cannot physically retrieve a drop, stop and report failure; do not reset or use the receiver as an undeclared recovery shortcut.",
+    "Finish by releasing the timber stably inside the marked right-hand zone."
+  ],
+  "coordinate_frame": "+X rightward transport, +Y north, +Z up; beam initially spans north/south",
+  "workspace_world_m": {
+    "lower": [
+      -1.8,
+      -1.1,
+      0.405
+    ],
+    "upper": [
+      1.8,
+      1.1,
+      1.2
+    ]
+  },
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "G_front",
+    "G_side",
+    "H_front",
+    "H_side",
+    "global",
+    "global_side",
+    "top",
+    "pair_1",
+    "pair_2",
+    "pair_3",
+    "pair_4"
+  ],
+  "observation_contract": {
+    "initial_positions_public": true,
+    "initial_geometry_public": true,
+    "policy": [
+      "RGB",
+      "robot_proprioception",
+      "action_status"
+    ],
+    "live_object_truth_for_policy": false,
+    "motion_screen": "Optional robot-only nominal geometry; no payload/table/dynamics guarantee"
+  },
+  "completion": {
+    "stable_duration_sim_s": 1.0,
+    "max_sample_gap_sim_s": 0.021,
+    "max_linear_speed_m_s": 0.01,
+    "max_angular_speed_rad_s": 0.05,
+    "containment_tolerance_m": 0.001,
+    "minimum_handovers": 1
+  },
+  "process_criteria": {
+    "minimum_grippers": 2,
+    "minimum_finger_normal_force_n": 0.05,
+    "support_gap_tolerance_s": 0.2,
+    "handover_overlap_s": 0.2,
+    "contact_tolerance_m": 0.0001,
+    "airborne_clearance_m": 0.005,
+    "collision_penetration_tolerance_m": 0.0001
+  },
+  "evaluation_rules": {
+    "invalidating_events": {
+      "inter_robot_collision": "Cross-robot penetration beyond the declared tolerance invalidates compliance.",
+      "incomplete_process_sampling": "Missing process evidence prevents a successful score.",
+      "payload_nonfinger_contact": "Payload penetration into a non-finger robot body invalidates compliance.",
+      "pickup_by_non_sender": "Initial pickup must use the declared initial sending team.",
+      "unsupported_initial_lift": "Establish the required support before the initial lift.",
+      "recovery_by_non_sender": "Only the established sending team may retrieve a drop; existing receivers may release, not assist recovery.",
+      "unverified_handover": "A replacement supporting team must establish the declared overlap before the retiring sender releases.",
+      "unsupported_final_landing": "Maintain required support until landing in the finish zone."
+    },
+    "recoverable_events": {
+      "drop_attempt": "Counts as a failed transfer attempt; legal sender recovery and retry may still complete the episode."
+    },
+    "finish": "Meet the declared whole-object containment, release, stable-duration and handover criteria without any invalidating event.",
+    "evidence": "Bilateral positive-force contact plus retained airborne motion is a support proxy, not measured per-robot load. Rules/thresholds are public; live evaluator state is private."
+  },
+  "planning_hints": [
+    "Collision risk includes elbows, wrists and links, not only fingertips; assess full-arm motion and payload clearance.",
+    "Current grasp locations, payload pose and joint configurations affect the next team's approach, simultaneous support and sender withdrawal. Choose alternatives yourself; no grasp spacing, grouping or route is prescribed."
+  ]
+}

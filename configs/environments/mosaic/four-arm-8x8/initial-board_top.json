@@ -1,0 +1,23 @@
+{
+  "schema": "robofrontier.static_preview.v2",
+  "camera_id": "board_top",
+  "sim_time_s": 1.0000000000000007,
+  "frame_scope": "initialization preview; not live",
+  "image_size_pixel": [
+    1536,
+    1152
+  ],
+  "robot_labels": [],
+  "render_size_pixel": [
+    1280,
+    900
+  ],
+  "scene_viewport_pixel": [
+    128,
+    126,
+    1408,
+    1026
+  ],
+  "label_boxes_outside_scene": true,
+  "annotation_source": "fixed robot base geometry only; no object annotations"
+}

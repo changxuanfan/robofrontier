@@ -1,0 +1,255 @@
+{
+  "schema": "robofrontier.spring_dial.floating_module.v1",
+  "id": "spring-dial-floating-04-060",
+  "collection": "spring_dial",
+  "arm_count": 8,
+  "topology": "four_facing_pairs",
+  "stations": [
+    {
+      "id": "A",
+      "side": "south-west",
+      "base_position_m": [
+        -1.15,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "home_tcp_m": [
+        -1.15,
+        -0.42,
+        0.82
+      ],
+      "pair": 1,
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": []
+    },
+    {
+      "id": "B",
+      "side": "north",
+      "base_position_m": [
+        -0.8999999999999999,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "home_tcp_m": [
+        -0.8999999999999999,
+        0.42,
+        0.82
+      ],
+      "pair": 1,
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": []
+    },
+    {
+      "id": "C",
+      "side": "south-west",
+      "base_position_m": [
+        -0.55,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "home_tcp_m": [
+        -0.55,
+        -0.42,
+        0.82
+      ],
+      "pair": 2,
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": []
+    },
+    {
+      "id": "D",
+      "side": "north",
+      "base_position_m": [
+        -0.3,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "home_tcp_m": [
+        -0.3,
+        0.42,
+        0.82
+      ],
+      "pair": 2,
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": []
+    },
+    {
+      "id": "E",
+      "side": "south-west",
+      "base_position_m": [
+        0.04999999999999999,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "home_tcp_m": [
+        0.04999999999999999,
+        -0.42,
+        0.82
+      ],
+      "pair": 3,
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": []
+    },
+    {
+      "id": "F",
+      "side": "north",
+      "base_position_m": [
+        0.3,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "home_tcp_m": [
+        0.3,
+        0.42,
+        0.82
+      ],
+      "pair": 3,
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": []
+    },
+    {
+      "id": "G",
+      "side": "south-west",
+      "base_position_m": [
+        0.6499999999999999,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "home_tcp_m": [
+        0.6499999999999999,
+        -0.42,
+        0.82
+      ],
+      "pair": 4,
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": []
+    },
+    {
+      "id": "H",
+      "side": "north",
+      "base_position_m": [
+        0.8999999999999999,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "home_tcp_m": [
+        0.8999999999999999,
+        0.42,
+        0.82
+      ],
+      "pair": 4,
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": []
+    }
+  ],
+  "physics": {
+    "timestep_s": 0.001,
+    "gravity_m_s2": [
+      0.0,
+      0.0,
+      -9.81
+    ],
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 0
+  },
+  "tables": [
+    {
+      "center_m": [
+        0.0,
+        0.0,
+        0.375
+      ],
+      "half_size_m": [
+        1.95,
+        1.03,
+        0.025
+      ]
+    }
+  ],
+  "floor_rgba": [
+    0.84,
+    0.89,
+    0.94,
+    1.0
+  ],
+  "table_rgba": [
+    0.64,
+    0.47,
+    0.35,
+    1.0
+  ],
+  "edges": [],
+  "objects": [],
+  "initial_keyframe": "initial",
+  "scene": "scene.xml",
+  "dials": [
+    {
+      "id": "A",
+      "nominal_robots": [
+        "A",
+        "B"
+      ],
+      "center_m": [
+        -0.8999999999999999,
+        0,
+        0.515
+      ]
+    },
+    {
+      "id": "B",
+      "nominal_robots": [
+        "C",
+        "D"
+      ],
+      "center_m": [
+        -0.3,
+        0,
+        0.515
+      ]
+    },
+    {
+      "id": "C",
+      "nominal_robots": [
+        "E",
+        "F"
+      ],
+      "center_m": [
+        0.3,
+        0,
+        0.515
+      ]
+    },
+    {
+      "id": "D",
+      "nominal_robots": [
+        "G",
+        "H"
+      ],
+      "center_m": [
+        0.8999999999999999,
+        0,
+        0.515
+      ]
+    }
+  ]
+}

@@ -1,0 +1,534 @@
+{
+  "schema": "robofrontier.suite.environment.v1",
+  "id": "dial-n06-d3",
+  "collection": "frontier_suite",
+  "arm_count": 12,
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 20,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "stations": [
+    {
+      "id": "A",
+      "base_position_m": [
+        -0.95,
+        -1.7000000000000002,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.95,
+        -1.47,
+        0.82
+      ]
+    },
+    {
+      "id": "B",
+      "base_position_m": [
+        -0.7,
+        -0.4,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.7,
+        -0.63,
+        0.82
+      ]
+    },
+    {
+      "id": "C",
+      "base_position_m": [
+        -0.25,
+        -1.7000000000000002,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.25,
+        -1.47,
+        0.82
+      ]
+    },
+    {
+      "id": "D",
+      "base_position_m": [
+        0.0,
+        -0.4,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.0,
+        -0.63,
+        0.82
+      ]
+    },
+    {
+      "id": "E",
+      "base_position_m": [
+        0.44999999999999996,
+        -1.7000000000000002,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.45,
+        -1.47,
+        0.82
+      ]
+    },
+    {
+      "id": "F",
+      "base_position_m": [
+        0.7,
+        -0.4,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.7,
+        -0.63,
+        0.82
+      ]
+    },
+    {
+      "id": "G",
+      "base_position_m": [
+        -0.95,
+        0.4,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.95,
+        0.63,
+        0.82
+      ]
+    },
+    {
+      "id": "H",
+      "base_position_m": [
+        -0.7,
+        1.7000000000000002,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.7,
+        1.47,
+        0.82
+      ]
+    },
+    {
+      "id": "I",
+      "base_position_m": [
+        -0.25,
+        0.4,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.25,
+        0.63,
+        0.82
+      ]
+    },
+    {
+      "id": "J",
+      "base_position_m": [
+        0.0,
+        1.7000000000000002,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.0,
+        1.47,
+        0.82
+      ]
+    },
+    {
+      "id": "K",
+      "base_position_m": [
+        0.44999999999999996,
+        0.4,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.45,
+        0.63,
+        0.82
+      ]
+    },
+    {
+      "id": "L",
+      "base_position_m": [
+        0.7,
+        1.7000000000000002,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.7,
+        1.47,
+        0.82
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "center_m": [
+        -0.125,
+        0.0,
+        0.375
+      ],
+      "half_size_m": [
+        1.065,
+        1.9400000000000002,
+        0.025
+      ]
+    }
+  ],
+  "edges": [],
+  "objects": [
+    {
+      "id": "D01_module",
+      "source": "B",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        -0.7,
+        -1.05,
+        0.515
+      ]
+    },
+    {
+      "id": "D02_module",
+      "source": "D",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        0.0,
+        -1.05,
+        0.515
+      ]
+    },
+    {
+      "id": "D03_module",
+      "source": "F",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        0.7,
+        -1.05,
+        0.515
+      ]
+    },
+    {
+      "id": "D04_module",
+      "source": "H",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        -0.7,
+        1.05,
+        0.515
+      ]
+    },
+    {
+      "id": "D05_module",
+      "source": "J",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        0.0,
+        1.05,
+        0.515
+      ]
+    },
+    {
+      "id": "D06_module",
+      "source": "L",
+      "shape": "dial_module",
+      "color": "white",
+      "rgb": [
+        0.945,
+        0.937,
+        0.91
+      ],
+      "initial_position_m": [
+        0.7,
+        1.05,
+        0.515
+      ]
+    }
+  ],
+  "floor_rgba": [
+    0.84,
+    0.9,
+    0.95,
+    1
+  ],
+  "table_rgba": [
+    0.604,
+    0.459,
+    0.345,
+    1
+  ],
+  "initial_keyframe": "initial",
+  "scene": "scene.xml",
+  "suite_case": {
+    "id": "dial-n06-d3",
+    "family": "dial",
+    "level": 3,
+    "arms": 12,
+    "dials": 6,
+    "layout": "2_rows_3_modules_with_facing_pairs",
+    "scene_revision": 4
+  },
+  "dials": [
+    {
+      "id": "D01",
+      "index": 0,
+      "nominal_robots": [
+        "A",
+        "B"
+      ],
+      "initial_center_m": [
+        -0.7,
+        -1.05,
+        0.515
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D02",
+      "index": 1,
+      "nominal_robots": [
+        "C",
+        "D"
+      ],
+      "initial_center_m": [
+        0.0,
+        -1.05,
+        0.515
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D03",
+      "index": 2,
+      "nominal_robots": [
+        "E",
+        "F"
+      ],
+      "initial_center_m": [
+        0.7,
+        -1.05,
+        0.515
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D04",
+      "index": 3,
+      "nominal_robots": [
+        "G",
+        "H"
+      ],
+      "initial_center_m": [
+        -0.7,
+        1.05,
+        0.515
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D05",
+      "index": 4,
+      "nominal_robots": [
+        "I",
+        "J"
+      ],
+      "initial_center_m": [
+        0.0,
+        1.05,
+        0.515
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D06",
+      "index": 5,
+      "nominal_robots": [
+        "K",
+        "L"
+      ],
+      "initial_center_m": [
+        0.7,
+        1.05,
+        0.515
+      ],
+      "layout_yaw_rad": 0.0
+    }
+  ],
+  "mechanism": {
+    "dial_count": 6,
+    "interface": "crank",
+    "free_modules": true,
+    "handle_material": "anodized aluminium",
+    "handle_mass_kg": 0.2882304,
+    "spring_nm_rad": 0.03,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      0.09999999999999998,
+      -1.7400000000000002
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "feedback_rule_version": 2,
+    "feedback_dwell_sim_s": 0.25,
+    "feedback_stability": "same nonzero 4-degree detent band throughout the dwell; in-band vibration allowed",
+    "rotor_counterbalanced": true,
+    "balance_mass_kg": 0.04575,
+    "balance_arm_mass_kg": 0.015,
+    "balance_radius_m": 0.06,
+    "handle_stem_mass_kg": 0.2592,
+    "parking_fixture": "Passive rear rack; the complete module must leave all external supports before red operation",
+    "handle_cross_section_m": [
+      0.016,
+      0.02
+    ],
+    "handle_attachment_local_m": [
+      0,
+      0.02,
+      -0.154
+    ],
+    "handle_neck_clear_length_m": 0.024,
+    "handle_shoulders": "Two visible passive stop shoulders. They transmit load by real contact and release when the gripper opens; no hand attachment."
+  },
+  "compiled_mass_kg": {
+    "D_link0": 0.629769,
+    "D_link1": 4.970684,
+    "D_link2": 0.646926,
+    "D_link3": 3.228604,
+    "D_link4": 3.587895,
+    "D_link5": 1.225946,
+    "D_link6": 1.666555,
+    "D_link7": 0.735522,
+    "D_hand": 0.73,
+    "D_left_finger": 0.015,
+    "D_right_finger": 0.015,
+    "D01_parking": 0.23399999999999996,
+    "D01_module": 0.5882303999999998,
+    "D01_rotor": 0.18075000000000002,
+    "D02_parking": 0.23399999999999996,
+    "D02_module": 0.5882303999999998,
+    "D02_rotor": 0.18075000000000002,
+    "D03_parking": 0.23399999999999996,
+    "D03_module": 0.5882303999999998,
+    "D03_rotor": 0.18075000000000002,
+    "D04_parking": 0.23399999999999996,
+    "D04_module": 0.5882303999999998,
+    "D04_rotor": 0.18075000000000002,
+    "D05_parking": 0.23399999999999996,
+    "D05_module": 0.5882303999999998,
+    "D05_rotor": 0.18075000000000002,
+    "D06_parking": 0.23399999999999996,
+    "D06_module": 0.5882303999999998,
+    "D06_rotor": 0.18075000000000002
+  }
+}

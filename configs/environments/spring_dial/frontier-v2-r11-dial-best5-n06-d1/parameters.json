@@ -1,0 +1,88 @@
+{
+  "physics": {
+    "table_height_m": 0.8,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 20,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "material_scope": "Disk material density retained; enlarged disk mass/inertia and tabletop rest recomputed. Rotor geometry and calibrated assumptions are declared in mechanism metadata; visual markers carry no mass."
+  },
+  "mechanism": {
+    "dial_count": 6,
+    "interface": "gear",
+    "free_modules": false,
+    "handle_material": null,
+    "handle_mass_kg": 0,
+    "spring_nm_rad": 0.03,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      0.94,
+      0.0
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "feedback_rule_version": 3,
+    "feedback_dwell_sim_s": 0.25,
+    "feedback_stability": "same nonzero 4-degree detent band throughout the dwell; in-band vibration allowed",
+    "white_disk_diameter_m": 0.3,
+    "white_disk_diameter_scale": 1.3043478260869563,
+    "digit_height_m": 0.04,
+    "digit_radius_m": 0.122,
+    "digit_outer_rim_clearance_m": 0.007999999999999997,
+    "detent_labels": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "direction_indicator": "Orange arrow",
+    "layout": "rectangular_opposed_rows",
+    "table_inner_radius_m": 0,
+    "row_spacing_m": 0.46,
+    "feedback": {
+      "version": "best5-v1",
+      "mode": "best_so_far",
+      "symbol_count": 5,
+      "total_marks": 6,
+      "step_deg": 60.0,
+      "angle_tolerance_deg": 4.0,
+      "dwell_sim_s": 0.25,
+      "zero_valid": false,
+      "require_red_grasp": true,
+      "initial_best": 0,
+      "display_digits": 1,
+      "display_brightness": "Bright only when READY is green; otherwise dim but readable",
+      "record_scope": "episode",
+      "settlement": "automatic_stable_configuration",
+      "readiness": "Grey invalid, amber qualifying, green ready; readiness is not password correctness"
+    },
+    "score_label": "BEST",
+    "symbol_to_angle_deg": {
+      "0": 0,
+      "1": 60,
+      "2": 120,
+      "3": 180,
+      "4": 240,
+      "5": 300
+    },
+    "score_panel_scale": 1.0
+  },
+  "source_directory": "configs/environments/spring_dial/frontier-v2-r10-dial-n06-d1"
+}

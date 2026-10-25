@@ -1,0 +1,58 @@
+{
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 20,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "material_scope": "Original dial assembly properties retained; initial rest reconfigured without parking blocks"
+  },
+  "mechanism": {
+    "dial_count": 8,
+    "interface": "gear",
+    "free_modules": false,
+    "handle_material": null,
+    "handle_mass_kg": 0,
+    "spring_nm_rad": 0.03,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      -0.31,
+      -1.06
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "feedback_rule_version": 2,
+    "feedback_dwell_sim_s": 0.25,
+    "feedback_stability": "same nonzero 4-degree detent band throughout the dwell; in-band vibration allowed",
+    "white_disk_diameter_m": 0.2438,
+    "white_disk_diameter_scale": 1.06,
+    "digit_height_m": 0.02,
+    "digit_radius_m": 0.1097,
+    "detent_labels": [
+      "0",
+      "1",
+      "2",
+      "3"
+    ],
+    "layout": "rectangular_3_2_3",
+    "table_inner_radius_m": 0,
+    "row_spacing_m": null
+  },
+  "grid": null,
+  "scope": "Declared geometry/material and engineering parameters; not a task success proof"
+}

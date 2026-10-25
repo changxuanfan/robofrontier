@@ -1,0 +1,47 @@
+{
+  "id": "spring-dial-facing-04",
+  "status": "design draft; task.json is the canonical policy task when built under configs/environments",
+  "goal": "Find and simultaneously hold the four hidden nonzero dial angles.",
+  "dial_ids": [
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "allowed_code_angles_deg": [
+    90,
+    180,
+    270
+  ],
+  "candidate_codes": 81,
+  "angle_convention": "Top view: 0 north, 90 east, 180 south, 270 west. Clockwise positive; -90 displays 270. Mechanical range -180..+180, with either endpoint displaying 180.",
+  "feedback": {
+    "angle_tolerance_deg": 4.0,
+    "max_speed_deg_s": 5.0,
+    "stable_duration_s": 0.25,
+    "max_sample_gap_s": 0.03
+  },
+  "rules": [
+    "All dials must be nonzero, within angular tolerance and stable before feedback.",
+    "Only total correct count is displayed, never per-dial correctness.",
+    "Invalid or moving inputs display a dash, distinct from a valid zero score.",
+    "Dial return is passive spring physics; no latching at guessed angles.",
+    "A completed arm command continues holding pose/grasp; models need not repeat HOLD.",
+    "Secret is sampled privately when apparatus starts, absent from scene and public task.",
+    "Each new stable entry counts as a trial; unchanged stable holding does not repeatedly submit."
+  ],
+  "observation_contract": [
+    "RGB including pointers and center score",
+    "robot proprioception",
+    "action status"
+  ],
+  "metrics": [
+    "success",
+    "valid code trials",
+    "robot action calls",
+    "total absolute dial travel",
+    "wall and simulation time",
+    "slip/release/reset events"
+  ],
+  "engineering_boundary": "No dial-angle command exists. Gripper contact and arm pose/joint commands must produce rotation. Engineering joint perturbation checks are not policy actions or experience."
+}

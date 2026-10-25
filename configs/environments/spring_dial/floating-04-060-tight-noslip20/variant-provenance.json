@@ -1,0 +1,8 @@
+{
+  "source_directory": "/Users/fanchangxuan/Repos/roomscript2/configs/environments/spring_dial/floating-04-060-tight",
+  "only_xml_change": "option.noslip_iterations",
+  "noslip_iterations": 20,
+  "non_noslip_xml_sha256": "835f820723d8bcd31dbbf15cacd9a7c7828cf77dfcf64fb1851837784e8ece96",
+  "initial_keyframe_unchanged": true,
+  "gripper_friction_mass_geometry_unchanged": true
+}

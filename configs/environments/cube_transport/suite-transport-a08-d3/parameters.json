@@ -1,0 +1,46 @@
+{
+  "case": {
+    "id": "transport-a08-d3",
+    "family": "transport",
+    "level": 3,
+    "arms": 8,
+    "objects": 24,
+    "mechanism": "double_peg_compliant_socket",
+    "status": "generated",
+    "directory": "configs/environments/cube_transport/suite-transport-a08-d3",
+    "scene_sha256": "804977bfc0f1c4539e1cdf91da912a2a33da8ed88e71871c54fd651177e6791a",
+    "layout_report": "configs/environments/cube_transport/suite-transport-a08-d3/layout-validation.json"
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "cylinder_radius_m": 0.02,
+    "cylinder_height_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "cube_contact_time_constant_s": 0.004
+  },
+  "mechanism": {
+    "cube_side_m": 0.04,
+    "peg_diameter_m": 0.008,
+    "peg_length_m": 0.01,
+    "hole_diameter_m": 0.01,
+    "peg_spacing_m": 0.02,
+    "board_mass_kg": 0.15,
+    "vertical_stiffness_n_m": 300,
+    "angular_stiffness_nm_rad": 0.16,
+    "contact_geometry": "True hollow mesh bores for pegs/fingertips; consolidated coplanar support manifold for larger cube/arm bodies. This does not attach, align or insert objects."
+  },
+  "grid": null
+}

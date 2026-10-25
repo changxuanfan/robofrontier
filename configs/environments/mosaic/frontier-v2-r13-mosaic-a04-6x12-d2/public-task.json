@@ -1,0 +1,358 @@
+{
+  "kind": "frontier_suite",
+  "id": "mosaic-a04-6x12-d2",
+  "suite_version": 2,
+  "family": "mosaic",
+  "level": 2,
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -0.45594999999999997,
+        -0.639698729810778,
+        0.8
+      ],
+      "yaw_rad": 1.0471975511965979
+    },
+    "B": {
+      "base_position_m": [
+        0.45594999999999997,
+        -0.639698729810778,
+        0.8
+      ],
+      "yaw_rad": 2.0943951023931953
+    },
+    "C": {
+      "base_position_m": [
+        -0.45594999999999997,
+        0.639698729810778,
+        0.8
+      ],
+      "yaw_rad": -1.0471975511965979
+    },
+    "D": {
+      "base_position_m": [
+        0.45594999999999997,
+        0.639698729810778,
+        0.8
+      ],
+      "yaw_rad": -2.0943951023931953
+    }
+  },
+  "rules": [
+    "Build the supplied Tulip reference, including background cells, one released cube per pixel. The 9x18 petal mask is mirrored from left to right. The portrait grid rotates clockwise 90 degrees as a whole on the horizontal workstation.",
+    "Cube side is 60 mm and common cell-center pitch is 81 mm. L1 has 80 mm clear square pockets, L2 3 mm red printed lines, L3 no visible grid. The four colors are cream, navy, coral and sage. The target image matches world north-up, centered on the declared assembly origin.",
+    "Stock allocations do not restrict which robot can use an item. Preserve completed placements and account for finger release/withdrawal clearance.",
+    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits."
+  ],
+  "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB",
+      "Robot proprioception and robot geometry",
+      "Action feedback",
+      "Visible dial count"
+    ]
+  },
+  "gripper_profile": "standard-panda",
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "assembly_01",
+    "assembly_02"
+  ],
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "execution_readiness": "environment_preview_only",
+  "initial_supplies": [
+    {
+      "source": "A",
+      "color": "cream",
+      "count": 18
+    },
+    {
+      "source": "B",
+      "color": "coral",
+      "count": 1
+    },
+    {
+      "source": "B",
+      "color": "cream",
+      "count": 3
+    },
+    {
+      "source": "B",
+      "color": "navy",
+      "count": 14
+    },
+    {
+      "source": "C",
+      "color": "coral",
+      "count": 18
+    },
+    {
+      "source": "D",
+      "color": "coral",
+      "count": 3
+    },
+    {
+      "source": "D",
+      "color": "sage",
+      "count": 15
+    }
+  ],
+  "mechanism": {
+    "kind": "printed_grid",
+    "stock_packing": "Single layer; non-exclusive station allocation",
+    "stock_count": 72,
+    "robot_to_grid_edge_m": 0.39669872981077803,
+    "stock_edge_clearance_m": 0.055,
+    "row_spacing_scale_from_r3": 0.95,
+    "table_side_scale_from_r3": 1.25,
+    "table_vertical_scale_from_r4": 0.9,
+    "outer_base_axis_inset_from_grid_end_m": 0.10505000000000003,
+    "layout_revision": {
+      "name": "corner-facing-r12-inward50mm",
+      "source_revision": 11,
+      "inward_distance_m": 0.05,
+      "direction": "Existing robot forward axis in tabletop plane",
+      "unchanged": "All yaw angles; middle robots in six/eight-arm scenes",
+      "changes": [
+        {
+          "robot": "A",
+          "previous_base_m": [
+            -0.48095,
+            -0.6829999999999999,
+            0.8
+          ],
+          "base_m": [
+            -0.45594999999999997,
+            -0.639698729810778,
+            0.8
+          ],
+          "translation_m": [
+            0.024999999999999994,
+            0.04330127018922194,
+            0.0
+          ],
+          "yaw_deg": 60.00000000000001
+        },
+        {
+          "robot": "B",
+          "previous_base_m": [
+            0.48095,
+            -0.6829999999999999,
+            0.8
+          ],
+          "base_m": [
+            0.45594999999999997,
+            -0.639698729810778,
+            0.8
+          ],
+          "translation_m": [
+            -0.024999999999999994,
+            0.04330127018922194,
+            0.0
+          ],
+          "yaw_deg": 119.99999999999999
+        },
+        {
+          "robot": "C",
+          "previous_base_m": [
+            -0.48095,
+            0.6829999999999999,
+            0.8
+          ],
+          "base_m": [
+            -0.45594999999999997,
+            0.639698729810778,
+            0.8
+          ],
+          "translation_m": [
+            0.024999999999999994,
+            -0.04330127018922194,
+            0.0
+          ],
+          "yaw_deg": -60.00000000000001
+        },
+        {
+          "robot": "D",
+          "previous_base_m": [
+            0.48095,
+            0.6829999999999999,
+            0.8
+          ],
+          "base_m": [
+            0.45594999999999997,
+            0.639698729810778,
+            0.8
+          ],
+          "translation_m": [
+            -0.024999999999999994,
+            -0.04330127018922194,
+            0.0
+          ],
+          "yaw_deg": -119.99999999999999
+        }
+      ],
+      "relocated_stock_count": 0
+    },
+    "station_x_positions_m": [
+      -0.45594999999999997,
+      0.45594999999999997
+    ],
+    "robot_to_grid_edge_m_by_robot": {
+      "A": 0.39669872981077803,
+      "B": 0.39669872981077803,
+      "C": 0.39669872981077803,
+      "D": 0.39669872981077803
+    },
+    "stock_layout_revision": {
+      "name": "individually-graspable-r13",
+      "source_revision": 12,
+      "changed_stock_count": 3,
+      "robot_poses_changed": false
+    }
+  },
+  "target": {
+    "rows": 6,
+    "columns": 12,
+    "colors": 4,
+    "pitch_m": 0.081,
+    "cube_side_m": 0.06,
+    "pattern": [
+      [
+        "navy",
+        "sage",
+        "sage",
+        "navy",
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "cream",
+        "navy"
+      ],
+      [
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "sage",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream"
+      ],
+      [
+        "navy",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream"
+      ],
+      [
+        "navy",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream"
+      ],
+      [
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "sage",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream"
+      ],
+      [
+        "navy",
+        "navy",
+        "sage",
+        "navy",
+        "navy",
+        "navy",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "cream",
+        "navy"
+      ]
+    ],
+    "pocket_opening_m": null,
+    "depth_m": 0,
+    "center_world_m": [
+      0,
+      0,
+      0.8
+    ],
+    "row1": "north",
+    "column1": "west",
+    "reference_image": "target-pattern.png",
+    "palette": {
+      "cream": "#FFF4DA",
+      "navy": "#173F73",
+      "coral": "#F03F5B",
+      "sage": "#16A16E"
+    },
+    "reference": {
+      "name": "Tulip",
+      "original_width": 6,
+      "original_height": 12,
+      "rotation_clockwise_deg": 90,
+      "source_sha256": "25a210531d2d0637480ae1fc2b3e40223f4e0f75710064f00ed6d15ea68ced87",
+      "source_file": "assets/tulip_parameters.json",
+      "color_hex": {
+        "cream": "#FFF4DA",
+        "navy": "#173F73",
+        "coral": "#F03F5B",
+        "sage": "#16A16E"
+      },
+      "palette_id": "bright",
+      "palette_selection_status": "selected_by_user",
+      "counts": {
+        "navy": 14,
+        "sage": 15,
+        "cream": 21,
+        "coral": 22
+      }
+    }
+  }
+}

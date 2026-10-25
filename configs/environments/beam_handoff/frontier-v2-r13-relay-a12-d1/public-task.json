@@ -1,0 +1,439 @@
+{
+  "kind": "frontier_suite",
+  "id": "relay-a12-d1",
+  "suite_version": 2,
+  "family": "relay",
+  "level": 1,
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -0.9353074360871938,
+        0.5399999999999999,
+        0.8
+      ],
+      "yaw_rad": 2.6179938779914944
+    },
+    "B": {
+      "base_position_m": [
+        -2.061140461006964,
+        1.1899999999999997,
+        0.8
+      ],
+      "yaw_rad": -0.5235987755982987
+    },
+    "C": {
+      "base_position_m": [
+        -0.6348080724758707,
+        0.8737383539249433,
+        0.8
+      ],
+      "yaw_rad": 2.199114857512855
+    },
+    "D": {
+      "base_position_m": [
+        -1.3989289004560859,
+        1.925460446612375,
+        0.8
+      ],
+      "yaw_rad": -0.9424777960769379
+    },
+    "E": {
+      "base_position_m": [
+        -0.22454462608318004,
+        1.0563994087925102,
+        0.8
+      ],
+      "yaw_rad": 1.7802358370342162
+    },
+    "F": {
+      "base_position_m": [
+        -0.4948298241462672,
+        2.327991289746458,
+        0.8
+      ],
+      "yaw_rad": -1.361356816555577
+    },
+    "G": {
+      "base_position_m": [
+        0.22454462608318018,
+        1.05639940879251,
+        0.8
+      ],
+      "yaw_rad": 1.361356816555577
+    },
+    "H": {
+      "base_position_m": [
+        0.49482982414626736,
+        2.3279912897464574,
+        0.8
+      ],
+      "yaw_rad": -1.7802358370342162
+    },
+    "I": {
+      "base_position_m": [
+        0.634808072475871,
+        0.873738353924943,
+        0.8
+      ],
+      "yaw_rad": 0.9424777960769379
+    },
+    "J": {
+      "base_position_m": [
+        1.398928900456086,
+        1.9254604466123748,
+        0.8
+      ],
+      "yaw_rad": -2.199114857512855
+    },
+    "K": {
+      "base_position_m": [
+        0.9353074360871939,
+        0.5399999999999999,
+        0.8
+      ],
+      "yaw_rad": 0.5235987755982988
+    },
+    "L": {
+      "base_position_m": [
+        2.061140461006964,
+        1.1899999999999997,
+        0.8
+      ],
+      "yaw_rad": -2.6179938779914944
+    }
+  },
+  "rules": [
+    "Move every numbered payload from its own initial route region rightward to the common destination. The 8/12/16-arm cases contain 2/3/4 independent payload assemblies. Regions indicate progress, not prescribed grasp points or fixed robot pairs.",
+    "Airborne transport needs at least two real beam grasps. Establish receiving support before sender release. Teams may change dynamically; the 16-arm half-ring contains 10 outer and 6 inner robots.",
+    "After pickup keep the whole transported assembly clear of table/floor until final landing. For L3 the free weight must remain in the tray. Rope and tray are passive; no stabilizing attachments or direct weight grasp.",
+    "Drops are recorded. The last established sending team may recover; a receiver cannot retrieve a dropped object to bypass a handover. No reset or respawn.",
+    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits.",
+    "Only START and GOAL are outlined; each is 0.80 m by 1.36 m. The GOAL outline is the actual final acceptance boundary, not decoration.",
+    "Numbered apparatuses still start at separate positions along the route. START marks the route origin; it does not require all apparatuses to start there or return there. Follow the sparse arrows toward GOAL.",
+    "Unpainted route reference anchors do not prescribe handover locations, grasp points, robot pairs or an execution order. Scheduling and independent concurrent work remain planner choices.",
+    "Curved and elbow apparatuses initially open forward along the local route (right on the straight table). The weight, closed eyes and any passive hinge move with the complete apparatus and retain their physical connections.",
+    "START/GOAL occupy the two normal end landings within the arc tabletop; there are no external side tables. The twelve-arm layout spans120 degrees; the largest existing layout spans180 degrees. The inner tabletop opening is1.60m in diameter."
+  ],
+  "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB",
+      "Robot proprioception and robot geometry",
+      "Action feedback",
+      "Visible dial count"
+    ]
+  },
+  "gripper_profile": "standard-panda",
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "G_front",
+    "G_side",
+    "H_front",
+    "H_side",
+    "I_front",
+    "I_side",
+    "J_front",
+    "J_side",
+    "K_front",
+    "K_side",
+    "L_front",
+    "L_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "payload_close",
+    "payload_01_close",
+    "payload_02_close",
+    "payload_03_close"
+  ],
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "execution_readiness": "environment_preview_only",
+  "initial_supplies": [
+    {
+      "source": "A",
+      "color": "red",
+      "count": 1
+    },
+    {
+      "source": "E",
+      "color": "red",
+      "count": 1
+    },
+    {
+      "source": "I",
+      "color": "red",
+      "count": 1
+    }
+  ],
+  "mechanism": {
+    "chord_m": 1.2,
+    "mass_kg": 1.458,
+    "cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "kind": "straight_beam",
+    "minimum_supporting_robots": 2,
+    "flexible_teams": true,
+    "layout": "upper_arc_120_degrees",
+    "outer_arms": 6,
+    "inner_arms": 6,
+    "inner_robot_radius_m": 1.08,
+    "outer_robot_radius_m": 2.38,
+    "curve_radius_m": 1.73,
+    "table_end_extension_m": 0.38,
+    "finish": "Tabletop destination region; no cradle; beam and suspended assembly must land stably",
+    "payload_count": 3,
+    "payload_assemblies": [
+      {
+        "id": "payload_01",
+        "beam_body": "payload_01",
+        "weight_body": null,
+        "tray_body": null,
+        "source_region_id": "pickup_01",
+        "initial_route_stage_id": "zone_01",
+        "pickup_center_m": [
+          -1.688223948547079,
+          0.5359103465619132,
+          0.8
+        ],
+        "pickup_half_size_m": [
+          0.24,
+          0.65
+        ],
+        "pickup_yaw_rad": 1.0471975511965979,
+        "destination_region_id": "zone_06",
+        "layout_yaw_change_rad": -0.5235987755982987,
+        "source_region_painted": false
+      },
+      {
+        "id": "payload_02",
+        "beam_body": "payload_02",
+        "weight_body": null,
+        "tray_body": null,
+        "source_region_id": "pickup_02",
+        "initial_route_stage_id": "zone_03",
+        "pickup_center_m": [
+          -0.6726944573495415,
+          1.6256636082078006,
+          0.8
+        ],
+        "pickup_half_size_m": [
+          0.24,
+          0.65
+        ],
+        "pickup_yaw_rad": 0.20943951023931962,
+        "destination_region_id": "zone_06",
+        "layout_yaw_change_rad": -0.1047197551196597,
+        "source_region_painted": false
+      },
+      {
+        "id": "payload_03",
+        "beam_body": "payload_03",
+        "weight_body": null,
+        "tray_body": null,
+        "source_region_id": "pickup_03",
+        "initial_route_stage_id": "zone_05",
+        "pickup_center_m": [
+          0.7579830482659955,
+          1.5876906810022504,
+          0.8
+        ],
+        "pickup_half_size_m": [
+          0.24,
+          0.65
+        ],
+        "pickup_yaw_rad": -0.6283185307179586,
+        "destination_region_id": "zone_06",
+        "layout_yaw_change_rad": 0.3141592653589793,
+        "source_region_painted": false
+      }
+    ],
+    "initial_distribution": "Separate positions along the route; each travels rightward to the common destination",
+    "cable_to_cable_collision": false,
+    "table_inner_diameter_m": 1.6,
+    "layout_arc_degrees": 120,
+    "presentation": {
+      "revision": 13,
+      "endpoint_size_xy_m": [
+        0.8,
+        1.36
+      ],
+      "start_center_world_m": [
+        -1.738223948547079,
+        0.44930780618346927,
+        0.8
+      ],
+      "goal_center_world_m": [
+        1.738223948547079,
+        0.44930780618346927,
+        0.8
+      ],
+      "intermediate_region_frames": false,
+      "per_payload_pickup_frames": false,
+      "arrows": [
+        {
+          "center_world_m": [
+            -1.3632586037396288,
+            1.0650943523133891,
+            0.8
+          ],
+          "yaw_rad": 0.9075712110370513
+        },
+        {
+          "center_world_m": [
+            -1.0887242765162184,
+            1.3444625133205599,
+            0.8
+          ],
+          "yaw_rad": 0.6806784082777884
+        },
+        {
+          "center_world_m": [
+            -0.7583820839451041,
+            1.5549137000975588,
+            0.8
+          ],
+          "yaw_rad": 0.45378560551852587
+        },
+        {
+          "center_world_m": [
+            -0.3891653240148865,
+            1.685660212078457,
+            0.8
+          ],
+          "yaw_rad": 0.22689280275926293
+        },
+        {
+          "center_world_m": [
+            1.0593194812624605e-16,
+            1.73,
+            0.8
+          ],
+          "yaw_rad": 0.0
+        },
+        {
+          "center_world_m": [
+            0.3891653240148863,
+            1.685660212078457,
+            0.8
+          ],
+          "yaw_rad": -0.2268928027592627
+        },
+        {
+          "center_world_m": [
+            0.758382083945104,
+            1.5549137000975588,
+            0.8
+          ],
+          "yaw_rad": -0.45378560551852565
+        },
+        {
+          "center_world_m": [
+            1.0887242765162186,
+            1.3444625133205597,
+            0.8
+          ],
+          "yaw_rad": -0.6806784082777885
+        },
+        {
+          "center_world_m": [
+            1.3632586037396288,
+            1.065094352313389,
+            0.8
+          ],
+          "yaw_rad": -0.9075712110370513
+        }
+      ],
+      "opening": "L2/L3 whole assembly yaw reversed by180 degrees; opening faces the original local route-forward direction",
+      "end_extensions": [],
+      "physics_scope": "Apparatus local mechanics and controller unchanged. Twelve-arm modules are laid out on120degrees; arc worktops have1.60m inner openings and integrated normal end landings, without external side tables."
+    }
+  },
+  "route_regions": [
+    {
+      "region_id": "zone_01",
+      "center_m": [
+        -1.738223948547079,
+        0.44930780618346927,
+        0.8
+      ],
+      "nominal_yaw_rad": 1.0471975511965979,
+      "half_size_m": [
+        0.4,
+        0.68
+      ],
+      "painted": true,
+      "label": "START"
+    },
+    {
+      "region_id": "zone_02",
+      "center_m": [
+        -1.0168684864659783,
+        1.3995994002686591,
+        0.8
+      ],
+      "nominal_yaw_rad": 0.6283185307179586,
+      "painted": false
+    },
+    {
+      "region_id": "zone_03",
+      "center_m": [
+        -0.3596872251147236,
+        1.6921953492694837,
+        0.8
+      ],
+      "nominal_yaw_rad": 0.20943951023931962,
+      "painted": false
+    },
+    {
+      "region_id": "zone_04",
+      "center_m": [
+        0.35968722511472373,
+        1.6921953492694835,
+        0.8
+      ],
+      "nominal_yaw_rad": -0.20943951023931962,
+      "painted": false
+    },
+    {
+      "region_id": "zone_05",
+      "center_m": [
+        1.0168684864659785,
+        1.399599400268659,
+        0.8
+      ],
+      "nominal_yaw_rad": -0.6283185307179586,
+      "painted": false
+    },
+    {
+      "region_id": "zone_06",
+      "center_m": [
+        1.738223948547079,
+        0.44930780618346927,
+        0.8
+      ],
+      "nominal_yaw_rad": -1.0471975511965979,
+      "half_size_m": [
+        0.4,
+        0.68
+      ],
+      "painted": true,
+      "label": "GOAL"
+    }
+  ]
+}

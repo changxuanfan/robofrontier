@@ -1,0 +1,167 @@
+{
+  "schema": "robofrontier.spring_dial.environment.v1",
+  "id": "spring-dial-crank-04",
+  "collection": "spring_dial",
+  "arm_count": 4,
+  "topology": "two_facing_pairs",
+  "stations": [
+    {
+      "id": "A",
+      "side": "south",
+      "pair": 1,
+      "base_position_m": [
+        -0.43,
+        -0.86,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.43,
+        -0.61,
+        0.82
+      ]
+    },
+    {
+      "id": "B",
+      "side": "north",
+      "pair": 1,
+      "base_position_m": [
+        -0.43,
+        0.86,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.43,
+        0.61,
+        0.82
+      ]
+    },
+    {
+      "id": "C",
+      "side": "south",
+      "pair": 2,
+      "base_position_m": [
+        0.43,
+        -0.86,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.43,
+        -0.61,
+        0.82
+      ]
+    },
+    {
+      "id": "D",
+      "side": "north",
+      "pair": 2,
+      "base_position_m": [
+        0.43,
+        0.86,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.43,
+        0.61,
+        0.82
+      ]
+    }
+  ],
+  "dials": [
+    {
+      "id": "A",
+      "nominal_robot": "A",
+      "center_m": [
+        -0.43,
+        -0.32,
+        0.461
+      ]
+    },
+    {
+      "id": "B",
+      "nominal_robot": "B",
+      "center_m": [
+        -0.43,
+        0.32,
+        0.461
+      ]
+    },
+    {
+      "id": "C",
+      "nominal_robot": "C",
+      "center_m": [
+        0.43,
+        -0.32,
+        0.461
+      ]
+    },
+    {
+      "id": "D",
+      "nominal_robot": "D",
+      "center_m": [
+        0.43,
+        0.32,
+        0.461
+      ]
+    }
+  ],
+  "physics": {
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 0
+  },
+  "tables": [
+    {
+      "center_m": [
+        0,
+        0,
+        0.375
+      ],
+      "half_size_m": [
+        0.95,
+        1.03,
+        0.025
+      ]
+    }
+  ],
+  "floor_rgba": [
+    0.84,
+    0.89,
+    0.94,
+    1
+  ],
+  "table_rgba": [
+    0.64,
+    0.47,
+    0.35,
+    1
+  ],
+  "edges": [],
+  "objects": [],
+  "initial_keyframe": "initial",
+  "scene": "scene.xml"
+}

@@ -1,0 +1,399 @@
+{
+  "physics": {
+    "table_height_m": 0.8,
+    "cube_size_m": 0.06,
+    "object_mass_kg": 0.16874999999999996,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0
+  },
+  "mechanism": {
+    "kind": "unmarked_table",
+    "stock_packing": "Single layer; non-exclusive station allocation",
+    "stock_count": 162,
+    "robot_to_grid_edge_m": 0.3046446609406726,
+    "stock_edge_clearance_m": 0.055,
+    "row_spacing_scale_from_r3": 0.95,
+    "table_side_scale_from_r3": 1.25,
+    "table_vertical_scale_from_r4": 1.0,
+    "outer_base_axis_inset_from_grid_end_m": 0.11719999999999997,
+    "layout_revision": {
+      "name": "corner-facing-r12-inward50mm",
+      "source_revision": 11,
+      "inward_distance_m": 0.05,
+      "direction": "Existing robot forward axis in tabletop plane",
+      "unchanged": "All yaw angles; middle robots in six/eight-arm scenes",
+      "changes": [
+        {
+          "robot": "A",
+          "previous_base_m": [
+            -0.8118000000000001,
+            -0.7045,
+            0.8
+          ],
+          "base_m": [
+            -0.7764446609406727,
+            -0.6691446609406726,
+            0.8
+          ],
+          "translation_m": [
+            0.03535533905932738,
+            0.035355339059327376,
+            0.0
+          ],
+          "yaw_deg": 45.0
+        },
+        {
+          "robot": "B",
+          "previous_base_m": [
+            0.0,
+            -0.7045,
+            0.8
+          ],
+          "base_m": [
+            0.0,
+            -0.7045,
+            0.8
+          ],
+          "translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "yaw_deg": 90.0
+        },
+        {
+          "robot": "C",
+          "previous_base_m": [
+            0.8118000000000001,
+            -0.7045,
+            0.8
+          ],
+          "base_m": [
+            0.7764446609406727,
+            -0.6691446609406726,
+            0.8
+          ],
+          "translation_m": [
+            -0.035355339059327376,
+            0.03535533905932738,
+            0.0
+          ],
+          "yaw_deg": 135.0
+        },
+        {
+          "robot": "D",
+          "previous_base_m": [
+            -0.8118000000000001,
+            0.7045,
+            0.8
+          ],
+          "base_m": [
+            -0.7764446609406727,
+            0.6691446609406726,
+            0.8
+          ],
+          "translation_m": [
+            0.03535533905932738,
+            -0.035355339059327376,
+            0.0
+          ],
+          "yaw_deg": -45.0
+        },
+        {
+          "robot": "E",
+          "previous_base_m": [
+            0.0,
+            0.7045,
+            0.8
+          ],
+          "base_m": [
+            0.0,
+            0.7045,
+            0.8
+          ],
+          "translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "yaw_deg": -90.0
+        },
+        {
+          "robot": "F",
+          "previous_base_m": [
+            0.8118000000000001,
+            0.7045,
+            0.8
+          ],
+          "base_m": [
+            0.7764446609406727,
+            0.6691446609406726,
+            0.8
+          ],
+          "translation_m": [
+            -0.035355339059327376,
+            -0.03535533905932738,
+            0.0
+          ],
+          "yaw_deg": -135.0
+        }
+      ],
+      "relocated_stock_count": 5
+    },
+    "station_x_positions_m": [
+      -0.7764446609406727,
+      0.0,
+      0.7764446609406727
+    ],
+    "robot_to_grid_edge_m_by_robot": {
+      "A": 0.3046446609406726,
+      "B": 0.34,
+      "C": 0.3046446609406726,
+      "D": 0.3046446609406726,
+      "E": 0.34,
+      "F": 0.3046446609406726
+    }
+  },
+  "grid": {
+    "rows": 9,
+    "columns": 18,
+    "colors": 4,
+    "pitch_m": 0.081,
+    "cube_side_m": 0.06,
+    "pattern": [
+      [
+        "navy",
+        "navy",
+        "sage",
+        "navy",
+        "navy",
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "navy",
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "navy",
+        "navy",
+        "navy"
+      ],
+      [
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "sage",
+        "sage",
+        "cream",
+        "sage",
+        "sage",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream",
+        "cream",
+        "cream"
+      ],
+      [
+        "cream",
+        "navy",
+        "navy",
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "sage",
+        "sage",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "sage"
+      ],
+      [
+        "cream",
+        "navy",
+        "sage",
+        "navy",
+        "cream",
+        "cream",
+        "sage",
+        "sage",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream",
+        "cream"
+      ],
+      [
+        "cream",
+        "navy",
+        "sage",
+        "navy",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "coral",
+        "navy",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream",
+        "sage"
+      ],
+      [
+        "cream",
+        "navy",
+        "sage",
+        "navy",
+        "sage",
+        "sage",
+        "sage",
+        "cream",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream",
+        "cream"
+      ],
+      [
+        "cream",
+        "navy",
+        "navy",
+        "navy",
+        "cream",
+        "sage",
+        "sage",
+        "cream",
+        "sage",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "sage"
+      ],
+      [
+        "sage",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "sage",
+        "cream",
+        "sage",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream",
+        "cream",
+        "sage"
+      ],
+      [
+        "navy",
+        "navy",
+        "sage",
+        "navy",
+        "navy",
+        "navy",
+        "sage",
+        "cream",
+        "navy",
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "navy",
+        "navy"
+      ]
+    ],
+    "pocket_opening_m": null,
+    "depth_m": 0,
+    "floor_z_m": 0.8,
+    "rim_z_m": 0.8,
+    "color_counts": {
+      "navy": 32,
+      "sage": 33,
+      "cream": 65,
+      "coral": 32
+    },
+    "palette": {
+      "cream": "#FFF4DA",
+      "navy": "#173F73",
+      "coral": "#F03F5B",
+      "sage": "#16A16E"
+    },
+    "reference": {
+      "name": "Tulip",
+      "original_width": 9,
+      "original_height": 18,
+      "rotation_clockwise_deg": 90,
+      "source_sha256": "25a210531d2d0637480ae1fc2b3e40223f4e0f75710064f00ed6d15ea68ced87",
+      "source_file": "assets/tulip_parameters.json",
+      "color_hex": {
+        "cream": "#FFF4DA",
+        "navy": "#173F73",
+        "coral": "#F03F5B",
+        "sage": "#16A16E"
+      },
+      "palette_id": "bright",
+      "palette_selection_status": "selected_by_user",
+      "counts": {
+        "navy": 32,
+        "sage": 33,
+        "cream": 65,
+        "coral": 32
+      }
+    },
+    "printed_line_width_m": 0
+  }
+}

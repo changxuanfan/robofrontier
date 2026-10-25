@@ -1,0 +1,67 @@
+{
+  "physics": {
+    "table_height_m": 0.8,
+    "cube_size_m": 0.06,
+    "object_mass_kg": 0.16874999999999996,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0
+  },
+  "mechanism": {
+    "kind": "spring_board_two_flat_blades",
+    "cube_side_m": 0.06,
+    "cylinder_diameter_m": 0.06,
+    "cylinder_height_m": 0.06,
+    "table_side_scale_from_r3": 0.85,
+    "mount_layout_scale_from_r3": 0.85,
+    "cube_body_mass_kg": 0.16874999999999996,
+    "cube_material": "Solid wood; inherited nominal density",
+    "cylinder_body_mass_kg": 0.13253594007331937,
+    "blade_size_m": [
+      0.0025,
+      0.012,
+      0.024
+    ],
+    "blade_spacing_m": 0.024,
+    "slot_opening_m": [
+      0.0045,
+      0.015
+    ],
+    "slot_depth_m": 0.026,
+    "board_thickness_m": 0.032,
+    "spring_board": {
+      "translation_k_n_m": 1400.0,
+      "translation_damping_ns_m": 45.0,
+      "roll_pitch_k_nm_rad": 0.6,
+      "roll_pitch_damping_nms_rad": 0.075,
+      "per_axis_limit_rad": 0.35,
+      "translation_limit_m": [
+        -0.003,
+        0.018
+      ],
+      "support": "Equivalent central passive z/roll/pitch mechanism; cosmetic coil is not FEA"
+    },
+    "supplies": "Tabletop; no pedestals. Plug blades initially up/sideways. First six stock identities are cubes, subsequent identities are cylinders."
+  },
+  "grid": null,
+  "source_frame_revision": {
+    "source_directory": "configs/environments/cube_transport/frontier-v2-r5-transport-a04-d3",
+    "source_scene_sha256": "0bb8c8145198d19915a804766f9de4785700f6d9a3bc315612ad807402f1b291",
+    "vertical_translation_m": 0.4,
+    "floor_unchanged": true,
+    "geometry_scaled": false
+  }
+}

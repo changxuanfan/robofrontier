@@ -1,0 +1,61 @@
+{
+  "case": {
+    "id": "relay-a16-d3",
+    "family": "relay",
+    "level": 3,
+    "arms": 16,
+    "pairs": 8,
+    "layout": "closed_loop",
+    "payload": "flexible_cable_weight",
+    "status": "planned",
+    "directory": "configs/environments/beam_handoff/suite-relay-a16-d3-v2",
+    "scene_sha256": null,
+    "layout_report": "configs/environments/beam_handoff/suite-relay-a16-d3/layout-validation.json",
+    "scene_revision": 2,
+    "history": [
+      {
+        "directory": "configs/environments/beam_handoff/suite-relay-a16-d3",
+        "scene_sha256": "f223eb48afa0332f02ef60c1ec5981df4e2a82e0b222997264300134bdcfa536",
+        "status": "generated",
+        "superseded_reason": "Align beam with transport direction and stagger opposed bases, preserving old normal-to-path layouts and witnesses"
+      }
+    ],
+    "verification_results": {},
+    "last_oracle_report": null
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "beam_length_m": 1.2,
+    "beam_cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "beam_mass_kg": 1.458,
+    "weight_mass_kg": 0.25,
+    "suspension_length_m": 0.2,
+    "suspension_segments": 8,
+    "opposed_base_spacing_m": 1.118033988749895,
+    "cross_track_base_spacing_m": 1.0,
+    "longitudinal_pair_stagger_m": 0.5,
+    "minimum_supporting_robots": 2,
+    "loop_radius_m": 1.1,
+    "beam_alignment": "tangent"
+  },
+  "grid": null
+}

@@ -1,0 +1,19 @@
+{
+  "robot_count": 4,
+  "passive_dial_count": 4,
+  "actuators": 32,
+  "dial_actuators": 0,
+  "initial_penetrations_over_1mm": [],
+  "finite_state": true,
+  "initial_dial_angle_rad": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "scope": "Initial geometry and passive settling only; manipulation checked separately.",
+  "policy_adapter_available": true,
+  "policy_trial_started": false,
+  "llm_used": false,
+  "passed": true
+}

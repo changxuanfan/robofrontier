@@ -1,0 +1,84 @@
+{
+  "case": {
+    "id": "dial-n04-d1",
+    "family": "dial",
+    "level": 1,
+    "arms": 4,
+    "dials": 4,
+    "mechanism": "fixed_gear",
+    "candidate_codes": 81,
+    "status": "planned",
+    "layout": "2_rows_2_columns",
+    "directory": "configs/environments/spring_dial/suite-dial-n04-d1-v3",
+    "scene_sha256": null,
+    "layout_report": "configs/environments/spring_dial/suite-dial-n04-d1-v2/layout-validation.json",
+    "verification_results": {},
+    "last_oracle_report": null,
+    "scene_revision": 3,
+    "history": [
+      {
+        "directory": "configs/environments/spring_dial/suite-dial-n04-d1",
+        "scene_sha256": "6a2f2632fc68d1f1a3752c0af525ec1f6b48b9dd04972bf0cbd979f0df1bde00",
+        "status": "oracle_witness_passed",
+        "verification_results": {
+          "0": {
+            "passed": true,
+            "scene_sha256": "6a2f2632fc68d1f1a3752c0af525ec1f6b48b9dd04972bf0cbd979f0df1bde00",
+            "report": "runs/oracle/frontier-v1/dial-n04-d1/seed-0/attempt-001/report.json"
+          }
+        },
+        "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d1/seed-0/attempt-001/report.json",
+        "superseded_reason": "Freeze a common 0.03 Nm/rad spring, physical crank balance and calibrated hard contacts; earlier scenes and witness records remain unchanged"
+      },
+      {
+        "directory": "configs/environments/spring_dial/suite-dial-n04-d1-v2",
+        "scene_revision": 2,
+        "scene_sha256": "8763a4a6b2bbf3a547468236ace73eff255100aa2553a18c6a520a74ad99949b",
+        "status": "oracle_witness_passed",
+        "verification_results": {},
+        "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d1/seed-0/attempt-002/report.json",
+        "superseded_reason": "Deterministic asset ordering and current public contract; validated prior scene restored byte-for-byte and retained"
+      }
+    ],
+    "contract_sha256": "f5a93076d65afd7abe226c1564f05bf8ca452b1ec95c8308b3f7622b38490b5f",
+    "previous_contract_sha256": "edfe42d5b8c703b955e64989f0da8ed1b18b7cbbebb8dc5de7aca05baa4cf4a7"
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 20,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "dial_count": 4,
+    "interface": "gear",
+    "free_modules": false,
+    "handle_material": null,
+    "handle_mass_kg": 0,
+    "spring_nm_rad": 0.03,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      0.0,
+      -0.9600000000000002
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ]
+  },
+  "grid": null
+}

@@ -1,0 +1,51 @@
+{
+  "status": "static_checks_passed",
+  "endpoint_size_xy_m": [
+    0.8,
+    1.36
+  ],
+  "tabletop_samples": 1250,
+  "endpoint_regions_fully_supported": true,
+  "complete_assembly_footprint_tabletop_samples": 36,
+  "first_complete_assembly_inside_start": false,
+  "complete_rigid_transform_checked": [
+    "payload_01",
+    "payload_02",
+    "payload_03",
+    "payload_04"
+  ],
+  "endpoint_regions_outside_all_robot_mounts": true,
+  "added_table_end_extensions": [
+    {
+      "center_world_xy_m": [
+        -2.97,
+        0.0
+      ],
+      "half_size_xy_m": [
+        0.44,
+        0.7200000000000001
+      ],
+      "nonoverlapping_added_pieces": 4,
+      "added_area_m2": 0.8885704844581315
+    },
+    {
+      "center_world_xy_m": [
+        2.97,
+        0.0
+      ],
+      "half_size_xy_m": [
+        0.44,
+        0.7200000000000001
+      ],
+      "nonoverlapping_added_pieces": 4,
+      "added_area_m2": 0.8885704827913529
+    }
+  ],
+  "original_mechanics_and_robot_table_geometry_preserved": true,
+  "initial_robot_payload_or_different_payload_penetrations_over_1mm": [],
+  "source_directory": "configs/environments/beam_handoff/frontier-v2-r10-relay-a16-d3",
+  "physics_steps": 0,
+  "oracle_verified": false,
+  "policy_verified": false,
+  "scope": "Static initial geometry and metadata only; no grasp, dynamics, collision-free motion or complete-task feasibility claim"
+}

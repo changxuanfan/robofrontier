@@ -1,0 +1,70 @@
+{
+  "timestep_s": 0.002,
+  "control_dt_s": 0.01,
+  "table_height_m": 0.4,
+  "cube_size_m": 0.04,
+  "cube_mass_kg": 0.05,
+  "contact_friction": [
+    1.0,
+    0.005,
+    0.0001
+  ],
+  "cubes": {
+    "blue": [
+      0.45,
+      -0.09
+    ],
+    "red": [
+      0.45,
+      0.0
+    ],
+    "green": [
+      0.45,
+      0.09
+    ]
+  },
+  "home_tcp_m": [
+    0.43,
+    0.0,
+    0.6
+  ],
+  "linear_speed_m_s": [
+    0.01,
+    0.03,
+    0.06
+  ],
+  "joint_speed_deg_s": [
+    5.0,
+    15.0,
+    30.0
+  ],
+  "joint_acceleration_deg_s2": 60.0,
+  "gripper_full_travel_s": 1.0,
+  "workspace_min_m": [
+    0.2,
+    -0.3,
+    0.415
+  ],
+  "workspace_max_m": [
+    0.7,
+    0.3,
+    0.95
+  ],
+  "camera_position_m": [
+    1.65,
+    0.0,
+    1.35
+  ],
+  "camera_target_m": [
+    0.25,
+    0.0,
+    0.78
+  ],
+  "video_fps": 30,
+  "window_size": [
+    1280,
+    800
+  ],
+  "noslip_iterations": 10,
+  "profile": "noslip-10-v1"
+}

@@ -1,0 +1,132 @@
+{
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.1,
+    "object_mass_kg": 0.7812500000000001,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0
+  },
+  "mechanism": {
+    "kind": "recessed_grid",
+    "stock_packing": "Single layer; non-exclusive station allocation",
+    "stock_count": 72
+  },
+  "grid": {
+    "rows": 6,
+    "columns": 12,
+    "colors": 4,
+    "pitch_m": 0.126,
+    "cube_side_m": 0.1,
+    "pattern": [
+      [
+        "blue",
+        "blue",
+        "blue",
+        "yellow",
+        "yellow",
+        "yellow",
+        "red",
+        "red",
+        "blue",
+        "blue",
+        "blue",
+        "blue"
+      ],
+      [
+        "yellow",
+        "yellow",
+        "yellow",
+        "white",
+        "white",
+        "white",
+        "red",
+        "red",
+        "white",
+        "red",
+        "blue",
+        "blue"
+      ],
+      [
+        "yellow",
+        "yellow",
+        "yellow",
+        "white",
+        "white",
+        "white",
+        "red",
+        "red",
+        "white",
+        "red",
+        "white",
+        "red"
+      ],
+      [
+        "yellow",
+        "yellow",
+        "yellow",
+        "white",
+        "white",
+        "white",
+        "red",
+        "red",
+        "white",
+        "red",
+        "white",
+        "red"
+      ],
+      [
+        "yellow",
+        "yellow",
+        "yellow",
+        "white",
+        "white",
+        "white",
+        "red",
+        "red",
+        "white",
+        "red",
+        "blue",
+        "blue"
+      ],
+      [
+        "blue",
+        "blue",
+        "blue",
+        "yellow",
+        "yellow",
+        "yellow",
+        "red",
+        "red",
+        "blue",
+        "blue",
+        "blue",
+        "blue"
+      ]
+    ],
+    "pocket_opening_m": 0.125,
+    "depth_m": 0.03333333333333333,
+    "floor_z_m": 0.3666666666666667,
+    "rim_z_m": 0.4,
+    "color_counts": {
+      "blue": 18,
+      "yellow": 18,
+      "red": 18,
+      "white": 18
+    }
+  },
+  "scope": "Declared geometry/material and engineering parameters; not a task success proof"
+}

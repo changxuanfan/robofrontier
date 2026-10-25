@@ -1,0 +1,227 @@
+{
+  "kind": "spring_dial",
+  "id": "spring-dial-crank-04-policy-v1",
+  "status": "Crank-handle apparatus; Oracle manipulation is separate from GPT performance",
+  "scene_asset": "configs/environments/spring_dial/crank-04",
+  "scene_sha256": "e820cd986a64f59d26b08bbf9c08f46f04fba90b44f24d6b72625bac2db9add1",
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -0.43,
+        -0.86,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "B": {
+      "base_position_m": [
+        -0.43,
+        0.86,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "C": {
+      "base_position_m": [
+        0.43,
+        -0.86,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "D": {
+      "base_position_m": [
+        0.43,
+        0.86,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    }
+  },
+  "objects": [],
+  "dials": [
+    {
+      "id": "A",
+      "nominal_robot": "A",
+      "center_m": [
+        -0.43,
+        -0.32,
+        0.461
+      ]
+    },
+    {
+      "id": "B",
+      "nominal_robot": "B",
+      "center_m": [
+        -0.43,
+        0.32,
+        0.461
+      ]
+    },
+    {
+      "id": "C",
+      "nominal_robot": "C",
+      "center_m": [
+        0.43,
+        -0.32,
+        0.461
+      ]
+    },
+    {
+      "id": "D",
+      "nominal_robot": "D",
+      "center_m": [
+        0.43,
+        0.32,
+        0.461
+      ]
+    }
+  ],
+  "table_height_m": 0.4,
+  "mechanism": {
+    "apparatus": "crank",
+    "hub_diameter_m": 0.024,
+    "hub_height_m": 0.036,
+    "crank_radius_m": 0.075,
+    "arm_width_m": 0.016,
+    "arm_thickness_m": 0.009,
+    "grip_diameter_m": 0.022,
+    "grip_height_m": 0.044,
+    "assembly_mass_kg": 0.12,
+    "rotation_range_deg": [
+      -180,
+      180
+    ],
+    "return_mechanism": "passive spring"
+  },
+  "physics": {
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 0
+  },
+  "goal": "Discover the hidden four-symbol code and simultaneously hold the corresponding four crank settings until the display reads 4.",
+  "objective": "Succeed while reducing valid code trials, robot actions and elapsed time. Evaluate information gained against crank-grasp, turn, release and coordination cost.",
+  "coordinate_frame": "World +X right, +Y north, +Z up. Dial symbols are read on each stationary white dial from above; the crank rotates relative to that dial.",
+  "allowed_code_angles_deg": [
+    90,
+    180,
+    270
+  ],
+  "allowed_code_symbols": [
+    1,
+    2,
+    3
+  ],
+  "symbol_to_angle_deg": {
+    "0": 0,
+    "1": 90,
+    "2": 180,
+    "3": 270
+  },
+  "candidate_codes": 81,
+  "rules": [
+    "All four dials start at symbol 0. Each hidden code entry is sampled independently and uniformly from symbols 1, 2, 3; repetitions are allowed and zero is never a code entry.",
+    "Read each symbol on the stationary white dial from above: 0 north, 1 east (90 degrees clockwise), 2 south (180), 3 west (270). The displayed digit is the red crank rotor angle relative to its own white dial, not the robot wrist angle.",
+    "Each red hand grip is physically connected to a passive spring-return rotor. Hold and move the grip to turn the pointer through real robot/gripper contact. The white dial is fixed to the table. Releasing the crank lets its rotor return toward zero. No dial actuator, angle-setting command, attachment, reset or physics change is available to policy.",
+    "Feedback requires all four rotors near nonzero marks and slow/stable for the declared duration. The display reveals only the total correct count, never which dials match. Invalid/transient inputs display a dash; a valid zero score displays 0.",
+    "Each newly entered stable configuration counts once, including intermediate configurations formed while adjusting. Continued holding and repeated observation do not submit another trial; leaving and re-entering can. There is no separate submit button.",
+    "The first valid score 4 wins and latches visibly; the passive springs remain active. Post-success cleanup does not erase success or create further trials.",
+    "A completed TCP or gripper command does not prove that the crank moved by the requested angle or stayed grasped. Verify the relative pointer position and current robot/gripper evidence.",
+    "Nominal robot/dial labels show the initial layout, not exclusive ownership. Choose robot allocation, grasp pose, turn direction, observation views and communication within current role permissions."
+  ],
+  "planning_hints": [
+    "Compare the information value of a proposed trial with its required angle changes, execution time and coordination cost. Separate confirmed deductions from hypotheses.",
+    "You can retain some settings while changing others; a release/regrasp of every dial is not required for each trial.",
+    "A grasp pose and current joint configuration affect subsequent rotation range. Interpret feedback against an observed configuration, accounting for slip, tracking error and stale views.",
+    "When multiple roles operate one apparatus, coordinate the input configuration being tested so the aggregate feedback can be interpreted. Choose the communication and execution granularity yourself.",
+    "The red cylindrical grip is part of the rotating crank. Its position changes around the fixed dial center as the pointer turns; keep contact while following that motion, then check the visible pointer for slip.",
+    "Compare reachable grasp and wrist configurations with the crank motion needed for the next trial. Regrasping every dial is not inherently required; retain a useful grasp when it preserves access and does not obstruct another robot.",
+    "Opening a hand after a turn can require a clear withdrawal path around the crank arm and fixed dial. Check physical release before assuming the spring-return rotor is free."
+  ],
+  "feedback": {
+    "angle_tolerance_deg": 4.0,
+    "max_speed_deg_s": 5.0,
+    "stable_duration_s": 0.25,
+    "max_sample_gap_s": 0.03
+  },
+  "completion": {
+    "stable_duration_sim_s": 0.25,
+    "max_sample_gap_sim_s": 0.03,
+    "success_latched": true,
+    "complete_sampling_required": true
+  },
+  "workspace_world_m": {
+    "lower": [
+      -0.95,
+      -1.03,
+      0.42500000000000004
+    ],
+    "upper": [
+      0.95,
+      1.03,
+      1.3
+    ]
+  },
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "dial_A",
+    "dial_B",
+    "dial_C",
+    "dial_D",
+    "global",
+    "global_side",
+    "top",
+    "board"
+  ],
+  "view_camera": "global",
+  "recording_camera": "board",
+  "camera_roles": {
+    "overview": "global",
+    "game_feedback": "board",
+    "dial_details": {
+      "A": "dial_A",
+      "B": "dial_B",
+      "C": "dial_C",
+      "D": "dial_D"
+    }
+  },
+  "observation_contract": {
+    "initial_positions_public": false,
+    "initial_geometry_public": true,
+    "policy": [
+      "RGB including the score and pointer",
+      "robot_proprioception",
+      "action_status"
+    ],
+    "live_object_truth_for_policy": false,
+    "fixture_geometry": "Declared device/grip dimensions and fixed robot/camera calibration are public. Infer each dial position and live pointer angle from permitted RGB.",
+    "motion_screen": "Optional nominal robot-only geometry; does not certify crank contact, force, slip or release."
+  },
+  "metrics": [
+    "success",
+    "valid_trials",
+    "robot_action_count",
+    "absolute_dial_travel_rad",
+    "wall_time",
+    "simulation_time",
+    "holding_departures",
+    "zero_entries",
+    "sampling_gaps"
+  ]
+}

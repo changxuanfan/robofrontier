@@ -1,0 +1,1994 @@
+{
+  "schema": "robofrontier.workstation.v2",
+  "id": "transport-a12-d3",
+  "collection": "frontier_suite",
+  "arm_count": 12,
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.06,
+    "object_mass_kg": 0.16874999999999996,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0
+  },
+  "stations": [
+    {
+      "id": "A",
+      "base_position_m": [
+        -0.714,
+        -1.581,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.714,
+        -1.301,
+        0.94
+      ]
+    },
+    {
+      "id": "B",
+      "base_position_m": [
+        0.0,
+        -1.581,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.0,
+        -1.301,
+        0.94
+      ]
+    },
+    {
+      "id": "C",
+      "base_position_m": [
+        0.714,
+        -1.581,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.714,
+        -1.301,
+        0.94
+      ]
+    },
+    {
+      "id": "D",
+      "base_position_m": [
+        1.581,
+        -0.714,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.301,
+        -0.714,
+        0.94
+      ]
+    },
+    {
+      "id": "E",
+      "base_position_m": [
+        1.581,
+        0.0,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.301,
+        0.0,
+        0.94
+      ]
+    },
+    {
+      "id": "F",
+      "base_position_m": [
+        1.581,
+        0.714,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.301,
+        0.714,
+        0.94
+      ]
+    },
+    {
+      "id": "G",
+      "base_position_m": [
+        0.714,
+        1.581,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.714,
+        1.301,
+        0.94
+      ]
+    },
+    {
+      "id": "H",
+      "base_position_m": [
+        -0.0,
+        1.581,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.0,
+        1.301,
+        0.94
+      ]
+    },
+    {
+      "id": "I",
+      "base_position_m": [
+        -0.714,
+        1.581,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.714,
+        1.301,
+        0.94
+      ]
+    },
+    {
+      "id": "J",
+      "base_position_m": [
+        -1.581,
+        0.714,
+        0.4
+      ],
+      "yaw_rad": 0,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.301,
+        0.714,
+        0.94
+      ]
+    },
+    {
+      "id": "K",
+      "base_position_m": [
+        -1.581,
+        -0.0,
+        0.4
+      ],
+      "yaw_rad": 0,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.301,
+        0.0,
+        0.94
+      ]
+    },
+    {
+      "id": "L",
+      "base_position_m": [
+        -1.581,
+        -0.714,
+        0.4
+      ],
+      "yaw_rad": 0,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.301,
+        -0.714,
+        0.94
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "center_m": [
+        0,
+        -1.3005,
+        0.375
+      ],
+      "half_size_m": [
+        1.768,
+        0.4675000000000001,
+        0.025
+      ]
+    },
+    {
+      "center_m": [
+        0,
+        1.3005,
+        0.375
+      ],
+      "half_size_m": [
+        1.768,
+        0.4675000000000001,
+        0.025
+      ]
+    },
+    {
+      "center_m": [
+        -1.3005,
+        0,
+        0.375
+      ],
+      "half_size_m": [
+        0.4675000000000001,
+        0.8329999999999999,
+        0.025
+      ]
+    },
+    {
+      "center_m": [
+        1.3005,
+        0,
+        0.375
+      ],
+      "half_size_m": [
+        0.4675000000000001,
+        0.8329999999999999,
+        0.025
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "A_B",
+      "stations": [
+        "A",
+        "B"
+      ],
+      "position_m": [
+        -0.357,
+        -1.381,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "B_C",
+      "stations": [
+        "B",
+        "C"
+      ],
+      "position_m": [
+        0.357,
+        -1.381,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "C_D",
+      "stations": [
+        "C",
+        "D"
+      ],
+      "position_m": [
+        1.0474999999999999,
+        -1.0474999999999999,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "D_E",
+      "stations": [
+        "D",
+        "E"
+      ],
+      "position_m": [
+        1.381,
+        -0.357,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "E_F",
+      "stations": [
+        "E",
+        "F"
+      ],
+      "position_m": [
+        1.381,
+        0.357,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "F_G",
+      "stations": [
+        "F",
+        "G"
+      ],
+      "position_m": [
+        1.0474999999999999,
+        1.0474999999999999,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "G_H",
+      "stations": [
+        "G",
+        "H"
+      ],
+      "position_m": [
+        0.357,
+        1.381,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "H_I",
+      "stations": [
+        "H",
+        "I"
+      ],
+      "position_m": [
+        -0.357,
+        1.381,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "I_J",
+      "stations": [
+        "I",
+        "J"
+      ],
+      "position_m": [
+        -1.0474999999999999,
+        1.0474999999999999,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "J_K",
+      "stations": [
+        "J",
+        "K"
+      ],
+      "position_m": [
+        -1.381,
+        0.357,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "K_L",
+      "stations": [
+        "K",
+        "L"
+      ],
+      "position_m": [
+        -1.381,
+        -0.357,
+        0.45
+      ],
+      "capacity": 1
+    },
+    {
+      "id": "L_A",
+      "stations": [
+        "L",
+        "A"
+      ],
+      "position_m": [
+        -1.0474999999999999,
+        -1.0474999999999999,
+        0.45
+      ],
+      "capacity": 1
+    }
+  ],
+  "objects": [
+    {
+      "id": "A_item1",
+      "source": "A",
+      "identity": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.464,
+        -1.381,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        0.7071067811865476,
+        0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "A_item2",
+      "source": "A",
+      "identity": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.714,
+        -1.281,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        -0.5,
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "A_item3",
+      "source": "A",
+      "identity": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.964,
+        -1.381,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        0.5,
+        -0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "B_item1",
+      "source": "B",
+      "identity": "B",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.25,
+        -1.381,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        0.7071067811865476,
+        0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "B_item2",
+      "source": "B",
+      "identity": "B",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.0,
+        -1.281,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        -0.5,
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "B_item3",
+      "source": "B",
+      "identity": "B",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        -0.25,
+        -1.381,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        0.5,
+        -0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "C_item1",
+      "source": "C",
+      "identity": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.1
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.964,
+        -1.381,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        0.7071067811865476,
+        0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "C_item2",
+      "source": "C",
+      "identity": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.1
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.714,
+        -1.281,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        -0.5,
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "C_item3",
+      "source": "C",
+      "identity": "C",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.1
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        0.464,
+        -1.381,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        0.5,
+        -0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "D_item1",
+      "source": "D",
+      "identity": "D",
+      "color": "white",
+      "rgb": [
+        0.95,
+        0.95,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.381,
+        -0.464,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        6.123233995736766e-17,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "id": "D_item2",
+      "source": "D",
+      "identity": "D",
+      "color": "white",
+      "rgb": [
+        0.95,
+        0.95,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.281,
+        -0.714,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        4.3297802811774664e-17,
+        -0.7071067811865475,
+        4.3297802811774664e-17,
+        0.7071067811865476
+      ]
+    },
+    {
+      "id": "D_item3",
+      "source": "D",
+      "identity": "D",
+      "color": "white",
+      "rgb": [
+        0.95,
+        0.95,
+        0.91
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.381,
+        -0.964,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        4.3297802811774664e-17,
+        0.7071067811865475,
+        -4.3297802811774664e-17,
+        0.7071067811865476
+      ]
+    },
+    {
+      "id": "E_item1",
+      "source": "E",
+      "identity": "E",
+      "color": "cyan",
+      "rgb": [
+        0.08,
+        0.66,
+        0.68
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.381,
+        0.25,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        6.123233995736766e-17,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "id": "E_item2",
+      "source": "E",
+      "identity": "E",
+      "color": "cyan",
+      "rgb": [
+        0.08,
+        0.66,
+        0.68
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.281,
+        0.0,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        4.3297802811774664e-17,
+        -0.7071067811865475,
+        4.3297802811774664e-17,
+        0.7071067811865476
+      ]
+    },
+    {
+      "id": "E_item3",
+      "source": "E",
+      "identity": "E",
+      "color": "cyan",
+      "rgb": [
+        0.08,
+        0.66,
+        0.68
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.381,
+        -0.25,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        4.3297802811774664e-17,
+        0.7071067811865475,
+        -4.3297802811774664e-17,
+        0.7071067811865476
+      ]
+    },
+    {
+      "id": "F_item1",
+      "source": "F",
+      "identity": "F",
+      "color": "purple",
+      "rgb": [
+        0.49,
+        0.27,
+        0.69
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.381,
+        0.964,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        6.123233995736766e-17,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "id": "F_item2",
+      "source": "F",
+      "identity": "F",
+      "color": "purple",
+      "rgb": [
+        0.49,
+        0.27,
+        0.69
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.281,
+        0.714,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        4.3297802811774664e-17,
+        -0.7071067811865475,
+        4.3297802811774664e-17,
+        0.7071067811865476
+      ]
+    },
+    {
+      "id": "F_item3",
+      "source": "F",
+      "identity": "F",
+      "color": "purple",
+      "rgb": [
+        0.49,
+        0.27,
+        0.69
+      ],
+      "shape": "cube",
+      "initial_position_m": [
+        1.381,
+        0.464,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        4.3297802811774664e-17,
+        0.7071067811865475,
+        -4.3297802811774664e-17,
+        0.7071067811865476
+      ]
+    },
+    {
+      "id": "G_item1",
+      "source": "G",
+      "identity": "G",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        0.464,
+        1.381,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        0.7071067811865476,
+        -0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "G_item2",
+      "source": "G",
+      "identity": "G",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        0.714,
+        1.281,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        0.5,
+        0.5,
+        -0.5
+      ]
+    },
+    {
+      "id": "G_item3",
+      "source": "G",
+      "identity": "G",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        0.964,
+        1.381,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        -0.5,
+        -0.5,
+        -0.5
+      ]
+    },
+    {
+      "id": "H_item1",
+      "source": "H",
+      "identity": "H",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -0.25,
+        1.381,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        0.7071067811865476,
+        -0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "H_item2",
+      "source": "H",
+      "identity": "H",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        0.0,
+        1.281,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        0.5,
+        0.5,
+        -0.5
+      ]
+    },
+    {
+      "id": "H_item3",
+      "source": "H",
+      "identity": "H",
+      "color": "blue",
+      "rgb": [
+        0.06,
+        0.34,
+        0.77
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        0.25,
+        1.381,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        -0.5,
+        -0.5,
+        -0.5
+      ]
+    },
+    {
+      "id": "I_item1",
+      "source": "I",
+      "identity": "I",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.1
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -0.964,
+        1.381,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        0.7071067811865476,
+        -0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "I_item2",
+      "source": "I",
+      "identity": "I",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.1
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -0.714,
+        1.281,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        0.5,
+        0.5,
+        -0.5
+      ]
+    },
+    {
+      "id": "I_item3",
+      "source": "I",
+      "identity": "I",
+      "color": "yellow",
+      "rgb": [
+        0.98,
+        0.74,
+        0.1
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -0.464,
+        1.381,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.5,
+        -0.5,
+        -0.5,
+        -0.5
+      ]
+    },
+    {
+      "id": "J_item1",
+      "source": "J",
+      "identity": "J",
+      "color": "white",
+      "rgb": [
+        0.95,
+        0.95,
+        0.91
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -1.381,
+        0.464,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "J_item2",
+      "source": "J",
+      "identity": "J",
+      "color": "white",
+      "rgb": [
+        0.95,
+        0.95,
+        0.91
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -1.281,
+        0.714,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "J_item3",
+      "source": "J",
+      "identity": "J",
+      "color": "white",
+      "rgb": [
+        0.95,
+        0.95,
+        0.91
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -1.381,
+        0.964,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        -0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "K_item1",
+      "source": "K",
+      "identity": "K",
+      "color": "cyan",
+      "rgb": [
+        0.08,
+        0.66,
+        0.68
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -1.381,
+        -0.25,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "K_item2",
+      "source": "K",
+      "identity": "K",
+      "color": "cyan",
+      "rgb": [
+        0.08,
+        0.66,
+        0.68
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -1.281,
+        0.0,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "K_item3",
+      "source": "K",
+      "identity": "K",
+      "color": "cyan",
+      "rgb": [
+        0.08,
+        0.66,
+        0.68
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -1.381,
+        0.25,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        -0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "L_item1",
+      "source": "L",
+      "identity": "L",
+      "color": "purple",
+      "rgb": [
+        0.49,
+        0.27,
+        0.69
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -1.381,
+        -0.964,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "L_item2",
+      "source": "L",
+      "identity": "L",
+      "color": "purple",
+      "rgb": [
+        0.49,
+        0.27,
+        0.69
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -1.281,
+        -0.714,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.7071067811865475,
+        0.0
+      ]
+    },
+    {
+      "id": "L_item3",
+      "source": "L",
+      "identity": "L",
+      "color": "purple",
+      "rgb": [
+        0.49,
+        0.27,
+        0.69
+      ],
+      "shape": "cylinder",
+      "initial_position_m": [
+        -1.381,
+        -0.464,
+        0.43000000000000005
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        -0.7071067811865475,
+        0.0
+      ]
+    }
+  ],
+  "floor_rgba": [
+    0.84,
+    0.9,
+    0.95,
+    1
+  ],
+  "table_rgba": [
+    0.604,
+    0.459,
+    0.345,
+    1
+  ],
+  "initial_keyframe": "initial",
+  "scene": "scene.xml",
+  "suite_case": {
+    "family": "transport",
+    "level": 3,
+    "suite_version": 2,
+    "scene_revision": 5,
+    "scale_index": 2,
+    "arms": 12,
+    "id": "transport-a12-d3",
+    "directory": "configs/environments/cube_transport/frontier-v2-r5-transport-a12-d3"
+  },
+  "gripper_profile": "standard-panda",
+  "goals": [
+    {
+      "goal_id": "A_slot1",
+      "robot": "A",
+      "board": "board_A",
+      "local_position_m": [
+        0,
+        -0.1,
+        0.03
+      ],
+      "position_m": [
+        -0.614,
+        -1.051,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "B"
+      }
+    },
+    {
+      "goal_id": "A_slot2",
+      "robot": "A",
+      "board": "board_A",
+      "local_position_m": [
+        0,
+        0,
+        0.03
+      ],
+      "position_m": [
+        -0.714,
+        -1.051,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "F"
+      }
+    },
+    {
+      "goal_id": "A_slot3",
+      "robot": "A",
+      "board": "board_A",
+      "local_position_m": [
+        0,
+        0.1,
+        0.03
+      ],
+      "position_m": [
+        -0.814,
+        -1.051,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "H"
+      }
+    },
+    {
+      "goal_id": "B_slot1",
+      "robot": "B",
+      "board": "board_B",
+      "local_position_m": [
+        0,
+        -0.1,
+        0.03
+      ],
+      "position_m": [
+        0.1,
+        -1.051,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "G"
+      }
+    },
+    {
+      "goal_id": "B_slot2",
+      "robot": "B",
+      "board": "board_B",
+      "local_position_m": [
+        0,
+        0,
+        0.03
+      ],
+      "position_m": [
+        0.0,
+        -1.051,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "H"
+      }
+    },
+    {
+      "goal_id": "B_slot3",
+      "robot": "B",
+      "board": "board_B",
+      "local_position_m": [
+        0,
+        0.1,
+        0.03
+      ],
+      "position_m": [
+        -0.1,
+        -1.051,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "L"
+      }
+    },
+    {
+      "goal_id": "C_slot1",
+      "robot": "C",
+      "board": "board_C",
+      "local_position_m": [
+        0,
+        -0.1,
+        0.03
+      ],
+      "position_m": [
+        0.814,
+        -1.051,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "B"
+      }
+    },
+    {
+      "goal_id": "C_slot2",
+      "robot": "C",
+      "board": "board_C",
+      "local_position_m": [
+        0,
+        0,
+        0.03
+      ],
+      "position_m": [
+        0.714,
+        -1.051,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "I"
+      }
+    },
+    {
+      "goal_id": "C_slot3",
+      "robot": "C",
+      "board": "board_C",
+      "local_position_m": [
+        0,
+        0.1,
+        0.03
+      ],
+      "position_m": [
+        0.614,
+        -1.051,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "J"
+      }
+    },
+    {
+      "goal_id": "D_slot1",
+      "robot": "D",
+      "board": "board_D",
+      "local_position_m": [
+        0,
+        -0.1,
+        0.03
+      ],
+      "position_m": [
+        1.051,
+        -0.614,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "B"
+      }
+    },
+    {
+      "goal_id": "D_slot2",
+      "robot": "D",
+      "board": "board_D",
+      "local_position_m": [
+        0,
+        0,
+        0.03
+      ],
+      "position_m": [
+        1.051,
+        -0.714,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "C"
+      }
+    },
+    {
+      "goal_id": "D_slot3",
+      "robot": "D",
+      "board": "board_D",
+      "local_position_m": [
+        0,
+        0.1,
+        0.03
+      ],
+      "position_m": [
+        1.051,
+        -0.814,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "G"
+      }
+    },
+    {
+      "goal_id": "E_slot1",
+      "robot": "E",
+      "board": "board_E",
+      "local_position_m": [
+        0,
+        -0.1,
+        0.03
+      ],
+      "position_m": [
+        1.051,
+        0.1,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "A"
+      }
+    },
+    {
+      "goal_id": "E_slot2",
+      "robot": "E",
+      "board": "board_E",
+      "local_position_m": [
+        0,
+        0,
+        0.03
+      ],
+      "position_m": [
+        1.051,
+        0.0,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "F"
+      }
+    },
+    {
+      "goal_id": "E_slot3",
+      "robot": "E",
+      "board": "board_E",
+      "local_position_m": [
+        0,
+        0.1,
+        0.03
+      ],
+      "position_m": [
+        1.051,
+        -0.1,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "G"
+      }
+    },
+    {
+      "goal_id": "F_slot1",
+      "robot": "F",
+      "board": "board_F",
+      "local_position_m": [
+        0,
+        -0.1,
+        0.03
+      ],
+      "position_m": [
+        1.051,
+        0.814,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "E"
+      }
+    },
+    {
+      "goal_id": "F_slot2",
+      "robot": "F",
+      "board": "board_F",
+      "local_position_m": [
+        0,
+        0,
+        0.03
+      ],
+      "position_m": [
+        1.051,
+        0.714,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "F"
+      }
+    },
+    {
+      "goal_id": "F_slot3",
+      "robot": "F",
+      "board": "board_F",
+      "local_position_m": [
+        0,
+        0.1,
+        0.03
+      ],
+      "position_m": [
+        1.051,
+        0.614,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "L"
+      }
+    },
+    {
+      "goal_id": "G_slot1",
+      "robot": "G",
+      "board": "board_G",
+      "local_position_m": [
+        0,
+        -0.1,
+        0.03
+      ],
+      "position_m": [
+        0.614,
+        1.051,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "A"
+      }
+    },
+    {
+      "goal_id": "G_slot2",
+      "robot": "G",
+      "board": "board_G",
+      "local_position_m": [
+        0,
+        0,
+        0.03
+      ],
+      "position_m": [
+        0.714,
+        1.051,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "C"
+      }
+    },
+    {
+      "goal_id": "G_slot3",
+      "robot": "G",
+      "board": "board_G",
+      "local_position_m": [
+        0,
+        0.1,
+        0.03
+      ],
+      "position_m": [
+        0.814,
+        1.051,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "K"
+      }
+    },
+    {
+      "goal_id": "H_slot1",
+      "robot": "H",
+      "board": "board_H",
+      "local_position_m": [
+        0,
+        -0.1,
+        0.03
+      ],
+      "position_m": [
+        -0.1,
+        1.051,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "E"
+      }
+    },
+    {
+      "goal_id": "H_slot2",
+      "robot": "H",
+      "board": "board_H",
+      "local_position_m": [
+        0,
+        0,
+        0.03
+      ],
+      "position_m": [
+        0.0,
+        1.051,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "E"
+      }
+    },
+    {
+      "goal_id": "H_slot3",
+      "robot": "H",
+      "board": "board_H",
+      "local_position_m": [
+        0,
+        0.1,
+        0.03
+      ],
+      "position_m": [
+        0.1,
+        1.051,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "H"
+      }
+    },
+    {
+      "goal_id": "I_slot1",
+      "robot": "I",
+      "board": "board_I",
+      "local_position_m": [
+        0,
+        -0.1,
+        0.03
+      ],
+      "position_m": [
+        -0.814,
+        1.051,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "D"
+      }
+    },
+    {
+      "goal_id": "I_slot2",
+      "robot": "I",
+      "board": "board_I",
+      "local_position_m": [
+        0,
+        0,
+        0.03
+      ],
+      "position_m": [
+        -0.714,
+        1.051,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "I"
+      }
+    },
+    {
+      "goal_id": "I_slot3",
+      "robot": "I",
+      "board": "board_I",
+      "local_position_m": [
+        0,
+        0.1,
+        0.03
+      ],
+      "position_m": [
+        -0.614,
+        1.051,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "J"
+      }
+    },
+    {
+      "goal_id": "J_slot1",
+      "robot": "J",
+      "board": "board_J",
+      "local_position_m": [
+        0,
+        -0.1,
+        0.03
+      ],
+      "position_m": [
+        -1.051,
+        0.614,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "A"
+      }
+    },
+    {
+      "goal_id": "J_slot2",
+      "robot": "J",
+      "board": "board_J",
+      "local_position_m": [
+        0,
+        0,
+        0.03
+      ],
+      "position_m": [
+        -1.051,
+        0.714,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "D"
+      }
+    },
+    {
+      "goal_id": "J_slot3",
+      "robot": "J",
+      "board": "board_J",
+      "local_position_m": [
+        0,
+        0.1,
+        0.03
+      ],
+      "position_m": [
+        -1.051,
+        0.814,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "L"
+      }
+    },
+    {
+      "goal_id": "K_slot1",
+      "robot": "K",
+      "board": "board_K",
+      "local_position_m": [
+        0,
+        -0.1,
+        0.03
+      ],
+      "position_m": [
+        -1.051,
+        -0.1,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "C"
+      }
+    },
+    {
+      "goal_id": "K_slot2",
+      "robot": "K",
+      "board": "board_K",
+      "local_position_m": [
+        0,
+        0,
+        0.03
+      ],
+      "position_m": [
+        -1.051,
+        0.0,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "K"
+      }
+    },
+    {
+      "goal_id": "K_slot3",
+      "robot": "K",
+      "board": "board_K",
+      "local_position_m": [
+        0,
+        0.1,
+        0.03
+      ],
+      "position_m": [
+        -1.051,
+        0.1,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "K"
+      }
+    },
+    {
+      "goal_id": "L_slot1",
+      "robot": "L",
+      "board": "board_L",
+      "local_position_m": [
+        0,
+        -0.1,
+        0.03
+      ],
+      "position_m": [
+        -1.051,
+        -0.814,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "D"
+      }
+    },
+    {
+      "goal_id": "L_slot2",
+      "robot": "L",
+      "board": "board_L",
+      "local_position_m": [
+        0,
+        0,
+        0.03
+      ],
+      "position_m": [
+        -1.051,
+        -0.714,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "I"
+      }
+    },
+    {
+      "goal_id": "L_slot3",
+      "robot": "L",
+      "board": "board_L",
+      "local_position_m": [
+        0,
+        0.1,
+        0.03
+      ],
+      "position_m": [
+        -1.051,
+        -0.614,
+        0.5700000000000001
+      ],
+      "requires": {
+        "identity": "J"
+      }
+    }
+  ],
+  "mechanism": {
+    "kind": "spring_board_two_flat_blades",
+    "cube_side_m": 0.06,
+    "cylinder_diameter_m": 0.06,
+    "cylinder_height_m": 0.06,
+    "table_side_scale_from_r3": 0.85,
+    "mount_layout_scale_from_r3": 0.85,
+    "cube_body_mass_kg": 0.16874999999999996,
+    "cube_material": "Solid wood; inherited nominal density",
+    "cylinder_body_mass_kg": 0.13253594007331937,
+    "blade_size_m": [
+      0.0025,
+      0.012,
+      0.024
+    ],
+    "blade_spacing_m": 0.024,
+    "slot_opening_m": [
+      0.0045,
+      0.015
+    ],
+    "slot_depth_m": 0.026,
+    "board_thickness_m": 0.032,
+    "spring_board": {
+      "translation_k_n_m": 1400.0,
+      "translation_damping_ns_m": 45.0,
+      "roll_pitch_k_nm_rad": 0.6,
+      "roll_pitch_damping_nms_rad": 0.075,
+      "per_axis_limit_rad": 0.35,
+      "translation_limit_m": [
+        -0.003,
+        0.018
+      ],
+      "support": "Equivalent central passive z/roll/pitch mechanism; cosmetic coil is not FEA"
+    },
+    "supplies": "Tabletop; no pedestals. Plug blades initially up/sideways. First six stock identities are cubes, subsequent identities are cylinders."
+  }
+}

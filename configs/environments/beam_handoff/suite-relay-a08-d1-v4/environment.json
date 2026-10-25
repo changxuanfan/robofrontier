@@ -1,0 +1,339 @@
+{
+  "schema": "robofrontier.suite.environment.v1",
+  "id": "relay-a08-d1",
+  "collection": "frontier_suite",
+  "arm_count": 8,
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "stations": [
+    {
+      "id": "A",
+      "base_position_m": [
+        -1.08,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.08,
+        -0.38,
+        1.08
+      ]
+    },
+    {
+      "id": "B",
+      "base_position_m": [
+        -1.08,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.08,
+        0.38,
+        1.08
+      ]
+    },
+    {
+      "id": "C",
+      "base_position_m": [
+        -0.36,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.36,
+        -0.38,
+        1.08
+      ]
+    },
+    {
+      "id": "D",
+      "base_position_m": [
+        -0.36,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.36,
+        0.38,
+        1.08
+      ]
+    },
+    {
+      "id": "E",
+      "base_position_m": [
+        0.36,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.36,
+        -0.38,
+        1.08
+      ]
+    },
+    {
+      "id": "F",
+      "base_position_m": [
+        0.36,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.36,
+        0.38,
+        1.08
+      ]
+    },
+    {
+      "id": "G",
+      "base_position_m": [
+        1.08,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.08,
+        -0.38,
+        1.08
+      ]
+    },
+    {
+      "id": "H",
+      "base_position_m": [
+        1.08,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.08,
+        0.38,
+        1.08
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "center_m": [
+        0,
+        0,
+        0.375
+      ],
+      "half_size_m": [
+        1.32,
+        0.89,
+        0.025
+      ]
+    }
+  ],
+  "edges": [],
+  "objects": [
+    {
+      "id": "payload",
+      "shape": "beam",
+      "initial_position_m": [
+        -1.08,
+        0,
+        0.9
+      ],
+      "color": "wood",
+      "rgb": [
+        0.52,
+        0.29,
+        0.16
+      ]
+    }
+  ],
+  "floor_rgba": [
+    0.84,
+    0.9,
+    0.95,
+    1
+  ],
+  "table_rgba": [
+    0.604,
+    0.459,
+    0.345,
+    1
+  ],
+  "initial_keyframe": "initial",
+  "scene": "scene.xml",
+  "suite_case": {
+    "id": "relay-a08-d1",
+    "family": "relay",
+    "level": 1,
+    "arms": 8,
+    "pairs": 4,
+    "layout": "straight",
+    "scene_revision": 4
+  },
+  "route": [
+    {
+      "center_m": [
+        -1.08,
+        0,
+        0.9
+      ],
+      "yaw_rad": 0.0
+    },
+    {
+      "center_m": [
+        -0.36,
+        0,
+        0.9
+      ],
+      "yaw_rad": 0.0
+    },
+    {
+      "center_m": [
+        0.36,
+        0,
+        0.9
+      ],
+      "yaw_rad": 0.0
+    },
+    {
+      "center_m": [
+        1.08,
+        0,
+        0.9
+      ],
+      "yaw_rad": 0.0
+    }
+  ],
+  "pairs": [
+    {
+      "robots": [
+        "A",
+        "B"
+      ],
+      "center_m": [
+        -1.08,
+        0,
+        0.9
+      ],
+      "yaw_rad": 0.0
+    },
+    {
+      "robots": [
+        "C",
+        "D"
+      ],
+      "center_m": [
+        -0.36,
+        0,
+        0.9
+      ],
+      "yaw_rad": 0.0
+    },
+    {
+      "robots": [
+        "E",
+        "F"
+      ],
+      "center_m": [
+        0.36,
+        0,
+        0.9
+      ],
+      "yaw_rad": 0.0
+    },
+    {
+      "robots": [
+        "G",
+        "H"
+      ],
+      "center_m": [
+        1.08,
+        0,
+        0.9
+      ],
+      "yaw_rad": 0.0
+    }
+  ],
+  "mechanism": {
+    "beam_length_m": 1.2,
+    "beam_cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "beam_mass_kg": 1.458,
+    "weight_mass_kg": 0,
+    "suspension_length_m": 0,
+    "suspension_segments": 0,
+    "opposed_base_spacing_m": 1.3,
+    "cross_track_base_spacing_m": 1.3,
+    "longitudinal_pair_stagger_m": 0.0,
+    "minimum_supporting_robots": 2,
+    "loop_radius_m": null,
+    "beam_alignment": "normal"
+  },
+  "compiled_mass_kg": {
+    "D_link0": 0.629769,
+    "D_link1": 4.970684,
+    "D_link2": 0.646926,
+    "D_link3": 3.228604,
+    "D_link4": 3.587895,
+    "D_link5": 1.225946,
+    "D_link6": 1.666555,
+    "D_link7": 0.735522,
+    "D_hand": 0.73,
+    "D_left_finger": 0.015,
+    "D_right_finger": 0.015,
+    "payload": 1.458
+  }
+}

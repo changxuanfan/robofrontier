@@ -1,0 +1,78 @@
+{
+  "case": {
+    "id": "dial-n04-d3",
+    "family": "dial",
+    "level": 3,
+    "arms": 8,
+    "dials": 4,
+    "mechanism": "airborne_crank",
+    "candidate_codes": 81,
+    "status": "planned",
+    "layout": "linear_facing_pairs_0.70m",
+    "directory": "configs/environments/spring_dial/suite-dial-n04-d3-v2",
+    "scene_sha256": null,
+    "layout_report": "configs/environments/spring_dial/suite-dial-n04-d3/layout-validation.json",
+    "verification_results": {},
+    "last_oracle_report": null,
+    "scene_revision": 2,
+    "history": [
+      {
+        "directory": "configs/environments/spring_dial/suite-dial-n04-d3",
+        "scene_sha256": "3b894115c6b5df77d1825d2c5b4cd5f11bd9c8ac8fa95668bb8e343dea2970f8",
+        "status": "oracle_failed",
+        "verification_results": {
+          "0": {
+            "passed": false,
+            "scene_sha256": "3b894115c6b5df77d1825d2c5b4cd5f11bd9c8ac8fa95668bb8e343dea2970f8",
+            "executor_sha256": "68fc902cc1d00b72c95f58c9926ab4d94d949505a831724315b9db58004cf705",
+            "report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-005/report.json"
+          }
+        },
+        "last_oracle_report": "runs/oracle/frontier-v1/dial-n04-d3/seed-0/attempt-005/report.json",
+        "superseded_reason": "Freeze a common 0.03 Nm/rad spring, physical crank balance and calibrated hard contacts; earlier scenes and witness records remain unchanged"
+      }
+    ]
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 20,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "dial_count": 4,
+    "interface": "crank",
+    "free_modules": true,
+    "handle_material": "anodized aluminium",
+    "handle_mass_kg": 0.2592,
+    "spring_nm_rad": 0.03,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      -0.25,
+      -0.69
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "rotor_counterbalanced": true,
+    "balance_mass_kg": 0.04575,
+    "balance_arm_mass_kg": 0.015,
+    "balance_radius_m": 0.06
+  },
+  "grid": null
+}

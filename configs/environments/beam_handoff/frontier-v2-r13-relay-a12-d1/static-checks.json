@@ -1,0 +1,27 @@
+{
+  "status": "static_checks_passed",
+  "endpoint_size_xy_m": [
+    0.8,
+    1.36
+  ],
+  "tabletop_samples": 1250,
+  "endpoint_regions_fully_supported": true,
+  "complete_assembly_footprint_tabletop_samples": 24,
+  "first_complete_assembly_inside_start": true,
+  "complete_rigid_transform_checked": [
+    "payload_01",
+    "payload_02",
+    "payload_03"
+  ],
+  "endpoint_regions_outside_all_robot_mounts": false,
+  "endpoint_regions_within_integrated_arc_landings": true,
+  "added_table_end_extensions": [],
+  "original_apparatus_and_robot_local_mechanics_preserved": true,
+  "table_geometry": "upper_arc_120_degrees",
+  "initial_robot_payload_or_different_payload_penetrations_over_1mm": [],
+  "source_directory": "configs/environments/beam_handoff/frontier-v2-r10-relay-a12-d1",
+  "physics_steps": 0,
+  "oracle_verified": false,
+  "policy_verified": false,
+  "scope": "Static initial geometry and metadata only; no grasp, dynamics, collision-free motion or complete-task feasibility claim"
+}

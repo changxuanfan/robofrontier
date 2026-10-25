@@ -1,0 +1,171 @@
+{
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.06,
+    "object_mass_kg": 0.16874999999999996,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0
+  },
+  "mechanism": {
+    "kind": "obtuse_elbow_three_cable_tray",
+    "chord_m": 1.2,
+    "bend_rise_m": 0.24852813742385707,
+    "interior_angle_deg": 135,
+    "centerline_length_m": 1.2988706403508727,
+    "mass_kg": 1.5781278280263116,
+    "cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "collision": "Two solid miter-joined convex prisms, no arc or hidden joint",
+    "tray": {
+      "outer_diameter_m": 0.1,
+      "flat_floor_diameter_m": 0.07,
+      "clear_diameter_m": 0.1,
+      "depth_m": 0.01,
+      "rim_profile": "Gentle outward slope; 10 mm rise over 15 mm run, 2 mm material thickness",
+      "weight_diameter_m": 0.05,
+      "weight_height_m": 0.05,
+      "weight_mass_kg": 0.25,
+      "cable_attachments": 3,
+      "attachment_angle_spacing_deg": 120,
+      "free_weight": true,
+      "weight_tray_sliding_friction": 0.25
+    },
+    "cable_length_m": 0.2,
+    "cable_segments_each": 8,
+    "cable_segment_mass_kg": 0.001,
+    "cable_radius_m": 0.002,
+    "cable_model": "Ball-jointed rigid links with true end connections; equal-length initial slack arches",
+    "cable_self_collision": false,
+    "cable_environment_collision": true,
+    "initial_condition": "All components table-supported; initially slack",
+    "minimum_supporting_robots": 2,
+    "flexible_teams": true,
+    "layout": "upper_semicircle",
+    "outer_arms": 10,
+    "inner_arms": 6,
+    "inner_robot_radius_m": 1.03,
+    "outer_robot_radius_m": 2.43,
+    "curve_radius_m": 1.73,
+    "table_end_extension_m": 0.38,
+    "finish": "Tabletop destination region; no cradle; beam and suspended assembly must land stably",
+    "payload_count": 4,
+    "payload_assemblies": [
+      {
+        "id": "payload_01",
+        "beam_body": "payload_01",
+        "weight_body": "payload_01_weight",
+        "tray_body": "payload_01_tray",
+        "source_region_id": "pickup_01",
+        "initial_route_stage_id": "zone_01",
+        "pickup_center_m": [
+          -1.73,
+          -0.3199999999999998,
+          0.4
+        ],
+        "pickup_half_size_m": [
+          0.24,
+          0.65
+        ],
+        "pickup_yaw_rad": 1.5707963267948966,
+        "destination_region_id": "zone_10",
+        "initial_position_m": [
+          -1.73,
+          -0.3799999999999998,
+          0.4225
+        ]
+      },
+      {
+        "id": "payload_02",
+        "beam_body": "payload_02",
+        "weight_body": "payload_02_weight",
+        "tray_body": "payload_02_tray",
+        "source_region_id": "pickup_02",
+        "initial_route_stage_id": "zone_04",
+        "pickup_center_m": [
+          -1.0901666049839542,
+          1.3682239485470786,
+          0.4
+        ],
+        "pickup_half_size_m": [
+          0.24,
+          0.65
+        ],
+        "pickup_yaw_rad": 0.5235987755982991,
+        "destination_region_id": "zone_10",
+        "initial_position_m": [
+          -1.1421281292110206,
+          1.3382239485470786,
+          0.4225
+        ]
+      },
+      {
+        "id": "payload_03",
+        "beam_body": "payload_03",
+        "weight_body": "payload_03_weight",
+        "tray_body": "payload_03_tray",
+        "source_region_id": "pickup_03",
+        "initial_route_stage_id": "zone_06",
+        "pickup_center_m": [
+          0.04436133158061552,
+          1.7488659389045218,
+          0.4
+        ],
+        "pickup_half_size_m": [
+          0.24,
+          0.65
+        ],
+        "pickup_yaw_rad": -0.17453292519943298,
+        "destination_region_id": "zone_10",
+        "initial_position_m": [
+          -0.01472713360011696,
+          1.7592848295645376,
+          0.4225
+        ]
+      },
+      {
+        "id": "payload_04",
+        "beam_body": "payload_04",
+        "weight_body": "payload_04_weight",
+        "tray_body": "payload_04_tray",
+        "source_region_id": "pickup_04",
+        "initial_route_stage_id": "zone_09",
+        "pickup_center_m": [
+          1.5367429966949475,
+          0.8360149293577431,
+          0.4
+        ],
+        "pickup_half_size_m": [
+          0.24,
+          0.65
+        ],
+        "pickup_yaw_rad": -1.2217304763960306,
+        "destination_region_id": "zone_10",
+        "initial_position_m": [
+          1.5162217880954074,
+          0.8923964866048977,
+          0.4225
+        ]
+      }
+    ],
+    "initial_distribution": "Separate positions along the route; each travels rightward to the common destination",
+    "cable_to_cable_collision": false
+  },
+  "grid": null,
+  "scope": "Declared geometry/material and engineering parameters; not a task success proof"
+}

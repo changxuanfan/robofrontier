@@ -1,0 +1,54 @@
+{
+  "case": {
+    "id": "transport-a04-d1",
+    "family": "transport",
+    "level": 1,
+    "arms": 4,
+    "objects": 12,
+    "mechanism": "cube",
+    "status": "oracle_failed",
+    "directory": "configs/environments/cube_transport/suite-transport-a04-d1",
+    "scene_sha256": "5b95c0b7d53a331d24b988fde4e9d74cb92ee0c8211ae259cd78328e0b467efe",
+    "layout_report": "configs/environments/cube_transport/suite-transport-a04-d1/layout-validation.json",
+    "verification_results": {
+      "0": {
+        "passed": false,
+        "scene_sha256": "5b95c0b7d53a331d24b988fde4e9d74cb92ee0c8211ae259cd78328e0b467efe",
+        "report": "runs/oracle/frontier-v1/transport-a04-d1/seed-0/attempt-006/report.json"
+      }
+    },
+    "last_oracle_report": "runs/oracle/frontier-v1/transport-a04-d1/seed-0/attempt-006/report.json"
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "cylinder_radius_m": 0.02,
+    "cylinder_height_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "cube_contact_time_constant_s": 0.004
+  },
+  "mechanism": {
+    "cube_side_m": 0.04,
+    "peg_diameter_m": 0,
+    "peg_length_m": 0,
+    "hole_diameter_m": 0,
+    "peg_spacing_m": 0.02,
+    "board_mass_kg": 0.15,
+    "vertical_stiffness_n_m": null,
+    "angular_stiffness_nm_rad": null,
+    "contact_geometry": "True hollow mesh bores for pegs/fingertips; consolidated coplanar support manifold for larger cube/arm bodies. This does not attach, align or insert objects."
+  },
+  "grid": null
+}

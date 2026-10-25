@@ -1,0 +1,12 @@
+{
+  "source_floating_scene": "/Users/fanchangxuan/Repos/roomscript2/configs/environments/spring_dial/floating-04-060-tight-noslip20",
+  "source_fixed_crank": "configs/environments/spring_dial/crank-04",
+  "source_scene_sha256": "186a3c338fca716d5077e4a877a9acc58c90c38399c83c61ea96b69a54368886",
+  "blue_support_geometry_preserved": true,
+  "robot_layout_preserved": false,
+  "previous_spacing_m": 0.6,
+  "horizontal_spacing_m": 0.7,
+  "same_row_spacing_increment_m": 0.09999999999999998,
+  "crank_geometry_and_physical_mass_preserved": true,
+  "policy_oracle_recipe_exported": false
+}

@@ -1,0 +1,12 @@
+{
+  "status": "static_checks_passed",
+  "oracle_verified": false,
+  "policy_verified": false,
+  "frozen_input": false,
+  "robot_count": 12,
+  "nq": 129,
+  "nv": 126,
+  "ngeom": 1065,
+  "physics_sha256": "8ba0e70af93a405807c42a35a89d9e5ab9f87c8cecc7058834ff96e8320f0548",
+  "scope": "Static initial geometry and metadata only; no grasp, dynamics, collision-free motion or complete-task feasibility claim"
+}

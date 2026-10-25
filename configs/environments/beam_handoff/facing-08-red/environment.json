@@ -1,0 +1,274 @@
+{
+  "schema": "robofrontier.beam_handoff.environment.v1",
+  "id": "beam-handoff-facing-08-red",
+  "collection": "beam_handoff",
+  "arm_count": 8,
+  "topology": "four_facing_pairs",
+  "physics": {
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0.0,
+      0.0,
+      -9.81
+    ],
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10
+  },
+  "stations": [
+    {
+      "id": "A",
+      "side": "south",
+      "pair": 1,
+      "base_position_m": [
+        -1.08,
+        -0.85,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "home_tcp_m": [
+        -1.08,
+        -0.58,
+        0.78
+      ],
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": []
+    },
+    {
+      "id": "B",
+      "side": "north",
+      "pair": 1,
+      "base_position_m": [
+        -1.08,
+        0.85,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "home_tcp_m": [
+        -1.08,
+        0.58,
+        0.78
+      ],
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": []
+    },
+    {
+      "id": "C",
+      "side": "south",
+      "pair": 2,
+      "base_position_m": [
+        -0.36,
+        -0.85,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "home_tcp_m": [
+        -0.36,
+        -0.58,
+        0.78
+      ],
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": []
+    },
+    {
+      "id": "D",
+      "side": "north",
+      "pair": 2,
+      "base_position_m": [
+        -0.36,
+        0.85,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "home_tcp_m": [
+        -0.36,
+        0.58,
+        0.78
+      ],
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": []
+    },
+    {
+      "id": "E",
+      "side": "south",
+      "pair": 3,
+      "base_position_m": [
+        0.36,
+        -0.85,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "home_tcp_m": [
+        0.36,
+        -0.58,
+        0.78
+      ],
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": []
+    },
+    {
+      "id": "F",
+      "side": "north",
+      "pair": 3,
+      "base_position_m": [
+        0.36,
+        0.85,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "home_tcp_m": [
+        0.36,
+        0.58,
+        0.78
+      ],
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": []
+    },
+    {
+      "id": "G",
+      "side": "south",
+      "pair": 4,
+      "base_position_m": [
+        1.08,
+        -0.85,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "home_tcp_m": [
+        1.08,
+        -0.58,
+        0.78
+      ],
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": []
+    },
+    {
+      "id": "H",
+      "side": "north",
+      "pair": 4,
+      "base_position_m": [
+        1.08,
+        0.85,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "home_tcp_m": [
+        1.08,
+        0.58,
+        0.78
+      ],
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": []
+    }
+  ],
+  "pairs": [
+    {
+      "id": 1,
+      "robots": [
+        "A",
+        "B"
+      ],
+      "center_x_m": -1.08
+    },
+    {
+      "id": 2,
+      "robots": [
+        "C",
+        "D"
+      ],
+      "center_x_m": -0.36
+    },
+    {
+      "id": 3,
+      "robots": [
+        "E",
+        "F"
+      ],
+      "center_x_m": 0.36
+    },
+    {
+      "id": 4,
+      "robots": [
+        "G",
+        "H"
+      ],
+      "center_x_m": 1.08
+    }
+  ],
+  "tables": [
+    {
+      "center_m": [
+        0,
+        0,
+        0.375
+      ],
+      "half_size_m": [
+        1.65,
+        1.05,
+        0.025
+      ]
+    }
+  ],
+  "table_rgba": [
+    0.76,
+    0.51,
+    0.29,
+    1.0
+  ],
+  "floor_rgba": [
+    0.72,
+    0.86,
+    0.98,
+    1.0
+  ],
+  "edges": [],
+  "objects": [],
+  "beam": {
+    "length_m": 1.2,
+    "width_m": 0.045,
+    "height_m": 0.045,
+    "density_kg_m3": 600.0,
+    "initial_center_xy_m": [
+      -1.25,
+      0.0
+    ],
+    "long_axis_world": "+Y",
+    "id": "timber",
+    "mass_kg": 1.458,
+    "initial_center_world_m": [
+      -1.25,
+      0.0,
+      0.42250000000000004
+    ]
+  },
+  "goal": {
+    "center_xy_m": [
+      1.48,
+      0.0
+    ],
+    "zone_length_x_m": 0.22,
+    "zone_width_y_m": 1.36
+  },
+  "initial_keyframe": "initial",
+  "scene": "scene.xml",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "future_policy_runtime": [
+      "RGB",
+      "robot_proprioception",
+      "action_status"
+    ],
+    "live_object_truth_for_policy": false
+  }
+}

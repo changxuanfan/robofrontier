@@ -1,0 +1,527 @@
+{
+  "schema": "robofrontier.mosaic.task.v1",
+  "id": "mosaic-four-arm-7x7-draft",
+  "status": "draft transcription; not a validated manipulation benchmark",
+  "reference_image": "assets/reference-original.png",
+  "matrix_codes": [
+    "WWWRWWW",
+    "WWRRRWW",
+    "WBRRRBW",
+    "WBRYRBW",
+    "BBRYRBB",
+    "BRYYYRB",
+    "RWWBWWR"
+  ],
+  "code_to_color": {
+    "B": "blue",
+    "R": "red",
+    "Y": "yellow",
+    "W": "white"
+  },
+  "inventory_counts": {
+    "white": 18,
+    "red": 15,
+    "blue": 11,
+    "yellow": 5
+  },
+  "transcription_note": "Transcribed from the supplied regular 7x7 illustration, rows north to south and columns west to east; B blue, R red, Y yellow, W white. No rescaling or cropping of another target.",
+  "assignment": "No arm/color ownership or placement order imposed; supply color is only initial location.",
+  "goal_cells": [
+    {
+      "row": 1,
+      "column": 1,
+      "color": "white",
+      "cube_center_world_m": [
+        -0.12,
+        0.12,
+        0.42
+      ]
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "color": "white",
+      "cube_center_world_m": [
+        -0.08,
+        0.12,
+        0.42
+      ]
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "color": "white",
+      "cube_center_world_m": [
+        -0.04,
+        0.12,
+        0.42
+      ]
+    },
+    {
+      "row": 1,
+      "column": 4,
+      "color": "red",
+      "cube_center_world_m": [
+        0.0,
+        0.12,
+        0.42
+      ]
+    },
+    {
+      "row": 1,
+      "column": 5,
+      "color": "white",
+      "cube_center_world_m": [
+        0.04,
+        0.12,
+        0.42
+      ]
+    },
+    {
+      "row": 1,
+      "column": 6,
+      "color": "white",
+      "cube_center_world_m": [
+        0.08,
+        0.12,
+        0.42
+      ]
+    },
+    {
+      "row": 1,
+      "column": 7,
+      "color": "white",
+      "cube_center_world_m": [
+        0.12,
+        0.12,
+        0.42
+      ]
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "color": "white",
+      "cube_center_world_m": [
+        -0.12,
+        0.08,
+        0.42
+      ]
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "color": "white",
+      "cube_center_world_m": [
+        -0.08,
+        0.08,
+        0.42
+      ]
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "color": "red",
+      "cube_center_world_m": [
+        -0.04,
+        0.08,
+        0.42
+      ]
+    },
+    {
+      "row": 2,
+      "column": 4,
+      "color": "red",
+      "cube_center_world_m": [
+        0.0,
+        0.08,
+        0.42
+      ]
+    },
+    {
+      "row": 2,
+      "column": 5,
+      "color": "red",
+      "cube_center_world_m": [
+        0.04,
+        0.08,
+        0.42
+      ]
+    },
+    {
+      "row": 2,
+      "column": 6,
+      "color": "white",
+      "cube_center_world_m": [
+        0.08,
+        0.08,
+        0.42
+      ]
+    },
+    {
+      "row": 2,
+      "column": 7,
+      "color": "white",
+      "cube_center_world_m": [
+        0.12,
+        0.08,
+        0.42
+      ]
+    },
+    {
+      "row": 3,
+      "column": 1,
+      "color": "white",
+      "cube_center_world_m": [
+        -0.12,
+        0.04,
+        0.42
+      ]
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "color": "blue",
+      "cube_center_world_m": [
+        -0.08,
+        0.04,
+        0.42
+      ]
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "color": "red",
+      "cube_center_world_m": [
+        -0.04,
+        0.04,
+        0.42
+      ]
+    },
+    {
+      "row": 3,
+      "column": 4,
+      "color": "red",
+      "cube_center_world_m": [
+        0.0,
+        0.04,
+        0.42
+      ]
+    },
+    {
+      "row": 3,
+      "column": 5,
+      "color": "red",
+      "cube_center_world_m": [
+        0.04,
+        0.04,
+        0.42
+      ]
+    },
+    {
+      "row": 3,
+      "column": 6,
+      "color": "blue",
+      "cube_center_world_m": [
+        0.08,
+        0.04,
+        0.42
+      ]
+    },
+    {
+      "row": 3,
+      "column": 7,
+      "color": "white",
+      "cube_center_world_m": [
+        0.12,
+        0.04,
+        0.42
+      ]
+    },
+    {
+      "row": 4,
+      "column": 1,
+      "color": "white",
+      "cube_center_world_m": [
+        -0.12,
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "row": 4,
+      "column": 2,
+      "color": "blue",
+      "cube_center_world_m": [
+        -0.08,
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "row": 4,
+      "column": 3,
+      "color": "red",
+      "cube_center_world_m": [
+        -0.04,
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "row": 4,
+      "column": 4,
+      "color": "yellow",
+      "cube_center_world_m": [
+        0.0,
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "row": 4,
+      "column": 5,
+      "color": "red",
+      "cube_center_world_m": [
+        0.04,
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "row": 4,
+      "column": 6,
+      "color": "blue",
+      "cube_center_world_m": [
+        0.08,
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "row": 4,
+      "column": 7,
+      "color": "white",
+      "cube_center_world_m": [
+        0.12,
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "row": 5,
+      "column": 1,
+      "color": "blue",
+      "cube_center_world_m": [
+        -0.12,
+        -0.04,
+        0.42
+      ]
+    },
+    {
+      "row": 5,
+      "column": 2,
+      "color": "blue",
+      "cube_center_world_m": [
+        -0.08,
+        -0.04,
+        0.42
+      ]
+    },
+    {
+      "row": 5,
+      "column": 3,
+      "color": "red",
+      "cube_center_world_m": [
+        -0.04,
+        -0.04,
+        0.42
+      ]
+    },
+    {
+      "row": 5,
+      "column": 4,
+      "color": "yellow",
+      "cube_center_world_m": [
+        0.0,
+        -0.04,
+        0.42
+      ]
+    },
+    {
+      "row": 5,
+      "column": 5,
+      "color": "red",
+      "cube_center_world_m": [
+        0.04,
+        -0.04,
+        0.42
+      ]
+    },
+    {
+      "row": 5,
+      "column": 6,
+      "color": "blue",
+      "cube_center_world_m": [
+        0.08,
+        -0.04,
+        0.42
+      ]
+    },
+    {
+      "row": 5,
+      "column": 7,
+      "color": "blue",
+      "cube_center_world_m": [
+        0.12,
+        -0.04,
+        0.42
+      ]
+    },
+    {
+      "row": 6,
+      "column": 1,
+      "color": "blue",
+      "cube_center_world_m": [
+        -0.12,
+        -0.08,
+        0.42
+      ]
+    },
+    {
+      "row": 6,
+      "column": 2,
+      "color": "red",
+      "cube_center_world_m": [
+        -0.08,
+        -0.08,
+        0.42
+      ]
+    },
+    {
+      "row": 6,
+      "column": 3,
+      "color": "yellow",
+      "cube_center_world_m": [
+        -0.04,
+        -0.08,
+        0.42
+      ]
+    },
+    {
+      "row": 6,
+      "column": 4,
+      "color": "yellow",
+      "cube_center_world_m": [
+        0.0,
+        -0.08,
+        0.42
+      ]
+    },
+    {
+      "row": 6,
+      "column": 5,
+      "color": "yellow",
+      "cube_center_world_m": [
+        0.04,
+        -0.08,
+        0.42
+      ]
+    },
+    {
+      "row": 6,
+      "column": 6,
+      "color": "red",
+      "cube_center_world_m": [
+        0.08,
+        -0.08,
+        0.42
+      ]
+    },
+    {
+      "row": 6,
+      "column": 7,
+      "color": "blue",
+      "cube_center_world_m": [
+        0.12,
+        -0.08,
+        0.42
+      ]
+    },
+    {
+      "row": 7,
+      "column": 1,
+      "color": "red",
+      "cube_center_world_m": [
+        -0.12,
+        -0.12,
+        0.42
+      ]
+    },
+    {
+      "row": 7,
+      "column": 2,
+      "color": "white",
+      "cube_center_world_m": [
+        -0.08,
+        -0.12,
+        0.42
+      ]
+    },
+    {
+      "row": 7,
+      "column": 3,
+      "color": "white",
+      "cube_center_world_m": [
+        -0.04,
+        -0.12,
+        0.42
+      ]
+    },
+    {
+      "row": 7,
+      "column": 4,
+      "color": "blue",
+      "cube_center_world_m": [
+        0.0,
+        -0.12,
+        0.42
+      ]
+    },
+    {
+      "row": 7,
+      "column": 5,
+      "color": "white",
+      "cube_center_world_m": [
+        0.04,
+        -0.12,
+        0.42
+      ]
+    },
+    {
+      "row": 7,
+      "column": 6,
+      "color": "white",
+      "cube_center_world_m": [
+        0.08,
+        -0.12,
+        0.42
+      ]
+    },
+    {
+      "row": 7,
+      "column": 7,
+      "color": "red",
+      "cube_center_world_m": [
+        0.12,
+        -0.12,
+        0.42
+      ]
+    }
+  ],
+  "evaluation_status": "runtime adapter includes private stable pose/color/release evaluation; dense manipulation feasibility remains unvalidated",
+  "execution_objective": {
+    "priority": "Complete the recognizable full color pattern efficiently, with visually cohesive, aligned, compact placement and no material gaps.",
+    "quality_tradeoff": "Small residual errors are acceptable under the human preference. Compare local correction with later consolidation by expected benefit, disturbance and execution/coordination cost; select the order and methods yourself.",
+    "audit": "The original strict completion thresholds remain a separate diagnostic. Report practical progress, residual gaps/pose uncertainty and strict claims honestly; do not require every cell to pass the strict audit before making other useful progress."
+  }
+}

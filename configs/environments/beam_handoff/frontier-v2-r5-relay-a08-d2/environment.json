@@ -1,0 +1,391 @@
+{
+  "schema": "robofrontier.workstation.v2",
+  "id": "relay-a08-d2",
+  "collection": "frontier_suite",
+  "arm_count": 8,
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.06,
+    "object_mass_kg": 0.16874999999999996,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0
+  },
+  "stations": [
+    {
+      "id": "A",
+      "base_position_m": [
+        -1.08,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.08,
+        -0.38,
+        0.98
+      ]
+    },
+    {
+      "id": "B",
+      "base_position_m": [
+        -1.08,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.08,
+        0.38,
+        0.98
+      ]
+    },
+    {
+      "id": "C",
+      "base_position_m": [
+        -0.36,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.36,
+        -0.38,
+        0.98
+      ]
+    },
+    {
+      "id": "D",
+      "base_position_m": [
+        -0.36,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.36,
+        0.38,
+        0.98
+      ]
+    },
+    {
+      "id": "E",
+      "base_position_m": [
+        0.36,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.36,
+        -0.38,
+        0.98
+      ]
+    },
+    {
+      "id": "F",
+      "base_position_m": [
+        0.36,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.36,
+        0.38,
+        0.98
+      ]
+    },
+    {
+      "id": "G",
+      "base_position_m": [
+        1.08,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.08,
+        -0.38,
+        0.98
+      ]
+    },
+    {
+      "id": "H",
+      "base_position_m": [
+        1.08,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.08,
+        0.38,
+        0.98
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "center_m": [
+        0,
+        0,
+        0.375
+      ],
+      "half_size_m": [
+        2.05,
+        1.02,
+        0.025
+      ]
+    }
+  ],
+  "edges": [],
+  "objects": [
+    {
+      "id": "payload_01",
+      "display_id": "1",
+      "source": "A",
+      "shape": "arc_beam",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "initial_position_m": [
+        -1.46,
+        0.0,
+        0.4225
+      ],
+      "initial_quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "start_region_id": "pickup_01"
+    },
+    {
+      "id": "payload_02",
+      "display_id": "2",
+      "source": "E",
+      "shape": "arc_beam",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "initial_position_m": [
+        0.03999999999999998,
+        0.0,
+        0.4225
+      ],
+      "initial_quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "start_region_id": "pickup_02"
+    }
+  ],
+  "floor_rgba": [
+    0.84,
+    0.9,
+    0.95,
+    1
+  ],
+  "table_rgba": [
+    0.604,
+    0.459,
+    0.345,
+    1
+  ],
+  "initial_keyframe": "initial",
+  "scene": "scene.xml",
+  "suite_case": {
+    "family": "relay",
+    "level": 2,
+    "suite_version": 2,
+    "scene_revision": 5,
+    "scale_index": 0,
+    "arms": 8,
+    "id": "relay-a08-d2",
+    "directory": "configs/environments/beam_handoff/frontier-v2-r5-relay-a08-d2"
+  },
+  "gripper_profile": "standard-panda",
+  "route": [
+    {
+      "region_id": "zone_01",
+      "center_m": [
+        -1.46,
+        0.0,
+        0.4
+      ],
+      "nominal_yaw_rad": 0.0
+    },
+    {
+      "region_id": "zone_02",
+      "center_m": [
+        -0.36,
+        0.0,
+        0.4
+      ],
+      "nominal_yaw_rad": 0.0
+    },
+    {
+      "region_id": "zone_03",
+      "center_m": [
+        0.36,
+        0.0,
+        0.4
+      ],
+      "nominal_yaw_rad": 0.0
+    },
+    {
+      "region_id": "zone_04",
+      "center_m": [
+        1.46,
+        0.0,
+        0.4
+      ],
+      "nominal_yaw_rad": 0.0,
+      "half_size_m": [
+        0.5,
+        0.9
+      ]
+    }
+  ],
+  "support_groups": null,
+  "pairs": null,
+  "mechanism": {
+    "chord_m": 1.2,
+    "circular_angle_deg": 90,
+    "radius_m": 0.848528137423857,
+    "arc_length_m": 1.33286488144751,
+    "mass_kg": 1.6194308309587244,
+    "cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "collision": "32 tangent convex segments; smooth visual sweep; analytic arc mass distributed over segments",
+    "kind": "arc_cable_weight",
+    "cable_length_m": 0.2,
+    "cable_segments_each": 8,
+    "cable_segment_mass_kg": 0.001,
+    "cable_radius_m": 0.002,
+    "cable_model": "Ball-jointed rigid links with true end connections; equal-length initial slack arches",
+    "cable_self_collision": false,
+    "cable_environment_collision": true,
+    "initial_condition": "All components table-supported; initially slack",
+    "minimum_supporting_robots": 2,
+    "flexible_teams": true,
+    "layout": "straight",
+    "outer_arms": null,
+    "inner_arms": null,
+    "inner_robot_radius_m": null,
+    "outer_robot_radius_m": null,
+    "curve_radius_m": null,
+    "table_end_extension_m": 0.38,
+    "finish": "Tabletop destination region; no cradle; beam and suspended assembly must land stably",
+    "payload_count": 2,
+    "payload_assemblies": [
+      {
+        "id": "payload_01",
+        "beam_body": "payload_01",
+        "weight_body": "payload_01_weight",
+        "tray_body": null,
+        "source_region_id": "pickup_01",
+        "initial_route_stage_id": "zone_01",
+        "pickup_center_m": [
+          -1.4,
+          0.0,
+          0.4
+        ],
+        "pickup_half_size_m": [
+          0.24,
+          0.65
+        ],
+        "pickup_yaw_rad": 0.0,
+        "destination_region_id": "zone_04",
+        "initial_position_m": [
+          -1.46,
+          0.0,
+          0.4225
+        ]
+      },
+      {
+        "id": "payload_02",
+        "beam_body": "payload_02",
+        "weight_body": "payload_02_weight",
+        "tray_body": null,
+        "source_region_id": "pickup_02",
+        "initial_route_stage_id": "zone_03",
+        "pickup_center_m": [
+          0.09999999999999998,
+          0.0,
+          0.4
+        ],
+        "pickup_half_size_m": [
+          0.24,
+          0.65
+        ],
+        "pickup_yaw_rad": 0.0,
+        "destination_region_id": "zone_04",
+        "initial_position_m": [
+          0.03999999999999998,
+          0.0,
+          0.4225
+        ]
+      }
+    ],
+    "initial_distribution": "Separate positions along the route; each travels rightward to the common destination",
+    "cable_to_cable_collision": false
+  }
+}

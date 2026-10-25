@@ -1,0 +1,2505 @@
+{
+  "generated_by": "robofrontier.factory_scene",
+  "seed": 1729,
+  "third_party": [
+    {
+      "id": "Barlow Condensed",
+      "source": "https://github.com/google/fonts/tree/main/ofl/barlowcondensed",
+      "license": "SIL Open Font License 1.1",
+      "license_file": "fonts/OFL.txt"
+    },
+    {
+      "id": "concrete_floor_02",
+      "source": "https://polyhaven.com/a/concrete_floor_02",
+      "license": "CC0 1.0",
+      "metadata": "source/polyhaven/source.json"
+    }
+  ],
+  "assets": [
+    {
+      "path": "fonts/BarlowCondensed-SemiBold.ttf",
+      "sha256": "7b619d14bc2327509a9ef32b0890f709626f7ecc9ff61191c2a4314c5499d2d9",
+      "bytes": 109428
+    },
+    {
+      "path": "fonts/OFL.txt",
+      "sha256": "186d750eb496a4c17a76385f82be6aea2ac1cf2de074a811d63786cf374ea73f",
+      "bytes": 4377
+    },
+    {
+      "path": "meshes/factory_area_markings_yellow_g0_batch.obj",
+      "sha256": "8b5ff4538e5f2af2db362b51bae619c1fb3586a315ea3f2baae56eb938f472be",
+      "bytes": 14361
+    },
+    {
+      "path": "meshes/factory_bevel_1.obj",
+      "sha256": "47ce3882006ed7c8ef1350da54c44085c5baf9a52d4eb2ee94288894d86d7de4",
+      "bytes": 927
+    },
+    {
+      "path": "meshes/factory_bevel_10.obj",
+      "sha256": "33c10132c7f309cb6d3c119c97bfca2602238a427cc8faa47605fa27ed07aa8f",
+      "bytes": 927
+    },
+    {
+      "path": "meshes/factory_bevel_16.obj",
+      "sha256": "2ebfd177373fe483da22ec3a4098ec9129454070765fe47f64cc3527f263a871",
+      "bytes": 926
+    },
+    {
+      "path": "meshes/factory_bevel_2.obj",
+      "sha256": "4b14684fdf3c068810c94a90201fa63330466324b75db8cad5b8603728a4f76a",
+      "bytes": 919
+    },
+    {
+      "path": "meshes/factory_bevel_24.obj",
+      "sha256": "dcd2127c6d07eb02711c67da32fad0f6307bbc2e7de093c6e4757ca92c910873",
+      "bytes": 919
+    },
+    {
+      "path": "meshes/factory_bevel_25.obj",
+      "sha256": "060c07124b61049939d878b53bb150bb92bdd87f237305b5c4337005f97ba677",
+      "bytes": 927
+    },
+    {
+      "path": "meshes/factory_bevel_26.obj",
+      "sha256": "65d0faa36481615ae31a8431e433d2ac645faab409962e66077124b1ac9f848e",
+      "bytes": 894
+    },
+    {
+      "path": "meshes/factory_bevel_27.obj",
+      "sha256": "7eada82b7d2a9aa58fb9cbd7554503913b79a9515ac0f2cfa608960778383848",
+      "bytes": 919
+    },
+    {
+      "path": "meshes/factory_bevel_3.obj",
+      "sha256": "bdecdc73b1ca63a9dd1f438954d6ece6efda9f62cc32ab1b23030d6d8bf6b5ae",
+      "bytes": 918
+    },
+    {
+      "path": "meshes/factory_bevel_30.obj",
+      "sha256": "a1e8407ccddd141e7da3a776638e63d6c5ad32a73f44f42fcbe8721311b520f8",
+      "bytes": 1038
+    },
+    {
+      "path": "meshes/factory_bevel_35.obj",
+      "sha256": "d7d22b1a4a2b694ed3b25c41fe3a938f99fdc5fac16e73537c056f6ea3d46eec",
+      "bytes": 911
+    },
+    {
+      "path": "meshes/factory_bevel_8.obj",
+      "sha256": "51eef15a71ba34abf4017c367796b2bfbb392cdec3a0712981685c1ddf59dd18",
+      "bytes": 1030
+    },
+    {
+      "path": "meshes/factory_bevel_9.obj",
+      "sha256": "a663d5373fc5cb6ec278bdb28861496e0e5553a3208d82bfe100d12e420f85af",
+      "bytes": 919
+    },
+    {
+      "path": "meshes/factory_detail_-1_cart_blue_g0_batch.obj",
+      "sha256": "fd6f0e9424f87efd58f0216394e21cb618e2c107e5ac7eec406901e49c6756f1",
+      "bytes": 19062
+    },
+    {
+      "path": "meshes/factory_detail_-1_cart_cabinet_dark_g0_batch.obj",
+      "sha256": "f1c9056ab52173553a8a12b7eb640562f9053373dfecb3360aab57874878fb3c",
+      "bytes": 1095
+    },
+    {
+      "path": "meshes/factory_detail_-1_cart_label_g0_batch.obj",
+      "sha256": "e9d086f9861f12afe4881741df746c680cb61c1f76dbb86dffb8b992bec46e36",
+      "bytes": 1175
+    },
+    {
+      "path": "meshes/factory_detail_-1_cart_steel_light_g0_batch.obj",
+      "sha256": "5dd3810554a1e62b6fcae8a5ca7fc1043b55c9ed26ebaa87ec91e4f8cb8199bf",
+      "bytes": 3255
+    },
+    {
+      "path": "meshes/factory_detail_-1_rack_0_blue_g0_batch.obj",
+      "sha256": "78ee3dd085b7443040bdbcc6edb2227b6faefd17387528a3eb2b3b6c32f7ccd4",
+      "bytes": 76535
+    },
+    {
+      "path": "meshes/factory_detail_-1_rack_0_cardboard_g0_batch.obj",
+      "sha256": "5c34faebd46e644538425377b92ca3ab57372b12c1c65b4d90fd6632fae48823",
+      "bytes": 2839
+    },
+    {
+      "path": "meshes/factory_detail_-1_rack_0_label_g0_batch.obj",
+      "sha256": "fcacded77f28331c67a66149fb92a7f50c5c708e3902c5814cecbfa3f1a41261",
+      "bytes": 4549
+    },
+    {
+      "path": "meshes/factory_detail_-1_rack_0_steel_g0_batch.obj",
+      "sha256": "c511b87e1c0188e1836768d8ec498d3e6b66eae58ef18e953e6b0bc649b7eca4",
+      "bytes": 2119
+    },
+    {
+      "path": "meshes/factory_detail_-1_rack_0_steel_light_g0_batch.obj",
+      "sha256": "9654585e67f5cdfebd0a950d6f262abc8afc4041f5ff2e932e619ce9a8fdda49",
+      "bytes": 1631
+    },
+    {
+      "path": "meshes/factory_detail_-1_rack_0_tape_g0_batch.obj",
+      "sha256": "6facff106b8bc315e8764223611acc6e44c974b3c3d0ef56c336f7bacf354329",
+      "bytes": 839
+    },
+    {
+      "path": "meshes/factory_detail_-1_rack_4_blue_g0_batch.obj",
+      "sha256": "78ee3dd085b7443040bdbcc6edb2227b6faefd17387528a3eb2b3b6c32f7ccd4",
+      "bytes": 76535
+    },
+    {
+      "path": "meshes/factory_detail_-1_rack_4_cardboard_g0_batch.obj",
+      "sha256": "5c34faebd46e644538425377b92ca3ab57372b12c1c65b4d90fd6632fae48823",
+      "bytes": 2839
+    },
+    {
+      "path": "meshes/factory_detail_-1_rack_4_label_g0_batch.obj",
+      "sha256": "fcacded77f28331c67a66149fb92a7f50c5c708e3902c5814cecbfa3f1a41261",
+      "bytes": 4549
+    },
+    {
+      "path": "meshes/factory_detail_-1_rack_4_steel_g0_batch.obj",
+      "sha256": "c511b87e1c0188e1836768d8ec498d3e6b66eae58ef18e953e6b0bc649b7eca4",
+      "bytes": 2119
+    },
+    {
+      "path": "meshes/factory_detail_-1_rack_4_steel_light_g0_batch.obj",
+      "sha256": "9654585e67f5cdfebd0a950d6f262abc8afc4041f5ff2e932e619ce9a8fdda49",
+      "bytes": 1631
+    },
+    {
+      "path": "meshes/factory_detail_-1_rack_4_tape_g0_batch.obj",
+      "sha256": "6facff106b8bc315e8764223611acc6e44c974b3c3d0ef56c336f7bacf354329",
+      "bytes": 839
+    },
+    {
+      "path": "meshes/factory_detail_-1_tools_1_base_cabinet_dark_g0_batch.obj",
+      "sha256": "a8899f632f869063348fbf2b432c6246ed7da56c99fb25287a4c90a7b8c4356f",
+      "bytes": 5016
+    },
+    {
+      "path": "meshes/factory_detail_-1_tools_1_base_steel_light_g0_batch.obj",
+      "sha256": "0bc78fe7302442f2993f5ace65f002cfca5b3b44fc53b63a46c366c8c7a02dfd",
+      "bytes": 1519
+    },
+    {
+      "path": "meshes/factory_detail_-1_tools_1_board_blue_g0_batch.obj",
+      "sha256": "4c26a2c3159cd6e6f4ab593b8380de95869a532caca6f50df564976c8fda4ddc",
+      "bytes": 4174
+    },
+    {
+      "path": "meshes/factory_detail_-1_tools_1_board_steel_light_g0_batch.obj",
+      "sha256": "b62331e199e4a9f9440fc4f8133881c21a676fda7ea4243d16ded9e3dfdb8032",
+      "bytes": 1471
+    },
+    {
+      "path": "meshes/factory_detail_-1_tools_3_base_cabinet_dark_g0_batch.obj",
+      "sha256": "a8899f632f869063348fbf2b432c6246ed7da56c99fb25287a4c90a7b8c4356f",
+      "bytes": 5016
+    },
+    {
+      "path": "meshes/factory_detail_-1_tools_3_base_steel_light_g0_batch.obj",
+      "sha256": "0bc78fe7302442f2993f5ace65f002cfca5b3b44fc53b63a46c366c8c7a02dfd",
+      "bytes": 1519
+    },
+    {
+      "path": "meshes/factory_detail_-1_tools_3_board_blue_g0_batch.obj",
+      "sha256": "4c26a2c3159cd6e6f4ab593b8380de95869a532caca6f50df564976c8fda4ddc",
+      "bytes": 4174
+    },
+    {
+      "path": "meshes/factory_detail_-1_tools_3_board_steel_light_g0_batch.obj",
+      "sha256": "b62331e199e4a9f9440fc4f8133881c21a676fda7ea4243d16ded9e3dfdb8032",
+      "bytes": 1471
+    },
+    {
+      "path": "meshes/factory_detail_1_cart_blue_g0_batch.obj",
+      "sha256": "fd6f0e9424f87efd58f0216394e21cb618e2c107e5ac7eec406901e49c6756f1",
+      "bytes": 19062
+    },
+    {
+      "path": "meshes/factory_detail_1_cart_cabinet_dark_g0_batch.obj",
+      "sha256": "f1c9056ab52173553a8a12b7eb640562f9053373dfecb3360aab57874878fb3c",
+      "bytes": 1095
+    },
+    {
+      "path": "meshes/factory_detail_1_cart_label_g0_batch.obj",
+      "sha256": "e9d086f9861f12afe4881741df746c680cb61c1f76dbb86dffb8b992bec46e36",
+      "bytes": 1175
+    },
+    {
+      "path": "meshes/factory_detail_1_cart_steel_light_g0_batch.obj",
+      "sha256": "5dd3810554a1e62b6fcae8a5ca7fc1043b55c9ed26ebaa87ec91e4f8cb8199bf",
+      "bytes": 3255
+    },
+    {
+      "path": "meshes/factory_detail_1_rack_0_blue_g0_batch.obj",
+      "sha256": "78ee3dd085b7443040bdbcc6edb2227b6faefd17387528a3eb2b3b6c32f7ccd4",
+      "bytes": 76535
+    },
+    {
+      "path": "meshes/factory_detail_1_rack_0_cardboard_g0_batch.obj",
+      "sha256": "5c34faebd46e644538425377b92ca3ab57372b12c1c65b4d90fd6632fae48823",
+      "bytes": 2839
+    },
+    {
+      "path": "meshes/factory_detail_1_rack_0_label_g0_batch.obj",
+      "sha256": "fcacded77f28331c67a66149fb92a7f50c5c708e3902c5814cecbfa3f1a41261",
+      "bytes": 4549
+    },
+    {
+      "path": "meshes/factory_detail_1_rack_0_steel_g0_batch.obj",
+      "sha256": "c511b87e1c0188e1836768d8ec498d3e6b66eae58ef18e953e6b0bc649b7eca4",
+      "bytes": 2119
+    },
+    {
+      "path": "meshes/factory_detail_1_rack_0_steel_light_g0_batch.obj",
+      "sha256": "9654585e67f5cdfebd0a950d6f262abc8afc4041f5ff2e932e619ce9a8fdda49",
+      "bytes": 1631
+    },
+    {
+      "path": "meshes/factory_detail_1_rack_0_tape_g0_batch.obj",
+      "sha256": "6facff106b8bc315e8764223611acc6e44c974b3c3d0ef56c336f7bacf354329",
+      "bytes": 839
+    },
+    {
+      "path": "meshes/factory_detail_1_rack_4_blue_g0_batch.obj",
+      "sha256": "78ee3dd085b7443040bdbcc6edb2227b6faefd17387528a3eb2b3b6c32f7ccd4",
+      "bytes": 76535
+    },
+    {
+      "path": "meshes/factory_detail_1_rack_4_cardboard_g0_batch.obj",
+      "sha256": "5c34faebd46e644538425377b92ca3ab57372b12c1c65b4d90fd6632fae48823",
+      "bytes": 2839
+    },
+    {
+      "path": "meshes/factory_detail_1_rack_4_label_g0_batch.obj",
+      "sha256": "fcacded77f28331c67a66149fb92a7f50c5c708e3902c5814cecbfa3f1a41261",
+      "bytes": 4549
+    },
+    {
+      "path": "meshes/factory_detail_1_rack_4_steel_g0_batch.obj",
+      "sha256": "c511b87e1c0188e1836768d8ec498d3e6b66eae58ef18e953e6b0bc649b7eca4",
+      "bytes": 2119
+    },
+    {
+      "path": "meshes/factory_detail_1_rack_4_steel_light_g0_batch.obj",
+      "sha256": "9654585e67f5cdfebd0a950d6f262abc8afc4041f5ff2e932e619ce9a8fdda49",
+      "bytes": 1631
+    },
+    {
+      "path": "meshes/factory_detail_1_rack_4_tape_g0_batch.obj",
+      "sha256": "6facff106b8bc315e8764223611acc6e44c974b3c3d0ef56c336f7bacf354329",
+      "bytes": 839
+    },
+    {
+      "path": "meshes/factory_detail_1_tools_1_base_cabinet_dark_g0_batch.obj",
+      "sha256": "a8899f632f869063348fbf2b432c6246ed7da56c99fb25287a4c90a7b8c4356f",
+      "bytes": 5016
+    },
+    {
+      "path": "meshes/factory_detail_1_tools_1_base_steel_light_g0_batch.obj",
+      "sha256": "0bc78fe7302442f2993f5ace65f002cfca5b3b44fc53b63a46c366c8c7a02dfd",
+      "bytes": 1519
+    },
+    {
+      "path": "meshes/factory_detail_1_tools_1_board_blue_g0_batch.obj",
+      "sha256": "4c26a2c3159cd6e6f4ab593b8380de95869a532caca6f50df564976c8fda4ddc",
+      "bytes": 4174
+    },
+    {
+      "path": "meshes/factory_detail_1_tools_1_board_steel_light_g0_batch.obj",
+      "sha256": "b62331e199e4a9f9440fc4f8133881c21a676fda7ea4243d16ded9e3dfdb8032",
+      "bytes": 1471
+    },
+    {
+      "path": "meshes/factory_detail_1_tools_3_base_cabinet_dark_g0_batch.obj",
+      "sha256": "a8899f632f869063348fbf2b432c6246ed7da56c99fb25287a4c90a7b8c4356f",
+      "bytes": 5016
+    },
+    {
+      "path": "meshes/factory_detail_1_tools_3_base_steel_light_g0_batch.obj",
+      "sha256": "0bc78fe7302442f2993f5ace65f002cfca5b3b44fc53b63a46c366c8c7a02dfd",
+      "bytes": 1519
+    },
+    {
+      "path": "meshes/factory_detail_1_tools_3_board_blue_g0_batch.obj",
+      "sha256": "4c26a2c3159cd6e6f4ab593b8380de95869a532caca6f50df564976c8fda4ddc",
+      "bytes": 4174
+    },
+    {
+      "path": "meshes/factory_detail_1_tools_3_board_steel_light_g0_batch.obj",
+      "sha256": "b62331e199e4a9f9440fc4f8133881c21a676fda7ea4243d16ded9e3dfdb8032",
+      "bytes": 1471
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_cart_-5.5_blue_g0_batch.obj",
+      "sha256": "fd6f0e9424f87efd58f0216394e21cb618e2c107e5ac7eec406901e49c6756f1",
+      "bytes": 19062
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_cart_-5.5_cabinet_dark_g0_batch.obj",
+      "sha256": "f1c9056ab52173553a8a12b7eb640562f9053373dfecb3360aab57874878fb3c",
+      "bytes": 1095
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_cart_-5.5_label_g0_batch.obj",
+      "sha256": "e9d086f9861f12afe4881741df746c680cb61c1f76dbb86dffb8b992bec46e36",
+      "bytes": 1175
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_cart_-5.5_steel_light_g0_batch.obj",
+      "sha256": "5dd3810554a1e62b6fcae8a5ca7fc1043b55c9ed26ebaa87ec91e4f8cb8199bf",
+      "bytes": 3255
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_cart_5.5_blue_g0_batch.obj",
+      "sha256": "fd6f0e9424f87efd58f0216394e21cb618e2c107e5ac7eec406901e49c6756f1",
+      "bytes": 19062
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_cart_5.5_cabinet_dark_g0_batch.obj",
+      "sha256": "f1c9056ab52173553a8a12b7eb640562f9053373dfecb3360aab57874878fb3c",
+      "bytes": 1095
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_cart_5.5_label_g0_batch.obj",
+      "sha256": "e9d086f9861f12afe4881741df746c680cb61c1f76dbb86dffb8b992bec46e36",
+      "bytes": 1175
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_cart_5.5_steel_light_g0_batch.obj",
+      "sha256": "5dd3810554a1e62b6fcae8a5ca7fc1043b55c9ed26ebaa87ec91e4f8cb8199bf",
+      "bytes": 3255
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_rack_-20.5_blue_g0_batch.obj",
+      "sha256": "78ee3dd085b7443040bdbcc6edb2227b6faefd17387528a3eb2b3b6c32f7ccd4",
+      "bytes": 76535
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_rack_-20.5_cardboard_g0_batch.obj",
+      "sha256": "5c34faebd46e644538425377b92ca3ab57372b12c1c65b4d90fd6632fae48823",
+      "bytes": 2839
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_rack_-20.5_label_g0_batch.obj",
+      "sha256": "fcacded77f28331c67a66149fb92a7f50c5c708e3902c5814cecbfa3f1a41261",
+      "bytes": 4549
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_rack_-20.5_steel_g0_batch.obj",
+      "sha256": "c511b87e1c0188e1836768d8ec498d3e6b66eae58ef18e953e6b0bc649b7eca4",
+      "bytes": 2119
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_rack_-20.5_steel_light_g0_batch.obj",
+      "sha256": "9654585e67f5cdfebd0a950d6f262abc8afc4041f5ff2e932e619ce9a8fdda49",
+      "bytes": 1631
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_rack_-20.5_tape_g0_batch.obj",
+      "sha256": "6facff106b8bc315e8764223611acc6e44c974b3c3d0ef56c336f7bacf354329",
+      "bytes": 839
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_rack_20.5_blue_g0_batch.obj",
+      "sha256": "78ee3dd085b7443040bdbcc6edb2227b6faefd17387528a3eb2b3b6c32f7ccd4",
+      "bytes": 76535
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_rack_20.5_cardboard_g0_batch.obj",
+      "sha256": "5c34faebd46e644538425377b92ca3ab57372b12c1c65b4d90fd6632fae48823",
+      "bytes": 2839
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_rack_20.5_label_g0_batch.obj",
+      "sha256": "fcacded77f28331c67a66149fb92a7f50c5c708e3902c5814cecbfa3f1a41261",
+      "bytes": 4549
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_rack_20.5_steel_g0_batch.obj",
+      "sha256": "c511b87e1c0188e1836768d8ec498d3e6b66eae58ef18e953e6b0bc649b7eca4",
+      "bytes": 2119
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_rack_20.5_steel_light_g0_batch.obj",
+      "sha256": "9654585e67f5cdfebd0a950d6f262abc8afc4041f5ff2e932e619ce9a8fdda49",
+      "bytes": 1631
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_rack_20.5_tape_g0_batch.obj",
+      "sha256": "6facff106b8bc315e8764223611acc6e44c974b3c3d0ef56c336f7bacf354329",
+      "bytes": 839
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_tools_-10.5_base_cabinet_dark_g0_batch.obj",
+      "sha256": "a8899f632f869063348fbf2b432c6246ed7da56c99fb25287a4c90a7b8c4356f",
+      "bytes": 5016
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_tools_-10.5_base_steel_light_g0_batch.obj",
+      "sha256": "0bc78fe7302442f2993f5ace65f002cfca5b3b44fc53b63a46c366c8c7a02dfd",
+      "bytes": 1519
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_tools_-10.5_board_blue_g0_batch.obj",
+      "sha256": "4c26a2c3159cd6e6f4ab593b8380de95869a532caca6f50df564976c8fda4ddc",
+      "bytes": 4174
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_tools_-10.5_board_steel_light_g0_batch.obj",
+      "sha256": "b62331e199e4a9f9440fc4f8133881c21a676fda7ea4243d16ded9e3dfdb8032",
+      "bytes": 1471
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_tools_10.5_base_cabinet_dark_g0_batch.obj",
+      "sha256": "a8899f632f869063348fbf2b432c6246ed7da56c99fb25287a4c90a7b8c4356f",
+      "bytes": 5016
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_tools_10.5_base_steel_light_g0_batch.obj",
+      "sha256": "0bc78fe7302442f2993f5ace65f002cfca5b3b44fc53b63a46c366c8c7a02dfd",
+      "bytes": 1519
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_tools_10.5_board_blue_g0_batch.obj",
+      "sha256": "4c26a2c3159cd6e6f4ab593b8380de95869a532caca6f50df564976c8fda4ddc",
+      "bytes": 4174
+    },
+    {
+      "path": "meshes/factory_detail_end_-1_tools_10.5_board_steel_light_g0_batch.obj",
+      "sha256": "b62331e199e4a9f9440fc4f8133881c21a676fda7ea4243d16ded9e3dfdb8032",
+      "bytes": 1471
+    },
+    {
+      "path": "meshes/factory_detail_end_1_cart_-5.5_blue_g0_batch.obj",
+      "sha256": "fd6f0e9424f87efd58f0216394e21cb618e2c107e5ac7eec406901e49c6756f1",
+      "bytes": 19062
+    },
+    {
+      "path": "meshes/factory_detail_end_1_cart_-5.5_cabinet_dark_g0_batch.obj",
+      "sha256": "f1c9056ab52173553a8a12b7eb640562f9053373dfecb3360aab57874878fb3c",
+      "bytes": 1095
+    },
+    {
+      "path": "meshes/factory_detail_end_1_cart_-5.5_label_g0_batch.obj",
+      "sha256": "e9d086f9861f12afe4881741df746c680cb61c1f76dbb86dffb8b992bec46e36",
+      "bytes": 1175
+    },
+    {
+      "path": "meshes/factory_detail_end_1_cart_-5.5_steel_light_g0_batch.obj",
+      "sha256": "5dd3810554a1e62b6fcae8a5ca7fc1043b55c9ed26ebaa87ec91e4f8cb8199bf",
+      "bytes": 3255
+    },
+    {
+      "path": "meshes/factory_detail_end_1_cart_5.5_blue_g0_batch.obj",
+      "sha256": "fd6f0e9424f87efd58f0216394e21cb618e2c107e5ac7eec406901e49c6756f1",
+      "bytes": 19062
+    },
+    {
+      "path": "meshes/factory_detail_end_1_cart_5.5_cabinet_dark_g0_batch.obj",
+      "sha256": "f1c9056ab52173553a8a12b7eb640562f9053373dfecb3360aab57874878fb3c",
+      "bytes": 1095
+    },
+    {
+      "path": "meshes/factory_detail_end_1_cart_5.5_label_g0_batch.obj",
+      "sha256": "e9d086f9861f12afe4881741df746c680cb61c1f76dbb86dffb8b992bec46e36",
+      "bytes": 1175
+    },
+    {
+      "path": "meshes/factory_detail_end_1_cart_5.5_steel_light_g0_batch.obj",
+      "sha256": "5dd3810554a1e62b6fcae8a5ca7fc1043b55c9ed26ebaa87ec91e4f8cb8199bf",
+      "bytes": 3255
+    },
+    {
+      "path": "meshes/factory_detail_end_1_rack_-20.5_blue_g0_batch.obj",
+      "sha256": "78ee3dd085b7443040bdbcc6edb2227b6faefd17387528a3eb2b3b6c32f7ccd4",
+      "bytes": 76535
+    },
+    {
+      "path": "meshes/factory_detail_end_1_rack_-20.5_cardboard_g0_batch.obj",
+      "sha256": "5c34faebd46e644538425377b92ca3ab57372b12c1c65b4d90fd6632fae48823",
+      "bytes": 2839
+    },
+    {
+      "path": "meshes/factory_detail_end_1_rack_-20.5_label_g0_batch.obj",
+      "sha256": "fcacded77f28331c67a66149fb92a7f50c5c708e3902c5814cecbfa3f1a41261",
+      "bytes": 4549
+    },
+    {
+      "path": "meshes/factory_detail_end_1_rack_-20.5_steel_g0_batch.obj",
+      "sha256": "c511b87e1c0188e1836768d8ec498d3e6b66eae58ef18e953e6b0bc649b7eca4",
+      "bytes": 2119
+    },
+    {
+      "path": "meshes/factory_detail_end_1_rack_-20.5_steel_light_g0_batch.obj",
+      "sha256": "9654585e67f5cdfebd0a950d6f262abc8afc4041f5ff2e932e619ce9a8fdda49",
+      "bytes": 1631
+    },
+    {
+      "path": "meshes/factory_detail_end_1_rack_-20.5_tape_g0_batch.obj",
+      "sha256": "6facff106b8bc315e8764223611acc6e44c974b3c3d0ef56c336f7bacf354329",
+      "bytes": 839
+    },
+    {
+      "path": "meshes/factory_detail_end_1_rack_20.5_blue_g0_batch.obj",
+      "sha256": "78ee3dd085b7443040bdbcc6edb2227b6faefd17387528a3eb2b3b6c32f7ccd4",
+      "bytes": 76535
+    },
+    {
+      "path": "meshes/factory_detail_end_1_rack_20.5_cardboard_g0_batch.obj",
+      "sha256": "5c34faebd46e644538425377b92ca3ab57372b12c1c65b4d90fd6632fae48823",
+      "bytes": 2839
+    },
+    {
+      "path": "meshes/factory_detail_end_1_rack_20.5_label_g0_batch.obj",
+      "sha256": "fcacded77f28331c67a66149fb92a7f50c5c708e3902c5814cecbfa3f1a41261",
+      "bytes": 4549
+    },
+    {
+      "path": "meshes/factory_detail_end_1_rack_20.5_steel_g0_batch.obj",
+      "sha256": "c511b87e1c0188e1836768d8ec498d3e6b66eae58ef18e953e6b0bc649b7eca4",
+      "bytes": 2119
+    },
+    {
+      "path": "meshes/factory_detail_end_1_rack_20.5_steel_light_g0_batch.obj",
+      "sha256": "9654585e67f5cdfebd0a950d6f262abc8afc4041f5ff2e932e619ce9a8fdda49",
+      "bytes": 1631
+    },
+    {
+      "path": "meshes/factory_detail_end_1_rack_20.5_tape_g0_batch.obj",
+      "sha256": "6facff106b8bc315e8764223611acc6e44c974b3c3d0ef56c336f7bacf354329",
+      "bytes": 839
+    },
+    {
+      "path": "meshes/factory_detail_end_1_tools_-10.5_base_cabinet_dark_g0_batch.obj",
+      "sha256": "a8899f632f869063348fbf2b432c6246ed7da56c99fb25287a4c90a7b8c4356f",
+      "bytes": 5016
+    },
+    {
+      "path": "meshes/factory_detail_end_1_tools_-10.5_base_steel_light_g0_batch.obj",
+      "sha256": "0bc78fe7302442f2993f5ace65f002cfca5b3b44fc53b63a46c366c8c7a02dfd",
+      "bytes": 1519
+    },
+    {
+      "path": "meshes/factory_detail_end_1_tools_-10.5_board_blue_g0_batch.obj",
+      "sha256": "4c26a2c3159cd6e6f4ab593b8380de95869a532caca6f50df564976c8fda4ddc",
+      "bytes": 4174
+    },
+    {
+      "path": "meshes/factory_detail_end_1_tools_-10.5_board_steel_light_g0_batch.obj",
+      "sha256": "b62331e199e4a9f9440fc4f8133881c21a676fda7ea4243d16ded9e3dfdb8032",
+      "bytes": 1471
+    },
+    {
+      "path": "meshes/factory_detail_end_1_tools_10.5_base_cabinet_dark_g0_batch.obj",
+      "sha256": "a8899f632f869063348fbf2b432c6246ed7da56c99fb25287a4c90a7b8c4356f",
+      "bytes": 5016
+    },
+    {
+      "path": "meshes/factory_detail_end_1_tools_10.5_base_steel_light_g0_batch.obj",
+      "sha256": "0bc78fe7302442f2993f5ace65f002cfca5b3b44fc53b63a46c366c8c7a02dfd",
+      "bytes": 1519
+    },
+    {
+      "path": "meshes/factory_detail_end_1_tools_10.5_board_blue_g0_batch.obj",
+      "sha256": "4c26a2c3159cd6e6f4ab593b8380de95869a532caca6f50df564976c8fda4ddc",
+      "bytes": 4174
+    },
+    {
+      "path": "meshes/factory_detail_end_1_tools_10.5_board_steel_light_g0_batch.obj",
+      "sha256": "b62331e199e4a9f9440fc4f8133881c21a676fda7ea4243d16ded9e3dfdb8032",
+      "bytes": 1471
+    },
+    {
+      "path": "meshes/factory_east_column_0_steel_g0_batch.obj",
+      "sha256": "2399fd003a7ecaed4d00e6d0bb1e643c400690e69b8e98de69b5b62ab6a631b7",
+      "bytes": 763
+    },
+    {
+      "path": "meshes/factory_east_column_1_steel_g0_batch.obj",
+      "sha256": "2399fd003a7ecaed4d00e6d0bb1e643c400690e69b8e98de69b5b62ab6a631b7",
+      "bytes": 763
+    },
+    {
+      "path": "meshes/factory_east_column_2_steel_g0_batch.obj",
+      "sha256": "2399fd003a7ecaed4d00e6d0bb1e643c400690e69b8e98de69b5b62ab6a631b7",
+      "bytes": 763
+    },
+    {
+      "path": "meshes/factory_east_column_3_steel_g0_batch.obj",
+      "sha256": "2399fd003a7ecaed4d00e6d0bb1e643c400690e69b8e98de69b5b62ab6a631b7",
+      "bytes": 763
+    },
+    {
+      "path": "meshes/factory_east_column_4_steel_g0_batch.obj",
+      "sha256": "2399fd003a7ecaed4d00e6d0bb1e643c400690e69b8e98de69b5b62ab6a631b7",
+      "bytes": 763
+    },
+    {
+      "path": "meshes/factory_east_column_5_steel_g0_batch.obj",
+      "sha256": "2399fd003a7ecaed4d00e6d0bb1e643c400690e69b8e98de69b5b62ab6a631b7",
+      "bytes": 763
+    },
+    {
+      "path": "meshes/factory_east_column_6_steel_g0_batch.obj",
+      "sha256": "2399fd003a7ecaed4d00e6d0bb1e643c400690e69b8e98de69b5b62ab6a631b7",
+      "bytes": 763
+    },
+    {
+      "path": "meshes/factory_east_column_7_steel_g0_batch.obj",
+      "sha256": "2399fd003a7ecaed4d00e6d0bb1e643c400690e69b8e98de69b5b62ab6a631b7",
+      "bytes": 763
+    },
+    {
+      "path": "meshes/factory_east_column_8_steel_g0_batch.obj",
+      "sha256": "2399fd003a7ecaed4d00e6d0bb1e643c400690e69b8e98de69b5b62ab6a631b7",
+      "bytes": 763
+    },
+    {
+      "path": "meshes/factory_east_wall_steel_light_g5_batch.obj",
+      "sha256": "edb5bf816c65f3678aa20686b13d0cd3cc67ec5c03855216b9022305921f6e93",
+      "bytes": 17801
+    },
+    {
+      "path": "meshes/factory_electrical_conduits_steel_g0_batch.obj",
+      "sha256": "a6657ce188175c29f6070a5ac9d051776621499a5c3f88bf430cde4e6bde7abb",
+      "bytes": 3655
+    },
+    {
+      "path": "meshes/factory_end_-1_cabinet_1_black_g0_batch.obj",
+      "sha256": "d36e50ccb62e3e4115ad8e5f407212fd9763493fdaf8b9c4a050dde6e38bd3eb",
+      "bytes": 4076
+    },
+    {
+      "path": "meshes/factory_end_-1_cabinet_1_cabinet_g0_batch.obj",
+      "sha256": "72e95082c99f34dc202fcb671a29ed390ba851ce501a9e97186046f09c5a35c8",
+      "bytes": 2979
+    },
+    {
+      "path": "meshes/factory_end_-1_cabinet_3_black_g0_batch.obj",
+      "sha256": "d36e50ccb62e3e4115ad8e5f407212fd9763493fdaf8b9c4a050dde6e38bd3eb",
+      "bytes": 4076
+    },
+    {
+      "path": "meshes/factory_end_-1_cabinet_3_cabinet_g0_batch.obj",
+      "sha256": "72e95082c99f34dc202fcb671a29ed390ba851ce501a9e97186046f09c5a35c8",
+      "bytes": 2979
+    },
+    {
+      "path": "meshes/factory_end_-1_cabinet_5_black_g0_batch.obj",
+      "sha256": "d36e50ccb62e3e4115ad8e5f407212fd9763493fdaf8b9c4a050dde6e38bd3eb",
+      "bytes": 4076
+    },
+    {
+      "path": "meshes/factory_end_-1_cabinet_5_cabinet_g0_batch.obj",
+      "sha256": "72e95082c99f34dc202fcb671a29ed390ba851ce501a9e97186046f09c5a35c8",
+      "bytes": 2979
+    },
+    {
+      "path": "meshes/factory_end_-1_rack_0_blue_g0_batch.obj",
+      "sha256": "78ee3dd085b7443040bdbcc6edb2227b6faefd17387528a3eb2b3b6c32f7ccd4",
+      "bytes": 76535
+    },
+    {
+      "path": "meshes/factory_end_-1_rack_0_cardboard_g0_batch.obj",
+      "sha256": "5c34faebd46e644538425377b92ca3ab57372b12c1c65b4d90fd6632fae48823",
+      "bytes": 2839
+    },
+    {
+      "path": "meshes/factory_end_-1_rack_0_label_g0_batch.obj",
+      "sha256": "fcacded77f28331c67a66149fb92a7f50c5c708e3902c5814cecbfa3f1a41261",
+      "bytes": 4549
+    },
+    {
+      "path": "meshes/factory_end_-1_rack_0_steel_g0_batch.obj",
+      "sha256": "c511b87e1c0188e1836768d8ec498d3e6b66eae58ef18e953e6b0bc649b7eca4",
+      "bytes": 2119
+    },
+    {
+      "path": "meshes/factory_end_-1_rack_0_steel_light_g0_batch.obj",
+      "sha256": "9654585e67f5cdfebd0a950d6f262abc8afc4041f5ff2e932e619ce9a8fdda49",
+      "bytes": 1631
+    },
+    {
+      "path": "meshes/factory_end_-1_rack_0_tape_g0_batch.obj",
+      "sha256": "6facff106b8bc315e8764223611acc6e44c974b3c3d0ef56c336f7bacf354329",
+      "bytes": 839
+    },
+    {
+      "path": "meshes/factory_end_-1_rack_2_blue_g0_batch.obj",
+      "sha256": "78ee3dd085b7443040bdbcc6edb2227b6faefd17387528a3eb2b3b6c32f7ccd4",
+      "bytes": 76535
+    },
+    {
+      "path": "meshes/factory_end_-1_rack_2_cardboard_g0_batch.obj",
+      "sha256": "5c34faebd46e644538425377b92ca3ab57372b12c1c65b4d90fd6632fae48823",
+      "bytes": 2839
+    },
+    {
+      "path": "meshes/factory_end_-1_rack_2_label_g0_batch.obj",
+      "sha256": "fcacded77f28331c67a66149fb92a7f50c5c708e3902c5814cecbfa3f1a41261",
+      "bytes": 4549
+    },
+    {
+      "path": "meshes/factory_end_-1_rack_2_steel_g0_batch.obj",
+      "sha256": "c511b87e1c0188e1836768d8ec498d3e6b66eae58ef18e953e6b0bc649b7eca4",
+      "bytes": 2119
+    },
+    {
+      "path": "meshes/factory_end_-1_rack_2_steel_light_g0_batch.obj",
+      "sha256": "9654585e67f5cdfebd0a950d6f262abc8afc4041f5ff2e932e619ce9a8fdda49",
+      "bytes": 1631
+    },
+    {
+      "path": "meshes/factory_end_-1_rack_2_tape_g0_batch.obj",
+      "sha256": "6facff106b8bc315e8764223611acc6e44c974b3c3d0ef56c336f7bacf354329",
+      "bytes": 839
+    },
+    {
+      "path": "meshes/factory_end_-1_rack_4_blue_g0_batch.obj",
+      "sha256": "78ee3dd085b7443040bdbcc6edb2227b6faefd17387528a3eb2b3b6c32f7ccd4",
+      "bytes": 76535
+    },
+    {
+      "path": "meshes/factory_end_-1_rack_4_cardboard_g0_batch.obj",
+      "sha256": "5c34faebd46e644538425377b92ca3ab57372b12c1c65b4d90fd6632fae48823",
+      "bytes": 2839
+    },
+    {
+      "path": "meshes/factory_end_-1_rack_4_label_g0_batch.obj",
+      "sha256": "fcacded77f28331c67a66149fb92a7f50c5c708e3902c5814cecbfa3f1a41261",
+      "bytes": 4549
+    },
+    {
+      "path": "meshes/factory_end_-1_rack_4_steel_g0_batch.obj",
+      "sha256": "c511b87e1c0188e1836768d8ec498d3e6b66eae58ef18e953e6b0bc649b7eca4",
+      "bytes": 2119
+    },
+    {
+      "path": "meshes/factory_end_-1_rack_4_steel_light_g0_batch.obj",
+      "sha256": "9654585e67f5cdfebd0a950d6f262abc8afc4041f5ff2e932e619ce9a8fdda49",
+      "bytes": 1631
+    },
+    {
+      "path": "meshes/factory_end_-1_rack_4_tape_g0_batch.obj",
+      "sha256": "6facff106b8bc315e8764223611acc6e44c974b3c3d0ef56c336f7bacf354329",
+      "bytes": 839
+    },
+    {
+      "path": "meshes/factory_end_1_cabinet_1_black_g0_batch.obj",
+      "sha256": "d36e50ccb62e3e4115ad8e5f407212fd9763493fdaf8b9c4a050dde6e38bd3eb",
+      "bytes": 4076
+    },
+    {
+      "path": "meshes/factory_end_1_cabinet_1_cabinet_g0_batch.obj",
+      "sha256": "72e95082c99f34dc202fcb671a29ed390ba851ce501a9e97186046f09c5a35c8",
+      "bytes": 2979
+    },
+    {
+      "path": "meshes/factory_end_1_cabinet_3_black_g0_batch.obj",
+      "sha256": "d36e50ccb62e3e4115ad8e5f407212fd9763493fdaf8b9c4a050dde6e38bd3eb",
+      "bytes": 4076
+    },
+    {
+      "path": "meshes/factory_end_1_cabinet_3_cabinet_g0_batch.obj",
+      "sha256": "72e95082c99f34dc202fcb671a29ed390ba851ce501a9e97186046f09c5a35c8",
+      "bytes": 2979
+    },
+    {
+      "path": "meshes/factory_end_1_cabinet_5_black_g0_batch.obj",
+      "sha256": "d36e50ccb62e3e4115ad8e5f407212fd9763493fdaf8b9c4a050dde6e38bd3eb",
+      "bytes": 4076
+    },
+    {
+      "path": "meshes/factory_end_1_cabinet_5_cabinet_g0_batch.obj",
+      "sha256": "72e95082c99f34dc202fcb671a29ed390ba851ce501a9e97186046f09c5a35c8",
+      "bytes": 2979
+    },
+    {
+      "path": "meshes/factory_end_1_rack_0_blue_g0_batch.obj",
+      "sha256": "78ee3dd085b7443040bdbcc6edb2227b6faefd17387528a3eb2b3b6c32f7ccd4",
+      "bytes": 76535
+    },
+    {
+      "path": "meshes/factory_end_1_rack_0_cardboard_g0_batch.obj",
+      "sha256": "5c34faebd46e644538425377b92ca3ab57372b12c1c65b4d90fd6632fae48823",
+      "bytes": 2839
+    },
+    {
+      "path": "meshes/factory_end_1_rack_0_label_g0_batch.obj",
+      "sha256": "fcacded77f28331c67a66149fb92a7f50c5c708e3902c5814cecbfa3f1a41261",
+      "bytes": 4549
+    },
+    {
+      "path": "meshes/factory_end_1_rack_0_steel_g0_batch.obj",
+      "sha256": "c511b87e1c0188e1836768d8ec498d3e6b66eae58ef18e953e6b0bc649b7eca4",
+      "bytes": 2119
+    },
+    {
+      "path": "meshes/factory_end_1_rack_0_steel_light_g0_batch.obj",
+      "sha256": "9654585e67f5cdfebd0a950d6f262abc8afc4041f5ff2e932e619ce9a8fdda49",
+      "bytes": 1631
+    },
+    {
+      "path": "meshes/factory_end_1_rack_0_tape_g0_batch.obj",
+      "sha256": "6facff106b8bc315e8764223611acc6e44c974b3c3d0ef56c336f7bacf354329",
+      "bytes": 839
+    },
+    {
+      "path": "meshes/factory_end_1_rack_2_blue_g0_batch.obj",
+      "sha256": "78ee3dd085b7443040bdbcc6edb2227b6faefd17387528a3eb2b3b6c32f7ccd4",
+      "bytes": 76535
+    },
+    {
+      "path": "meshes/factory_end_1_rack_2_cardboard_g0_batch.obj",
+      "sha256": "5c34faebd46e644538425377b92ca3ab57372b12c1c65b4d90fd6632fae48823",
+      "bytes": 2839
+    },
+    {
+      "path": "meshes/factory_end_1_rack_2_label_g0_batch.obj",
+      "sha256": "fcacded77f28331c67a66149fb92a7f50c5c708e3902c5814cecbfa3f1a41261",
+      "bytes": 4549
+    },
+    {
+      "path": "meshes/factory_end_1_rack_2_steel_g0_batch.obj",
+      "sha256": "c511b87e1c0188e1836768d8ec498d3e6b66eae58ef18e953e6b0bc649b7eca4",
+      "bytes": 2119
+    },
+    {
+      "path": "meshes/factory_end_1_rack_2_steel_light_g0_batch.obj",
+      "sha256": "9654585e67f5cdfebd0a950d6f262abc8afc4041f5ff2e932e619ce9a8fdda49",
+      "bytes": 1631
+    },
+    {
+      "path": "meshes/factory_end_1_rack_2_tape_g0_batch.obj",
+      "sha256": "6facff106b8bc315e8764223611acc6e44c974b3c3d0ef56c336f7bacf354329",
+      "bytes": 839
+    },
+    {
+      "path": "meshes/factory_end_1_rack_4_blue_g0_batch.obj",
+      "sha256": "78ee3dd085b7443040bdbcc6edb2227b6faefd17387528a3eb2b3b6c32f7ccd4",
+      "bytes": 76535
+    },
+    {
+      "path": "meshes/factory_end_1_rack_4_cardboard_g0_batch.obj",
+      "sha256": "5c34faebd46e644538425377b92ca3ab57372b12c1c65b4d90fd6632fae48823",
+      "bytes": 2839
+    },
+    {
+      "path": "meshes/factory_end_1_rack_4_label_g0_batch.obj",
+      "sha256": "fcacded77f28331c67a66149fb92a7f50c5c708e3902c5814cecbfa3f1a41261",
+      "bytes": 4549
+    },
+    {
+      "path": "meshes/factory_end_1_rack_4_steel_g0_batch.obj",
+      "sha256": "c511b87e1c0188e1836768d8ec498d3e6b66eae58ef18e953e6b0bc649b7eca4",
+      "bytes": 2119
+    },
+    {
+      "path": "meshes/factory_end_1_rack_4_steel_light_g0_batch.obj",
+      "sha256": "9654585e67f5cdfebd0a950d6f262abc8afc4041f5ff2e932e619ce9a8fdda49",
+      "bytes": 1631
+    },
+    {
+      "path": "meshes/factory_end_1_rack_4_tape_g0_batch.obj",
+      "sha256": "6facff106b8bc315e8764223611acc6e44c974b3c3d0ef56c336f7bacf354329",
+      "bytes": 839
+    },
+    {
+      "path": "meshes/factory_end_wall_detail_-1_cabinet_dark_g3_batch.obj",
+      "sha256": "3615f84853aeb57e955569377bf75252e77d6329af61b1cbecf270a345e1c544",
+      "bytes": 1767
+    },
+    {
+      "path": "meshes/factory_end_wall_detail_1_cabinet_dark_g2_batch.obj",
+      "sha256": "3615f84853aeb57e955569377bf75252e77d6329af61b1cbecf270a345e1c544",
+      "bytes": 1767
+    },
+    {
+      "path": "meshes/factory_floor_band_g0_batch.obj",
+      "sha256": "1b4c7c57591dd258f92404431f627013d7590214fbf4d80d7478616508032d02",
+      "bytes": 4817
+    },
+    {
+      "path": "meshes/factory_lighting_and_trays_lamp_g1_batch.obj",
+      "sha256": "65ba3b76149f26f02ca41285936d84a18d4ec1e0c59ebe233a59ff6bf3ff7342",
+      "bytes": 13033
+    },
+    {
+      "path": "meshes/factory_lighting_and_trays_steel_light_g1_batch.obj",
+      "sha256": "bc31b4ac46732d54cd42b11341412bfa817dceae0875be16f3e10567ed99ee19",
+      "bytes": 170445
+    },
+    {
+      "path": "meshes/factory_north_door_black_g2_batch.obj",
+      "sha256": "03bb6286d6b7b0f2a50bee110eddb3daf494d0f10153fdd165bfbbcbad4c2b55",
+      "bytes": 3046
+    },
+    {
+      "path": "meshes/factory_north_door_steel_g2_batch.obj",
+      "sha256": "7007a4f6ba3f53d799f5ca807a1667730e149d0f6e58fb73328a2f8f1bf9c6ba",
+      "bytes": 735
+    },
+    {
+      "path": "meshes/factory_roof_steel_g1_batch.obj",
+      "sha256": "683ec81fad6589bf11cb186b8f4cc34fb44a313640ccae14a08b463a2dc5d1bd",
+      "bytes": 8465
+    },
+    {
+      "path": "meshes/factory_roof_steel_light_g1_batch.obj",
+      "sha256": "56169e2d2887233c9f16417b407e08510727f2369d1e8d84b6c016b0be203610",
+      "bytes": 5033
+    },
+    {
+      "path": "meshes/factory_side_-1_drawer_2_cabinet_dark_g0_batch.obj",
+      "sha256": "a8899f632f869063348fbf2b432c6246ed7da56c99fb25287a4c90a7b8c4356f",
+      "bytes": 5016
+    },
+    {
+      "path": "meshes/factory_side_-1_drawer_2_steel_light_g0_batch.obj",
+      "sha256": "0bc78fe7302442f2993f5ace65f002cfca5b3b44fc53b63a46c366c8c7a02dfd",
+      "bytes": 1519
+    },
+    {
+      "path": "meshes/factory_side_-1_drawer_5_cabinet_dark_g0_batch.obj",
+      "sha256": "a8899f632f869063348fbf2b432c6246ed7da56c99fb25287a4c90a7b8c4356f",
+      "bytes": 5016
+    },
+    {
+      "path": "meshes/factory_side_-1_drawer_5_steel_light_g0_batch.obj",
+      "sha256": "0bc78fe7302442f2993f5ace65f002cfca5b3b44fc53b63a46c366c8c7a02dfd",
+      "bytes": 1519
+    },
+    {
+      "path": "meshes/factory_side_-1_electrical_0_black_g0_batch.obj",
+      "sha256": "d36e50ccb62e3e4115ad8e5f407212fd9763493fdaf8b9c4a050dde6e38bd3eb",
+      "bytes": 4076
+    },
+    {
+      "path": "meshes/factory_side_-1_electrical_0_cabinet_g0_batch.obj",
+      "sha256": "72e95082c99f34dc202fcb671a29ed390ba851ce501a9e97186046f09c5a35c8",
+      "bytes": 2979
+    },
+    {
+      "path": "meshes/factory_side_-1_electrical_3_black_g0_batch.obj",
+      "sha256": "d36e50ccb62e3e4115ad8e5f407212fd9763493fdaf8b9c4a050dde6e38bd3eb",
+      "bytes": 4076
+    },
+    {
+      "path": "meshes/factory_side_-1_electrical_3_cabinet_g0_batch.obj",
+      "sha256": "72e95082c99f34dc202fcb671a29ed390ba851ce501a9e97186046f09c5a35c8",
+      "bytes": 2979
+    },
+    {
+      "path": "meshes/factory_side_-1_rack_1_blue_g0_batch.obj",
+      "sha256": "78ee3dd085b7443040bdbcc6edb2227b6faefd17387528a3eb2b3b6c32f7ccd4",
+      "bytes": 76535
+    },
+    {
+      "path": "meshes/factory_side_-1_rack_1_cardboard_g0_batch.obj",
+      "sha256": "5c34faebd46e644538425377b92ca3ab57372b12c1c65b4d90fd6632fae48823",
+      "bytes": 2839
+    },
+    {
+      "path": "meshes/factory_side_-1_rack_1_label_g0_batch.obj",
+      "sha256": "fcacded77f28331c67a66149fb92a7f50c5c708e3902c5814cecbfa3f1a41261",
+      "bytes": 4549
+    },
+    {
+      "path": "meshes/factory_side_-1_rack_1_steel_g0_batch.obj",
+      "sha256": "c511b87e1c0188e1836768d8ec498d3e6b66eae58ef18e953e6b0bc649b7eca4",
+      "bytes": 2119
+    },
+    {
+      "path": "meshes/factory_side_-1_rack_1_steel_light_g0_batch.obj",
+      "sha256": "9654585e67f5cdfebd0a950d6f262abc8afc4041f5ff2e932e619ce9a8fdda49",
+      "bytes": 1631
+    },
+    {
+      "path": "meshes/factory_side_-1_rack_1_tape_g0_batch.obj",
+      "sha256": "6facff106b8bc315e8764223611acc6e44c974b3c3d0ef56c336f7bacf354329",
+      "bytes": 839
+    },
+    {
+      "path": "meshes/factory_side_-1_rack_4_blue_g0_batch.obj",
+      "sha256": "78ee3dd085b7443040bdbcc6edb2227b6faefd17387528a3eb2b3b6c32f7ccd4",
+      "bytes": 76535
+    },
+    {
+      "path": "meshes/factory_side_-1_rack_4_cardboard_g0_batch.obj",
+      "sha256": "5c34faebd46e644538425377b92ca3ab57372b12c1c65b4d90fd6632fae48823",
+      "bytes": 2839
+    },
+    {
+      "path": "meshes/factory_side_-1_rack_4_label_g0_batch.obj",
+      "sha256": "fcacded77f28331c67a66149fb92a7f50c5c708e3902c5814cecbfa3f1a41261",
+      "bytes": 4549
+    },
+    {
+      "path": "meshes/factory_side_-1_rack_4_steel_g0_batch.obj",
+      "sha256": "c511b87e1c0188e1836768d8ec498d3e6b66eae58ef18e953e6b0bc649b7eca4",
+      "bytes": 2119
+    },
+    {
+      "path": "meshes/factory_side_-1_rack_4_steel_light_g0_batch.obj",
+      "sha256": "9654585e67f5cdfebd0a950d6f262abc8afc4041f5ff2e932e619ce9a8fdda49",
+      "bytes": 1631
+    },
+    {
+      "path": "meshes/factory_side_-1_rack_4_tape_g0_batch.obj",
+      "sha256": "6facff106b8bc315e8764223611acc6e44c974b3c3d0ef56c336f7bacf354329",
+      "bytes": 839
+    },
+    {
+      "path": "meshes/factory_side_1_drawer_2_cabinet_dark_g0_batch.obj",
+      "sha256": "a8899f632f869063348fbf2b432c6246ed7da56c99fb25287a4c90a7b8c4356f",
+      "bytes": 5016
+    },
+    {
+      "path": "meshes/factory_side_1_drawer_2_steel_light_g0_batch.obj",
+      "sha256": "0bc78fe7302442f2993f5ace65f002cfca5b3b44fc53b63a46c366c8c7a02dfd",
+      "bytes": 1519
+    },
+    {
+      "path": "meshes/factory_side_1_drawer_5_cabinet_dark_g0_batch.obj",
+      "sha256": "a8899f632f869063348fbf2b432c6246ed7da56c99fb25287a4c90a7b8c4356f",
+      "bytes": 5016
+    },
+    {
+      "path": "meshes/factory_side_1_drawer_5_steel_light_g0_batch.obj",
+      "sha256": "0bc78fe7302442f2993f5ace65f002cfca5b3b44fc53b63a46c366c8c7a02dfd",
+      "bytes": 1519
+    },
+    {
+      "path": "meshes/factory_side_1_electrical_0_black_g0_batch.obj",
+      "sha256": "d36e50ccb62e3e4115ad8e5f407212fd9763493fdaf8b9c4a050dde6e38bd3eb",
+      "bytes": 4076
+    },
+    {
+      "path": "meshes/factory_side_1_electrical_0_cabinet_g0_batch.obj",
+      "sha256": "72e95082c99f34dc202fcb671a29ed390ba851ce501a9e97186046f09c5a35c8",
+      "bytes": 2979
+    },
+    {
+      "path": "meshes/factory_side_1_electrical_3_black_g0_batch.obj",
+      "sha256": "d36e50ccb62e3e4115ad8e5f407212fd9763493fdaf8b9c4a050dde6e38bd3eb",
+      "bytes": 4076
+    },
+    {
+      "path": "meshes/factory_side_1_electrical_3_cabinet_g0_batch.obj",
+      "sha256": "72e95082c99f34dc202fcb671a29ed390ba851ce501a9e97186046f09c5a35c8",
+      "bytes": 2979
+    },
+    {
+      "path": "meshes/factory_side_1_rack_1_blue_g0_batch.obj",
+      "sha256": "78ee3dd085b7443040bdbcc6edb2227b6faefd17387528a3eb2b3b6c32f7ccd4",
+      "bytes": 76535
+    },
+    {
+      "path": "meshes/factory_side_1_rack_1_cardboard_g0_batch.obj",
+      "sha256": "5c34faebd46e644538425377b92ca3ab57372b12c1c65b4d90fd6632fae48823",
+      "bytes": 2839
+    },
+    {
+      "path": "meshes/factory_side_1_rack_1_label_g0_batch.obj",
+      "sha256": "fcacded77f28331c67a66149fb92a7f50c5c708e3902c5814cecbfa3f1a41261",
+      "bytes": 4549
+    },
+    {
+      "path": "meshes/factory_side_1_rack_1_steel_g0_batch.obj",
+      "sha256": "c511b87e1c0188e1836768d8ec498d3e6b66eae58ef18e953e6b0bc649b7eca4",
+      "bytes": 2119
+    },
+    {
+      "path": "meshes/factory_side_1_rack_1_steel_light_g0_batch.obj",
+      "sha256": "9654585e67f5cdfebd0a950d6f262abc8afc4041f5ff2e932e619ce9a8fdda49",
+      "bytes": 1631
+    },
+    {
+      "path": "meshes/factory_side_1_rack_1_tape_g0_batch.obj",
+      "sha256": "6facff106b8bc315e8764223611acc6e44c974b3c3d0ef56c336f7bacf354329",
+      "bytes": 839
+    },
+    {
+      "path": "meshes/factory_side_1_rack_4_blue_g0_batch.obj",
+      "sha256": "78ee3dd085b7443040bdbcc6edb2227b6faefd17387528a3eb2b3b6c32f7ccd4",
+      "bytes": 76535
+    },
+    {
+      "path": "meshes/factory_side_1_rack_4_cardboard_g0_batch.obj",
+      "sha256": "5c34faebd46e644538425377b92ca3ab57372b12c1c65b4d90fd6632fae48823",
+      "bytes": 2839
+    },
+    {
+      "path": "meshes/factory_side_1_rack_4_label_g0_batch.obj",
+      "sha256": "fcacded77f28331c67a66149fb92a7f50c5c708e3902c5814cecbfa3f1a41261",
+      "bytes": 4549
+    },
+    {
+      "path": "meshes/factory_side_1_rack_4_steel_g0_batch.obj",
+      "sha256": "c511b87e1c0188e1836768d8ec498d3e6b66eae58ef18e953e6b0bc649b7eca4",
+      "bytes": 2119
+    },
+    {
+      "path": "meshes/factory_side_1_rack_4_steel_light_g0_batch.obj",
+      "sha256": "9654585e67f5cdfebd0a950d6f262abc8afc4041f5ff2e932e619ce9a8fdda49",
+      "bytes": 1631
+    },
+    {
+      "path": "meshes/factory_side_1_rack_4_tape_g0_batch.obj",
+      "sha256": "6facff106b8bc315e8764223611acc6e44c974b3c3d0ef56c336f7bacf354329",
+      "bytes": 839
+    },
+    {
+      "path": "meshes/factory_south_door_black_g3_batch.obj",
+      "sha256": "03bb6286d6b7b0f2a50bee110eddb3daf494d0f10153fdd165bfbbcbad4c2b55",
+      "bytes": 3046
+    },
+    {
+      "path": "meshes/factory_south_door_steel_g3_batch.obj",
+      "sha256": "7007a4f6ba3f53d799f5ca807a1667730e149d0f6e58fb73328a2f8f1bf9c6ba",
+      "bytes": 735
+    },
+    {
+      "path": "meshes/factory_staging_dial_0_cardboard_g0_batch.obj",
+      "sha256": "10925360c25daa80cc52be460e118a39f722ee80d0a209df3115f61fe99dd780",
+      "bytes": 11553
+    },
+    {
+      "path": "meshes/factory_staging_dial_0_tape_g0_batch.obj",
+      "sha256": "fbac626e5581951ad6c938afa9b26dc16a596fb87bf71c7bd6c97500313bbbed",
+      "bytes": 827
+    },
+    {
+      "path": "meshes/factory_staging_dial_1_cardboard_g0_batch.obj",
+      "sha256": "10925360c25daa80cc52be460e118a39f722ee80d0a209df3115f61fe99dd780",
+      "bytes": 11553
+    },
+    {
+      "path": "meshes/factory_staging_dial_1_tape_g0_batch.obj",
+      "sha256": "fbac626e5581951ad6c938afa9b26dc16a596fb87bf71c7bd6c97500313bbbed",
+      "bytes": 827
+    },
+    {
+      "path": "meshes/factory_staging_mosaic_0_cardboard_g0_batch.obj",
+      "sha256": "10925360c25daa80cc52be460e118a39f722ee80d0a209df3115f61fe99dd780",
+      "bytes": 11553
+    },
+    {
+      "path": "meshes/factory_staging_mosaic_0_tape_g0_batch.obj",
+      "sha256": "fbac626e5581951ad6c938afa9b26dc16a596fb87bf71c7bd6c97500313bbbed",
+      "bytes": 827
+    },
+    {
+      "path": "meshes/factory_staging_mosaic_1_cardboard_g0_batch.obj",
+      "sha256": "10925360c25daa80cc52be460e118a39f722ee80d0a209df3115f61fe99dd780",
+      "bytes": 11553
+    },
+    {
+      "path": "meshes/factory_staging_mosaic_1_tape_g0_batch.obj",
+      "sha256": "fbac626e5581951ad6c938afa9b26dc16a596fb87bf71c7bd6c97500313bbbed",
+      "bytes": 827
+    },
+    {
+      "path": "meshes/factory_staging_relay_0_cardboard_g0_batch.obj",
+      "sha256": "10925360c25daa80cc52be460e118a39f722ee80d0a209df3115f61fe99dd780",
+      "bytes": 11553
+    },
+    {
+      "path": "meshes/factory_staging_relay_0_tape_g0_batch.obj",
+      "sha256": "fbac626e5581951ad6c938afa9b26dc16a596fb87bf71c7bd6c97500313bbbed",
+      "bytes": 827
+    },
+    {
+      "path": "meshes/factory_staging_relay_1_cardboard_g0_batch.obj",
+      "sha256": "10925360c25daa80cc52be460e118a39f722ee80d0a209df3115f61fe99dd780",
+      "bytes": 11553
+    },
+    {
+      "path": "meshes/factory_staging_relay_1_tape_g0_batch.obj",
+      "sha256": "fbac626e5581951ad6c938afa9b26dc16a596fb87bf71c7bd6c97500313bbbed",
+      "bytes": 827
+    },
+    {
+      "path": "meshes/factory_staging_transport_0_cardboard_g0_batch.obj",
+      "sha256": "10925360c25daa80cc52be460e118a39f722ee80d0a209df3115f61fe99dd780",
+      "bytes": 11553
+    },
+    {
+      "path": "meshes/factory_staging_transport_0_tape_g0_batch.obj",
+      "sha256": "fbac626e5581951ad6c938afa9b26dc16a596fb87bf71c7bd6c97500313bbbed",
+      "bytes": 827
+    },
+    {
+      "path": "meshes/factory_staging_transport_1_cardboard_g0_batch.obj",
+      "sha256": "10925360c25daa80cc52be460e118a39f722ee80d0a209df3115f61fe99dd780",
+      "bytes": 11553
+    },
+    {
+      "path": "meshes/factory_staging_transport_1_tape_g0_batch.obj",
+      "sha256": "fbac626e5581951ad6c938afa9b26dc16a596fb87bf71c7bd6c97500313bbbed",
+      "bytes": 827
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n04-d2_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n04-d2_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n04-d3_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n04-d3_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d2_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d2_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d2_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d2_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d2_2_blue_g0_batch.obj",
+      "sha256": "22f570fbd25476757edd3c7551d75acbef7187246d25c5cdfa7313d6dcf88740",
+      "bytes": 9318
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d2_2_steel_g0_batch.obj",
+      "sha256": "1a8c82771ea487f216cca2614d4320dbd29ea42106f64a6536f5d36198e22893",
+      "bytes": 1127
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d2_2_steel_light_g0_batch.obj",
+      "sha256": "b29d480062857ae1a71fdf322b56e932bba4952ea693fe7c5b20c1c966a9fdde",
+      "bytes": 2867
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d2_3_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d2_3_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d2_4_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d2_4_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d3_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d3_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d3_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d3_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d3_2_blue_g0_batch.obj",
+      "sha256": "22f570fbd25476757edd3c7551d75acbef7187246d25c5cdfa7313d6dcf88740",
+      "bytes": 9318
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d3_2_steel_g0_batch.obj",
+      "sha256": "1a8c82771ea487f216cca2614d4320dbd29ea42106f64a6536f5d36198e22893",
+      "bytes": 1127
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d3_2_steel_light_g0_batch.obj",
+      "sha256": "b29d480062857ae1a71fdf322b56e932bba4952ea693fe7c5b20c1c966a9fdde",
+      "bytes": 2867
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d3_3_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d3_3_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d3_4_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n06-d3_4_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d1_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d1_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d1_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d1_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d1_2_blue_g0_batch.obj",
+      "sha256": "22f570fbd25476757edd3c7551d75acbef7187246d25c5cdfa7313d6dcf88740",
+      "bytes": 9318
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d1_2_steel_g0_batch.obj",
+      "sha256": "1a8c82771ea487f216cca2614d4320dbd29ea42106f64a6536f5d36198e22893",
+      "bytes": 1127
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d1_2_steel_light_g0_batch.obj",
+      "sha256": "b29d480062857ae1a71fdf322b56e932bba4952ea693fe7c5b20c1c966a9fdde",
+      "bytes": 2867
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d2_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d2_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d2_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d2_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d2_2_blue_g0_batch.obj",
+      "sha256": "22f570fbd25476757edd3c7551d75acbef7187246d25c5cdfa7313d6dcf88740",
+      "bytes": 9318
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d2_2_steel_g0_batch.obj",
+      "sha256": "1a8c82771ea487f216cca2614d4320dbd29ea42106f64a6536f5d36198e22893",
+      "bytes": 1127
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d2_2_steel_light_g0_batch.obj",
+      "sha256": "b29d480062857ae1a71fdf322b56e932bba4952ea693fe7c5b20c1c966a9fdde",
+      "bytes": 2867
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d2_3_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d2_3_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d2_4_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d2_4_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d3_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d3_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d3_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d3_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d3_2_blue_g0_batch.obj",
+      "sha256": "22f570fbd25476757edd3c7551d75acbef7187246d25c5cdfa7313d6dcf88740",
+      "bytes": 9318
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d3_2_steel_g0_batch.obj",
+      "sha256": "1a8c82771ea487f216cca2614d4320dbd29ea42106f64a6536f5d36198e22893",
+      "bytes": 1127
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d3_2_steel_light_g0_batch.obj",
+      "sha256": "b29d480062857ae1a71fdf322b56e932bba4952ea693fe7c5b20c1c966a9fdde",
+      "bytes": 2867
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d3_3_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d3_3_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d3_4_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_dial-n08-d3_4_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a04-6x12-d2_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a04-6x12-d2_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a04-6x12-d3_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a04-6x12-d3_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d1_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d1_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d1_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d1_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d1_2_blue_g0_batch.obj",
+      "sha256": "22f570fbd25476757edd3c7551d75acbef7187246d25c5cdfa7313d6dcf88740",
+      "bytes": 9318
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d1_2_steel_g0_batch.obj",
+      "sha256": "1a8c82771ea487f216cca2614d4320dbd29ea42106f64a6536f5d36198e22893",
+      "bytes": 1127
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d1_2_steel_light_g0_batch.obj",
+      "sha256": "b29d480062857ae1a71fdf322b56e932bba4952ea693fe7c5b20c1c966a9fdde",
+      "bytes": 2867
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d2_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d2_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d2_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d2_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d2_2_blue_g0_batch.obj",
+      "sha256": "22f570fbd25476757edd3c7551d75acbef7187246d25c5cdfa7313d6dcf88740",
+      "bytes": 9318
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d2_2_steel_g0_batch.obj",
+      "sha256": "1a8c82771ea487f216cca2614d4320dbd29ea42106f64a6536f5d36198e22893",
+      "bytes": 1127
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d2_2_steel_light_g0_batch.obj",
+      "sha256": "b29d480062857ae1a71fdf322b56e932bba4952ea693fe7c5b20c1c966a9fdde",
+      "bytes": 2867
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d3_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d3_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d3_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d3_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d3_2_blue_g0_batch.obj",
+      "sha256": "22f570fbd25476757edd3c7551d75acbef7187246d25c5cdfa7313d6dcf88740",
+      "bytes": 9318
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d3_2_steel_g0_batch.obj",
+      "sha256": "1a8c82771ea487f216cca2614d4320dbd29ea42106f64a6536f5d36198e22893",
+      "bytes": 1127
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a06-9x18-d3_2_steel_light_g0_batch.obj",
+      "sha256": "b29d480062857ae1a71fdf322b56e932bba4952ea693fe7c5b20c1c966a9fdde",
+      "bytes": 2867
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d1_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d1_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d1_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d1_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d1_2_blue_g0_batch.obj",
+      "sha256": "22f570fbd25476757edd3c7551d75acbef7187246d25c5cdfa7313d6dcf88740",
+      "bytes": 9318
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d1_2_steel_g0_batch.obj",
+      "sha256": "1a8c82771ea487f216cca2614d4320dbd29ea42106f64a6536f5d36198e22893",
+      "bytes": 1127
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d1_2_steel_light_g0_batch.obj",
+      "sha256": "b29d480062857ae1a71fdf322b56e932bba4952ea693fe7c5b20c1c966a9fdde",
+      "bytes": 2867
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d2_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d2_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d2_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d2_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d2_2_blue_g0_batch.obj",
+      "sha256": "22f570fbd25476757edd3c7551d75acbef7187246d25c5cdfa7313d6dcf88740",
+      "bytes": 9318
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d2_2_steel_g0_batch.obj",
+      "sha256": "1a8c82771ea487f216cca2614d4320dbd29ea42106f64a6536f5d36198e22893",
+      "bytes": 1127
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d2_2_steel_light_g0_batch.obj",
+      "sha256": "b29d480062857ae1a71fdf322b56e932bba4952ea693fe7c5b20c1c966a9fdde",
+      "bytes": 2867
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d2_3_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d2_3_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d3_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d3_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d3_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d3_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d3_2_blue_g0_batch.obj",
+      "sha256": "22f570fbd25476757edd3c7551d75acbef7187246d25c5cdfa7313d6dcf88740",
+      "bytes": 9318
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d3_2_steel_g0_batch.obj",
+      "sha256": "1a8c82771ea487f216cca2614d4320dbd29ea42106f64a6536f5d36198e22893",
+      "bytes": 1127
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d3_2_steel_light_g0_batch.obj",
+      "sha256": "b29d480062857ae1a71fdf322b56e932bba4952ea693fe7c5b20c1c966a9fdde",
+      "bytes": 2867
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d3_3_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_mosaic-a08-12x24-d3_3_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a08-d1_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a08-d1_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a08-d1_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a08-d1_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a08-d2_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a08-d2_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a08-d2_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a08-d2_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a08-d3_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a08-d3_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a08-d3_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a08-d3_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d1_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d1_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d1_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d1_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d1_2_blue_g0_batch.obj",
+      "sha256": "22f570fbd25476757edd3c7551d75acbef7187246d25c5cdfa7313d6dcf88740",
+      "bytes": 9318
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d1_2_steel_g0_batch.obj",
+      "sha256": "1a8c82771ea487f216cca2614d4320dbd29ea42106f64a6536f5d36198e22893",
+      "bytes": 1127
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d1_2_steel_light_g0_batch.obj",
+      "sha256": "b29d480062857ae1a71fdf322b56e932bba4952ea693fe7c5b20c1c966a9fdde",
+      "bytes": 2867
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d1_3_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d1_3_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d1_4_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d1_4_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d2_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d2_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d2_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d2_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d2_2_blue_g0_batch.obj",
+      "sha256": "22f570fbd25476757edd3c7551d75acbef7187246d25c5cdfa7313d6dcf88740",
+      "bytes": 9318
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d2_2_steel_g0_batch.obj",
+      "sha256": "1a8c82771ea487f216cca2614d4320dbd29ea42106f64a6536f5d36198e22893",
+      "bytes": 1127
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d2_2_steel_light_g0_batch.obj",
+      "sha256": "b29d480062857ae1a71fdf322b56e932bba4952ea693fe7c5b20c1c966a9fdde",
+      "bytes": 2867
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d2_3_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d2_3_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d2_4_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d2_4_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d3_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d3_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d3_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d3_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d3_2_blue_g0_batch.obj",
+      "sha256": "22f570fbd25476757edd3c7551d75acbef7187246d25c5cdfa7313d6dcf88740",
+      "bytes": 9318
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d3_2_steel_g0_batch.obj",
+      "sha256": "1a8c82771ea487f216cca2614d4320dbd29ea42106f64a6536f5d36198e22893",
+      "bytes": 1127
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d3_2_steel_light_g0_batch.obj",
+      "sha256": "b29d480062857ae1a71fdf322b56e932bba4952ea693fe7c5b20c1c966a9fdde",
+      "bytes": 2867
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d3_3_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d3_3_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d3_4_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a12-d3_4_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d1_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d1_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d1_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d1_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d1_2_blue_g0_batch.obj",
+      "sha256": "22f570fbd25476757edd3c7551d75acbef7187246d25c5cdfa7313d6dcf88740",
+      "bytes": 9318
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d1_2_steel_g0_batch.obj",
+      "sha256": "1a8c82771ea487f216cca2614d4320dbd29ea42106f64a6536f5d36198e22893",
+      "bytes": 1127
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d1_2_steel_light_g0_batch.obj",
+      "sha256": "b29d480062857ae1a71fdf322b56e932bba4952ea693fe7c5b20c1c966a9fdde",
+      "bytes": 2867
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d1_3_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d1_3_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d1_4_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d1_4_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d2_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d2_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d2_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d2_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d2_2_blue_g0_batch.obj",
+      "sha256": "22f570fbd25476757edd3c7551d75acbef7187246d25c5cdfa7313d6dcf88740",
+      "bytes": 9318
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d2_2_steel_g0_batch.obj",
+      "sha256": "1a8c82771ea487f216cca2614d4320dbd29ea42106f64a6536f5d36198e22893",
+      "bytes": 1127
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d2_2_steel_light_g0_batch.obj",
+      "sha256": "b29d480062857ae1a71fdf322b56e932bba4952ea693fe7c5b20c1c966a9fdde",
+      "bytes": 2867
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d2_3_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d2_3_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d2_4_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d2_4_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d3_0_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d3_0_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d3_1_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d3_1_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d3_2_blue_g0_batch.obj",
+      "sha256": "22f570fbd25476757edd3c7551d75acbef7187246d25c5cdfa7313d6dcf88740",
+      "bytes": 9318
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d3_2_steel_g0_batch.obj",
+      "sha256": "1a8c82771ea487f216cca2614d4320dbd29ea42106f64a6536f5d36198e22893",
+      "bytes": 1127
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d3_2_steel_light_g0_batch.obj",
+      "sha256": "b29d480062857ae1a71fdf322b56e932bba4952ea693fe7c5b20c1c966a9fdde",
+      "bytes": 2867
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d3_3_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d3_3_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d3_4_black_g0_batch.obj",
+      "sha256": "7a6eb6eff8ee37108e8457d432c3d251edc075e1ca528cfef99a7e674fe8a8c2",
+      "bytes": 2007
+    },
+    {
+      "path": "meshes/factory_underbench_relay-a16-d3_4_cabinet_g0_batch.obj",
+      "sha256": "91cd6d9a2b9da630459f3014e323e4ebaf0bcf6b1a70910af264eb1de8e0209a",
+      "bytes": 3090
+    },
+    {
+      "path": "meshes/factory_ventilation_black_g1_batch.obj",
+      "sha256": "41ebbe7abc650e179c5d2f064790425dc31e4c884689cdfab535e97107d19369",
+      "bytes": 4825
+    },
+    {
+      "path": "meshes/factory_ventilation_cabinet_dark_g1_batch.obj",
+      "sha256": "fd0927fcd05d1b2cb2581c4614de4483b922804932bc12f0403dd53dc4b5180f",
+      "bytes": 9897
+    },
+    {
+      "path": "meshes/factory_ventilation_steel_light_g1_batch.obj",
+      "sha256": "aa14668c4cbbadf28f39f6e87f1c1b39abd9b048ffc42628cec6af8b0b1268b7",
+      "bytes": 75681
+    },
+    {
+      "path": "meshes/factory_west_column_0_steel_g0_batch.obj",
+      "sha256": "2399fd003a7ecaed4d00e6d0bb1e643c400690e69b8e98de69b5b62ab6a631b7",
+      "bytes": 763
+    },
+    {
+      "path": "meshes/factory_west_column_1_steel_g0_batch.obj",
+      "sha256": "2399fd003a7ecaed4d00e6d0bb1e643c400690e69b8e98de69b5b62ab6a631b7",
+      "bytes": 763
+    },
+    {
+      "path": "meshes/factory_west_column_2_steel_g0_batch.obj",
+      "sha256": "2399fd003a7ecaed4d00e6d0bb1e643c400690e69b8e98de69b5b62ab6a631b7",
+      "bytes": 763
+    },
+    {
+      "path": "meshes/factory_west_column_3_steel_g0_batch.obj",
+      "sha256": "2399fd003a7ecaed4d00e6d0bb1e643c400690e69b8e98de69b5b62ab6a631b7",
+      "bytes": 763
+    },
+    {
+      "path": "meshes/factory_west_column_4_steel_g0_batch.obj",
+      "sha256": "2399fd003a7ecaed4d00e6d0bb1e643c400690e69b8e98de69b5b62ab6a631b7",
+      "bytes": 763
+    },
+    {
+      "path": "meshes/factory_west_column_5_steel_g0_batch.obj",
+      "sha256": "2399fd003a7ecaed4d00e6d0bb1e643c400690e69b8e98de69b5b62ab6a631b7",
+      "bytes": 763
+    },
+    {
+      "path": "meshes/factory_west_column_6_steel_g0_batch.obj",
+      "sha256": "2399fd003a7ecaed4d00e6d0bb1e643c400690e69b8e98de69b5b62ab6a631b7",
+      "bytes": 763
+    },
+    {
+      "path": "meshes/factory_west_column_7_steel_g0_batch.obj",
+      "sha256": "2399fd003a7ecaed4d00e6d0bb1e643c400690e69b8e98de69b5b62ab6a631b7",
+      "bytes": 763
+    },
+    {
+      "path": "meshes/factory_west_column_8_steel_g0_batch.obj",
+      "sha256": "2399fd003a7ecaed4d00e6d0bb1e643c400690e69b8e98de69b5b62ab6a631b7",
+      "bytes": 763
+    },
+    {
+      "path": "meshes/factory_west_wall_steel_light_g4_batch.obj",
+      "sha256": "edb5bf816c65f3678aa20686b13d0cd3cc67ec5c03855216b9022305921f6e93",
+      "bytes": 17801
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "fb360f7ddf24c38e4807fc846181a7713605cbd7a77b01666598a50af2180a69",
+      "bytes": 151
+    },
+    {
+      "path": "source/polyhaven/LICENSE.txt",
+      "sha256": "4a8b792f8ea135c39b3572d47d4558db110df97f48944d2757cfa7c54f51938d",
+      "bytes": 108
+    },
+    {
+      "path": "source/polyhaven/concrete-color.jpg",
+      "sha256": "b08a20dcb306d08ee7f4a05ec216b19b7fd37e95745998ec5f81ecedaac1f0e9",
+      "bytes": 3310792
+    },
+    {
+      "path": "source/polyhaven/concrete-normal.jpg",
+      "sha256": "ce12d18f283f884f4be6f6c110f81582376049caada1e226958659d3d5fbaae1",
+      "bytes": 935810
+    },
+    {
+      "path": "source/polyhaven/concrete-roughness.jpg",
+      "sha256": "cb539b0f8fdc8c63241683e01c923eb040fa701ec4c60cff27b674294746ae67",
+      "bytes": 1417673
+    },
+    {
+      "path": "source/polyhaven/source.json",
+      "sha256": "1b960bc1ef176292237be873e1332bb7ff81bdb99ed5a5ad9cb5333e4a4c16c4",
+      "bytes": 837
+    },
+    {
+      "path": "textures/bench-grain.png",
+      "sha256": "598377604f8d8bcbe21181e7d5e1d95537d5949e4a53d7c849fde6f2925024e5",
+      "bytes": 474839
+    },
+    {
+      "path": "textures/concrete-color.png",
+      "sha256": "21ccb50ecaeae5fc36368faa95ec9b444c90b016e5c6b5aee99802ebef116d9d",
+      "bytes": 1961100
+    },
+    {
+      "path": "textures/concrete-normal.png",
+      "sha256": "56674eb6afd0e4abadf8b7e65d7f0a58f1b238e7b0431b2c37a530de015922fa",
+      "bytes": 456906
+    },
+    {
+      "path": "textures/concrete-roughness.png",
+      "sha256": "ace9c67bf1ccbafdd474f4f6d9441120c20e7111bbba40190ae543b620d14dc1",
+      "bytes": 1689778
+    },
+    {
+      "path": "textures/hazard-stripe.png",
+      "sha256": "4e6f46297f9667896fea173e9e9c6f5a006ca9b93a7891e740b1c7b14aa6c646",
+      "bytes": 5209
+    },
+    {
+      "path": "textures/panel_process.png",
+      "sha256": "969b5bb5916e3c8271c5d63338b8f7dc1f23abf5fa2917ad8499e347331d7506",
+      "bytes": 13113
+    },
+    {
+      "path": "textures/panel_safety.png",
+      "sha256": "b4dc7f8c651a54e8128ac0645ce1b5faa2cdcfe60777bf8764768793aeffd938",
+      "bytes": 15131
+    },
+    {
+      "path": "textures/panel_tools.png",
+      "sha256": "a8aefa9604a8a125c0032249d50a285b4e32aaa3b263a084c69e5ad6faae1982",
+      "bytes": 15673
+    },
+    {
+      "path": "textures/roof-ribs.png",
+      "sha256": "4b3cd6c6d771ea594e95e7bed99528d246db4f7f3e0163fc02054537c90c4edf",
+      "bytes": 141885
+    },
+    {
+      "path": "textures/shutter-ribs.png",
+      "sha256": "67cb620846e0c150cb283a62bdd4242115ae271a7ce0be04c503d94e89b0a49b",
+      "bytes": 12351
+    },
+    {
+      "path": "textures/sign_bay_-1_0.png",
+      "sha256": "bfcc0af46733d67ce609c0671bba0b68d50ad5c14c2331b4528a0aa219160fb5",
+      "bytes": 3287
+    },
+    {
+      "path": "textures/sign_bay_-1_1.png",
+      "sha256": "78bac9a85d539f985c4a6a83a8f7df281aad835e87e8c6bd09b24d0961f8d647",
+      "bytes": 3917
+    },
+    {
+      "path": "textures/sign_bay_-1_2.png",
+      "sha256": "cf4d9d41458a2420e4591c75db48739a010b769452e6ea0ba04481e4eb6b3afb",
+      "bytes": 4001
+    },
+    {
+      "path": "textures/sign_bay_-1_3.png",
+      "sha256": "dcf47b5554487a9d9c227a5cfe499f9932e59ab6c05be5db93997ee1d4fe14ae",
+      "bytes": 3343
+    },
+    {
+      "path": "textures/sign_bay_-1_4.png",
+      "sha256": "43bd76e71952b9f4802d6204b24c18429058c769b0f70781cb4b4c6f9b07cede",
+      "bytes": 3762
+    },
+    {
+      "path": "textures/sign_bay_-1_5.png",
+      "sha256": "363bd0ef8d3715fb499b0edb386cf90bce2ffe989a917aa541967651cc1c67e3",
+      "bytes": 4182
+    },
+    {
+      "path": "textures/sign_bay_-1_6.png",
+      "sha256": "6473b0106ab95157546ffa1dc2cc71d60b30ed7e9af17d8e7e7dd0ba8d00f0fd",
+      "bytes": 3407
+    },
+    {
+      "path": "textures/sign_bay_-1_7.png",
+      "sha256": "32c91f47241d396ebede9f6734e456230a9e1a9bc9cef19ce94f53843ee36945",
+      "bytes": 4402
+    },
+    {
+      "path": "textures/sign_bay_-1_8.png",
+      "sha256": "a665920059a6b849c2b7224f64146ad7c1e53617e9d672709493e92c686ad113",
+      "bytes": 4239
+    },
+    {
+      "path": "textures/sign_bay_-1_9.png",
+      "sha256": "4bab494b5dd33112829ee2cfd29ab876472be4f084922f7228ee268a9c4b84eb",
+      "bytes": 3262
+    },
+    {
+      "path": "textures/sign_bay_1_0.png",
+      "sha256": "7b460c35cda45c9cc3df337167bf4cc692fe090d7c11131c3864f7d7f1029a0f",
+      "bytes": 3377
+    },
+    {
+      "path": "textures/sign_bay_1_1.png",
+      "sha256": "d49be870a1add9b53fb8107b2e345ac273f67bd98ad2394da4f9a1bb84798352",
+      "bytes": 3909
+    },
+    {
+      "path": "textures/sign_bay_1_2.png",
+      "sha256": "9d225f75482814a2b6df0812eb8d787160784aeb14b16c10800193d762fca59a",
+      "bytes": 4029
+    },
+    {
+      "path": "textures/sign_bay_1_3.png",
+      "sha256": "bc85f717e84428584fa580231176dd50b5fedb759f8debd2e7f61043a8b4bd53",
+      "bytes": 3385
+    },
+    {
+      "path": "textures/sign_bay_1_4.png",
+      "sha256": "72e2471b20268bbb22cd73937842bb11281a3cca4cc42366c80fa5d496b4f9e5",
+      "bytes": 3833
+    },
+    {
+      "path": "textures/sign_bay_1_5.png",
+      "sha256": "d8a29b4ea2267b9676bcf2ed9aa83c466a3726b0c8608b82ef6f19f985b8f5b9",
+      "bytes": 4223
+    },
+    {
+      "path": "textures/sign_bay_1_6.png",
+      "sha256": "d05f1ab36a9213ed5090d7f6130c54f31f89baf6f494b3f844211f9bf28f9f3c",
+      "bytes": 3484
+    },
+    {
+      "path": "textures/sign_bay_1_7.png",
+      "sha256": "ac04297b75ba843b2f30cded74684814eeb367b2a39937a20bdd244e8783b2e8",
+      "bytes": 4350
+    },
+    {
+      "path": "textures/sign_bay_1_8.png",
+      "sha256": "76044db96b05dbdfadd5fd128d4dfbcf9d24ab1369a561870a002a44cd3dd7db",
+      "bytes": 4185
+    },
+    {
+      "path": "textures/sign_bay_1_9.png",
+      "sha256": "f329e57341f43d85b175a20e0ce5271e29afbbb0f3c80fe17988581f35b75da1",
+      "bytes": 3374
+    },
+    {
+      "path": "textures/sign_brand.png",
+      "sha256": "a6956ca8dfa5d8e912d91e08ca6f2e970822d28264120807b22da99a569377b1",
+      "bytes": 12731
+    },
+    {
+      "path": "textures/sign_end_-1_cabinet_1_label.png",
+      "sha256": "8ad1e4825cfc3fd894aca69acacc7e5e26d5276000611143ac548247c7d123c3",
+      "bytes": 2048
+    },
+    {
+      "path": "textures/sign_end_-1_cabinet_3_label.png",
+      "sha256": "8ad1e4825cfc3fd894aca69acacc7e5e26d5276000611143ac548247c7d123c3",
+      "bytes": 2048
+    },
+    {
+      "path": "textures/sign_end_-1_cabinet_5_label.png",
+      "sha256": "8ad1e4825cfc3fd894aca69acacc7e5e26d5276000611143ac548247c7d123c3",
+      "bytes": 2048
+    },
+    {
+      "path": "textures/sign_end_1_cabinet_1_label.png",
+      "sha256": "8ad1e4825cfc3fd894aca69acacc7e5e26d5276000611143ac548247c7d123c3",
+      "bytes": 2048
+    },
+    {
+      "path": "textures/sign_end_1_cabinet_3_label.png",
+      "sha256": "8ad1e4825cfc3fd894aca69acacc7e5e26d5276000611143ac548247c7d123c3",
+      "bytes": 2048
+    },
+    {
+      "path": "textures/sign_end_1_cabinet_5_label.png",
+      "sha256": "8ad1e4825cfc3fd894aca69acacc7e5e26d5276000611143ac548247c7d123c3",
+      "bytes": 2048
+    },
+    {
+      "path": "textures/sign_north_exit.png",
+      "sha256": "23b7e0ce94c7f012a1782ddc7b1050e786fd88588c9c6bba9cdaa27fec2df020",
+      "bytes": 1388
+    },
+    {
+      "path": "textures/sign_north_left.png",
+      "sha256": "9c349150e14d301708d392aa909d74260c35b69c3043fce1aa510bcd0df40f04",
+      "bytes": 10294
+    },
+    {
+      "path": "textures/sign_north_right.png",
+      "sha256": "7df80056a6508fc5bec51bb760e8e2c86e783c5c50af41a0b0455f1e1f8b0697",
+      "bytes": 9159
+    },
+    {
+      "path": "textures/sign_side_-1_electrical_0_label.png",
+      "sha256": "8ad1e4825cfc3fd894aca69acacc7e5e26d5276000611143ac548247c7d123c3",
+      "bytes": 2048
+    },
+    {
+      "path": "textures/sign_side_-1_electrical_3_label.png",
+      "sha256": "8ad1e4825cfc3fd894aca69acacc7e5e26d5276000611143ac548247c7d123c3",
+      "bytes": 2048
+    },
+    {
+      "path": "textures/sign_side_1_electrical_0_label.png",
+      "sha256": "8ad1e4825cfc3fd894aca69acacc7e5e26d5276000611143ac548247c7d123c3",
+      "bytes": 2048
+    },
+    {
+      "path": "textures/sign_side_1_electrical_3_label.png",
+      "sha256": "8ad1e4825cfc3fd894aca69acacc7e5e26d5276000611143ac548247c7d123c3",
+      "bytes": 2048
+    },
+    {
+      "path": "textures/sign_south_exit.png",
+      "sha256": "23b7e0ce94c7f012a1782ddc7b1050e786fd88588c9c6bba9cdaa27fec2df020",
+      "bytes": 1388
+    },
+    {
+      "path": "textures/sign_south_left.png",
+      "sha256": "05a8771084b2c71c77f383c23dcc4ad64ce4653aeac7836cdc6a3477a3e49722",
+      "bytes": 5965
+    },
+    {
+      "path": "textures/sign_south_right.png",
+      "sha256": "ea3125ee4bcde89fa375828460f7ad6f30a002c9febdde8d36bbd126fbf6913c",
+      "bytes": 6713
+    },
+    {
+      "path": "textures/wall-paint.png",
+      "sha256": "d2a7dac410bf94c474b3674b70abf632c084d10e1fa0a6286f0ed6bd474f572f",
+      "bytes": 281838
+    },
+    {
+      "path": "viewer.html",
+      "sha256": "2009fec94ec2aae40ca68e54014cc42c415e643ded9230c6dffe7f0e57c434ec",
+      "bytes": 6733
+    }
+  ]
+}

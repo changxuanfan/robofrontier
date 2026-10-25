@@ -1,0 +1,447 @@
+{
+  "schema": "robofrontier.cube_transport.task.v3",
+  "rules_version": 3,
+  "id": "ring-10-v3-seed0",
+  "environment": "ring-10",
+  "seed": 0,
+  "seed_scope": "orders only; initial object poses are fixed",
+  "goal": "Place an object of the requested color and shape in each numbered slot.",
+  "orders": {
+    "A": [
+      {
+        "goal_id": "A_slot1",
+        "slot": 1,
+        "requires": {
+          "color": "red",
+          "shape": "cube"
+        },
+        "position_m": [
+          -0.615,
+          -0.59,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "A_slot2",
+        "slot": 2,
+        "requires": {
+          "color": "green",
+          "shape": "cube"
+        },
+        "position_m": [
+          -0.72,
+          -0.59,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "A_slot3",
+        "slot": 3,
+        "requires": {
+          "color": "orange",
+          "shape": "cone"
+        },
+        "position_m": [
+          -0.825,
+          -0.59,
+          0.42
+        ]
+      }
+    ],
+    "B": [
+      {
+        "goal_id": "B_slot1",
+        "slot": 1,
+        "requires": {
+          "color": "red",
+          "shape": "cube"
+        },
+        "position_m": [
+          0.105,
+          -0.59,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "B_slot2",
+        "slot": 2,
+        "requires": {
+          "color": "blue",
+          "shape": "cube"
+        },
+        "position_m": [
+          0.0,
+          -0.59,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "B_slot3",
+        "slot": 3,
+        "requires": {
+          "color": "green",
+          "shape": "cube"
+        },
+        "position_m": [
+          -0.105,
+          -0.59,
+          0.42
+        ]
+      }
+    ],
+    "C": [
+      {
+        "goal_id": "C_slot1",
+        "slot": 1,
+        "requires": {
+          "color": "cyan",
+          "shape": "cube"
+        },
+        "position_m": [
+          0.825,
+          -0.59,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "C_slot2",
+        "slot": 2,
+        "requires": {
+          "color": "green",
+          "shape": "cone"
+        },
+        "position_m": [
+          0.72,
+          -0.59,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "C_slot3",
+        "slot": 3,
+        "requires": {
+          "color": "orange",
+          "shape": "cone"
+        },
+        "position_m": [
+          0.615,
+          -0.59,
+          0.42
+        ]
+      }
+    ],
+    "D": [
+      {
+        "goal_id": "D_slot1",
+        "slot": 1,
+        "requires": {
+          "color": "cyan",
+          "shape": "cube"
+        },
+        "position_m": [
+          0.95,
+          -0.255,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "D_slot2",
+        "slot": 2,
+        "requires": {
+          "color": "blue",
+          "shape": "cone"
+        },
+        "position_m": [
+          0.95,
+          -0.36,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "D_slot3",
+        "slot": 3,
+        "requires": {
+          "color": "green",
+          "shape": "cone"
+        },
+        "position_m": [
+          0.95,
+          -0.465,
+          0.42
+        ]
+      }
+    ],
+    "E": [
+      {
+        "goal_id": "E_slot1",
+        "slot": 1,
+        "requires": {
+          "color": "purple",
+          "shape": "cube"
+        },
+        "position_m": [
+          0.95,
+          0.465,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "E_slot2",
+        "slot": 2,
+        "requires": {
+          "color": "red",
+          "shape": "cone"
+        },
+        "position_m": [
+          0.95,
+          0.36,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "E_slot3",
+        "slot": 3,
+        "requires": {
+          "color": "red",
+          "shape": "cone"
+        },
+        "position_m": [
+          0.95,
+          0.255,
+          0.42
+        ]
+      }
+    ],
+    "F": [
+      {
+        "goal_id": "F_slot1",
+        "slot": 1,
+        "requires": {
+          "color": "blue",
+          "shape": "cube"
+        },
+        "position_m": [
+          0.615,
+          0.59,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "F_slot2",
+        "slot": 2,
+        "requires": {
+          "color": "cyan",
+          "shape": "cube"
+        },
+        "position_m": [
+          0.72,
+          0.59,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "F_slot3",
+        "slot": 3,
+        "requires": {
+          "color": "green",
+          "shape": "cone"
+        },
+        "position_m": [
+          0.825,
+          0.59,
+          0.42
+        ]
+      }
+    ],
+    "G": [
+      {
+        "goal_id": "G_slot1",
+        "slot": 1,
+        "requires": {
+          "color": "blue",
+          "shape": "cube"
+        },
+        "position_m": [
+          -0.105,
+          0.59,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "G_slot2",
+        "slot": 2,
+        "requires": {
+          "color": "purple",
+          "shape": "cube"
+        },
+        "position_m": [
+          0.0,
+          0.59,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "G_slot3",
+        "slot": 3,
+        "requires": {
+          "color": "blue",
+          "shape": "cone"
+        },
+        "position_m": [
+          0.105,
+          0.59,
+          0.42
+        ]
+      }
+    ],
+    "H": [
+      {
+        "goal_id": "H_slot1",
+        "slot": 1,
+        "requires": {
+          "color": "green",
+          "shape": "cube"
+        },
+        "position_m": [
+          -0.825,
+          0.59,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "H_slot2",
+        "slot": 2,
+        "requires": {
+          "color": "orange",
+          "shape": "cube"
+        },
+        "position_m": [
+          -0.72,
+          0.59,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "H_slot3",
+        "slot": 3,
+        "requires": {
+          "color": "purple",
+          "shape": "cube"
+        },
+        "position_m": [
+          -0.615,
+          0.59,
+          0.42
+        ]
+      }
+    ],
+    "I": [
+      {
+        "goal_id": "I_slot1",
+        "slot": 1,
+        "requires": {
+          "color": "orange",
+          "shape": "cube"
+        },
+        "position_m": [
+          -0.95,
+          0.255,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "I_slot2",
+        "slot": 2,
+        "requires": {
+          "color": "orange",
+          "shape": "cube"
+        },
+        "position_m": [
+          -0.95,
+          0.36,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "I_slot3",
+        "slot": 3,
+        "requires": {
+          "color": "blue",
+          "shape": "cone"
+        },
+        "position_m": [
+          -0.95,
+          0.465,
+          0.42
+        ]
+      }
+    ],
+    "J": [
+      {
+        "goal_id": "J_slot1",
+        "slot": 1,
+        "requires": {
+          "color": "red",
+          "shape": "cube"
+        },
+        "position_m": [
+          -0.95,
+          -0.465,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "J_slot2",
+        "slot": 2,
+        "requires": {
+          "color": "red",
+          "shape": "cone"
+        },
+        "position_m": [
+          -0.95,
+          -0.36,
+          0.42
+        ]
+      },
+      {
+        "goal_id": "J_slot3",
+        "slot": 3,
+        "requires": {
+          "color": "orange",
+          "shape": "cone"
+        },
+        "position_m": [
+          -0.95,
+          -0.255,
+          0.42
+        ]
+      }
+    ]
+  },
+  "identical_types_interchangeable": true,
+  "slot_numbers_impose_execution_order": false,
+  "distance_distribution": {
+    "hop_counts": {
+      "0": 5,
+      "1": 6,
+      "2": 5,
+      "3": 5,
+      "4": 4,
+      "5": 5
+    },
+    "scope": "global initial supply to goals; shortest allowed graph distance",
+    "rule": "minimize global sum of squared hop counts",
+    "squared_count_lower_bound": 152
+  },
+  "completion": {
+    "xy_tolerance_m": 0.02,
+    "z_tolerance_m": 0.01,
+    "max_linear_speed_m_s": 0.01,
+    "stable_duration_sim_s": 1,
+    "max_sample_gap_sim_s": 0.025,
+    "table_support_required": true,
+    "released_required": true,
+    "distinct_object_per_goal": true
+  },
+  "environment_config": "configs/environments/cube_transport_cones/ring-10/environment.json"
+}

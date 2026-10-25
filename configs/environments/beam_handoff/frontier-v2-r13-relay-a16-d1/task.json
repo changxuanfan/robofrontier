@@ -1,0 +1,714 @@
+{
+  "kind": "frontier_suite",
+  "suite_version": 2,
+  "id": "relay-a16-d1",
+  "family": "relay",
+  "level": 1,
+  "scale": {
+    "family": "relay",
+    "level": 1,
+    "suite_version": 2,
+    "scene_revision": 13,
+    "scale_index": 2,
+    "arms": 16,
+    "id": "relay-a16-d1",
+    "source_scene_revision": 10,
+    "table_height_m": 0.8,
+    "directory": "configs/environments/beam_handoff/frontier-v2-r13-relay-a16-d1"
+  },
+  "scene_asset": "configs/environments/beam_handoff/frontier-v2-r13-relay-a16-d1",
+  "scene_sha256": "8ac11391873bc813df94eb6a3718ed04c1701f6de15224fb68a45226fd158b61",
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -2.43,
+        2.9758917219280684e-16,
+        0.8
+      ],
+      "yaw_rad": 6.283185307179586
+    },
+    "B": {
+      "base_position_m": [
+        -2.283453068509757,
+        0.8311089482813754,
+        0.8
+      ],
+      "yaw_rad": 5.934119456780721
+    },
+    "C": {
+      "base_position_m": [
+        -1.8614879967791165,
+        1.561973891538291,
+        0.8
+      ],
+      "yaw_rad": 5.585053606381854
+    },
+    "D": {
+      "base_position_m": [
+        -1.2150000000000005,
+        2.104441731196186,
+        0.8
+      ],
+      "yaw_rad": 5.235987755982989
+    },
+    "E": {
+      "base_position_m": [
+        -0.4219650717306407,
+        2.3930828398196655,
+        0.8
+      ],
+      "yaw_rad": 4.886921905584122
+    },
+    "F": {
+      "base_position_m": [
+        0.42196507173064096,
+        2.3930828398196655,
+        0.8
+      ],
+      "yaw_rad": 4.537856055185257
+    },
+    "G": {
+      "base_position_m": [
+        1.2149999999999999,
+        2.1044417311961863,
+        0.8
+      ],
+      "yaw_rad": 4.188790204786391
+    },
+    "H": {
+      "base_position_m": [
+        1.8614879967791167,
+        1.5619738915382908,
+        0.8
+      ],
+      "yaw_rad": 3.839724354387525
+    },
+    "I": {
+      "base_position_m": [
+        2.283453068509757,
+        0.8311089482813752,
+        0.8
+      ],
+      "yaw_rad": 3.490658503988659
+    },
+    "J": {
+      "base_position_m": [
+        2.43,
+        0.0,
+        0.8
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    "K": {
+      "base_position_m": [
+        -1.03,
+        1.2613862031217737e-16,
+        0.8
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    "L": {
+      "base_position_m": [
+        -0.8332875042061958,
+        0.6054188098612474,
+        0.8
+      ],
+      "yaw_rad": 2.5132741228718345
+    },
+    "M": {
+      "base_position_m": [
+        -0.3182875042061958,
+        0.9795882117840082,
+        0.8
+      ],
+      "yaw_rad": 1.8849555921538759
+    },
+    "N": {
+      "base_position_m": [
+        0.3182875042061959,
+        0.9795882117840081,
+        0.8
+      ],
+      "yaw_rad": 1.2566370614359172
+    },
+    "O": {
+      "base_position_m": [
+        0.8332875042061959,
+        0.6054188098612473,
+        0.8
+      ],
+      "yaw_rad": 0.6283185307179586
+    },
+    "P": {
+      "base_position_m": [
+        1.03,
+        0.0,
+        0.8
+      ],
+      "yaw_rad": 0.0
+    }
+  },
+  "objects": [
+    {
+      "id": "payload_01",
+      "display_id": "1",
+      "source": "K",
+      "shape": "straight_beam",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "initial_position_m": [
+        -1.73,
+        -0.3799999999999998,
+        0.8225
+      ],
+      "initial_quaternion_wxyz": [
+        0.7071067811865476,
+        0.0,
+        0.0,
+        0.7071067811865475
+      ],
+      "start_region_id": "pickup_01"
+    },
+    {
+      "id": "payload_02",
+      "display_id": "2",
+      "source": "C",
+      "shape": "straight_beam",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "initial_position_m": [
+        -1.1421281292110206,
+        1.3382239485470786,
+        0.8225
+      ],
+      "initial_quaternion_wxyz": [
+        0.9659258262890682,
+        0.0,
+        0.0,
+        0.2588190451025209
+      ],
+      "start_region_id": "pickup_02"
+    },
+    {
+      "id": "payload_03",
+      "display_id": "3",
+      "source": "E",
+      "shape": "straight_beam",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "initial_position_m": [
+        -0.01472713360011696,
+        1.7592848295645376,
+        0.8225
+      ],
+      "initial_quaternion_wxyz": [
+        0.9961946980917455,
+        0.0,
+        0.0,
+        -0.08715574274765818
+      ],
+      "start_region_id": "pickup_03"
+    },
+    {
+      "id": "payload_04",
+      "display_id": "4",
+      "source": "O",
+      "shape": "straight_beam",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "initial_position_m": [
+        1.5162217880954074,
+        0.8923964866048977,
+        0.8225
+      ],
+      "initial_quaternion_wxyz": [
+        0.8191520442889918,
+        0.0,
+        0.0,
+        -0.573576436351046
+      ],
+      "start_region_id": "pickup_04"
+    }
+  ],
+  "table_height_m": 0.8,
+  "cube_size_m": null,
+  "physics": {
+    "table_height_m": 0.8,
+    "cube_size_m": 0.06,
+    "object_mass_kg": 0.16874999999999996,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0
+  },
+  "mechanism": {
+    "chord_m": 1.2,
+    "mass_kg": 1.458,
+    "cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "kind": "straight_beam",
+    "minimum_supporting_robots": 2,
+    "flexible_teams": true,
+    "layout": "upper_semicircle",
+    "outer_arms": 10,
+    "inner_arms": 6,
+    "inner_robot_radius_m": 1.03,
+    "outer_robot_radius_m": 2.43,
+    "curve_radius_m": 1.73,
+    "table_end_extension_m": 0.38,
+    "finish": "Tabletop destination region; no cradle; beam and suspended assembly must land stably",
+    "payload_count": 4,
+    "payload_assemblies": [
+      {
+        "id": "payload_01",
+        "beam_body": "payload_01",
+        "weight_body": null,
+        "tray_body": null,
+        "source_region_id": "pickup_01",
+        "initial_route_stage_id": "zone_01",
+        "pickup_center_m": [
+          -1.73,
+          -0.3799999999999998,
+          0.8
+        ],
+        "pickup_half_size_m": [
+          0.24,
+          0.65
+        ],
+        "pickup_yaw_rad": 1.5707963267948966,
+        "destination_region_id": "zone_10",
+        "initial_position_m": [
+          -1.73,
+          -0.3799999999999998,
+          0.8225
+        ],
+        "source_region_painted": false
+      },
+      {
+        "id": "payload_02",
+        "beam_body": "payload_02",
+        "weight_body": null,
+        "tray_body": null,
+        "source_region_id": "pickup_02",
+        "initial_route_stage_id": "zone_04",
+        "pickup_center_m": [
+          -1.1421281292110206,
+          1.3382239485470786,
+          0.8
+        ],
+        "pickup_half_size_m": [
+          0.24,
+          0.65
+        ],
+        "pickup_yaw_rad": 0.5235987755982991,
+        "destination_region_id": "zone_10",
+        "initial_position_m": [
+          -1.1421281292110206,
+          1.3382239485470786,
+          0.8225
+        ],
+        "source_region_painted": false
+      },
+      {
+        "id": "payload_03",
+        "beam_body": "payload_03",
+        "weight_body": null,
+        "tray_body": null,
+        "source_region_id": "pickup_03",
+        "initial_route_stage_id": "zone_06",
+        "pickup_center_m": [
+          -0.01472713360011696,
+          1.7592848295645376,
+          0.8
+        ],
+        "pickup_half_size_m": [
+          0.24,
+          0.65
+        ],
+        "pickup_yaw_rad": -0.17453292519943298,
+        "destination_region_id": "zone_10",
+        "initial_position_m": [
+          -0.01472713360011696,
+          1.7592848295645376,
+          0.8225
+        ],
+        "source_region_painted": false
+      },
+      {
+        "id": "payload_04",
+        "beam_body": "payload_04",
+        "weight_body": null,
+        "tray_body": null,
+        "source_region_id": "pickup_04",
+        "initial_route_stage_id": "zone_09",
+        "pickup_center_m": [
+          1.5162217880954074,
+          0.8923964866048977,
+          0.8
+        ],
+        "pickup_half_size_m": [
+          0.24,
+          0.65
+        ],
+        "pickup_yaw_rad": -1.2217304763960306,
+        "destination_region_id": "zone_10",
+        "initial_position_m": [
+          1.5162217880954074,
+          0.8923964866048977,
+          0.8225
+        ],
+        "source_region_painted": false
+      }
+    ],
+    "initial_distribution": "Separate positions along the route; each travels rightward to the common destination",
+    "cable_to_cable_collision": false,
+    "table_inner_diameter_m": 1.6,
+    "layout_arc_degrees": 180,
+    "presentation": {
+      "revision": 13,
+      "endpoint_size_xy_m": [
+        0.8,
+        1.36
+      ],
+      "start_center_world_m": [
+        -1.73,
+        -0.47999999999999976,
+        0.8
+      ],
+      "goal_center_world_m": [
+        1.73,
+        -0.48,
+        0.8
+      ],
+      "intermediate_region_frames": false,
+      "per_payload_pickup_frames": false,
+      "arrows": [
+        {
+          "center_world_m": [
+            -1.671051679480088,
+            0.4477569480273614,
+            0.8
+          ],
+          "yaw_rad": 1.308996938995747
+        },
+        {
+          "center_world_m": [
+            -1.498223948547079,
+            0.8649999999999999,
+            0.8
+          ],
+          "yaw_rad": 1.0471975511965979
+        },
+        {
+          "center_world_m": [
+            -1.2232947314527272,
+            1.2232947314527274,
+            0.8
+          ],
+          "yaw_rad": 0.7853981633974483
+        },
+        {
+          "center_world_m": [
+            -0.8649999999999997,
+            1.498223948547079,
+            0.8
+          ],
+          "yaw_rad": 0.5235987755982987
+        },
+        {
+          "center_world_m": [
+            -0.44775694802736105,
+            1.6710516794800883,
+            0.8
+          ],
+          "yaw_rad": 0.2617993877991496
+        },
+        {
+          "center_world_m": [
+            1.0593194812624605e-16,
+            1.73,
+            0.8
+          ],
+          "yaw_rad": 0.0
+        },
+        {
+          "center_world_m": [
+            0.4477569480273609,
+            1.6710516794800883,
+            0.8
+          ],
+          "yaw_rad": -0.26179938779914935
+        },
+        {
+          "center_world_m": [
+            0.8650000000000002,
+            1.4982239485470787,
+            0.8
+          ],
+          "yaw_rad": -0.5235987755982989
+        },
+        {
+          "center_world_m": [
+            1.2232947314527274,
+            1.2232947314527272,
+            0.8
+          ],
+          "yaw_rad": -0.7853981633974483
+        },
+        {
+          "center_world_m": [
+            1.498223948547079,
+            0.8649999999999999,
+            0.8
+          ],
+          "yaw_rad": -1.0471975511965979
+        },
+        {
+          "center_world_m": [
+            1.6710516794800883,
+            0.4477569480273609,
+            0.8
+          ],
+          "yaw_rad": -1.3089969389957472
+        }
+      ],
+      "opening": "L2/L3 whole assembly yaw reversed by180 degrees; opening faces the original local route-forward direction",
+      "end_extensions": [],
+      "physics_scope": "Apparatus local mechanics and controller unchanged. Twelve-arm modules are laid out on120degrees; arc worktops have1.60m inner openings and integrated normal end landings, without external side tables."
+    }
+  },
+  "goals": [],
+  "grid": null,
+  "route": [
+    {
+      "region_id": "zone_01",
+      "center_m": [
+        -1.73,
+        -0.47999999999999976,
+        0.8
+      ],
+      "nominal_yaw_rad": 1.5707963267948966,
+      "half_size_m": [
+        0.4,
+        0.68
+      ],
+      "painted": true,
+      "label": "START"
+    },
+    {
+      "region_id": "zone_02",
+      "center_m": [
+        -1.6256682339596213,
+        0.5916948479534072,
+        0.8
+      ],
+      "nominal_yaw_rad": 1.2217304763960306,
+      "painted": false
+    },
+    {
+      "region_id": "zone_03",
+      "center_m": [
+        -1.3252568865958319,
+        1.1120225647577133,
+        0.8
+      ],
+      "nominal_yaw_rad": 0.8726646259971647,
+      "painted": false
+    },
+    {
+      "region_id": "zone_04",
+      "center_m": [
+        -0.8650000000000003,
+        1.4982239485470787,
+        0.8
+      ],
+      "nominal_yaw_rad": 0.5235987755982991,
+      "painted": false
+    },
+    {
+      "region_id": "zone_05",
+      "center_m": [
+        -0.30041134736378944,
+        1.7037174127111199,
+        0.8
+      ],
+      "nominal_yaw_rad": 0.17453292519943298,
+      "painted": false
+    },
+    {
+      "region_id": "zone_06",
+      "center_m": [
+        0.3004113473637896,
+        1.7037174127111199,
+        0.8
+      ],
+      "nominal_yaw_rad": -0.17453292519943298,
+      "painted": false
+    },
+    {
+      "region_id": "zone_07",
+      "center_m": [
+        0.8649999999999998,
+        1.498223948547079,
+        0.8
+      ],
+      "nominal_yaw_rad": -0.5235987755982987,
+      "painted": false
+    },
+    {
+      "region_id": "zone_08",
+      "center_m": [
+        1.3252568865958319,
+        1.112022564757713,
+        0.8
+      ],
+      "nominal_yaw_rad": -0.8726646259971647,
+      "painted": false
+    },
+    {
+      "region_id": "zone_09",
+      "center_m": [
+        1.6256682339596213,
+        0.591694847953407,
+        0.8
+      ],
+      "nominal_yaw_rad": -1.2217304763960306,
+      "painted": false
+    },
+    {
+      "region_id": "zone_10",
+      "center_m": [
+        1.73,
+        -0.48,
+        0.8
+      ],
+      "nominal_yaw_rad": -1.5707963267948966,
+      "half_size_m": [
+        0.4,
+        0.68
+      ],
+      "painted": true,
+      "label": "GOAL"
+    }
+  ],
+  "pairs": null,
+  "dials": null,
+  "gripper_profile": "standard-panda",
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "rules": [
+    "Move every numbered payload from its own initial route region rightward to the common destination. The 8/12/16-arm cases contain 2/3/4 independent payload assemblies. Regions indicate progress, not prescribed grasp points or fixed robot pairs.",
+    "Airborne transport needs at least two real beam grasps. Establish receiving support before sender release. Teams may change dynamically; the 16-arm half-ring contains 10 outer and 6 inner robots.",
+    "After pickup keep the whole transported assembly clear of table/floor until final landing. For L3 the free weight must remain in the tray. Rope and tray are passive; no stabilizing attachments or direct weight grasp.",
+    "Drops are recorded. The last established sending team may recover; a receiver cannot retrieve a dropped object to bypass a handover. No reset or respawn.",
+    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits.",
+    "Only START and GOAL are outlined; each is 0.80 m by 1.36 m. The GOAL outline is the actual final acceptance boundary, not decoration.",
+    "Numbered apparatuses still start at separate positions along the route. START marks the route origin; it does not require all apparatuses to start there or return there. Follow the sparse arrows toward GOAL.",
+    "Unpainted route reference anchors do not prescribe handover locations, grasp points, robot pairs or an execution order. Scheduling and independent concurrent work remain planner choices.",
+    "Curved and elbow apparatuses initially open forward along the local route (right on the straight table). The weight, closed eyes and any passive hinge move with the complete apparatus and retain their physical connections.",
+    "START/GOAL occupy the two normal end landings within the arc tabletop; there are no external side tables. The twelve-arm layout spans120 degrees; the largest existing layout spans180 degrees. The inner tabletop opening is1.60m in diameter."
+  ],
+  "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB",
+      "Robot proprioception and robot geometry",
+      "Action feedback",
+      "Visible dial count"
+    ]
+  },
+  "completion": {
+    "stable_duration_sim_s": 1.0,
+    "scope": "Mechanism-specific commissioning required; no inherited v1 evaluator assumed"
+  },
+  "execution_readiness": "environment_preview_only",
+  "oracle_verified": false,
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "G_front",
+    "G_side",
+    "H_front",
+    "H_side",
+    "I_front",
+    "I_side",
+    "J_front",
+    "J_side",
+    "K_front",
+    "K_side",
+    "L_front",
+    "L_side",
+    "M_front",
+    "M_side",
+    "N_front",
+    "N_side",
+    "O_front",
+    "O_side",
+    "P_front",
+    "P_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "payload_close",
+    "payload_01_close",
+    "payload_02_close",
+    "payload_03_close",
+    "payload_04_close"
+  ],
+  "view_camera": "global",
+  "recording_camera": "global",
+  "workspace_world_m": {
+    "lower": [
+      -3.2800000000000002,
+      -0.85,
+      0.42500000000000004
+    ],
+    "upper": [
+      3.2800000000000002,
+      3.2430828398196656,
+      2.1
+    ]
+  }
+}

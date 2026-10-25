@@ -1,0 +1,79 @@
+{
+  "case": {
+    "id": "relay-a12-d3",
+    "family": "relay",
+    "level": 3,
+    "arms": 12,
+    "pairs": 6,
+    "layout": "bend",
+    "payload": "flexible_cable_weight",
+    "status": "planned",
+    "directory": "configs/environments/beam_handoff/suite-relay-a12-d3-v3",
+    "scene_sha256": null,
+    "layout_report": "configs/environments/beam_handoff/suite-relay-a12-d3/layout-validation.json",
+    "verification_results": {},
+    "last_oracle_report": null,
+    "scene_revision": 3,
+    "history": [
+      {
+        "directory": "configs/environments/beam_handoff/suite-relay-a12-d3",
+        "scene_sha256": "68f1940fccbc4dd703f6c4b2cc77f31eda159b77c5c203584a4a506966030e82",
+        "status": "oracle_failed",
+        "verification_results": {
+          "0": {
+            "passed": false,
+            "scene_sha256": "68f1940fccbc4dd703f6c4b2cc77f31eda159b77c5c203584a4a506966030e82",
+            "executor_sha256": "db44f77fa30453a161739620c554f4579ef657bccf31bbf0b8061833c891748f",
+            "report": "runs/oracle/frontier-v1/relay-a12-d3/seed-0/attempt-002/report.json"
+          }
+        },
+        "last_oracle_report": "runs/oracle/frontier-v1/relay-a12-d3/seed-0/attempt-002/report.json",
+        "superseded_reason": "Align beam with transport direction and stagger opposed bases, preserving old normal-to-path layouts and witnesses"
+      },
+      {
+        "directory": "configs/environments/beam_handoff/suite-relay-a12-d3-v2",
+        "scene_revision": 2,
+        "scene_sha256": "0fff4358faf5cee562e64c2877e7b8557db069a122c3e29d1d2a9530272bb98e",
+        "status": "generated",
+        "verification_results": {},
+        "last_oracle_report": null,
+        "superseded_reason": "Restore the physically demonstrated normal beam orientation for straight/quarter-turn layouts; isolate tangent experiment to the closed ring"
+      }
+    ]
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "beam_length_m": 1.2,
+    "beam_cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "beam_mass_kg": 1.458,
+    "weight_mass_kg": 0.25,
+    "suspension_length_m": 0.2,
+    "suspension_segments": 8,
+    "opposed_base_spacing_m": 1.3,
+    "cross_track_base_spacing_m": 1.3,
+    "longitudinal_pair_stagger_m": 0.0,
+    "minimum_supporting_robots": 2,
+    "loop_radius_m": null,
+    "beam_alignment": "normal"
+  },
+  "grid": null
+}

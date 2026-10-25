@@ -1,0 +1,54 @@
+{
+  "case": {
+    "id": "mosaic-a04-7x7-d2",
+    "family": "mosaic",
+    "level": 2,
+    "arms": 4,
+    "rows": 7,
+    "columns": 7,
+    "objects": 49,
+    "pitch_m": 0.051,
+    "guidance": "printed_grid",
+    "status": "generated",
+    "directory": "configs/environments/mosaic/suite-mosaic-a04-7x7-d2",
+    "scene_sha256": "e5d8ae17d690899649d644ca1d6d7575a46dfe52c5c3c65bbfab2c9ceeed39f0",
+    "layout_report": "configs/environments/mosaic/suite-mosaic-a04-7x7-d2/layout-validation.json"
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "cube_contact_time_constant_s": 0.004
+  },
+  "mechanism": null,
+  "grid": {
+    "rows": 7,
+    "columns": 7,
+    "pitch_m": 0.051,
+    "cube_side_m": 0.04,
+    "pattern": [
+      "RBBWWWW",
+      "WRBBBWW",
+      "WYRRRRW",
+      "BYYYRRR",
+      "WYRRRRW",
+      "WRBBBWW",
+      "RBBWWWW"
+    ],
+    "floor_z_m": 0.4,
+    "rim_z_m": 0.4,
+    "pocket_opening_m": null
+  }
+}

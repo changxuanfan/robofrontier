@@ -1,0 +1,63 @@
+{
+  "old_sphere_scene_hashes_unchanged": true,
+  "generator_source_hashes_match": true,
+  "videos": [
+    {
+      "path": "benchmarks/cube_transport_cylinders/validation/line-03-A-pick-place.mp4",
+      "sha256": "b22f7f22043cf860222ca86309790bb0f880957059ecd55b140155b9c00ad2b4",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 960,
+            "height": 720,
+            "avg_frame_rate": "20/1"
+          }
+        ],
+        "format": {
+          "duration": "21.200000"
+        }
+      }
+    },
+    {
+      "path": "benchmarks/cube_transport_cylinders/validation/ring-07-G-pick-place.mp4",
+      "sha256": "ba343edb9b11da15004d4e30b4ee1998d5614e9b8af18533eddccb41ea480c9e",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 960,
+            "height": 720,
+            "avg_frame_rate": "20/1"
+          }
+        ],
+        "format": {
+          "duration": "21.200000"
+        }
+      }
+    },
+    {
+      "path": "benchmarks/cube_transport_cylinders/validation/ring-12-L-pick-place.mp4",
+      "sha256": "5b4c482eb690072e90dbcaf4d0608f75545394c015ba695fc3a8a88f9df6f035",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 960,
+            "height": 720,
+            "avg_frame_rate": "20/1"
+          }
+        ],
+        "format": {
+          "duration": "21.200000"
+        }
+      }
+    }
+  ]
+}

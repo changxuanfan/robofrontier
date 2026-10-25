@@ -1,0 +1,6 @@
+{
+  "physics_signature_before": "92f01c8e7a75c65fdceb0678d5480eff07663bb4c168a12f11b592593d221997",
+  "physics_signature_after": "92f01c8e7a75c65fdceb0678d5480eff07663bb4c168a12f11b592593d221997",
+  "identical": true,
+  "note": "Overview framing moved back; every non-camera XML element, including keyframe and contacts, is unchanged."
+}

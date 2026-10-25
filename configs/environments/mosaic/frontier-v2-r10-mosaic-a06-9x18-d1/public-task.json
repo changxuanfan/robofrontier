@@ -1,0 +1,384 @@
+{
+  "kind": "frontier_suite",
+  "id": "mosaic-a06-9x18-d1",
+  "suite_version": 2,
+  "family": "mosaic",
+  "level": 1,
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -0.6118,
+        -0.7045,
+        0.8
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "B": {
+      "base_position_m": [
+        0.0,
+        -0.7045,
+        0.8
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "C": {
+      "base_position_m": [
+        0.6118,
+        -0.7045,
+        0.8
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "D": {
+      "base_position_m": [
+        -0.6118,
+        0.7045,
+        0.8
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "E": {
+      "base_position_m": [
+        0.0,
+        0.7045,
+        0.8
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "F": {
+      "base_position_m": [
+        0.6118,
+        0.7045,
+        0.8
+      ],
+      "yaw_rad": -1.5707963267948966
+    }
+  },
+  "rules": [
+    "Build the supplied Tulip reference, including background cells, one released cube per pixel. The 9x18 petal mask is mirrored from left to right. The portrait grid rotates clockwise 90 degrees as a whole on the horizontal workstation.",
+    "Cube side is 60 mm and common cell-center pitch is 81 mm. L1 has 80 mm clear square pockets, L2 3 mm red printed lines, L3 no visible grid. The four colors are cream, navy, coral and sage. The target image matches world north-up, centered on the declared assembly origin.",
+    "Stock allocations do not restrict which robot can use an item. Preserve completed placements and account for finger release/withdrawal clearance.",
+    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits."
+  ],
+  "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB",
+      "Robot proprioception and robot geometry",
+      "Action feedback",
+      "Visible dial count"
+    ]
+  },
+  "gripper_profile": "standard-panda",
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "assembly_01",
+    "assembly_02",
+    "assembly_03"
+  ],
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "execution_readiness": "environment_preview_only",
+  "initial_supplies": [
+    {
+      "source": "A",
+      "color": "cream",
+      "count": 27
+    },
+    {
+      "source": "B",
+      "color": "cream",
+      "count": 27
+    },
+    {
+      "source": "C",
+      "color": "cream",
+      "count": 11
+    },
+    {
+      "source": "C",
+      "color": "navy",
+      "count": 16
+    },
+    {
+      "source": "D",
+      "color": "coral",
+      "count": 11
+    },
+    {
+      "source": "D",
+      "color": "navy",
+      "count": 16
+    },
+    {
+      "source": "E",
+      "color": "coral",
+      "count": 21
+    },
+    {
+      "source": "E",
+      "color": "sage",
+      "count": 6
+    },
+    {
+      "source": "F",
+      "color": "sage",
+      "count": 27
+    }
+  ],
+  "mechanism": {
+    "kind": "recessed_grid",
+    "stock_packing": "Single layer; non-exclusive station allocation",
+    "stock_count": 162,
+    "robot_to_grid_edge_m": 0.34,
+    "stock_edge_clearance_m": 0.055,
+    "station_pitch_m": 0.6118,
+    "row_spacing_scale_from_r3": 0.95,
+    "table_side_scale_from_r3": 1.25,
+    "table_vertical_scale_from_r4": 1.0,
+    "outer_base_axis_inset_from_grid_end_m": 0.11719999999999997
+  },
+  "target": {
+    "rows": 9,
+    "columns": 18,
+    "colors": 4,
+    "pitch_m": 0.081,
+    "cube_side_m": 0.06,
+    "pattern": [
+      [
+        "navy",
+        "navy",
+        "sage",
+        "navy",
+        "navy",
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "navy",
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "navy",
+        "navy",
+        "navy"
+      ],
+      [
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "sage",
+        "sage",
+        "cream",
+        "sage",
+        "sage",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream",
+        "cream",
+        "cream"
+      ],
+      [
+        "cream",
+        "navy",
+        "navy",
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "sage",
+        "sage",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "sage"
+      ],
+      [
+        "cream",
+        "navy",
+        "sage",
+        "navy",
+        "cream",
+        "cream",
+        "sage",
+        "sage",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream",
+        "cream"
+      ],
+      [
+        "cream",
+        "navy",
+        "sage",
+        "navy",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "coral",
+        "navy",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream",
+        "sage"
+      ],
+      [
+        "cream",
+        "navy",
+        "sage",
+        "navy",
+        "sage",
+        "sage",
+        "sage",
+        "cream",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream",
+        "cream"
+      ],
+      [
+        "cream",
+        "navy",
+        "navy",
+        "navy",
+        "cream",
+        "sage",
+        "sage",
+        "cream",
+        "sage",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "sage"
+      ],
+      [
+        "sage",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "sage",
+        "cream",
+        "sage",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream",
+        "cream",
+        "sage"
+      ],
+      [
+        "navy",
+        "navy",
+        "sage",
+        "navy",
+        "navy",
+        "navy",
+        "sage",
+        "cream",
+        "navy",
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "navy",
+        "navy"
+      ]
+    ],
+    "pocket_opening_m": 0.08,
+    "depth_m": 0.02,
+    "center_world_m": [
+      0,
+      0,
+      0.8
+    ],
+    "row1": "north",
+    "column1": "west",
+    "reference_image": "target-pattern.png",
+    "palette": {
+      "cream": "#FFF4DA",
+      "navy": "#173F73",
+      "coral": "#F03F5B",
+      "sage": "#16A16E"
+    },
+    "reference": {
+      "name": "Tulip",
+      "original_width": 9,
+      "original_height": 18,
+      "rotation_clockwise_deg": 90,
+      "source_sha256": "25a210531d2d0637480ae1fc2b3e40223f4e0f75710064f00ed6d15ea68ced87",
+      "source_file": "assets/tulip_parameters.json",
+      "color_hex": {
+        "cream": "#FFF4DA",
+        "navy": "#173F73",
+        "coral": "#F03F5B",
+        "sage": "#16A16E"
+      },
+      "palette_id": "bright",
+      "palette_selection_status": "selected_by_user",
+      "counts": {
+        "navy": 32,
+        "sage": 33,
+        "cream": 65,
+        "coral": 32
+      }
+    }
+  }
+}

@@ -1,0 +1,326 @@
+{
+  "kind": "spring_dial",
+  "id": "spring-dial-floating-04-060-policy-v1",
+  "status": "Free apparatus; Oracle validation separate from policy performance",
+  "scene_asset": "configs/environments/spring_dial/floating-04-060",
+  "scene_sha256": "b6a9e8bede867758f65033223410f0a3d46233e424f3173b0f63dd1a8fc21f19",
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -1.15,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "B": {
+      "base_position_m": [
+        -0.8999999999999999,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "C": {
+      "base_position_m": [
+        -0.55,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "D": {
+      "base_position_m": [
+        -0.3,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "E": {
+      "base_position_m": [
+        0.04999999999999999,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "F": {
+      "base_position_m": [
+        0.3,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "G": {
+      "base_position_m": [
+        0.6499999999999999,
+        -0.65,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "H": {
+      "base_position_m": [
+        0.8999999999999999,
+        0.65,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    }
+  },
+  "objects": [],
+  "dials": [
+    {
+      "id": "A",
+      "nominal_robots": [
+        "A",
+        "B"
+      ],
+      "center_m": [
+        -0.8999999999999999,
+        0,
+        0.515
+      ]
+    },
+    {
+      "id": "B",
+      "nominal_robots": [
+        "C",
+        "D"
+      ],
+      "center_m": [
+        -0.3,
+        0,
+        0.515
+      ]
+    },
+    {
+      "id": "C",
+      "nominal_robots": [
+        "E",
+        "F"
+      ],
+      "center_m": [
+        0.3,
+        0,
+        0.515
+      ]
+    },
+    {
+      "id": "D",
+      "nominal_robots": [
+        "G",
+        "H"
+      ],
+      "center_m": [
+        0.8999999999999999,
+        0,
+        0.515
+      ]
+    }
+  ],
+  "table_height_m": 0.4,
+  "mechanism": {
+    "apparatus": "floating",
+    "face_diameter_m": 0.23,
+    "face_thickness_m": 0.008,
+    "handle_length_m": 0.3,
+    "handle_cross_section_m": [
+      0.016,
+      0.02
+    ],
+    "handle_eccentric_offset_m": -0.03,
+    "knob_core_diameter_m": 0.054,
+    "knob_overall_diameter_m": 0.059,
+    "knob_height_m": 0.04,
+    "rotation_range_deg": [
+      -180,
+      180
+    ],
+    "return_mechanism": "passive spring",
+    "module_mass_kg": 1.1903552420800265,
+    "minimum_airborne_clearance_m": 0.02,
+    "contact_sequence": {
+      "kind": "lift_before_knob_contact",
+      "airborne_duration_s": 0.25,
+      "contact_tolerance_m": 0.0002
+    }
+  },
+  "physics": {
+    "timestep_s": 0.001,
+    "gravity_m_s2": [
+      0.0,
+      0.0,
+      -9.81
+    ],
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 0
+  },
+  "goal": "Discover the code and simultaneously maintain four airborne modules at their correct relative dial settings until CORRECT reads 4.",
+  "objective": "Succeed while reducing code trials, physical actions and elapsed time; include stabilization, observation and coordination costs.",
+  "coordinate_frame": "World +X right, +Y north, +Z up. Dial symbols are in each movable disk frame, viewed from its printed front.",
+  "allowed_code_angles_deg": [
+    90,
+    180,
+    270
+  ],
+  "allowed_code_symbols": [
+    1,
+    2,
+    3
+  ],
+  "symbol_to_angle_deg": {
+    "0": 0,
+    "1": 90,
+    "2": 180,
+    "3": 270
+  },
+  "candidate_codes": 81,
+  "rules": [
+    "All four dials start at symbol 0. Each hidden code entry is sampled independently and uniformly from symbols 1, 2, 3; repetitions are allowed and zero is never a code entry.",
+    "Symbols belong to each movable white disk: 0 at its marked top, 1 clockwise quarter turn, 2 half turn, 3 counterclockwise quarter turn, viewed from the printed front. Angle is red rotor relative to its own white disk, not world yaw. Range -180 to +180 degrees; either endpoint is symbol 2.",
+    "Rotate and hold through real robot/gripper contact. The spring returns an unrestrained dial toward zero. Direct dial-state writes, attachments, simulator resets and physics-parameter changes are unavailable policy actions.",
+    "Each blue handle and white disk form one free movable module. Lift and stabilize the complete module before turning its red knob. All four modules must simultaneously clear the tabletop by at least 20 mm, with no apparatus/table contact, for feedback to be eligible. Grounded configurations show a dash. No fixture attachment or automatic lifting/rotation tool is supplied.",
+    "Before another robot touches, grasps or turns a red knob, a different robot must maintain a two-finger grip on the blue handle and the complete module must continuously clear the table by at least 20 mm for 0.25 simulated seconds. Valid feedback also requires all four blue-handle holds and airborne prerequisites to remain established. Verify lift and stable support with RGB, not jaw width alone. Before this prerequisite the partner may prepare a distant pose but must stay outside knob contact. Loss of support requires stopping rotation and re-establishing support before continuing; a new contact must satisfy the prerequisite again. The private contact audit uses a 0.2 mm numerical contact tolerance. Initiating knob contact prematurely makes the episode process-noncompliant, even if the code is later solved; no automatic reset or replay occurs. Post-win cleanup is excluded from this audit.",
+    "Automatic feedback requires all four dials near nonzero marks and slow/stable for the declared duration. The display gives only the total correct count, not the identities of correct entries. Invalid/transient inputs display a dash; a valid zero score displays 0.",
+    "Every newly entered stable configuration counts as a trial, including intermediate configurations formed while adjusting. Continued holding and repeated observation do not create extra trials; leaving and re-entering can. There is no separate submit button.",
+    "The first valid score 4 wins. The visible 4 and private success record then latch; physical springs remain active. Post-success cleanup does not create more trials or erase success.",
+    "Robot motion completion is not proof of dial alignment. Pose and established grasp holding persist across tool calls, waits and normal control handback until changed by an explicit command.",
+    "Nominal robot/dial labels identify the initial arrangement, not an extra exclusive reservation. Use permitted ownership and actual reachability when choosing allocation."
+  ],
+  "planning_hints": [
+    "Compare the information value of a proposed trial with its required angle changes, execution time and coordination cost. Separate confirmed deductions from hypotheses.",
+    "You can retain some settings while changing others; a release/regrasp of every dial is not required for each trial.",
+    "A grasp pose and current joint configuration affect subsequent rotation range. Interpret feedback against an observed configuration, accounting for slip, tracking error and stale views.",
+    "When multiple roles operate one apparatus, coordinate the input configuration being tested so the aggregate feedback can be interpreted. Choose the communication and execution granularity yourself.",
+    "Grasping farther along a handle can increase the load moment. Choose contact point and bearing direction for gravity and partner forces. If the disk pitches, slips or remains grounded during a lift, reassess the grasp and support geometry rather than relying only on more vertical motion or more force. Reorienting the blue handle changes the whole disk frame, not the code digit.",
+    "The support grasp and module orientation determine reaction to knob torque and the turning arm's approach and future joint range. Plan these together; recheck relative alignment and support after contact or slip.",
+    "Holding the blue handle and turning the red knob can require different robots. Nominal pairs identify the initial layout, not fixed roles or a required agent split. One agent/delegate may operate several robots.",
+    "Compare parallel progress with coupling: operations on independent modules may overlap, while changing a shared module's support changes the partner's reference. Use observed evidence rather than treating commanded wrist rotation as a measured dial change."
+  ],
+  "feedback": {
+    "angle_tolerance_deg": 4.0,
+    "max_speed_deg_s": 5.0,
+    "stable_duration_s": 0.25,
+    "max_sample_gap_s": 0.03
+  },
+  "completion": {
+    "stable_duration_sim_s": 0.25,
+    "max_sample_gap_sim_s": 0.03,
+    "success_latched": true,
+    "complete_sampling_required": true
+  },
+  "workspace_world_m": {
+    "lower": [
+      -1.95,
+      -1.03,
+      0.42500000000000004
+    ],
+    "upper": [
+      1.95,
+      1.03,
+      1.3
+    ]
+  },
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "G_front",
+    "G_side",
+    "H_front",
+    "H_side",
+    "dial_A",
+    "dial_A_side",
+    "dial_A_front",
+    "dial_A_high",
+    "dial_B",
+    "dial_B_side",
+    "dial_B_front",
+    "dial_B_high",
+    "dial_C",
+    "dial_C_side",
+    "dial_C_front",
+    "dial_C_high",
+    "dial_D",
+    "dial_D_side",
+    "dial_D_front",
+    "dial_D_high",
+    "global",
+    "global_side",
+    "top",
+    "board"
+  ],
+  "view_camera": "global",
+  "recording_camera": "global",
+  "camera_roles": {
+    "overview": "global",
+    "game_feedback": "board",
+    "dial_details": {
+      "A": [
+        "dial_A",
+        "dial_A_front",
+        "dial_A_side",
+        "dial_A_high"
+      ],
+      "B": [
+        "dial_B",
+        "dial_B_front",
+        "dial_B_side",
+        "dial_B_high"
+      ],
+      "C": [
+        "dial_C",
+        "dial_C_front",
+        "dial_C_side",
+        "dial_C_high"
+      ],
+      "D": [
+        "dial_D",
+        "dial_D_front",
+        "dial_D_side",
+        "dial_D_high"
+      ]
+    }
+  },
+  "observation_contract": {
+    "initial_positions_public": false,
+    "initial_geometry_public": true,
+    "policy": [
+      "RGB including instrument display",
+      "robot_proprioception",
+      "action_status"
+    ],
+    "live_object_truth_for_policy": false,
+    "fixture_geometry": "Device dimensions are public; localize movable modules and their axes from permitted RGB.",
+    "motion_screen": "Optional robot-only CAD; excludes apparatus and contact dynamics."
+  },
+  "metrics": [
+    "success",
+    "valid_trials",
+    "robot_action_count",
+    "absolute_dial_travel_rad",
+    "wall_time",
+    "simulation_time",
+    "holding_departures",
+    "zero_entries",
+    "sampling_gaps",
+    "grounded_dial_travel_rad",
+    "premature_knob_contact_events"
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "id": "spring-dial-crank-04",
+  "table": {
+    "length_m": 1.9,
+    "width_m": 2.06,
+    "height_m": 0.4,
+    "thickness_m": 0.05
+  },
+  "base_column_spacing_m": 0.86,
+  "opposed_base_spacing_m": 1.72,
+  "dial": {
+    "center_y_m": 0.32,
+    "face_radius_m": 0.115,
+    "knob_core_radius_m": 0.024,
+    "knob_height_m": 0.044,
+    "knob_center_above_table_m": 0.061,
+    "mass_kg": 0.12,
+    "spring_nm_per_rad": 0.03,
+    "damping_nm_s_per_rad": 0.003,
+    "range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "friction": [
+      0.8,
+      0.005,
+      0.0001
+    ]
+  },
+  "physics": {
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 0
+  },
+  "feedback": {
+    "angle_tolerance_deg": 4.0,
+    "max_speed_deg_s": 5.0,
+    "stable_duration_s": 0.25,
+    "max_sample_gap_s": 0.03
+  },
+  "appearance": {
+    "design": "panel",
+    "face_radius_m": 0.165,
+    "pointer_length_m": 0.154,
+    "letter_half_size_m": 0.04
+  },
+  "crank": {
+    "id": "spring-dial-crank-04",
+    "radius_m": 0.075,
+    "arm_width_m": 0.016,
+    "arm_thickness_m": 0.009,
+    "grip_diameter_m": 0.022,
+    "grip_height_m": 0.044,
+    "hub_diameter_m": 0.024,
+    "hub_height_m": 0.036,
+    "assembly_mass_kg": 0.12,
+    "contact_friction": [
+      0.8,
+      0.005,
+      0.0001
+    ]
+  }
+}

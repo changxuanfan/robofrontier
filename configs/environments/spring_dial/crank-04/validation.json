@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "arm_count": 4,
+  "fixed_white_dials": true,
+  "crank_handles": 4,
+  "dial_actuators": 0,
+  "actuators": 32,
+  "assembled_crank_mass_kg": 0.12,
+  "initial_penetrations_over_1mm": [],
+  "scope": "Initial scene load/settling only; crank grasp and rotation not yet validated."
+}

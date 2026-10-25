@@ -1,0 +1,108 @@
+{
+  "schema": "robofrontier.static_preview.v2",
+  "camera_id": "pair_1",
+  "sim_time_s": 0.0,
+  "frame_scope": "initialization preview; not live",
+  "image_size_pixel": [
+    1536,
+    1152
+  ],
+  "robot_labels": [
+    {
+      "robot_id": "A",
+      "base_anchor_pixel": [
+        768.0,
+        781.6981725612701
+      ],
+      "label_box_pixel": [
+        741.0,
+        1068.5,
+        795.0,
+        1111.5
+      ],
+      "overlap_area_pixel2": 0.0
+    },
+    {
+      "robot_id": "B",
+      "base_anchor_pixel": [
+        768.0,
+        426.8687423457212
+      ],
+      "label_box_pixel": [
+        741.0,
+        64.5,
+        795.0,
+        107.5
+      ],
+      "overlap_area_pixel2": 0.0
+    },
+    {
+      "robot_id": "C",
+      "base_anchor_pixel": [
+        1098.251477637965,
+        781.6981725612701
+      ],
+      "label_box_pixel": [
+        1071.251477637965,
+        1068.5,
+        1125.251477637965,
+        1111.5
+      ],
+      "overlap_area_pixel2": 0.0
+    },
+    {
+      "robot_id": "D",
+      "base_anchor_pixel": [
+        959.3661230417187,
+        426.8687423457212
+      ],
+      "label_box_pixel": [
+        932.3661230417187,
+        64.5,
+        986.3661230417187,
+        107.5
+      ],
+      "overlap_area_pixel2": 0.0
+    },
+    {
+      "robot_id": "F",
+      "base_anchor_pixel": [
+        1150.7322460834373,
+        426.8687423457212
+      ],
+      "label_box_pixel": [
+        1123.7322460834373,
+        64.5,
+        1177.7322460834373,
+        107.5
+      ],
+      "overlap_area_pixel2": 0.0
+    },
+    {
+      "robot_id": "H",
+      "base_anchor_pixel": [
+        1342.0983691251558,
+        426.8687423457212
+      ],
+      "label_box_pixel": [
+        1315.0983691251558,
+        64.5,
+        1369.0983691251558,
+        107.5
+      ],
+      "overlap_area_pixel2": 0.0
+    }
+  ],
+  "render_size_pixel": [
+    1280,
+    900
+  ],
+  "scene_viewport_pixel": [
+    128,
+    126,
+    1408,
+    1026
+  ],
+  "label_boxes_outside_scene": true,
+  "annotation_source": "fixed robot base geometry only; no object annotations"
+}

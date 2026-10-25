@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "scope": "Layout, asset contract and 1-second stationary dynamics only; no full manipulation or GPT trial.",
+  "horizontal_base_spacing_m": 0.8,
+  "same_row_increment_m": 0.2,
+  "table_size_m": [
+    3.1999999999999997,
+    2.06
+  ],
+  "module_and_pair_internal_geometry_preserved": true,
+  "mass_inertia_friction_and_noslip_preserved": true,
+  "symmetric_table_margins": true,
+  "score_panel_inside_table": true,
+  "initial_inter_robot_contacts": 0,
+  "source_060_sha256": "7930f511d25336f123f796d3246410fee8aa2ded6a721e0f08c81f3065e8d4f4",
+  "new_scene_sha256": "1c565958a1e1afb60dc8e38431fea36a1d69dd3ca149c1dda0ec165353db0cda"
+}

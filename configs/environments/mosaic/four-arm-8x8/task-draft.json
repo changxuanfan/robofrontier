@@ -1,0 +1,673 @@
+{
+  "schema": "robofrontier.mosaic.task.v1",
+  "id": "mosaic-four-arm-8x8-draft",
+  "status": "draft transcription; not a validated manipulation benchmark",
+  "reference_image": "assets/reference-original.png",
+  "matrix_codes": [
+    "BBBBBBBB",
+    "BRWYYWRB",
+    "BYYYYYYB",
+    "YWBYYBWY",
+    "YYWRRWYY",
+    "YWRYYRWY",
+    "BYYYYYYB",
+    "BBBBBBBB"
+  ],
+  "code_to_color": {
+    "B": "blue",
+    "R": "red",
+    "Y": "yellow",
+    "W": "white"
+  },
+  "inventory_counts": {
+    "blue": 24,
+    "red": 6,
+    "white": 8,
+    "yellow": 26
+  },
+  "transcription_note": "Transcribed from the supplied regular 8x8 illustration, rows north to south and columns west to east; B blue, R red, Y yellow, W white. No rescaling or cropping of the 10x10 target.",
+  "assignment": "No arm/color ownership or placement order imposed; supply color is only initial location.",
+  "goal_cells": [
+    {
+      "row": 1,
+      "column": 1,
+      "color": "blue",
+      "cube_center_world_m": [
+        -0.14,
+        0.14,
+        0.42
+      ]
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "color": "blue",
+      "cube_center_world_m": [
+        -0.1,
+        0.14,
+        0.42
+      ]
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "color": "blue",
+      "cube_center_world_m": [
+        -0.06,
+        0.14,
+        0.42
+      ]
+    },
+    {
+      "row": 1,
+      "column": 4,
+      "color": "blue",
+      "cube_center_world_m": [
+        -0.02,
+        0.14,
+        0.42
+      ]
+    },
+    {
+      "row": 1,
+      "column": 5,
+      "color": "blue",
+      "cube_center_world_m": [
+        0.02,
+        0.14,
+        0.42
+      ]
+    },
+    {
+      "row": 1,
+      "column": 6,
+      "color": "blue",
+      "cube_center_world_m": [
+        0.06,
+        0.14,
+        0.42
+      ]
+    },
+    {
+      "row": 1,
+      "column": 7,
+      "color": "blue",
+      "cube_center_world_m": [
+        0.1,
+        0.14,
+        0.42
+      ]
+    },
+    {
+      "row": 1,
+      "column": 8,
+      "color": "blue",
+      "cube_center_world_m": [
+        0.14,
+        0.14,
+        0.42
+      ]
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "color": "blue",
+      "cube_center_world_m": [
+        -0.14,
+        0.1,
+        0.42
+      ]
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "color": "red",
+      "cube_center_world_m": [
+        -0.1,
+        0.1,
+        0.42
+      ]
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "color": "white",
+      "cube_center_world_m": [
+        -0.06,
+        0.1,
+        0.42
+      ]
+    },
+    {
+      "row": 2,
+      "column": 4,
+      "color": "yellow",
+      "cube_center_world_m": [
+        -0.02,
+        0.1,
+        0.42
+      ]
+    },
+    {
+      "row": 2,
+      "column": 5,
+      "color": "yellow",
+      "cube_center_world_m": [
+        0.02,
+        0.1,
+        0.42
+      ]
+    },
+    {
+      "row": 2,
+      "column": 6,
+      "color": "white",
+      "cube_center_world_m": [
+        0.06,
+        0.1,
+        0.42
+      ]
+    },
+    {
+      "row": 2,
+      "column": 7,
+      "color": "red",
+      "cube_center_world_m": [
+        0.1,
+        0.1,
+        0.42
+      ]
+    },
+    {
+      "row": 2,
+      "column": 8,
+      "color": "blue",
+      "cube_center_world_m": [
+        0.14,
+        0.1,
+        0.42
+      ]
+    },
+    {
+      "row": 3,
+      "column": 1,
+      "color": "blue",
+      "cube_center_world_m": [
+        -0.14,
+        0.06,
+        0.42
+      ]
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "color": "yellow",
+      "cube_center_world_m": [
+        -0.1,
+        0.06,
+        0.42
+      ]
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "color": "yellow",
+      "cube_center_world_m": [
+        -0.06,
+        0.06,
+        0.42
+      ]
+    },
+    {
+      "row": 3,
+      "column": 4,
+      "color": "yellow",
+      "cube_center_world_m": [
+        -0.02,
+        0.06,
+        0.42
+      ]
+    },
+    {
+      "row": 3,
+      "column": 5,
+      "color": "yellow",
+      "cube_center_world_m": [
+        0.02,
+        0.06,
+        0.42
+      ]
+    },
+    {
+      "row": 3,
+      "column": 6,
+      "color": "yellow",
+      "cube_center_world_m": [
+        0.06,
+        0.06,
+        0.42
+      ]
+    },
+    {
+      "row": 3,
+      "column": 7,
+      "color": "yellow",
+      "cube_center_world_m": [
+        0.1,
+        0.06,
+        0.42
+      ]
+    },
+    {
+      "row": 3,
+      "column": 8,
+      "color": "blue",
+      "cube_center_world_m": [
+        0.14,
+        0.06,
+        0.42
+      ]
+    },
+    {
+      "row": 4,
+      "column": 1,
+      "color": "yellow",
+      "cube_center_world_m": [
+        -0.14,
+        0.02,
+        0.42
+      ]
+    },
+    {
+      "row": 4,
+      "column": 2,
+      "color": "white",
+      "cube_center_world_m": [
+        -0.1,
+        0.02,
+        0.42
+      ]
+    },
+    {
+      "row": 4,
+      "column": 3,
+      "color": "blue",
+      "cube_center_world_m": [
+        -0.06,
+        0.02,
+        0.42
+      ]
+    },
+    {
+      "row": 4,
+      "column": 4,
+      "color": "yellow",
+      "cube_center_world_m": [
+        -0.02,
+        0.02,
+        0.42
+      ]
+    },
+    {
+      "row": 4,
+      "column": 5,
+      "color": "yellow",
+      "cube_center_world_m": [
+        0.02,
+        0.02,
+        0.42
+      ]
+    },
+    {
+      "row": 4,
+      "column": 6,
+      "color": "blue",
+      "cube_center_world_m": [
+        0.06,
+        0.02,
+        0.42
+      ]
+    },
+    {
+      "row": 4,
+      "column": 7,
+      "color": "white",
+      "cube_center_world_m": [
+        0.1,
+        0.02,
+        0.42
+      ]
+    },
+    {
+      "row": 4,
+      "column": 8,
+      "color": "yellow",
+      "cube_center_world_m": [
+        0.14,
+        0.02,
+        0.42
+      ]
+    },
+    {
+      "row": 5,
+      "column": 1,
+      "color": "yellow",
+      "cube_center_world_m": [
+        -0.14,
+        -0.02,
+        0.42
+      ]
+    },
+    {
+      "row": 5,
+      "column": 2,
+      "color": "yellow",
+      "cube_center_world_m": [
+        -0.1,
+        -0.02,
+        0.42
+      ]
+    },
+    {
+      "row": 5,
+      "column": 3,
+      "color": "white",
+      "cube_center_world_m": [
+        -0.06,
+        -0.02,
+        0.42
+      ]
+    },
+    {
+      "row": 5,
+      "column": 4,
+      "color": "red",
+      "cube_center_world_m": [
+        -0.02,
+        -0.02,
+        0.42
+      ]
+    },
+    {
+      "row": 5,
+      "column": 5,
+      "color": "red",
+      "cube_center_world_m": [
+        0.02,
+        -0.02,
+        0.42
+      ]
+    },
+    {
+      "row": 5,
+      "column": 6,
+      "color": "white",
+      "cube_center_world_m": [
+        0.06,
+        -0.02,
+        0.42
+      ]
+    },
+    {
+      "row": 5,
+      "column": 7,
+      "color": "yellow",
+      "cube_center_world_m": [
+        0.1,
+        -0.02,
+        0.42
+      ]
+    },
+    {
+      "row": 5,
+      "column": 8,
+      "color": "yellow",
+      "cube_center_world_m": [
+        0.14,
+        -0.02,
+        0.42
+      ]
+    },
+    {
+      "row": 6,
+      "column": 1,
+      "color": "yellow",
+      "cube_center_world_m": [
+        -0.14,
+        -0.06,
+        0.42
+      ]
+    },
+    {
+      "row": 6,
+      "column": 2,
+      "color": "white",
+      "cube_center_world_m": [
+        -0.1,
+        -0.06,
+        0.42
+      ]
+    },
+    {
+      "row": 6,
+      "column": 3,
+      "color": "red",
+      "cube_center_world_m": [
+        -0.06,
+        -0.06,
+        0.42
+      ]
+    },
+    {
+      "row": 6,
+      "column": 4,
+      "color": "yellow",
+      "cube_center_world_m": [
+        -0.02,
+        -0.06,
+        0.42
+      ]
+    },
+    {
+      "row": 6,
+      "column": 5,
+      "color": "yellow",
+      "cube_center_world_m": [
+        0.02,
+        -0.06,
+        0.42
+      ]
+    },
+    {
+      "row": 6,
+      "column": 6,
+      "color": "red",
+      "cube_center_world_m": [
+        0.06,
+        -0.06,
+        0.42
+      ]
+    },
+    {
+      "row": 6,
+      "column": 7,
+      "color": "white",
+      "cube_center_world_m": [
+        0.1,
+        -0.06,
+        0.42
+      ]
+    },
+    {
+      "row": 6,
+      "column": 8,
+      "color": "yellow",
+      "cube_center_world_m": [
+        0.14,
+        -0.06,
+        0.42
+      ]
+    },
+    {
+      "row": 7,
+      "column": 1,
+      "color": "blue",
+      "cube_center_world_m": [
+        -0.14,
+        -0.1,
+        0.42
+      ]
+    },
+    {
+      "row": 7,
+      "column": 2,
+      "color": "yellow",
+      "cube_center_world_m": [
+        -0.1,
+        -0.1,
+        0.42
+      ]
+    },
+    {
+      "row": 7,
+      "column": 3,
+      "color": "yellow",
+      "cube_center_world_m": [
+        -0.06,
+        -0.1,
+        0.42
+      ]
+    },
+    {
+      "row": 7,
+      "column": 4,
+      "color": "yellow",
+      "cube_center_world_m": [
+        -0.02,
+        -0.1,
+        0.42
+      ]
+    },
+    {
+      "row": 7,
+      "column": 5,
+      "color": "yellow",
+      "cube_center_world_m": [
+        0.02,
+        -0.1,
+        0.42
+      ]
+    },
+    {
+      "row": 7,
+      "column": 6,
+      "color": "yellow",
+      "cube_center_world_m": [
+        0.06,
+        -0.1,
+        0.42
+      ]
+    },
+    {
+      "row": 7,
+      "column": 7,
+      "color": "yellow",
+      "cube_center_world_m": [
+        0.1,
+        -0.1,
+        0.42
+      ]
+    },
+    {
+      "row": 7,
+      "column": 8,
+      "color": "blue",
+      "cube_center_world_m": [
+        0.14,
+        -0.1,
+        0.42
+      ]
+    },
+    {
+      "row": 8,
+      "column": 1,
+      "color": "blue",
+      "cube_center_world_m": [
+        -0.14,
+        -0.14,
+        0.42
+      ]
+    },
+    {
+      "row": 8,
+      "column": 2,
+      "color": "blue",
+      "cube_center_world_m": [
+        -0.1,
+        -0.14,
+        0.42
+      ]
+    },
+    {
+      "row": 8,
+      "column": 3,
+      "color": "blue",
+      "cube_center_world_m": [
+        -0.06,
+        -0.14,
+        0.42
+      ]
+    },
+    {
+      "row": 8,
+      "column": 4,
+      "color": "blue",
+      "cube_center_world_m": [
+        -0.02,
+        -0.14,
+        0.42
+      ]
+    },
+    {
+      "row": 8,
+      "column": 5,
+      "color": "blue",
+      "cube_center_world_m": [
+        0.02,
+        -0.14,
+        0.42
+      ]
+    },
+    {
+      "row": 8,
+      "column": 6,
+      "color": "blue",
+      "cube_center_world_m": [
+        0.06,
+        -0.14,
+        0.42
+      ]
+    },
+    {
+      "row": 8,
+      "column": 7,
+      "color": "blue",
+      "cube_center_world_m": [
+        0.1,
+        -0.14,
+        0.42
+      ]
+    },
+    {
+      "row": 8,
+      "column": 8,
+      "color": "blue",
+      "cube_center_world_m": [
+        0.14,
+        -0.14,
+        0.42
+      ]
+    }
+  ],
+  "evaluation_status": "runtime adapter includes private stable pose/color/release evaluation; dense manipulation feasibility remains unvalidated"
+}

@@ -1,0 +1,363 @@
+{
+  "schema": "robofrontier.suite.environment.v1",
+  "id": "dial-n08-d1",
+  "collection": "frontier_suite",
+  "arm_count": 8,
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 20,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "stations": [
+    {
+      "id": "A",
+      "base_position_m": [
+        -0.72,
+        1.1800000000000002,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.72,
+        0.94,
+        0.8
+      ]
+    },
+    {
+      "id": "B",
+      "base_position_m": [
+        0.0,
+        1.1800000000000002,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.0,
+        0.94,
+        0.8
+      ]
+    },
+    {
+      "id": "C",
+      "base_position_m": [
+        0.72,
+        1.1800000000000002,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.72,
+        0.94,
+        0.8
+      ]
+    },
+    {
+      "id": "D",
+      "base_position_m": [
+        -1.28,
+        0.0,
+        0.4
+      ],
+      "yaw_rad": 0.0,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.04,
+        0.0,
+        0.8
+      ]
+    },
+    {
+      "id": "E",
+      "base_position_m": [
+        1.28,
+        0.0,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.04,
+        0.0,
+        0.8
+      ]
+    },
+    {
+      "id": "F",
+      "base_position_m": [
+        -0.72,
+        -1.1800000000000002,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.72,
+        -0.94,
+        0.8
+      ]
+    },
+    {
+      "id": "G",
+      "base_position_m": [
+        0.0,
+        -1.1800000000000002,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.0,
+        -0.94,
+        0.8
+      ]
+    },
+    {
+      "id": "H",
+      "base_position_m": [
+        0.72,
+        -1.1800000000000002,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.72,
+        -0.94,
+        0.8
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "center_m": [
+        0.0,
+        0.0,
+        0.375
+      ],
+      "half_size_m": [
+        1.52,
+        1.4200000000000002,
+        0.025
+      ]
+    }
+  ],
+  "edges": [],
+  "objects": [],
+  "floor_rgba": [
+    0.84,
+    0.9,
+    0.95,
+    1
+  ],
+  "table_rgba": [
+    0.604,
+    0.459,
+    0.345,
+    1
+  ],
+  "initial_keyframe": "initial",
+  "scene": "scene.xml",
+  "suite_case": {
+    "id": "dial-n08-d1",
+    "family": "dial",
+    "level": 1,
+    "arms": 8,
+    "dials": 8,
+    "layout": "3_2_3_perimeter",
+    "scene_revision": 2
+  },
+  "dials": [
+    {
+      "id": "D01",
+      "index": 0,
+      "nominal_robots": [
+        "A"
+      ],
+      "initial_center_m": [
+        -0.72,
+        0.62,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D02",
+      "index": 1,
+      "nominal_robots": [
+        "B"
+      ],
+      "initial_center_m": [
+        0.0,
+        0.62,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D03",
+      "index": 2,
+      "nominal_robots": [
+        "C"
+      ],
+      "initial_center_m": [
+        0.72,
+        0.62,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D04",
+      "index": 3,
+      "nominal_robots": [
+        "D"
+      ],
+      "initial_center_m": [
+        -0.72,
+        0.0,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D05",
+      "index": 4,
+      "nominal_robots": [
+        "E"
+      ],
+      "initial_center_m": [
+        0.72,
+        0.0,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D06",
+      "index": 5,
+      "nominal_robots": [
+        "F"
+      ],
+      "initial_center_m": [
+        -0.72,
+        -0.62,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D07",
+      "index": 6,
+      "nominal_robots": [
+        "G"
+      ],
+      "initial_center_m": [
+        0.0,
+        -0.62,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    },
+    {
+      "id": "D08",
+      "index": 7,
+      "nominal_robots": [
+        "H"
+      ],
+      "initial_center_m": [
+        0.72,
+        -0.62,
+        0.405
+      ],
+      "layout_yaw_rad": 0.0
+    }
+  ],
+  "mechanism": {
+    "dial_count": 8,
+    "interface": "gear",
+    "free_modules": false,
+    "handle_material": null,
+    "handle_mass_kg": 0,
+    "spring_nm_rad": 0.03,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      -0.36,
+      -1.2200000000000002
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ]
+  },
+  "compiled_mass_kg": {
+    "D_link0": 0.629769,
+    "D_link1": 4.970684,
+    "D_link2": 0.646926,
+    "D_link3": 3.228604,
+    "D_link4": 3.587895,
+    "D_link5": 1.225946,
+    "D_link6": 1.666555,
+    "D_link7": 0.735522,
+    "D_hand": 0.73,
+    "D_left_finger": 0.015,
+    "D_right_finger": 0.015,
+    "D01_module": 0.3,
+    "D01_rotor": 0.11999999999999994,
+    "D02_module": 0.3,
+    "D02_rotor": 0.11999999999999994,
+    "D03_module": 0.3,
+    "D03_rotor": 0.11999999999999994,
+    "D04_module": 0.3,
+    "D04_rotor": 0.11999999999999994,
+    "D05_module": 0.3,
+    "D05_rotor": 0.11999999999999994,
+    "D06_module": 0.3,
+    "D06_rotor": 0.11999999999999994,
+    "D07_module": 0.3,
+    "D07_rotor": 0.11999999999999994,
+    "D08_module": 0.3,
+    "D08_rotor": 0.11999999999999994
+  }
+}

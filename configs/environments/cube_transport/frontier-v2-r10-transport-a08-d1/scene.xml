@@ -1,0 +1,1754 @@
+<mujoco model="RoboFrontier | transport-a08-d1">
+  <compiler angle="radian" meshdir="assets/robot" autolimits="true" />
+  <option integrator="implicitfast" timestep="0.002" gravity="0.0 0.0 -9.81" solver="Newton" iterations="100" noslip_iterations="10" />
+  <default>
+    <default class="panda">
+      <material specular="0.5" shininess="0.25" />
+      <joint armature="0.1" damping="1" axis="0 0 1" range="-2.8973 2.8973" />
+      <general dyntype="none" biastype="affine" ctrlrange="-2.8973 2.8973" forcerange="-87 87" />
+      <default class="finger">
+        <joint axis="0 1 0" type="slide" range="0 0.04" />
+      </default>
+      <default class="visual">
+        <geom type="mesh" contype="0" conaffinity="0" group="2" mass="0" />
+      </default>
+      <default class="collision">
+        <geom type="mesh" group="3" />
+        <default class="fingertip_pad_collision_1">
+          <geom type="box" size="0.0085 0.004 0.0085" pos="0 0.0055 0.0445" />
+        </default>
+        <default class="fingertip_pad_collision_2">
+          <geom type="box" size="0.003 0.002 0.003" pos="0.0055 0.002 0.05" />
+        </default>
+        <default class="fingertip_pad_collision_3">
+          <geom type="box" size="0.003 0.002 0.003" pos="-0.0055 0.002 0.05" />
+        </default>
+        <default class="fingertip_pad_collision_4">
+          <geom type="box" size="0.003 0.002 0.0035" pos="0.0055 0.002 0.0395" />
+        </default>
+        <default class="fingertip_pad_collision_5">
+          <geom type="box" size="0.003 0.002 0.0035" pos="-0.0055 0.002 0.0395" />
+        </default>
+      </default>
+    </default>
+  </default>
+  <asset>
+    <material class="panda" name="white" rgba="1 1 1 1" />
+    <material class="panda" name="off_white" rgba="0.901961 0.921569 0.929412 1" />
+    <material class="panda" name="black" rgba="0.25 0.25 0.25 1" />
+    <material class="panda" name="green" rgba="0 1 0 1" />
+    <material class="panda" name="light_blue" rgba="0.039216 0.541176 0.780392 1" />
+    <mesh name="link0_c" file="dfc6d94330-link0.stl" />
+    <mesh name="link1_c" file="e41a39a941-link1.stl" />
+    <mesh name="link2_c" file="370f7605a0-link2.stl" />
+    <mesh name="link3_c" file="0a8d638b93-link3.stl" />
+    <mesh name="link4_c" file="0180ebb577-link4.stl" />
+    <mesh name="link5_c0" file="3e5aa75fb1-link5_collision_0.obj" />
+    <mesh name="link5_c1" file="87cd8f6210-link5_collision_1.obj" />
+    <mesh name="link5_c2" file="823ab6c8f7-link5_collision_2.obj" />
+    <mesh name="link6_c" file="20b768e99a-link6.stl" />
+    <mesh name="link7_c" file="92ac6afcf7-link7.stl" />
+    <mesh name="hand_c" file="94493e94f3-hand.stl" />
+    <mesh file="6b9f41a4c2-link0_0.obj" name="link0_0" />
+    <mesh file="57673d2ee2-link0_1.obj" name="link0_1" />
+    <mesh file="1ca435a2a8-link0_2.obj" name="link0_2" />
+    <mesh file="3e9c6334d2-link0_3.obj" name="link0_3" />
+    <mesh file="215d257897-link0_4.obj" name="link0_4" />
+    <mesh file="9361b104e9-link0_5.obj" name="link0_5" />
+    <mesh file="2dc0b8ebbb-link0_7.obj" name="link0_7" />
+    <mesh file="3b8c436999-link0_8.obj" name="link0_8" />
+    <mesh file="45178f97d2-link0_9.obj" name="link0_9" />
+    <mesh file="c9198b9d85-link0_10.obj" name="link0_10" />
+    <mesh file="f0adec78d6-link0_11.obj" name="link0_11" />
+    <mesh file="51091e776b-link1.obj" name="link1" />
+    <mesh file="5c9f8e715d-link2.obj" name="link2" />
+    <mesh file="ce2da87f51-link3_0.obj" name="link3_0" />
+    <mesh file="2880b7753a-link3_1.obj" name="link3_1" />
+    <mesh file="670cff81ae-link3_2.obj" name="link3_2" />
+    <mesh file="30ede0c812-link3_3.obj" name="link3_3" />
+    <mesh file="443bf6d178-link4_0.obj" name="link4_0" />
+    <mesh file="ca935ec7cc-link4_1.obj" name="link4_1" />
+    <mesh file="c89caf26d3-link4_2.obj" name="link4_2" />
+    <mesh file="1495d17f45-link4_3.obj" name="link4_3" />
+    <mesh file="a3238b8f2a-link5_0.obj" name="link5_0" />
+    <mesh file="9d994bbf83-link5_1.obj" name="link5_1" />
+    <mesh file="83b4ffe9f7-link5_2.obj" name="link5_2" />
+    <mesh file="0504c70ebf-link6_0.obj" name="link6_0" />
+    <mesh file="45f7ca7769-link6_1.obj" name="link6_1" />
+    <mesh file="e54eee4d82-link6_2.obj" name="link6_2" />
+    <mesh file="d4f6a25ef3-link6_3.obj" name="link6_3" />
+    <mesh file="be353480fe-link6_4.obj" name="link6_4" />
+    <mesh file="7c87664623-link6_5.obj" name="link6_5" />
+    <mesh file="8fbc031e0d-link6_6.obj" name="link6_6" />
+    <mesh file="7dc5ebb799-link6_7.obj" name="link6_7" />
+    <mesh file="e3f7738181-link6_8.obj" name="link6_8" />
+    <mesh file="25a56ea9b0-link6_9.obj" name="link6_9" />
+    <mesh file="365f26c21d-link6_10.obj" name="link6_10" />
+    <mesh file="8ae61e08b3-link6_11.obj" name="link6_11" />
+    <mesh file="f28d1bfd62-link6_12.obj" name="link6_12" />
+    <mesh file="0a55fa92dc-link6_13.obj" name="link6_13" />
+    <mesh file="750ae3ee47-link6_14.obj" name="link6_14" />
+    <mesh file="5999c1c249-link6_15.obj" name="link6_15" />
+    <mesh file="551d7a8b37-link6_16.obj" name="link6_16" />
+    <mesh file="04586b0bde-link7_0.obj" name="link7_0" />
+    <mesh file="c3f72289f3-link7_1.obj" name="link7_1" />
+    <mesh file="d2faecedb3-link7_2.obj" name="link7_2" />
+    <mesh file="b62d87c4d4-link7_3.obj" name="link7_3" />
+    <mesh file="cb78ccb61f-link7_4.obj" name="link7_4" />
+    <mesh file="099071d309-link7_5.obj" name="link7_5" />
+    <mesh file="99469e2d95-link7_6.obj" name="link7_6" />
+    <mesh file="426c3db8a1-link7_7.obj" name="link7_7" />
+    <mesh file="b94aab9010-hand_0.obj" name="hand_0" />
+    <mesh file="cd76f7494b-hand_1.obj" name="hand_1" />
+    <mesh file="e0f44a7171-hand_2.obj" name="hand_2" />
+    <mesh file="a431a06d99-hand_3.obj" name="hand_3" />
+    <mesh file="21f96ef6a8-hand_4.obj" name="hand_4" />
+    <mesh file="215098c0fc-finger_0.obj" name="finger_0" />
+    <mesh file="cf239e9aca-finger_1.obj" name="finger_1" />
+    <texture name="sky" type="skybox" builtin="gradient" rgb1=".75 .86 .98" rgb2=".90 .96 1" width="256" height="256" />
+    <material name="floor_light" rgba="0.84 0.9 0.95 1.0" emission=".25" specular="0" />
+    <material name="table_oak" rgba="0.604 0.459 0.345 1.0" emission=".12" specular=".05" shininess=".05" reflectance="0" />
+    <texture name="label_A" type="2d" file="assets/label_A.png" />
+    <material name="label_A" texture="label_A" />
+    <texture name="label_B" type="2d" file="assets/label_B.png" />
+    <material name="label_B" texture="label_B" />
+    <texture name="label_C" type="2d" file="assets/label_C.png" />
+    <material name="label_C" texture="label_C" />
+    <texture name="label_D" type="2d" file="assets/label_D.png" />
+    <material name="label_D" texture="label_D" />
+    <texture name="label_E" type="2d" file="assets/label_E.png" />
+    <material name="label_E" texture="label_E" />
+    <texture name="label_F" type="2d" file="assets/label_F.png" />
+    <material name="label_F" texture="label_F" />
+    <texture name="label_G" type="2d" file="assets/label_G.png" />
+    <material name="label_G" texture="label_G" />
+    <texture name="label_H" type="2d" file="assets/label_H.png" />
+    <material name="label_H" texture="label_H" />
+    <texture name="A_slot1_number" type="2d" file="assets/A_slot1_number.png" />
+    <material name="A_slot1_number" texture="A_slot1_number" specular="0" />
+    <texture name="A_slot2_number" type="2d" file="assets/A_slot2_number.png" />
+    <material name="A_slot2_number" texture="A_slot2_number" specular="0" />
+    <texture name="A_slot3_number" type="2d" file="assets/A_slot3_number.png" />
+    <material name="A_slot3_number" texture="A_slot3_number" specular="0" />
+    <texture name="A_item1_identity" type="2d" file="assets/A_item1_identity.png" />
+    <material name="A_item1_identity" texture="A_item1_identity" specular="0" />
+    <texture name="A_item2_identity" type="2d" file="assets/A_item2_identity.png" />
+    <material name="A_item2_identity" texture="A_item2_identity" specular="0" />
+    <texture name="A_item3_identity" type="2d" file="assets/A_item3_identity.png" />
+    <material name="A_item3_identity" texture="A_item3_identity" specular="0" />
+    <texture name="B_slot1_number" type="2d" file="assets/B_slot1_number.png" />
+    <material name="B_slot1_number" texture="B_slot1_number" specular="0" />
+    <texture name="B_slot2_number" type="2d" file="assets/B_slot2_number.png" />
+    <material name="B_slot2_number" texture="B_slot2_number" specular="0" />
+    <texture name="B_slot3_number" type="2d" file="assets/B_slot3_number.png" />
+    <material name="B_slot3_number" texture="B_slot3_number" specular="0" />
+    <texture name="B_item1_identity" type="2d" file="assets/B_item1_identity.png" />
+    <material name="B_item1_identity" texture="B_item1_identity" specular="0" />
+    <texture name="B_item2_identity" type="2d" file="assets/B_item2_identity.png" />
+    <material name="B_item2_identity" texture="B_item2_identity" specular="0" />
+    <texture name="B_item3_identity" type="2d" file="assets/B_item3_identity.png" />
+    <material name="B_item3_identity" texture="B_item3_identity" specular="0" />
+    <texture name="C_slot1_number" type="2d" file="assets/C_slot1_number.png" />
+    <material name="C_slot1_number" texture="C_slot1_number" specular="0" />
+    <texture name="C_slot2_number" type="2d" file="assets/C_slot2_number.png" />
+    <material name="C_slot2_number" texture="C_slot2_number" specular="0" />
+    <texture name="C_slot3_number" type="2d" file="assets/C_slot3_number.png" />
+    <material name="C_slot3_number" texture="C_slot3_number" specular="0" />
+    <texture name="C_item1_identity" type="2d" file="assets/C_item1_identity.png" />
+    <material name="C_item1_identity" texture="C_item1_identity" specular="0" />
+    <texture name="C_item2_identity" type="2d" file="assets/C_item2_identity.png" />
+    <material name="C_item2_identity" texture="C_item2_identity" specular="0" />
+    <texture name="C_item3_identity" type="2d" file="assets/C_item3_identity.png" />
+    <material name="C_item3_identity" texture="C_item3_identity" specular="0" />
+    <texture name="D_slot1_number" type="2d" file="assets/D_slot1_number.png" />
+    <material name="D_slot1_number" texture="D_slot1_number" specular="0" />
+    <texture name="D_slot2_number" type="2d" file="assets/D_slot2_number.png" />
+    <material name="D_slot2_number" texture="D_slot2_number" specular="0" />
+    <texture name="D_slot3_number" type="2d" file="assets/D_slot3_number.png" />
+    <material name="D_slot3_number" texture="D_slot3_number" specular="0" />
+    <texture name="D_item1_identity" type="2d" file="assets/D_item1_identity.png" />
+    <material name="D_item1_identity" texture="D_item1_identity" specular="0" />
+    <texture name="D_item2_identity" type="2d" file="assets/D_item2_identity.png" />
+    <material name="D_item2_identity" texture="D_item2_identity" specular="0" />
+    <texture name="D_item3_identity" type="2d" file="assets/D_item3_identity.png" />
+    <material name="D_item3_identity" texture="D_item3_identity" specular="0" />
+    <texture name="E_slot1_number" type="2d" file="assets/E_slot1_number.png" />
+    <material name="E_slot1_number" texture="E_slot1_number" specular="0" />
+    <texture name="E_slot2_number" type="2d" file="assets/E_slot2_number.png" />
+    <material name="E_slot2_number" texture="E_slot2_number" specular="0" />
+    <texture name="E_slot3_number" type="2d" file="assets/E_slot3_number.png" />
+    <material name="E_slot3_number" texture="E_slot3_number" specular="0" />
+    <texture name="E_item1_identity" type="2d" file="assets/E_item1_identity.png" />
+    <material name="E_item1_identity" texture="E_item1_identity" specular="0" />
+    <texture name="E_item2_identity" type="2d" file="assets/E_item2_identity.png" />
+    <material name="E_item2_identity" texture="E_item2_identity" specular="0" />
+    <texture name="E_item3_identity" type="2d" file="assets/E_item3_identity.png" />
+    <material name="E_item3_identity" texture="E_item3_identity" specular="0" />
+    <texture name="F_slot1_number" type="2d" file="assets/F_slot1_number.png" />
+    <material name="F_slot1_number" texture="F_slot1_number" specular="0" />
+    <texture name="F_slot2_number" type="2d" file="assets/F_slot2_number.png" />
+    <material name="F_slot2_number" texture="F_slot2_number" specular="0" />
+    <texture name="F_slot3_number" type="2d" file="assets/F_slot3_number.png" />
+    <material name="F_slot3_number" texture="F_slot3_number" specular="0" />
+    <texture name="F_item1_identity" type="2d" file="assets/F_item1_identity.png" />
+    <material name="F_item1_identity" texture="F_item1_identity" specular="0" />
+    <texture name="F_item2_identity" type="2d" file="assets/F_item2_identity.png" />
+    <material name="F_item2_identity" texture="F_item2_identity" specular="0" />
+    <texture name="F_item3_identity" type="2d" file="assets/F_item3_identity.png" />
+    <material name="F_item3_identity" texture="F_item3_identity" specular="0" />
+    <texture name="G_slot1_number" type="2d" file="assets/G_slot1_number.png" />
+    <material name="G_slot1_number" texture="G_slot1_number" specular="0" />
+    <texture name="G_slot2_number" type="2d" file="assets/G_slot2_number.png" />
+    <material name="G_slot2_number" texture="G_slot2_number" specular="0" />
+    <texture name="G_slot3_number" type="2d" file="assets/G_slot3_number.png" />
+    <material name="G_slot3_number" texture="G_slot3_number" specular="0" />
+    <texture name="G_item1_identity" type="2d" file="assets/G_item1_identity.png" />
+    <material name="G_item1_identity" texture="G_item1_identity" specular="0" />
+    <texture name="G_item2_identity" type="2d" file="assets/G_item2_identity.png" />
+    <material name="G_item2_identity" texture="G_item2_identity" specular="0" />
+    <texture name="G_item3_identity" type="2d" file="assets/G_item3_identity.png" />
+    <material name="G_item3_identity" texture="G_item3_identity" specular="0" />
+    <texture name="H_slot1_number" type="2d" file="assets/H_slot1_number.png" />
+    <material name="H_slot1_number" texture="H_slot1_number" specular="0" />
+    <texture name="H_slot2_number" type="2d" file="assets/H_slot2_number.png" />
+    <material name="H_slot2_number" texture="H_slot2_number" specular="0" />
+    <texture name="H_slot3_number" type="2d" file="assets/H_slot3_number.png" />
+    <material name="H_slot3_number" texture="H_slot3_number" specular="0" />
+    <texture name="H_item1_identity" type="2d" file="assets/H_item1_identity.png" />
+    <material name="H_item1_identity" texture="H_item1_identity" specular="0" />
+    <texture name="H_item2_identity" type="2d" file="assets/H_item2_identity.png" />
+    <material name="H_item2_identity" texture="H_item2_identity" specular="0" />
+    <texture name="H_item3_identity" type="2d" file="assets/H_item3_identity.png" />
+    <material name="H_item3_identity" texture="H_item3_identity" specular="0" />
+  </asset>
+  <worldbody>
+    <light pos="0.0 0.0 5.4" dir="0 0 -1" diffuse=".5 .5 .5" castshadow="true" />
+    <geom name="floor" type="plane" size="20 20 .1" material="floor_light" />
+    <geom name="table_0" type="box" pos="0.0 -0.9179999999999999 0.775" size="1.3599999999999999 0.44199999999999995 0.025" material="table_oak" friction="1.0 0.005 0.0001" condim="4" />
+    <geom name="table_1" type="box" pos="0.0 0.9179999999999999 0.775" size="1.3599999999999999 0.44199999999999995 0.025" material="table_oak" friction="1.0 0.005 0.0001" condim="4" />
+    <geom name="table_2" type="box" pos="-0.9179999999999999 0.0 0.775" size="0.44199999999999995 0.4759999999999999 0.025" material="table_oak" friction="1.0 0.005 0.0001" condim="4" />
+    <geom name="table_3" type="box" pos="0.9179999999999999 0.0 0.775" size="0.44199999999999995 0.4759999999999999 0.025" material="table_oak" friction="1.0 0.005 0.0001" condim="4" />
+    <body name="A_link0" childclass="panda" pos="-0.357 -1.1729999999999998 0.8" quat="0.7071067811865476 0.0 0.0 0.7071067811865475">
+      <inertial mass="0.629769" pos="-0.041018 -0.00014 0.049974" fullinertia="0.00315 0.00388 0.004285 8.2904e-7 0.00015 8.2299e-6" />
+      <geom mesh="link0_0" material="off_white" class="visual" />
+      <geom mesh="link0_1" material="black" class="visual" />
+      <geom mesh="link0_2" material="off_white" class="visual" />
+      <geom mesh="link0_3" material="black" class="visual" />
+      <geom mesh="link0_4" material="off_white" class="visual" />
+      <geom mesh="link0_5" material="black" class="visual" />
+      <geom mesh="link0_7" material="white" class="visual" />
+      <geom mesh="link0_8" material="white" class="visual" />
+      <geom mesh="link0_9" material="black" class="visual" />
+      <geom mesh="link0_10" material="off_white" class="visual" />
+      <geom mesh="link0_11" material="white" class="visual" />
+      <geom mesh="link0_c" class="collision" />
+      <body name="A_link1" pos="0 0 0.333">
+        <inertial mass="4.970684" pos="0.003875 0.002081 -0.04762" fullinertia="0.70337 0.70661 0.0091170 -0.00013900 0.0067720 0.019169" />
+        <joint name="A_joint1" />
+        <geom material="white" mesh="link1" class="visual" />
+        <geom mesh="link1_c" class="collision" />
+        <body name="A_link2" quat="1 -1 0 0">
+          <inertial mass="0.646926" pos="-0.003141 -0.02872 0.003495" fullinertia="0.0079620 2.8110e-2 2.5995e-2 -3.925e-3 1.0254e-2 7.04e-4" />
+          <joint name="A_joint2" range="-1.7628 1.7628" />
+          <geom material="white" mesh="link2" class="visual" />
+          <geom mesh="link2_c" class="collision" />
+          <body name="A_link3" pos="0 -0.316 0" quat="1 1 0 0">
+            <joint name="A_joint3" />
+            <inertial mass="3.228604" pos="2.7518e-2 3.9252e-2 -6.6502e-2" fullinertia="3.7242e-2 3.6155e-2 1.083e-2 -4.761e-3 -1.1396e-2 -1.2805e-2" />
+            <geom mesh="link3_0" material="white" class="visual" />
+            <geom mesh="link3_1" material="white" class="visual" />
+            <geom mesh="link3_2" material="white" class="visual" />
+            <geom mesh="link3_3" material="black" class="visual" />
+            <geom mesh="link3_c" class="collision" />
+            <body name="A_link4" pos="0.0825 0 0" quat="1 1 0 0">
+              <inertial mass="3.587895" pos="-5.317e-2 1.04419e-1 2.7454e-2" fullinertia="2.5853e-2 1.9552e-2 2.8323e-2 7.796e-3 -1.332e-3 8.641e-3" />
+              <joint name="A_joint4" range="-3.0718 -0.0698" />
+              <geom mesh="link4_0" material="white" class="visual" />
+              <geom mesh="link4_1" material="white" class="visual" />
+              <geom mesh="link4_2" material="black" class="visual" />
+              <geom mesh="link4_3" material="white" class="visual" />
+              <geom mesh="link4_c" class="collision" />
+              <body name="A_link5" pos="-0.0825 0.384 0" quat="1 -1 0 0">
+                <inertial mass="1.225946" pos="-1.1953e-2 4.1065e-2 -3.8437e-2" fullinertia="3.5549e-2 2.9474e-2 8.627e-3 -2.117e-3 -4.037e-3 2.29e-4" />
+                <joint name="A_joint5" />
+                <geom mesh="link5_0" material="black" class="visual" />
+                <geom mesh="link5_1" material="white" class="visual" />
+                <geom mesh="link5_2" material="white" class="visual" />
+                <geom mesh="link5_c0" class="collision" />
+                <geom mesh="link5_c1" class="collision" />
+                <geom mesh="link5_c2" class="collision" />
+                <body name="A_link6" quat="1 1 0 0">
+                  <inertial mass="1.666555" pos="6.0149e-2 -1.4117e-2 -1.0517e-2" fullinertia="1.964e-3 4.354e-3 5.433e-3 1.09e-4 -1.158e-3 3.41e-4" />
+                  <joint name="A_joint6" range="-0.0175 3.7525" />
+                  <geom mesh="link6_0" material="off_white" class="visual" />
+                  <geom mesh="link6_1" material="white" class="visual" />
+                  <geom mesh="link6_2" material="black" class="visual" />
+                  <geom mesh="link6_3" material="white" class="visual" />
+                  <geom mesh="link6_4" material="white" class="visual" />
+                  <geom mesh="link6_5" material="white" class="visual" />
+                  <geom mesh="link6_6" material="white" class="visual" />
+                  <geom mesh="link6_7" material="light_blue" class="visual" />
+                  <geom mesh="link6_8" material="light_blue" class="visual" />
+                  <geom mesh="link6_9" material="black" class="visual" />
+                  <geom mesh="link6_10" material="black" class="visual" />
+                  <geom mesh="link6_11" material="white" class="visual" />
+                  <geom mesh="link6_12" material="green" class="visual" />
+                  <geom mesh="link6_13" material="white" class="visual" />
+                  <geom mesh="link6_14" material="black" class="visual" />
+                  <geom mesh="link6_15" material="black" class="visual" />
+                  <geom mesh="link6_16" material="white" class="visual" />
+                  <geom mesh="link6_c" class="collision" />
+                  <body name="A_link7" pos="0.088 0 0" quat="1 1 0 0">
+                    <inertial mass="7.35522e-01" pos="1.0517e-2 -4.252e-3 6.1597e-2" fullinertia="1.2516e-2 1.0027e-2 4.815e-3 -4.28e-4 -1.196e-3 -7.41e-4" />
+                    <joint name="A_joint7" />
+                    <geom mesh="link7_0" material="white" class="visual" />
+                    <geom mesh="link7_1" material="black" class="visual" />
+                    <geom mesh="link7_2" material="black" class="visual" />
+                    <geom mesh="link7_3" material="black" class="visual" />
+                    <geom mesh="link7_4" material="black" class="visual" />
+                    <geom mesh="link7_5" material="black" class="visual" />
+                    <geom mesh="link7_6" material="black" class="visual" />
+                    <geom mesh="link7_7" material="white" class="visual" />
+                    <geom mesh="link7_c" class="collision" />
+                    <body name="A_hand" pos="0 0 0.107" quat="0.9238795 0 0 -0.3826834">
+                      <inertial mass="0.73" pos="-0.01 0 0.03" diaginertia="0.001 0.0025 0.0017" />
+                      <geom mesh="hand_0" material="off_white" class="visual" />
+                      <geom mesh="hand_1" material="black" class="visual" />
+                      <geom mesh="hand_2" material="black" class="visual" />
+                      <geom mesh="hand_3" material="white" class="visual" />
+                      <geom mesh="hand_4" material="off_white" class="visual" />
+                      <geom mesh="hand_c" class="collision" />
+                      <body name="A_left_finger" pos="0 0 0.0584">
+                        <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7" />
+                        <joint name="A_finger_joint1" class="finger" solreflimit="0.004 1" solimplimit="0.99 0.999 0.0001 0.5 2" />
+                        <geom mesh="finger_0" material="off_white" class="visual" />
+                        <geom mesh="finger_1" material="black" class="visual" />
+                        <geom mesh="finger_0" class="collision" />
+                        <geom class="fingertip_pad_collision_1" />
+                        <geom class="fingertip_pad_collision_2" />
+                        <geom class="fingertip_pad_collision_3" />
+                        <geom class="fingertip_pad_collision_4" />
+                        <geom class="fingertip_pad_collision_5" />
+                      </body>
+                      <body name="A_right_finger" pos="0 0 0.0584" quat="0 0 0 1">
+                        <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7" />
+                        <joint name="A_finger_joint2" class="finger" solreflimit="0.004 1" solimplimit="0.99 0.999 0.0001 0.5 2" />
+                        <geom mesh="finger_0" material="off_white" class="visual" />
+                        <geom mesh="finger_1" material="black" class="visual" />
+                        <geom mesh="finger_0" class="collision" />
+                        <geom class="fingertip_pad_collision_1" />
+                        <geom class="fingertip_pad_collision_2" />
+                        <geom class="fingertip_pad_collision_3" />
+                        <geom class="fingertip_pad_collision_4" />
+                        <geom class="fingertip_pad_collision_5" />
+                      </body>
+                      <site name="A_tcp" pos="0 0 .1029" size=".004" rgba="1 .65 .05 1" />
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+    <geom name="A_label" type="box" size=".065 .065 .0003" pos="-0.357 -1.313 0.8006" quat="0.7071067811865476 0.0 0.0 0.7071067811865475" material="label_A" contype="0" conaffinity="0" mass="0" />
+    <camera name="A_front" pos="-0.357 -0.073 1.65" xyaxes="-1.0 0.0 0.0 0.0 -0.729537204140085 0.6839411288813297" fovy="50" />
+    <camera name="A_side" pos="0.493 -0.523 1.5499999999999998" xyaxes="-0.3328201177351374 0.9429903335828895 0.0 -0.5783841924095382 -0.20413559732101344 0.7898103467777308" fovy="50" />
+    <body name="B_link0" childclass="panda" pos="0.357 -1.1729999999999998 0.8" quat="0.7071067811865476 0.0 0.0 0.7071067811865475">
+      <inertial mass="0.629769" pos="-0.041018 -0.00014 0.049974" fullinertia="0.00315 0.00388 0.004285 8.2904e-7 0.00015 8.2299e-6" />
+      <geom mesh="link0_0" material="off_white" class="visual" />
+      <geom mesh="link0_1" material="black" class="visual" />
+      <geom mesh="link0_2" material="off_white" class="visual" />
+      <geom mesh="link0_3" material="black" class="visual" />
+      <geom mesh="link0_4" material="off_white" class="visual" />
+      <geom mesh="link0_5" material="black" class="visual" />
+      <geom mesh="link0_7" material="white" class="visual" />
+      <geom mesh="link0_8" material="white" class="visual" />
+      <geom mesh="link0_9" material="black" class="visual" />
+      <geom mesh="link0_10" material="off_white" class="visual" />
+      <geom mesh="link0_11" material="white" class="visual" />
+      <geom mesh="link0_c" class="collision" />
+      <body name="B_link1" pos="0 0 0.333">
+        <inertial mass="4.970684" pos="0.003875 0.002081 -0.04762" fullinertia="0.70337 0.70661 0.0091170 -0.00013900 0.0067720 0.019169" />
+        <joint name="B_joint1" />
+        <geom material="white" mesh="link1" class="visual" />
+        <geom mesh="link1_c" class="collision" />
+        <body name="B_link2" quat="1 -1 0 0">
+          <inertial mass="0.646926" pos="-0.003141 -0.02872 0.003495" fullinertia="0.0079620 2.8110e-2 2.5995e-2 -3.925e-3 1.0254e-2 7.04e-4" />
+          <joint name="B_joint2" range="-1.7628 1.7628" />
+          <geom material="white" mesh="link2" class="visual" />
+          <geom mesh="link2_c" class="collision" />
+          <body name="B_link3" pos="0 -0.316 0" quat="1 1 0 0">
+            <joint name="B_joint3" />
+            <inertial mass="3.228604" pos="2.7518e-2 3.9252e-2 -6.6502e-2" fullinertia="3.7242e-2 3.6155e-2 1.083e-2 -4.761e-3 -1.1396e-2 -1.2805e-2" />
+            <geom mesh="link3_0" material="white" class="visual" />
+            <geom mesh="link3_1" material="white" class="visual" />
+            <geom mesh="link3_2" material="white" class="visual" />
+            <geom mesh="link3_3" material="black" class="visual" />
+            <geom mesh="link3_c" class="collision" />
+            <body name="B_link4" pos="0.0825 0 0" quat="1 1 0 0">
+              <inertial mass="3.587895" pos="-5.317e-2 1.04419e-1 2.7454e-2" fullinertia="2.5853e-2 1.9552e-2 2.8323e-2 7.796e-3 -1.332e-3 8.641e-3" />
+              <joint name="B_joint4" range="-3.0718 -0.0698" />
+              <geom mesh="link4_0" material="white" class="visual" />
+              <geom mesh="link4_1" material="white" class="visual" />
+              <geom mesh="link4_2" material="black" class="visual" />
+              <geom mesh="link4_3" material="white" class="visual" />
+              <geom mesh="link4_c" class="collision" />
+              <body name="B_link5" pos="-0.0825 0.384 0" quat="1 -1 0 0">
+                <inertial mass="1.225946" pos="-1.1953e-2 4.1065e-2 -3.8437e-2" fullinertia="3.5549e-2 2.9474e-2 8.627e-3 -2.117e-3 -4.037e-3 2.29e-4" />
+                <joint name="B_joint5" />
+                <geom mesh="link5_0" material="black" class="visual" />
+                <geom mesh="link5_1" material="white" class="visual" />
+                <geom mesh="link5_2" material="white" class="visual" />
+                <geom mesh="link5_c0" class="collision" />
+                <geom mesh="link5_c1" class="collision" />
+                <geom mesh="link5_c2" class="collision" />
+                <body name="B_link6" quat="1 1 0 0">
+                  <inertial mass="1.666555" pos="6.0149e-2 -1.4117e-2 -1.0517e-2" fullinertia="1.964e-3 4.354e-3 5.433e-3 1.09e-4 -1.158e-3 3.41e-4" />
+                  <joint name="B_joint6" range="-0.0175 3.7525" />
+                  <geom mesh="link6_0" material="off_white" class="visual" />
+                  <geom mesh="link6_1" material="white" class="visual" />
+                  <geom mesh="link6_2" material="black" class="visual" />
+                  <geom mesh="link6_3" material="white" class="visual" />
+                  <geom mesh="link6_4" material="white" class="visual" />
+                  <geom mesh="link6_5" material="white" class="visual" />
+                  <geom mesh="link6_6" material="white" class="visual" />
+                  <geom mesh="link6_7" material="light_blue" class="visual" />
+                  <geom mesh="link6_8" material="light_blue" class="visual" />
+                  <geom mesh="link6_9" material="black" class="visual" />
+                  <geom mesh="link6_10" material="black" class="visual" />
+                  <geom mesh="link6_11" material="white" class="visual" />
+                  <geom mesh="link6_12" material="green" class="visual" />
+                  <geom mesh="link6_13" material="white" class="visual" />
+                  <geom mesh="link6_14" material="black" class="visual" />
+                  <geom mesh="link6_15" material="black" class="visual" />
+                  <geom mesh="link6_16" material="white" class="visual" />
+                  <geom mesh="link6_c" class="collision" />
+                  <body name="B_link7" pos="0.088 0 0" quat="1 1 0 0">
+                    <inertial mass="7.35522e-01" pos="1.0517e-2 -4.252e-3 6.1597e-2" fullinertia="1.2516e-2 1.0027e-2 4.815e-3 -4.28e-4 -1.196e-3 -7.41e-4" />
+                    <joint name="B_joint7" />
+                    <geom mesh="link7_0" material="white" class="visual" />
+                    <geom mesh="link7_1" material="black" class="visual" />
+                    <geom mesh="link7_2" material="black" class="visual" />
+                    <geom mesh="link7_3" material="black" class="visual" />
+                    <geom mesh="link7_4" material="black" class="visual" />
+                    <geom mesh="link7_5" material="black" class="visual" />
+                    <geom mesh="link7_6" material="black" class="visual" />
+                    <geom mesh="link7_7" material="white" class="visual" />
+                    <geom mesh="link7_c" class="collision" />
+                    <body name="B_hand" pos="0 0 0.107" quat="0.9238795 0 0 -0.3826834">
+                      <inertial mass="0.73" pos="-0.01 0 0.03" diaginertia="0.001 0.0025 0.0017" />
+                      <geom mesh="hand_0" material="off_white" class="visual" />
+                      <geom mesh="hand_1" material="black" class="visual" />
+                      <geom mesh="hand_2" material="black" class="visual" />
+                      <geom mesh="hand_3" material="white" class="visual" />
+                      <geom mesh="hand_4" material="off_white" class="visual" />
+                      <geom mesh="hand_c" class="collision" />
+                      <body name="B_left_finger" pos="0 0 0.0584">
+                        <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7" />
+                        <joint name="B_finger_joint1" class="finger" solreflimit="0.004 1" solimplimit="0.99 0.999 0.0001 0.5 2" />
+                        <geom mesh="finger_0" material="off_white" class="visual" />
+                        <geom mesh="finger_1" material="black" class="visual" />
+                        <geom mesh="finger_0" class="collision" />
+                        <geom class="fingertip_pad_collision_1" />
+                        <geom class="fingertip_pad_collision_2" />
+                        <geom class="fingertip_pad_collision_3" />
+                        <geom class="fingertip_pad_collision_4" />
+                        <geom class="fingertip_pad_collision_5" />
+                      </body>
+                      <body name="B_right_finger" pos="0 0 0.0584" quat="0 0 0 1">
+                        <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7" />
+                        <joint name="B_finger_joint2" class="finger" solreflimit="0.004 1" solimplimit="0.99 0.999 0.0001 0.5 2" />
+                        <geom mesh="finger_0" material="off_white" class="visual" />
+                        <geom mesh="finger_1" material="black" class="visual" />
+                        <geom mesh="finger_0" class="collision" />
+                        <geom class="fingertip_pad_collision_1" />
+                        <geom class="fingertip_pad_collision_2" />
+                        <geom class="fingertip_pad_collision_3" />
+                        <geom class="fingertip_pad_collision_4" />
+                        <geom class="fingertip_pad_collision_5" />
+                      </body>
+                      <site name="B_tcp" pos="0 0 .1029" size=".004" rgba="1 .65 .05 1" />
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+    <geom name="B_label" type="box" size=".065 .065 .0003" pos="0.357 -1.313 0.8006" quat="0.7071067811865476 0.0 0.0 0.7071067811865475" material="label_B" contype="0" conaffinity="0" mass="0" />
+    <camera name="B_front" pos="0.357 -0.073 1.65" xyaxes="-1.0 0.0 0.0 0.0 -0.729537204140085 0.6839411288813297" fovy="50" />
+    <camera name="B_side" pos="1.207 -0.523 1.5499999999999998" xyaxes="-0.33282011773513737 0.9429903335828895 0.0 -0.5783841924095382 -0.2041355973210134 0.7898103467777309" fovy="50" />
+    <body name="C_link0" childclass="panda" pos="1.1729999999999998 -0.357 0.8" quat="6.123233995736766e-17 0.0 0.0 1.0">
+      <inertial mass="0.629769" pos="-0.041018 -0.00014 0.049974" fullinertia="0.00315 0.00388 0.004285 8.2904e-7 0.00015 8.2299e-6" />
+      <geom mesh="link0_0" material="off_white" class="visual" />
+      <geom mesh="link0_1" material="black" class="visual" />
+      <geom mesh="link0_2" material="off_white" class="visual" />
+      <geom mesh="link0_3" material="black" class="visual" />
+      <geom mesh="link0_4" material="off_white" class="visual" />
+      <geom mesh="link0_5" material="black" class="visual" />
+      <geom mesh="link0_7" material="white" class="visual" />
+      <geom mesh="link0_8" material="white" class="visual" />
+      <geom mesh="link0_9" material="black" class="visual" />
+      <geom mesh="link0_10" material="off_white" class="visual" />
+      <geom mesh="link0_11" material="white" class="visual" />
+      <geom mesh="link0_c" class="collision" />
+      <body name="C_link1" pos="0 0 0.333">
+        <inertial mass="4.970684" pos="0.003875 0.002081 -0.04762" fullinertia="0.70337 0.70661 0.0091170 -0.00013900 0.0067720 0.019169" />
+        <joint name="C_joint1" />
+        <geom material="white" mesh="link1" class="visual" />
+        <geom mesh="link1_c" class="collision" />
+        <body name="C_link2" quat="1 -1 0 0">
+          <inertial mass="0.646926" pos="-0.003141 -0.02872 0.003495" fullinertia="0.0079620 2.8110e-2 2.5995e-2 -3.925e-3 1.0254e-2 7.04e-4" />
+          <joint name="C_joint2" range="-1.7628 1.7628" />
+          <geom material="white" mesh="link2" class="visual" />
+          <geom mesh="link2_c" class="collision" />
+          <body name="C_link3" pos="0 -0.316 0" quat="1 1 0 0">
+            <joint name="C_joint3" />
+            <inertial mass="3.228604" pos="2.7518e-2 3.9252e-2 -6.6502e-2" fullinertia="3.7242e-2 3.6155e-2 1.083e-2 -4.761e-3 -1.1396e-2 -1.2805e-2" />
+            <geom mesh="link3_0" material="white" class="visual" />
+            <geom mesh="link3_1" material="white" class="visual" />
+            <geom mesh="link3_2" material="white" class="visual" />
+            <geom mesh="link3_3" material="black" class="visual" />
+            <geom mesh="link3_c" class="collision" />
+            <body name="C_link4" pos="0.0825 0 0" quat="1 1 0 0">
+              <inertial mass="3.587895" pos="-5.317e-2 1.04419e-1 2.7454e-2" fullinertia="2.5853e-2 1.9552e-2 2.8323e-2 7.796e-3 -1.332e-3 8.641e-3" />
+              <joint name="C_joint4" range="-3.0718 -0.0698" />
+              <geom mesh="link4_0" material="white" class="visual" />
+              <geom mesh="link4_1" material="white" class="visual" />
+              <geom mesh="link4_2" material="black" class="visual" />
+              <geom mesh="link4_3" material="white" class="visual" />
+              <geom mesh="link4_c" class="collision" />
+              <body name="C_link5" pos="-0.0825 0.384 0" quat="1 -1 0 0">
+                <inertial mass="1.225946" pos="-1.1953e-2 4.1065e-2 -3.8437e-2" fullinertia="3.5549e-2 2.9474e-2 8.627e-3 -2.117e-3 -4.037e-3 2.29e-4" />
+                <joint name="C_joint5" />
+                <geom mesh="link5_0" material="black" class="visual" />
+                <geom mesh="link5_1" material="white" class="visual" />
+                <geom mesh="link5_2" material="white" class="visual" />
+                <geom mesh="link5_c0" class="collision" />
+                <geom mesh="link5_c1" class="collision" />
+                <geom mesh="link5_c2" class="collision" />
+                <body name="C_link6" quat="1 1 0 0">
+                  <inertial mass="1.666555" pos="6.0149e-2 -1.4117e-2 -1.0517e-2" fullinertia="1.964e-3 4.354e-3 5.433e-3 1.09e-4 -1.158e-3 3.41e-4" />
+                  <joint name="C_joint6" range="-0.0175 3.7525" />
+                  <geom mesh="link6_0" material="off_white" class="visual" />
+                  <geom mesh="link6_1" material="white" class="visual" />
+                  <geom mesh="link6_2" material="black" class="visual" />
+                  <geom mesh="link6_3" material="white" class="visual" />
+                  <geom mesh="link6_4" material="white" class="visual" />
+                  <geom mesh="link6_5" material="white" class="visual" />
+                  <geom mesh="link6_6" material="white" class="visual" />
+                  <geom mesh="link6_7" material="light_blue" class="visual" />
+                  <geom mesh="link6_8" material="light_blue" class="visual" />
+                  <geom mesh="link6_9" material="black" class="visual" />
+                  <geom mesh="link6_10" material="black" class="visual" />
+                  <geom mesh="link6_11" material="white" class="visual" />
+                  <geom mesh="link6_12" material="green" class="visual" />
+                  <geom mesh="link6_13" material="white" class="visual" />
+                  <geom mesh="link6_14" material="black" class="visual" />
+                  <geom mesh="link6_15" material="black" class="visual" />
+                  <geom mesh="link6_16" material="white" class="visual" />
+                  <geom mesh="link6_c" class="collision" />
+                  <body name="C_link7" pos="0.088 0 0" quat="1 1 0 0">
+                    <inertial mass="7.35522e-01" pos="1.0517e-2 -4.252e-3 6.1597e-2" fullinertia="1.2516e-2 1.0027e-2 4.815e-3 -4.28e-4 -1.196e-3 -7.41e-4" />
+                    <joint name="C_joint7" />
+                    <geom mesh="link7_0" material="white" class="visual" />
+                    <geom mesh="link7_1" material="black" class="visual" />
+                    <geom mesh="link7_2" material="black" class="visual" />
+                    <geom mesh="link7_3" material="black" class="visual" />
+                    <geom mesh="link7_4" material="black" class="visual" />
+                    <geom mesh="link7_5" material="black" class="visual" />
+                    <geom mesh="link7_6" material="black" class="visual" />
+                    <geom mesh="link7_7" material="white" class="visual" />
+                    <geom mesh="link7_c" class="collision" />
+                    <body name="C_hand" pos="0 0 0.107" quat="0.9238795 0 0 -0.3826834">
+                      <inertial mass="0.73" pos="-0.01 0 0.03" diaginertia="0.001 0.0025 0.0017" />
+                      <geom mesh="hand_0" material="off_white" class="visual" />
+                      <geom mesh="hand_1" material="black" class="visual" />
+                      <geom mesh="hand_2" material="black" class="visual" />
+                      <geom mesh="hand_3" material="white" class="visual" />
+                      <geom mesh="hand_4" material="off_white" class="visual" />
+                      <geom mesh="hand_c" class="collision" />
+                      <body name="C_left_finger" pos="0 0 0.0584">
+                        <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7" />
+                        <joint name="C_finger_joint1" class="finger" solreflimit="0.004 1" solimplimit="0.99 0.999 0.0001 0.5 2" />
+                        <geom mesh="finger_0" material="off_white" class="visual" />
+                        <geom mesh="finger_1" material="black" class="visual" />
+                        <geom mesh="finger_0" class="collision" />
+                        <geom class="fingertip_pad_collision_1" />
+                        <geom class="fingertip_pad_collision_2" />
+                        <geom class="fingertip_pad_collision_3" />
+                        <geom class="fingertip_pad_collision_4" />
+                        <geom class="fingertip_pad_collision_5" />
+                      </body>
+                      <body name="C_right_finger" pos="0 0 0.0584" quat="0 0 0 1">
+                        <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7" />
+                        <joint name="C_finger_joint2" class="finger" solreflimit="0.004 1" solimplimit="0.99 0.999 0.0001 0.5 2" />
+                        <geom mesh="finger_0" material="off_white" class="visual" />
+                        <geom mesh="finger_1" material="black" class="visual" />
+                        <geom mesh="finger_0" class="collision" />
+                        <geom class="fingertip_pad_collision_1" />
+                        <geom class="fingertip_pad_collision_2" />
+                        <geom class="fingertip_pad_collision_3" />
+                        <geom class="fingertip_pad_collision_4" />
+                        <geom class="fingertip_pad_collision_5" />
+                      </body>
+                      <site name="C_tcp" pos="0 0 .1029" size=".004" rgba="1 .65 .05 1" />
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+    <geom name="C_label" type="box" size=".065 .065 .0003" pos="1.313 -0.357 0.8006" quat="6.123233995736766e-17 0.0 0.0 1.0" material="label_C" contype="0" conaffinity="0" mass="0" />
+    <camera name="C_front" pos="0.073 -0.357 1.65" xyaxes="0.0 -1.0 0.0 0.729537204140085 0.0 0.6839411288813297" fovy="50" />
+    <camera name="C_side" pos="0.523 0.493 1.5499999999999998" xyaxes="-0.9429903335828895 -0.3328201177351374 0.0 0.20413559732101344 -0.5783841924095382 0.7898103467777308" fovy="50" />
+    <body name="D_link0" childclass="panda" pos="1.1729999999999998 0.357 0.8" quat="6.123233995736766e-17 0.0 0.0 1.0">
+      <inertial mass="0.629769" pos="-0.041018 -0.00014 0.049974" fullinertia="0.00315 0.00388 0.004285 8.2904e-7 0.00015 8.2299e-6" />
+      <geom mesh="link0_0" material="off_white" class="visual" />
+      <geom mesh="link0_1" material="black" class="visual" />
+      <geom mesh="link0_2" material="off_white" class="visual" />
+      <geom mesh="link0_3" material="black" class="visual" />
+      <geom mesh="link0_4" material="off_white" class="visual" />
+      <geom mesh="link0_5" material="black" class="visual" />
+      <geom mesh="link0_7" material="white" class="visual" />
+      <geom mesh="link0_8" material="white" class="visual" />
+      <geom mesh="link0_9" material="black" class="visual" />
+      <geom mesh="link0_10" material="off_white" class="visual" />
+      <geom mesh="link0_11" material="white" class="visual" />
+      <geom mesh="link0_c" class="collision" />
+      <body name="D_link1" pos="0 0 0.333">
+        <inertial mass="4.970684" pos="0.003875 0.002081 -0.04762" fullinertia="0.70337 0.70661 0.0091170 -0.00013900 0.0067720 0.019169" />
+        <joint name="D_joint1" />
+        <geom material="white" mesh="link1" class="visual" />
+        <geom mesh="link1_c" class="collision" />
+        <body name="D_link2" quat="1 -1 0 0">
+          <inertial mass="0.646926" pos="-0.003141 -0.02872 0.003495" fullinertia="0.0079620 2.8110e-2 2.5995e-2 -3.925e-3 1.0254e-2 7.04e-4" />
+          <joint name="D_joint2" range="-1.7628 1.7628" />
+          <geom material="white" mesh="link2" class="visual" />
+          <geom mesh="link2_c" class="collision" />
+          <body name="D_link3" pos="0 -0.316 0" quat="1 1 0 0">
+            <joint name="D_joint3" />
+            <inertial mass="3.228604" pos="2.7518e-2 3.9252e-2 -6.6502e-2" fullinertia="3.7242e-2 3.6155e-2 1.083e-2 -4.761e-3 -1.1396e-2 -1.2805e-2" />
+            <geom mesh="link3_0" material="white" class="visual" />
+            <geom mesh="link3_1" material="white" class="visual" />
+            <geom mesh="link3_2" material="white" class="visual" />
+            <geom mesh="link3_3" material="black" class="visual" />
+            <geom mesh="link3_c" class="collision" />
+            <body name="D_link4" pos="0.0825 0 0" quat="1 1 0 0">
+              <inertial mass="3.587895" pos="-5.317e-2 1.04419e-1 2.7454e-2" fullinertia="2.5853e-2 1.9552e-2 2.8323e-2 7.796e-3 -1.332e-3 8.641e-3" />
+              <joint name="D_joint4" range="-3.0718 -0.0698" />
+              <geom mesh="link4_0" material="white" class="visual" />
+              <geom mesh="link4_1" material="white" class="visual" />
+              <geom mesh="link4_2" material="black" class="visual" />
+              <geom mesh="link4_3" material="white" class="visual" />
+              <geom mesh="link4_c" class="collision" />
+              <body name="D_link5" pos="-0.0825 0.384 0" quat="1 -1 0 0">
+                <inertial mass="1.225946" pos="-1.1953e-2 4.1065e-2 -3.8437e-2" fullinertia="3.5549e-2 2.9474e-2 8.627e-3 -2.117e-3 -4.037e-3 2.29e-4" />
+                <joint name="D_joint5" />
+                <geom mesh="link5_0" material="black" class="visual" />
+                <geom mesh="link5_1" material="white" class="visual" />
+                <geom mesh="link5_2" material="white" class="visual" />
+                <geom mesh="link5_c0" class="collision" />
+                <geom mesh="link5_c1" class="collision" />
+                <geom mesh="link5_c2" class="collision" />
+                <body name="D_link6" quat="1 1 0 0">
+                  <inertial mass="1.666555" pos="6.0149e-2 -1.4117e-2 -1.0517e-2" fullinertia="1.964e-3 4.354e-3 5.433e-3 1.09e-4 -1.158e-3 3.41e-4" />
+                  <joint name="D_joint6" range="-0.0175 3.7525" />
+                  <geom mesh="link6_0" material="off_white" class="visual" />
+                  <geom mesh="link6_1" material="white" class="visual" />
+                  <geom mesh="link6_2" material="black" class="visual" />
+                  <geom mesh="link6_3" material="white" class="visual" />
+                  <geom mesh="link6_4" material="white" class="visual" />
+                  <geom mesh="link6_5" material="white" class="visual" />
+                  <geom mesh="link6_6" material="white" class="visual" />
+                  <geom mesh="link6_7" material="light_blue" class="visual" />
+                  <geom mesh="link6_8" material="light_blue" class="visual" />
+                  <geom mesh="link6_9" material="black" class="visual" />
+                  <geom mesh="link6_10" material="black" class="visual" />
+                  <geom mesh="link6_11" material="white" class="visual" />
+                  <geom mesh="link6_12" material="green" class="visual" />
+                  <geom mesh="link6_13" material="white" class="visual" />
+                  <geom mesh="link6_14" material="black" class="visual" />
+                  <geom mesh="link6_15" material="black" class="visual" />
+                  <geom mesh="link6_16" material="white" class="visual" />
+                  <geom mesh="link6_c" class="collision" />
+                  <body name="D_link7" pos="0.088 0 0" quat="1 1 0 0">
+                    <inertial mass="7.35522e-01" pos="1.0517e-2 -4.252e-3 6.1597e-2" fullinertia="1.2516e-2 1.0027e-2 4.815e-3 -4.28e-4 -1.196e-3 -7.41e-4" />
+                    <joint name="D_joint7" />
+                    <geom mesh="link7_0" material="white" class="visual" />
+                    <geom mesh="link7_1" material="black" class="visual" />
+                    <geom mesh="link7_2" material="black" class="visual" />
+                    <geom mesh="link7_3" material="black" class="visual" />
+                    <geom mesh="link7_4" material="black" class="visual" />
+                    <geom mesh="link7_5" material="black" class="visual" />
+                    <geom mesh="link7_6" material="black" class="visual" />
+                    <geom mesh="link7_7" material="white" class="visual" />
+                    <geom mesh="link7_c" class="collision" />
+                    <body name="D_hand" pos="0 0 0.107" quat="0.9238795 0 0 -0.3826834">
+                      <inertial mass="0.73" pos="-0.01 0 0.03" diaginertia="0.001 0.0025 0.0017" />
+                      <geom mesh="hand_0" material="off_white" class="visual" />
+                      <geom mesh="hand_1" material="black" class="visual" />
+                      <geom mesh="hand_2" material="black" class="visual" />
+                      <geom mesh="hand_3" material="white" class="visual" />
+                      <geom mesh="hand_4" material="off_white" class="visual" />
+                      <geom mesh="hand_c" class="collision" />
+                      <body name="D_left_finger" pos="0 0 0.0584">
+                        <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7" />
+                        <joint name="D_finger_joint1" class="finger" solreflimit="0.004 1" solimplimit="0.99 0.999 0.0001 0.5 2" />
+                        <geom mesh="finger_0" material="off_white" class="visual" />
+                        <geom mesh="finger_1" material="black" class="visual" />
+                        <geom mesh="finger_0" class="collision" />
+                        <geom class="fingertip_pad_collision_1" />
+                        <geom class="fingertip_pad_collision_2" />
+                        <geom class="fingertip_pad_collision_3" />
+                        <geom class="fingertip_pad_collision_4" />
+                        <geom class="fingertip_pad_collision_5" />
+                      </body>
+                      <body name="D_right_finger" pos="0 0 0.0584" quat="0 0 0 1">
+                        <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7" />
+                        <joint name="D_finger_joint2" class="finger" solreflimit="0.004 1" solimplimit="0.99 0.999 0.0001 0.5 2" />
+                        <geom mesh="finger_0" material="off_white" class="visual" />
+                        <geom mesh="finger_1" material="black" class="visual" />
+                        <geom mesh="finger_0" class="collision" />
+                        <geom class="fingertip_pad_collision_1" />
+                        <geom class="fingertip_pad_collision_2" />
+                        <geom class="fingertip_pad_collision_3" />
+                        <geom class="fingertip_pad_collision_4" />
+                        <geom class="fingertip_pad_collision_5" />
+                      </body>
+                      <site name="D_tcp" pos="0 0 .1029" size=".004" rgba="1 .65 .05 1" />
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+    <geom name="D_label" type="box" size=".065 .065 .0003" pos="1.313 0.357 0.8006" quat="6.123233995736766e-17 0.0 0.0 1.0" material="label_D" contype="0" conaffinity="0" mass="0" />
+    <camera name="D_front" pos="0.073 0.357 1.65" xyaxes="0.0 -1.0 0.0 0.729537204140085 0.0 0.6839411288813297" fovy="50" />
+    <camera name="D_side" pos="0.523 1.207 1.5499999999999998" xyaxes="-0.9429903335828895 -0.33282011773513737 0.0 0.2041355973210134 -0.5783841924095382 0.7898103467777309" fovy="50" />
+    <body name="E_link0" childclass="panda" pos="0.357 1.1729999999999998 0.8" quat="0.7071067811865476 0.0 0.0 -0.7071067811865475">
+      <inertial mass="0.629769" pos="-0.041018 -0.00014 0.049974" fullinertia="0.00315 0.00388 0.004285 8.2904e-7 0.00015 8.2299e-6" />
+      <geom mesh="link0_0" material="off_white" class="visual" />
+      <geom mesh="link0_1" material="black" class="visual" />
+      <geom mesh="link0_2" material="off_white" class="visual" />
+      <geom mesh="link0_3" material="black" class="visual" />
+      <geom mesh="link0_4" material="off_white" class="visual" />
+      <geom mesh="link0_5" material="black" class="visual" />
+      <geom mesh="link0_7" material="white" class="visual" />
+      <geom mesh="link0_8" material="white" class="visual" />
+      <geom mesh="link0_9" material="black" class="visual" />
+      <geom mesh="link0_10" material="off_white" class="visual" />
+      <geom mesh="link0_11" material="white" class="visual" />
+      <geom mesh="link0_c" class="collision" />
+      <body name="E_link1" pos="0 0 0.333">
+        <inertial mass="4.970684" pos="0.003875 0.002081 -0.04762" fullinertia="0.70337 0.70661 0.0091170 -0.00013900 0.0067720 0.019169" />
+        <joint name="E_joint1" />
+        <geom material="white" mesh="link1" class="visual" />
+        <geom mesh="link1_c" class="collision" />
+        <body name="E_link2" quat="1 -1 0 0">
+          <inertial mass="0.646926" pos="-0.003141 -0.02872 0.003495" fullinertia="0.0079620 2.8110e-2 2.5995e-2 -3.925e-3 1.0254e-2 7.04e-4" />
+          <joint name="E_joint2" range="-1.7628 1.7628" />
+          <geom material="white" mesh="link2" class="visual" />
+          <geom mesh="link2_c" class="collision" />
+          <body name="E_link3" pos="0 -0.316 0" quat="1 1 0 0">
+            <joint name="E_joint3" />
+            <inertial mass="3.228604" pos="2.7518e-2 3.9252e-2 -6.6502e-2" fullinertia="3.7242e-2 3.6155e-2 1.083e-2 -4.761e-3 -1.1396e-2 -1.2805e-2" />
+            <geom mesh="link3_0" material="white" class="visual" />
+            <geom mesh="link3_1" material="white" class="visual" />
+            <geom mesh="link3_2" material="white" class="visual" />
+            <geom mesh="link3_3" material="black" class="visual" />
+            <geom mesh="link3_c" class="collision" />
+            <body name="E_link4" pos="0.0825 0 0" quat="1 1 0 0">
+              <inertial mass="3.587895" pos="-5.317e-2 1.04419e-1 2.7454e-2" fullinertia="2.5853e-2 1.9552e-2 2.8323e-2 7.796e-3 -1.332e-3 8.641e-3" />
+              <joint name="E_joint4" range="-3.0718 -0.0698" />
+              <geom mesh="link4_0" material="white" class="visual" />
+              <geom mesh="link4_1" material="white" class="visual" />
+              <geom mesh="link4_2" material="black" class="visual" />
+              <geom mesh="link4_3" material="white" class="visual" />
+              <geom mesh="link4_c" class="collision" />
+              <body name="E_link5" pos="-0.0825 0.384 0" quat="1 -1 0 0">
+                <inertial mass="1.225946" pos="-1.1953e-2 4.1065e-2 -3.8437e-2" fullinertia="3.5549e-2 2.9474e-2 8.627e-3 -2.117e-3 -4.037e-3 2.29e-4" />
+                <joint name="E_joint5" />
+                <geom mesh="link5_0" material="black" class="visual" />
+                <geom mesh="link5_1" material="white" class="visual" />
+                <geom mesh="link5_2" material="white" class="visual" />
+                <geom mesh="link5_c0" class="collision" />
+                <geom mesh="link5_c1" class="collision" />
+                <geom mesh="link5_c2" class="collision" />
+                <body name="E_link6" quat="1 1 0 0">
+                  <inertial mass="1.666555" pos="6.0149e-2 -1.4117e-2 -1.0517e-2" fullinertia="1.964e-3 4.354e-3 5.433e-3 1.09e-4 -1.158e-3 3.41e-4" />
+                  <joint name="E_joint6" range="-0.0175 3.7525" />
+                  <geom mesh="link6_0" material="off_white" class="visual" />
+                  <geom mesh="link6_1" material="white" class="visual" />
+                  <geom mesh="link6_2" material="black" class="visual" />
+                  <geom mesh="link6_3" material="white" class="visual" />
+                  <geom mesh="link6_4" material="white" class="visual" />
+                  <geom mesh="link6_5" material="white" class="visual" />
+                  <geom mesh="link6_6" material="white" class="visual" />
+                  <geom mesh="link6_7" material="light_blue" class="visual" />
+                  <geom mesh="link6_8" material="light_blue" class="visual" />
+                  <geom mesh="link6_9" material="black" class="visual" />
+                  <geom mesh="link6_10" material="black" class="visual" />
+                  <geom mesh="link6_11" material="white" class="visual" />
+                  <geom mesh="link6_12" material="green" class="visual" />
+                  <geom mesh="link6_13" material="white" class="visual" />
+                  <geom mesh="link6_14" material="black" class="visual" />
+                  <geom mesh="link6_15" material="black" class="visual" />
+                  <geom mesh="link6_16" material="white" class="visual" />
+                  <geom mesh="link6_c" class="collision" />
+                  <body name="E_link7" pos="0.088 0 0" quat="1 1 0 0">
+                    <inertial mass="7.35522e-01" pos="1.0517e-2 -4.252e-3 6.1597e-2" fullinertia="1.2516e-2 1.0027e-2 4.815e-3 -4.28e-4 -1.196e-3 -7.41e-4" />
+                    <joint name="E_joint7" />
+                    <geom mesh="link7_0" material="white" class="visual" />
+                    <geom mesh="link7_1" material="black" class="visual" />
+                    <geom mesh="link7_2" material="black" class="visual" />
+                    <geom mesh="link7_3" material="black" class="visual" />
+                    <geom mesh="link7_4" material="black" class="visual" />
+                    <geom mesh="link7_5" material="black" class="visual" />
+                    <geom mesh="link7_6" material="black" class="visual" />
+                    <geom mesh="link7_7" material="white" class="visual" />
+                    <geom mesh="link7_c" class="collision" />
+                    <body name="E_hand" pos="0 0 0.107" quat="0.9238795 0 0 -0.3826834">
+                      <inertial mass="0.73" pos="-0.01 0 0.03" diaginertia="0.001 0.0025 0.0017" />
+                      <geom mesh="hand_0" material="off_white" class="visual" />
+                      <geom mesh="hand_1" material="black" class="visual" />
+                      <geom mesh="hand_2" material="black" class="visual" />
+                      <geom mesh="hand_3" material="white" class="visual" />
+                      <geom mesh="hand_4" material="off_white" class="visual" />
+                      <geom mesh="hand_c" class="collision" />
+                      <body name="E_left_finger" pos="0 0 0.0584">
+                        <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7" />
+                        <joint name="E_finger_joint1" class="finger" solreflimit="0.004 1" solimplimit="0.99 0.999 0.0001 0.5 2" />
+                        <geom mesh="finger_0" material="off_white" class="visual" />
+                        <geom mesh="finger_1" material="black" class="visual" />
+                        <geom mesh="finger_0" class="collision" />
+                        <geom class="fingertip_pad_collision_1" />
+                        <geom class="fingertip_pad_collision_2" />
+                        <geom class="fingertip_pad_collision_3" />
+                        <geom class="fingertip_pad_collision_4" />
+                        <geom class="fingertip_pad_collision_5" />
+                      </body>
+                      <body name="E_right_finger" pos="0 0 0.0584" quat="0 0 0 1">
+                        <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7" />
+                        <joint name="E_finger_joint2" class="finger" solreflimit="0.004 1" solimplimit="0.99 0.999 0.0001 0.5 2" />
+                        <geom mesh="finger_0" material="off_white" class="visual" />
+                        <geom mesh="finger_1" material="black" class="visual" />
+                        <geom mesh="finger_0" class="collision" />
+                        <geom class="fingertip_pad_collision_1" />
+                        <geom class="fingertip_pad_collision_2" />
+                        <geom class="fingertip_pad_collision_3" />
+                        <geom class="fingertip_pad_collision_4" />
+                        <geom class="fingertip_pad_collision_5" />
+                      </body>
+                      <site name="E_tcp" pos="0 0 .1029" size=".004" rgba="1 .65 .05 1" />
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+    <geom name="E_label" type="box" size=".065 .065 .0003" pos="0.357 1.313 0.8006" quat="0.7071067811865476 0.0 0.0 -0.7071067811865475" material="label_E" contype="0" conaffinity="0" mass="0" />
+    <camera name="E_front" pos="0.357 0.073 1.65" xyaxes="1.0 0.0 -0.0 0.0 0.729537204140085 0.6839411288813297" fovy="50" />
+    <camera name="E_side" pos="-0.493 0.523 1.5499999999999998" xyaxes="0.3328201177351374 -0.9429903335828895 0.0 0.5783841924095382 0.20413559732101344 0.7898103467777308" fovy="50" />
+    <body name="F_link0" childclass="panda" pos="-0.357 1.1729999999999998 0.8" quat="0.7071067811865476 0.0 0.0 -0.7071067811865475">
+      <inertial mass="0.629769" pos="-0.041018 -0.00014 0.049974" fullinertia="0.00315 0.00388 0.004285 8.2904e-7 0.00015 8.2299e-6" />
+      <geom mesh="link0_0" material="off_white" class="visual" />
+      <geom mesh="link0_1" material="black" class="visual" />
+      <geom mesh="link0_2" material="off_white" class="visual" />
+      <geom mesh="link0_3" material="black" class="visual" />
+      <geom mesh="link0_4" material="off_white" class="visual" />
+      <geom mesh="link0_5" material="black" class="visual" />
+      <geom mesh="link0_7" material="white" class="visual" />
+      <geom mesh="link0_8" material="white" class="visual" />
+      <geom mesh="link0_9" material="black" class="visual" />
+      <geom mesh="link0_10" material="off_white" class="visual" />
+      <geom mesh="link0_11" material="white" class="visual" />
+      <geom mesh="link0_c" class="collision" />
+      <body name="F_link1" pos="0 0 0.333">
+        <inertial mass="4.970684" pos="0.003875 0.002081 -0.04762" fullinertia="0.70337 0.70661 0.0091170 -0.00013900 0.0067720 0.019169" />
+        <joint name="F_joint1" />
+        <geom material="white" mesh="link1" class="visual" />
+        <geom mesh="link1_c" class="collision" />
+        <body name="F_link2" quat="1 -1 0 0">
+          <inertial mass="0.646926" pos="-0.003141 -0.02872 0.003495" fullinertia="0.0079620 2.8110e-2 2.5995e-2 -3.925e-3 1.0254e-2 7.04e-4" />
+          <joint name="F_joint2" range="-1.7628 1.7628" />
+          <geom material="white" mesh="link2" class="visual" />
+          <geom mesh="link2_c" class="collision" />
+          <body name="F_link3" pos="0 -0.316 0" quat="1 1 0 0">
+            <joint name="F_joint3" />
+            <inertial mass="3.228604" pos="2.7518e-2 3.9252e-2 -6.6502e-2" fullinertia="3.7242e-2 3.6155e-2 1.083e-2 -4.761e-3 -1.1396e-2 -1.2805e-2" />
+            <geom mesh="link3_0" material="white" class="visual" />
+            <geom mesh="link3_1" material="white" class="visual" />
+            <geom mesh="link3_2" material="white" class="visual" />
+            <geom mesh="link3_3" material="black" class="visual" />
+            <geom mesh="link3_c" class="collision" />
+            <body name="F_link4" pos="0.0825 0 0" quat="1 1 0 0">
+              <inertial mass="3.587895" pos="-5.317e-2 1.04419e-1 2.7454e-2" fullinertia="2.5853e-2 1.9552e-2 2.8323e-2 7.796e-3 -1.332e-3 8.641e-3" />
+              <joint name="F_joint4" range="-3.0718 -0.0698" />
+              <geom mesh="link4_0" material="white" class="visual" />
+              <geom mesh="link4_1" material="white" class="visual" />
+              <geom mesh="link4_2" material="black" class="visual" />
+              <geom mesh="link4_3" material="white" class="visual" />
+              <geom mesh="link4_c" class="collision" />
+              <body name="F_link5" pos="-0.0825 0.384 0" quat="1 -1 0 0">
+                <inertial mass="1.225946" pos="-1.1953e-2 4.1065e-2 -3.8437e-2" fullinertia="3.5549e-2 2.9474e-2 8.627e-3 -2.117e-3 -4.037e-3 2.29e-4" />
+                <joint name="F_joint5" />
+                <geom mesh="link5_0" material="black" class="visual" />
+                <geom mesh="link5_1" material="white" class="visual" />
+                <geom mesh="link5_2" material="white" class="visual" />
+                <geom mesh="link5_c0" class="collision" />
+                <geom mesh="link5_c1" class="collision" />
+                <geom mesh="link5_c2" class="collision" />
+                <body name="F_link6" quat="1 1 0 0">
+                  <inertial mass="1.666555" pos="6.0149e-2 -1.4117e-2 -1.0517e-2" fullinertia="1.964e-3 4.354e-3 5.433e-3 1.09e-4 -1.158e-3 3.41e-4" />
+                  <joint name="F_joint6" range="-0.0175 3.7525" />
+                  <geom mesh="link6_0" material="off_white" class="visual" />
+                  <geom mesh="link6_1" material="white" class="visual" />
+                  <geom mesh="link6_2" material="black" class="visual" />
+                  <geom mesh="link6_3" material="white" class="visual" />
+                  <geom mesh="link6_4" material="white" class="visual" />
+                  <geom mesh="link6_5" material="white" class="visual" />
+                  <geom mesh="link6_6" material="white" class="visual" />
+                  <geom mesh="link6_7" material="light_blue" class="visual" />
+                  <geom mesh="link6_8" material="light_blue" class="visual" />
+                  <geom mesh="link6_9" material="black" class="visual" />
+                  <geom mesh="link6_10" material="black" class="visual" />
+                  <geom mesh="link6_11" material="white" class="visual" />
+                  <geom mesh="link6_12" material="green" class="visual" />
+                  <geom mesh="link6_13" material="white" class="visual" />
+                  <geom mesh="link6_14" material="black" class="visual" />
+                  <geom mesh="link6_15" material="black" class="visual" />
+                  <geom mesh="link6_16" material="white" class="visual" />
+                  <geom mesh="link6_c" class="collision" />
+                  <body name="F_link7" pos="0.088 0 0" quat="1 1 0 0">
+                    <inertial mass="7.35522e-01" pos="1.0517e-2 -4.252e-3 6.1597e-2" fullinertia="1.2516e-2 1.0027e-2 4.815e-3 -4.28e-4 -1.196e-3 -7.41e-4" />
+                    <joint name="F_joint7" />
+                    <geom mesh="link7_0" material="white" class="visual" />
+                    <geom mesh="link7_1" material="black" class="visual" />
+                    <geom mesh="link7_2" material="black" class="visual" />
+                    <geom mesh="link7_3" material="black" class="visual" />
+                    <geom mesh="link7_4" material="black" class="visual" />
+                    <geom mesh="link7_5" material="black" class="visual" />
+                    <geom mesh="link7_6" material="black" class="visual" />
+                    <geom mesh="link7_7" material="white" class="visual" />
+                    <geom mesh="link7_c" class="collision" />
+                    <body name="F_hand" pos="0 0 0.107" quat="0.9238795 0 0 -0.3826834">
+                      <inertial mass="0.73" pos="-0.01 0 0.03" diaginertia="0.001 0.0025 0.0017" />
+                      <geom mesh="hand_0" material="off_white" class="visual" />
+                      <geom mesh="hand_1" material="black" class="visual" />
+                      <geom mesh="hand_2" material="black" class="visual" />
+                      <geom mesh="hand_3" material="white" class="visual" />
+                      <geom mesh="hand_4" material="off_white" class="visual" />
+                      <geom mesh="hand_c" class="collision" />
+                      <body name="F_left_finger" pos="0 0 0.0584">
+                        <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7" />
+                        <joint name="F_finger_joint1" class="finger" solreflimit="0.004 1" solimplimit="0.99 0.999 0.0001 0.5 2" />
+                        <geom mesh="finger_0" material="off_white" class="visual" />
+                        <geom mesh="finger_1" material="black" class="visual" />
+                        <geom mesh="finger_0" class="collision" />
+                        <geom class="fingertip_pad_collision_1" />
+                        <geom class="fingertip_pad_collision_2" />
+                        <geom class="fingertip_pad_collision_3" />
+                        <geom class="fingertip_pad_collision_4" />
+                        <geom class="fingertip_pad_collision_5" />
+                      </body>
+                      <body name="F_right_finger" pos="0 0 0.0584" quat="0 0 0 1">
+                        <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7" />
+                        <joint name="F_finger_joint2" class="finger" solreflimit="0.004 1" solimplimit="0.99 0.999 0.0001 0.5 2" />
+                        <geom mesh="finger_0" material="off_white" class="visual" />
+                        <geom mesh="finger_1" material="black" class="visual" />
+                        <geom mesh="finger_0" class="collision" />
+                        <geom class="fingertip_pad_collision_1" />
+                        <geom class="fingertip_pad_collision_2" />
+                        <geom class="fingertip_pad_collision_3" />
+                        <geom class="fingertip_pad_collision_4" />
+                        <geom class="fingertip_pad_collision_5" />
+                      </body>
+                      <site name="F_tcp" pos="0 0 .1029" size=".004" rgba="1 .65 .05 1" />
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+    <geom name="F_label" type="box" size=".065 .065 .0003" pos="-0.357 1.313 0.8006" quat="0.7071067811865476 0.0 0.0 -0.7071067811865475" material="label_F" contype="0" conaffinity="0" mass="0" />
+    <camera name="F_front" pos="-0.357 0.073 1.65" xyaxes="1.0 0.0 -0.0 0.0 0.729537204140085 0.6839411288813297" fovy="50" />
+    <camera name="F_side" pos="-1.207 0.523 1.5499999999999998" xyaxes="0.33282011773513737 -0.9429903335828895 0.0 0.5783841924095382 0.2041355973210134 0.7898103467777309" fovy="50" />
+    <body name="G_link0" childclass="panda" pos="-1.1729999999999998 0.357 0.8" quat="1.0 0.0 0.0 0.0">
+      <inertial mass="0.629769" pos="-0.041018 -0.00014 0.049974" fullinertia="0.00315 0.00388 0.004285 8.2904e-7 0.00015 8.2299e-6" />
+      <geom mesh="link0_0" material="off_white" class="visual" />
+      <geom mesh="link0_1" material="black" class="visual" />
+      <geom mesh="link0_2" material="off_white" class="visual" />
+      <geom mesh="link0_3" material="black" class="visual" />
+      <geom mesh="link0_4" material="off_white" class="visual" />
+      <geom mesh="link0_5" material="black" class="visual" />
+      <geom mesh="link0_7" material="white" class="visual" />
+      <geom mesh="link0_8" material="white" class="visual" />
+      <geom mesh="link0_9" material="black" class="visual" />
+      <geom mesh="link0_10" material="off_white" class="visual" />
+      <geom mesh="link0_11" material="white" class="visual" />
+      <geom mesh="link0_c" class="collision" />
+      <body name="G_link1" pos="0 0 0.333">
+        <inertial mass="4.970684" pos="0.003875 0.002081 -0.04762" fullinertia="0.70337 0.70661 0.0091170 -0.00013900 0.0067720 0.019169" />
+        <joint name="G_joint1" />
+        <geom material="white" mesh="link1" class="visual" />
+        <geom mesh="link1_c" class="collision" />
+        <body name="G_link2" quat="1 -1 0 0">
+          <inertial mass="0.646926" pos="-0.003141 -0.02872 0.003495" fullinertia="0.0079620 2.8110e-2 2.5995e-2 -3.925e-3 1.0254e-2 7.04e-4" />
+          <joint name="G_joint2" range="-1.7628 1.7628" />
+          <geom material="white" mesh="link2" class="visual" />
+          <geom mesh="link2_c" class="collision" />
+          <body name="G_link3" pos="0 -0.316 0" quat="1 1 0 0">
+            <joint name="G_joint3" />
+            <inertial mass="3.228604" pos="2.7518e-2 3.9252e-2 -6.6502e-2" fullinertia="3.7242e-2 3.6155e-2 1.083e-2 -4.761e-3 -1.1396e-2 -1.2805e-2" />
+            <geom mesh="link3_0" material="white" class="visual" />
+            <geom mesh="link3_1" material="white" class="visual" />
+            <geom mesh="link3_2" material="white" class="visual" />
+            <geom mesh="link3_3" material="black" class="visual" />
+            <geom mesh="link3_c" class="collision" />
+            <body name="G_link4" pos="0.0825 0 0" quat="1 1 0 0">
+              <inertial mass="3.587895" pos="-5.317e-2 1.04419e-1 2.7454e-2" fullinertia="2.5853e-2 1.9552e-2 2.8323e-2 7.796e-3 -1.332e-3 8.641e-3" />
+              <joint name="G_joint4" range="-3.0718 -0.0698" />
+              <geom mesh="link4_0" material="white" class="visual" />
+              <geom mesh="link4_1" material="white" class="visual" />
+              <geom mesh="link4_2" material="black" class="visual" />
+              <geom mesh="link4_3" material="white" class="visual" />
+              <geom mesh="link4_c" class="collision" />
+              <body name="G_link5" pos="-0.0825 0.384 0" quat="1 -1 0 0">
+                <inertial mass="1.225946" pos="-1.1953e-2 4.1065e-2 -3.8437e-2" fullinertia="3.5549e-2 2.9474e-2 8.627e-3 -2.117e-3 -4.037e-3 2.29e-4" />
+                <joint name="G_joint5" />
+                <geom mesh="link5_0" material="black" class="visual" />
+                <geom mesh="link5_1" material="white" class="visual" />
+                <geom mesh="link5_2" material="white" class="visual" />
+                <geom mesh="link5_c0" class="collision" />
+                <geom mesh="link5_c1" class="collision" />
+                <geom mesh="link5_c2" class="collision" />
+                <body name="G_link6" quat="1 1 0 0">
+                  <inertial mass="1.666555" pos="6.0149e-2 -1.4117e-2 -1.0517e-2" fullinertia="1.964e-3 4.354e-3 5.433e-3 1.09e-4 -1.158e-3 3.41e-4" />
+                  <joint name="G_joint6" range="-0.0175 3.7525" />
+                  <geom mesh="link6_0" material="off_white" class="visual" />
+                  <geom mesh="link6_1" material="white" class="visual" />
+                  <geom mesh="link6_2" material="black" class="visual" />
+                  <geom mesh="link6_3" material="white" class="visual" />
+                  <geom mesh="link6_4" material="white" class="visual" />
+                  <geom mesh="link6_5" material="white" class="visual" />
+                  <geom mesh="link6_6" material="white" class="visual" />
+                  <geom mesh="link6_7" material="light_blue" class="visual" />
+                  <geom mesh="link6_8" material="light_blue" class="visual" />
+                  <geom mesh="link6_9" material="black" class="visual" />
+                  <geom mesh="link6_10" material="black" class="visual" />
+                  <geom mesh="link6_11" material="white" class="visual" />
+                  <geom mesh="link6_12" material="green" class="visual" />
+                  <geom mesh="link6_13" material="white" class="visual" />
+                  <geom mesh="link6_14" material="black" class="visual" />
+                  <geom mesh="link6_15" material="black" class="visual" />
+                  <geom mesh="link6_16" material="white" class="visual" />
+                  <geom mesh="link6_c" class="collision" />
+                  <body name="G_link7" pos="0.088 0 0" quat="1 1 0 0">
+                    <inertial mass="7.35522e-01" pos="1.0517e-2 -4.252e-3 6.1597e-2" fullinertia="1.2516e-2 1.0027e-2 4.815e-3 -4.28e-4 -1.196e-3 -7.41e-4" />
+                    <joint name="G_joint7" />
+                    <geom mesh="link7_0" material="white" class="visual" />
+                    <geom mesh="link7_1" material="black" class="visual" />
+                    <geom mesh="link7_2" material="black" class="visual" />
+                    <geom mesh="link7_3" material="black" class="visual" />
+                    <geom mesh="link7_4" material="black" class="visual" />
+                    <geom mesh="link7_5" material="black" class="visual" />
+                    <geom mesh="link7_6" material="black" class="visual" />
+                    <geom mesh="link7_7" material="white" class="visual" />
+                    <geom mesh="link7_c" class="collision" />
+                    <body name="G_hand" pos="0 0 0.107" quat="0.9238795 0 0 -0.3826834">
+                      <inertial mass="0.73" pos="-0.01 0 0.03" diaginertia="0.001 0.0025 0.0017" />
+                      <geom mesh="hand_0" material="off_white" class="visual" />
+                      <geom mesh="hand_1" material="black" class="visual" />
+                      <geom mesh="hand_2" material="black" class="visual" />
+                      <geom mesh="hand_3" material="white" class="visual" />
+                      <geom mesh="hand_4" material="off_white" class="visual" />
+                      <geom mesh="hand_c" class="collision" />
+                      <body name="G_left_finger" pos="0 0 0.0584">
+                        <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7" />
+                        <joint name="G_finger_joint1" class="finger" solreflimit="0.004 1" solimplimit="0.99 0.999 0.0001 0.5 2" />
+                        <geom mesh="finger_0" material="off_white" class="visual" />
+                        <geom mesh="finger_1" material="black" class="visual" />
+                        <geom mesh="finger_0" class="collision" />
+                        <geom class="fingertip_pad_collision_1" />
+                        <geom class="fingertip_pad_collision_2" />
+                        <geom class="fingertip_pad_collision_3" />
+                        <geom class="fingertip_pad_collision_4" />
+                        <geom class="fingertip_pad_collision_5" />
+                      </body>
+                      <body name="G_right_finger" pos="0 0 0.0584" quat="0 0 0 1">
+                        <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7" />
+                        <joint name="G_finger_joint2" class="finger" solreflimit="0.004 1" solimplimit="0.99 0.999 0.0001 0.5 2" />
+                        <geom mesh="finger_0" material="off_white" class="visual" />
+                        <geom mesh="finger_1" material="black" class="visual" />
+                        <geom mesh="finger_0" class="collision" />
+                        <geom class="fingertip_pad_collision_1" />
+                        <geom class="fingertip_pad_collision_2" />
+                        <geom class="fingertip_pad_collision_3" />
+                        <geom class="fingertip_pad_collision_4" />
+                        <geom class="fingertip_pad_collision_5" />
+                      </body>
+                      <site name="G_tcp" pos="0 0 .1029" size=".004" rgba="1 .65 .05 1" />
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+    <geom name="G_label" type="box" size=".065 .065 .0003" pos="-1.313 0.357 0.8006" quat="1.0 0.0 0.0 0.0" material="label_G" contype="0" conaffinity="0" mass="0" />
+    <camera name="G_front" pos="-0.073 0.357 1.65" xyaxes="0.0 1.0 0.0 -0.729537204140085 0.0 0.6839411288813297" fovy="50" />
+    <camera name="G_side" pos="-0.523 -0.493 1.5499999999999998" xyaxes="0.9429903335828895 0.3328201177351374 -0.0 -0.20413559732101344 0.5783841924095382 0.7898103467777308" fovy="50" />
+    <body name="H_link0" childclass="panda" pos="-1.1729999999999998 -0.357 0.8" quat="1.0 0.0 0.0 0.0">
+      <inertial mass="0.629769" pos="-0.041018 -0.00014 0.049974" fullinertia="0.00315 0.00388 0.004285 8.2904e-7 0.00015 8.2299e-6" />
+      <geom mesh="link0_0" material="off_white" class="visual" />
+      <geom mesh="link0_1" material="black" class="visual" />
+      <geom mesh="link0_2" material="off_white" class="visual" />
+      <geom mesh="link0_3" material="black" class="visual" />
+      <geom mesh="link0_4" material="off_white" class="visual" />
+      <geom mesh="link0_5" material="black" class="visual" />
+      <geom mesh="link0_7" material="white" class="visual" />
+      <geom mesh="link0_8" material="white" class="visual" />
+      <geom mesh="link0_9" material="black" class="visual" />
+      <geom mesh="link0_10" material="off_white" class="visual" />
+      <geom mesh="link0_11" material="white" class="visual" />
+      <geom mesh="link0_c" class="collision" />
+      <body name="H_link1" pos="0 0 0.333">
+        <inertial mass="4.970684" pos="0.003875 0.002081 -0.04762" fullinertia="0.70337 0.70661 0.0091170 -0.00013900 0.0067720 0.019169" />
+        <joint name="H_joint1" />
+        <geom material="white" mesh="link1" class="visual" />
+        <geom mesh="link1_c" class="collision" />
+        <body name="H_link2" quat="1 -1 0 0">
+          <inertial mass="0.646926" pos="-0.003141 -0.02872 0.003495" fullinertia="0.0079620 2.8110e-2 2.5995e-2 -3.925e-3 1.0254e-2 7.04e-4" />
+          <joint name="H_joint2" range="-1.7628 1.7628" />
+          <geom material="white" mesh="link2" class="visual" />
+          <geom mesh="link2_c" class="collision" />
+          <body name="H_link3" pos="0 -0.316 0" quat="1 1 0 0">
+            <joint name="H_joint3" />
+            <inertial mass="3.228604" pos="2.7518e-2 3.9252e-2 -6.6502e-2" fullinertia="3.7242e-2 3.6155e-2 1.083e-2 -4.761e-3 -1.1396e-2 -1.2805e-2" />
+            <geom mesh="link3_0" material="white" class="visual" />
+            <geom mesh="link3_1" material="white" class="visual" />
+            <geom mesh="link3_2" material="white" class="visual" />
+            <geom mesh="link3_3" material="black" class="visual" />
+            <geom mesh="link3_c" class="collision" />
+            <body name="H_link4" pos="0.0825 0 0" quat="1 1 0 0">
+              <inertial mass="3.587895" pos="-5.317e-2 1.04419e-1 2.7454e-2" fullinertia="2.5853e-2 1.9552e-2 2.8323e-2 7.796e-3 -1.332e-3 8.641e-3" />
+              <joint name="H_joint4" range="-3.0718 -0.0698" />
+              <geom mesh="link4_0" material="white" class="visual" />
+              <geom mesh="link4_1" material="white" class="visual" />
+              <geom mesh="link4_2" material="black" class="visual" />
+              <geom mesh="link4_3" material="white" class="visual" />
+              <geom mesh="link4_c" class="collision" />
+              <body name="H_link5" pos="-0.0825 0.384 0" quat="1 -1 0 0">
+                <inertial mass="1.225946" pos="-1.1953e-2 4.1065e-2 -3.8437e-2" fullinertia="3.5549e-2 2.9474e-2 8.627e-3 -2.117e-3 -4.037e-3 2.29e-4" />
+                <joint name="H_joint5" />
+                <geom mesh="link5_0" material="black" class="visual" />
+                <geom mesh="link5_1" material="white" class="visual" />
+                <geom mesh="link5_2" material="white" class="visual" />
+                <geom mesh="link5_c0" class="collision" />
+                <geom mesh="link5_c1" class="collision" />
+                <geom mesh="link5_c2" class="collision" />
+                <body name="H_link6" quat="1 1 0 0">
+                  <inertial mass="1.666555" pos="6.0149e-2 -1.4117e-2 -1.0517e-2" fullinertia="1.964e-3 4.354e-3 5.433e-3 1.09e-4 -1.158e-3 3.41e-4" />
+                  <joint name="H_joint6" range="-0.0175 3.7525" />
+                  <geom mesh="link6_0" material="off_white" class="visual" />
+                  <geom mesh="link6_1" material="white" class="visual" />
+                  <geom mesh="link6_2" material="black" class="visual" />
+                  <geom mesh="link6_3" material="white" class="visual" />
+                  <geom mesh="link6_4" material="white" class="visual" />
+                  <geom mesh="link6_5" material="white" class="visual" />
+                  <geom mesh="link6_6" material="white" class="visual" />
+                  <geom mesh="link6_7" material="light_blue" class="visual" />
+                  <geom mesh="link6_8" material="light_blue" class="visual" />
+                  <geom mesh="link6_9" material="black" class="visual" />
+                  <geom mesh="link6_10" material="black" class="visual" />
+                  <geom mesh="link6_11" material="white" class="visual" />
+                  <geom mesh="link6_12" material="green" class="visual" />
+                  <geom mesh="link6_13" material="white" class="visual" />
+                  <geom mesh="link6_14" material="black" class="visual" />
+                  <geom mesh="link6_15" material="black" class="visual" />
+                  <geom mesh="link6_16" material="white" class="visual" />
+                  <geom mesh="link6_c" class="collision" />
+                  <body name="H_link7" pos="0.088 0 0" quat="1 1 0 0">
+                    <inertial mass="7.35522e-01" pos="1.0517e-2 -4.252e-3 6.1597e-2" fullinertia="1.2516e-2 1.0027e-2 4.815e-3 -4.28e-4 -1.196e-3 -7.41e-4" />
+                    <joint name="H_joint7" />
+                    <geom mesh="link7_0" material="white" class="visual" />
+                    <geom mesh="link7_1" material="black" class="visual" />
+                    <geom mesh="link7_2" material="black" class="visual" />
+                    <geom mesh="link7_3" material="black" class="visual" />
+                    <geom mesh="link7_4" material="black" class="visual" />
+                    <geom mesh="link7_5" material="black" class="visual" />
+                    <geom mesh="link7_6" material="black" class="visual" />
+                    <geom mesh="link7_7" material="white" class="visual" />
+                    <geom mesh="link7_c" class="collision" />
+                    <body name="H_hand" pos="0 0 0.107" quat="0.9238795 0 0 -0.3826834">
+                      <inertial mass="0.73" pos="-0.01 0 0.03" diaginertia="0.001 0.0025 0.0017" />
+                      <geom mesh="hand_0" material="off_white" class="visual" />
+                      <geom mesh="hand_1" material="black" class="visual" />
+                      <geom mesh="hand_2" material="black" class="visual" />
+                      <geom mesh="hand_3" material="white" class="visual" />
+                      <geom mesh="hand_4" material="off_white" class="visual" />
+                      <geom mesh="hand_c" class="collision" />
+                      <body name="H_left_finger" pos="0 0 0.0584">
+                        <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7" />
+                        <joint name="H_finger_joint1" class="finger" solreflimit="0.004 1" solimplimit="0.99 0.999 0.0001 0.5 2" />
+                        <geom mesh="finger_0" material="off_white" class="visual" />
+                        <geom mesh="finger_1" material="black" class="visual" />
+                        <geom mesh="finger_0" class="collision" />
+                        <geom class="fingertip_pad_collision_1" />
+                        <geom class="fingertip_pad_collision_2" />
+                        <geom class="fingertip_pad_collision_3" />
+                        <geom class="fingertip_pad_collision_4" />
+                        <geom class="fingertip_pad_collision_5" />
+                      </body>
+                      <body name="H_right_finger" pos="0 0 0.0584" quat="0 0 0 1">
+                        <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7" />
+                        <joint name="H_finger_joint2" class="finger" solreflimit="0.004 1" solimplimit="0.99 0.999 0.0001 0.5 2" />
+                        <geom mesh="finger_0" material="off_white" class="visual" />
+                        <geom mesh="finger_1" material="black" class="visual" />
+                        <geom mesh="finger_0" class="collision" />
+                        <geom class="fingertip_pad_collision_1" />
+                        <geom class="fingertip_pad_collision_2" />
+                        <geom class="fingertip_pad_collision_3" />
+                        <geom class="fingertip_pad_collision_4" />
+                        <geom class="fingertip_pad_collision_5" />
+                      </body>
+                      <site name="H_tcp" pos="0 0 .1029" size=".004" rgba="1 .65 .05 1" />
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+    <geom name="H_label" type="box" size=".065 .065 .0003" pos="-1.313 -0.357 0.8006" quat="1.0 0.0 0.0 0.0" material="label_H" contype="0" conaffinity="0" mass="0" />
+    <camera name="H_front" pos="-0.073 -0.357 1.65" xyaxes="0.0 1.0 0.0 -0.729537204140085 0.0 0.6839411288813297" fovy="50" />
+    <camera name="H_side" pos="-0.523 -1.207 1.5499999999999998" xyaxes="0.9429903335828895 0.33282011773513737 -0.0 -0.2041355973210134 0.5783841924095382 0.7898103467777309" fovy="50" />
+    <geom name="table_leg_0_0" type="box" pos="-1.2699999999999998 -1.2699999999999998 0.375" size="0.035 0.035 0.375" rgba="0.3 0.32 0.34 1.0" />
+    <geom name="table_leg_0_1" type="box" pos="1.2699999999999998 -1.2699999999999998 0.375" size="0.035 0.035 0.375" rgba="0.3 0.32 0.34 1.0" />
+    <geom name="table_leg_0_2" type="box" pos="-1.2699999999999998 -0.566 0.375" size="0.035 0.035 0.375" rgba="0.3 0.32 0.34 1.0" />
+    <geom name="table_leg_0_3" type="box" pos="1.2699999999999998 -0.566 0.375" size="0.035 0.035 0.375" rgba="0.3 0.32 0.34 1.0" />
+    <geom name="table_leg_1_0" type="box" pos="-1.2699999999999998 0.566 0.375" size="0.035 0.035 0.375" rgba="0.3 0.32 0.34 1.0" />
+    <geom name="table_leg_1_1" type="box" pos="1.2699999999999998 0.566 0.375" size="0.035 0.035 0.375" rgba="0.3 0.32 0.34 1.0" />
+    <geom name="table_leg_1_2" type="box" pos="-1.2699999999999998 1.2699999999999998 0.375" size="0.035 0.035 0.375" rgba="0.3 0.32 0.34 1.0" />
+    <geom name="table_leg_1_3" type="box" pos="1.2699999999999998 1.2699999999999998 0.375" size="0.035 0.035 0.375" rgba="0.3 0.32 0.34 1.0" />
+    <geom name="table_leg_2_0" type="box" pos="-1.2699999999999998 -0.3859999999999999 0.375" size="0.035 0.035 0.375" rgba="0.3 0.32 0.34 1.0" />
+    <geom name="table_leg_2_1" type="box" pos="-0.566 -0.3859999999999999 0.375" size="0.035 0.035 0.375" rgba="0.3 0.32 0.34 1.0" />
+    <geom name="table_leg_2_2" type="box" pos="-1.2699999999999998 0.3859999999999999 0.375" size="0.035 0.035 0.375" rgba="0.3 0.32 0.34 1.0" />
+    <geom name="table_leg_2_3" type="box" pos="-0.566 0.3859999999999999 0.375" size="0.035 0.035 0.375" rgba="0.3 0.32 0.34 1.0" />
+    <geom name="table_leg_3_0" type="box" pos="0.566 -0.3859999999999999 0.375" size="0.035 0.035 0.375" rgba="0.3 0.32 0.34 1.0" />
+    <geom name="table_leg_3_1" type="box" pos="1.2699999999999998 -0.3859999999999999 0.375" size="0.035 0.035 0.375" rgba="0.3 0.32 0.34 1.0" />
+    <geom name="table_leg_3_2" type="box" pos="0.566 0.3859999999999999 0.375" size="0.035 0.035 0.375" rgba="0.3 0.32 0.34 1.0" />
+    <geom name="table_leg_3_3" type="box" pos="1.2699999999999998 0.3859999999999999 0.375" size="0.035 0.035 0.375" rgba="0.3 0.32 0.34 1.0" />
+    <camera name="global" pos="0.0 -3.2406107852402117 3.7359698336440017" xyaxes="1.0 0.0 -0.0 0.0 0.6448709392097829 0.7642914835078908" fovy="43" />
+    <camera name="global_rear" pos="0.0 3.2406107852402117 3.7359698336440017" xyaxes="-1.0 0.0 0.0 0.0 -0.6448709392097829 0.7642914835078908" fovy="43" />
+    <camera name="global_side" pos="-2.43918473786621 -1.9513477902929677 2.6887354744352208" xyaxes="0.6246950475544242 -0.7808688094430304 0.0 0.388036627255196 0.31042930180415673 0.8677910027707109" fovy="48" />
+    <camera name="top" pos="0.0 0.0 5.190532528159179" xyaxes="1 0 0 0 1 0" fovy="48" />
+    <body name="board_A" pos="-0.357 -0.643 0.803" quat="0.7071067811865476 0.0 0.0 0.7071067811865475">
+      <geom name="board_A_plate" type="box" pos="0.0 0.0 -0.0015" size="0.055 0.16 0.0015" rgba="0.94 0.94 0.9 1.0" density="650" />
+      <geom name="A_slot1_markx0" type="box" pos="-0.035 -0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_slot1_marky0" type="box" pos="0.0 -0.135 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_slot1_markx1" type="box" pos="0.035 -0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_slot1_marky1" type="box" pos="0.0 -0.065 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_slot1_label" type="box" pos="-0.045 -0.1 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="A_slot1_number" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_slot2_markx0" type="box" pos="-0.035 0.0 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_slot2_marky0" type="box" pos="0.0 -0.035 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_slot2_markx1" type="box" pos="0.035 0.0 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_slot2_marky1" type="box" pos="0.0 0.035 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_slot2_label" type="box" pos="-0.045 0.0 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="A_slot2_number" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_slot3_markx0" type="box" pos="-0.035 0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_slot3_marky0" type="box" pos="0.0 0.065 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_slot3_markx1" type="box" pos="0.035 0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_slot3_marky1" type="box" pos="0.0 0.135 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_slot3_label" type="box" pos="-0.045 0.1 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="A_slot3_number" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="A_item1" pos="-0.107 -0.973 0.8300000000000001" quat="0.7071067811865476 0.0 0.0 0.7071067811865475">
+      <freejoint name="A_item1_free" />
+      <geom name="A_item1_geom" type="box" pos="0.0 0.0 0.0" size="0.03 0.03 0.03" rgba="0.85 0.12 0.12 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.16874999999999996" />
+      <geom name="A_item1_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="A_item1_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_item1_print1" type="box" pos="0.0 0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="A_item1_identity" quat="0.7071067811865476 -0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_item1_print2" type="box" pos="0.0 -0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="A_item1_identity" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="A_item2" pos="-0.357 -0.873 0.8300000000000001" quat="0.7071067811865476 0.0 0.0 0.7071067811865475">
+      <freejoint name="A_item2_free" />
+      <geom name="A_item2_geom" type="box" pos="0.0 0.0 0.0" size="0.03 0.03 0.03" rgba="0.85 0.12 0.12 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.16874999999999996" />
+      <geom name="A_item2_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="A_item2_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_item2_print1" type="box" pos="0.0 0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="A_item2_identity" quat="0.7071067811865476 -0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_item2_print2" type="box" pos="0.0 -0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="A_item2_identity" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="A_item3" pos="-0.607 -0.973 0.8300000000000001" quat="0.7071067811865476 0.0 0.0 0.7071067811865475">
+      <freejoint name="A_item3_free" />
+      <geom name="A_item3_geom" type="box" pos="0.0 0.0 0.0" size="0.03 0.03 0.03" rgba="0.85 0.12 0.12 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.16874999999999996" />
+      <geom name="A_item3_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="A_item3_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_item3_print1" type="box" pos="0.0 0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="A_item3_identity" quat="0.7071067811865476 -0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="A_item3_print2" type="box" pos="0.0 -0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="A_item3_identity" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="board_B" pos="0.357 -0.643 0.803" quat="0.7071067811865476 0.0 0.0 0.7071067811865475">
+      <geom name="board_B_plate" type="box" pos="0.0 0.0 -0.0015" size="0.055 0.16 0.0015" rgba="0.94 0.94 0.9 1.0" density="650" />
+      <geom name="B_slot1_markx0" type="box" pos="-0.035 -0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_slot1_marky0" type="box" pos="0.0 -0.135 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_slot1_markx1" type="box" pos="0.035 -0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_slot1_marky1" type="box" pos="0.0 -0.065 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_slot1_label" type="box" pos="-0.045 -0.1 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="B_slot1_number" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_slot2_markx0" type="box" pos="-0.035 0.0 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_slot2_marky0" type="box" pos="0.0 -0.035 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_slot2_markx1" type="box" pos="0.035 0.0 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_slot2_marky1" type="box" pos="0.0 0.035 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_slot2_label" type="box" pos="-0.045 0.0 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="B_slot2_number" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_slot3_markx0" type="box" pos="-0.035 0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_slot3_marky0" type="box" pos="0.0 0.065 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_slot3_markx1" type="box" pos="0.035 0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_slot3_marky1" type="box" pos="0.0 0.135 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_slot3_label" type="box" pos="-0.045 0.1 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="B_slot3_number" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="B_item1" pos="0.607 -0.973 0.8300000000000001" quat="0.7071067811865476 0.0 0.0 0.7071067811865475">
+      <freejoint name="B_item1_free" />
+      <geom name="B_item1_geom" type="box" pos="0.0 0.0 0.0" size="0.03 0.03 0.03" rgba="0.06 0.34 0.77 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.16874999999999996" />
+      <geom name="B_item1_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="B_item1_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_item1_print1" type="box" pos="0.0 0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="B_item1_identity" quat="0.7071067811865476 -0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_item1_print2" type="box" pos="0.0 -0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="B_item1_identity" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="B_item2" pos="0.357 -0.873 0.8300000000000001" quat="0.7071067811865476 0.0 0.0 0.7071067811865475">
+      <freejoint name="B_item2_free" />
+      <geom name="B_item2_geom" type="box" pos="0.0 0.0 0.0" size="0.03 0.03 0.03" rgba="0.06 0.34 0.77 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.16874999999999996" />
+      <geom name="B_item2_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="B_item2_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_item2_print1" type="box" pos="0.0 0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="B_item2_identity" quat="0.7071067811865476 -0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_item2_print2" type="box" pos="0.0 -0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="B_item2_identity" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="B_item3" pos="0.107 -0.973 0.8300000000000001" quat="0.7071067811865476 0.0 0.0 0.7071067811865475">
+      <freejoint name="B_item3_free" />
+      <geom name="B_item3_geom" type="box" pos="0.0 0.0 0.0" size="0.03 0.03 0.03" rgba="0.06 0.34 0.77 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.16874999999999996" />
+      <geom name="B_item3_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="B_item3_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_item3_print1" type="box" pos="0.0 0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="B_item3_identity" quat="0.7071067811865476 -0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="B_item3_print2" type="box" pos="0.0 -0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="B_item3_identity" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="board_C" pos="0.643 -0.357 0.803" quat="6.123233995736766e-17 0.0 0.0 1.0">
+      <geom name="board_C_plate" type="box" pos="0.0 0.0 -0.0015" size="0.055 0.16 0.0015" rgba="0.94 0.94 0.9 1.0" density="650" />
+      <geom name="C_slot1_markx0" type="box" pos="-0.035 -0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_slot1_marky0" type="box" pos="0.0 -0.135 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_slot1_markx1" type="box" pos="0.035 -0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_slot1_marky1" type="box" pos="0.0 -0.065 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_slot1_label" type="box" pos="-0.045 -0.1 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="C_slot1_number" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_slot2_markx0" type="box" pos="-0.035 0.0 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_slot2_marky0" type="box" pos="0.0 -0.035 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_slot2_markx1" type="box" pos="0.035 0.0 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_slot2_marky1" type="box" pos="0.0 0.035 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_slot2_label" type="box" pos="-0.045 0.0 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="C_slot2_number" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_slot3_markx0" type="box" pos="-0.035 0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_slot3_marky0" type="box" pos="0.0 0.065 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_slot3_markx1" type="box" pos="0.035 0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_slot3_marky1" type="box" pos="0.0 0.135 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_slot3_label" type="box" pos="-0.045 0.1 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="C_slot3_number" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="C_item1" pos="0.973 -0.107 0.8300000000000001" quat="6.123233995736766e-17 0.0 0.0 1.0">
+      <freejoint name="C_item1_free" />
+      <geom name="C_item1_geom" type="box" pos="0.0 0.0 0.0" size="0.03 0.03 0.03" rgba="0.98 0.74 0.1 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.16874999999999996" />
+      <geom name="C_item1_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="C_item1_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_item1_print1" type="box" pos="0.0 0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="C_item1_identity" quat="0.7071067811865476 -0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_item1_print2" type="box" pos="0.0 -0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="C_item1_identity" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="C_item2" pos="0.873 -0.357 0.8300000000000001" quat="6.123233995736766e-17 0.0 0.0 1.0">
+      <freejoint name="C_item2_free" />
+      <geom name="C_item2_geom" type="box" pos="0.0 0.0 0.0" size="0.03 0.03 0.03" rgba="0.98 0.74 0.1 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.16874999999999996" />
+      <geom name="C_item2_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="C_item2_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_item2_print1" type="box" pos="0.0 0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="C_item2_identity" quat="0.7071067811865476 -0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_item2_print2" type="box" pos="0.0 -0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="C_item2_identity" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="C_item3" pos="0.973 -0.607 0.8300000000000001" quat="6.123233995736766e-17 0.0 0.0 1.0">
+      <freejoint name="C_item3_free" />
+      <geom name="C_item3_geom" type="box" pos="0.0 0.0 0.0" size="0.03 0.03 0.03" rgba="0.98 0.74 0.1 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.16874999999999996" />
+      <geom name="C_item3_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="C_item3_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_item3_print1" type="box" pos="0.0 0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="C_item3_identity" quat="0.7071067811865476 -0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="C_item3_print2" type="box" pos="0.0 -0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="C_item3_identity" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="board_D" pos="0.643 0.357 0.803" quat="6.123233995736766e-17 0.0 0.0 1.0">
+      <geom name="board_D_plate" type="box" pos="0.0 0.0 -0.0015" size="0.055 0.16 0.0015" rgba="0.94 0.94 0.9 1.0" density="650" />
+      <geom name="D_slot1_markx0" type="box" pos="-0.035 -0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_slot1_marky0" type="box" pos="0.0 -0.135 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_slot1_markx1" type="box" pos="0.035 -0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_slot1_marky1" type="box" pos="0.0 -0.065 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_slot1_label" type="box" pos="-0.045 -0.1 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="D_slot1_number" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_slot2_markx0" type="box" pos="-0.035 0.0 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_slot2_marky0" type="box" pos="0.0 -0.035 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_slot2_markx1" type="box" pos="0.035 0.0 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_slot2_marky1" type="box" pos="0.0 0.035 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_slot2_label" type="box" pos="-0.045 0.0 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="D_slot2_number" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_slot3_markx0" type="box" pos="-0.035 0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_slot3_marky0" type="box" pos="0.0 0.065 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_slot3_markx1" type="box" pos="0.035 0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_slot3_marky1" type="box" pos="0.0 0.135 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_slot3_label" type="box" pos="-0.045 0.1 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="D_slot3_number" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="D_item1" pos="0.973 0.607 0.8300000000000001" quat="6.123233995736766e-17 0.0 0.0 1.0">
+      <freejoint name="D_item1_free" />
+      <geom name="D_item1_geom" type="box" pos="0.0 0.0 0.0" size="0.03 0.03 0.03" rgba="0.95 0.95 0.91 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.16874999999999996" />
+      <geom name="D_item1_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="D_item1_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_item1_print1" type="box" pos="0.0 0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="D_item1_identity" quat="0.7071067811865476 -0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_item1_print2" type="box" pos="0.0 -0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="D_item1_identity" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="D_item2" pos="0.873 0.357 0.8300000000000001" quat="6.123233995736766e-17 0.0 0.0 1.0">
+      <freejoint name="D_item2_free" />
+      <geom name="D_item2_geom" type="box" pos="0.0 0.0 0.0" size="0.03 0.03 0.03" rgba="0.95 0.95 0.91 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.16874999999999996" />
+      <geom name="D_item2_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="D_item2_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_item2_print1" type="box" pos="0.0 0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="D_item2_identity" quat="0.7071067811865476 -0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_item2_print2" type="box" pos="0.0 -0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="D_item2_identity" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="D_item3" pos="0.973 0.107 0.8300000000000001" quat="6.123233995736766e-17 0.0 0.0 1.0">
+      <freejoint name="D_item3_free" />
+      <geom name="D_item3_geom" type="box" pos="0.0 0.0 0.0" size="0.03 0.03 0.03" rgba="0.95 0.95 0.91 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.16874999999999996" />
+      <geom name="D_item3_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="D_item3_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_item3_print1" type="box" pos="0.0 0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="D_item3_identity" quat="0.7071067811865476 -0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="D_item3_print2" type="box" pos="0.0 -0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="D_item3_identity" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="board_E" pos="0.357 0.643 0.803" quat="0.7071067811865476 0.0 0.0 -0.7071067811865475">
+      <geom name="board_E_plate" type="box" pos="0.0 0.0 -0.0015" size="0.055 0.16 0.0015" rgba="0.94 0.94 0.9 1.0" density="650" />
+      <geom name="E_slot1_markx0" type="box" pos="-0.035 -0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_slot1_marky0" type="box" pos="0.0 -0.135 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_slot1_markx1" type="box" pos="0.035 -0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_slot1_marky1" type="box" pos="0.0 -0.065 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_slot1_label" type="box" pos="-0.045 -0.1 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="E_slot1_number" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_slot2_markx0" type="box" pos="-0.035 0.0 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_slot2_marky0" type="box" pos="0.0 -0.035 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_slot2_markx1" type="box" pos="0.035 0.0 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_slot2_marky1" type="box" pos="0.0 0.035 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_slot2_label" type="box" pos="-0.045 0.0 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="E_slot2_number" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_slot3_markx0" type="box" pos="-0.035 0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_slot3_marky0" type="box" pos="0.0 0.065 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_slot3_markx1" type="box" pos="0.035 0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_slot3_marky1" type="box" pos="0.0 0.135 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_slot3_label" type="box" pos="-0.045 0.1 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="E_slot3_number" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="E_item1" pos="0.107 0.973 0.8300000000000001" quat="0.7071067811865476 0.0 0.0 -0.7071067811865475">
+      <freejoint name="E_item1_free" />
+      <geom name="E_item1_geom" type="box" pos="0.0 0.0 0.0" size="0.03 0.03 0.03" rgba="0.08 0.66 0.68 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.16874999999999996" />
+      <geom name="E_item1_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="E_item1_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_item1_print1" type="box" pos="0.0 0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="E_item1_identity" quat="0.7071067811865476 -0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_item1_print2" type="box" pos="0.0 -0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="E_item1_identity" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="E_item2" pos="0.357 0.873 0.8300000000000001" quat="0.7071067811865476 0.0 0.0 -0.7071067811865475">
+      <freejoint name="E_item2_free" />
+      <geom name="E_item2_geom" type="box" pos="0.0 0.0 0.0" size="0.03 0.03 0.03" rgba="0.08 0.66 0.68 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.16874999999999996" />
+      <geom name="E_item2_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="E_item2_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_item2_print1" type="box" pos="0.0 0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="E_item2_identity" quat="0.7071067811865476 -0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_item2_print2" type="box" pos="0.0 -0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="E_item2_identity" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="E_item3" pos="0.607 0.973 0.8300000000000001" quat="0.7071067811865476 0.0 0.0 -0.7071067811865475">
+      <freejoint name="E_item3_free" />
+      <geom name="E_item3_geom" type="box" pos="0.0 0.0 0.0" size="0.03 0.03 0.03" rgba="0.08 0.66 0.68 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.16874999999999996" />
+      <geom name="E_item3_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="E_item3_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_item3_print1" type="box" pos="0.0 0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="E_item3_identity" quat="0.7071067811865476 -0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="E_item3_print2" type="box" pos="0.0 -0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="E_item3_identity" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="board_F" pos="-0.357 0.643 0.803" quat="0.7071067811865476 0.0 0.0 -0.7071067811865475">
+      <geom name="board_F_plate" type="box" pos="0.0 0.0 -0.0015" size="0.055 0.16 0.0015" rgba="0.94 0.94 0.9 1.0" density="650" />
+      <geom name="F_slot1_markx0" type="box" pos="-0.035 -0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_slot1_marky0" type="box" pos="0.0 -0.135 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_slot1_markx1" type="box" pos="0.035 -0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_slot1_marky1" type="box" pos="0.0 -0.065 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_slot1_label" type="box" pos="-0.045 -0.1 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="F_slot1_number" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_slot2_markx0" type="box" pos="-0.035 0.0 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_slot2_marky0" type="box" pos="0.0 -0.035 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_slot2_markx1" type="box" pos="0.035 0.0 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_slot2_marky1" type="box" pos="0.0 0.035 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_slot2_label" type="box" pos="-0.045 0.0 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="F_slot2_number" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_slot3_markx0" type="box" pos="-0.035 0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_slot3_marky0" type="box" pos="0.0 0.065 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_slot3_markx1" type="box" pos="0.035 0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_slot3_marky1" type="box" pos="0.0 0.135 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_slot3_label" type="box" pos="-0.045 0.1 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="F_slot3_number" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="F_item1" pos="-0.607 0.973 0.8300000000000001" quat="0.7071067811865476 0.0 0.0 -0.7071067811865475">
+      <freejoint name="F_item1_free" />
+      <geom name="F_item1_geom" type="box" pos="0.0 0.0 0.0" size="0.03 0.03 0.03" rgba="0.49 0.27 0.69 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.16874999999999996" />
+      <geom name="F_item1_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="F_item1_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_item1_print1" type="box" pos="0.0 0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="F_item1_identity" quat="0.7071067811865476 -0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_item1_print2" type="box" pos="0.0 -0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="F_item1_identity" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="F_item2" pos="-0.357 0.873 0.8300000000000001" quat="0.7071067811865476 0.0 0.0 -0.7071067811865475">
+      <freejoint name="F_item2_free" />
+      <geom name="F_item2_geom" type="box" pos="0.0 0.0 0.0" size="0.03 0.03 0.03" rgba="0.49 0.27 0.69 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.16874999999999996" />
+      <geom name="F_item2_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="F_item2_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_item2_print1" type="box" pos="0.0 0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="F_item2_identity" quat="0.7071067811865476 -0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_item2_print2" type="box" pos="0.0 -0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="F_item2_identity" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="F_item3" pos="-0.107 0.973 0.8300000000000001" quat="0.7071067811865476 0.0 0.0 -0.7071067811865475">
+      <freejoint name="F_item3_free" />
+      <geom name="F_item3_geom" type="box" pos="0.0 0.0 0.0" size="0.03 0.03 0.03" rgba="0.49 0.27 0.69 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.16874999999999996" />
+      <geom name="F_item3_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="F_item3_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_item3_print1" type="box" pos="0.0 0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="F_item3_identity" quat="0.7071067811865476 -0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="F_item3_print2" type="box" pos="0.0 -0.030199999999999998 0.0" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="F_item3_identity" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="board_G" pos="-0.643 0.357 0.803" quat="1.0 0.0 0.0 0.0">
+      <geom name="board_G_plate" type="box" pos="0.0 0.0 -0.0015" size="0.055 0.16 0.0015" rgba="0.94 0.94 0.9 1.0" density="650" />
+      <geom name="G_slot1_markx0" type="box" pos="-0.035 -0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="G_slot1_marky0" type="box" pos="0.0 -0.135 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="G_slot1_markx1" type="box" pos="0.035 -0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="G_slot1_marky1" type="box" pos="0.0 -0.065 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="G_slot1_label" type="box" pos="-0.045 -0.1 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="G_slot1_number" contype="0" conaffinity="0" mass="0" />
+      <geom name="G_slot2_markx0" type="box" pos="-0.035 0.0 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="G_slot2_marky0" type="box" pos="0.0 -0.035 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="G_slot2_markx1" type="box" pos="0.035 0.0 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="G_slot2_marky1" type="box" pos="0.0 0.035 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="G_slot2_label" type="box" pos="-0.045 0.0 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="G_slot2_number" contype="0" conaffinity="0" mass="0" />
+      <geom name="G_slot3_markx0" type="box" pos="-0.035 0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="G_slot3_marky0" type="box" pos="0.0 0.065 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="G_slot3_markx1" type="box" pos="0.035 0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="G_slot3_marky1" type="box" pos="0.0 0.135 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="G_slot3_label" type="box" pos="-0.045 0.1 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="G_slot3_number" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="G_item1" pos="-0.973 0.107 0.8300000000000001" quat="1.0 0.0 0.0 0.0">
+      <freejoint name="G_item1_free" />
+      <geom name="G_item1_geom" type="cylinder" pos="0.0 0.0 0.0" size="0.03 0.03" rgba="0.85 0.12 0.12 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.13253594007331937" />
+      <geom name="G_item1_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="G_item1_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="G_item2" pos="-0.873 0.357 0.8300000000000001" quat="1.0 0.0 0.0 0.0">
+      <freejoint name="G_item2_free" />
+      <geom name="G_item2_geom" type="cylinder" pos="0.0 0.0 0.0" size="0.03 0.03" rgba="0.85 0.12 0.12 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.13253594007331937" />
+      <geom name="G_item2_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="G_item2_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="G_item3" pos="-0.973 0.607 0.8300000000000001" quat="1.0 0.0 0.0 0.0">
+      <freejoint name="G_item3_free" />
+      <geom name="G_item3_geom" type="cylinder" pos="0.0 0.0 0.0" size="0.03 0.03" rgba="0.85 0.12 0.12 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.13253594007331937" />
+      <geom name="G_item3_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="G_item3_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="board_H" pos="-0.643 -0.357 0.803" quat="1.0 0.0 0.0 0.0">
+      <geom name="board_H_plate" type="box" pos="0.0 0.0 -0.0015" size="0.055 0.16 0.0015" rgba="0.94 0.94 0.9 1.0" density="650" />
+      <geom name="H_slot1_markx0" type="box" pos="-0.035 -0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="H_slot1_marky0" type="box" pos="0.0 -0.135 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="H_slot1_markx1" type="box" pos="0.035 -0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="H_slot1_marky1" type="box" pos="0.0 -0.065 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="H_slot1_label" type="box" pos="-0.045 -0.1 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="H_slot1_number" contype="0" conaffinity="0" mass="0" />
+      <geom name="H_slot2_markx0" type="box" pos="-0.035 0.0 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="H_slot2_marky0" type="box" pos="0.0 -0.035 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="H_slot2_markx1" type="box" pos="0.035 0.0 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="H_slot2_marky1" type="box" pos="0.0 0.035 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="H_slot2_label" type="box" pos="-0.045 0.0 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="H_slot2_number" contype="0" conaffinity="0" mass="0" />
+      <geom name="H_slot3_markx0" type="box" pos="-0.035 0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="H_slot3_marky0" type="box" pos="0.0 0.065 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="H_slot3_markx1" type="box" pos="0.035 0.1 0.00015" size="0.0005 0.035 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="H_slot3_marky1" type="box" pos="0.0 0.135 0.00015" size="0.035 0.0005 0.0001" rgba="0.23 0.4 0.51 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="H_slot3_label" type="box" pos="-0.045 0.1 0.0002" size="0.007 0.011 0.0001" rgba="0.945 0.937 0.91 1.0" material="H_slot3_number" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="H_item1" pos="-0.973 -0.607 0.8300000000000001" quat="1.0 0.0 0.0 0.0">
+      <freejoint name="H_item1_free" />
+      <geom name="H_item1_geom" type="cylinder" pos="0.0 0.0 0.0" size="0.03 0.03" rgba="0.06 0.34 0.77 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.13253594007331937" />
+      <geom name="H_item1_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="H_item1_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="H_item2" pos="-0.873 -0.357 0.8300000000000001" quat="1.0 0.0 0.0 0.0">
+      <freejoint name="H_item2_free" />
+      <geom name="H_item2_geom" type="cylinder" pos="0.0 0.0 0.0" size="0.03 0.03" rgba="0.06 0.34 0.77 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.13253594007331937" />
+      <geom name="H_item2_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="H_item2_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="H_item3" pos="-0.973 -0.107 0.8300000000000001" quat="1.0 0.0 0.0 0.0">
+      <freejoint name="H_item3_free" />
+      <geom name="H_item3_geom" type="cylinder" pos="0.0 0.0 0.0" size="0.03 0.03" rgba="0.06 0.34 0.77 1.0" friction="1 .005 .0001" condim="4" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.13253594007331937" />
+      <geom name="H_item3_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="H_item3_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="transfer_A_B" pos="0.0 -0.973 0.8002" quat="1.0 0.0 0.0 0.0">
+      <geom name="transfer_A_B_x0" type="box" pos="-0.07 0.0 0.0" size="0.001 0.07 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_A_B_y0" type="box" pos="0.0 -0.07 0.0" size="0.07 0.001 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_A_B_x1" type="box" pos="0.07 0.0 0.0" size="0.001 0.07 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_A_B_y1" type="box" pos="0.0 0.07 0.0" size="0.07 0.001 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="transfer_B_C" pos="0.665 -0.665 0.8002" quat="1.0 0.0 0.0 0.0">
+      <geom name="transfer_B_C_x0" type="box" pos="-0.07 0.0 0.0" size="0.001 0.07 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_B_C_y0" type="box" pos="0.0 -0.07 0.0" size="0.07 0.001 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_B_C_x1" type="box" pos="0.07 0.0 0.0" size="0.001 0.07 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_B_C_y1" type="box" pos="0.0 0.07 0.0" size="0.07 0.001 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="transfer_C_D" pos="0.973 0.0 0.8002" quat="1.0 0.0 0.0 0.0">
+      <geom name="transfer_C_D_x0" type="box" pos="-0.07 0.0 0.0" size="0.001 0.07 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_C_D_y0" type="box" pos="0.0 -0.07 0.0" size="0.07 0.001 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_C_D_x1" type="box" pos="0.07 0.0 0.0" size="0.001 0.07 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_C_D_y1" type="box" pos="0.0 0.07 0.0" size="0.07 0.001 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="transfer_D_E" pos="0.665 0.665 0.8002" quat="1.0 0.0 0.0 0.0">
+      <geom name="transfer_D_E_x0" type="box" pos="-0.07 0.0 0.0" size="0.001 0.07 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_D_E_y0" type="box" pos="0.0 -0.07 0.0" size="0.07 0.001 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_D_E_x1" type="box" pos="0.07 0.0 0.0" size="0.001 0.07 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_D_E_y1" type="box" pos="0.0 0.07 0.0" size="0.07 0.001 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="transfer_E_F" pos="0.0 0.973 0.8002" quat="1.0 0.0 0.0 0.0">
+      <geom name="transfer_E_F_x0" type="box" pos="-0.07 0.0 0.0" size="0.001 0.07 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_E_F_y0" type="box" pos="0.0 -0.07 0.0" size="0.07 0.001 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_E_F_x1" type="box" pos="0.07 0.0 0.0" size="0.001 0.07 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_E_F_y1" type="box" pos="0.0 0.07 0.0" size="0.07 0.001 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="transfer_F_G" pos="-0.665 0.665 0.8002" quat="1.0 0.0 0.0 0.0">
+      <geom name="transfer_F_G_x0" type="box" pos="-0.07 0.0 0.0" size="0.001 0.07 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_F_G_y0" type="box" pos="0.0 -0.07 0.0" size="0.07 0.001 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_F_G_x1" type="box" pos="0.07 0.0 0.0" size="0.001 0.07 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_F_G_y1" type="box" pos="0.0 0.07 0.0" size="0.07 0.001 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="transfer_G_H" pos="-0.973 0.0 0.8002" quat="1.0 0.0 0.0 0.0">
+      <geom name="transfer_G_H_x0" type="box" pos="-0.07 0.0 0.0" size="0.001 0.07 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_G_H_y0" type="box" pos="0.0 -0.07 0.0" size="0.07 0.001 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_G_H_x1" type="box" pos="0.07 0.0 0.0" size="0.001 0.07 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_G_H_y1" type="box" pos="0.0 0.07 0.0" size="0.07 0.001 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <body name="transfer_H_A" pos="-0.665 -0.665 0.8002" quat="1.0 0.0 0.0 0.0">
+      <geom name="transfer_H_A_x0" type="box" pos="-0.07 0.0 0.0" size="0.001 0.07 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_H_A_y0" type="box" pos="0.0 -0.07 0.0" size="0.07 0.001 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_H_A_x1" type="box" pos="0.07 0.0 0.0" size="0.001 0.07 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+      <geom name="transfer_H_A_y1" type="box" pos="0.0 0.07 0.0" size="0.07 0.001 0.00012" rgba="0.2 0.47 0.64 1.0" contype="0" conaffinity="0" mass="0" />
+    </body>
+    <camera name="board_A_close" pos="0.043 -0.273 1.42" xyaxes="-0.6790419816174271 0.7340994395864077 0.0 -0.5392958109397865 -0.4988486251193025 0.6784615519831465" fovy="38" />
+    <camera name="board_B_close" pos="0.757 -0.273 1.42" xyaxes="-0.679041981617427 0.7340994395864077 0.0 -0.5392958109397864 -0.49884862511930234 0.6784615519831464" fovy="38" />
+    <camera name="board_C_close" pos="0.273 0.043 1.42" xyaxes="-0.7340994395864077 -0.6790419816174271 0.0 0.4988486251193025 -0.5392958109397865 0.6784615519831465" fovy="38" />
+    <camera name="board_D_close" pos="0.273 0.757 1.42" xyaxes="-0.7340994395864077 -0.679041981617427 0.0 0.49884862511930234 -0.5392958109397864 0.6784615519831464" fovy="38" />
+    <camera name="board_E_close" pos="-0.043 0.273 1.42" xyaxes="0.6790419816174271 -0.7340994395864077 0.0 0.5392958109397865 0.4988486251193025 0.6784615519831465" fovy="38" />
+    <camera name="board_F_close" pos="-0.757 0.273 1.42" xyaxes="0.679041981617427 -0.7340994395864077 0.0 0.5392958109397864 0.49884862511930234 0.6784615519831464" fovy="38" />
+    <camera name="board_G_close" pos="-0.273 -0.043 1.42" xyaxes="0.7340994395864077 0.6790419816174271 -0.0 -0.4988486251193025 0.5392958109397865 0.6784615519831465" fovy="38" />
+    <camera name="board_H_close" pos="-0.273 -0.757 1.42" xyaxes="0.7340994395864077 0.679041981617427 -0.0 -0.49884862511930234 0.5392958109397864 0.6784615519831464" fovy="38" />
+  </worldbody>
+  <tendon>
+    <fixed name="A_split">
+      <joint joint="A_finger_joint1" coef="0.5" />
+      <joint joint="A_finger_joint2" coef="0.5" />
+    </fixed>
+    <fixed name="B_split">
+      <joint joint="B_finger_joint1" coef="0.5" />
+      <joint joint="B_finger_joint2" coef="0.5" />
+    </fixed>
+    <fixed name="C_split">
+      <joint joint="C_finger_joint1" coef="0.5" />
+      <joint joint="C_finger_joint2" coef="0.5" />
+    </fixed>
+    <fixed name="D_split">
+      <joint joint="D_finger_joint1" coef="0.5" />
+      <joint joint="D_finger_joint2" coef="0.5" />
+    </fixed>
+    <fixed name="E_split">
+      <joint joint="E_finger_joint1" coef="0.5" />
+      <joint joint="E_finger_joint2" coef="0.5" />
+    </fixed>
+    <fixed name="F_split">
+      <joint joint="F_finger_joint1" coef="0.5" />
+      <joint joint="F_finger_joint2" coef="0.5" />
+    </fixed>
+    <fixed name="G_split">
+      <joint joint="G_finger_joint1" coef="0.5" />
+      <joint joint="G_finger_joint2" coef="0.5" />
+    </fixed>
+    <fixed name="H_split">
+      <joint joint="H_finger_joint1" coef="0.5" />
+      <joint joint="H_finger_joint2" coef="0.5" />
+    </fixed>
+  </tendon>
+  <equality>
+    <joint joint1="A_finger_joint1" joint2="A_finger_joint2" solimp="0.95 0.99 0.001" solref="0.005 1" />
+    <joint joint1="B_finger_joint1" joint2="B_finger_joint2" solimp="0.95 0.99 0.001" solref="0.005 1" />
+    <joint joint1="C_finger_joint1" joint2="C_finger_joint2" solimp="0.95 0.99 0.001" solref="0.005 1" />
+    <joint joint1="D_finger_joint1" joint2="D_finger_joint2" solimp="0.95 0.99 0.001" solref="0.005 1" />
+    <joint joint1="E_finger_joint1" joint2="E_finger_joint2" solimp="0.95 0.99 0.001" solref="0.005 1" />
+    <joint joint1="F_finger_joint1" joint2="F_finger_joint2" solimp="0.95 0.99 0.001" solref="0.005 1" />
+    <joint joint1="G_finger_joint1" joint2="G_finger_joint2" solimp="0.95 0.99 0.001" solref="0.005 1" />
+    <joint joint1="H_finger_joint1" joint2="H_finger_joint2" solimp="0.95 0.99 0.001" solref="0.005 1" />
+  </equality>
+  <actuator>
+    <general class="panda" name="A_actuator1" joint="A_joint1" gainprm="4500" biasprm="0 -4500 -450" />
+    <general class="panda" name="A_actuator2" joint="A_joint2" gainprm="4500" biasprm="0 -4500 -450" ctrlrange="-1.7628 1.7628" />
+    <general class="panda" name="A_actuator3" joint="A_joint3" gainprm="3500" biasprm="0 -3500 -350" />
+    <general class="panda" name="A_actuator4" joint="A_joint4" gainprm="3500" biasprm="0 -3500 -350" ctrlrange="-3.0718 -0.0698" />
+    <general class="panda" name="A_actuator5" joint="A_joint5" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" />
+    <general class="panda" name="A_actuator6" joint="A_joint6" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" ctrlrange="-0.0175 3.7525" />
+    <general class="panda" name="A_actuator7" joint="A_joint7" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" />
+    <general class="panda" name="A_actuator8" tendon="A_split" forcerange="-100 100" ctrlrange="0 255" gainprm="0.01568627451 0 0" biasprm="0 -100 -10" />
+    <general class="panda" name="B_actuator1" joint="B_joint1" gainprm="4500" biasprm="0 -4500 -450" />
+    <general class="panda" name="B_actuator2" joint="B_joint2" gainprm="4500" biasprm="0 -4500 -450" ctrlrange="-1.7628 1.7628" />
+    <general class="panda" name="B_actuator3" joint="B_joint3" gainprm="3500" biasprm="0 -3500 -350" />
+    <general class="panda" name="B_actuator4" joint="B_joint4" gainprm="3500" biasprm="0 -3500 -350" ctrlrange="-3.0718 -0.0698" />
+    <general class="panda" name="B_actuator5" joint="B_joint5" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" />
+    <general class="panda" name="B_actuator6" joint="B_joint6" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" ctrlrange="-0.0175 3.7525" />
+    <general class="panda" name="B_actuator7" joint="B_joint7" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" />
+    <general class="panda" name="B_actuator8" tendon="B_split" forcerange="-100 100" ctrlrange="0 255" gainprm="0.01568627451 0 0" biasprm="0 -100 -10" />
+    <general class="panda" name="C_actuator1" joint="C_joint1" gainprm="4500" biasprm="0 -4500 -450" />
+    <general class="panda" name="C_actuator2" joint="C_joint2" gainprm="4500" biasprm="0 -4500 -450" ctrlrange="-1.7628 1.7628" />
+    <general class="panda" name="C_actuator3" joint="C_joint3" gainprm="3500" biasprm="0 -3500 -350" />
+    <general class="panda" name="C_actuator4" joint="C_joint4" gainprm="3500" biasprm="0 -3500 -350" ctrlrange="-3.0718 -0.0698" />
+    <general class="panda" name="C_actuator5" joint="C_joint5" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" />
+    <general class="panda" name="C_actuator6" joint="C_joint6" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" ctrlrange="-0.0175 3.7525" />
+    <general class="panda" name="C_actuator7" joint="C_joint7" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" />
+    <general class="panda" name="C_actuator8" tendon="C_split" forcerange="-100 100" ctrlrange="0 255" gainprm="0.01568627451 0 0" biasprm="0 -100 -10" />
+    <general class="panda" name="D_actuator1" joint="D_joint1" gainprm="4500" biasprm="0 -4500 -450" />
+    <general class="panda" name="D_actuator2" joint="D_joint2" gainprm="4500" biasprm="0 -4500 -450" ctrlrange="-1.7628 1.7628" />
+    <general class="panda" name="D_actuator3" joint="D_joint3" gainprm="3500" biasprm="0 -3500 -350" />
+    <general class="panda" name="D_actuator4" joint="D_joint4" gainprm="3500" biasprm="0 -3500 -350" ctrlrange="-3.0718 -0.0698" />
+    <general class="panda" name="D_actuator5" joint="D_joint5" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" />
+    <general class="panda" name="D_actuator6" joint="D_joint6" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" ctrlrange="-0.0175 3.7525" />
+    <general class="panda" name="D_actuator7" joint="D_joint7" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" />
+    <general class="panda" name="D_actuator8" tendon="D_split" forcerange="-100 100" ctrlrange="0 255" gainprm="0.01568627451 0 0" biasprm="0 -100 -10" />
+    <general class="panda" name="E_actuator1" joint="E_joint1" gainprm="4500" biasprm="0 -4500 -450" />
+    <general class="panda" name="E_actuator2" joint="E_joint2" gainprm="4500" biasprm="0 -4500 -450" ctrlrange="-1.7628 1.7628" />
+    <general class="panda" name="E_actuator3" joint="E_joint3" gainprm="3500" biasprm="0 -3500 -350" />
+    <general class="panda" name="E_actuator4" joint="E_joint4" gainprm="3500" biasprm="0 -3500 -350" ctrlrange="-3.0718 -0.0698" />
+    <general class="panda" name="E_actuator5" joint="E_joint5" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" />
+    <general class="panda" name="E_actuator6" joint="E_joint6" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" ctrlrange="-0.0175 3.7525" />
+    <general class="panda" name="E_actuator7" joint="E_joint7" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" />
+    <general class="panda" name="E_actuator8" tendon="E_split" forcerange="-100 100" ctrlrange="0 255" gainprm="0.01568627451 0 0" biasprm="0 -100 -10" />
+    <general class="panda" name="F_actuator1" joint="F_joint1" gainprm="4500" biasprm="0 -4500 -450" />
+    <general class="panda" name="F_actuator2" joint="F_joint2" gainprm="4500" biasprm="0 -4500 -450" ctrlrange="-1.7628 1.7628" />
+    <general class="panda" name="F_actuator3" joint="F_joint3" gainprm="3500" biasprm="0 -3500 -350" />
+    <general class="panda" name="F_actuator4" joint="F_joint4" gainprm="3500" biasprm="0 -3500 -350" ctrlrange="-3.0718 -0.0698" />
+    <general class="panda" name="F_actuator5" joint="F_joint5" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" />
+    <general class="panda" name="F_actuator6" joint="F_joint6" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" ctrlrange="-0.0175 3.7525" />
+    <general class="panda" name="F_actuator7" joint="F_joint7" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" />
+    <general class="panda" name="F_actuator8" tendon="F_split" forcerange="-100 100" ctrlrange="0 255" gainprm="0.01568627451 0 0" biasprm="0 -100 -10" />
+    <general class="panda" name="G_actuator1" joint="G_joint1" gainprm="4500" biasprm="0 -4500 -450" />
+    <general class="panda" name="G_actuator2" joint="G_joint2" gainprm="4500" biasprm="0 -4500 -450" ctrlrange="-1.7628 1.7628" />
+    <general class="panda" name="G_actuator3" joint="G_joint3" gainprm="3500" biasprm="0 -3500 -350" />
+    <general class="panda" name="G_actuator4" joint="G_joint4" gainprm="3500" biasprm="0 -3500 -350" ctrlrange="-3.0718 -0.0698" />
+    <general class="panda" name="G_actuator5" joint="G_joint5" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" />
+    <general class="panda" name="G_actuator6" joint="G_joint6" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" ctrlrange="-0.0175 3.7525" />
+    <general class="panda" name="G_actuator7" joint="G_joint7" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" />
+    <general class="panda" name="G_actuator8" tendon="G_split" forcerange="-100 100" ctrlrange="0 255" gainprm="0.01568627451 0 0" biasprm="0 -100 -10" />
+    <general class="panda" name="H_actuator1" joint="H_joint1" gainprm="4500" biasprm="0 -4500 -450" />
+    <general class="panda" name="H_actuator2" joint="H_joint2" gainprm="4500" biasprm="0 -4500 -450" ctrlrange="-1.7628 1.7628" />
+    <general class="panda" name="H_actuator3" joint="H_joint3" gainprm="3500" biasprm="0 -3500 -350" />
+    <general class="panda" name="H_actuator4" joint="H_joint4" gainprm="3500" biasprm="0 -3500 -350" ctrlrange="-3.0718 -0.0698" />
+    <general class="panda" name="H_actuator5" joint="H_joint5" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" />
+    <general class="panda" name="H_actuator6" joint="H_joint6" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" ctrlrange="-0.0175 3.7525" />
+    <general class="panda" name="H_actuator7" joint="H_joint7" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" />
+    <general class="panda" name="H_actuator8" tendon="H_split" forcerange="-100 100" ctrlrange="0 255" gainprm="0.01568627451 0 0" biasprm="0 -100 -10" />
+  </actuator>
+  <contact>
+    <exclude body1="A_link0" body2="A_link1" />
+    <exclude body1="B_link0" body2="B_link1" />
+    <exclude body1="C_link0" body2="C_link1" />
+    <exclude body1="D_link0" body2="D_link1" />
+    <exclude body1="E_link0" body2="E_link1" />
+    <exclude body1="F_link0" body2="F_link1" />
+    <exclude body1="G_link0" body2="G_link1" />
+    <exclude body1="H_link0" body2="H_link1" />
+  </contact>
+  <visual>
+    <global offwidth="1280" offheight="900" />
+    <headlight ambient=".25 .25 .25" diffuse=".40 .40 .40" />
+    <rgba haze=".88 .94 1 1" />
+  </visual>
+  <statistic center="0 0 .5" extent="3.2522463171549463" />
+  <size memory="64M" />
+  <keyframe>
+    <key name="initial" qpos="6.932079824998548e-17 -0.8194841523625983 2.631880017228532e-17 -2.234967458282799 2.578982322758387e-16 1.4154847197183344 0.7853981633974486 0.04 0.04 6.942195940671639e-17 -0.8194841523625983 2.6187110987438214e-17 -2.234967458282799 2.579245320926082e-16 1.4154847197183344 0.7853981633974486 0.04 0.04 6.908945262939124e-17 -0.819484152362598 -6.151244400808629e-18 -2.234967458282798 1.0369778887714297e-16 1.4154847197183336 0.7853981633974484 0.04 0.04 6.894873601798072e-17 -0.819484152362598 -6.079546464892502e-18 -2.234967458282798 1.0376629146864541e-16 1.4154847197183336 0.7853981633974484 0.04 0.04 -5.233096931882268e-17 -0.819484152362599 2.0924806568990348e-16 -2.2349674582827994 -7.885853827002454e-17 1.415484719718334 0.7853981633974485 0.04 0.04 -5.286452884935461e-17 -0.819484152362599 2.097233895112493e-16 -2.2349674582827994 -7.878521999657493e-17 1.415484719718334 0.7853981633974485 0.04 0.04 1.9314683558191874e-17 -0.819484152362598 -3.9659482757486154e-18 -2.2349674582827985 1.435787963205166e-16 1.415484719718334 0.7853981633974484 0.04 0.04 1.93058306577091e-17 -0.819484152362598 -3.9567978036596834e-18 -2.2349674582827985 1.4358126606132604e-16 1.415484719718334 0.7853981633974484 0.04 0.04 -0.107 -0.973 0.8300000000000001 0.7071067811865476 0.0 0.0 0.7071067811865475 -0.357 -0.873 0.8300000000000001 0.7071067811865476 0.0 0.0 0.7071067811865475 -0.607 -0.973 0.8300000000000001 0.7071067811865476 0.0 0.0 0.7071067811865475 0.607 -0.973 0.8300000000000001 0.7071067811865476 0.0 0.0 0.7071067811865475 0.357 -0.873 0.8300000000000001 0.7071067811865476 0.0 0.0 0.7071067811865475 0.107 -0.973 0.8300000000000001 0.7071067811865476 0.0 0.0 0.7071067811865475 0.973 -0.107 0.8300000000000001 6.123233995736766e-17 0.0 0.0 1.0 0.873 -0.357 0.8300000000000001 6.123233995736766e-17 0.0 0.0 1.0 0.973 -0.607 0.8300000000000001 6.123233995736766e-17 0.0 0.0 1.0 0.973 0.607 0.8300000000000001 6.123233995736766e-17 0.0 0.0 1.0 0.873 0.357 0.8300000000000001 6.123233995736766e-17 0.0 0.0 1.0 0.973 0.107 0.8300000000000001 6.123233995736766e-17 0.0 0.0 1.0 0.107 0.973 0.8300000000000001 0.7071067811865476 0.0 0.0 -0.7071067811865475 0.357 0.873 0.8300000000000001 0.7071067811865476 0.0 0.0 -0.7071067811865475 0.607 0.973 0.8300000000000001 0.7071067811865476 0.0 0.0 -0.7071067811865475 -0.607 0.973 0.8300000000000001 0.7071067811865476 0.0 0.0 -0.7071067811865475 -0.357 0.873 0.8300000000000001 0.7071067811865476 0.0 0.0 -0.7071067811865475 -0.107 0.973 0.8300000000000001 0.7071067811865476 0.0 0.0 -0.7071067811865475 -0.973 0.107 0.8300000000000001 1.0 0.0 0.0 0.0 -0.873 0.357 0.8300000000000001 1.0 0.0 0.0 0.0 -0.973 0.607 0.8300000000000001 1.0 0.0 0.0 0.0 -0.973 -0.607 0.8300000000000001 1.0 0.0 0.0 0.0 -0.873 -0.357 0.8300000000000001 1.0 0.0 0.0 0.0 -0.973 -0.107 0.8300000000000001 1.0 0.0 0.0 0.0" ctrl="6.932079824998548e-17 -0.8194841523625983 2.631880017228532e-17 -2.234967458282799 2.578982322758387e-16 1.4154847197183344 0.7853981633974486 255.0 6.942195940671639e-17 -0.8194841523625983 2.6187110987438214e-17 -2.234967458282799 2.579245320926082e-16 1.4154847197183344 0.7853981633974486 255.0 6.908945262939124e-17 -0.819484152362598 -6.151244400808629e-18 -2.234967458282798 1.0369778887714297e-16 1.4154847197183336 0.7853981633974484 255.0 6.894873601798072e-17 -0.819484152362598 -6.079546464892502e-18 -2.234967458282798 1.0376629146864541e-16 1.4154847197183336 0.7853981633974484 255.0 -5.233096931882268e-17 -0.819484152362599 2.0924806568990348e-16 -2.2349674582827994 -7.885853827002454e-17 1.415484719718334 0.7853981633974485 255.0 -5.286452884935461e-17 -0.819484152362599 2.097233895112493e-16 -2.2349674582827994 -7.878521999657493e-17 1.415484719718334 0.7853981633974485 255.0 1.9314683558191874e-17 -0.819484152362598 -3.9659482757486154e-18 -2.2349674582827985 1.435787963205166e-16 1.415484719718334 0.7853981633974484 255.0 1.93058306577091e-17 -0.819484152362598 -3.9567978036596834e-18 -2.2349674582827985 1.4358126606132604e-16 1.415484719718334 0.7853981633974484 255.0" />
+  </keyframe>
+</mujoco>

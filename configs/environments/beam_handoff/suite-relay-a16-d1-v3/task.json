@@ -1,0 +1,479 @@
+{
+  "kind": "frontier_suite",
+  "id": "relay-a16-d1",
+  "suite_version": 1,
+  "family": "relay",
+  "level": 1,
+  "scale": {
+    "id": "relay-a16-d1",
+    "family": "relay",
+    "level": 1,
+    "arms": 16,
+    "pairs": 8,
+    "layout": "closed_loop",
+    "scene_revision": 3
+  },
+  "scene_asset": "configs/environments/beam_handoff/suite-relay-a16-d1-v3",
+  "scene_sha256": "66b2e0d55ee27fac0568037c742bfa89b5761b250b1807b88910a81528e4a400",
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -0.14999999999999997,
+        -1.5999999999999999,
+        0.4
+      ],
+      "yaw_rad": 1.2793395323170296
+    },
+    "B": {
+      "base_position_m": [
+        0.15000000000000002,
+        -0.5999999999999999,
+        0.4
+      ],
+      "yaw_rad": 4.420932185906823
+    },
+    "C": {
+      "base_position_m": [
+        1.0253048327204939,
+        -1.237436867076458,
+        0.4
+      ],
+      "yaw_rad": 2.064737695714478
+    },
+    "D": {
+      "base_position_m": [
+        0.5303300858899107,
+        -0.3181980515339463,
+        0.4
+      ],
+      "yaw_rad": 5.206330349304271
+    },
+    "E": {
+      "base_position_m": [
+        1.6,
+        -0.15000000000000002,
+        0.4
+      ],
+      "yaw_rad": 2.8501358591119264
+    },
+    "F": {
+      "base_position_m": [
+        0.6000000000000001,
+        0.15000000000000002,
+        0.4
+      ],
+      "yaw_rad": 5.9917285127017195
+    },
+    "G": {
+      "base_position_m": [
+        1.2374368670764584,
+        1.025304832720494,
+        0.4
+      ],
+      "yaw_rad": 3.6355340225093746
+    },
+    "H": {
+      "base_position_m": [
+        0.31819805153394654,
+        0.5303300858899109,
+        0.4
+      ],
+      "yaw_rad": 6.777126676099168
+    },
+    "I": {
+      "base_position_m": [
+        0.15000000000000022,
+        1.6000000000000003,
+        0.4
+      ],
+      "yaw_rad": 4.420932185906823
+    },
+    "J": {
+      "base_position_m": [
+        -0.14999999999999988,
+        0.6000000000000003,
+        0.4
+      ],
+      "yaw_rad": 7.562524839496616
+    },
+    "K": {
+      "base_position_m": [
+        -1.0253048327204939,
+        1.2374368670764588,
+        0.4
+      ],
+      "yaw_rad": 5.206330349304271
+    },
+    "L": {
+      "base_position_m": [
+        -0.5303300858899107,
+        0.31819805153394676,
+        0.4
+      ],
+      "yaw_rad": 8.347923002894063
+    },
+    "M": {
+      "base_position_m": [
+        -1.6,
+        0.15000000000000052,
+        0.4
+      ],
+      "yaw_rad": 5.9917285127017195
+    },
+    "N": {
+      "base_position_m": [
+        -0.6000000000000001,
+        -0.14999999999999963,
+        0.4
+      ],
+      "yaw_rad": 9.133321166291513
+    },
+    "O": {
+      "base_position_m": [
+        -1.2374368670764584,
+        -1.0253048327204934,
+        0.4
+      ],
+      "yaw_rad": 6.777126676099168
+    },
+    "P": {
+      "base_position_m": [
+        -0.3181980515339466,
+        -0.5303300858899103,
+        0.4
+      ],
+      "yaw_rad": 9.918719329688962
+    }
+  },
+  "objects": [
+    {
+      "id": "payload",
+      "shape": "beam",
+      "initial_position_m": [
+        2.7755575615628914e-17,
+        -1.0999999999999999,
+        0.72
+      ],
+      "color": "wood",
+      "rgb": [
+        0.52,
+        0.29,
+        0.16
+      ]
+    }
+  ],
+  "table_height_m": 0.4,
+  "cube_size_m": 0.04,
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "beam_length_m": 1.2,
+    "beam_cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "beam_mass_kg": 1.458,
+    "weight_mass_kg": 0,
+    "suspension_length_m": 0,
+    "suspension_segments": 0,
+    "opposed_base_spacing_m": 1.044030650891055,
+    "cross_track_base_spacing_m": 1.0,
+    "longitudinal_pair_stagger_m": 0.3,
+    "minimum_supporting_robots": 2,
+    "loop_radius_m": 1.1,
+    "beam_alignment": "tangent"
+  },
+  "goals": [],
+  "grid": null,
+  "route": [
+    {
+      "center_m": [
+        2.7755575615628914e-17,
+        -1.0999999999999999,
+        0.72
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    {
+      "center_m": [
+        0.7778174593052023,
+        -0.7778174593052022,
+        0.72
+      ],
+      "yaw_rad": -0.7853981633974483
+    },
+    {
+      "center_m": [
+        1.1,
+        0.0,
+        0.72
+      ],
+      "yaw_rad": 0.0
+    },
+    {
+      "center_m": [
+        0.7778174593052024,
+        0.7778174593052025,
+        0.72
+      ],
+      "yaw_rad": 0.7853981633974483
+    },
+    {
+      "center_m": [
+        1.624667235218378e-16,
+        1.1000000000000003,
+        0.72
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    {
+      "center_m": [
+        -0.7778174593052023,
+        0.7778174593052027,
+        0.72
+      ],
+      "yaw_rad": 2.356194490192345
+    },
+    {
+      "center_m": [
+        -1.1,
+        4.440892098500626e-16,
+        0.72
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    {
+      "center_m": [
+        -0.7778174593052025,
+        -0.7778174593052019,
+        0.72
+      ],
+      "yaw_rad": 3.9269908169872414
+    },
+    {
+      "center_m": [
+        2.7755575615628914e-17,
+        -1.0999999999999999,
+        0.72
+      ],
+      "yaw_rad": -1.5707963267948966
+    }
+  ],
+  "pairs": [
+    {
+      "robots": [
+        "A",
+        "B"
+      ],
+      "center_m": [
+        2.7755575615628914e-17,
+        -1.0999999999999999,
+        0.72
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    {
+      "robots": [
+        "C",
+        "D"
+      ],
+      "center_m": [
+        0.7778174593052023,
+        -0.7778174593052022,
+        0.72
+      ],
+      "yaw_rad": -0.7853981633974483
+    },
+    {
+      "robots": [
+        "E",
+        "F"
+      ],
+      "center_m": [
+        1.1,
+        0.0,
+        0.72
+      ],
+      "yaw_rad": 0.0
+    },
+    {
+      "robots": [
+        "G",
+        "H"
+      ],
+      "center_m": [
+        0.7778174593052024,
+        0.7778174593052025,
+        0.72
+      ],
+      "yaw_rad": 0.7853981633974483
+    },
+    {
+      "robots": [
+        "I",
+        "J"
+      ],
+      "center_m": [
+        1.624667235218378e-16,
+        1.1000000000000003,
+        0.72
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    {
+      "robots": [
+        "K",
+        "L"
+      ],
+      "center_m": [
+        -0.7778174593052023,
+        0.7778174593052027,
+        0.72
+      ],
+      "yaw_rad": 2.356194490192345
+    },
+    {
+      "robots": [
+        "M",
+        "N"
+      ],
+      "center_m": [
+        -1.1,
+        4.440892098500626e-16,
+        0.72
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    {
+      "robots": [
+        "O",
+        "P"
+      ],
+      "center_m": [
+        -0.7778174593052025,
+        -0.7778174593052019,
+        0.72
+      ],
+      "yaw_rad": 3.9269908169872414
+    }
+  ],
+  "dials": null,
+  "workspace_world_m": {
+    "lower": [
+      -1.9400000000000002,
+      -1.9400000000000004,
+      0.425
+    ],
+    "upper": [
+      1.9400000000000002,
+      1.9400000000000004,
+      1.35
+    ]
+  },
+  "coordinate_frame": "World +X right/east, +Y north, +Z up. Device marks belong to the movable device frame.",
+  "rules": [
+    "Follow the declared route through all stations. At least two robots must physically grasp and support the wooden beam during airborne transport; gripping only its hanging weight or cable does not count as a beam grasp.",
+    "Never drop below the required two beam grasps. Individual sending grippers may release after other real grasps provide sufficient support. Custody changes only after the receiving pair has held for 0.20 seconds together with at least one sender. Grasp points, poses, timing and Agent allocation are choices, not prescribed alternating steps.",
+    "Keep the complete payload, including its attached weight and flexible suspension, clear of table and floor during transport. Initial pickup and stable final cradle landing are distinct phases.",
+    "A drop is recorded as a failed attempt. Only the last established sending team may recover it; the receiver cannot pick it up to bypass an airborne handover. No reset or respawn.",
+    "A closed loop requires the declared full circuit of actual handovers; remaining at the coincident start/finish is not completion.",
+    "Use robot actuation and real physical contact. No attachments to hands, state writes, teleportation, simulator reset, material edits or hidden evaluator access."
+  ],
+  "objective": "Complete the task correctly and efficiently; account for planning, observation, communication, recovery and useful holding as well as simultaneous motion.",
+  "completion": {
+    "stable_duration_sim_s": 1.0,
+    "max_sample_gap_sim_s": 0.03,
+    "xy_tolerance_m": 0.005,
+    "z_tolerance_m": 0.003,
+    "linear_speed_m_s": 0.01,
+    "angular_speed_rad_s": 0.1
+  },
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "G_front",
+    "G_side",
+    "H_front",
+    "H_side",
+    "I_front",
+    "I_side",
+    "J_front",
+    "J_side",
+    "K_front",
+    "K_side",
+    "L_front",
+    "L_side",
+    "M_front",
+    "M_side",
+    "N_front",
+    "N_side",
+    "O_front",
+    "O_side",
+    "P_front",
+    "P_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "pair_1",
+    "pair_2",
+    "pair_3",
+    "pair_4",
+    "pair_5",
+    "pair_6",
+    "pair_7",
+    "pair_8"
+  ],
+  "view_camera": "global",
+  "recording_camera": "global",
+  "observation_contract": {
+    "initial_positions_public": false,
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "selected timestamped RGB",
+      "robot proprioception",
+      "action status",
+      "visible aggregate dial score"
+    ],
+    "motion_screen": "Robot-only geometry. Does not certify apparatus contact, insertion, shared load or cable clearance."
+  },
+  "status": "Suite development task; per-scene Oracle evidence is separate from policy performance.",
+  "process_contract": {
+    "collision_sampling": "every physics step",
+    "inter_robot_penetration_limit_m": 0.0002,
+    "self_robot_penetration_limit_m": 0.001,
+    "expected_finger_to_finger_closure_excluded": true,
+    "relay_receiving_overlap_sim_s": 0.2,
+    "relay_support_gap_sim_s": 0.2,
+    "grasp_proximity_tolerance_m": 0.0002,
+    "relay_positive_contact_force_threshold_n": 0.02,
+    "relay_support_proxy": "Opposed jaw proximity within 0.2 mm and at least one actual force-bearing finger contact per gripper; not an individual load-share measurement",
+    "driven_red_support_gap_sim_s": 0.05
+  }
+}

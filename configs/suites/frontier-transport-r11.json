@@ -1,0 +1,115 @@
+{
+  "schema_version": 2,
+  "case_count": 9,
+  "status": "Environment and task instruction changes only; no Oracle or manipulation unit execution",
+  "cases": [
+    {
+      "family": "transport",
+      "level": 1,
+      "suite_version": 2,
+      "scene_revision": 11,
+      "scale_index": 0,
+      "arms": 4,
+      "id": "transport-a04-d1",
+      "source_scene_revision": 10,
+      "table_height_m": 0.8,
+      "directory": "configs/environments/cube_transport/frontier-v2-r11-transport-a04-d1"
+    },
+    {
+      "family": "transport",
+      "level": 2,
+      "suite_version": 2,
+      "scene_revision": 11,
+      "scale_index": 0,
+      "arms": 4,
+      "id": "transport-a04-d2",
+      "source_scene_revision": 10,
+      "table_height_m": 0.8,
+      "directory": "configs/environments/cube_transport/frontier-v2-r11-transport-a04-d2"
+    },
+    {
+      "family": "transport",
+      "level": 3,
+      "suite_version": 2,
+      "scene_revision": 11,
+      "scale_index": 0,
+      "arms": 4,
+      "id": "transport-a04-d3",
+      "source_scene_revision": 10,
+      "table_height_m": 0.8,
+      "directory": "configs/environments/cube_transport/frontier-v2-r11-transport-a04-d3"
+    },
+    {
+      "family": "transport",
+      "level": 1,
+      "suite_version": 2,
+      "scene_revision": 11,
+      "scale_index": 1,
+      "arms": 8,
+      "id": "transport-a08-d1",
+      "source_scene_revision": 10,
+      "table_height_m": 0.8,
+      "directory": "configs/environments/cube_transport/frontier-v2-r11-transport-a08-d1"
+    },
+    {
+      "family": "transport",
+      "level": 2,
+      "suite_version": 2,
+      "scene_revision": 11,
+      "scale_index": 1,
+      "arms": 8,
+      "id": "transport-a08-d2",
+      "source_scene_revision": 10,
+      "table_height_m": 0.8,
+      "directory": "configs/environments/cube_transport/frontier-v2-r11-transport-a08-d2"
+    },
+    {
+      "family": "transport",
+      "level": 3,
+      "suite_version": 2,
+      "scene_revision": 11,
+      "scale_index": 1,
+      "arms": 8,
+      "id": "transport-a08-d3",
+      "source_scene_revision": 10,
+      "table_height_m": 0.8,
+      "directory": "configs/environments/cube_transport/frontier-v2-r11-transport-a08-d3"
+    },
+    {
+      "family": "transport",
+      "level": 1,
+      "suite_version": 2,
+      "scene_revision": 11,
+      "scale_index": 2,
+      "arms": 12,
+      "id": "transport-a12-d1",
+      "source_scene_revision": 10,
+      "table_height_m": 0.8,
+      "directory": "configs/environments/cube_transport/frontier-v2-r11-transport-a12-d1"
+    },
+    {
+      "family": "transport",
+      "level": 2,
+      "suite_version": 2,
+      "scene_revision": 11,
+      "scale_index": 2,
+      "arms": 12,
+      "id": "transport-a12-d2",
+      "source_scene_revision": 10,
+      "table_height_m": 0.8,
+      "directory": "configs/environments/cube_transport/frontier-v2-r11-transport-a12-d2"
+    },
+    {
+      "family": "transport",
+      "level": 3,
+      "suite_version": 2,
+      "scene_revision": 11,
+      "scale_index": 2,
+      "arms": 12,
+      "id": "transport-a12-d3",
+      "source_scene_revision": 10,
+      "table_height_m": 0.8,
+      "directory": "configs/environments/cube_transport/frontier-v2-r11-transport-a12-d3"
+    }
+  ]
+}

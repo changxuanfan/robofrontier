@@ -1,0 +1,562 @@
+{
+  "schema": "robofrontier.workstation.v2",
+  "id": "relay-a18-d3",
+  "collection": "frontier_suite",
+  "arm_count": 18,
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.1,
+    "object_mass_kg": 0.7812500000000001,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0
+  },
+  "stations": [
+    {
+      "id": "A",
+      "base_position_m": [
+        -2.5,
+        3.061616997868383e-16,
+        0.4
+      ],
+      "yaw_rad": 6.283185307179586,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -2.23,
+        0.0,
+        0.98
+      ]
+    },
+    {
+      "id": "B",
+      "base_position_m": [
+        -2.3987324340362433,
+        0.7043313921035742,
+        0.4
+      ],
+      "yaw_rad": 5.99758597503506,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -2.13966933,
+        0.6282636,
+        0.98
+      ]
+    },
+    {
+      "id": "C",
+      "base_position_m": [
+        -2.1031338320779525,
+        1.3516020436389944,
+        0.4
+      ],
+      "yaw_rad": 5.711986642890533,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.87599538,
+        1.20562902,
+        0.98
+      ]
+    },
+    {
+      "id": "D",
+      "base_position_m": [
+        -1.6371518348632128,
+        1.8893739358856456,
+        0.4
+      ],
+      "yaw_rad": 5.426387310746007,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.46033944,
+        1.68532155,
+        0.98
+      ]
+    },
+    {
+      "id": "E",
+      "base_position_m": [
+        -1.0385375325047157,
+        2.274079988386296,
+        0.4
+      ],
+      "yaw_rad": 5.140787978601479,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.92637548,
+        2.02847935,
+        0.98
+      ]
+    },
+    {
+      "id": "F",
+      "base_position_m": [
+        -0.35578709568321254,
+        2.474553604702332,
+        0.4
+      ],
+      "yaw_rad": 4.855188646456953,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.31736209,
+        2.20730182,
+        0.98
+      ]
+    },
+    {
+      "id": "G",
+      "base_position_m": [
+        0.35578709568321276,
+        2.4745536047023315,
+        0.4
+      ],
+      "yaw_rad": 4.569589314312426,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.31736209,
+        2.20730182,
+        0.98
+      ]
+    },
+    {
+      "id": "H",
+      "base_position_m": [
+        1.0385375325047161,
+        2.274079988386296,
+        0.4
+      ],
+      "yaw_rad": 4.2839899821679,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.92637548,
+        2.02847935,
+        0.98
+      ]
+    },
+    {
+      "id": "I",
+      "base_position_m": [
+        1.6371518348632128,
+        1.8893739358856456,
+        0.4
+      ],
+      "yaw_rad": 3.998390650023373,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.46033944,
+        1.68532155,
+        0.98
+      ]
+    },
+    {
+      "id": "J",
+      "base_position_m": [
+        2.103133832077953,
+        1.3516020436389942,
+        0.4
+      ],
+      "yaw_rad": 3.7127913178788465,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.87599538,
+        1.20562902,
+        0.98
+      ]
+    },
+    {
+      "id": "K",
+      "base_position_m": [
+        2.3987324340362437,
+        0.7043313921035738,
+        0.4
+      ],
+      "yaw_rad": 3.4271919857343196,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        2.13966933,
+        0.6282636,
+        0.98
+      ]
+    },
+    {
+      "id": "L",
+      "base_position_m": [
+        2.5,
+        0.0,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        2.23,
+        0.0,
+        0.98
+      ]
+    },
+    {
+      "id": "M",
+      "base_position_m": [
+        -1.2,
+        1.4695761589768238e-16,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.47,
+        0.0,
+        0.98
+      ]
+    },
+    {
+      "id": "N",
+      "base_position_m": [
+        -0.9708203932499367,
+        0.7053423027509679,
+        0.4
+      ],
+      "yaw_rad": 2.5132741228718345,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.18925498,
+        0.86404432,
+        0.98
+      ]
+    },
+    {
+      "id": "O",
+      "base_position_m": [
+        -0.3708203932499368,
+        1.1412678195541843,
+        0.4
+      ],
+      "yaw_rad": 1.8849555921538759,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.45425498,
+        1.39805308,
+        0.98
+      ]
+    },
+    {
+      "id": "P",
+      "base_position_m": [
+        0.37082039324993693,
+        1.141267819554184,
+        0.4
+      ],
+      "yaw_rad": 1.2566370614359172,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.45425498,
+        1.39805308,
+        0.98
+      ]
+    },
+    {
+      "id": "Q",
+      "base_position_m": [
+        0.9708203932499369,
+        0.7053423027509678,
+        0.4
+      ],
+      "yaw_rad": 0.6283185307179586,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.18925498,
+        0.86404432,
+        0.98
+      ]
+    },
+    {
+      "id": "R",
+      "base_position_m": [
+        1.2,
+        0.0,
+        0.4
+      ],
+      "yaw_rad": 0.0,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.47,
+        0.0,
+        0.98
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "center_m": [
+        0,
+        1.25,
+        0.375
+      ],
+      "half_size_m": [
+        2.78,
+        1.53,
+        0.025
+      ]
+    }
+  ],
+  "edges": [],
+  "objects": [
+    {
+      "id": "payload",
+      "source": "A",
+      "shape": "arc_beam",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.12,
+        0.12
+      ],
+      "initial_position_m": [
+        -1.85,
+        0.2400000000000002,
+        0.4225
+      ]
+    }
+  ],
+  "floor_rgba": [
+    0.84,
+    0.9,
+    0.95,
+    1
+  ],
+  "table_rgba": [
+    0.604,
+    0.459,
+    0.345,
+    1
+  ],
+  "initial_keyframe": "initial",
+  "scene": "scene.xml",
+  "suite_case": {
+    "family": "relay",
+    "level": 3,
+    "suite_version": 2,
+    "scene_revision": 1,
+    "scale_index": 2,
+    "arms": 18,
+    "id": "relay-a18-d3",
+    "directory": "configs/environments/beam_handoff/frontier-v2-relay-a18-d3"
+  },
+  "gripper_profile": "standard-panda",
+  "route": [
+    {
+      "region_id": "zone_01",
+      "center_m": [
+        -1.85,
+        2.2655965784226036e-16,
+        0.4
+      ],
+      "nominal_yaw_rad": 1.5707963267948966
+    },
+    {
+      "region_id": "zone_02",
+      "center_m": [
+        -1.7750620011868201,
+        0.5212052301566449,
+        0.4
+      ],
+      "nominal_yaw_rad": 1.28519699465037
+    },
+    {
+      "region_id": "zone_03",
+      "center_m": [
+        -1.5563190357376848,
+        1.000185512292856,
+        0.4
+      ],
+      "nominal_yaw_rad": 0.9995976625058431
+    },
+    {
+      "region_id": "zone_04",
+      "center_m": [
+        -1.2114923577987775,
+        1.3981367125553779,
+        0.4
+      ],
+      "nominal_yaw_rad": 0.7139983303613167
+    },
+    {
+      "region_id": "zone_05",
+      "center_m": [
+        -0.7685177740534898,
+        1.6828191914058592,
+        0.4
+      ],
+      "nominal_yaw_rad": 0.42839899821678995
+    },
+    {
+      "region_id": "zone_06",
+      "center_m": [
+        -0.2632824508055773,
+        1.8311696674797258,
+        0.4
+      ],
+      "nominal_yaw_rad": 0.14279966607226324
+    },
+    {
+      "region_id": "zone_07",
+      "center_m": [
+        0.2632824508055775,
+        1.8311696674797255,
+        0.4
+      ],
+      "nominal_yaw_rad": -0.14279966607226324
+    },
+    {
+      "region_id": "zone_08",
+      "center_m": [
+        0.76851777405349,
+        1.682819191405859,
+        0.4
+      ],
+      "nominal_yaw_rad": -0.42839899821678995
+    },
+    {
+      "region_id": "zone_09",
+      "center_m": [
+        1.2114923577987775,
+        1.3981367125553779,
+        0.4
+      ],
+      "nominal_yaw_rad": -0.7139983303613167
+    },
+    {
+      "region_id": "zone_10",
+      "center_m": [
+        1.556319035737685,
+        1.0001855122928558,
+        0.4
+      ],
+      "nominal_yaw_rad": -0.9995976625058431
+    },
+    {
+      "region_id": "zone_11",
+      "center_m": [
+        1.7750620011868203,
+        0.5212052301566447,
+        0.4
+      ],
+      "nominal_yaw_rad": -1.28519699465037
+    },
+    {
+      "region_id": "zone_12",
+      "center_m": [
+        1.85,
+        0.0,
+        0.4
+      ],
+      "nominal_yaw_rad": -1.5707963267948966
+    }
+  ],
+  "support_groups": null,
+  "pairs": null,
+  "mechanism": {
+    "chord_m": 1.2,
+    "circular_angle_deg": 120,
+    "radius_m": 0.6928203230275509,
+    "arc_length_m": 1.451039491387374,
+    "mass_kg": 1.7630129820356593,
+    "cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "collision": "32 tangent convex segments; smooth visual sweep; analytic arc mass distributed over segments",
+    "kind": "arc_three_cable_tray",
+    "tray": {
+      "outer_diameter_m": 0.072,
+      "clear_diameter_m": 0.066,
+      "depth_m": 0.003,
+      "weight_diameter_m": 0.05,
+      "weight_mass_kg": 0.25,
+      "cable_attachments": 3,
+      "attachment_angle_spacing_deg": 120,
+      "free_weight": true,
+      "weight_tray_sliding_friction": 0.25
+    },
+    "cable_length_m": 0.2,
+    "cable_segments_each": 8,
+    "cable_segment_mass_kg": 0.001,
+    "cable_radius_m": 0.002,
+    "cable_model": "Ball-jointed rigid links with true end connections; equal-length initial slack arches",
+    "cable_self_collision": false,
+    "cable_environment_collision": true,
+    "initial_condition": "All components table-supported; initially slack",
+    "minimum_supporting_robots": 2,
+    "flexible_teams": true,
+    "layout": "semicircle",
+    "outer_arms": 12,
+    "inner_arms": 6,
+    "curve_radius_m": 1.85,
+    "finish": "Tabletop destination region; no cradle; beam and suspended assembly must land stably"
+  }
+}

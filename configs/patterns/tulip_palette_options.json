@@ -1,0 +1,56 @@
+{
+  "preview_default": "bright",
+  "selection_status": "selected_by_user",
+  "palettes": [
+    {
+      "id": "bright",
+      "name": "明亮郁金香",
+      "hex": [
+        "#FFF4DA",
+        "#173F73",
+        "#F03F5B",
+        "#16A16E"
+      ]
+    },
+    {
+      "id": "fresh",
+      "name": "清爽青蓝",
+      "hex": [
+        "#F5FCFF",
+        "#164E73",
+        "#FF5C72",
+        "#00A57A"
+      ]
+    },
+    {
+      "id": "classic",
+      "name": "暖白正红",
+      "hex": [
+        "#FFF8E7",
+        "#283B58",
+        "#E62D3D",
+        "#258B45"
+      ]
+    },
+    {
+      "id": "violet",
+      "name": "紫花青叶",
+      "hex": [
+        "#FFF7EB",
+        "#283B63",
+        "#A843D8",
+        "#00A58C"
+      ]
+    },
+    {
+      "id": "original",
+      "name": "原配色对照",
+      "hex": [
+        "#F4E7D5",
+        "#263C4C",
+        "#EF7180",
+        "#4C9B87"
+      ]
+    }
+  ]
+}

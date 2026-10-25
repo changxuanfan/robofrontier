@@ -1,0 +1,16 @@
+{
+  "status": "sampled_geometry_coverage_checked",
+  "oracle_verified": false,
+  "policy_verified": false,
+  "frozen_input": false,
+  "robot_count": 8,
+  "physics_sha256": "760b2cd3936888bd5ff695652dd7c37ebcd20b1af8d6a9351b95626e23dce2d6",
+  "initial_robot_penetrations": [],
+  "physics_steps": 0,
+  "scope": "Static compilation and initial contact screen only; no manipulation or all-cell reachability certification",
+  "pickup_geometry_covered": 288,
+  "goal_geometry_covered": 288,
+  "all_sources_and_goals_geometrically_covered": true,
+  "coverage_report": "/Users/fanchangxuan/Repos/roomscript2/runs/engineering/mosaic-r13-coverage-20261025/mosaic-a08-12x24-d3/report.json",
+  "coverage_report_sha256": "93f3c5d96818987fe1bb82352801f0b88f8cfd6ee63b945818c23f8d701e8e79"
+}

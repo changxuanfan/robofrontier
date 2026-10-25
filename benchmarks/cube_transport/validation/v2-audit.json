@@ -1,0 +1,31 @@
+{
+  "rules_version": 2,
+  "environments": 10,
+  "tasks": 30,
+  "engineering_point_samples": 1496,
+  "engineering_checks_passed": true,
+  "known_pose_fixtures": [
+    {
+      "environment": "line-03",
+      "shape": "cube",
+      "passed": true,
+      "final_xy_error_m": 0.0008861095608208364
+    },
+    {
+      "environment": "ring-07",
+      "shape": "sphere",
+      "passed": true,
+      "final_xy_error_m": 0.0005088263534813014
+    },
+    {
+      "environment": "ring-12",
+      "shape": "sphere",
+      "passed": true,
+      "final_xy_error_m": 0.0005127826476860198
+    }
+  ],
+  "semantic_and_context_test_suite": "9 tests passed",
+  "artifact_hash_verification": "passed",
+  "policy_trials_started": 0,
+  "runtime_adapter": "not connected; existing harness unchanged"
+}

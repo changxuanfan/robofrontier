@@ -1,0 +1,2376 @@
+{
+  "environment": "ring-09",
+  "mujoco_version": "3.16.0",
+  "arms": 9,
+  "free_objects": 27,
+  "cameras": 21,
+  "ik": [
+    {
+      "arm": "A",
+      "kind": "source",
+      "target_m": [
+        -0.615,
+        -0.71,
+        0.64
+      ],
+      "position_error_m": 9.809000226233668e-06,
+      "rotation_error_rad": 1.7951873619127257e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "source",
+      "target_m": [
+        -0.615,
+        -0.71,
+        0.42
+      ],
+      "position_error_m": 6.31067565771083e-05,
+      "rotation_error_rad": 9.460041590879128e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "source",
+      "target_m": [
+        -0.72,
+        -0.71,
+        0.64
+      ],
+      "position_error_m": 1.2944417664507513e-06,
+      "rotation_error_rad": 2.1798519549262258e-07,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "source",
+      "target_m": [
+        -0.72,
+        -0.71,
+        0.42
+      ],
+      "position_error_m": 1.4024809666078689e-06,
+      "rotation_error_rad": 1.5820514488206366e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "source",
+      "target_m": [
+        -0.825,
+        -0.71,
+        0.64
+      ],
+      "position_error_m": 9.809000225940898e-06,
+      "rotation_error_rad": 1.795188598800491e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "source",
+      "target_m": [
+        -0.825,
+        -0.71,
+        0.42
+      ],
+      "position_error_m": 6.310675657668031e-05,
+      "rotation_error_rad": 9.460041590879128e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "goal",
+      "target_m": [
+        -0.615,
+        -0.59,
+        0.64
+      ],
+      "position_error_m": 2.2142194308732155e-05,
+      "rotation_error_rad": 7.022685988867725e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "goal",
+      "target_m": [
+        -0.615,
+        -0.59,
+        0.42
+      ],
+      "position_error_m": 6.245949228500106e-07,
+      "rotation_error_rad": 3.837736135366188e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "goal",
+      "target_m": [
+        -0.72,
+        -0.59,
+        0.64
+      ],
+      "position_error_m": 7.913794301555863e-07,
+      "rotation_error_rad": 2.3873501878062234e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "goal",
+      "target_m": [
+        -0.72,
+        -0.59,
+        0.42
+      ],
+      "position_error_m": 1.087918929693752e-06,
+      "rotation_error_rad": 3.2616868505694306e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "goal",
+      "target_m": [
+        -0.825,
+        -0.59,
+        0.64
+      ],
+      "position_error_m": 2.214219430841222e-05,
+      "rotation_error_rad": 7.022685040322023e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "goal",
+      "target_m": [
+        -0.825,
+        -0.59,
+        0.42
+      ],
+      "position_error_m": 6.245949229359442e-07,
+      "rotation_error_rad": 3.837562556762541e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "parking",
+      "target_m": [
+        -0.49,
+        -0.69,
+        0.64
+      ],
+      "position_error_m": 1.387471094508338e-05,
+      "rotation_error_rad": 1.7091521462106378e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "parking",
+      "target_m": [
+        -0.49,
+        -0.69,
+        0.42
+      ],
+      "position_error_m": 1.6005880954460618e-06,
+      "rotation_error_rad": 9.571696837531305e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "parking",
+      "target_m": [
+        -0.95,
+        -0.69,
+        0.64
+      ],
+      "position_error_m": 1.3874710945311651e-05,
+      "rotation_error_rad": 1.7091521462106378e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "parking",
+      "target_m": [
+        -0.95,
+        -0.69,
+        0.42
+      ],
+      "position_error_m": 1.6005880958581817e-06,
+      "rotation_error_rad": 9.571696837531305e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "handoff_A_B",
+      "target_m": [
+        -0.36,
+        -0.67,
+        0.64
+      ],
+      "position_error_m": 4.33295327857093e-06,
+      "rotation_error_rad": 1.1464717527092495e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "handoff_A_B",
+      "target_m": [
+        -0.36,
+        -0.67,
+        0.42
+      ],
+      "position_error_m": 1.3446527932873712e-06,
+      "rotation_error_rad": 6.584930868211651e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "handoff_I_A",
+      "target_m": [
+        -0.875,
+        -0.515,
+        0.64
+      ],
+      "position_error_m": 5.284131504900037e-05,
+      "rotation_error_rad": 8.584791882808676e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "A",
+      "kind": "handoff_I_A",
+      "target_m": [
+        -0.875,
+        -0.515,
+        0.42
+      ],
+      "position_error_m": 2.9447881383907445e-06,
+      "rotation_error_rad": 6.76985189166803e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "source",
+      "target_m": [
+        0.105,
+        -0.71,
+        0.64
+      ],
+      "position_error_m": 9.809000226204301e-06,
+      "rotation_error_rad": 1.7951935463430305e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "source",
+      "target_m": [
+        0.105,
+        -0.71,
+        0.42
+      ],
+      "position_error_m": 6.310675657689165e-05,
+      "rotation_error_rad": 9.460041590879128e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "source",
+      "target_m": [
+        0.0,
+        -0.71,
+        0.64
+      ],
+      "position_error_m": 1.2944417663178044e-06,
+      "rotation_error_rad": 2.200130084191774e-07,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "source",
+      "target_m": [
+        0.0,
+        -0.71,
+        0.42
+      ],
+      "position_error_m": 1.402480966641229e-06,
+      "rotation_error_rad": 1.5826127585593628e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "source",
+      "target_m": [
+        -0.105,
+        -0.71,
+        0.64
+      ],
+      "position_error_m": 9.80900022625616e-06,
+      "rotation_error_rad": 1.7951898356874044e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "source",
+      "target_m": [
+        -0.105,
+        -0.71,
+        0.42
+      ],
+      "position_error_m": 6.310675657658666e-05,
+      "rotation_error_rad": 9.460040417286936e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "goal",
+      "target_m": [
+        0.105,
+        -0.59,
+        0.64
+      ],
+      "position_error_m": 2.21421943085457e-05,
+      "rotation_error_rad": 7.022684091776195e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "goal",
+      "target_m": [
+        0.105,
+        -0.59,
+        0.42
+      ],
+      "position_error_m": 6.245949228577579e-07,
+      "rotation_error_rad": 3.837504695483251e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "goal",
+      "target_m": [
+        0.0,
+        -0.59,
+        0.64
+      ],
+      "position_error_m": 7.913794302458153e-07,
+      "rotation_error_rad": 2.3874431948065825e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "goal",
+      "target_m": [
+        0.0,
+        -0.59,
+        0.42
+      ],
+      "position_error_m": 1.0879189303734512e-06,
+      "rotation_error_rad": 3.2618910740254776e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "goal",
+      "target_m": [
+        -0.105,
+        -0.59,
+        0.64
+      ],
+      "position_error_m": 2.2142194308334748e-05,
+      "rotation_error_rad": 7.022685672685839e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "goal",
+      "target_m": [
+        -0.105,
+        -0.59,
+        0.42
+      ],
+      "position_error_m": 6.245949230059437e-07,
+      "rotation_error_rad": 3.837562556762541e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "parking",
+      "target_m": [
+        0.23,
+        -0.69,
+        0.64
+      ],
+      "position_error_m": 1.387471094532586e-05,
+      "rotation_error_rad": 1.7091521462106378e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "parking",
+      "target_m": [
+        0.23,
+        -0.69,
+        0.42
+      ],
+      "position_error_m": 1.6005880957688815e-06,
+      "rotation_error_rad": 9.571650441339106e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "parking",
+      "target_m": [
+        -0.23,
+        -0.69,
+        0.64
+      ],
+      "position_error_m": 1.387471094517394e-05,
+      "rotation_error_rad": 1.7091469496003072e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "parking",
+      "target_m": [
+        -0.23,
+        -0.69,
+        0.42
+      ],
+      "position_error_m": 1.6005880955565577e-06,
+      "rotation_error_rad": 9.571650441339106e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "handoff_A_B",
+      "target_m": [
+        -0.36,
+        -0.67,
+        0.64
+      ],
+      "position_error_m": 4.332953278410635e-06,
+      "rotation_error_rad": 1.1464736894723388e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "handoff_A_B",
+      "target_m": [
+        -0.36,
+        -0.67,
+        0.42
+      ],
+      "position_error_m": 1.3446527931731824e-06,
+      "rotation_error_rad": 6.584829707099273e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "handoff_B_C",
+      "target_m": [
+        0.36,
+        -0.67,
+        0.64
+      ],
+      "position_error_m": 4.332953278381443e-06,
+      "rotation_error_rad": 1.1464736894723388e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "B",
+      "kind": "handoff_B_C",
+      "target_m": [
+        0.36,
+        -0.67,
+        0.42
+      ],
+      "position_error_m": 1.3446527934032224e-06,
+      "rotation_error_rad": 6.585032027769964e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "source",
+      "target_m": [
+        0.825,
+        -0.71,
+        0.64
+      ],
+      "position_error_m": 9.809000226233668e-06,
+      "rotation_error_rad": 1.7951873619127257e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "source",
+      "target_m": [
+        0.825,
+        -0.71,
+        0.42
+      ],
+      "position_error_m": 6.310675657684206e-05,
+      "rotation_error_rad": 9.460041590879128e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "source",
+      "target_m": [
+        0.72,
+        -0.71,
+        0.64
+      ],
+      "position_error_m": 1.2944417664507513e-06,
+      "rotation_error_rad": 2.1798519549262258e-07,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "source",
+      "target_m": [
+        0.72,
+        -0.71,
+        0.42
+      ],
+      "position_error_m": 1.4024809666078689e-06,
+      "rotation_error_rad": 1.5820514488206366e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "source",
+      "target_m": [
+        0.615,
+        -0.71,
+        0.64
+      ],
+      "position_error_m": 9.809000226279113e-06,
+      "rotation_error_rad": 1.7951910725734652e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "source",
+      "target_m": [
+        0.615,
+        -0.71,
+        0.42
+      ],
+      "position_error_m": 6.310675657672525e-05,
+      "rotation_error_rad": 9.460042060315964e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "goal",
+      "target_m": [
+        0.825,
+        -0.59,
+        0.64
+      ],
+      "position_error_m": 2.2142194308732155e-05,
+      "rotation_error_rad": 7.022685988867725e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "goal",
+      "target_m": [
+        0.825,
+        -0.59,
+        0.42
+      ],
+      "position_error_m": 6.245949227863896e-07,
+      "rotation_error_rad": 3.837620417169434e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "goal",
+      "target_m": [
+        0.72,
+        -0.59,
+        0.64
+      ],
+      "position_error_m": 7.913794301555863e-07,
+      "rotation_error_rad": 2.3873501878062234e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "goal",
+      "target_m": [
+        0.72,
+        -0.59,
+        0.42
+      ],
+      "position_error_m": 1.087918929693752e-06,
+      "rotation_error_rad": 3.2616868505694306e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "goal",
+      "target_m": [
+        0.615,
+        -0.59,
+        0.64
+      ],
+      "position_error_m": 2.2142194308578233e-05,
+      "rotation_error_rad": 7.022684724140095e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "goal",
+      "target_m": [
+        0.615,
+        -0.59,
+        0.42
+      ],
+      "position_error_m": 6.245949229164325e-07,
+      "rotation_error_rad": 3.837331106410606e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "parking",
+      "target_m": [
+        0.95,
+        -0.69,
+        0.64
+      ],
+      "position_error_m": 1.3874710945013184e-05,
+      "rotation_error_rad": 1.7091495479074476e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "parking",
+      "target_m": [
+        0.95,
+        -0.69,
+        0.42
+      ],
+      "position_error_m": 1.6005880957162264e-06,
+      "rotation_error_rad": 9.571743233498614e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "parking",
+      "target_m": [
+        0.49,
+        -0.69,
+        0.64
+      ],
+      "position_error_m": 1.3874710945092744e-05,
+      "rotation_error_rad": 1.7091482487543712e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "parking",
+      "target_m": [
+        0.49,
+        -0.69,
+        0.42
+      ],
+      "position_error_m": 1.6005880958141097e-06,
+      "rotation_error_rad": 9.571743233498614e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "handoff_B_C",
+      "target_m": [
+        0.36,
+        -0.67,
+        0.64
+      ],
+      "position_error_m": 4.332953278711128e-06,
+      "rotation_error_rad": 1.1464794997419765e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "handoff_B_C",
+      "target_m": [
+        0.36,
+        -0.67,
+        0.42
+      ],
+      "position_error_m": 1.3446527930375322e-06,
+      "rotation_error_rad": 6.584930868211651e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "handoff_C_D",
+      "target_m": [
+        0.875,
+        -0.515,
+        0.64
+      ],
+      "position_error_m": 5.284131504877201e-05,
+      "rotation_error_rad": 8.584791624159879e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "C",
+      "kind": "handoff_C_D",
+      "target_m": [
+        0.875,
+        -0.515,
+        0.42
+      ],
+      "position_error_m": 2.9447881385585455e-06,
+      "rotation_error_rad": 6.76985189166803e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "source",
+      "target_m": [
+        1.07,
+        -0.255,
+        0.64
+      ],
+      "position_error_m": 9.809000226050954e-06,
+      "rotation_error_rad": 1.7951910725734652e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "source",
+      "target_m": [
+        1.07,
+        -0.255,
+        0.42
+      ],
+      "position_error_m": 6.310675657679805e-05,
+      "rotation_error_rad": 9.460042060315964e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "source",
+      "target_m": [
+        1.07,
+        -0.36,
+        0.64
+      ],
+      "position_error_m": 1.2944417666225683e-06,
+      "rotation_error_rad": 2.159383408157448e-07,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "source",
+      "target_m": [
+        1.07,
+        -0.36,
+        0.42
+      ],
+      "position_error_m": 1.402480966408376e-06,
+      "rotation_error_rad": 1.5820514488206366e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "source",
+      "target_m": [
+        1.07,
+        -0.465,
+        0.64
+      ],
+      "position_error_m": 9.809000226259631e-06,
+      "rotation_error_rad": 1.7951898356874044e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "source",
+      "target_m": [
+        1.07,
+        -0.465,
+        0.42
+      ],
+      "position_error_m": 6.31067565769156e-05,
+      "rotation_error_rad": 9.460041590879128e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "goal",
+      "target_m": [
+        0.95,
+        -0.255,
+        0.64
+      ],
+      "position_error_m": 2.2142194308389754e-05,
+      "rotation_error_rad": 7.022685356503938e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "goal",
+      "target_m": [
+        0.95,
+        -0.255,
+        0.42
+      ],
+      "position_error_m": 6.245949228154308e-07,
+      "rotation_error_rad": 3.83767827670397e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "goal",
+      "target_m": [
+        0.95,
+        -0.36,
+        0.64
+      ],
+      "position_error_m": 7.913794302202752e-07,
+      "rotation_error_rad": 2.3872571771823327e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "goal",
+      "target_m": [
+        0.95,
+        -0.36,
+        0.42
+      ],
+      "position_error_m": 1.0879189299089338e-06,
+      "rotation_error_rad": 3.261823000960848e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "goal",
+      "target_m": [
+        0.95,
+        -0.465,
+        0.64
+      ],
+      "position_error_m": 2.214219430849003e-05,
+      "rotation_error_rad": 7.022685672685839e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "goal",
+      "target_m": [
+        0.95,
+        -0.465,
+        0.42
+      ],
+      "position_error_m": 6.245949229691551e-07,
+      "rotation_error_rad": 3.837504695483251e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "parking",
+      "target_m": [
+        1.05,
+        -0.13,
+        0.64
+      ],
+      "position_error_m": 1.3874710945000316e-05,
+      "rotation_error_rad": 1.7091456504452556e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "parking",
+      "target_m": [
+        1.05,
+        -0.13,
+        0.42
+      ],
+      "position_error_m": 1.600588095954129e-06,
+      "rotation_error_rad": 9.571673639463317e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "parking",
+      "target_m": [
+        1.05,
+        -0.59,
+        0.64
+      ],
+      "position_error_m": 1.3874710945171257e-05,
+      "rotation_error_rad": 1.7091443512892166e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "parking",
+      "target_m": [
+        1.05,
+        -0.59,
+        0.42
+      ],
+      "position_error_m": 1.600588096033994e-06,
+      "rotation_error_rad": 9.571696837531305e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "handoff_C_D",
+      "target_m": [
+        0.875,
+        -0.515,
+        0.64
+      ],
+      "position_error_m": 5.284131504870024e-05,
+      "rotation_error_rad": 8.584792141457464e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "handoff_C_D",
+      "target_m": [
+        0.875,
+        -0.515,
+        0.42
+      ],
+      "position_error_m": 2.9447881384882875e-06,
+      "rotation_error_rad": 6.769720694259238e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "handoff_D_E",
+      "target_m": [
+        1.03,
+        0.0,
+        0.64
+      ],
+      "position_error_m": 4.332953278655236e-06,
+      "rotation_error_rad": 1.1464794997419765e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "D",
+      "kind": "handoff_D_E",
+      "target_m": [
+        1.03,
+        0.0,
+        0.42
+      ],
+      "position_error_m": 1.3446527933701422e-06,
+      "rotation_error_rad": 6.584863427642744e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "source",
+      "target_m": [
+        1.07,
+        0.465,
+        0.64
+      ],
+      "position_error_m": 9.809000226120208e-06,
+      "rotation_error_rad": 1.795188598800491e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "source",
+      "target_m": [
+        1.07,
+        0.465,
+        0.42
+      ],
+      "position_error_m": 6.310675657688772e-05,
+      "rotation_error_rad": 9.460041356160702e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "source",
+      "target_m": [
+        1.07,
+        0.36,
+        0.64
+      ],
+      "position_error_m": 1.2944417666225683e-06,
+      "rotation_error_rad": 2.159383408157448e-07,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "source",
+      "target_m": [
+        1.07,
+        0.36,
+        0.42
+      ],
+      "position_error_m": 1.402480966408376e-06,
+      "rotation_error_rad": 1.5820514488206366e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "source",
+      "target_m": [
+        1.07,
+        0.255,
+        0.64
+      ],
+      "position_error_m": 9.809000225611964e-06,
+      "rotation_error_rad": 1.7951935463430305e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "source",
+      "target_m": [
+        1.07,
+        0.255,
+        0.42
+      ],
+      "position_error_m": 6.310675657681585e-05,
+      "rotation_error_rad": 9.46004088672383e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "goal",
+      "target_m": [
+        0.95,
+        0.465,
+        0.64
+      ],
+      "position_error_m": 2.2142194308135885e-05,
+      "rotation_error_rad": 7.022685356503938e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "goal",
+      "target_m": [
+        0.95,
+        0.465,
+        0.42
+      ],
+      "position_error_m": 6.245949229345753e-07,
+      "rotation_error_rad": 3.837562556762541e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "goal",
+      "target_m": [
+        0.95,
+        0.36,
+        0.64
+      ],
+      "position_error_m": 7.913794302202752e-07,
+      "rotation_error_rad": 2.3872571771823327e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "goal",
+      "target_m": [
+        0.95,
+        0.36,
+        0.42
+      ],
+      "position_error_m": 1.0879189299089338e-06,
+      "rotation_error_rad": 3.261823000960848e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "goal",
+      "target_m": [
+        0.95,
+        0.255,
+        0.64
+      ],
+      "position_error_m": 2.2142194308600025e-05,
+      "rotation_error_rad": 7.022684724140095e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "goal",
+      "target_m": [
+        0.95,
+        0.255,
+        0.42
+      ],
+      "position_error_m": 6.245949227936341e-07,
+      "rotation_error_rad": 3.83767827670397e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "parking",
+      "target_m": [
+        1.05,
+        0.59,
+        0.64
+      ],
+      "position_error_m": 1.3874710944858299e-05,
+      "rotation_error_rad": 1.7091443512892166e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "parking",
+      "target_m": [
+        1.05,
+        0.59,
+        0.42
+      ],
+      "position_error_m": 1.600588095546733e-06,
+      "rotation_error_rad": 9.571789629241034e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "parking",
+      "target_m": [
+        1.05,
+        0.13,
+        0.64
+      ],
+      "position_error_m": 1.3874710945140184e-05,
+      "rotation_error_rad": 1.7091443512892166e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "parking",
+      "target_m": [
+        1.05,
+        0.13,
+        0.42
+      ],
+      "position_error_m": 1.600588096065684e-06,
+      "rotation_error_rad": 9.571743233498614e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "handoff_D_E",
+      "target_m": [
+        1.03,
+        0.0,
+        0.64
+      ],
+      "position_error_m": 4.332953278816715e-06,
+      "rotation_error_rad": 1.1464775629887024e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "handoff_D_E",
+      "target_m": [
+        1.03,
+        0.0,
+        0.42
+      ],
+      "position_error_m": 1.3446527937189272e-06,
+      "rotation_error_rad": 6.5849645882370925e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "handoff_E_F",
+      "target_m": [
+        0.6950000000000001,
+        0.515,
+        0.64
+      ],
+      "position_error_m": 1.3540569356307207e-06,
+      "rotation_error_rad": 3.056445749299861e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "E",
+      "kind": "handoff_E_F",
+      "target_m": [
+        0.6950000000000001,
+        0.515,
+        0.42
+      ],
+      "position_error_m": 8.544275513082754e-07,
+      "rotation_error_rad": 1.8029789283581045e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "source",
+      "target_m": [
+        0.255,
+        0.71,
+        0.64
+      ],
+      "position_error_m": 9.809000225919576e-06,
+      "rotation_error_rad": 1.7951898356874044e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "source",
+      "target_m": [
+        0.255,
+        0.71,
+        0.42
+      ],
+      "position_error_m": 6.310675657689082e-05,
+      "rotation_error_rad": 9.460041825597549e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "source",
+      "target_m": [
+        0.36,
+        0.71,
+        0.64
+      ],
+      "position_error_m": 1.2944417663750767e-06,
+      "rotation_error_rad": 2.149076029934881e-07,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "source",
+      "target_m": [
+        0.36,
+        0.71,
+        0.42
+      ],
+      "position_error_m": 1.4024809666305539e-06,
+      "rotation_error_rad": 1.5823321285795772e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "source",
+      "target_m": [
+        0.465,
+        0.71,
+        0.64
+      ],
+      "position_error_m": 9.809000226045394e-06,
+      "rotation_error_rad": 1.795188598800491e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "source",
+      "target_m": [
+        0.465,
+        0.71,
+        0.42
+      ],
+      "position_error_m": 6.31067565766618e-05,
+      "rotation_error_rad": 9.460041590879128e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "goal",
+      "target_m": [
+        0.255,
+        0.59,
+        0.64
+      ],
+      "position_error_m": 2.2142194308523572e-05,
+      "rotation_error_rad": 7.022685356503938e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "goal",
+      "target_m": [
+        0.255,
+        0.59,
+        0.42
+      ],
+      "position_error_m": 6.245949230269005e-07,
+      "rotation_error_rad": 3.837446833331525e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "goal",
+      "target_m": [
+        0.36,
+        0.59,
+        0.64
+      ],
+      "position_error_m": 7.913794302066663e-07,
+      "rotation_error_rad": 2.3873501878062234e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "goal",
+      "target_m": [
+        0.36,
+        0.59,
+        0.42
+      ],
+      "position_error_m": 1.087918929931703e-06,
+      "rotation_error_rad": 3.2616868505694306e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "goal",
+      "target_m": [
+        0.465,
+        0.59,
+        0.64
+      ],
+      "position_error_m": 2.2142194308345485e-05,
+      "rotation_error_rad": 7.022684724140095e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "goal",
+      "target_m": [
+        0.465,
+        0.59,
+        0.42
+      ],
+      "position_error_m": 6.245949226876729e-07,
+      "rotation_error_rad": 3.837273241641335e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "parking",
+      "target_m": [
+        0.13,
+        0.69,
+        0.64
+      ],
+      "position_error_m": 1.3874710945211442e-05,
+      "rotation_error_rad": 1.7091482487543712e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "parking",
+      "target_m": [
+        0.13,
+        0.69,
+        0.42
+      ],
+      "position_error_m": 1.6005880961185702e-06,
+      "rotation_error_rad": 9.571627243158669e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "parking",
+      "target_m": [
+        0.59,
+        0.69,
+        0.64
+      ],
+      "position_error_m": 1.3874710945204478e-05,
+      "rotation_error_rad": 1.7091469496003072e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "parking",
+      "target_m": [
+        0.59,
+        0.69,
+        0.42
+      ],
+      "position_error_m": 1.6005880959905914e-06,
+      "rotation_error_rad": 9.571696837531305e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "handoff_E_F",
+      "target_m": [
+        0.6950000000000001,
+        0.515,
+        0.64
+      ],
+      "position_error_m": 8.369169889159941e-07,
+      "rotation_error_rad": 2.342470122949252e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "handoff_E_F",
+      "target_m": [
+        0.6950000000000001,
+        0.515,
+        0.42
+      ],
+      "position_error_m": 4.198777622412661e-06,
+      "rotation_error_rad": 8.262260541118885e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "handoff_F_G",
+      "target_m": [
+        0.0,
+        0.67,
+        0.64
+      ],
+      "position_error_m": 4.332953278427953e-06,
+      "rotation_error_rad": 1.1464736894723388e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "F",
+      "kind": "handoff_F_G",
+      "target_m": [
+        0.0,
+        0.67,
+        0.42
+      ],
+      "position_error_m": 1.3446527933796673e-06,
+      "rotation_error_rad": 6.5849645882370925e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "source",
+      "target_m": [
+        -0.465,
+        0.71,
+        0.64
+      ],
+      "position_error_m": 9.809000225925136e-06,
+      "rotation_error_rad": 1.795188598800491e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "source",
+      "target_m": [
+        -0.465,
+        0.71,
+        0.42
+      ],
+      "position_error_m": 6.310675657681585e-05,
+      "rotation_error_rad": 9.460041121442268e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "source",
+      "target_m": [
+        -0.36,
+        0.71,
+        0.64
+      ],
+      "position_error_m": 1.2944417663750767e-06,
+      "rotation_error_rad": 2.149076029934881e-07,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "source",
+      "target_m": [
+        -0.36,
+        0.71,
+        0.42
+      ],
+      "position_error_m": 1.4024809666305539e-06,
+      "rotation_error_rad": 1.5823321285795772e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "source",
+      "target_m": [
+        -0.255,
+        0.71,
+        0.64
+      ],
+      "position_error_m": 9.809000226084043e-06,
+      "rotation_error_rad": 1.7951898356874044e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "source",
+      "target_m": [
+        -0.255,
+        0.71,
+        0.42
+      ],
+      "position_error_m": 6.310675657676927e-05,
+      "rotation_error_rad": 9.460041121442268e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "goal",
+      "target_m": [
+        -0.465,
+        0.59,
+        0.64
+      ],
+      "position_error_m": 2.2142194308413234e-05,
+      "rotation_error_rad": 7.022684407958151e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "goal",
+      "target_m": [
+        -0.465,
+        0.59,
+        0.42
+      ],
+      "position_error_m": 6.245949228422502e-07,
+      "rotation_error_rad": 3.837446833331525e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "goal",
+      "target_m": [
+        -0.36,
+        0.59,
+        0.64
+      ],
+      "position_error_m": 7.913794302066663e-07,
+      "rotation_error_rad": 2.3873501878062234e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "goal",
+      "target_m": [
+        -0.36,
+        0.59,
+        0.42
+      ],
+      "position_error_m": 1.087918929931703e-06,
+      "rotation_error_rad": 3.2616868505694306e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "goal",
+      "target_m": [
+        -0.255,
+        0.59,
+        0.64
+      ],
+      "position_error_m": 2.21421943085229e-05,
+      "rotation_error_rad": 7.022684724140095e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "goal",
+      "target_m": [
+        -0.255,
+        0.59,
+        0.42
+      ],
+      "position_error_m": 6.245949228050483e-07,
+      "rotation_error_rad": 3.837388970307323e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "parking",
+      "target_m": [
+        -0.59,
+        0.69,
+        0.64
+      ],
+      "position_error_m": 1.3874710945211723e-05,
+      "rotation_error_rad": 1.7091443512892166e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "parking",
+      "target_m": [
+        -0.59,
+        0.69,
+        0.42
+      ],
+      "position_error_m": 1.600588095752507e-06,
+      "rotation_error_rad": 9.571650441339106e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "parking",
+      "target_m": [
+        -0.13,
+        0.69,
+        0.64
+      ],
+      "position_error_m": 1.387471094501827e-05,
+      "rotation_error_rad": 1.7091482487543712e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "parking",
+      "target_m": [
+        -0.13,
+        0.69,
+        0.42
+      ],
+      "position_error_m": 1.600588095607228e-06,
+      "rotation_error_rad": 9.571696837531305e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "handoff_F_G",
+      "target_m": [
+        0.0,
+        0.67,
+        0.64
+      ],
+      "position_error_m": 4.332953278548451e-06,
+      "rotation_error_rad": 1.146467879173255e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "handoff_F_G",
+      "target_m": [
+        0.0,
+        0.67,
+        0.42
+      ],
+      "position_error_m": 1.3446527933656232e-06,
+      "rotation_error_rad": 6.584897148013535e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "handoff_G_H",
+      "target_m": [
+        -0.6950000000000001,
+        0.515,
+        0.64
+      ],
+      "position_error_m": 8.369169887209946e-07,
+      "rotation_error_rad": 2.342185733301339e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "G",
+      "kind": "handoff_G_H",
+      "target_m": [
+        -0.6950000000000001,
+        0.515,
+        0.42
+      ],
+      "position_error_m": 4.198777622887523e-06,
+      "rotation_error_rad": 8.262260541118885e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "source",
+      "target_m": [
+        -1.07,
+        0.255,
+        0.64
+      ],
+      "position_error_m": 9.809000225801474e-06,
+      "rotation_error_rad": 1.795186125024108e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "source",
+      "target_m": [
+        -1.07,
+        0.255,
+        0.42
+      ],
+      "position_error_m": 6.31067565768613e-05,
+      "rotation_error_rad": 9.460041590879128e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "source",
+      "target_m": [
+        -1.07,
+        0.36,
+        0.64
+      ],
+      "position_error_m": 1.2944417662994022e-06,
+      "rotation_error_rad": 2.1798519549262258e-07,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "source",
+      "target_m": [
+        -1.07,
+        0.36,
+        0.42
+      ],
+      "position_error_m": 1.4024809665191314e-06,
+      "rotation_error_rad": 1.5823321285795772e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "source",
+      "target_m": [
+        -1.07,
+        0.465,
+        0.64
+      ],
+      "position_error_m": 9.809000225870726e-06,
+      "rotation_error_rad": 1.7951910725734652e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "source",
+      "target_m": [
+        -1.07,
+        0.465,
+        0.42
+      ],
+      "position_error_m": 6.310675657696801e-05,
+      "rotation_error_rad": 9.460041590879128e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "goal",
+      "target_m": [
+        -0.95,
+        0.255,
+        0.64
+      ],
+      "position_error_m": 2.2142194308136556e-05,
+      "rotation_error_rad": 7.022684407958151e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "goal",
+      "target_m": [
+        -0.95,
+        0.255,
+        0.42
+      ],
+      "position_error_m": 6.245949229082719e-07,
+      "rotation_error_rad": 3.837388970307323e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "goal",
+      "target_m": [
+        -0.95,
+        0.36,
+        0.64
+      ],
+      "position_error_m": 7.913794302713553e-07,
+      "rotation_error_rad": 2.387164162934487e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "goal",
+      "target_m": [
+        -0.95,
+        0.36,
+        0.42
+      ],
+      "position_error_m": 1.0879189300250631e-06,
+      "rotation_error_rad": 3.2616868505694306e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "goal",
+      "target_m": [
+        -0.95,
+        0.465,
+        0.64
+      ],
+      "position_error_m": 2.2142194308467895e-05,
+      "rotation_error_rad": 7.022684724140095e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "goal",
+      "target_m": [
+        -0.95,
+        0.465,
+        0.42
+      ],
+      "position_error_m": 6.245949225403401e-07,
+      "rotation_error_rad": 3.837736135366188e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "parking",
+      "target_m": [
+        -1.05,
+        0.13,
+        0.64
+      ],
+      "position_error_m": 1.3874710945112858e-05,
+      "rotation_error_rad": 1.7091456504452556e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "parking",
+      "target_m": [
+        -1.05,
+        0.13,
+        0.42
+      ],
+      "position_error_m": 1.6005880956801536e-06,
+      "rotation_error_rad": 9.571720035543071e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "parking",
+      "target_m": [
+        -1.05,
+        0.59,
+        0.64
+      ],
+      "position_error_m": 1.387471094477579e-05,
+      "rotation_error_rad": 1.7091443512892166e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "parking",
+      "target_m": [
+        -1.05,
+        0.59,
+        0.42
+      ],
+      "position_error_m": 1.6005880958180054e-06,
+      "rotation_error_rad": 9.571650441339106e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "handoff_G_H",
+      "target_m": [
+        -0.6950000000000001,
+        0.515,
+        0.64
+      ],
+      "position_error_m": 1.3540569361032393e-06,
+      "rotation_error_rad": 3.056736327400941e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "handoff_G_H",
+      "target_m": [
+        -0.6950000000000001,
+        0.515,
+        0.42
+      ],
+      "position_error_m": 8.544275511469322e-07,
+      "rotation_error_rad": 1.8037177027912213e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "handoff_H_I",
+      "target_m": [
+        -1.03,
+        0.0,
+        0.64
+      ],
+      "position_error_m": 4.332953278581489e-06,
+      "rotation_error_rad": 1.1464794997419765e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "H",
+      "kind": "handoff_H_I",
+      "target_m": [
+        -1.03,
+        0.0,
+        0.42
+      ],
+      "position_error_m": 1.3446527938350025e-06,
+      "rotation_error_rad": 6.584897148013535e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "source",
+      "target_m": [
+        -1.07,
+        -0.465,
+        0.64
+      ],
+      "position_error_m": 9.809000226020351e-06,
+      "rotation_error_rad": 1.7951910725734652e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "source",
+      "target_m": [
+        -1.07,
+        -0.465,
+        0.42
+      ],
+      "position_error_m": 6.31067565765914e-05,
+      "rotation_error_rad": 9.460041121442268e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "source",
+      "target_m": [
+        -1.07,
+        -0.36,
+        0.64
+      ],
+      "position_error_m": 1.2944417662994022e-06,
+      "rotation_error_rad": 2.1798519549262258e-07,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "source",
+      "target_m": [
+        -1.07,
+        -0.36,
+        0.42
+      ],
+      "position_error_m": 1.4024809665191314e-06,
+      "rotation_error_rad": 1.5823321285795772e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "source",
+      "target_m": [
+        -1.07,
+        -0.255,
+        0.64
+      ],
+      "position_error_m": 9.80900022624851e-06,
+      "rotation_error_rad": 1.795188598800491e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "source",
+      "target_m": [
+        -1.07,
+        -0.255,
+        0.42
+      ],
+      "position_error_m": 6.310675657688075e-05,
+      "rotation_error_rad": 9.460041121442268e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "goal",
+      "target_m": [
+        -0.95,
+        -0.465,
+        0.64
+      ],
+      "position_error_m": 2.214219430829082e-05,
+      "rotation_error_rad": 7.022684407958151e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "goal",
+      "target_m": [
+        -0.95,
+        -0.465,
+        0.42
+      ],
+      "position_error_m": 6.245949229923207e-07,
+      "rotation_error_rad": 3.837446833331525e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "goal",
+      "target_m": [
+        -0.95,
+        -0.36,
+        0.64
+      ],
+      "position_error_m": 7.913794302713553e-07,
+      "rotation_error_rad": 2.387164162934487e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "goal",
+      "target_m": [
+        -0.95,
+        -0.36,
+        0.42
+      ],
+      "position_error_m": 1.0879189300250631e-06,
+      "rotation_error_rad": 3.2616868505694306e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "goal",
+      "target_m": [
+        -0.95,
+        -0.255,
+        0.64
+      ],
+      "position_error_m": 2.2142194308191216e-05,
+      "rotation_error_rad": 7.022685040322023e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "goal",
+      "target_m": [
+        -0.95,
+        -0.255,
+        0.42
+      ],
+      "position_error_m": 6.245949224179419e-07,
+      "rotation_error_rad": 3.837562556762541e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "parking",
+      "target_m": [
+        -1.05,
+        -0.59,
+        0.64
+      ],
+      "position_error_m": 1.3874710945148208e-05,
+      "rotation_error_rad": 1.7091495479074476e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "parking",
+      "target_m": [
+        -1.05,
+        -0.59,
+        0.42
+      ],
+      "position_error_m": 1.6005880956306396e-06,
+      "rotation_error_rad": 9.571696837531305e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "parking",
+      "target_m": [
+        -1.05,
+        -0.13,
+        0.64
+      ],
+      "position_error_m": 1.3874710945057121e-05,
+      "rotation_error_rad": 1.7091443512892166e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "parking",
+      "target_m": [
+        -1.05,
+        -0.13,
+        0.42
+      ],
+      "position_error_m": 1.6005880958453614e-06,
+      "rotation_error_rad": 9.571673639463317e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "handoff_H_I",
+      "target_m": [
+        -1.03,
+        0.0,
+        0.64
+      ],
+      "position_error_m": 4.332953278874395e-06,
+      "rotation_error_rad": 1.1464736894723388e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "handoff_H_I",
+      "target_m": [
+        -1.03,
+        0.0,
+        0.42
+      ],
+      "position_error_m": 1.3446527928328185e-06,
+      "rotation_error_rad": 6.584863427642744e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "handoff_I_A",
+      "target_m": [
+        -0.875,
+        -0.515,
+        0.64
+      ],
+      "position_error_m": 5.284131504864065e-05,
+      "rotation_error_rad": 8.584792141457464e-05,
+      "endpoint_penetrations": [],
+      "passed": true
+    },
+    {
+      "arm": "I",
+      "kind": "handoff_I_A",
+      "target_m": [
+        -0.875,
+        -0.515,
+        0.42
+      ],
+      "position_error_m": 2.9447881386147525e-06,
+      "rotation_error_rad": 6.769917489418974e-06,
+      "endpoint_penetrations": [],
+      "passed": true
+    }
+  ],
+  "checks": {
+    "table_support": {
+      "passed": true,
+      "unsupported": []
+    },
+    "distinct_cube_footprints": {
+      "passed": true,
+      "minimum_chebyshev_center_distance_m": 0.07499999999999996,
+      "closest_pair": [
+        "A_goal3",
+        "I_A"
+      ],
+      "scope": "axis aligned 40 mm cubes at marked centers; excludes gripper and swept volume"
+    },
+    "initial_penetrations": {
+      "passed": true,
+      "contacts": []
+    },
+    "passive_settle": {
+      "passed": true,
+      "duration_sim_s": 1,
+      "max_object_drift_m": 7.480376899957978e-05,
+      "max_home_tcp_error_m": 0.0044436678110073
+    }
+  },
+  "scope": "load, support, point IK and endpoint contacts with peers home, home contacts, 1 s settle; no transport rollout",
+  "passed": true
+}

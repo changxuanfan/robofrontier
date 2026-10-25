@@ -1,0 +1,460 @@
+{
+  "kind": "frontier_suite",
+  "id": "mosaic-a08-10x24-d1",
+  "suite_version": 2,
+  "family": "mosaic",
+  "level": 1,
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -0.99,
+        -0.6799999999999999,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "B": {
+      "base_position_m": [
+        -0.33,
+        -0.6799999999999999,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "C": {
+      "base_position_m": [
+        0.33,
+        -0.6799999999999999,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "D": {
+      "base_position_m": [
+        0.99,
+        -0.6799999999999999,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "E": {
+      "base_position_m": [
+        -0.99,
+        0.6799999999999999,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "F": {
+      "base_position_m": [
+        -0.33,
+        0.6799999999999999,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "G": {
+      "base_position_m": [
+        0.33,
+        0.6799999999999999,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "H": {
+      "base_position_m": [
+        0.99,
+        0.6799999999999999,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    }
+  },
+  "rules": [
+    "Build the entire single right-pointing rocket reference, including background cells, one released cube per pixel.",
+    "Cube side is 60 mm and common cell-center pitch is 76 mm. L1 has 75 mm clear square pockets, L2 3 mm red printed lines, L3 no visible grid. All scales use four colors. The reference is north-up, centered on the declared assembly origin.",
+    "Stock allocations do not restrict which robot can use an item. Preserve completed placements and account for finger release/withdrawal clearance.",
+    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits."
+  ],
+  "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB",
+      "Robot proprioception and robot geometry",
+      "Action feedback",
+      "Visible dial count"
+    ]
+  },
+  "gripper_profile": "standard-panda",
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "G_front",
+    "G_side",
+    "H_front",
+    "H_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "assembly_01",
+    "assembly_02",
+    "assembly_03",
+    "assembly_04"
+  ],
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "execution_readiness": "environment_preview_only",
+  "initial_supplies": [
+    {
+      "source": "A",
+      "color": "red",
+      "count": 30
+    },
+    {
+      "source": "B",
+      "color": "blue",
+      "count": 16
+    },
+    {
+      "source": "B",
+      "color": "red",
+      "count": 14
+    },
+    {
+      "source": "C",
+      "color": "blue",
+      "count": 30
+    },
+    {
+      "source": "D",
+      "color": "blue",
+      "count": 30
+    },
+    {
+      "source": "E",
+      "color": "blue",
+      "count": 30
+    },
+    {
+      "source": "F",
+      "color": "blue",
+      "count": 30
+    },
+    {
+      "source": "G",
+      "color": "blue",
+      "count": 6
+    },
+    {
+      "source": "G",
+      "color": "white",
+      "count": 18
+    },
+    {
+      "source": "G",
+      "color": "yellow",
+      "count": 6
+    },
+    {
+      "source": "H",
+      "color": "white",
+      "count": 30
+    }
+  ],
+  "mechanism": {
+    "kind": "recessed_grid",
+    "stock_packing": "Single layer; non-exclusive station allocation",
+    "stock_count": 240
+  },
+  "target": {
+    "rows": 10,
+    "columns": 24,
+    "colors": 4,
+    "pitch_m": 0.076,
+    "cube_side_m": 0.06,
+    "pattern": [
+      [
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "red",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue"
+      ],
+      [
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "red",
+        "red",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue"
+      ],
+      [
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue"
+      ],
+      [
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "red",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "red",
+        "blue",
+        "blue",
+        "blue"
+      ],
+      [
+        "blue",
+        "blue",
+        "blue",
+        "yellow",
+        "yellow",
+        "yellow",
+        "red",
+        "white",
+        "blue",
+        "blue",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "red",
+        "red",
+        "red",
+        "blue"
+      ],
+      [
+        "blue",
+        "blue",
+        "blue",
+        "yellow",
+        "yellow",
+        "yellow",
+        "red",
+        "white",
+        "blue",
+        "blue",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "red",
+        "red",
+        "red",
+        "blue"
+      ],
+      [
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "red",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "white",
+        "red",
+        "blue",
+        "blue",
+        "blue"
+      ],
+      [
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "red",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue"
+      ],
+      [
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "red",
+        "red",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue"
+      ],
+      [
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "red",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue",
+        "blue"
+      ]
+    ],
+    "pocket_opening_m": 0.075,
+    "depth_m": 0.02,
+    "center_world_m": [
+      0,
+      0,
+      0.4
+    ],
+    "row1": "north",
+    "column1": "west",
+    "reference_image": "target-pattern.png"
+  }
+}

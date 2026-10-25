@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "scope": "Initial geometry, stationary dynamics and endpoint IK only; no full trajectory or manipulation proof.",
+  "robot_count": 4,
+  "inter_robot_contacts": [],
+  "max_home_tcp_error_m": 1.0023722095556469e-05,
+  "max_object_drift_m": 7.102324584007391e-07,
+  "endpoint_coverage": {
+    "scope": "Robot-only endpoint IK, not full trajectory/contact proof",
+    "sources": {
+      "A_item1": true,
+      "A_item2": true,
+      "A_item3": true,
+      "B_item1": true,
+      "B_item2": true,
+      "B_item3": true,
+      "C_item1": true,
+      "C_item2": true,
+      "C_item3": true,
+      "D_item1": true,
+      "D_item2": true,
+      "D_item3": true
+    },
+    "goals": {
+      "A_slot1": "A",
+      "A_slot2": "A",
+      "A_slot3": "A",
+      "B_slot1": "B",
+      "B_slot2": "B",
+      "B_slot3": "B",
+      "C_slot1": "C",
+      "C_slot2": "C",
+      "C_slot3": "C",
+      "D_slot1": "D",
+      "D_slot2": "D",
+      "D_slot3": "D"
+    },
+    "passed": true
+  },
+  "sim_duration_s": 1,
+  "wall_time_s": 0.2052251669811085,
+  "scene_sha256": "0cae25d658a29d1e457e61ebed5f07170f59e693f8afa46ecca6591356071d18"
+}

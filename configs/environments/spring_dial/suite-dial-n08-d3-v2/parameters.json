@@ -1,0 +1,69 @@
+{
+  "case": {
+    "id": "dial-n08-d3",
+    "family": "dial",
+    "level": 3,
+    "arms": 16,
+    "dials": 8,
+    "mechanism": "airborne_crank",
+    "candidate_codes": 6561,
+    "status": "planned",
+    "layout": "annular_inner_outer_facing_pairs",
+    "directory": "configs/environments/spring_dial/suite-dial-n08-d3-v2",
+    "scene_sha256": null,
+    "layout_report": "configs/environments/spring_dial/suite-dial-n08-d3/layout-validation.json",
+    "scene_revision": 2,
+    "history": [
+      {
+        "directory": "configs/environments/spring_dial/suite-dial-n08-d3",
+        "scene_sha256": "7b7539f8bc0154554e744cc64a0ce2b8702482dd7bfe4af4c33bda58332743ae",
+        "status": "generated",
+        "superseded_reason": "Freeze a common 0.03 Nm/rad spring, physical crank balance and calibrated hard contacts; earlier scenes and witness records remain unchanged"
+      }
+    ],
+    "verification_results": {},
+    "last_oracle_report": null
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 20,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "mechanism": {
+    "dial_count": 8,
+    "interface": "crank",
+    "free_modules": true,
+    "handle_material": "anodized aluminium",
+    "handle_mass_kg": 0.2592,
+    "spring_nm_rad": 0.03,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      0.8725182257924048,
+      -2.1064453341257336
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "rotor_counterbalanced": true,
+    "balance_mass_kg": 0.04575,
+    "balance_arm_mass_kg": 0.015,
+    "balance_radius_m": 0.06
+  },
+  "grid": null
+}

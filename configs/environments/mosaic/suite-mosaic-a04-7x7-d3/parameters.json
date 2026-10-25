@@ -1,0 +1,63 @@
+{
+  "case": {
+    "id": "mosaic-a04-7x7-d3",
+    "family": "mosaic",
+    "level": 3,
+    "arms": 4,
+    "rows": 7,
+    "columns": 7,
+    "objects": 49,
+    "pitch_m": 0.051,
+    "guidance": "unmarked",
+    "status": "oracle_failed",
+    "directory": "configs/environments/mosaic/suite-mosaic-a04-7x7-d3",
+    "scene_sha256": "382728792cfa914003d05bcac9c1b1a96542fa0fce282a3622dbd43544aa5c32",
+    "layout_report": "configs/environments/mosaic/suite-mosaic-a04-7x7-d3/layout-validation.json",
+    "verification_results": {
+      "0": {
+        "passed": false,
+        "scene_sha256": "382728792cfa914003d05bcac9c1b1a96542fa0fce282a3622dbd43544aa5c32",
+        "executor_sha256": "9b404700b87979ff1253c0353bef0c0acf45615328a0a1298001d89677885454",
+        "report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-001/report.json"
+      }
+    },
+    "last_oracle_report": "runs/oracle/frontier-v1/mosaic-a04-7x7-d3/seed-0/attempt-001/report.json"
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "cube_contact_time_constant_s": 0.004
+  },
+  "mechanism": null,
+  "grid": {
+    "rows": 7,
+    "columns": 7,
+    "pitch_m": 0.051,
+    "cube_side_m": 0.04,
+    "pattern": [
+      "RBBWWWW",
+      "WRBBBWW",
+      "WYRRRRW",
+      "BYYYRRR",
+      "WYRRRRW",
+      "WRBBBWW",
+      "RBBWWWW"
+    ],
+    "floor_z_m": 0.4,
+    "rim_z_m": 0.4,
+    "pocket_opening_m": null
+  }
+}

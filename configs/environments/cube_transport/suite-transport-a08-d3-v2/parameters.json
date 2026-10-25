@@ -1,0 +1,66 @@
+{
+  "case": {
+    "id": "transport-a08-d3",
+    "family": "transport",
+    "level": 3,
+    "arms": 8,
+    "objects": 24,
+    "mechanism": "double_peg_compliant_socket",
+    "status": "planned",
+    "directory": "configs/environments/cube_transport/suite-transport-a08-d3-v2",
+    "scene_sha256": null,
+    "layout_report": "configs/environments/cube_transport/suite-transport-a08-d3/layout-validation.json",
+    "verification_results": {},
+    "last_oracle_report": null,
+    "scene_revision": 2,
+    "history": [
+      {
+        "directory": "configs/environments/cube_transport/suite-transport-a08-d3",
+        "scene_sha256": "d1078921dc9d93b3ded88cf712684864ce5bea05d6210bcd61d9bc9d049dc38b",
+        "status": "oracle_witness_passed",
+        "verification_results": {
+          "0": {
+            "passed": true,
+            "scene_sha256": "d1078921dc9d93b3ded88cf712684864ce5bea05d6210bcd61d9bc9d049dc38b",
+            "report": "runs/oracle/frontier-v1/transport-a08-d3/seed-0/attempt-001/report.json"
+          }
+        },
+        "last_oracle_report": "runs/oracle/frontier-v1/transport-a08-d3/seed-0/attempt-001/report.json",
+        "superseded_reason": "Use four corner docking pads so both physical pegs clear the buffer at quarter-turn orientations; preserve earlier rail-supported scenes"
+      }
+    ]
+  },
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "cylinder_radius_m": 0.02,
+    "cylinder_height_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "cube_contact_time_constant_s": 0.004
+  },
+  "mechanism": {
+    "cube_side_m": 0.04,
+    "peg_diameter_m": 0.008,
+    "peg_length_m": 0.01,
+    "hole_diameter_m": 0.01,
+    "peg_spacing_m": 0.02,
+    "board_mass_kg": 0.15,
+    "vertical_stiffness_n_m": 300,
+    "angular_stiffness_nm_rad": 0.16,
+    "buffer_support": "Four 8 mm corner pads on a 32 mm square; both pegs remain clear at in-plane quarter-turn orientations",
+    "contact_geometry": "True hollow mesh bores for pegs/fingertips; consolidated coplanar support manifold for larger cube/arm bodies. This does not attach, align or insert objects."
+  },
+  "grid": null
+}

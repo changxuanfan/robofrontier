@@ -1,0 +1,580 @@
+{
+  "schema": "robofrontier.suite.environment.v1",
+  "id": "relay-a16-d3",
+  "collection": "frontier_suite",
+  "arm_count": 16,
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ]
+  },
+  "stations": [
+    {
+      "id": "A",
+      "base_position_m": [
+        -0.24999999999999997,
+        -1.5999999999999999,
+        0.4
+      ],
+      "yaw_rad": 1.1071487177940904,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.12925233,
+        -1.35850466,
+        1.0
+      ]
+    },
+    {
+      "id": "B",
+      "base_position_m": [
+        0.25,
+        -0.5999999999999999,
+        0.4
+      ],
+      "yaw_rad": 4.2487413713838835,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.12925233,
+        -0.84149534,
+        1.0
+      ]
+    },
+    {
+      "id": "C",
+      "base_position_m": [
+        0.9545941546018392,
+        -1.308147545195113,
+        0.4
+      ],
+      "yaw_rad": 1.8925468811915387,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.86921266,
+        -1.05200305,
+        1.0
+      ]
+    },
+    {
+      "id": "D",
+      "base_position_m": [
+        0.6010407640085654,
+        -0.24748737341529148,
+        0.4
+      ],
+      "yaw_rad": 5.034139534781332,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.68642226,
+        -0.50363186,
+        1.0
+      ]
+    },
+    {
+      "id": "E",
+      "base_position_m": [
+        1.6,
+        -0.25000000000000006,
+        0.4
+      ],
+      "yaw_rad": 2.677945044588987,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.35850466,
+        -0.12925233,
+        1.0
+      ]
+    },
+    {
+      "id": "F",
+      "base_position_m": [
+        0.6000000000000001,
+        0.25000000000000006,
+        0.4
+      ],
+      "yaw_rad": 5.81953769817878,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.84149534,
+        0.12925233,
+        1.0
+      ]
+    },
+    {
+      "id": "G",
+      "base_position_m": [
+        1.308147545195113,
+        0.9545941546018394,
+        0.4
+      ],
+      "yaw_rad": 3.4633432079864352,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        1.05200305,
+        0.86921266,
+        1.0
+      ]
+    },
+    {
+      "id": "H",
+      "base_position_m": [
+        0.2474873734152917,
+        0.6010407640085657,
+        0.4
+      ],
+      "yaw_rad": 6.604935861576228,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.50363186,
+        0.68642226,
+        1.0
+      ]
+    },
+    {
+      "id": "I",
+      "base_position_m": [
+        0.2500000000000002,
+        1.6000000000000003,
+        0.4
+      ],
+      "yaw_rad": 4.2487413713838835,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        0.12925233,
+        1.35850466,
+        1.0
+      ]
+    },
+    {
+      "id": "J",
+      "base_position_m": [
+        -0.2499999999999999,
+        0.6000000000000003,
+        0.4
+      ],
+      "yaw_rad": 7.390334024973677,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.12925233,
+        0.84149534,
+        1.0
+      ]
+    },
+    {
+      "id": "K",
+      "base_position_m": [
+        -0.954594154601839,
+        1.3081475451951134,
+        0.4
+      ],
+      "yaw_rad": 5.034139534781332,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.86921266,
+        1.05200305,
+        1.0
+      ]
+    },
+    {
+      "id": "L",
+      "base_position_m": [
+        -0.6010407640085655,
+        0.24748737341529203,
+        0.4
+      ],
+      "yaw_rad": 8.175732188371125,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.68642226,
+        0.50363186,
+        1.0
+      ]
+    },
+    {
+      "id": "M",
+      "base_position_m": [
+        -1.6,
+        0.25000000000000056,
+        0.4
+      ],
+      "yaw_rad": 5.81953769817878,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.35850466,
+        0.12925233,
+        1.0
+      ]
+    },
+    {
+      "id": "N",
+      "base_position_m": [
+        -0.6000000000000001,
+        -0.24999999999999967,
+        0.4
+      ],
+      "yaw_rad": 8.961130351768574,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.84149534,
+        -0.12925233,
+        1.0
+      ]
+    },
+    {
+      "id": "O",
+      "base_position_m": [
+        -1.3081475451951132,
+        -0.9545941546018386,
+        0.4
+      ],
+      "yaw_rad": 6.604935861576228,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -1.05200305,
+        -0.86921266,
+        1.0
+      ]
+    },
+    {
+      "id": "P",
+      "base_position_m": [
+        -0.2474873734152918,
+        -0.6010407640085651,
+        0.4
+      ],
+      "yaw_rad": 9.746528515166021,
+      "side": "suite",
+      "source_positions_m": [],
+      "goal_positions_m": [],
+      "parking_positions_m": [],
+      "home_tcp_m": [
+        -0.50363186,
+        -0.68642226,
+        1.0
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "center_m": [
+        0,
+        0,
+        0.375
+      ],
+      "half_size_m": [
+        1.84,
+        1.8400000000000003,
+        0.025
+      ]
+    }
+  ],
+  "edges": [],
+  "objects": [
+    {
+      "id": "payload",
+      "shape": "beam",
+      "initial_position_m": [
+        2.7755575615628914e-17,
+        -1.0999999999999999,
+        0.72
+      ],
+      "color": "wood",
+      "rgb": [
+        0.52,
+        0.29,
+        0.16
+      ]
+    }
+  ],
+  "floor_rgba": [
+    0.84,
+    0.9,
+    0.95,
+    1
+  ],
+  "table_rgba": [
+    0.604,
+    0.459,
+    0.345,
+    1
+  ],
+  "initial_keyframe": "initial",
+  "scene": "scene.xml",
+  "suite_case": {
+    "id": "relay-a16-d3",
+    "family": "relay",
+    "level": 3,
+    "arms": 16,
+    "pairs": 8,
+    "layout": "closed_loop",
+    "scene_revision": 2
+  },
+  "route": [
+    {
+      "center_m": [
+        2.7755575615628914e-17,
+        -1.0999999999999999,
+        0.72
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    {
+      "center_m": [
+        0.7778174593052023,
+        -0.7778174593052022,
+        0.72
+      ],
+      "yaw_rad": -0.7853981633974483
+    },
+    {
+      "center_m": [
+        1.1,
+        0.0,
+        0.72
+      ],
+      "yaw_rad": 0.0
+    },
+    {
+      "center_m": [
+        0.7778174593052024,
+        0.7778174593052025,
+        0.72
+      ],
+      "yaw_rad": 0.7853981633974483
+    },
+    {
+      "center_m": [
+        1.624667235218378e-16,
+        1.1000000000000003,
+        0.72
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    {
+      "center_m": [
+        -0.7778174593052023,
+        0.7778174593052027,
+        0.72
+      ],
+      "yaw_rad": 2.356194490192345
+    },
+    {
+      "center_m": [
+        -1.1,
+        4.440892098500626e-16,
+        0.72
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    {
+      "center_m": [
+        -0.7778174593052025,
+        -0.7778174593052019,
+        0.72
+      ],
+      "yaw_rad": 3.9269908169872414
+    },
+    {
+      "center_m": [
+        2.7755575615628914e-17,
+        -1.0999999999999999,
+        0.72
+      ],
+      "yaw_rad": -1.5707963267948966
+    }
+  ],
+  "pairs": [
+    {
+      "robots": [
+        "A",
+        "B"
+      ],
+      "center_m": [
+        2.7755575615628914e-17,
+        -1.0999999999999999,
+        0.72
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    {
+      "robots": [
+        "C",
+        "D"
+      ],
+      "center_m": [
+        0.7778174593052023,
+        -0.7778174593052022,
+        0.72
+      ],
+      "yaw_rad": -0.7853981633974483
+    },
+    {
+      "robots": [
+        "E",
+        "F"
+      ],
+      "center_m": [
+        1.1,
+        0.0,
+        0.72
+      ],
+      "yaw_rad": 0.0
+    },
+    {
+      "robots": [
+        "G",
+        "H"
+      ],
+      "center_m": [
+        0.7778174593052024,
+        0.7778174593052025,
+        0.72
+      ],
+      "yaw_rad": 0.7853981633974483
+    },
+    {
+      "robots": [
+        "I",
+        "J"
+      ],
+      "center_m": [
+        1.624667235218378e-16,
+        1.1000000000000003,
+        0.72
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    {
+      "robots": [
+        "K",
+        "L"
+      ],
+      "center_m": [
+        -0.7778174593052023,
+        0.7778174593052027,
+        0.72
+      ],
+      "yaw_rad": 2.356194490192345
+    },
+    {
+      "robots": [
+        "M",
+        "N"
+      ],
+      "center_m": [
+        -1.1,
+        4.440892098500626e-16,
+        0.72
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    {
+      "robots": [
+        "O",
+        "P"
+      ],
+      "center_m": [
+        -0.7778174593052025,
+        -0.7778174593052019,
+        0.72
+      ],
+      "yaw_rad": 3.9269908169872414
+    }
+  ],
+  "mechanism": {
+    "beam_length_m": 1.2,
+    "beam_cross_section_m": [
+      0.045,
+      0.045
+    ],
+    "beam_mass_kg": 1.458,
+    "weight_mass_kg": 0.25,
+    "suspension_length_m": 0.2,
+    "suspension_segments": 8,
+    "opposed_base_spacing_m": 1.118033988749895,
+    "cross_track_base_spacing_m": 1.0,
+    "longitudinal_pair_stagger_m": 0.5,
+    "minimum_supporting_robots": 2,
+    "loop_radius_m": 1.1,
+    "beam_alignment": "tangent"
+  },
+  "compiled_mass_kg": {
+    "D_link0": 0.629769,
+    "D_link1": 4.970684,
+    "D_link2": 0.646926,
+    "D_link3": 3.228604,
+    "D_link4": 3.587895,
+    "D_link5": 1.225946,
+    "D_link6": 1.666555,
+    "D_link7": 0.735522,
+    "D_hand": 0.73,
+    "D_left_finger": 0.015,
+    "D_right_finger": 0.015,
+    "payload": 1.458,
+    "suspension_0": 0.0015,
+    "suspension_1": 0.0015,
+    "suspension_2": 0.0015,
+    "suspension_3": 0.0015,
+    "suspension_4": 0.0015,
+    "suspension_5": 0.0015,
+    "suspension_6": 0.0015,
+    "suspension_7": 0.0015,
+    "weight": 0.25
+  }
+}

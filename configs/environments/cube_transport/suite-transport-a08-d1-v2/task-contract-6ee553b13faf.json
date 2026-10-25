@@ -1,0 +1,1072 @@
+{
+  "kind": "frontier_suite",
+  "id": "transport-a08-d1",
+  "suite_version": 1,
+  "family": "transport",
+  "level": 1,
+  "scale": {
+    "id": "transport-a08-d1",
+    "family": "transport",
+    "level": 1,
+    "arms": 8,
+    "scene_revision": 2
+  },
+  "scene_asset": "configs/environments/cube_transport/suite-transport-a08-d1-v2",
+  "scene_sha256": "b9f81035b033def8b3d95c78c341f45d4366c23000966749e6cedc0e39147ca1",
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -0.36,
+        -1.01,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "B": {
+      "base_position_m": [
+        0.36,
+        -1.01,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "C": {
+      "base_position_m": [
+        1.01,
+        -0.36,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    "D": {
+      "base_position_m": [
+        1.01,
+        0.36,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    "E": {
+      "base_position_m": [
+        0.36,
+        1.01,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "F": {
+      "base_position_m": [
+        -0.36,
+        1.01,
+        0.4
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "G": {
+      "base_position_m": [
+        -1.01,
+        0.36,
+        0.4
+      ],
+      "yaw_rad": 0
+    },
+    "H": {
+      "base_position_m": [
+        -1.01,
+        -0.36,
+        0.4
+      ],
+      "yaw_rad": 0
+    }
+  },
+  "objects": [
+    {
+      "id": "A_item1",
+      "source": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "a",
+      "initial_position_m": [
+        -0.255,
+        -0.71,
+        0.57
+      ],
+      "identity": "A"
+    },
+    {
+      "id": "A_item2",
+      "source": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "a",
+      "initial_position_m": [
+        -0.36,
+        -0.71,
+        0.57
+      ],
+      "identity": "A"
+    },
+    {
+      "id": "A_item3",
+      "source": "A",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "a",
+      "initial_position_m": [
+        -0.465,
+        -0.71,
+        0.57
+      ],
+      "identity": "A"
+    },
+    {
+      "id": "B_item1",
+      "source": "B",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.465,
+        -0.71,
+        0.57
+      ],
+      "identity": "B"
+    },
+    {
+      "id": "B_item2",
+      "source": "B",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.36,
+        -0.71,
+        0.57
+      ],
+      "identity": "B"
+    },
+    {
+      "id": "B_item3",
+      "source": "B",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "b",
+      "initial_position_m": [
+        0.255,
+        -0.71,
+        0.57
+      ],
+      "identity": "B"
+    },
+    {
+      "id": "C_item1",
+      "source": "C",
+      "color": "green",
+      "rgb": [
+        0.12,
+        0.62,
+        0.25
+      ],
+      "shape": "cube",
+      "type_code": "c",
+      "initial_position_m": [
+        0.71,
+        -0.255,
+        0.57
+      ],
+      "identity": "C"
+    },
+    {
+      "id": "C_item2",
+      "source": "C",
+      "color": "green",
+      "rgb": [
+        0.12,
+        0.62,
+        0.25
+      ],
+      "shape": "cube",
+      "type_code": "c",
+      "initial_position_m": [
+        0.71,
+        -0.36,
+        0.57
+      ],
+      "identity": "C"
+    },
+    {
+      "id": "C_item3",
+      "source": "C",
+      "color": "green",
+      "rgb": [
+        0.12,
+        0.62,
+        0.25
+      ],
+      "shape": "cube",
+      "type_code": "c",
+      "initial_position_m": [
+        0.71,
+        -0.465,
+        0.57
+      ],
+      "identity": "C"
+    },
+    {
+      "id": "D_item1",
+      "source": "D",
+      "color": "orange",
+      "rgb": [
+        0.95,
+        0.43,
+        0.08
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        0.71,
+        0.465,
+        0.57
+      ],
+      "identity": "D"
+    },
+    {
+      "id": "D_item2",
+      "source": "D",
+      "color": "orange",
+      "rgb": [
+        0.95,
+        0.43,
+        0.08
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        0.71,
+        0.36,
+        0.57
+      ],
+      "identity": "D"
+    },
+    {
+      "id": "D_item3",
+      "source": "D",
+      "color": "orange",
+      "rgb": [
+        0.95,
+        0.43,
+        0.08
+      ],
+      "shape": "cube",
+      "type_code": "d",
+      "initial_position_m": [
+        0.71,
+        0.255,
+        0.57
+      ],
+      "identity": "D"
+    },
+    {
+      "id": "E_item1",
+      "source": "E",
+      "color": "purple",
+      "rgb": [
+        0.52,
+        0.23,
+        0.76
+      ],
+      "shape": "cube",
+      "type_code": "e",
+      "initial_position_m": [
+        0.255,
+        0.71,
+        0.57
+      ],
+      "identity": "E"
+    },
+    {
+      "id": "E_item2",
+      "source": "E",
+      "color": "purple",
+      "rgb": [
+        0.52,
+        0.23,
+        0.76
+      ],
+      "shape": "cube",
+      "type_code": "e",
+      "initial_position_m": [
+        0.36,
+        0.71,
+        0.57
+      ],
+      "identity": "E"
+    },
+    {
+      "id": "E_item3",
+      "source": "E",
+      "color": "purple",
+      "rgb": [
+        0.52,
+        0.23,
+        0.76
+      ],
+      "shape": "cube",
+      "type_code": "e",
+      "initial_position_m": [
+        0.465,
+        0.71,
+        0.57
+      ],
+      "identity": "E"
+    },
+    {
+      "id": "F_item1",
+      "source": "F",
+      "color": "cyan",
+      "rgb": [
+        0.05,
+        0.68,
+        0.79
+      ],
+      "shape": "cube",
+      "type_code": "f",
+      "initial_position_m": [
+        -0.465,
+        0.71,
+        0.57
+      ],
+      "identity": "F"
+    },
+    {
+      "id": "F_item2",
+      "source": "F",
+      "color": "cyan",
+      "rgb": [
+        0.05,
+        0.68,
+        0.79
+      ],
+      "shape": "cube",
+      "type_code": "f",
+      "initial_position_m": [
+        -0.36,
+        0.71,
+        0.57
+      ],
+      "identity": "F"
+    },
+    {
+      "id": "F_item3",
+      "source": "F",
+      "color": "cyan",
+      "rgb": [
+        0.05,
+        0.68,
+        0.79
+      ],
+      "shape": "cube",
+      "type_code": "f",
+      "initial_position_m": [
+        -0.255,
+        0.71,
+        0.57
+      ],
+      "identity": "F"
+    },
+    {
+      "id": "G_item1",
+      "source": "G",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "g",
+      "initial_position_m": [
+        -0.71,
+        0.255,
+        0.57
+      ],
+      "identity": "G"
+    },
+    {
+      "id": "G_item2",
+      "source": "G",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "g",
+      "initial_position_m": [
+        -0.71,
+        0.36,
+        0.57
+      ],
+      "identity": "G"
+    },
+    {
+      "id": "G_item3",
+      "source": "G",
+      "color": "red",
+      "rgb": [
+        0.85,
+        0.13,
+        0.13
+      ],
+      "shape": "cube",
+      "type_code": "g",
+      "initial_position_m": [
+        -0.71,
+        0.465,
+        0.57
+      ],
+      "identity": "G"
+    },
+    {
+      "id": "H_item1",
+      "source": "H",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "h",
+      "initial_position_m": [
+        -0.71,
+        -0.465,
+        0.57
+      ],
+      "identity": "H"
+    },
+    {
+      "id": "H_item2",
+      "source": "H",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "h",
+      "initial_position_m": [
+        -0.71,
+        -0.36,
+        0.57
+      ],
+      "identity": "H"
+    },
+    {
+      "id": "H_item3",
+      "source": "H",
+      "color": "blue",
+      "rgb": [
+        0.12,
+        0.36,
+        0.85
+      ],
+      "shape": "cube",
+      "type_code": "h",
+      "initial_position_m": [
+        -0.71,
+        -0.255,
+        0.57
+      ],
+      "identity": "H"
+    }
+  ],
+  "table_height_m": 0.4,
+  "cube_size_m": 0.04,
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.04,
+    "cylinder_radius_m": 0.02,
+    "cylinder_height_m": 0.04,
+    "object_mass_kg": 0.05,
+    "contact_friction": [
+      1,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "cube_contact_time_constant_s": 0.004
+  },
+  "mechanism": {
+    "cube_side_m": 0.04,
+    "peg_diameter_m": 0,
+    "peg_length_m": 0,
+    "hole_diameter_m": 0,
+    "peg_spacing_m": 0.02,
+    "board_mass_kg": 0.15,
+    "vertical_stiffness_n_m": null,
+    "angular_stiffness_nm_rad": null,
+    "buffer_support": "Four 8 mm corner pads on a 32 mm square; both pegs remain clear at in-plane quarter-turn orientations",
+    "contact_geometry": "True hollow mesh bores for pegs/fingertips; consolidated coplanar support manifold for larger cube/arm bodies. This does not attach, align or insert objects."
+  },
+  "goals": [
+    {
+      "goal_id": "A_slot1",
+      "robot": "A",
+      "board": "board_A",
+      "local_position_m": [
+        0,
+        -0.105,
+        0.02
+      ],
+      "position_m": [
+        -0.255,
+        -0.59,
+        0.54
+      ],
+      "requires": {
+        "identity": "A"
+      }
+    },
+    {
+      "goal_id": "A_slot2",
+      "robot": "A",
+      "board": "board_A",
+      "local_position_m": [
+        0,
+        0,
+        0.02
+      ],
+      "position_m": [
+        -0.36,
+        -0.59,
+        0.54
+      ],
+      "requires": {
+        "identity": "B"
+      }
+    },
+    {
+      "goal_id": "A_slot3",
+      "robot": "A",
+      "board": "board_A",
+      "local_position_m": [
+        0,
+        0.105,
+        0.02
+      ],
+      "position_m": [
+        -0.465,
+        -0.59,
+        0.54
+      ],
+      "requires": {
+        "identity": "E"
+      }
+    },
+    {
+      "goal_id": "B_slot1",
+      "robot": "B",
+      "board": "board_B",
+      "local_position_m": [
+        0,
+        -0.105,
+        0.02
+      ],
+      "position_m": [
+        0.465,
+        -0.59,
+        0.54
+      ],
+      "requires": {
+        "identity": "B"
+      }
+    },
+    {
+      "goal_id": "B_slot2",
+      "robot": "B",
+      "board": "board_B",
+      "local_position_m": [
+        0,
+        0,
+        0.02
+      ],
+      "position_m": [
+        0.36,
+        -0.59,
+        0.54
+      ],
+      "requires": {
+        "identity": "C"
+      }
+    },
+    {
+      "goal_id": "B_slot3",
+      "robot": "B",
+      "board": "board_B",
+      "local_position_m": [
+        0,
+        0.105,
+        0.02
+      ],
+      "position_m": [
+        0.255,
+        -0.59,
+        0.54
+      ],
+      "requires": {
+        "identity": "G"
+      }
+    },
+    {
+      "goal_id": "C_slot1",
+      "robot": "C",
+      "board": "board_C",
+      "local_position_m": [
+        0,
+        -0.105,
+        0.02
+      ],
+      "position_m": [
+        0.59,
+        -0.255,
+        0.54
+      ],
+      "requires": {
+        "identity": "D"
+      }
+    },
+    {
+      "goal_id": "C_slot2",
+      "robot": "C",
+      "board": "board_C",
+      "local_position_m": [
+        0,
+        0,
+        0.02
+      ],
+      "position_m": [
+        0.59,
+        -0.36,
+        0.54
+      ],
+      "requires": {
+        "identity": "E"
+      }
+    },
+    {
+      "goal_id": "C_slot3",
+      "robot": "C",
+      "board": "board_C",
+      "local_position_m": [
+        0,
+        0.105,
+        0.02
+      ],
+      "position_m": [
+        0.59,
+        -0.465,
+        0.54
+      ],
+      "requires": {
+        "identity": "F"
+      }
+    },
+    {
+      "goal_id": "D_slot1",
+      "robot": "D",
+      "board": "board_D",
+      "local_position_m": [
+        0,
+        -0.105,
+        0.02
+      ],
+      "position_m": [
+        0.59,
+        0.465,
+        0.54
+      ],
+      "requires": {
+        "identity": "D"
+      }
+    },
+    {
+      "goal_id": "D_slot2",
+      "robot": "D",
+      "board": "board_D",
+      "local_position_m": [
+        0,
+        0,
+        0.02
+      ],
+      "position_m": [
+        0.59,
+        0.36,
+        0.54
+      ],
+      "requires": {
+        "identity": "H"
+      }
+    },
+    {
+      "goal_id": "D_slot3",
+      "robot": "D",
+      "board": "board_D",
+      "local_position_m": [
+        0,
+        0.105,
+        0.02
+      ],
+      "position_m": [
+        0.59,
+        0.255,
+        0.54
+      ],
+      "requires": {
+        "identity": "H"
+      }
+    },
+    {
+      "goal_id": "E_slot1",
+      "robot": "E",
+      "board": "board_E",
+      "local_position_m": [
+        0,
+        -0.105,
+        0.02
+      ],
+      "position_m": [
+        0.255,
+        0.59,
+        0.54
+      ],
+      "requires": {
+        "identity": "A"
+      }
+    },
+    {
+      "goal_id": "E_slot2",
+      "robot": "E",
+      "board": "board_E",
+      "local_position_m": [
+        0,
+        0,
+        0.02
+      ],
+      "position_m": [
+        0.36,
+        0.59,
+        0.54
+      ],
+      "requires": {
+        "identity": "E"
+      }
+    },
+    {
+      "goal_id": "E_slot3",
+      "robot": "E",
+      "board": "board_E",
+      "local_position_m": [
+        0,
+        0.105,
+        0.02
+      ],
+      "position_m": [
+        0.465,
+        0.59,
+        0.54
+      ],
+      "requires": {
+        "identity": "G"
+      }
+    },
+    {
+      "goal_id": "F_slot1",
+      "robot": "F",
+      "board": "board_F",
+      "local_position_m": [
+        0,
+        -0.105,
+        0.02
+      ],
+      "position_m": [
+        -0.465,
+        0.59,
+        0.54
+      ],
+      "requires": {
+        "identity": "C"
+      }
+    },
+    {
+      "goal_id": "F_slot2",
+      "robot": "F",
+      "board": "board_F",
+      "local_position_m": [
+        0,
+        0,
+        0.02
+      ],
+      "position_m": [
+        -0.36,
+        0.59,
+        0.54
+      ],
+      "requires": {
+        "identity": "F"
+      }
+    },
+    {
+      "goal_id": "F_slot3",
+      "robot": "F",
+      "board": "board_F",
+      "local_position_m": [
+        0,
+        0.105,
+        0.02
+      ],
+      "position_m": [
+        -0.255,
+        0.59,
+        0.54
+      ],
+      "requires": {
+        "identity": "H"
+      }
+    },
+    {
+      "goal_id": "G_slot1",
+      "robot": "G",
+      "board": "board_G",
+      "local_position_m": [
+        0,
+        -0.105,
+        0.02
+      ],
+      "position_m": [
+        -0.59,
+        0.255,
+        0.54
+      ],
+      "requires": {
+        "identity": "B"
+      }
+    },
+    {
+      "goal_id": "G_slot2",
+      "robot": "G",
+      "board": "board_G",
+      "local_position_m": [
+        0,
+        0,
+        0.02
+      ],
+      "position_m": [
+        -0.59,
+        0.36,
+        0.54
+      ],
+      "requires": {
+        "identity": "C"
+      }
+    },
+    {
+      "goal_id": "G_slot3",
+      "robot": "G",
+      "board": "board_G",
+      "local_position_m": [
+        0,
+        0.105,
+        0.02
+      ],
+      "position_m": [
+        -0.59,
+        0.465,
+        0.54
+      ],
+      "requires": {
+        "identity": "D"
+      }
+    },
+    {
+      "goal_id": "H_slot1",
+      "robot": "H",
+      "board": "board_H",
+      "local_position_m": [
+        0,
+        -0.105,
+        0.02
+      ],
+      "position_m": [
+        -0.59,
+        -0.465,
+        0.54
+      ],
+      "requires": {
+        "identity": "A"
+      }
+    },
+    {
+      "goal_id": "H_slot2",
+      "robot": "H",
+      "board": "board_H",
+      "local_position_m": [
+        0,
+        0,
+        0.02
+      ],
+      "position_m": [
+        -0.59,
+        -0.36,
+        0.54
+      ],
+      "requires": {
+        "identity": "F"
+      }
+    },
+    {
+      "goal_id": "H_slot3",
+      "robot": "H",
+      "board": "board_H",
+      "local_position_m": [
+        0,
+        0.105,
+        0.02
+      ],
+      "position_m": [
+        -0.59,
+        -0.255,
+        0.54
+      ],
+      "requires": {
+        "identity": "G"
+      }
+    }
+  ],
+  "grid": null,
+  "route": null,
+  "pairs": null,
+  "dials": null,
+  "workspace_world_m": {
+    "lower": [
+      -1.31,
+      -1.31,
+      0.425
+    ],
+    "upper": [
+      1.31,
+      1.31,
+      1.35
+    ]
+  },
+  "coordinate_frame": "World +X right/east, +Y north, +Z up. Device marks belong to the movable device frame.",
+  "rules": [
+    "Deliver three requested source-identity items to each robot station; goal numbers do not prescribe execution order. Repeated colors have visible identity marks.",
+    "Table-supported buffers are permitted. Each robot has one gripper; respect actual reach and shared-space occupancy.",
+    "For socket versions both physical pegs must enter the requested pair of holes. The compliant board changes pose with load; inspect the actual board rather than treating its initial plane as permanent.",
+    "Use robot actuation and real physical contact. No attachments to hands, state writes, teleportation, simulator reset, material edits or hidden evaluator access."
+  ],
+  "objective": "Complete the task correctly and efficiently; account for planning, observation, communication, recovery and useful holding as well as simultaneous motion.",
+  "completion": {
+    "stable_duration_sim_s": 0.6,
+    "max_sample_gap_sim_s": 0.03,
+    "xy_tolerance_m": 0.005,
+    "z_tolerance_m": 0.003,
+    "linear_speed_m_s": 0.01,
+    "angular_speed_rad_s": 0.1
+  },
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "G_front",
+    "G_side",
+    "H_front",
+    "H_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "board_A_close",
+    "board_B_close",
+    "board_C_close",
+    "board_D_close",
+    "board_E_close",
+    "board_F_close",
+    "board_G_close",
+    "board_H_close"
+  ],
+  "view_camera": "global",
+  "recording_camera": "global",
+  "observation_contract": {
+    "initial_positions_public": false,
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "selected timestamped RGB",
+      "robot proprioception",
+      "action status",
+      "visible aggregate dial score"
+    ],
+    "motion_screen": "Robot-only geometry. Does not certify apparatus contact, insertion, shared load or cable clearance."
+  },
+  "status": "Suite development task; per-scene Oracle evidence is separate from policy performance.",
+  "process_contract": {
+    "collision_sampling": "every physics step",
+    "inter_robot_penetration_limit_m": 0.0002,
+    "self_robot_penetration_limit_m": 0.001,
+    "expected_finger_to_finger_closure_excluded": true,
+    "relay_receiving_overlap_sim_s": 0.2,
+    "relay_support_gap_sim_s": 0.2,
+    "relay_positive_contact_force_threshold_n": 0.02,
+    "relay_support_proxy": "Bilateral force-bearing finger contact; not an individual load-share measurement",
+    "driven_red_support_gap_sim_s": 0.05
+  }
+}

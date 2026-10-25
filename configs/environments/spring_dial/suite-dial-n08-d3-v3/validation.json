@@ -1,0 +1,10 @@
+{
+  "status": "generated",
+  "passed": null,
+  "scope": "Compiled scene and initial home configuration only; no full manipulation proof.",
+  "robot_count": 16,
+  "cameras": 61,
+  "nq": 208,
+  "physical_geoms": 1512,
+  "scene_sha256": "1acbd6312db6e7af06f0cf23dd592489190b59182acd350bb99bb544bea49ba8"
+}

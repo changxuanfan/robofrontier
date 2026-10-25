@@ -1,0 +1,226 @@
+{
+  "kind": "frontier_suite",
+  "id": "dial-n08-d1",
+  "suite_version": 2,
+  "family": "dial",
+  "level": 1,
+  "arms": {
+    "A": {
+      "base_position_m": [
+        8.878689293818311e-17,
+        1.45,
+        0.4
+      ],
+      "yaw_rad": 4.71238898038469
+    },
+    "B": {
+      "base_position_m": [
+        1.0253048327204939,
+        1.0253048327204939,
+        0.4
+      ],
+      "yaw_rad": 3.9269908169872414
+    },
+    "C": {
+      "base_position_m": [
+        1.45,
+        0.0,
+        0.4
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    "D": {
+      "base_position_m": [
+        1.0253048327204939,
+        -1.0253048327204939,
+        0.4
+      ],
+      "yaw_rad": 2.356194490192345
+    },
+    "E": {
+      "base_position_m": [
+        8.878689293818311e-17,
+        -1.45,
+        0.4
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "F": {
+      "base_position_m": [
+        -1.0253048327204939,
+        -1.0253048327204939,
+        0.4
+      ],
+      "yaw_rad": 0.7853981633974483
+    },
+    "G": {
+      "base_position_m": [
+        -1.45,
+        -1.7757378587636622e-16,
+        0.4
+      ],
+      "yaw_rad": 0.0
+    },
+    "H": {
+      "base_position_m": [
+        -1.025304832720494,
+        1.0253048327204939,
+        0.4
+      ],
+      "yaw_rad": -0.7853981633974483
+    }
+  },
+  "rules": [
+    "Each private code digit is independently 1,2,3. Relative disk positions are zero, clockwise quarter-turn, half-turn and counterclockwise quarter-turn; -180 and +180 are the same half-turn symbol.",
+    "All disks must stay within 4 degrees of a nonzero detent for 0.25 simulated seconds for a valid count. Only aggregate correct count is visible; no individual matches. Zero is invalid.",
+    "Movable modules start naturally on the tabletop, without parking racks. Establish blue-handle support and full-module 20 mm clearance before red operation; sustain support and stop after loss.",
+    "A crank contact point moves around its axle; rotation can require coordinated translation. Reach a valid count equal to the number of disks.",
+    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits."
+  ],
+  "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB",
+      "Robot proprioception and robot geometry",
+      "Action feedback",
+      "Visible dial count"
+    ]
+  },
+  "gripper_profile": "standard-panda",
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "G_front",
+    "G_side",
+    "H_front",
+    "H_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "D01_front",
+    "D01_side",
+    "D01_high",
+    "D02_front",
+    "D02_side",
+    "D02_high",
+    "D03_front",
+    "D03_side",
+    "D03_high",
+    "D04_front",
+    "D04_side",
+    "D04_high",
+    "D05_front",
+    "D05_side",
+    "D05_high",
+    "D06_front",
+    "D06_side",
+    "D06_high",
+    "D07_front",
+    "D07_side",
+    "D07_high",
+    "D08_front",
+    "D08_side",
+    "D08_high",
+    "board"
+  ],
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "execution_readiness": "environment_preview_only",
+  "initial_supplies": [],
+  "mechanism": {
+    "dial_count": 8,
+    "interface": "gear",
+    "free_modules": false,
+    "handle_material": null,
+    "handle_mass_kg": 0,
+    "spring_nm_rad": 0.03,
+    "damping_nm_s_rad": 0.003,
+    "angle_tolerance_deg": 4,
+    "minimum_airborne_clearance_m": 0.02,
+    "blue_support_dwell_s": 0.25,
+    "score_panel_xy_m": [
+      0.4974884620746167,
+      -1.2010433922646726
+    ],
+    "rotation_range_rad": [
+      -3.141592653589793,
+      3.141592653589793
+    ],
+    "feedback_rule_version": 2,
+    "feedback_dwell_sim_s": 0.25,
+    "feedback_stability": "same nonzero 4-degree detent band throughout the dwell; in-band vibration allowed",
+    "layout": "concentric_ring",
+    "table_inner_radius_m": 0.6799999999999999,
+    "table_outer_radius_m": 1.72
+  },
+  "dials": [
+    {
+      "id": "D01",
+      "index": 0,
+      "nominal_robots": [
+        "A"
+      ]
+    },
+    {
+      "id": "D02",
+      "index": 1,
+      "nominal_robots": [
+        "B"
+      ]
+    },
+    {
+      "id": "D03",
+      "index": 2,
+      "nominal_robots": [
+        "C"
+      ]
+    },
+    {
+      "id": "D04",
+      "index": 3,
+      "nominal_robots": [
+        "D"
+      ]
+    },
+    {
+      "id": "D05",
+      "index": 4,
+      "nominal_robots": [
+        "E"
+      ]
+    },
+    {
+      "id": "D06",
+      "index": 5,
+      "nominal_robots": [
+        "F"
+      ]
+    },
+    {
+      "id": "D07",
+      "index": 6,
+      "nominal_robots": [
+        "G"
+      ]
+    },
+    {
+      "id": "D08",
+      "index": 7,
+      "nominal_robots": [
+        "H"
+      ]
+    }
+  ]
+}

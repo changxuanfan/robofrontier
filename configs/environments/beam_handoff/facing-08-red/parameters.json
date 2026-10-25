@@ -1,0 +1,66 @@
+{
+  "schema": "robofrontier.beam_handoff.parameters.v1",
+  "id": "beam-handoff-facing-08-red",
+  "pair_count": 4,
+  "pair_spacing_m": 0.72,
+  "opposed_base_spacing_m": 1.7,
+  "table": {
+    "length_m": 3.3,
+    "width_m": 2.1,
+    "height_m": 0.4,
+    "thickness_m": 0.05,
+    "rgba": [
+      0.76,
+      0.51,
+      0.29,
+      1.0
+    ]
+  },
+  "beam": {
+    "length_m": 1.2,
+    "width_m": 0.045,
+    "height_m": 0.045,
+    "density_kg_m3": 600.0,
+    "initial_center_xy_m": [
+      -1.25,
+      0.0
+    ],
+    "long_axis_world": "+Y"
+  },
+  "goal": {
+    "center_xy_m": [
+      1.48,
+      0.0
+    ],
+    "zone_length_x_m": 0.22,
+    "zone_width_y_m": 1.36
+  },
+  "physics": {
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0.0,
+      0.0,
+      -9.81
+    ],
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10
+  },
+  "appearance": {
+    "floor_rgba": [
+      0.72,
+      0.86,
+      0.98,
+      1.0
+    ],
+    "beam_rgba": [
+      0.86,
+      0.055,
+      0.04,
+      1.0
+    ]
+  }
+}

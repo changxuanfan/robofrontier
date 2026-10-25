@@ -1,0 +1,37 @@
+{
+  "case_id": "dial-n08-d2",
+  "scope": "Static geometry, optional passive settle and endpoint IK only; no robot task commands",
+  "oracle_verified": false,
+  "static_robot_contacts": [],
+  "static_robot_apparatus_contacts": [],
+  "initial_equality_residual_m": 0.0,
+  "settle_duration_sim_s": 3.0,
+  "settle_robot_contacts": [],
+  "settle_robot_apparatus_contacts": [],
+  "max_main_object_drift_m": 0.0045989154997939635,
+  "main_object_drift_m": {
+    "D01_module": 0.00457553217124348,
+    "D02_module": 0.004454411691672114,
+    "D03_module": 0.004598915497932522,
+    "D04_module": 0.004454411756945806,
+    "D05_module": 0.0045989154997939635,
+    "D06_module": 0.0044544457690565585,
+    "D07_module": 0.004598915497926452,
+    "D08_module": 0.004454411691680247
+  },
+  "free_body_drift_m": {
+    "D01_module": 0.00457553217124348,
+    "D02_module": 0.004454411691672114,
+    "D03_module": 0.004598915497932522,
+    "D04_module": 0.004454411756945806,
+    "D05_module": 0.0045989154997939635,
+    "D06_module": 0.0044544457690565585,
+    "D07_module": 0.004598915497926452,
+    "D08_module": 0.004454411691680247
+  },
+  "initial_table_supported_assembly_remains_above_table": true,
+  "tray_check": null,
+  "endpoint_coverage": null,
+  "finite_state": true,
+  "passed": true
+}

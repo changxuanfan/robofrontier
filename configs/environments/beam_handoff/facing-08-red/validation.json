@@ -1,0 +1,17 @@
+{
+  "scope": "Static initial geometry, home IK, two-second passive stability and rendering only. No lift, transfer or collision-free trajectory has been demonstrated.",
+  "mujoco_version": "3.16.0",
+  "robot_count": 8,
+  "actuators": 64,
+  "cameras": 23,
+  "free_bodies": 1,
+  "beam_mass_kg": 1.458,
+  "timber_drift_during_2s_settle_m": 7.240217009524264e-05,
+  "max_home_tcp_error_m": 0.003580705523517518,
+  "penetrations_over_1mm": [],
+  "inter_robot_initial_contacts": [],
+  "finite_state": true,
+  "transport_feasibility_tested": false,
+  "llm_used": false,
+  "passed": true
+}

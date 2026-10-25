@@ -1,0 +1,32 @@
+{
+  "scope": "environment initialization and point IK only; no grasp, dense insertion, trajectory or multiarm collision-free proof",
+  "mujoco_version": "3.16.0",
+  "robot_count": 4,
+  "free_cubes": 49,
+  "actuators": 32,
+  "cameras": 12,
+  "initial_penetrations_over_1mm": [],
+  "max_cube_drift_after_1s_m": 7.240217152665318e-05,
+  "max_home_tcp_error_m": 0.0038493284865693616,
+  "point_reachability": {
+    "A": {
+      "point_reachable_grid_cells": 49,
+      "supply_point_ik_failures": []
+    },
+    "B": {
+      "point_reachable_grid_cells": 49,
+      "supply_point_ik_failures": []
+    },
+    "C": {
+      "point_reachable_grid_cells": 49,
+      "supply_point_ik_failures": []
+    },
+    "D": {
+      "point_reachable_grid_cells": 49,
+      "supply_point_ik_failures": []
+    }
+  },
+  "uncovered_grid_cells": [],
+  "point_ik_scope": "fixed initial down orientation, center endpoint only; not approach/retreat or collision clearance",
+  "passed": true
+}

@@ -1,0 +1,39 @@
+{
+  "physics": {
+    "table_height_m": 0.4,
+    "cube_size_m": 0.1,
+    "object_mass_kg": 0.7812500000000001,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0
+  },
+  "mechanism": {
+    "kind": "flat_placement",
+    "cube_side_m": 0.1,
+    "cube_body_mass_kg": 0.7812500000000001,
+    "cube_material": "Solid wood; inherited nominal density",
+    "blade_size_m": null,
+    "blade_spacing_m": null,
+    "slot_opening_m": null,
+    "slot_depth_m": null,
+    "bottom_bar_size_m": null,
+    "latch": null,
+    "spring_board": null,
+    "supplies": "Tabletop; no pedestals. Plug blades initially up/sideways; latch bars initially up with varied yaw."
+  },
+  "grid": null,
+  "scope": "Declared geometry/material and engineering parameters; not a task success proof"
+}

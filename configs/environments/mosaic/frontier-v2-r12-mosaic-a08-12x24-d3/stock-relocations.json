@@ -1,0 +1,18 @@
+{
+  "scope": "Static initial layout construction only; no live object writes",
+  "changes": [
+    {
+      "object": "C_stock36",
+      "previous_m": [
+        0.8449999999999986,
+        -0.6367500000000006,
+        0.8300000000000001
+      ],
+      "position_m": [
+        0.7699999999999987,
+        -0.6367500000000006,
+        0.8300000000000001
+      ]
+    }
+  ]
+}
