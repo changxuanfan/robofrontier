@@ -1046,7 +1046,9 @@ def solve(trial, max_goals=None, goal_ids=None, motion_profile=None, resume=Fals
         trial.mosaic_current_job=None
         trial.event('goal_attempt', goal=goal['goal_id'], object=name, path=path,
                     progress=len(assignments), reference_completed=len(completed))
-        print(f"{trial.task['id']} mosaic {len(completed)}/{len(selected)} validated", flush=True)
+        print(f"{trial.task['id']} mosaic {len(completed)}/{len(selected)+len(protected)} validated", flush=True)
+        after_goal=getattr(trial,'mosaic_after_goal',None)
+        if after_goal is not None:after_goal(trial)
     trial.wait(1.2)
     return dict(reference_placed=len(completed), total_goals=len(trial.task['goals']),
                 commissioning_only=len(selected) < len(goals),resumed=resume)
