@@ -224,12 +224,14 @@ class Trial:
         if getattr(self,'live_preview',False) and self.data is getattr(self,'_live_data',None) and time.monotonic()-getattr(self,'last_heartbeat',0)>5:self._heartbeat('planning')
         arm=self.arms[robot];q,e=arm.ik.solve(np.asarray(target),rotation,arm.qref if seed is None else seed,220);_,r=arm.ik.pose(q)
         return q if e<.0018 and np.linalg.norm(rotation_vector(rotation,r))<.02 else None
-    def pose_clear(self,robot,q,allowed_objects=(),clearance_m=.003):
+    def pose_clear(self,robot,q,allowed_objects=(),clearance_m=.003,inter_robot_clearance_m=None):
         """Scratch endpoint check, including every arm link and world geometry.
 
         Target finger contact is permitted, never palm/arm contact. The live
         physics and continuous process monitor remain the execution evidence.
         """
+        if inter_robot_clearance_m is None:
+            inter_robot_clearance_m=getattr(self,'reference_inter_robot_clearance_m',None)
         self.check_stop();scratch=self.screen_data;scratch.qpos[:]=self.data.qpos;scratch.qpos[self.arms[robot].qids]=q
         mujoco.mj_kinematics(self.screen_model,scratch)
         tcp=scratch.site_xpos[self.arms[robot].site];workspace=self.task['workspace_world_m']
@@ -245,8 +247,11 @@ class Trial:
         allowed=set(g for name in allowed_objects for g in self.monitor.geoms[name])
         allowed|=carried_geoms
         for c in scratch.contact:
-            if c.dist>=clearance_m:continue
             a,b=map(int,c.geom)
+            if (inter_robot_clearance_m is not None and owner[a]>=0 and owner[b]>=0
+                    and owner[a]!=owner[b] and rid in (owner[a],owner[b])
+                    and c.dist<inter_robot_clearance_m):return False
+            if c.dist>=clearance_m:continue
             if owner[a]==rid and owner[b]==rid:
                 names=[self.model.body(int(self.model.geom_bodyid[g])).name for g in (a,b)]
                 if c.dist<-.001 and not all('finger' in name for name in names):return False

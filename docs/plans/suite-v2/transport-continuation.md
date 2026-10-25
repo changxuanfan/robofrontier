@@ -116,3 +116,24 @@ collision buffer and all phase samples. Three same-fixture comparisons retain
 the rejection verdict; median0.980→0.423s. This is screen overhead, not claimed
 whole-task speedup.73 relevant regressions pass. Already-running frozen worlds
 retain their original source; new runs receive the optimization.
+
+## Multi-hop and Cartesian approach gaps
+
+The first eight-arm L1 attempt reached13/24 and stopped at a known-idle frontier.
+Its E→D→C route wrongly required middle carrier D to reach C's final board.
+Intermediate grasps now screen carrying to the next transfer neighborhood;
+only the final receiver screens final placement/insertion. Actual subsequent
+handover routes/support remain separately checked. A kinematic regression proves
+an intermediate grasp can reach its next transfer despite not reaching the final
+board, and checks scratch-state preservation.
+
+Four-arm L2 attempt002 reached8/12 (with one current-state owner retry) before
+B_link7/D_link7 contact during the receiver's Cartesian approach. This stopped
+and retained the failure. The recorded506.05s fixture reproduces unsafe admission.
+TCP paths now follow sequential Cartesian/rotation IK rather than a straight
+joint endpoint chord. The wrist pair's nominal minimum was4.70mm despite actual
+contact, exposing tracking reserve as well. New full Oracle planning/admission
+uses6mm inter-robot clearance while preserving existing socket/payload tolerances.
+These are planning margins only; physical geometry, controller and scoring stay
+unchanged. The old unsafe command is now rejected. This remains nominal sampling,
+not a guarantee against every dynamic or between-sample collision.

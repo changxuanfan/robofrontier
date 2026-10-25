@@ -46,7 +46,7 @@ def main():
     frozen=Path(os.environ[MARKER]);files=list((frozen/'robofrontier').rglob('*.py'))+list((frozen/'scripts').rglob('*.py'))+[a.harness,a.catalog]
     sources={str(f.relative_to(frozen)):f.read_bytes() for f in files}
     t=Trial(frozen/case['directory'],out,controller_cfg=load_harness(a.harness),sources=sources)
-    t.live_preview=True;t.abort_on_process_violation=True;stopped={'requested':False}
+    t.live_preview=True;t.abort_on_process_violation=True;t.reference_inter_robot_clearance_m=.006;stopped={'requested':False}
     recovery=EngineeringRecovery(out)
     budget=ExplicitPauseBudget(out)
     signal.signal(signal.SIGTERM,lambda *_:stopped.update(requested=True))

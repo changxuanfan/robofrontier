@@ -97,23 +97,27 @@ def handover_centers(t,donor,receivers):
     return result
 
 
-def air_transfer(t,robot,name,receivers,goal):
+def air_transfer(t,robot,name,receivers,goal,next_receiver=None):
     centers=handover_centers(t,robot,receivers);last=None
     width=float(t.task['cube_size_m']);flat=t.task['level']==1
     # Compare low release first. Higher L1 release is ordinary free fall and
     # still needs the unchanged physical goal acceptance; never apply to pins.
     gaps=(.25*width,.5*width,5*width/6,4*width/3) if flat else (.015,)
     families=((0.,(.006,.015,.024)),(-60.,(-.012,.006,.020)),(60.,(-.012,.006,.020)))
-    families+=tuple((angle,tuple(width*f for f in (13/30,1/3,-13/30,-1/3,-.2,.1))) for angle in (-90.,90.,-120.,120.))
+    families+=tuple((angle,tuple(width*f for f in (13/30,1/3,-13/30,-1/3,-.2,.1))) for angle in (-90.,90.,-45.,45.,-75.,75.,-105.,105.,-120.,120.))
     for tilt,depths in families:
         for gap in gaps:
             t.check_stop()
             before=len(t.actions)
             try:
+                future=dict(goal,check_socket_path=not flat,release_clearance_m=gap)
+                if next_receiver is not None:
+                    if len(receivers)!=1:raise ValueError('Intermediate transfer requires one selected receiver')
+                    future=dict(next_handover_center_m=handover_centers(t,receivers[0],[next_receiver])[next_receiver].tolist())
                 receiver=ref.regrasp_held_plug(t,robot,name,keep_receiver_held=True,
                     allowed_receivers=receivers,candidate_centers=centers,receiver_tilt_deg=tilt,receiver_depths=depths,
-                    future_goal=dict(goal,check_socket_path=not flat,release_clearance_m=gap),planning_budget_s=3.)
-                if flat:
+                    future_goal=future,planning_budget_s=3.)
+                if flat and next_receiver is None:
                     if not hasattr(t,'transport_release_clearance'):t.transport_release_clearance={}
                     t.transport_release_clearance[receiver]=gap
                 return receiver
@@ -192,8 +196,9 @@ def execute_job(t,runtime,job,resume=False):
     elif obj['shape']=='cylinder' and abs(rotation[2,2])<.8:
         ref._pick_side_cylinder(t,robot,name,height,70.)
     else:t.pick(robot,name,height=height,force=70.,placement_hint=(p,r))
-    for receiver in path[1:]:
-        donor=robot;robot=air_transfer(t,robot,name,[receiver],goal)
+    for index,receiver in enumerate(path[1:],1):
+        following=path[index+1] if index+1<len(path) else None
+        donor=robot;robot=air_transfer(t,robot,name,[receiver],goal,next_receiver=following)
         runtime.release([donor])
     for attempt in range(2):
         try:

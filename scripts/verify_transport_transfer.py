@@ -32,7 +32,7 @@ def main():
     case=next(c for c in json.loads(a.catalog.read_text())['cases'] if c['id']==a.case)
     sources={str(f.relative_to(ROOT)):f.read_bytes() for package in ('robofrontier','scripts') for f in (ROOT/package).rglob('*.py')}
     t=Trial(ROOT/case['directory'],a.output,controller_cfg=load_harness(a.harness),sources=sources)
-    t.live_preview=True;t.abort_on_process_violation=True;stop={'requested':False}
+    t.live_preview=True;t.abort_on_process_violation=True;t.reference_inter_robot_clearance_m=.006;stop={'requested':False}
     signal.signal(signal.SIGTERM,lambda *_:stop.update(requested=True))
     t.stop_requested=lambda:stop['requested'] or time.monotonic()-t.started>a.wall_s or t.time>400
     report=dict(case_id=case['id'],passed=False,commissioning_only=True,full_task_attempt=False,

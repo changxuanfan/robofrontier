@@ -41,6 +41,41 @@ def recorded_frontier(fixture_name='transport_air_frontier.json'):
 
 
 class TransferCoverageTests(unittest.TestCase):
+    def test_receiver_cartesian_approach_does_not_cut_through_sender_wrist(self):
+        from types import SimpleNamespace
+        from robofrontier.suite.transport_runtime import sampled_motion_admission
+        f=json.loads((ROOT/'tests/fixtures/transport_tcp_wrist_sweep.json').read_text())
+        t=recorded_frontier('transport_tcp_wrist_sweep.json')
+        for r in t.held:t.arms[r].grasp_force=70.
+        runtime=SimpleNamespace(t=t,running={r:dict(commands={r:c}) for r,c in f['running'].items()},
+            jobs={r:dict(object=name,robots=set(f['job_robots'][r])) for r,name in t.held.items()})
+        self.assertFalse(sampled_motion_admission(dict(commands=f['request']),runtime))
+
+    def test_intermediate_receiver_needs_next_transfer_not_final_board_reach(self):
+        from robofrontier.suite import transport_oracle_v2 as ref
+        from robofrontier.robot_control import matrix_quat
+        t=recorded_frontier()
+        plan=ref.plan_air_regrasp(t,'A','A_item2',planning_budget_s=3.,allowed_receivers=['C'],
+            candidate_centers=full.handover_centers(t,'A',['C']),receiver_tilt_deg=-90.,
+            receiver_depths=(.026,.020,-.026,-.020,-.012,.006))
+        self.assertIsNotNone(plan)
+        s=ref._planning_copy(t);body=s.data.body('A_item2');old=body.xmat.reshape(3,3).copy()
+        offset=old.T@(s.data.site_xpos[s.arms['A'].site]-body.xpos)
+        relative=old.T@s.data.site_xmat[s.arms['A'].site].reshape(3,3)
+        rotation=plan['donor_tool']@relative.T;center=plan['donor_point']-rotation@offset
+        s.data.qpos[s.arms['A'].qids]=plan['donor_q']
+        s.data.joint('A_item2_free').qpos[:]=np.r_[center,matrix_quat(rotation)]
+        mujoco.mj_forward(s.model,s.data)
+        point=center+rotation[:,2]*plan['receiver_depth']+rotation[:,1-plan['receiver_axis']]*plan['receiver_shift']
+        tool=rotation@plan['receiver_relative_rotation']
+        final=next(g for g in t.task['goals'] if g['goal_id']=='A_slot1')
+        future=dict(final,next_handover_center_m=full.handover_centers(t,'C',['B'])['B'].tolist())
+        contact=s.screen_ik('C',point,tool,plan['receiver_approach_q'])
+        self.assertIsNotNone(contact)
+        before=s.data.qpos.copy()
+        self.assertTrue(ref._receiver_successor_clear(s,'A','C','A_item2',future,point,tool,contact_q=contact))
+        np.testing.assert_array_equal(s.data.qpos,before)
+
     def test_unqualified_pickup_waits_for_a_receiver_that_can_finish(self):
         from types import SimpleNamespace
         t=SimpleNamespace(task=dict(level=2),event=Mock())

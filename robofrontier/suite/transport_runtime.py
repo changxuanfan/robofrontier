@@ -186,7 +186,7 @@ def sampled_motion_admission(request,runtime):
     interrupting them. Actual process monitoring remains authoritative.
     """
     from .transport_oracle_v2 import _planning_copy
-    from ..robot_control import matrix_quat,quat_matrix
+    from ..robot_control import matrix_quat,quat_matrix,rotation_vector,advance_rotation
     import mujoco
     t=runtime.t;new={r:c for r,c in request['commands'].items() if c[0]=='move'}
     if not new:return True
@@ -194,14 +194,32 @@ def sampled_motion_admission(request,runtime):
     commands.update(new);s=_planning_copy(t);original=s.data.qpos.copy();paths={}
     for r,(op,p) in commands.items():
         arm=s.arms[r];start=t.data.qpos[arm.qids].copy()
-        if 'joint_rad' in p:end=np.asarray(p['joint_rad'])
+        if 'joint_rad' in p:waypoints=[start,np.asarray(p['joint_rad'])]
         else:
             point=np.asarray(p.get('target_m',t.data.site_xpos[arm.site]+np.asarray(p.get('delta_m',[0,0,0]))))
-            rotation=quat_matrix(p['quaternion_wxyz']) if 'quaternion_wxyz' in p else t.data.site_xmat[arm.site].reshape(3,3)
-            end=s.screen_ik(r,point,rotation,seed=start)
-            if end is None:return False
-        paths[r]=(start,end)
-    count=max(2,max(math.ceil(float(np.max(abs(b-a)))/.025) for a,b in paths.values()))
+            if r in runtime.running and getattr(t.arms[r],'goal',None) is not None:point=t.arms[r].goal.copy()
+            initial=t.data.site_xpos[arm.site].copy();initial_rotation=t.data.site_xmat[arm.site].reshape(3,3).copy()
+            rotation=quat_matrix(p['quaternion_wxyz']) if 'quaternion_wxyz' in p else initial_rotation
+            distance=float(np.linalg.norm(point-initial));angle=float(np.linalg.norm(rotation_vector(rotation,initial_rotation)))
+            speed=float(p.get('speed_m_s',.1));angular=float(p.get('angular_speed_rad_s',.6))
+            duration=max(distance/speed,angle/angular);intervals=[]
+            if distance>1e-9:intervals.append(.002/speed)
+            if angle>1e-9:intervals.append(.025/angular)
+            steps=max(1,math.ceil(duration/min(intervals))) if intervals else 1
+            if steps>2000:return False
+            waypoints=[start];seed=start
+            for stamp in np.linspace(0,duration,steps+1)[1:]:
+                position=initial+(point-initial)*min(1.,stamp*speed/max(distance,1e-12))
+                frame=advance_rotation(initial_rotation,rotation,min(angle,stamp*angular))
+                seed=s.screen_ik(r,position,frame,seed=seed)
+                if seed is None:return False
+                waypoints.append(seed)
+        dense=[start]
+        for a,b in zip(waypoints,waypoints[1:]):
+            steps=max(1,math.ceil(float(np.max(abs(b-a)))/.025))
+            dense.extend(a+(b-a)*f for f in np.linspace(0,1,steps+1)[1:])
+        paths[r]=np.asarray(dense)
+    count=max(2,max(len(path)-1 for path in paths.values()))
     carried={};owners={}
     for ident,job in runtime.jobs.items():
         name=job.get('object')
@@ -227,7 +245,9 @@ def sampled_motion_admission(request,runtime):
                         yield {r:f if r==robot else phase if r==other else 0. for r in paths}
     for progress in phase_samples():
         s.data.qpos[:]=original
-        for r,(a,b) in paths.items():s.data.qpos[s.arms[r].qids]=a+(b-a)*progress[r]
+        for r,path in paths.items():
+            index=progress[r]*(len(path)-1);low=min(int(index),len(path)-2);fraction=index-low
+            s.data.qpos[s.arms[r].qids]=path[low]*(1-fraction)+path[low+1]*fraction
         mujoco.mj_kinematics(s.model,s.data)
         for r,(name,offset,relative) in carried.items():
             arm=s.arms[r];rr=s.data.site_xmat[arm.site].reshape(3,3)@relative.T
@@ -239,5 +259,5 @@ def sampled_motion_admission(request,runtime):
         mujoco.mj_kinematics(s.model,s.data)
         mujoco.mj_comPos(s.model,s.data)
         for r in paths:
-            if not s.pose_clear(r,s.data.qpos[s.arms[r].qids],(owners[r],) if r in owners else (),clearance_m=.001):return False
+            if not s.pose_clear(r,s.data.qpos[s.arms[r].qids],(owners[r],) if r in owners else (),clearance_m=.001,inter_robot_clearance_m=.006):return False
     return True

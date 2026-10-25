@@ -228,7 +228,7 @@ def _receiver_tilt(tool,degrees):
     return np.column_stack((c*tool[:,0]-s*tool[:,2],tool[:,1],s*tool[:,0]+c*tool[:,2]))
 
 
-def _receiver_successor_clear(t,donor,receiver,name,goal,point,tool):
+def _receiver_successor_clear(t,donor,receiver,name,goal,point,tool,contact_q=None):
     """Private successor screen; optional sampled fit/release/descent check.
 
     Neither mode predicts physical slipping, tracking or the full transit.
@@ -240,6 +240,25 @@ def _receiver_successor_clear(t,donor,receiver,name,goal,point,tool):
     try:
         body=t.data.body(name);object_r=body.xmat.reshape(3,3).copy()
         offset=object_r.T@(point-body.xpos);relative=object_r.T@tool
+        if 'next_handover_center_m' in goal:
+            # A middle carrier need not reach the final board. Check that
+            # this proposed grasp can carry to its next transfer neighborhood.
+            # The next pair's grasp, route and actual support are checked when
+            # that handover is planned/executed, not assumed certified here.
+            from .scenes import rz
+            contact=contact_q if contact_q is not None else t.screen_ik(receiver,point,tool,t.data.qpos[t.arms[receiver].qids])
+            if contact is None:return False
+            t.data.qpos[t.arms[receiver].qids]=contact
+            if donor in getattr(t,'parking_q',{}):t.data.qpos[t.arms[donor].qids]=t.parking_q[donor]
+            mujoco.mj_kinematics(t.model,t.data);t.held={receiver:name}
+            center=np.asarray(goal['next_handover_center_m'],dtype=float)
+            for height in (.22,.30,.38):
+                p=np.r_[center[:2],t.task['table_height_m']+height]
+                for yaw in (0.,math.pi/2,-math.pi/2,math.pi):
+                    r=rz(yaw)@object_r;end_tool=r@relative
+                    q=t.screen_ik(receiver,p+r@offset,end_tool,contact)
+                    if q is not None and t.pose_clear(receiver,q):return True
+            return False
         board=t.data.body(goal['board']);board_r=board.xmat.reshape(3,3).copy()
         position=board.xpos+board_r@np.asarray(goal['local_position_m'])
         if t.task['level']==1:position=position+board_r[:,2]*float(goal.get('release_clearance_m',0.))
@@ -410,6 +429,7 @@ def plan_air_regrasp(trial, donor, name, diagnostics=None, planning_budget_s=120
                                     point = center + rotation[:, 2]*depth + tangent*shift
                                     approach = point-tool[:,2]*.15
                                     for seed in seeds(receiver):
+                                        if budget():return None
                                         q = t.screen_ik(receiver, approach, tool, seed)
                                         if q is None:
                                             continue
@@ -439,7 +459,8 @@ def plan_air_regrasp(trial, donor, name, diagnostics=None, planning_budget_s=120
                                         if not _release_sweep_clear(t, donor, receiver, name, near, width):
                                             continue
                                         count('gripper_sweeps_and_release_clear')
-                                        if future_goal is not None and not _receiver_successor_clear(t,donor,receiver,name,future_goal,point,tool):
+                                        if budget():return None
+                                        if future_goal is not None and not _receiver_successor_clear(t,donor,receiver,name,future_goal,point,tool,contact_q=near):
                                             count('receiver_successor_rejected');continue
                                         if future_goal is not None:count('receiver_successor_endpoints_clear')
                                         return dict(receiver=receiver, donor_point=donor_point,
