@@ -98,7 +98,8 @@ class BestManipulator(HoldingManipulator):
             try:return super().release(entries)
             except RuntimeError as error:
                 message=str(error);t=self.t
-                if attempt==2 or not message.startswith(('No reachable small open-crank exit','No reachable clear released-crank exit')):raise
+                if attempt==2 or not message.startswith(('No reachable small open-crank exit','No reachable clear released-crank exit',
+                    'Crank clear requires terminal opening and real separation')):raise
                 robot=message.rsplit(' ',1)[-1]
                 dial=next((a for a in entries if self.grips.get(a['id'],{}).get('robot')==robot),None)
                 if dial is None or t.arms[robot].grasp_force is not None or any(a.job is not None for a in t.arms.values()):raise

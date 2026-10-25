@@ -38,6 +38,21 @@ class LiveRepairTests(unittest.TestCase):
     def test_unverified_shoulder_capture_is_not_the_production_default(self):
         self.assertEqual(BestManipulator.blue_capture_mode,'stem')
 
+    def test_production_close_retains_uncertain_call_after_stop_feedback(self):
+        from scripts.run_blind_dial_oracle import close_trial
+        from robofrontier.suite.oracle_recovery import OracleRecovery
+        with tempfile.TemporaryDirectory() as tmp:
+            scene=Path(__file__).resolve().parents[1]/'configs/environments/spring_dial/frontier-v2-r11-dial-best5-n04-d1'
+            t=Trial(scene,Path(tmp)/'world',frames=False)
+            adapter=OracleRecovery(t,owner='test',world_id='one',observe=lambda:{})
+            adapter.submit(dict(owner='test',world_id='one',id='unknown',robot='A',review='Test uncertain acknowledgement',
+                sequence=[dict(op='gripper',parameters=dict(width_m=.02,speed_m_s=.01))]))
+            adapter.fence('test','unknown','Owner cannot establish original acknowledgement')
+            report=dict(passed=True)
+            close_trial(t,report)
+            self.assertFalse(report['passed']);self.assertEqual(report['unresolved_robot_actions'],['A'])
+            self.assertEqual(report['recovery']['requests']['unknown']['status'],'uncertain')
+
     def test_failed_plan_keeps_world_and_accepts_a_later_repair(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp);events=[];calls=[];deadline=time.monotonic()+10
