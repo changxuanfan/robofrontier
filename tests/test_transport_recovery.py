@@ -9,6 +9,15 @@ from robofrontier.suite.transport_recovery import EngineeringRecovery
 
 
 class EngineeringRecoveryTests(unittest.TestCase):
+    def test_no_free_robot_does_not_admit_an_empty_recovery(self):
+        with TemporaryDirectory() as tmp:
+            handler=EngineeringRecovery(tmp)
+            old=dict(status='failed',goal=dict(goal_id='slot',board='board'),object='item',robots={'A'})
+            runtime=SimpleNamespace(jobs={'old':old},leases={'A':'other'},recover=Mock(return_value=True))
+            t=SimpleNamespace(arms={'A':None},data=SimpleNamespace(body=lambda _:SimpleNamespace(xpos=[0,0,0])))
+            with self.assertRaisesRegex(ValueError,'No available recovery robot'):handler._retry(t,runtime,'old',{})
+            runtime.recover.assert_not_called()
+
     def test_explicit_scope_keeps_current_carrier_without_reacquiring_busy_old_peers(self):
         with TemporaryDirectory() as tmp:
             handler=EngineeringRecovery(tmp)

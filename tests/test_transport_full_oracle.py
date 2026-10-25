@@ -41,6 +41,29 @@ def recorded_frontier(fixture_name='transport_air_frontier.json'):
 
 
 class TransferCoverageTests(unittest.TestCase):
+    def test_empty_receiver_can_withdraw_from_existing_positive_close_clearance(self):
+        from types import SimpleNamespace
+        from robofrontier.suite.transport_runtime import sampled_motion_admission
+        fixture=json.loads((ROOT/'tests/fixtures/transport_clearance_escape.json').read_text())
+        t=recorded_frontier('transport_clearance_escape.json')
+        for r in t.held:t.arms[r].grasp_force=70.
+        runtime=SimpleNamespace(t=t,running={},jobs={
+            'transfer':dict(object='D_item3',robots={'E','F'}),
+            'other':dict(object='E_item1',robots={'G'})})
+        before=t.data.qpos.copy();end=np.array(fixture['escape']['joint_rad']);start=t.data.qpos[t.arms['F'].qids]
+        request=lambda q:dict(commands={'F':('move',dict(joint_rad=q.tolist(),joint_speed_rad_s=.18))})
+        # Recorded gap starts at3.46mm, remains positive and grows beyond6mm.
+        self.assertTrue(sampled_motion_admission(request(end),runtime))
+        self.assertFalse(sampled_motion_admission(request(2*start-end),runtime))
+        runtime.leases={'E':'transfer','F':'transfer','G':'other'}
+        runtime.jobs['historical']=dict(object='E_item1',robots={'F'})
+        self.assertTrue(sampled_motion_admission(request(end),runtime))
+        t.held['F']='D_item3'
+        self.assertFalse(sampled_motion_admission(request(end),runtime))
+        t.arms['F'].grasp_force=70.
+        self.assertFalse(sampled_motion_admission(request(end),runtime))
+        np.testing.assert_array_equal(t.data.qpos,before)
+
     def test_matching_keeps_easy_side_stock_for_direct_socket_work(self):
         from types import SimpleNamespace
         names=['up','side1','side2'];positions={n:np.array([i*.1,0.,.83]) for i,n in enumerate(names)}

@@ -206,3 +206,28 @@ Additional full qualification: four-arm L3 attempt001 (source7a1cbf4),12/12,
 345 robot commands, one known recoverable failed command, zero process violations
 or unresolved actions,719.92sim/1015.54wall seconds. All43197 motion frames audited.
 Two complete, decoded4x videos are included in the continuation gallery.
+
+## Empty receiver withdrawal at an already close frontier
+
+The live eight-arm L2 E/F frontier has3.46mm positive robot clearance. The6mm
+planning reserve rejected even an empty F retreat that increased every initially
+close geom-pair distance. A recorded regression reproduces the rejection.
+Admission now allows a single empty, unassigned-to-a-load arm in an otherwise
+idle runtime to withdraw from a gap of at least1mm: each initially close pair
+must monotonically separate (50micron numerical tolerance against its best
+sample), every other robot pair retains6mm, and the endpoint must restore6mm.
+Loaded, multi-arm and concurrent requests retain the normal6mm reserve. This is
+finite sampled engineering screening; native physical collision monitoring stays
+unchanged. It does not hotpatch the old executor.
+
+Independent known-pose/zero-velocity mechanical fixture empty-retreat-004 passed:
+actual robot gap3.465→27.058mm, ordinary F joint move completed, actual positive-force
+E support retained with+0.163mm load-height change, zero violations. It is not
+an exact continuation/checkpoint or an original-order qualification. Fixtures001
+and002 preserve rejected setup/admission diagnostics;003/004 pass with explicit
+correct target metadata.86 regressions pass, including reverse-direction/loaded
+rejections and complete live-state preservation.
+
+Only current lease owners now supply runtime target/contact permissions; old
+released scopes in failure history cannot overwrite them. An additional guard
+rejects empty recovery scopes before admission instead of raising path[0] later.

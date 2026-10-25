@@ -184,6 +184,53 @@ class TransportRuntime:
         self.t.execute,self.t.wait,self.t.step=self.original
 
 
+def _empty_withdrawal_margin(runtime,s,paths):
+    """Screen a single empty arm escaping an already close, idle frontier.
+
+    The6mm planning reserve cannot be required at the first sample if actual
+    compliant contact left a positive smaller gap. Only initially close geom
+    pairs may use their measured gap, and each must monotonically separate.
+    Every other pair keeps6mm; the endpoint must restore6mm for all pairs.
+    No loaded or concurrent move gets this finite sampled escape permission.
+    """
+    import mujoco
+    t=runtime.t
+    if runtime.running or len(paths)!=1:return None
+    robot=next(iter(paths));arm=t.arms[robot]
+    if arm.grasp_force is not None or robot in t.held:return None
+    owner=s.monitor.geom_owner;rid=list(s.arms).index(robot)
+    physical=(s.model.geom_contype!=0)|(s.model.geom_conaffinity!=0)
+    own=np.flatnonzero((owner==rid)&physical);others=np.flatnonzero((owner>=0)&(owner!=rid)&physical)
+    a=np.repeat(own,len(others));b=np.tile(others,len(own))
+    mask=((s.model.geom_contype[a]&s.model.geom_conaffinity[b])!=0)|((s.model.geom_contype[b]&s.model.geom_conaffinity[a])!=0)
+    a,b=a[mask],b[mask];original=s.data.qpos.copy();path=paths[robot]
+    close={};best={};tolerance=.00005
+    def near():
+        lower=np.linalg.norm(s.data.geom_xpos[a]-s.data.geom_xpos[b],axis=1)-s.model.geom_rbound[a]-s.model.geom_rbound[b]
+        return {int(i):float(mujoco.mj_geomDistance(s.model,s.data,int(a[i]),int(b[i]),.006,None))
+                for i in np.flatnonzero(lower<.006)}
+    try:
+        mujoco.mj_kinematics(s.model,s.data);mujoco.mj_comPos(s.model,s.data)
+        close={i:d for i,d in near().items() if d<.006}
+        if not close or min(close.values())<.001:return None
+        best=dict(close)
+        fractions=np.unique(np.r_[np.linspace(0,1,len(path)),[.25,.5,.75]])
+        for fraction in fractions[1:]:
+            index=fraction*(len(path)-1);low=min(int(index),len(path)-2);f=index-low
+            s.data.qpos[:]=original;s.data.qpos[s.arms[robot].qids]=path[low]*(1-f)+path[low+1]*f
+            mujoco.mj_kinematics(s.model,s.data);mujoco.mj_comPos(s.model,s.data)
+            distances=near()
+            if any(d<.006 and i not in close for i,d in distances.items()):return None
+            for i in close:
+                d=distances.get(i,.006)
+                if d<best[i]-tolerance:return None
+                best[i]=max(best[i],min(.006,d))
+        if any(d<.006 for d in distances.values()):return None
+        return min(close.values())-tolerance
+    finally:
+        s.data.qpos[:]=original
+
+
 def sampled_motion_admission(request,runtime):
     """Private sampled whole-scene nominal joint sweep, not certification.
 
@@ -224,12 +271,17 @@ def sampled_motion_admission(request,runtime):
             steps=max(1,math.ceil(float(np.max(abs(b-a)))/.025))
             dense.extend(a+(b-a)*f for f in np.linspace(0,1,steps+1)[1:])
         paths[r]=np.asarray(dense)
+    escape_margin=_empty_withdrawal_margin(runtime,s,paths) if all('joint_rad' in p for _,p in commands.values()) else None
     count=max(2,max(len(path)-1 for path in paths.values()))
     carried={};owners={}
+    leases=getattr(runtime,'leases',None)
     for ident,job in runtime.jobs.items():
         name=job.get('object')
         if name is None:continue
         for r in job['robots']:
+            # Old released scopes remain in failure history. They do not
+            # overwrite the target/contact permission of the current lease.
+            if leases is not None and leases.get(r)!=ident:continue
             owners[r]=name
             if t.arms[r].grasp_force is not None and t.finger_contacts(r,name):
                 body=t.data.body(name);br=body.xmat.reshape(3,3);arm=t.arms[r]
@@ -297,5 +349,5 @@ def sampled_motion_admission(request,runtime):
         mujoco.mj_comPos(s.model,s.data)
         if pair is not None and not cross_pair_clear(*pair):return False
         for r in changed_robots:
-            if not s.pose_clear(r,s.data.qpos[s.arms[r].qids],(owners[r],) if r in owners else (),clearance_m=.001,inter_robot_clearance_m=.006):return False
+            if not s.pose_clear(r,s.data.qpos[s.arms[r].qids],(owners[r],) if r in owners else (),clearance_m=.001,inter_robot_clearance_m=escape_margin if escape_margin is not None else .006):return False
     return True

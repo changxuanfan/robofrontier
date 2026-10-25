@@ -49,6 +49,7 @@ class EngineeringRecovery:
             robots.update(nearby)
         else:robots=retained|set(requested)
         if robots-set(t.arms):raise ValueError('Unknown recovery robot')
+        if not robots:raise ValueError('No available recovery robot')
         original=dict(id=goal['goal_id'],goal=goal,object=name,path=list(robots),attempts=1)
         steps=request.get('steps',[])
         resume=request.get('resume_goal',True)
