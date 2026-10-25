@@ -9,21 +9,24 @@ from copy import deepcopy
 import numpy as np
 
 
-def execute_plan(trial,plan):
+def execute_plan(trial,plan,*,initialize=True):
     if (trial.physical_control_sha256!=plan['source_physical_control_sha256'] or
             trial.environment_logic_sha256!=plan['source_environment_logic_sha256'] or
             trial.source_bundle['sha256']!=plan.get('target_scene_bundle_sha256',plan['source_scene_bundle_sha256'])):
         raise ValueError('Async world must match source control/evaluator/assets')
     from .mosaic_concurrency import ReadyFrontier
-    trial.execute('clear-idle-arms',deepcopy(plan['initial_commands']));trial.wait(.2)
-    trial.mosaic_concurrency_started_sim_s=trial.time
-    trial.parking_q={r:np.asarray(c[1]['joint_rad']) for r,c in plan['initial_commands'].items()}
+    if initialize:
+        trial.execute('clear-idle-arms',deepcopy(plan['initial_commands']));trial.wait(.2)
+        trial.mosaic_concurrency_started_sim_s=trial.time
+        trial.parking_q={r:np.asarray(c[1]['joint_rad']) for r,c in plan['initial_commands'].items()}
+    elif not hasattr(trial,'parking_q') or trial.held or any(a.job is not None or a.grasp_force is not None for a in trial.arms.values()):
+        raise ValueError('Continuation requires known idle released arms; never reset or repark')
     trial.mosaic_edges={frozenset(row['robots']):np.asarray(row['position_m']) for row in plan.get('table_buffers',[])}
     jobs=plan['jobs'];last_nodes={int(i):g for i,g in plan['last_goal_nodes'].items()}
     if any(len(j['actions'])!=1 for j in jobs):raise ValueError('Async admission requires operation-level nodes')
     frontier=ReadyFrontier(plan['predecessors'])
     completed=frontier.completed;active={};waiting={};qualified=set();started={};failures=[];peak=0
-    trial.mosaic_protected_assignments={}
+    if initialize:trial.mosaic_protected_assignments={}
     lower=np.asarray(trial.task['workspace_world_m']['lower']);upper=np.asarray(trial.task['workspace_world_m']['upper'])
 
     def bookkeeping(robot,command,node):
@@ -72,7 +75,7 @@ def execute_plan(trial,plan):
                 failures.append('Admission: '+str(error));prepared={}
                 trial.event('mosaic_async_admission_rejected',reason=str(error))
             for node,validated in prepared.items():
-                job=jobs[node];command=deepcopy(job['actions'][0]['commands']);label=f'mosaic-async-{node:04d}'
+                job=jobs[node];command=deepcopy(job['actions'][0]['commands']);label=f"{plan.get('operation_prefix','mosaic-async')}-{node:04d}"
                 active[node]=dict(commands=command,label=label,start_sim_s=trial.time,pending=set(command),results={})
                 started[job['goal_id']]=dict(goal_id=job['goal_id'],object=job['object'],path=job['path'])
                 trial.event('action_start',label=label,commands=command)

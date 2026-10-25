@@ -63,10 +63,11 @@ class ReadyFrontier:
             if self.remaining[child]==0:self.ready.add(child)
 
 
-def build_plan(source):
+def build_plan(source,*,candidate_prefix=False,after_sim_s=None):
     source=Path(source).resolve();began=time.monotonic()
     report=json.loads((source/'report.json').read_text())
-    if (not report.get('passed') or report.get('error') or report.get('unresolved_robot_actions') or
+    qualified=report.get('passed') if not candidate_prefix else (report.get('source_prefix_only') and not report.get('passed'))
+    if (not qualified or report.get('error') or report.get('unresolved_robot_actions') or
             report['evaluation']['violations']):raise ValueError('A complete clean physical source witness is required')
     if len(report['evaluation']['assignments'])!=report['evaluation']['total_goals']:
         raise ValueError('Every original source goal must have a physical assignment')
@@ -74,6 +75,8 @@ def build_plan(source):
     actions=json.loads((source/'actions.json').read_text())
     task=json.loads((source/'task.json').read_text())
     initial,scopes=source_scopes(actions,events,report['evaluation']['assignments'],[o['id'] for o in task['objects']])
+    if after_sim_s is not None:scopes=[s for s in scopes if s['end_sim_s']>after_sim_s+1e-8]
+    if not scopes:raise ValueError('No new complete command scope')
     # Reserve individual finite operations rather than a whole multi-arm job.
     # Object order retains the actual custody/staging chain; disjoint robots
     # can prepare/execute other jobs between its operations.
@@ -98,6 +101,8 @@ def build_plan(source):
         geom_sets.append(np.asarray(sorted(ids),int))
     index=0;frames=0
     for stamp,qpos in MotionReader(source/'motion').frames():
+        if candidate_prefix and stamp>report['source_prefix_cut_sim_s']+1e-8:break
+        if after_sim_s is not None and stamp<after_sim_s:continue
         while index+1<len(jobs) and stamp>jobs[index]['end_sim_s']:
             index+=1
         data.qpos[:]=qpos;mujoco.mj_kinematics(model,data)
@@ -121,7 +126,8 @@ def build_plan(source):
         source_report_sha256=hashlib.sha256((source/'report.json').read_bytes()).hexdigest(),
         source_assisted=bool(report.get('assisted') or report.get('llm_used')),
         source_actions_sha256=hashlib.sha256((source/'actions.json').read_bytes()).hexdigest(),
-        last_goal_nodes=last_nodes,last_goal_assignments=last_pairs,total_goals=report['evaluation']['total_goals'],
+        last_goal_nodes=last_nodes,last_goal_assignments=last_pairs,
+        total_goals=sum(len(s['expected_assignments']) for s in scopes),source_prefix_only=bool(candidate_prefix),
         repair_barrier_count=sum(s['barrier'] for s in scopes),planning_granularity='ordinary_finite_action',
         frames_screened=frames,planning_wall_s=time.monotonic()-began,reserve_per_scope_m=.02,
         scope='Source-order dependencies for shared robots, object custody or overlapping sampled operation envelopes; no continuous safety or optimality certificate')

@@ -53,6 +53,19 @@ def plan():
 
 
 class AsyncExecutionTests(unittest.TestCase):
+    def test_continuation_neither_reparks_nor_reuses_previous_native_action_ids(self):
+        t=Trial();p=plan();p['operation_prefix']='prefix-zero';execute_plan(t,p)
+        first_ids={r['call_id'] for a in t.actions for r in a['results'].values()}
+        t.execute=lambda *args: self.fail('Continuation must not repeat initial parking')
+        p=plan();p['operation_prefix']='prefix-one';execute_plan(t,p,initialize=False)
+        second_ids={r['call_id'] for a in t.actions[4:] for r in a['results'].values()}
+        self.assertFalse(first_ids&second_ids);self.assertEqual(len(t.actions),8)
+
+    def test_continuation_checks_existing_goals_before_new_work(self):
+        t=Trial();execute_plan(t,plan());t.accepted.pop('A')
+        with self.assertRaisesRegex(RuntimeError,'disturbed completed pairing A'):
+            execute_plan(t,plan(),initialize=False)
+
     def test_repair_barrier_counts_only_new_original_evaluator_assignments(self):
         t=Trial();p=plan()
         for j in p['jobs'][:2]:j.update(goal_id='@repair',object=None)

@@ -41,6 +41,11 @@ def run(args):
             concurrency['physical_equivalence']=equivalent
             concurrency['target_scene_bundle_sha256']=bundle_manifest(ROOT/case['directory'])['sha256']
     replay=None
+    streaming=None
+    if args.streaming_source:
+        from robofrontier.suite.mosaic_equivalence import check
+        streaming=check(args.streaming_source,ROOT/case['directory'])
+        if not streaming['equivalent_for_command_candidate']:raise ValueError('Streaming physical input equivalence failed')
     if args.equivalent_replay_source:
         from robofrontier.suite.mosaic_replay import prepare
         replay=prepare(args.equivalent_replay_source,ROOT/case['directory'])
@@ -87,7 +92,17 @@ def run(args):
     trial.mosaic_after_goal=after_goal
     trial.mosaic_motion_profile=dict(report['motion_profile'])
     solve_kwargs={}
-    if concurrency is not None:
+    if streaming is not None:
+        report['streaming_source']=str(args.streaming_source.resolve())
+        def solve_streaming(world,**kwargs):
+            if kwargs['resume']:
+                from robofrontier.suite.mosaic_oracle_v2 import solve
+                world.event('mosaic_stream_replanned_from_actual_state',scope='Owner reviewed actual target repair; no prefix replay')
+                return solve(world,**kwargs)
+            from robofrontier.suite.mosaic_stream import execute
+            return execute(world,args.streaming_source,streaming,max_goals=args.max_goals,prefix_goals=args.stream_prefix_goals)
+        solve_kwargs['solver']=solve_streaming
+    elif concurrency is not None:
         write_json(trial.directory/'concurrency-plan.json',concurrency)
         report['concurrency_planning_wall_s']=concurrency['planning_wall_s']
         report['concurrency_source']=str(args.concurrency_source.resolve())
@@ -140,6 +155,7 @@ def run(args):
                 requests=list(review.requests.values()),same_world_forward_only=True,physical_restart_supported=False),
             recovered_motion_failures=getattr(trial,'mosaic_recovered_motion_failures',[]))
         report.update(metadata);trial.close(report);report.update(metadata)
+        if hasattr(trial,'mosaic_stream_summary'):report['streaming_summary']=trial.mosaic_stream_summary
         report['total_wall_s_including_planning']=time.monotonic()-overall_started
         write_json(trial.directory/'report.json',report)
         phase='passed' if report['passed'] else 'commissioning_complete' if report.get('commissioning_passed') else 'interrupted' if report.get('interrupted') else 'failed'
@@ -163,6 +179,8 @@ def main():
     p.add_argument('--concurrency-source',type=Path)
     p.add_argument('--concurrency-execution',choices=('barrier','async'),default='barrier')
     p.add_argument('--equivalent-replay-source',type=Path)
+    p.add_argument('--streaming-source',type=Path)
+    p.add_argument('--stream-prefix-goals',type=int,default=24)
     p.add_argument('--auto-resume-reviews',action='store_true');a=p.parse_args()
     if a.review_after and (a.max_goals is None or any(i<1 or i>=a.max_goals for i in a.review_after)):
         p.error('Injected reviews require --max-goals and boundaries below that limit')
@@ -174,6 +192,9 @@ def main():
         p.error('Full source-bound concurrency cannot be mixed with commissioning selectors')
     if a.equivalent_replay_source and (a.concurrency_source or a.goal_id or a.max_goals or a.review_after):
         p.error('Equivalent replay is a separate full canonical execution mode')
+    if a.streaming_source and (a.concurrency_source or a.equivalent_replay_source or a.goal_id or a.review_after):
+        p.error('Streaming is a separate canonical execution mode; only declared max-goals commissioning may limit it')
+    if a.stream_prefix_goals<1:p.error('Positive source prefix size required')
     if any(v is not None and (not math.isfinite(v) or v<=0) for v in (a.wall_s,a.sim_s,a.review_wall_s,a.action_batches,a.max_reviews,a.loaded_speed)):
         p.error('Positive finite budgets and speed required')
     a.output=a.output.resolve()
