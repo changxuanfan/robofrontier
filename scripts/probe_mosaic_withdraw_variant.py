@@ -41,7 +41,7 @@ class WithdrawVariant(Trial):
                 q=nxt
                 minimum=min(minimum,float(np.min(np.minimum(q-arm.ik.limits[:,0],arm.ik.limits[:,1]-q))))
             if not valid:continue
-            self.withdraw_variant=dict(kind=kind,actual_start_m=start.tolist(),target_m=(start+offset).tolist(),
+            self.withdraw_variant=dict(direction=kind,actual_start_m=start.tolist(),target_m=(start+offset).tolist(),
                 released_object_screened_as_fixed_world_obstacle=True,samples=20,joint_sample_step_rad=.005,
                 minimum_original_ik_margin_rad=minimum,controller_joint_limits_unchanged=True)
             self.event('unit_measured_withdrawal',robot=robot,object=name,**self.withdraw_variant)
