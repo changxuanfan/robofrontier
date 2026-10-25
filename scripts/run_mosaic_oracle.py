@@ -22,16 +22,22 @@ from robofrontier.suite.source_snapshot import reexec_entry,MARKER
 
 
 def run(args):
+    overall_started=time.monotonic()
     catalog=json.loads(args.catalog.read_text())
     case=next(c for c in catalog['cases'] if c['id']==args.case)
     if case['family']!='mosaic':raise ValueError('Mosaic cases only')
+    concurrency=None
+    if args.concurrency_source:
+        from robofrontier.suite.mosaic_concurrency import build_plan
+        concurrency=build_plan(args.concurrency_source)
+        if concurrency['case_id']!=case['id']:raise ValueError('Concurrency source belongs to another case')
     sources={str(p.relative_to(ROOT)):p.read_bytes()
         for folder in ('robofrontier','scripts') for p in (ROOT/folder).rglob('*.py')}
     sources.update({'inputs/harness.json':args.harness.read_bytes(),'inputs/catalog.json':args.catalog.read_bytes()})
     trial=Trial(ROOT/case['directory'],args.output,seed=0,record_hz=60,
         controller_cfg=load_harness(args.harness),sources=sources)
     trial.live_preview=True;trial.abort_on_process_violation=True
-    budget_hit=lambda:(time.monotonic()-trial.started>=args.wall_s or trial.time>=args.sim_s or
+    budget_hit=lambda:(time.monotonic()-overall_started>=args.wall_s or trial.time>=args.sim_s or
         len(trial.actions)>=args.action_batches)
     trial.stop_requested=lambda:budget_hit() or (trial.directory/'STOP').exists()
     def stop(signum,frame):raise ReferenceStopped('External owner stop requested')
@@ -59,9 +65,22 @@ def run(args):
             pending.remove(count)
             raise RuntimeError('Declared commissioning review boundary')
     trial.mosaic_after_goal=after_goal
+    solve_kwargs={}
+    if concurrency is not None:
+        write_json(trial.directory/'concurrency-plan.json',concurrency)
+        report['concurrency_planning_wall_s']=concurrency['planning_wall_s']
+        report['concurrency_source']=str(args.concurrency_source.resolve())
+        def solve_concurrent(world,**kwargs):
+            if kwargs['resume']:
+                from robofrontier.suite.mosaic_oracle_v2 import solve
+                world.event('mosaic_concurrency_replanned_from_actual_state',scope='Owner reviewed physical repair; remaining matching uses actual state, no failed command stream replay')
+                return solve(world,**kwargs)
+            from robofrontier.suite.mosaic_concurrency import execute_plan
+            return execute_plan(world,concurrency)
+        solve_kwargs['solver']=solve_concurrent
     try:
         trial.wait(.6);trial.snapshot('initial');review._status('running')
-        result=run_reference(trial,review,max_goals=args.max_goals,motion_profile=report['motion_profile'],max_reviews=args.max_reviews,goal_ids=args.goal_id)
+        result=run_reference(trial,review,max_goals=args.max_goals,motion_profile=report['motion_profile'],max_reviews=args.max_reviews,goal_ids=args.goal_id,**solve_kwargs)
         trial.wait(1.2);require_known_idle(trial)
         evaluation=trial.monitor.result()
         report.update(reference_result=result,evaluation=evaluation,
@@ -85,6 +104,7 @@ def run(args):
                 requests=list(review.requests.values()),same_world_forward_only=True,physical_restart_supported=False),
             recovered_motion_failures=getattr(trial,'mosaic_recovered_motion_failures',[]))
         report.update(metadata);trial.close(report);report.update(metadata)
+        report['total_wall_s_including_planning']=time.monotonic()-overall_started
         write_json(trial.directory/'report.json',report)
         review._status('passed' if report['passed'] else 'commissioning_complete' if report.get('commissioning_passed') else 'failed')
     print(json.dumps(dict(case_id=case['id'],passed=report['passed'],commissioning_passed=report.get('commissioning_passed'),
@@ -102,6 +122,7 @@ def main():
     p.add_argument('--max-reviews',type=int,default=20);p.add_argument('--loaded-speed',type=float,default=.20)
     p.add_argument('--max-goals',type=int);p.add_argument('--review-after',nargs='*',type=int,default=[])
     p.add_argument('--goal-id',action='append')
+    p.add_argument('--concurrency-source',type=Path)
     p.add_argument('--auto-resume-reviews',action='store_true');a=p.parse_args()
     if a.review_after and (a.max_goals is None or any(i<1 or i>=a.max_goals for i in a.review_after)):
         p.error('Injected reviews require --max-goals and boundaries below that limit')
@@ -109,6 +130,8 @@ def main():
     if a.max_goals is not None and a.max_goals<1:p.error('Positive commissioning goal count required')
     if a.goal_id and (a.max_goals is None or a.max_goals>len(set(a.goal_id))):
         p.error('Explicit cells require a compatible --max-goals commissioning limit')
+    if a.concurrency_source and (a.goal_id or a.max_goals or a.review_after):
+        p.error('Full source-bound concurrency cannot be mixed with commissioning selectors')
     if any(not math.isfinite(v) or v<=0 for v in (a.wall_s,a.sim_s,a.review_wall_s,a.action_batches,a.max_reviews,a.loaded_speed)):
         p.error('Positive finite budgets and speed required')
     a.output=a.output.resolve()

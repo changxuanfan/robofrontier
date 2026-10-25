@@ -47,6 +47,7 @@ class MosaicReview:
             world_id=self.world_id, review_id=self.epoch, sim_time_s=t.time,
             updated_at_unix_s=time.time(), held=dict(t.held),
             job=getattr(t, 'mosaic_current_job', None),
+            active_jobs=getattr(t,'mosaic_active_jobs',[]),
             evaluation=t.monitor.result(),
             robots={r:a.observe() for r,a in t.arms.items()},
             objects={o['id']:dict(position_m=t.data.body(o['id']).xpos.tolist(),
@@ -117,6 +118,7 @@ class MosaicReview:
             robot=request['robot'];job=getattr(t,'mosaic_current_job',None)
             name=t.held.get(robot)
             if name is None:raise ValueError('No tracked held payload')
+            job=next((j for j in getattr(t,'mosaic_active_jobs',[]) if j['object']==name),job)
             if 'target_m' in request:
                 target=np.asarray(request['target_m'],dtype=float)
                 if target.shape!=(3,) or not np.isfinite(target).all():raise ValueError('Finite 3D staging target required')
