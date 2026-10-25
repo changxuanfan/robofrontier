@@ -16,13 +16,18 @@ DEPS=Path(os.environ.get('TRANSPORT_ORACLE_DEPS',ROOT/'.oracle-deps')).resolve()
 sys.path.insert(0,str(DEPS))
 
 
-def main():
+def parse_args(argv=None):
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--case',required=True);p.add_argument('--output',required=True,type=Path)
     p.add_argument('--catalog',type=Path,default=ROOT/'configs/suites/frontier-transport-r13.json')
     p.add_argument('--harness',type=Path,default=ROOT/'runs/oracle/transport-r13-units-20261025/harness.json')
-    p.add_argument('--wall-s',type=float,default=1200);p.add_argument('--sim-s',type=float,default=3600)
-    a=p.parse_args();out=a.output.resolve()
+    p.add_argument('--wall-s',type=float,help='Optional explicit episode wall cap; default is unlimited')
+    p.add_argument('--sim-s',type=float,help='Optional explicit episode simulation cap; default is unlimited')
+    return p.parse_args(argv)
+
+
+def main():
+    a=parse_args();out=a.output.resolve()
     from robofrontier.suite.source_snapshot import MARKER,freeze_executor
     if not os.environ.get(MARKER):
         if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip():
@@ -33,8 +38,9 @@ def main():
         frozen=freeze_executor(ROOT,launch,a.harness.resolve(),a.catalog.resolve())
         env[MARKER]=str(frozen);env['TRANSPORT_ORACLE_DEPS']=str(DEPS);env['PYTHONPATH']=str(frozen)
         args=[sys.executable,str(frozen/'scripts/run_transport_full_oracle.py'),'--case',a.case,'--output',str(out),
-            '--harness',str(frozen/'inputs/harness.json'),'--catalog',str(frozen/'inputs/catalog.json'),
-            '--wall-s',str(a.wall_s),'--sim-s',str(a.sim_s)]
+            '--harness',str(frozen/'inputs/harness.json'),'--catalog',str(frozen/'inputs/catalog.json')]
+        if a.wall_s is not None:args.extend(['--wall-s',str(a.wall_s)])
+        if a.sim_s is not None:args.extend(['--sim-s',str(a.sim_s)])
         os.execve(sys.executable,args,env)
     from robofrontier.suite.oracle import Trial,ReferenceStopped
     from robofrontier.suite.transport_full_oracle import solve
@@ -50,15 +56,15 @@ def main():
     recovery=EngineeringRecovery(out)
     budget=ExplicitPauseBudget(out)
     signal.signal(signal.SIGTERM,lambda *_:stopped.update(requested=True))
-    stop=lambda:stopped['requested'] or budget.times()['active_wall_s']>a.wall_s or t.time>a.sim_s or len(t.actions)>10000 or (out.parent.parent/'STOP').exists()
+    stop=lambda:stopped['requested'] or (a.wall_s is not None and budget.times()['active_wall_s']>a.wall_s) or (a.sim_s is not None and t.time>a.sim_s) or (out.parent.parent/'STOP').exists()
     t.stop_requested=lambda:budget.gate(stop)
     dependency_files={str(f.relative_to(DEPS)):hashlib.sha256(f.read_bytes()).hexdigest() for f in DEPS.rglob('*.so')}
     report=dict(case_id=case['id'],passed=False,full_task_attempt=True,commissioning_only=False,
         git_commit=os.environ['TRANSPORT_ORACLE_COMMIT'],worktree=os.environ['TRANSPORT_ORACLE_WORKTREE'],
         dependencies=dict(greenlet=importlib.metadata.version('greenlet'),binary_sha256=dependency_files),
         scope='Privileged geometry engineering Oracle; one real world, original full-order acceptance',
-        budgets=dict(wall_s=a.wall_s,simulation_s=a.sim_s,action_batches=10000,
-            wall_protocol='Planning/recovery time counts; only acknowledged engineering pauses excluded'))
+        budgets=dict(wall_s=a.wall_s,simulation_s=a.sim_s,action_batches=None,
+            wall_protocol='No default episode cap; all time recorded; only explicitly supplied caps apply'))
     try:
         t.wait(.6);t.snapshot('initial');report['frontier']=solve(t,on_blocked=recovery)
         t.wait(2.);result=t.monitor.result()

@@ -151,3 +151,34 @@ entire scene; unchanged peers need not each repeat their own full-scene scan.
 Synchronized samples still check all moving arms. The collision regressions and
 a positive retained-load move/state-preservation case pass (76 tests total).
 This reduces repeated checks without pruning the selected pair's scene coverage.
+
+## User execution scope and episode limits
+
+The user clarified: finish the nine Transport cases (4/8/12 arms x L1/L2/L3),
+then end this task. Do not proceed to GPT, other families or unrelated work.
+The user also removed the default whole-episode deadline: a progressing Oracle
+must not stop merely because30 minutes elapsed. New full runners default to no
+wall/simulation/action-count cap; explicit optional caps remain available. Per-action
+timeouts, unknown-action protection, process-violation handling and explicit STOP
+remain. This change is prospective; the old twelve-arm attempt ended at22/36
+on its recorded1800s limit and is not relabeled as a continuation/full pass.
+
+## Sender release preload
+
+An independent zero-velocity/controller-hold mechanical fixture reproduced the
+twelve-arm blocked G opening (target80mm, actual59.61mm). It is explicitly not
+an exact physics restart or original-order qualification. Reducing receiver F's
+force setpoint70→50N through the ordinary grasp API allowed full80mm sender opening,
+with real force-bearing receiver contact, preserved height and zero violations.
+The new helper reproduces this result and restores70N after release/withdrawal.
+All values stay within the frozen30–70N interface bounds; no servo, friction,
+material or force limit changes. Unknown openings are not retried. Resume also
+finishes the released sender's withdrawal instead of leaving a stale carrier hint.
+Evidence: `engineering/release-preload-002/` and `release-preload-003/` within
+the continuation run. The first20N probe was rejected by existing run limits and
+is retained as an unsuccessful diagnostic, not counted as qualification.
+
+Pair-dependent geometry checks use exact signed distances plus bounding-sphere
+rejection; synchronized/static/self sweeps are retained. On a reconstructed
+twelve-arm state both old/new admitted the same small candidate,1.171→0.230s.
+This is read-only screen timing, not whole-task speedup.80 regressions pass.

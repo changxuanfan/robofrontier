@@ -37,9 +37,10 @@ def render(directory,views=('global','global_rear'),speed=4,every=None,output=No
     for view in views:
         path=target/(view+'.mp4')
         if path.exists():raise FileExistsError(path)
-        processes[view]=subprocess.Popen(['ffmpeg','-hide_banner','-loglevel','error','-f','rawvideo','-pix_fmt','rgb24','-s','1280x800','-r',str(fps),'-i','-','-an','-c:v','libx264','-crf','23','-preset','fast','-pix_fmt','yuv420p','-movflags','+frag_keyframe+empty_moov+default_base_moof',str(path)],stdin=subprocess.PIPE)
+        processes[view]=subprocess.Popen(['ffmpeg','-hide_banner','-loglevel','error','-f','rawvideo','-pix_fmt','rgb24','-s','1280x800','-r',str(fps),'-i','-','-an','-c:v','libx264','-threads','1','-crf','23','-preset','fast','-pix_fmt','yuv420p','-movflags','+frag_keyframe+empty_moov+default_base_moof',str(path)],stdin=subprocess.PIPE)
     commissioning=report.get('commissioning_only') or report.get('full_task_attempt') is False
     outcome=('MECHANICAL PASS' if report.get('passed') or report.get('local_passed') else 'MECHANICAL PARTIAL / FAILED') if commissioning else 'PASS' if report.get('passed') else 'UNIT PASS' if report.get('local_passed') else 'INTERRUPTED' if report.get('interrupted') else 'PARTIAL / FAILED'
+    if report.get('engineering_assisted'):outcome+=' (engineering assisted)'
     try:
         with mujoco.Renderer(model,height=800,width=1280) as renderer:
             def emit(stamp,q):

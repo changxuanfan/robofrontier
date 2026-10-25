@@ -230,9 +230,39 @@ def sampled_motion_admission(request,runtime):
                 body=t.data.body(name);br=body.xmat.reshape(3,3);arm=t.arms[r]
                 carried[r]=(name,br.T@(t.data.site_xpos[arm.site]-body.xpos),br.T@t.data.site_xmat[arm.site].reshape(3,3))
     s.held={}
+    physical=(s.model.geom_contype!=0)|(s.model.geom_conaffinity!=0)
+    geometry={r:np.flatnonzero((s.monitor.geom_owner==list(s.arms).index(r))&physical).tolist() for r in paths}
+    for r,(name,_,_) in carried.items():
+        if r in geometry:geometry[r]+=list(t.monitor.geoms[name])
+    pair_cache={}
+    def cross_pair_clear(left,right):
+        key=(left,right)
+        if key not in pair_cache:
+            a=np.repeat(geometry[left],len(geometry[right]));b=np.tile(geometry[right],len(geometry[left]))
+            mask=(a!=b)&(((s.model.geom_contype[a]&s.model.geom_conaffinity[b])!=0)|((s.model.geom_contype[b]&s.model.geom_conaffinity[a])!=0))
+            # Receiving fingers may contact this scope's own payload. Palms,
+            # links and a different scope's payload never inherit that permit.
+            for actor in (left,right):
+                if actor not in owners:continue
+                allowed=t.monitor.geoms[owners[actor]]
+                fingers=np.flatnonzero((s.monitor.geom_owner==list(s.arms).index(actor))&(s.monitor.finger>=0))
+                mask&=~((np.isin(a,fingers)&np.isin(b,allowed))|(np.isin(b,fingers)&np.isin(a,allowed)))
+            a,b=a[mask],b[mask]
+            thresholds=np.where((s.monitor.geom_owner[a]>=0)&(s.monitor.geom_owner[b]>=0),.006,.001)
+            pair_cache[key]=(a,b,thresholds)
+        a,b,thresholds=pair_cache[key]
+        lower=np.linalg.norm(s.data.geom_xpos[a]-s.data.geom_xpos[b],axis=1)-s.model.geom_rbound[a]-s.model.geom_rbound[b]
+        for g,h,margin in zip(a[lower<thresholds],b[lower<thresholds],thresholds[lower<thresholds]):
+            if mujoco.mj_geomDistance(s.model,s.data,int(g),int(h),float(margin),None)<margin:return False
+        return True
     def phase_samples():
         fractions=np.linspace(0,1,count+1)
-        for f in fractions[1:]:yield {r:f for r in paths},tuple(paths)
+        for f in fractions[1:]:yield {r:f for r in paths},tuple(paths),None
+        # Exact quarter phases need their own self/static-world check if they
+        # fall between the synchronized grid's fractions.
+        for robot in paths:
+            for phase in (0.,.25,.5,.75,1.):
+                yield {r:phase if r==robot else 0. for r in paths},(robot,),None
         # Independent actions do not share a progress fraction. In particular,
         # a fast peer can finish while a slow loaded arm is midway through its
         # route. Check pairwise phase combinations, including idle end poses.
@@ -242,11 +272,10 @@ def sampled_motion_admission(request,runtime):
                 if robot==other:continue
                 for phase in (1.,0.,.5,.25,.75):
                     for f in fractions:
-                        # Only this pair changes from the captured state.
-                        # Each member is still checked against the full scene,
-                        # including every idle peer and carried object.
-                        yield {r:f if r==robot else phase if r==other else 0. for r in paths},(robot,other)
-    for progress,changed_robots in phase_samples():
+                        # Pair distances capture the phase-dependent change;
+                        # self/static geometry is covered by the sweeps above.
+                        yield {r:f if r==robot else phase if r==other else 0. for r in paths},(),(robot,other)
+    for progress,changed_robots,pair in phase_samples():
         s.data.qpos[:]=original
         for r,path in paths.items():
             index=progress[r]*(len(path)-1);low=min(int(index),len(path)-2);fraction=index-low
@@ -261,6 +290,7 @@ def sampled_motion_admission(request,runtime):
         # at every candidate phase adds no geometric evidence.
         mujoco.mj_kinematics(s.model,s.data)
         mujoco.mj_comPos(s.model,s.data)
+        if pair is not None and not cross_pair_clear(*pair):return False
         for r in changed_robots:
             if not s.pose_clear(r,s.data.qpos[s.arms[r].qids],(owners[r],) if r in owners else (),clearance_m=.001,inter_robot_clearance_m=.006):return False
     return True

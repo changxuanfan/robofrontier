@@ -160,13 +160,28 @@ def execute_job(t,runtime,job,resume=False):
         return dict(goal=goal['goal_id'],object=accepted[goal['goal_id']],already_accepted=True)
     if resume:
         allowed=runtime._current()[1]['robots']
+        previous_carriers=dict(t.held)
+        for owner,held in list(t.held.items()):
+            if owner in allowed and held==name and t.arms[owner].grasp_force is None and not ref._robot_payload_contacts(t,owner,name):
+                t.held.pop(owner)
+                t.event('transport_measured_carrier_cleared',robot=owner,object=name)
         holders=[r for r in allowed if t.arms[r].grasp_force is not None and t.finger_contacts(r,name)]
         if len(holders)>1:raise RuntimeError('Dual grasp frontier needs an explicit release/withdraw repair')
         if holders:
             robot=holders[0];t.held[robot]=name
+            released_donors=[]
+            for donor,held in previous_carriers.items():
+                if donor not in allowed or donor==robot or held!=name or t.arms[donor].grasp_force is not None:continue
+                restore=None
+                if ref._robot_payload_contacts(t,donor,name):
+                    restore=ref.unload_receiver_for_donor_release(t,donor,robot,name)
+                ref.withdraw_released_donor(t,donor,robot,name,restore_force=restore)
+                released_donors.append(donor)
             paths=[p for dest in goal_coverage(t,goal) if (p:=path_between({r:[s for s in ns if s in allowed] for r,ns in candidate_graph(t).items() if r in allowed},robot,dest))]
             if not paths:raise RuntimeError('Retained carrier has no finite remaining route')
             path=min(paths,key=len)
+            for donor in released_donors:
+                if donor not in path:runtime.release([donor])
         else:
             if name in accepted.values():
                 candidates=[o for o in t.env['objects'] if o['identity']==obj['identity'] and o['id'] not in accepted.values()]

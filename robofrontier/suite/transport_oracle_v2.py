@@ -473,6 +473,92 @@ def plan_air_regrasp(trial, donor, name, diagnostics=None, planning_budget_s=120
     return None
 
 
+def unload_receiver_for_donor_release(trial,donor,receiver,name):
+    """Try legal receiver pressures after a known, blocked donor opening.
+
+    The receiver must retain real force-bearing support. Lower pressure can
+    remove frictional preload without changing contact physics or drive limits.
+    Every retry is a new ordinary command after a known result, never unknown
+    action replay. The caller restores pressure after donor withdrawal.
+    """
+    arm=trial.arms[receiver];original=arm.grasp_force
+    if original is None:raise RuntimeError('Receiver has no active grasp for release unloading')
+    minimum=float(trial.cfg['allowed_grasp_force_n'][0]);width=float(trial.task['cube_size_m'])
+    initial_z=float(trial.data.body(name).xpos[2])
+    for force in sorted({(minimum+original)/2,minimum},reverse=True):
+        if force>=original:continue
+        if receiver not in trial.monitor.bilateral(trial.monitor.geoms[name],positive_force=True):
+            raise RuntimeError('Receiver support unverified before release unloading')
+        trial.execute('regrasp-receiver-unload',{receiver:('gripper',dict(mode='grasp',width_m=width,force_n=force,
+            speed_m_s=.025,epsilon_inner_m=.004,epsilon_outer_m=.008))})
+        trial.wait(.15)
+        if receiver not in trial.monitor.bilateral(trial.monitor.geoms[name],positive_force=True) or float(trial.data.body(name).xpos[2])<initial_z-.01:
+            raise RuntimeError('Receiver support changed during release unloading')
+        result=trial.execute('regrasp-donor-release-unloaded',{donor:('gripper',dict(mode='move',
+            width_m=trial.arms[donor].grip_max,speed_m_s=.005))},allow_failure=True)[donor]
+        if trial.arms[donor].grasp_force is not None or result['status']=='uncertain':
+            raise RuntimeError('Donor release unresolved after unloading')
+        if result['status']!='completed' and result.get('reason') not in ('Requested opening not reached','Requested aperture exceeded'):
+            raise RuntimeError('Donor release failed after unloading: '+str(result))
+        trial.wait(.15)
+        supported=receiver in trial.monitor.bilateral(trial.monitor.geoms[name],positive_force=True)
+        contact=_robot_payload_contacts(trial,donor,name)
+        trial.event('reference_release_unloading',donor=donor,receiver=receiver,object=name,
+            receiver_force_setpoint_n=force,donor_result=result,donor_still_contacts=contact,receiver_support=supported)
+        if not supported or float(trial.data.body(name).xpos[2])<initial_z-.01:
+            raise RuntimeError('Receiver did not retain payload during donor release')
+        if not contact:return original
+    raise RuntimeError('Donor still contacts payload after legal pressure unloading')
+
+
+def withdraw_released_donor(trial,donor,receiver,name,restore_force=None):
+    """Complete a known released sender retreat before the carrier continues."""
+    from .placement_oracle import park
+    width=float(trial.task['cube_size_m'])
+    trial.held.pop(donor,None)
+    trial.held[receiver] = name
+    pose = trial.data.site_xpos[trial.arms[donor].site].copy()
+    donor_tool = trial.data.site_xmat[trial.arms[donor].site].reshape(3, 3).copy()
+    # A tool-axis retreat is a candidate, not a whole-arm certificate.
+    # Donor no longer carries the item: do not permit finger/object contact
+    # in this route screen. All links and the receiver remain obstacles.
+    back, up = -donor_tool[:, 2], np.array([0., 0., 1.])
+    directions = []
+    for direction in (back, back+.75*up, up):
+        length = np.linalg.norm(direction)
+        if length < .01:
+            continue
+        direction = direction/length
+        if not any(np.dot(direction, previous) > .999 for previous in directions):
+            directions.append(direction)
+    cleared = False
+    for direction in directions:
+        for distance in (.16, .10, .06):
+            try:
+                trial.move_free(donor, pose+direction*distance, donor_tool,
+                                'regrasp-send-clear')
+            except RuntimeError as error:
+                if str(error).startswith(('No clear free-arm IK',
+                                          'No collision-free sampled free-arm route')):
+                    trial.event('reference_retreat_candidate_rejected', robot=donor,
+                                distance_m=distance, reason=str(error))
+                    continue
+                raise
+            cleared = True
+            break
+        if cleared:
+            break
+    if not cleared:
+        raise RuntimeError('No fully screened donor withdrawal '+donor+'/'+name)
+    park(trial, donor)
+    if restore_force is not None:
+        trial.execute('regrasp-receiver-restore-pressure',{receiver:('gripper',dict(mode='grasp',width_m=width,
+            force_n=restore_force,speed_m_s=.025,epsilon_inner_m=.004,epsilon_outer_m=.008))})
+        trial.wait(.15)
+    if not trial.finger_contacts(receiver, name):
+        raise RuntimeError('Air-regrasp payload not retained after donor withdrawal')
+
+
 def regrasp_held_plug(trial, donor, name, *, keep_receiver_held=False,
                      allowed_receivers=None,candidate_centers=None,receiver_tilt_deg=0.,receiver_depths=None,future_goal=None,planning_budget_s=120.):
     """Real handover, optionally retaining its actual carrier for a successor.
@@ -532,48 +618,12 @@ def regrasp_held_plug(trial, donor, name, *, keep_receiver_held=False,
     if released['status'] == 'failed' and released.get('reason') not in (
             'Requested opening not reached', 'Requested aperture exceeded'):
         raise RuntimeError('Air-regrasp donor release failed: '+str(released))
+    restore_force=None
     if _robot_payload_contacts(trial, donor, name):
-        raise RuntimeError('Donor still contacts payload after full opening '+donor+'/'+name)
+        restore_force=unload_receiver_for_donor_release(trial,donor,receiver,name)
     trial.event('reference_donor_release_verified', robot=donor, object=name,
                 actual_width_m=trial.arms[donor].observe()['gripper_width_m'])
-    trial.held.pop(donor)
-    trial.held[receiver] = name
-    pose = trial.data.site_xpos[trial.arms[donor].site].copy()
-    donor_tool = trial.data.site_xmat[trial.arms[donor].site].reshape(3, 3).copy()
-    # A tool-axis retreat is a candidate, not a whole-arm certificate.
-    # Donor no longer carries the item: do not permit finger/object contact
-    # in this route screen. All links and the receiver remain obstacles.
-    back, up = -donor_tool[:, 2], np.array([0., 0., 1.])
-    directions = []
-    for direction in (back, back+.75*up, up):
-        length = np.linalg.norm(direction)
-        if length < .01:
-            continue
-        direction = direction/length
-        if not any(np.dot(direction, previous) > .999 for previous in directions):
-            directions.append(direction)
-    cleared = False
-    for direction in directions:
-        for distance in (.16, .10, .06):
-            try:
-                trial.move_free(donor, pose+direction*distance, donor_tool,
-                                'regrasp-send-clear')
-            except RuntimeError as error:
-                if str(error).startswith(('No clear free-arm IK',
-                                          'No collision-free sampled free-arm route')):
-                    trial.event('reference_retreat_candidate_rejected', robot=donor,
-                                distance_m=distance, reason=str(error))
-                    continue
-                raise
-            cleared = True
-            break
-        if cleared:
-            break
-    if not cleared:
-        raise RuntimeError('No fully screened donor withdrawal '+donor+'/'+name)
-    park(trial, donor)
-    if not trial.finger_contacts(receiver, name):
-        raise RuntimeError('Air-regrasp payload not retained after donor withdrawal')
+    withdraw_released_donor(trial,donor,receiver,name,restore_force=restore_force)
     if keep_receiver_held:
         trial.event('reference_air_regrasp_carrier_retained', object=name,
                     donor=donor, receiver=receiver,
