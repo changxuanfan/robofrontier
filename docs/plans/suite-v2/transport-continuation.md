@@ -106,3 +106,13 @@ are cached until action/resource boundaries change, avoiding per-physics-tick
 searches. Real pickup, concurrent motion and insertion remain independently
 checked. The regression includes unavailable relevant receiver, unrelated free
 capacity, direct-grip independence and bounded repeated screening.
+
+## Nominal screen overhead
+
+Profiling the recorded asynchronous collision showed most candidate time in
+`mj_forward`, which solves dynamics/constraints not consumed by this FK screen.
+Candidate updates now use kinematics/comPos; pose_clear retains its own unchanged
+collision buffer and all phase samples. Three same-fixture comparisons retain
+the rejection verdict; median0.980→0.423s. This is screen overhead, not claimed
+whole-task speedup.73 relevant regressions pass. Already-running frozen worlds
+retain their original source; new runs receive the optimization.

@@ -233,7 +233,11 @@ def sampled_motion_admission(request,runtime):
             arm=s.arms[r];rr=s.data.site_xmat[arm.site].reshape(3,3)@relative.T
             point=s.data.site_xpos[arm.site]-rr@offset
             s.data.joint(name+'_free').qpos[:]=np.r_[point,matrix_quat(rr)]
-        mujoco.mj_forward(s.model,s.data)
+        # Only FK is consumed below; pose_clear computes collision data in
+        # its own scratch buffer. Full forward dynamics/constraint solving
+        # at every candidate phase adds no geometric evidence.
+        mujoco.mj_kinematics(s.model,s.data)
+        mujoco.mj_comPos(s.model,s.data)
         for r in paths:
             if not s.pose_clear(r,s.data.qpos[s.arms[r].qids],(owners[r],) if r in owners else (),clearance_m=.001):return False
     return True
