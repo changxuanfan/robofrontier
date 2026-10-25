@@ -15,6 +15,32 @@ def task():
 
 
 class MosaicReferenceTests(unittest.TestCase):
+    def test_goal_access_can_use_the_references_actual_release_height_and_keep_tilt_requirement(self):
+        from unittest.mock import Mock
+        from robofrontier.suite.mosaic_oracle_v2 import goal_endpoint_candidates
+        source=task();source['arms']={'A':{'base_position_m':[-.5,0.,.8]}}
+        trial=SimpleNamespace(task=source,arms={'A':object()},event=Mock())
+        def tilted(_,robot,point,rotation):
+            return np.zeros(7) if -.97<rotation[2,2]<-.96 else None
+        with patch('robofrontier.suite.mosaic_oracle_v2.helpers.goal_coverage',side_effect=RuntimeError('No candidate goal approach/seat/withdraw endpoints r1c1')), \
+             patch('robofrontier.suite.mosaic_oracle_v2.loaded_ik',side_effect=tilted), \
+             patch('robofrontier.suite.mosaic_oracle_v2.screen_release',return_value={'clearance_m':.04,'minimum_joint_margin_rad':.1}):
+            result=goal_endpoint_candidates(trial)
+        self.assertEqual(result,{'r1c1':['A']})
+        self.assertTrue(trial.mosaic_goal_tilted_coverage['r1c1']['A'])
+
+    def test_destination_tilt_requirement_reaches_the_actual_pick_operation(self):
+        from unittest.mock import Mock
+        trial=SimpleNamespace(task={'cube_size_m':.06},env={'stations':[],'edges':[]},
+            data=SimpleNamespace(body=lambda _:SimpleNamespace(xpos=np.array([.5,0.,.83]))),
+            mosaic_current_job={'goal_id':'r1c1'},mosaic_goal_tilted_coverage={'r1c1':{'A':True}})
+        with patch('robofrontier.suite.mosaic_oracle_v2.pick_transfer') as angled, \
+             patch('robofrontier.suite.mosaic_oracle_v2.pick_for_transport') as normal, \
+             patch('robofrontier.suite.mosaic_oracle_v2.place_cube'), \
+             patch('robofrontier.suite.mosaic_oracle_v2.helpers.park'):
+            deliver_cube(trial,'cube',['A'],np.array([0.,0.,.83]))
+        normal.assert_not_called();self.assertTrue(angled.call_args.kwargs['required_tilt'])
+
     def test_endpoint_map_keeps_a_supply_reachable_only_with_an_existing_transfer_tilt(self):
         body=SimpleNamespace(xpos=np.array([.5,0.,.83]),xmat=np.eye(3))
         trial=SimpleNamespace(task={'cube_size_m':.06,'arms':{'A':{'base_position_m':[0.,0.,.8]}}},

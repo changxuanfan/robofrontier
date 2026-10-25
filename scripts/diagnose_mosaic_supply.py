@@ -10,16 +10,19 @@ from robofrontier.robot_control import PandaArm
 from robofrontier.suite.oracle import Trial
 from robofrontier.suite.evaluate import Monitor
 from robofrontier.suite import placement_oracle as helpers
-from robofrontier.suite.mosaic_oracle_v2 import pickup_endpoint_candidates,assign_supply,buffer_graph
+from robofrontier.suite.mosaic_oracle_v2 import pickup_endpoint_candidates,goal_endpoint_candidates,assign_supply,buffer_graph
 
 
-def inspect(source,objects=()):
+def inspect(source,objects=(),nominal=False):
     source=Path(source).resolve();t=Trial.__new__(Trial)
     t.model=mujoco.MjModel.from_xml_path(str(source/'scene.xml'));t.data=mujoco.MjData(t.model)
-    states=np.load(source/'event-states.npz');t.data.qpos[:]=states['qpos'][-1];mujoco.mj_forward(t.model,t.data)
+    if nominal:mujoco.mj_resetDataKeyframe(t.model,t.data,t.model.key('initial').id)
+    else:
+        states=np.load(source/'event-states.npz');t.data.qpos[:]=states['qpos'][-1]
+    mujoco.mj_forward(t.model,t.data)
     t.task=json.loads((source/'task.json').read_text());t.env=json.loads((source/'environment.json').read_text())
     t.data.ctrl[:]=t.model.key_ctrl[t.model.key('initial').id]
-    initial_actions=json.loads((source/'actions.json').read_text())
+    initial_actions=[] if nominal else json.loads((source/'actions.json').read_text())
     if initial_actions and initial_actions[0]['label']=='clear-idle-arms':
         for robot,command in initial_actions[0]['commands'].items():
             for index,value in enumerate(command[1]['joint_rad'],1):t.data.ctrl[t.model.actuator(f'{robot}_actuator{index}').id]=value
@@ -28,11 +31,23 @@ def inspect(source,objects=()):
     t.home_q={r:initial[a.qids].copy() for r,a in t.arms.items()}
     t.screen_model=copy(t.model);t.screen_model.geom_margin[:]=np.maximum(t.screen_model.geom_margin,.004)
     t.screen_data=mujoco.MjData(t.screen_model);t.monitor=Monitor(t)
-    began=time.monotonic();t.stop_requested=lambda:time.monotonic()-began>120
+    began=time.monotonic();t.stop_requested=None
     def forbidden(*args,**kwargs):raise RuntimeError('Read-only archived-state inspection cannot execute or step')
     t.step=t.execute=t.wait=forbidden
-    pickups=pickup_endpoint_candidates(t);coverage=json.loads((source/'coverage.json').read_text())['goals'];neighbors,edges=helpers.graph(t.env)
-    print(json.dumps(dict(scope='Read-only archived-state endpoint diagnosis; no task success',
+    t.event=lambda kind,**fields:print(json.dumps(dict(event=kind,**fields)),flush=True)
+    if nominal:
+        parking={}
+        for robot,arm in t.arms.items():
+            point=t.data.site_xpos[arm.site].copy();point[2]=t.task['table_height_m']+.68
+            parking[robot]=t.screen_ik(robot,point,t.data.site_xmat[arm.site].reshape(3,3),seed=t.home_q[robot])
+            if parking[robot] is None:raise ValueError('No nominal parking candidate '+robot)
+        for robot,q in parking.items():
+            t.data.qpos[t.arms[robot].qids]=q;t.arms[robot].qref=q.copy()
+        mujoco.mj_forward(t.model,t.data)
+    pickups=pickup_endpoint_candidates(t)
+    coverage=goal_endpoint_candidates(t) if nominal else json.loads((source/'coverage.json').read_text())['goals']
+    neighbors,edges=helpers.graph(t.env)
+    print(json.dumps(dict(scope='Read-only proposed/archived-state endpoint diagnosis; no commands, physics integration or task success',
         empty_pickup_candidates=[name for name,robots in pickups.items() if not robots],
         neighbor_graph=neighbors,pickup_robot_counts={r:sum(r in a for a in pickups.values()) for r in t.arms},
         wall_s=time.monotonic()-began)),flush=True)
@@ -49,4 +64,5 @@ def inspect(source,objects=()):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('source',type=Path);p.add_argument('--object',action='append',default=[])
-    a=p.parse_args();inspect(a.source,a.object)
+    p.add_argument('--nominal',action='store_true')
+    a=p.parse_args();inspect(a.source,a.object,a.nominal)

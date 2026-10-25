@@ -555,7 +555,7 @@ def transfer_continuation_available(trial, robot, name, target):
     return False
 
 
-def pick_transfer(trial,robot,name,target,aperture=None):
+def pick_transfer(trial,robot,name,target,aperture=None,required_tilt=False):
     """Finite angled top-grasp candidates, then clear support and retract."""
     from .oracle import CUBE_ROTATIONS
     from ..robot_control import rotation_vector
@@ -571,7 +571,7 @@ def pick_transfer(trial,robot,name,target,aperture=None):
     base=np.asarray(trial.task['arms'][robot]['base_position_m'])
     directions=[np.asarray(target)-base,position-base];candidate=None;chosen_tilt=0;chosen_radial_sign=1
     candidates=((position+up*height,r,tilt) for height in (width/2-.005,*reversed(normal_grasp_heights(trial)))
-        for forward in directions for r,tilt in grasp_rotations(up,axes,forward))
+        for forward in directions for r,tilt in grasp_rotations(up,axes,forward) if not required_tilt or tilt>0)
     for point,r,tilt in candidates:
         seat=loaded_ik(trial,robot,point,r,(name,))
         if seat is None:continue
@@ -607,7 +607,7 @@ def pick_transfer(trial,robot,name,target,aperture=None):
         if aperture==default_aperture and narrow<aperture and arm_idle and uncommitted:
             trial.event('transfer_narrow_admission_search',robot=robot,object=name,aperture_m=narrow,
                 scope='Empty-hand geometry search only; unchanged controller, full-arm checks and physical evaluation')
-            return pick_transfer(trial,robot,name,target,aperture=narrow)
+            return pick_transfer(trial,robot,name,target,aperture=narrow,required_tilt=required_tilt)
         raise RuntimeError('No transfer pickup with usable continuation '+robot+'/'+name)
     trial.move(robot,point,candidate,'transfer-pick-contact',precise=True)
     trial.execute('transfer-pick-grasp',{robot:('gripper',dict(mode='grasp',width_m=width,force_n=50.,speed_m_s=.04,epsilon_inner_m=.008,epsilon_outer_m=.008))})
@@ -762,6 +762,51 @@ def pickup_endpoint_candidates(trial):
     return result
 
 
+def goal_endpoint_candidates(trial):
+    """Retain nominal access, then the actual reference's release/exit poses.
+
+    A free-drop placement need not reach a fictitious seated TCP. A template
+    does not prove grasp dynamics; execution rechecks the measured held offset.
+    Tilt requirements remain explicit so allocation cannot silently pick an
+    incompatible flat grasp for a destination that needs the angled template.
+    """
+    from copy import copy
+    trial.mosaic_goal_tilted_coverage={}
+    try:return helpers.goal_coverage(trial)
+    except RuntimeError as error:
+        if not str(error).startswith('No candidate goal approach/seat/withdraw endpoints '):raise
+    result={};axes=[np.array(v,dtype=float) for v in ((1,0,0),(-1,0,0),(0,1,0),(0,-1,0))]
+    for goal in trial.task['goals']:
+        proxy=copy(trial);proxy.task=dict(trial.task,goals=[goal])
+        try:
+            result[goal['goal_id']]=helpers.goal_coverage(proxy)[goal['goal_id']]
+            continue
+        except RuntimeError as error:
+            if not str(error).startswith('No candidate goal approach/seat/withdraw endpoints '):raise
+        position=np.asarray(goal['position_m']);options=[];tilts={}
+        robots=sorted(trial.arms,key=lambda r:np.linalg.norm(position[:2]-np.asarray(trial.task['arms'][r]['base_position_m'])[:2]))
+        for robot in robots:
+            base=np.asarray(trial.task['arms'][robot]['base_position_m'])
+            if np.linalg.norm(position[:2]-base[:2])>.88:continue
+            found=False
+            for height in (trial.task['cube_size_m']*.2,trial.task['cube_size_m']/3,trial.task['cube_size_m']/2-.005,trial.task['cube_size_m']*.1):
+                offset=np.array([0.,0.,height])
+                for rotation,tilt in grasp_rotations(np.array([0.,0.,1.]),axes,position-base):
+                    hover=loaded_ik(trial,robot,position+[0,0,.08]+offset,rotation)
+                    if hover is None:continue
+                    release=screen_release(trial,robot,position,np.eye(3),offset,rotation,hover)
+                    if release is None:continue
+                    options.append(robot);tilts[robot]=tilt>0;found=True
+                    trial.event('mosaic_goal_release_access_template',goal=goal['goal_id'],robot=robot,
+                        tilt_deg=tilt,capture_height_m=height,**release,
+                        scope='Finite endpoint/lowering/opening/exit screen; not grasp or placement dynamics proof')
+                    break
+                if found:break
+        if not options:raise RuntimeError('No finite Mosaic release/withdrawal access candidate '+goal['goal_id'])
+        result[goal['goal_id']]=options;trial.mosaic_goal_tilted_coverage[goal['goal_id']]=tilts
+    return result
+
+
 def pickup_admission_uncommitted(trial, robot, name, first_action, error,
                                  aperture_labels=('open-for-pick','transfer-open')):
     """Recognize empty-hand admission, never a failed/unknown pickup action."""
@@ -795,7 +840,10 @@ def deliver_cube(trial, name, path, position):
         current=trial.data.body(name).xpos
         angled_positions=[edges[key] for key in getattr(trial,'mosaic_angled_edges',{})]
         needs_angle=any(np.linalg.norm(np.asarray(p)[:2]-np.asarray(target)[:2])<.02 or np.linalg.norm(np.asarray(p)[:2]-current[:2])<.02 for p in angled_positions)
-        if needs_angle:pick_transfer(trial,robot,name,target)
+        goal_id=(getattr(trial,'mosaic_current_job',None) or {}).get('goal_id')
+        required_tilt=bool(index+1==len(path) and getattr(trial,'mosaic_goal_tilted_coverage',{}).get(goal_id,{}).get(robot))
+        if needs_angle or required_tilt:
+            pick_transfer(trial,robot,name,target,**({'required_tilt':True} if required_tilt else {}))
         else:
             first_action=len(getattr(trial,'actions',[]))
             try:pick_for_transport(trial,robot,name,target)
@@ -984,7 +1032,7 @@ def solve(trial, max_goals=None, goal_ids=None, motion_profile=None, resume=Fals
         trial.wait(1.2)
         return dict(reference_placed=len(protected),total_goals=len(trial.task['goals']),commissioning_only=False,resumed=resume)
     neighbors, _ = helpers.graph(trial.env)
-    coverage = helpers.goal_coverage(trial)
+    coverage = goal_endpoint_candidates(trial)
     pickups = pickup_endpoint_candidates(trial)
     from ..run_setup import write_json
     write_json(trial.directory / 'coverage.json', dict(
