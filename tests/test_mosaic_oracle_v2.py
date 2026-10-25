@@ -15,6 +15,28 @@ def task():
 
 
 class MosaicReferenceTests(unittest.TestCase):
+    def test_endpoint_map_keeps_a_supply_reachable_only_with_an_existing_transfer_tilt(self):
+        body=SimpleNamespace(xpos=np.array([.5,0.,.83]),xmat=np.eye(3))
+        trial=SimpleNamespace(task={'cube_size_m':.06,'arms':{'A':{'base_position_m':[0.,0.,.8]}}},
+            env={'objects':[{'id':'cube'}]},arms={'A':object()},home_q={'A':np.zeros(7)},
+            data=SimpleNamespace(body=lambda _:body),
+            screen_ik=lambda robot,point,rotation,seed=None:np.zeros(7) if -.95<rotation[2,2]<-.85 else None)
+        from robofrontier.suite.mosaic_oracle_v2 import pickup_endpoint_candidates
+        with patch('robofrontier.suite.mosaic_oracle_v2.helpers.pickup_coverage',return_value={'cube':[]}):
+            self.assertEqual(pickup_endpoint_candidates(trial),{'cube':['A']})
+
+    def test_narrow_transfer_search_is_empty_hand_only(self):
+        from unittest.mock import Mock
+        from robofrontier.suite.mosaic_oracle_v2 import pick_transfer
+        for job in (None,'unresolved-id'):
+            arm=SimpleNamespace(grip_max=.08,grasp_force=None,job=job,observe=lambda:{'gripper_width_m':.072})
+            trial=SimpleNamespace(arms={'A':arm},task={'cube_size_m':.06,'arms':{'A':{'base_position_m':[0,0,.8]}}},
+                data=SimpleNamespace(body=lambda _:SimpleNamespace(xpos=np.array([.5,0.,.83]),xmat=np.eye(3))),
+                actions=[],held={},execute=Mock(),event=Mock())
+            with patch('robofrontier.suite.mosaic_oracle_v2.loaded_ik',return_value=None):
+                with self.assertRaisesRegex(RuntimeError,'No transfer pickup'):pick_transfer(trial,'A','cube',[.1,0.,.83])
+            self.assertEqual(trial.execute.call_count,1 if job is None else 0)
+            if job is None:self.assertAlmostEqual(trial.execute.call_args.args[1]['A'][1]['width_m'],.064)
     def stopped_motion_trial(self):
         from unittest.mock import Mock
         arm=SimpleNamespace(job=None,grasp_force=50.,qids=np.arange(7),dofs=np.arange(7))
@@ -641,6 +663,16 @@ class MosaicReferenceTests(unittest.TestCase):
             with patch('robofrontier.suite.mosaic_oracle_v2.pickup_endpoint_candidates') as pickups:
                 result=solve(trial,resume=True)
             pickups.assert_not_called();self.assertEqual(result['reference_placed'],1)
+
+    def test_exhausted_supply_search_enters_owner_review_after_trying_buffers(self):
+        from unittest.mock import Mock
+        with tempfile.TemporaryDirectory() as directory,self.helper_patches():
+            trial,_=self.fake_trial(directory);trial.event=Mock()
+            with patch('robofrontier.suite.mosaic_oracle_v2.assign_supply',side_effect=ValueError('No complete unique supply assignment')) as assign, \
+                 patch('robofrontier.suite.mosaic_oracle_v2.buffer_graph',return_value=({'A':[]},{})):
+                with self.assertRaisesRegex(RuntimeError,'needs owner review'):solve(trial)
+            self.assertEqual(assign.call_count,2)
+            self.assertTrue(any(call.args[0]=='mosaic_supply_plan_exhausted' for call in trial.event.call_args_list))
 
     def test_uncommitted_admission_defers_until_independent_goal_progress(self):
         from unittest.mock import Mock
