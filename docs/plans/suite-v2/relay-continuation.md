@@ -137,3 +137,29 @@ The old L1 geometry was checked read-only: both rods already had a true contact
 chain to the tabletop, demonstrating why direct-table support was the wrong
 gate for the clarified stack task. The new executor starts canonically; it does
 not inject those recorded states or pretend that a physics restart exists.
+
+## Active nine-case validation and physical recovery finding
+
+The frozen `ab1abec` queue is at
+`runs/oracle/relay-nine-ab1abec-20261026-032833`. Eight-arm L1 passed its full
+native task and all21,863 recorded frames were decoded. Twelve-arm L1 has two
+of three rods released in GOAL and is still being repaired forward for its last
+rod;16-arm L1 is also running. These partial cases are not counted as passes.
+
+The8-arm L2 episode lost its G grasp during a subsequent carry, then inverted
+on the tabletop after supported opening. The original G/H custody was retained
+and51 ordinary finite station candidates found no admitted recovery approach.
+This failed episode was closed at a quiescent boundary for a concrete recovery
+limitation, not elapsed time; `PHYSICAL-RECOVERY-REVIEW.json` preserves the reason
+and its unchanged native failure report. This case still needs a canonical retry.
+
+Read-only FK reproduced the missing exposed-surface grasp. The new reference
+chooses the face actually facing upward for inverted timber and its hinged
+distal member. An actual recorded failure fixture now exercises complete
+original-custody receiving/arrival selection without changing any world state.
+Typed original-custody regrasp also retains a surviving bilateral holder rather
+than reopening it; a healthy pair requires explicit handover to change grasps.
+These are candidate/controller fixes, not changes to contact physics or task
+acceptance. They are not hot-patched into the already-frozen active episodes.
+The related87 checks pass. Only all nine complete physical successes, including
+any required retries, finish this request; no GPT trial follows this scope.

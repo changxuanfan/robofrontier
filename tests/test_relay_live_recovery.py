@@ -63,4 +63,25 @@ class RelayLiveRecoveryTests(unittest.TestCase):
         self.assertEqual(result['status'],'completed');self.assertEqual(self.t.held,{})
         self.assertEqual([call.args[1:] for call in contact.call_args_list],[('p','G'),('p','H')])
 
+    def test_partial_original_custody_recovery_preserves_surviving_grasp(self):
+        self.t.monitor.bilateral=lambda *a,**k:{'H'}
+        self.t.monitor.relay_v2.states['p'].update(dropped=True,custody={'G','H'})
+        self.t.arms['H'].site=0
+        self.t.data=SimpleNamespace(site_xpos=np.array([[0.,-.48,1.2]]),
+            body=lambda _:SimpleNamespace(xpos=np.array([0.,0.,1.2]),xmat=np.eye(3)))
+        with patch('robofrontier.suite.relay_live_recovery.ref.choose_team',return_value=['H','G']) as choose,patch('robofrontier.suite.relay_live_recovery.ref.grasp') as grasp:
+            result=self.recovery.process(dict(self.request,op='grasp'))
+        self.assertEqual(result['status'],'completed')
+        self.assertEqual(choose.call_args.kwargs['retained'],{0:'H'})
+        self.assertEqual(choose.call_args.kwargs['exclude'],{'H'})
+        self.assertEqual(choose.call_args.kwargs['departing'],())
+        grasp.assert_called_once_with(self.t,'p',['H','G'],.44)
+
+    def test_healthy_pair_is_not_reopened_by_recovery_grasp(self):
+        self.t.monitor.relay_v2.states['p'].update(dropped=False,custody={'G','H'})
+        with patch('robofrontier.suite.relay_live_recovery.ref.grasp') as grasp:
+            result=self.recovery.process(dict(self.request,op='grasp'))
+        self.assertEqual(result['status'],'failed')
+        grasp.assert_not_called()
+
 if __name__=='__main__':unittest.main()

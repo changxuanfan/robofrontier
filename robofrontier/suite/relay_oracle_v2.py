@@ -117,12 +117,18 @@ def grasp_stations(offset):
 def grasp_targets(t,ident,center,rotation,offset):
  points=[]
  for sign,station in zip((-1,1),grasp_stations(offset)):
-  local=np.array([cross_x(t.task,sign*station),sign*station,.006]);p=center+rotation@local
+  local=np.array([cross_x(t.task,sign*station),sign*station,.006])
   part_rotation=rotation
   if sign>0 and t.task['mechanism'].get('elastic_hinge'):
    child=t.data.body(ident+'_distal');part_rotation=child.xmat.reshape(3,3).copy()
    pivot=t.model.body_pos[t.model.body(ident+'_distal').id]
-   p=child.xpos+part_rotation@(local-pivot)
+  # A dropped assembly can settle inverted. Approach its exposed face rather
+  # than sending the nominal top tool beneath the tabletop. This changes only
+  # candidate tool poses; contact, custody and real actuator checks still apply.
+  surface=1. if part_rotation[2,2]>=0 else -1.
+  local[2]*=surface
+  p=(child.xpos+part_rotation@(local-pivot) if sign>0 and t.task['mechanism'].get('elastic_hinge')
+     else center+rotation@local)
   # Parallel jaws admit antipodal grasps. Mirrored facing teams need opposed
   # wrist frames; a common frame previously drove the far wrist to its limit.
   if t.task['level']==2:
@@ -131,7 +137,7 @@ def grasp_targets(t,ident,center,rotation,offset):
    theta=sign*math.atan2(t.task['mechanism']['bend_rise_m'],.5*t.task['mechanism']['chord_m'])
   else:theta=0.
   jaw_frame=part_rotation@rz(theta)
-  y=-sign*jaw_frame[:,0];z=-jaw_frame[:,2];r=np.column_stack((np.cross(y,z),y,z))
+  y=-sign*jaw_frame[:,0];z=-surface*jaw_frame[:,2];r=np.column_stack((np.cross(y,z),y,z))
   points.append((p,r))
  return points
 

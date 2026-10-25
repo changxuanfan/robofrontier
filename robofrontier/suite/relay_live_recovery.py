@@ -115,7 +115,16 @@ class RelayLiveRecovery:
                 state=t.monitor.relay_v2.states[payload]
                 if state['dropped'] and not set(team)<=state['custody']:raise ValueError('Only original custody may recover a drop')
                 body=t.data.body(payload);offset=request.get('offset_m',.44)
-                selected=ref.choose_team(t,payload,body.xpos.copy(),body.xmat.reshape(3,3).copy(),offset,exclude=set(t.arms)-set(team),departing=(),search_budget_s=60.)
+                continuing=set(team)&support
+                if len(continuing)>1:raise ValueError('Already supported; use an explicit retained handover for regrasp')
+                retained={}
+                if continuing:
+                    if not set(team)<=state['custody']:raise ValueError('Partial support recovery belongs to original custody')
+                    robot=next(iter(continuing));arm=t.arms[robot]
+                    local=body.xmat.reshape(3,3).T@(t.data.site_xpos[arm.site]-body.xpos)
+                    retained={int(local[1]>=0):robot}
+                selected=ref.choose_team(t,payload,body.xpos.copy(),body.xmat.reshape(3,3).copy(),offset,
+                    exclude=(set(t.arms)-set(team))|continuing,retained=retained,departing=(),search_budget_s=60.)
                 ref.grasp(t,payload,selected,offset);result['holders']=selected
             elif op=='open':
                 state=t.monitor.relay_v2.states[payload]
