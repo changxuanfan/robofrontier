@@ -11,6 +11,7 @@ import numpy as np
 
 
 FIELDS='qpos0 key_qpos key_qvel key_ctrl body_parentid body_weldid body_mass body_inertia body_pos body_quat body_ipos body_iquat body_gravcomp jnt_type jnt_bodyid jnt_pos jnt_axis jnt_range jnt_stiffness jnt_limited jnt_solref jnt_solimp dof_bodyid dof_damping dof_armature dof_frictionloss dof_solref dof_solimp actuator_trnid actuator_trntype actuator_gaintype actuator_biastype actuator_dyntype actuator_gainprm actuator_biasprm actuator_dynprm actuator_ctrlrange actuator_forcerange actuator_gear actuator_ctrllimited actuator_forcelimited exclude_signature pair_geom1 pair_geom2 pair_solref pair_solimp pair_friction eq_type eq_data mesh_vert mesh_face'.split()
+FIELDS+='eq_obj1id eq_obj2id eq_active0 eq_solref eq_solimp jnt_qposadr jnt_dofadr dof_jntid actuator_actrange actuator_actlimited actuator_lengthrange'.split()
 GEOMS='geom_type geom_bodyid geom_dataid geom_pos geom_quat geom_size geom_friction geom_solref geom_solimp geom_margin geom_gap geom_contype geom_conaffinity geom_condim geom_priority geom_solmix geom_rbound'.split()
 OPTIONS='timestep gravity integrator solver iterations tolerance noslip_iterations noslip_tolerance cone jacobian impratio density viscosity wind disableflags enableflags'.split()
 TASK='arms objects goals cube_size_m table_height_m completion workspace_world_m'.split()

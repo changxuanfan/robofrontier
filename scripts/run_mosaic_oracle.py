@@ -72,6 +72,7 @@ def run(args):
             pending.remove(count)
             raise RuntimeError('Declared commissioning review boundary')
     trial.mosaic_after_goal=after_goal
+    trial.mosaic_motion_profile=dict(report['motion_profile'])
     solve_kwargs={}
     if concurrency is not None:
         write_json(trial.directory/'concurrency-plan.json',concurrency)
