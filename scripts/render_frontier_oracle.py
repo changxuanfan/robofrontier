@@ -40,6 +40,8 @@ def render(directory,views=('global','global_rear'),speed=4,every=None,output=No
         processes[view]=subprocess.Popen(['ffmpeg','-hide_banner','-loglevel','error','-f','rawvideo','-pix_fmt','rgb24','-s','1280x800','-r',str(fps),'-i','-','-an','-c:v','libx264','-crf','23','-preset','fast','-pix_fmt','yuv420p','-movflags','+frag_keyframe+empty_moov+default_base_moof',str(path)],stdin=subprocess.PIPE)
     commissioning=report.get('commissioning_only') or report.get('full_task_attempt') is False
     outcome=('MECHANICAL PASS' if report.get('passed') or report.get('local_passed') else 'MECHANICAL PARTIAL / FAILED') if commissioning else 'PASS' if report.get('passed') else 'UNIT PASS' if report.get('local_passed') else 'INTERRUPTED' if report.get('interrupted') else 'PARTIAL / FAILED'
+    assisted=bool(report.get('assisted',report.get('llm_used',False)))
+    if assisted:outcome+=' (ASSISTED)'
     try:
         with mujoco.Renderer(model,height=800,width=1280) as renderer:
             def emit(stamp,q):
@@ -74,7 +76,7 @@ def render(directory,views=('global','global_rear'),speed=4,every=None,output=No
     for view in views:
         path=target/(view+'.mp4');check=subprocess.run(['ffmpeg','-v','error','-i',str(path),'-f','null','-'],capture_output=True,text=True)
         checks[view]=dict(path=str(path.resolve()),decode_passed=check.returncode==0,error=check.stderr or None)
-    write_json(target/'manifest.json',dict(kind='Recorded-state FK rerender; no commands, IK, contacts or integration',source_trial=str(directory),source_scene_sha256=report['scene_sha256'],source_format='robofrontier.motion.v1' if shared else 'legacy_npz',recorded_source_hz=source_hz,speedup=speed,every=every,fps=fps,source_frames=source_frames,rendered_states=rendered,wall_time_s=time.monotonic()-started,trial_passed=report.get('passed'),local_unit_passed=report.get('local_passed'),commissioning_only=report.get('commissioning_only',False),views=checks))
+    write_json(target/'manifest.json',dict(kind='Recorded-state FK rerender; no commands, IK, contacts or integration',source_trial=str(directory),source_scene_sha256=report['scene_sha256'],source_format='robofrontier.motion.v1' if shared else 'legacy_npz',recorded_source_hz=source_hz,speedup=speed,every=every,fps=fps,source_frames=source_frames,rendered_states=rendered,wall_time_s=time.monotonic()-started,trial_passed=report.get('passed'),assisted=assisted,oracle_mode=report.get('oracle_mode','pure_program'),local_unit_passed=report.get('local_passed'),commissioning_only=report.get('commissioning_only',False),views=checks))
     if not all(c['decode_passed'] for c in checks.values()):raise RuntimeError('A video could not be fully decoded')
     print(target,flush=True)
 

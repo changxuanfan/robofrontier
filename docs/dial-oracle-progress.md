@@ -1,12 +1,28 @@
 # Dial Oracle continuation — 2026-10-26
 
+**Completed:** all nine BEST5 dial cases have passing evidence: original six
+L1/L2 plus new four/six/eight L3. Eight L3 won in attempt-003 (frozen986f243),
+with privileged GPT mechanical assistance, zero process violations and zero
+unknown executions. Eight other selected cases are pure-program Oracle. Do not
+claim all nine are autonomous or one merged-version batch. Physics, solver and
+evaluator processes are closed. User requested to end after these nine; no new
+experiments, other-family work, GPT-policy tests or merge should auto-start.
+
+Completion report: `runs/oracle/dial-best5-recovery-20261026/review.md`.
+Selected results: `batch-status.json` in the same folder, active=false,9/9.
+Gallery: http://127.0.0.1:56719/best5-completed-20261026/index.html
+All18 selected front/rear videos linked; new L3 six views encoded and fully
+decoded. Frozen-solver replay and all new pass motion streams verified.
+
+## Historical continuation log
+
 User resumed work and authorized the recovery-first plan. Current checkout is
 `/Users/fanchangxuan/.codex/worktrees/dial-continuation/roomscript2`, branch
 `codex/dial-continuation`. The original checkout was externally archived during
 development. Its complete source snapshot is `d065d3e`; it contains the previous
 uncommitted work plus the first fixes. Main and other families are untouched.
 
-The original R11 batch remains 6/9; no new formal success is claimed yet.
+The original R11 batch remains historical6/9; see the completed selection above.
 Preserve evaluator-only passwords and all original evidence.
 
 ## Verified so far
@@ -143,7 +159,7 @@ passed all marks1..5, return1, release and passive return, no process violation:
 `runs/engineering/best5-recovery-20261026/pressure-guard-eight-d04/attempt-001`.
 The full new eight-dial run will use attempt-002 and a fresh blind solver.
 
-## Active attempt-002 (frozen 69430cd)
+## Historical attempt-002 (frozen 69430cd)
 
 Native exec22643; wall budget5400s / sim3000s. First solver query confirmed
 390625 candidates, not the previous posterior. D04 pressure guard triggered
@@ -237,3 +253,35 @@ supervisor time kill. Fresh blind solver again; previous posterior is not a
 standard-answer input. Use the proven pressure guard and the learned geometric
 regrasp procedure if necessary, keep the world on recoverable failure, and
 continue until the nine-task objective is fulfilled.
+
+## Final attempt-003 outcome
+
+- Full continuous initial-state run, fresh390625-code blind solver, all run
+  limits null. **Passed at BEST8/8**;26 explicit guesses /41 valid inputs;
+  sim1616.44s, wall5007.08s including research repair waiting.73 robot actions
+  failed/stopped during execution and recovery; all retained. No process
+  violation, no unresolved action, assisted=true, oracle_mode=privileged_assisted.
+- Three live recovery boundaries retained the same world, BEST and solver.
+  D04 G/H: temporary red support, fully open/withdraw blue, real settling,
+  measured-center regrasp, restore red30N. Healthy blue grasps were given a
+  declared18mm width estimate covering16/20mm faces (existing allowed width
+  tolerances and original70N targets); actual support qualification unchanged.
+  D05 I/J required geometric recapture later; J returned to20mm actual aperture
+  with qualified support. D06 K/L hit an exhausted open-crank exit; blue L
+  carried the apparatus12mm away from stationary, fully open K, actual release
+  was observed and the original reference regrasped K to finish.
+- Every intervention used existing move/gripper commands. Live object state,
+  scene/physics, limits and scoring were not altered. External scratch helpers
+  and SHA256 copies are archived in attempt-003/recovery/operator-source;
+  recorded plan envelopes are the authoritative command inputs.
+- Final audit replays the frozen decoder without private answers and verifies
+  all96988 eight-dial frames. Four/six L3 have30066/50328 verified frames. All
+  selected nine reports share the same underlying physical-control fingerprint.
+- Eight success video is captioned PASS(ASSISTED),12x,60Hz source. Front/rear
+  completely decoded; final visual review shows green READY and BEST8. Prior
+  violated/interrupted attempts remain separately labelled.
+-35 focused tests passed. New entrypoints default unlimited episode budgets;
+  explicit STOP and real execution-health handling remain. Rendering/reporting
+  improvements do not change frozen physical results.
+- Source stays on codex/dial-continuation; no main merge or GPT-policy experiment.
+  Goal complete: deliver report/gallery and end this task.
