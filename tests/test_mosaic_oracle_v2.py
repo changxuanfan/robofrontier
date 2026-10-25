@@ -707,6 +707,25 @@ class MosaicReferenceTests(unittest.TestCase):
                 with self.assertRaisesRegex(RuntimeError,'held payload'):solve(trial,resume=True)
             assign.assert_not_called()
 
+    def test_direct_replan_drops_angled_metadata_from_an_earlier_augmented_graph(self):
+        with tempfile.TemporaryDirectory() as directory,self.helper_patches():
+            trial,accepted=self.fake_trial(directory);trial.held={}
+            trial.mosaic_angled_edges={frozenset(('A','C')):{'tilt_deg_by_robot':{'A':15,'C':15}}}
+            def deliver(*args):
+                self.assertEqual(trial.mosaic_angled_edges,{})
+                accepted['r1c1']='cube'
+            with patch('robofrontier.suite.mosaic_oracle_v2.deliver_cube',side_effect=deliver):
+                result=solve(trial,resume=True)
+            self.assertEqual(result['reference_placed'],1)
+
+    def test_buffer_graph_does_not_inherit_absent_edges_from_old_metadata(self):
+        from robofrontier.suite.mosaic_oracle_v2 import buffer_graph
+        trial=SimpleNamespace(task=dict(cube_size_m=.06,table_height_m=.8,goals=[dict(position_m=[0,0,.83])],
+            arms={r:dict(base_position_m=[x,0,.8]) for r,x in [('A',0),('B',1)]}),
+            env=dict(objects=[],tables=[]),mosaic_angled_edges={frozenset(('A','C')):{'tilt_deg_by_robot':{'A':15}}})
+        graph,edges=buffer_graph(trial,{'A':[],'B':[]},{})
+        self.assertEqual(edges,{});self.assertEqual(trial.mosaic_angled_edges,{})
+
     def test_resume_completed_world_never_builds_another_pickup_plan(self):
         with tempfile.TemporaryDirectory() as directory,self.helper_patches():
             trial,accepted=self.fake_trial(directory);trial.held={};accepted['r1c1']='cube'

@@ -39,3 +39,18 @@ def check(source,target):
         source_scene_sha256=[hashlib.sha256((p/'scene.xml').read_bytes()).hexdigest() for p in (source,target)],
         case_ids=[t['id'] for t in tasks],mujoco_version=mujoco.__version__,
         scope='Exact compiled physical arrays and acceptance-relevant task data; visual grid may differ. No physics step, checkpoint restoration, task pass or robustness claim.')
+
+
+def check_prefix_candidate(source,target):
+    """Also permit fresh same-case execution of a retained partial witness."""
+    source,target=Path(source).resolve(),Path(target).resolve()
+    tasks=[json.loads((p/'task.json').read_text()) for p in (source,target)]
+    if tasks[0]['id']!=tasks[1]['id']:return check(source,target)
+    if any(t.get('family')!='mosaic' for t in tasks):raise ValueError('Mosaic prefix candidates only')
+    models=[mujoco.MjModel.from_xml_path(str(p/'scene.xml')) for p in (source,target)]
+    checks=compare_models(*models);checks['complete_same_case_task']=tasks[0]==tasks[1]
+    return dict(equivalent_for_command_candidate=all(checks.values()),checks=checks,
+        differences=[name for name,value in checks.items() if not value],
+        source_scene_sha256=[hashlib.sha256((p/'scene.xml').read_bytes()).hexdigest() for p in (source,target)],
+        case_ids=[t['id'] for t in tasks],mujoco_version=mujoco.__version__,
+        scope='Exact same-case compiled physical inputs and complete task equality; new native execution only, never a restored checkpoint or copied result')

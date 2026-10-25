@@ -1,4 +1,4 @@
-"""Fresh L3 execution of immutable, completed L2 command prefixes.
+"""Fresh native execution of immutable, completed Mosaic command prefixes.
 
 The source may still be running. Only complete recorded scopes covered by
 finalized motion chunks are candidates. They never constitute a full source
@@ -125,8 +125,8 @@ def snapshot(source,destination,*,after_sim_s=-1.,previous_pairs=None,max_new_go
     return manifest
 
 
-def execute(trial,source,equivalence,*,max_goals=None,prefix_goals=24):
-    if not equivalence['equivalent_for_command_candidate']:raise ValueError('Streaming requires exact L2/L3 physical input equivalence')
+def execute(trial,source,equivalence,*,max_goals=None,prefix_goals=24,finish_after_source=False):
+    if not equivalence['equivalent_for_command_candidate']:raise ValueError('Streaming requires exact physical input equivalence')
     source=Path(source).resolve();identity=json.loads((source/'runner-status.json').read_text())['world_id']
     original_manifest=hashlib.sha256((source/'executor-launch.json').read_bytes()).hexdigest()
     target_bundle=trial.source_bundle['sha256'];target_count=max_goals or len(trial.task['goals'])
@@ -143,7 +143,23 @@ def execute(trial,source,equivalence,*,max_goals=None,prefix_goals=24):
         manifest=snapshot(source,path,after_sim_s=after,previous_pairs=pairs,
             max_new_goals=min(prefix_goals,target_count-len(pairs)))
         if manifest is None:
-            if status['phase'] not in ('running','review'):raise RuntimeError('Source ended before a new usable complete prefix: '+status['phase'])
+            if status['phase'] not in ('running','review'):
+                if finish_after_source:
+                    report=json.loads((source/'report.json').read_text())
+                    if (report.get('failed_robot_actions') or report.get('unresolved_robot_actions') or
+                            report['evaluation']['violations']):raise RuntimeError('Closed source native feedback needs owner review')
+                    from .mosaic_run import require_known_idle
+                    require_known_idle(trial)
+                    if trial.held or any(a.grasp_force is not None for a in trial.arms.values()):
+                        raise RuntimeError('Source handoff requires physically released arms')
+                    trial.mosaic_stream_summary['source_terminal']=dict(phase=status['phase'],error=report.get('error'),
+                        source_passed=report.get('passed'),target_progress_at_handoff=len(trial.monitor.result().get('assignments',{})))
+                    write_json(trial.directory/'streaming-summary.json',trial.mosaic_stream_summary)
+                    trial.event('mosaic_stream_source_exhausted',source_phase=status['phase'],source_error=report.get('error'),
+                        scope='Retained source commands consumed; continue new target world from actual progress, never copy source outcome')
+                    from .mosaic_oracle_v2 import solve
+                    return solve(trial,resume=not first,motion_profile=trial.mosaic_motion_profile)
+                raise RuntimeError('Source ended before a new usable complete prefix: '+status['phase'])
             # Waiting is actual forward simulation. Previously accepted goals
             # remain protected; no held payload or active action is abandoned.
             if trial.held or any(a.job is not None or a.grasp_force is not None for a in trial.arms.values()):

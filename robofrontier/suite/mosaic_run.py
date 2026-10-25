@@ -224,7 +224,10 @@ def run_reference(trial, review, *, solver=reference.solve, max_goals=None, moti
                 extra['goal_ids']=[goal for goal in goal_ids if goal not in completed]
             return solver(trial,max_goals=remaining,motion_profile=motion_profile,resume=resume,**extra)
         except (ProcessViolation,ReferenceStopped):raise
-        except RuntimeError as error:
+        except Exception as error:
+            # Logic/input failures at a known idle boundary preserve the live
+            # owner for review too. Unknown/active actions and violations still
+            # fail require_known_idle and must never admit repair commands.
             require_known_idle(trial)
             if max_reviews is not None and len(review.history)>=max_reviews:
                 raise ReferenceStopped('Explicit review count budget exhausted')

@@ -61,6 +61,17 @@ class MosaicRunTests(unittest.TestCase):
                 run_reference(trial,review,solver=Mock(side_effect=RuntimeError('Unknown execution')))
             self.assertEqual(review.history,[]);trial.wait.assert_not_called()
 
+    def test_known_idle_logic_error_keeps_the_same_owner_available_for_review(self):
+        from robofrontier.suite.mosaic_run import MosaicReview,run_reference
+        with tempfile.TemporaryDirectory() as directory:
+            trial=self.trial(directory);review=MosaicReview(trial,publish=lambda:None)
+            self.request(review,'repair-logic',1)
+            solver=Mock(side_effect=[KeyError(frozenset(('A','C'))),{'reference_placed':1}])
+            result=run_reference(trial,review,solver=solver)
+            self.assertEqual(result['reference_placed'],1);self.assertEqual(len(review.history),1)
+            self.assertTrue(review.history[0]['error'].startswith('KeyError:'))
+            self.assertTrue(solver.call_args.kwargs['resume']);trial.close.assert_not_called()
+
     def test_violations_are_retained_and_never_resume(self):
         from robofrontier.suite.mosaic_run import MosaicReview, run_reference
         with tempfile.TemporaryDirectory() as directory:

@@ -43,8 +43,8 @@ def run(args):
     replay=None
     streaming=None
     if args.streaming_source:
-        from robofrontier.suite.mosaic_equivalence import check
-        streaming=check(args.streaming_source,ROOT/case['directory'])
+        from robofrontier.suite.mosaic_equivalence import check_prefix_candidate
+        streaming=check_prefix_candidate(args.streaming_source,ROOT/case['directory'])
         if not streaming['equivalent_for_command_candidate']:raise ValueError('Streaming physical input equivalence failed')
     if args.equivalent_replay_source:
         from robofrontier.suite.mosaic_replay import prepare
@@ -100,7 +100,8 @@ def run(args):
                 world.event('mosaic_stream_replanned_from_actual_state',scope='Owner reviewed actual target repair; no prefix replay')
                 return solve(world,**kwargs)
             from robofrontier.suite.mosaic_stream import execute
-            return execute(world,args.streaming_source,streaming,max_goals=args.max_goals,prefix_goals=args.stream_prefix_goals)
+            return execute(world,args.streaming_source,streaming,max_goals=args.max_goals,prefix_goals=args.stream_prefix_goals,
+                finish_after_source=args.finish_after_source)
         solve_kwargs['solver']=solve_streaming
     elif concurrency is not None:
         write_json(trial.directory/'concurrency-plan.json',concurrency)
@@ -181,6 +182,7 @@ def main():
     p.add_argument('--equivalent-replay-source',type=Path)
     p.add_argument('--streaming-source',type=Path)
     p.add_argument('--stream-prefix-goals',type=int,default=24)
+    p.add_argument('--finish-after-source',action='store_true')
     p.add_argument('--auto-resume-reviews',action='store_true');a=p.parse_args()
     if a.review_after and (a.max_goals is None or any(i<1 or i>=a.max_goals for i in a.review_after)):
         p.error('Injected reviews require --max-goals and boundaries below that limit')
@@ -195,6 +197,7 @@ def main():
     if a.streaming_source and (a.concurrency_source or a.equivalent_replay_source or a.goal_id or a.review_after):
         p.error('Streaming is a separate canonical execution mode; only declared max-goals commissioning may limit it')
     if a.stream_prefix_goals<1:p.error('Positive source prefix size required')
+    if a.finish_after_source and not a.streaming_source:p.error('Source-prefix handoff requires --streaming-source')
     if any(v is not None and (not math.isfinite(v) or v<=0) for v in (a.wall_s,a.sim_s,a.review_wall_s,a.action_batches,a.max_reviews,a.loaded_speed)):
         p.error('Positive finite budgets and speed required')
     a.output=a.output.resolve()

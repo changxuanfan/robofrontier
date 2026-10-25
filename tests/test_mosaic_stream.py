@@ -1,8 +1,43 @@
 import unittest
+from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import Mock,patch
+import json
+import tempfile
 from robofrontier.suite.mosaic_stream import completed_prefix,review_deliberation
 
 
 class CompletedPrefixTests(unittest.TestCase):
+    def test_closed_partial_source_hands_off_to_actual_target_progress_without_reparking(self):
+        from robofrontier.suite.mosaic_stream import execute
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);source=root/'source';source.mkdir();target=root/'target';target.mkdir();accepted={}
+            (source/'executor-launch.json').write_text('immutable')
+            (source/'runner-status.json').write_text(json.dumps(dict(world_id='w',phase='failed')))
+            (source/'report.json').write_text(json.dumps(dict(passed=False,error='KeyError: old graph',failed_robot_actions=0,
+                unresolved_robot_actions=[],evaluation=dict(violations=[]))))
+            t=SimpleNamespace(directory=target,source_bundle={'sha256':'target'},task={'goals':[{},{}]},held={},actions=[],
+                arms={'A':SimpleNamespace(job=None,grasp_force=None)},mosaic_motion_profile={'loaded_joint_speed_rad_s':.35},
+                check_stop=Mock(),event=Mock(),monitor=SimpleNamespace(result=lambda:{'assignments':dict(accepted)},violations=[]))
+            calls=[]
+            def snapshot(*args,**kwargs):
+                calls.append(1)
+                if len(calls)>1:return None
+                path=args[1];path.mkdir(parents=True);(path/'trace.jsonl').write_text('')
+                return dict(cut_sim_s=1.,source_assignments={'g':'cube'})
+            def native(*args,**kwargs):
+                accepted['g']='cube';t.mosaic_protected_assignments=dict(accepted)
+                return dict(concurrent_operation_peak=1)
+            with patch('robofrontier.suite.mosaic_stream.snapshot',side_effect=snapshot), \
+                 patch('robofrontier.suite.mosaic_stream.build_plan',return_value=dict(jobs=[],source_assisted=True,total_goals=1)), \
+                 patch('robofrontier.suite.mosaic_async.execute_plan',side_effect=native), \
+                 patch('robofrontier.suite.mosaic_oracle_v2.solve',return_value={'reference_placed':2}) as finish:
+                result=execute(t,source,{'equivalent_for_command_candidate':True},finish_after_source=True)
+            self.assertEqual(result['reference_placed'],2);self.assertTrue(finish.call_args.kwargs['resume'])
+            self.assertEqual(t.mosaic_stream_summary['source_terminal']['target_progress_at_handoff'],1)
+            self.assertFalse(t.mosaic_stream_summary['source_terminal']['source_passed'])
+            self.assertEqual(accepted,{'g':'cube'})
+
     def test_only_long_resolved_review_idle_is_replanned(self):
         jobs=[dict(actions=[dict(end_sim_s=a)],end_sim_s=b) for a,b in [(1,10),(11,20),(21,21.15),(31,40)]]
         p=dict(jobs=jobs);events=[dict(event='mosaic_review_opened',review_id=1,sim_time_s=11),

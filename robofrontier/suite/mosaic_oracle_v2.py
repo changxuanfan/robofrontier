@@ -883,7 +883,8 @@ def buffer_graph(trial, neighbors, edges):
     from itertools import combinations
     graph = {r:list(v) for r,v in neighbors.items()}
     buffers = dict(edges)
-    angled = dict(getattr(trial,'mosaic_angled_edges',{}))
+    # Metadata belongs to the graph being proposed, not a previous replan.
+    angled = {key:value for key,value in getattr(trial,'mosaic_angled_edges',{}).items() if key in buffers}
     size = trial.task['cube_size_m']
     goals = np.asarray([g['position_m'] for g in trial.task['goals']])
     lo, hi = goals[:,:2].min(axis=0)-size/2, goals[:,:2].max(axis=0)+size/2
@@ -1061,6 +1062,9 @@ def solve(trial, max_goals=None, goal_ids=None, motion_profile=None, resume=Fals
             trial.event('mosaic_supply_plan_exhausted',reason=str(error),empty_pickup_candidates=[name for name,robots in pickups.items() if not robots])
             raise RuntimeError('Finite Mosaic supply plan needs owner review: '+str(error)) from error
     trial.mosaic_edges=edges
+    # A later remaining-supply matching can use only original normal edges,
+    # even when an earlier solve needed additional angled buffers.
+    trial.mosaic_angled_edges={key:value for key,value in getattr(trial,'mosaic_angled_edges',{}).items() if key in edges}
     jobs.sort(key=lambda job:(-len(job[2]),np.linalg.norm(job[0]['position_m'][:2]),job[0]['goal_id']))
     write_json(trial.directory/'supply-plan.json',dict(
         scope='All unique supplies matched; buffers have endpoint screens only, not physical proof',
