@@ -9,14 +9,23 @@ import sys
 import time
 
 
+def final_success(report):
+    """A prior win cannot survive a late violation or unknown action."""
+    evaluation=report.get('evaluation',{})
+    return bool(report.get('passed') and not report.get('error')
+                and evaluation.get('task_success') and not evaluation.get('violations')
+                and not report.get('unresolved_robot_actions'))
+
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--case',required=True);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--codebook',type=Path,required=True);p.add_argument('--wall-s',type=float,default=1800)
     p.add_argument('--best5',action='store_true',help='Use R11 five-symbol BEST; --codebook is an evaluator-only per-case puzzle JSON')
+    p.add_argument('--harness',type=Path,help='Frozen controller configuration for this batch')
     p.add_argument('--sim-s',type=float,default=2400);p.add_argument('--actions',type=int,default=12000)
     a=p.parse_args();root=Path(__file__).resolve().parents[1]
     from robofrontier.suite.source_snapshot import reexec_entry
-    harness=root/'runs/oracle/suite-v2-r10-closure-20261025/inputs/harness.json'
+    harness=a.harness or root/'runs/oracle/suite-v2-r10-closure-20261025/inputs/harness.json'
     catalog=root/'configs/suites/dial-best5-r11.json' if a.best5 else root/'runs/oracle/suite-v2-r10-closure-20261025/inputs/catalog.json'
     reexec_entry(root,a.output,Path(__file__),sys.argv[1:],harness,catalog)
     from robofrontier.suite.oracle import Trial
@@ -72,7 +81,7 @@ def main():
         report['terminal_cleanup_feedback']=cleanup
         report['unresolved_robot_actions']=[r for r,arm in trial.arms.items() if arm.job is not None]
         report['evaluation']=trial.monitor.result()
-        if report['unresolved_robot_actions']:report['passed']=False
+        report['passed']=final_success(report)
         try:trial.close(report)
         finally:trial.monitor.game.close()
     print(json.dumps(dict(case_id=a.case,passed=report['passed'],error=report.get('error'),report=str(trial.directory/'report.json'))),flush=True)

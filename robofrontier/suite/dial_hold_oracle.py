@@ -6,6 +6,8 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import select
+import time
 import numpy as np
 from .dial_oracle_v2 import Manipulator
 from .evaluate import Monitor
@@ -15,20 +17,33 @@ WORKER=Path(__file__).with_name('dial_blind_worker.py')
 
 
 class Channel:
-    def __init__(self,mode,args,log,worker=WORKER):
+    def __init__(self,mode,args,log,worker=WORKER,timeout_s=60.):
+        self.timeout_s=timeout_s;self.pending=b''
         self.tmp=tempfile.TemporaryDirectory(prefix='dial-count-only-');self.log=Path(log).open('x')
         self.process=subprocess.Popen([sys.executable,'-I','-S',str(worker),mode,*map(str,args)],
             stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,bufsize=1,
             cwd=self.tmp.name,env={'PATH':os.defpath,'LC_ALL':'C'})
     def call(self,request):
         self.process.stdin.write(json.dumps(request)+'\n');self.process.stdin.flush()
-        line=self.process.stdout.readline()
-        if not line:raise RuntimeError('Isolated worker stopped: '+self.process.stderr.read()[-600:])
+        deadline=time.monotonic()+self.timeout_s
+        while b'\n' not in self.pending:
+            remaining=deadline-time.monotonic()
+            if remaining<=0 or not select.select([self.process.stdout],[],[],max(0,remaining))[0]:
+                self.process.kill();self.process.wait()
+                raise TimeoutError('Isolated worker response deadline exceeded')
+            data=os.read(self.process.stdout.fileno(),4096)
+            if not data:
+                raise RuntimeError('Isolated worker stopped before returning a complete response')
+            self.pending+=data
+        line,self.pending=self.pending.split(b'\n',1)
         result=json.loads(line);self.log.write(json.dumps(dict(input=request,output=result))+'\n');self.log.flush();return result
     def close(self):
         if self.process.poll() is None:
-            self.process.stdin.write('{"op":"close"}\n');self.process.stdin.flush();self.process.stdin.close()
-            self.process.wait(timeout=10)
+            try:
+                self.process.stdin.write('{"op":"close"}\n');self.process.stdin.flush();self.process.stdin.close()
+            except BrokenPipeError:pass
+            try:self.process.wait(timeout=10)
+            except subprocess.TimeoutExpired:self.process.kill();self.process.wait()
         code=self.process.returncode
         for pipe in (self.process.stdin,self.process.stdout,self.process.stderr):
             if pipe and not pipe.closed:pipe.close()
