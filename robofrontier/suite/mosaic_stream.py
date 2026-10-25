@@ -23,6 +23,32 @@ from .provenance import environment_logic_manifest
 MARKERS=('goal_attempt','mosaic_resume_from_actual_progress')
 
 
+def review_deliberation(plan,events):
+    """Schedule fresh candidates without copying long human thinking pauses.
+
+    Native actions and ordinary explicit settling remain intact. Within a
+    resolved source review, replace only long idle gaps with 2.4s of settling.
+    Source timing/envelopes remain archived, and new dynamics must still pass.
+    """
+    intervals=[];opened={}
+    for e in events:
+        if e['event']=='mosaic_review_opened':opened[e['review_id']]=e['sim_time_s']
+        elif e['event']=='mosaic_review_resumed':
+            start=opened.pop(e['review_id'],None)
+            if start is None:raise ValueError('Resolved source review has no recorded opening')
+            intervals.append((start,e['sim_time_s']))
+    saved=0.;changes=[]
+    for i,job in enumerate(plan['jobs']):
+        start=job['actions'][0]['end_sim_s'];end=job['end_sim_s'];gap=max(0.,end-start)
+        reviewed=sum(max(0.,min(end,b)-max(start,a)) for a,b in intervals)
+        if reviewed<=5.:continue
+        delay=gap-reviewed+2.4;job['wait_after_s']=max(0.,delay);saved+=gap-delay
+        changes.append(dict(node=i,source_gap_s=gap,target_settle_s=delay))
+    plan['review_deliberation_schedule']=dict(saved_source_idle_s=saved,changes=changes,
+        scope='Fresh candidate scheduling only; native command protection and whole-task timing policy unchanged')
+    return plan
+
+
 def completed_prefix(events,available_until,after_sim_s=-1.,max_new_goals=24,previous_pairs=None):
     """Choose an immutable completed boundary; ignore an in-flight tail."""
     pairs={};chosen=None;old=previous_pairs or {}
@@ -128,6 +154,7 @@ def execute(trial,source,equivalence,*,max_goals=None,prefix_goals=24):
                 raise RuntimeError('Streaming wait disturbed a completed pairing')
             time.sleep(.2);continue
         plan=build_plan(path,candidate_prefix=True,after_sim_s=None if first else after)
+        review_deliberation(plan,[json.loads(line) for line in (path/'trace.jsonl').read_text().splitlines()])
         plan['target_scene_bundle_sha256']=target_bundle
         plan['operation_prefix']=f'mosaic-stream-{chunk:04d}'
         write_json(path/'concurrency-plan.json',plan)
@@ -136,7 +163,8 @@ def execute(trial,source,equivalence,*,max_goals=None,prefix_goals=24):
         result=execute_plan(trial,plan,initialize=first)
         peak=max(peak,result['concurrent_operation_peak']);first=False;after=manifest['cut_sim_s'];pairs=manifest['source_assignments'];chunk+=1
         trial.mosaic_stream_summary['prefixes'].append(dict(path=str(path),source_cut_sim_s=after,candidate_goals=len(pairs),
-            target_actual_goals=len(trial.monitor.result().get('assignments',{})),peak=result['concurrent_operation_peak']))
+            target_actual_goals=len(trial.monitor.result().get('assignments',{})),peak=result['concurrent_operation_peak'],
+            review_deliberation_saved_s=plan['review_deliberation_schedule']['saved_source_idle_s']))
         trial.mosaic_stream_summary['source_assisted']|=plan['source_assisted']
         write_json(trial.directory/'streaming-summary.json',trial.mosaic_stream_summary)
     return dict(reference_placed=len(trial.monitor.result().get('assignments',{})),total_goals=len(trial.task['goals']),

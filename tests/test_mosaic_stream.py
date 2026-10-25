@@ -1,8 +1,17 @@
 import unittest
-from robofrontier.suite.mosaic_stream import completed_prefix
+from robofrontier.suite.mosaic_stream import completed_prefix,review_deliberation
 
 
 class CompletedPrefixTests(unittest.TestCase):
+    def test_only_long_resolved_review_idle_is_replanned(self):
+        jobs=[dict(actions=[dict(end_sim_s=a)],end_sim_s=b) for a,b in [(1,10),(11,20),(21,21.15),(31,40)]]
+        p=dict(jobs=jobs);events=[dict(event='mosaic_review_opened',review_id=1,sim_time_s=11),
+            dict(event='mosaic_review_resumed',review_id=1,sim_time_s=30)]
+        review_deliberation(p,events)
+        self.assertNotIn('wait_after_s',jobs[0]);self.assertNotIn('wait_after_s',jobs[2]);self.assertNotIn('wait_after_s',jobs[3])
+        self.assertAlmostEqual(jobs[1]['wait_after_s'],2.4);self.assertEqual(jobs[1]['end_sim_s'],20)
+        self.assertAlmostEqual(p['review_deliberation_schedule']['saved_source_idle_s'],6.6)
+
     def action(self,label,start,end,status='completed'):
         return [dict(event='action_start',label=label,sim_time_s=start,commands={'A':['move',{}]}),
             dict(event='action_end',label=label,sim_time_s=end,results={'A':dict(status=status)})]

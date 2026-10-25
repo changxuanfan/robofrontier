@@ -110,7 +110,7 @@ def execute_plan(trial,plan,*,initialize=True):
             trial.event('action_end',label=record['label'],results=record['results'])
             active.pop(node)
             source=jobs[node]['actions'][0]
-            waiting[node]=trial.time+max(0.,jobs[node]['end_sim_s']-source['end_sim_s'])
+            waiting[node]=trial.time+jobs[node].get('wait_after_s',max(0.,jobs[node]['end_sim_s']-source['end_sim_s']))
     trial.mosaic_active_jobs=[];trial.wait(2.4)
     return dict(reference_placed=len(qualified),total_goals=len(trial.task['goals']),commissioning_only=False,
         concurrent_operation_peak=peak,strategy='Independent native controller polling with source-bound dependencies; not proven optimal')
