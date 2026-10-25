@@ -19,7 +19,17 @@ from robofrontier.suite import relay_oracle_v2 as ref
 
 
 def diagnostic_world(run):
-    run=Path(run); observation=json.loads((run/'recovery/observation.json').read_text())
+    run=Path(run);recovery=run/'recovery'
+    # Observations publish at repair boundaries. Do not combine an older
+    # observation with motion chunks from an unresolved or queued movement.
+    for folder in ('requests','accepted'):
+        for path in (recovery/folder).glob('*.json'):
+            if (recovery/'results'/path.name).exists() or (recovery/'rejected'/path.name).exists():continue
+            request=json.loads(path.read_text())
+            if request.get('op')=='wait' and request.get('seconds')==0:continue
+            raise RuntimeError('Original owner repair unresolved; inspect '+path.stem+' before new FK planning')
+    observation=json.loads((recovery/'observation.json').read_text())
+    if observation.get('active_jobs'):raise RuntimeError('Original robot execution unresolved; obtain fresh feedback')
     t=Trial.__new__(Trial);t.model=mujoco.MjModel.from_xml_path(str(run/'scene.xml'))
     t.data=mujoco.MjData(t.model)
     mujoco.mj_resetDataKeyframe(t.model,t.data,t.model.key('initial').id)

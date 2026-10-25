@@ -177,6 +177,11 @@ class RelayLiveRecovery:
                 anchor_wall=time.monotonic();anchor_sim=t.time
             # Keep force holds/physics/recording alive while the owner thinks.
             desired=anchor_sim+(time.monotonic()-anchor_wall)
-            while t.time+.001<desired:t.step()
+            # A large world may integrate slower than real time. Poll between
+            # short batches instead of letting accumulated wall debt starve
+            # queued repairs. Every ordinary physics step is still recorded.
+            for _ in range(25):
+                if t.time+.001>=desired:break
+                t.step()
             if time.monotonic()>=next_publish:self.publish(str(error));next_publish=time.monotonic()+2.
             time.sleep(.01)

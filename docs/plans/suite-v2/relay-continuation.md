@@ -183,3 +183,25 @@ unchanged live world, explicit owner placement completed P2 with its distal
 beam and independent weight supported, while P1 remains held for continuation.
 Sixteen-arm L1 P4 has also been physically delivered, releasing its two terminal
 hands; the other three rods still need completion.
+
+The retained-world keeper had an unbounded real-time catchup loop. When a large
+world integrates slower than wall time, accumulated debt can keep a new repair
+file queued for many minutes while physics continues, without an active robot
+job. A file-queue regression reproduces this starvation. The new keeper polls
+between batches of at most25 unchanged2ms physics steps; this is an input-service
+quantum, not a trajectory or task deadline. No physical time, state or recording
+is skipped. Diagnostic FK also rejects queued/unresolved physical repairs so an
+old observation cannot be mixed with newer motion chunks. Related91 checks pass.
+
+The two current `ab1abec` worlds retain their frozen source. An explicitly logged
+run-local service helper uses their existing typed `wait(0)` requests between
+repairs, which already rebase the keeper's wall scheduling anchor. It issues no
+robot motion or state/reset operation. The helper and physical-repair client
+share a file lock, preserve original IDs and reject concurrent physical work.
+Its process/provenance is in the batch `owner-service-poll.json`; it automatically
+ends when these two original worlds close. All wall elapsed times remain intact.
+
+The completed12-arm L1 recording now has a continuous full-timeline16x video:
+`outputs/oracle/relay-nine-review-20261026/relay-a12-d1-full-16x/global.mp4`.
+All299,641 source frames were read and the entire exported video decoded; no
+physics or commands were replayed. Final images show the accepted stable stack.

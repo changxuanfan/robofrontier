@@ -84,4 +84,24 @@ class RelayLiveRecoveryTests(unittest.TestCase):
         self.assertEqual(result['status'],'failed')
         grasp.assert_not_called()
 
+    def test_physics_catchup_services_new_owner_request_before_finishing_wall_debt(self):
+        self.t.check_stop=Mock();self.t.wait=Mock();self.t.time=0.
+        self.recovery.publish=Mock();state={'steps':0,'done':False,'clock_calls':0}
+        self.t.monitor.result=lambda:{'task_success':state['done']}
+        def clock():
+            state['clock_calls']+=1
+            return 0. if state['clock_calls']<=2 else 1.
+        def step():
+            state['steps']+=1;self.t.time+=.002
+            if state['steps']==1:
+                (self.recovery.directory/'requests/new-owner.json').write_text(json.dumps({'id':'new-owner'}))
+            if state['steps']>100:raise AssertionError('Owner request starved inside physics catchup')
+        def process(request):
+            self.assertEqual(request['id'],'new-owner');state['done']=True
+            return {'status':'completed'}
+        self.t.step=step
+        with patch.object(self.recovery,'process',side_effect=process),patch('robofrontier.suite.relay_live_recovery.time.monotonic',side_effect=clock),patch('robofrontier.suite.relay_live_recovery.time.sleep'):
+            self.assertEqual(self.recovery.wait_for_repair(RuntimeError('retained world')),'complete')
+        self.assertLessEqual(state['steps'],25)
+
 if __name__=='__main__':unittest.main()
