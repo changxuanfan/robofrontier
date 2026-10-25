@@ -6,7 +6,8 @@ import unittest
 import mujoco
 import numpy as np
 
-from robofrontier.suite.relay_pipeline import simultaneous_carry_clear
+from robofrontier.suite.relay_pipeline import simultaneous_carry_clear,carry_chunk,Frontier
+from tests.test_relay_descent_recovery import recorded_world
 
 
 class RelayPipelineTests(unittest.TestCase):
@@ -42,6 +43,17 @@ class RelayPipelineTests(unittest.TestCase):
     def test_same_robot_cannot_be_reserved_for_two_loads(self):
         requests=self.requests([.4,.4,.5]);requests[1]['team']=['A']
         self.assertFalse(simultaneous_carry_clear(self.world(),requests))
+
+    def test_in_goal_supported_load_can_descend_without_nominal_center_correction(self):
+        t=recorded_world();point=t.data.body('payload_02').xpos.copy()
+        f=Frontier('payload_02',1,3,phase='carry',team=['G','H'],target=point+[.013,0,0],following='place')
+        with patch.object(t.monitor,'bilateral',return_value={'G','H'}):
+            self.assertIsNone(carry_chunk(t,f))
+
+    def test_goal_readiness_does_not_skip_an_intermediate_transfer(self):
+        t=recorded_world();point=t.data.body('payload_02').xpos.copy()
+        f=Frontier('payload_02',1,3,phase='carry',team=['G','H'],target=point+[.013,0,0],following='receive')
+        self.assertIsNotNone(carry_chunk(t,f))
 
 
 if __name__=='__main__':unittest.main()

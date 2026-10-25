@@ -42,7 +42,9 @@ class Frontier:
 def snapshot(t,frontiers):
     write_json(t.directory/'frontier.json',dict(sim_time_s=t.time,wall_elapsed_s=time.monotonic()-t.started,
         scopes=[dict(payload=f.ident,phase=f.phase,holders=f.team,route_index=f.index,
-            blocked=f.blocked,milestone=f.milestone,carry_chunks=f.chunks) for f in frontiers]))
+            target_m=None if f.target is None else np.asarray(f.target).tolist(),yaw_rad=f.yaw,following=f.following,
+            blocked=f.blocked,milestone=f.milestone,carry_chunks=f.chunks) for f in frontiers],
+        payload_motion=getattr(t,'relay_motion_metrics',{})))
 
 
 def simultaneous_carry_clear(t,requests):
@@ -93,7 +95,42 @@ def simultaneous_carry_clear(t,requests):
     return True
 
 
+def packing_shift(t,frontier,frontiers):
+    """Rank finite in-region landings away from already delivered loads."""
+    result=t.monitor.result().get('payloads',{});region=t.task['route'][-1];frame=rz(region['nominal_yaw_rad'])
+    peers=[float((frame.T@(t.data.body(other.ident).xpos-region['center_m']))[0]) for other in frontiers
+           if other is not frontier and result.get(other.ident,{}).get('completed')]
+    if not peers:return 0.
+    nominal=(frontier.number-(len(frontiers)-1)/2)*.12-.045
+    body=t.data.body(frontier.ident);relative=rz(ref.payload_route_yaw(t,frontier.ident,region))@body.xmat.reshape(3,3).T
+    half=np.asarray(region['half_size_m'])
+    valid=[]
+    for shift in [0.,-.06,-.12,.06,.12]:
+        anchor=np.asarray(region['center_m'])+frame@np.array([nominal+shift,0,0])
+        inside=True
+        for gid in t.monitor.relay_v2.states[frontier.ident]['all_geoms']:
+            rotation=t.data.geom_xmat[gid].reshape(3,3);bounds=t.model.geom_aabb[gid]
+            center=anchor+relative@(t.data.geom_xpos[gid]+rotation@bounds[:3]-body.xpos)
+            extent=abs(frame.T@relative@rotation)@bounds[3:]
+            if np.any(abs((frame.T@(center-region['center_m']))[:2])+extent[:2]>half+.002):inside=False;break
+        if inside:valid.append((min(abs(nominal+shift-peer) for peer in peers),-abs(shift),shift))
+    return max(valid)[2] if valid else 0.
+
+
 def carry_chunk(t,frontier):
+    if frontier.following=='place':
+        relay=t.monitor.relay_v2;state=relay.states[frontier.ident]
+        support=t.monitor.bilateral(state['rod_geoms'],positive_force=True)
+        if not state['dropped'] and set(frontier.team)<=support and relay.inside(state):
+            # The painted GOAL is the task condition. A private packing-center
+            # estimate is not an extra precision gate. Still preserve an
+            # actual descent corridor past already delivered payloads.
+            body=t.data.body(frontier.ident);rotation=body.xmat.reshape(3,3).copy()
+            gap=t.monitor.bottom(state['all_geoms'])-t.task['table_height_m']
+            landing=body.xpos.copy();landing[2]-=max(0.,gap-.01)
+            yaw=math.atan2(rotation[1,0],rotation[0,0])
+            if ref.carry_clear(t,frontier.ident,frontier.team,landing,yaw,target_rotation=rotation) or ref.terminal_reposition_plan(t,frontier.ident,frontier.team) is not None:
+                return None
     body=t.data.body(frontier.ident);point=body.xpos.copy();rotation=body.xmat.reshape(3,3).copy()
     desired=rz(frontier.yaw);delta=rotation_vector(desired,rotation);angle=float(np.linalg.norm(delta))
     distance=float(np.linalg.norm(frontier.target-point))
@@ -175,6 +212,7 @@ def solve(t,*,flexible=False,terminal_observer=None,handover_observer=None):
             if f.phase in ('done','carry'):continue
             if f.blocked and f.blocked_at==ready(f):continue
             prior_actions=len(t.actions)
+            terminal_phase=f.phase in ('place','release')
             try:
                 if f.phase=='pickup':
                     body=t.data.body(f.ident);point=body.xpos.copy();rotation=body.xmat.reshape(3,3).copy()
@@ -188,11 +226,12 @@ def solve(t,*,flexible=False,terminal_observer=None,handover_observer=None):
                     f.target=target;f.phase='carry';f.following='plan'
                 elif f.phase=='plan':
                     if f.index>=len(route)-1:
-                        final=route[-1];f.target=np.asarray(final['center_m'])+rz(final['nominal_yaw_rad'])@np.array([(f.number-(len(assemblies)-1)/2)*.12-.045,0,0]);f.target[2]=t.data.body(f.ident).xpos[2]
+                        final=route[-1];f.target=np.asarray(f.future['landing_point']).copy() if f.future.get('landing_point') is not None else np.asarray(final['center_m'])+rz(final['nominal_yaw_rad'])@np.array([(f.number-(len(assemblies)-1)/2)*.12-.045,0,0]);f.target[2]=t.data.body(f.ident).xpos[2]
                         f.yaw=ref.payload_route_yaw(t,f.ident,final);f.following='place';f.phase='carry'
                     else:
                         planner=ref.flexible_handover_plan if flexible else ref.handover_plan
-                        point,yaw,offset,future=planner(t,f.ident,f.team,f.offset,f.index+1,search_budget_s=40.)
+                        shift=packing_shift(t,f,frontiers) if f.index+1==len(route)-1 else 0.
+                        point,yaw,offset,future=planner(t,f.ident,f.team,f.offset,f.index+1,search_budget_s=40.,landing_shift_m=shift)
                         f.target=point;f.yaw=yaw;f.receiver_offset=offset;f.future=future;f.phase='carry';f.following='receive'
                 elif f.phase=='receive':
                     body=t.data.body(f.ident);receiver=ref.choose_team(t,f.ident,body.xpos.copy(),body.xmat.reshape(3,3).copy(),f.receiver_offset,exclude=f.team,search_budget_s=40.,**f.future)
@@ -212,6 +251,9 @@ def solve(t,*,flexible=False,terminal_observer=None,handover_observer=None):
                     if not t.monitor.result()['payloads'][f.ident]['completed']:raise RuntimeError('Frontier final score not established '+f.ident)
                     notify(f,'terminal_complete');f.phase='done'
                 f.blocked='';f.blocked_at=None;f.milestone+=1;progress=True;snapshot(t,frontiers)
+                # Finish enabled landing/release before an upstream search
+                # for the very hands this scope is about to free.
+                if terminal_phase:break
             except ReferenceStopped:raise
             except RuntimeError as error:
                 if t.monitor.violations or any(a.job is not None for a in t.arms.values()):raise
@@ -228,6 +270,7 @@ def solve(t,*,flexible=False,terminal_observer=None,handover_observer=None):
         selected=execute_carry_chunks(t,requests) if requests else []
         for f in frontiers:
             if f.ident in selected:f.chunks+=1;f.blocked='';progress=True
+        if selected:snapshot(t,frontiers)
         if not progress:
             snapshot(t,frontiers)
             raise RuntimeError('Relay frontier has no admitted independent prefix: '+str({f.ident:f.blocked or f.phase for f in frontiers if f.phase!='done'}))

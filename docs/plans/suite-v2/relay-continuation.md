@@ -48,3 +48,13 @@ Next gates: automatic full8-arm L1; real12-arm retained-holder exchange and
 successor; multi-payload pipelining and serial comparison; full nine-case Oracle;
 integration/freeze/revalidation; clean Adaptive GPT trials. Never import this
 Oracle's state-derived poses/solutions into policy input.
+
+The automatic cf7ed45 serial8-arm L1 subsequently passed2/2 without assisted
+requests. The first1e0ba2c rolling trial demonstrated real two-load movement,
+but stopped at an unnecessary13mm nominal-center correction inside GOAL.
+It is retained as an assisted diagnostic rather than a controlled speed result.
+The correction now admits real in-goal readiness only with a screened descent
+or bounded coupled recovery. Completed rods influence a finite in-region
+packing target; all true goal boundaries and collision checks remain. A further
+left landing preview found a valid first-rod successor after the second rod
+had already arrived. Source revisions and assisted histories stay separate.

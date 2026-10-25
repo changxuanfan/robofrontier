@@ -863,7 +863,7 @@ def release(t,ident,team,terminal=False):
   t.move_free(a,*t.home[a],label='send-clear',target_joints=t.home_q[a])
 
 
-def handover_plan(t,ident,team,offset,index,search_budget_s=None,lookahead_depth=2,retained_side=None):
+def handover_plan(t,ident,team,offset,index,search_budget_s=None,lookahead_depth=2,retained_side=None,landing_shift_m=0.):
  """One bounded search stage, including all nested IK and route checks."""
  started=time.monotonic();original_stop=t.stop_requested;search=copy(t);search.live_preview=False
  if not hasattr(t,'relay_ik_stats'):t.relay_ik_stats={}
@@ -871,6 +871,7 @@ def handover_plan(t,ident,team,offset,index,search_budget_s=None,lookahead_depth
  search.relay_handover_best=None;search.relay_handover_seen=set();search.relay_handover_score=None
  search.relay_handover_depth=max(1,min(2,int(lookahead_depth)));search.relay_handover_started=started
  search.relay_retained_side=retained_side
+ search.relay_landing_shift=float(landing_shift_m)
  budget=STAGE_SEARCH_WALL_S if search_budget_s is None else max(0.,float(search_budget_s))
  search.stop_requested=lambda:((original_stop is not None and original_stop()) or time.monotonic()-started>=budget)
  live=t.data is getattr(t,'_live_data',None) and hasattr(t,'trace')
@@ -964,7 +965,7 @@ def _handover_plan(t,ident,team,offset,index):
        # exclude a valid receiver that hands over earlier from this centre.
        if index==len(route)-1:
         assemblies=t.task['mechanism']['payload_assemblies'];number=next(i for i,item in enumerate(assemblies) if item['id']==ident)
-        landing=np.asarray(nxt['center_m'])+rz(nxt['nominal_yaw_rad'])@np.array([(number-(len(assemblies)-1)/2)*.12-.045,0,0])
+        landing=np.asarray(nxt['center_m'])+rz(nxt['nominal_yaw_rad'])@np.array([(number-(len(assemblies)-1)/2)*.12-.045+getattr(t,'relay_landing_shift',0.),0,0])
         landing=support_approach_point(probe,ident,landing,payload_route_yaw(t,ident,nxt))
         prelanding=landing.copy();prelanding[2]=later_height
         future_kwargs['future_waypoints'].append((prelanding.tolist(),payload_route_yaw(t,ident,nxt)))
@@ -1017,7 +1018,7 @@ def _handover_plan(t,ident,team,offset,index):
  raise RuntimeError('No bounded whole-arm carry/receiving candidate at stage '+str(index)+' '+ident)
 
 
-def flexible_handover_plan(t,ident,team,offset,index,search_budget_s=None):
+def flexible_handover_plan(t,ident,team,offset,index,search_budget_s=None,landing_shift_m=0.):
  """Try a retained holder within the same finite stage search budget.
 
  Unequal rings prefer retaining an inner arm when both choices are feasible.
@@ -1030,10 +1031,10 @@ def flexible_handover_plan(t,ident,team,offset,index,search_budget_s=None):
  for side in order:
   remaining=budget-(time.monotonic()-started)
   if remaining<=0:break
-  try:return handover_plan(t,ident,team,offset,index,search_budget_s=min(remaining,budget*.20),retained_side=side)
+  try:return handover_plan(t,ident,team,offset,index,search_budget_s=min(remaining,budget*.20),retained_side=side,landing_shift_m=landing_shift_m)
   except ReferenceStopped:raise
   except RuntimeError:pass
- return handover_plan(t,ident,team,offset,index,search_budget_s=max(0.,budget-(time.monotonic()-started)))
+ return handover_plan(t,ident,team,offset,index,search_budget_s=max(0.,budget-(time.monotonic()-started)),landing_shift_m=landing_shift_m)
 
 
 def solve(t,payload_ids=None,terminal_observer=None,allow_partial_handover=False,handover_observer=None):
