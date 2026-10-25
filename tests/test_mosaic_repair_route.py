@@ -3,6 +3,15 @@ from scripts.execute_mosaic_repair_route import choose
 
 
 class RepairRouteTests(unittest.TestCase):
+    def test_flat_pose_selection_requires_free_grippers_and_the_original_named_job(self):
+        from scripts.supervise_mosaic_normal_routes import select_flat_pose
+        s=dict(phase='review',world_id='w',review_id=1,review_history=[dict(error='RuntimeError: No pickup pose F/E_stock20')])
+        o=dict(world_id='w',review_id=1,evaluation=dict(violations=[]),job=dict(goal_id='g',object='E_stock20'),held={},
+            robots={'F':dict(grasp_force_setpoint_n=None)},last_actions=[dict(results={'F':dict(status='completed')})])
+        self.assertEqual(select_flat_pose(s,o),('g','E_stock20','F'))
+        o['robots']['F']['grasp_force_setpoint_n']=50
+        with self.assertRaisesRegex(ValueError,'free grippers'):select_flat_pose(s,o)
+
     def test_known_route_supervisor_requires_actual_custody_and_completed_feedback(self):
         from scripts.supervise_mosaic_normal_routes import select
         s=dict(phase='review',world_id='w',review_id=1,review_history=[dict(error='RuntimeError: No reachable loaded mosaic hover C/C_stock27')])
