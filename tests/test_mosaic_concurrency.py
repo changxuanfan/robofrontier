@@ -24,6 +24,18 @@ class ConcurrencyPlanningTests(unittest.TestCase):
         jobs=[self.job('A',[0,0,0],[1,1,1]),self.job('B',[1.03,0,0],[2,1,1])]
         self.assertEqual(dependencies(jobs),[[],[0]])
 
+    def test_incremental_frontier_matches_dependencies_across_out_of_order_completions(self):
+        from robofrontier.suite.mosaic_concurrency import ReadyFrontier
+        pred=[[],[0],[],[2],[1,3]];frontier=ReadyFrontier(pred)
+        self.assertEqual(set(frontier.claim_ready()),{0,2})
+        frontier.complete(2)
+        self.assertEqual(frontier.claim_ready(),[3])
+        frontier.complete(0)
+        self.assertEqual(frontier.claim_ready(),[1])
+        frontier.complete(3);self.assertEqual(frontier.claim_ready(),[])
+        frontier.complete(1);self.assertEqual(frontier.claim_ready(),[4])
+        with self.assertRaises(ValueError):frontier.complete(1)
+
     def test_object_custody_keeps_order_even_between_different_robots(self):
         jobs=[dict(self.job('A',[0,0,0],[1,1,1]),object='cube'),
               dict(self.job('B',[3,0,0],[4,1,1]),object='cube')]

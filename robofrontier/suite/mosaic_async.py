@@ -14,13 +14,14 @@ def execute_plan(trial,plan):
             trial.environment_logic_sha256!=plan['source_environment_logic_sha256'] or
             trial.source_bundle['sha256']!=plan.get('target_scene_bundle_sha256',plan['source_scene_bundle_sha256'])):
         raise ValueError('Async world must match source control/evaluator/assets')
-    from .mosaic_concurrency import ready_scopes
+    from .mosaic_concurrency import ReadyFrontier
     trial.execute('clear-idle-arms',deepcopy(plan['initial_commands']));trial.wait(.2)
     trial.mosaic_concurrency_started_sim_s=trial.time
     trial.parking_q={r:np.asarray(c[1]['joint_rad']) for r,c in plan['initial_commands'].items()}
     jobs=plan['jobs'];last_nodes={int(i):g for i,g in plan['last_goal_nodes'].items()}
     if any(len(j['actions'])!=1 for j in jobs):raise ValueError('Async admission requires operation-level nodes')
-    completed=set();active={};waiting={};qualified=set();started={};failures=[];peak=0
+    frontier=ReadyFrontier(plan['predecessors'])
+    completed=frontier.completed;active={};waiting={};qualified=set();started={};failures=[];peak=0
     trial.mosaic_protected_assignments={}
     lower=np.asarray(trial.task['workspace_world_m']['lower']);upper=np.asarray(trial.task['workspace_world_m']['upper'])
 
@@ -39,7 +40,7 @@ def execute_plan(trial,plan):
                 failures.append('Async motion disturbed completed pairing '+goal)
         for node,ready_time in list(waiting.items()):
             if trial.time+1e-9<ready_time:continue
-            waiting.pop(node);completed.add(node)
+            waiting.pop(node);frontier.complete(node)
             if node in last_nodes:
                 goal=last_nodes[node]
                 if current.get(goal)!=jobs[node]['object']:
@@ -54,7 +55,7 @@ def execute_plan(trial,plan):
         if failures and not active:
             raise RuntimeError('Known async failure after draining admitted work: '+failures[0])
         if not failures:
-            ready=ready_scopes(plan['predecessors'],completed,set(active)|set(waiting))
+            ready=frontier.claim_ready()
             prepared={};robots=set()
             try:
                 for node in sorted(ready,key=lambda i:-plan['critical_path_weights'][i]):

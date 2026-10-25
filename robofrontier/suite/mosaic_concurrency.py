@@ -34,7 +34,31 @@ def dependencies(jobs):
 
 
 def ready_scopes(predecessors,completed,active=()):
-    return [i for i,pred in enumerate(predecessors) if i not in completed and i not in active and set(pred)<=set(completed)]
+    completed=set(completed);active=set(active)
+    return [i for i,pred in enumerate(predecessors) if i not in completed and i not in active and set(pred)<=completed]
+
+
+class ReadyFrontier:
+    """Visit each dependency edge once, never rescan it each physics step."""
+    def __init__(self,predecessors):
+        self.remaining=[len(p) for p in predecessors]
+        self.successors=[[] for _ in predecessors]
+        for node,pred in enumerate(predecessors):
+            for parent in pred:self.successors[parent].append(node)
+        self.ready={i for i,n in enumerate(self.remaining) if n==0}
+        self.admitted=set();self.completed=set()
+
+    def claim_ready(self):
+        result=list(self.ready);self.ready.clear();self.admitted.update(result)
+        return result
+
+    def complete(self,node):
+        if node not in self.admitted or node in self.completed:
+            raise ValueError('Completion does not match an admitted unfinished operation')
+        self.completed.add(node)
+        for child in self.successors[node]:
+            self.remaining[child]-=1
+            if self.remaining[child]==0:self.ready.add(child)
 
 
 def build_plan(source):
@@ -117,11 +141,12 @@ def execute_plan(trial,plan):
         raise ValueError('Concurrent world must match source control/evaluator/assets')
     trial.execute('clear-idle-arms',deepcopy(plan['initial_commands']));trial.wait(.2)
     trial.parking_q={r:np.asarray(c[1]['joint_rad']) for r,c in plan['initial_commands'].items()}
-    completed=set();active={};peak=0;rounds=0;qualified=set();started={}
+    frontier=ReadyFrontier(plan['predecessors'])
+    completed=frontier.completed;active={};peak=0;rounds=0;qualified=set();started={}
     jobs=plan['jobs'];trial.mosaic_protected_assignments={}
     last_goal_nodes={int(i):goal for i,goal in plan['last_goal_nodes'].items()}
     while len(completed)<len(jobs):
-        ready=ready_scopes(plan['predecessors'],completed,active)
+        ready=frontier.claim_ready()
         for index in sorted(ready,key=lambda i:-plan['critical_path_weights'][i]):
             active[index]=0
             job=jobs[index];started[job['goal_id']]=dict(goal_id=job['goal_id'],object=job['object'],path=job['path'])
@@ -154,7 +179,7 @@ def execute_plan(trial,plan):
         for goal,name in trial.mosaic_protected_assignments.items():
             if current.get(goal)!=name:raise RuntimeError('Concurrent motion disturbed completed pairing '+goal)
         for i in finished:
-            completed.add(i);active.pop(i)
+            frontier.complete(i);active.pop(i)
             if i in last_goal_nodes:
                 goal=last_goal_nodes[i]
                 if current.get(goal)!=jobs[i]['object']:
