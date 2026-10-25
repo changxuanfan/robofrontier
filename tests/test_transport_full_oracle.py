@@ -41,6 +41,17 @@ def recorded_frontier(fixture_name='transport_air_frontier.json'):
 
 
 class TransferCoverageTests(unittest.TestCase):
+    def test_small_clear_retained_load_move_remains_admissible(self):
+        from types import SimpleNamespace
+        from robofrontier.suite.transport_runtime import sampled_motion_admission
+        t=recorded_frontier()
+        for r in t.held:t.arms[r].grasp_force=70.
+        runtime=SimpleNamespace(t=t,running={},jobs={r:dict(object=name,robots={r}) for r,name in t.held.items()})
+        target=t.data.qpos[t.arms['D'].qids].copy();target[0]+=.001
+        before=t.data.qpos.copy()
+        self.assertTrue(sampled_motion_admission(dict(commands={'D':('move',dict(joint_rad=target.tolist(),joint_speed_rad_s=.18))}),runtime))
+        np.testing.assert_array_equal(t.data.qpos,before)
+
     def test_receiver_cartesian_approach_does_not_cut_through_sender_wrist(self):
         from types import SimpleNamespace
         from robofrontier.suite.transport_runtime import sampled_motion_admission

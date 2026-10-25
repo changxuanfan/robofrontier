@@ -232,7 +232,7 @@ def sampled_motion_admission(request,runtime):
     s.held={}
     def phase_samples():
         fractions=np.linspace(0,1,count+1)
-        for f in fractions[1:]:yield {r:f for r in paths}
+        for f in fractions[1:]:yield {r:f for r in paths},tuple(paths)
         # Independent actions do not share a progress fraction. In particular,
         # a fast peer can finish while a slow loaded arm is midway through its
         # route. Check pairwise phase combinations, including idle end poses.
@@ -242,8 +242,11 @@ def sampled_motion_admission(request,runtime):
                 if robot==other:continue
                 for phase in (1.,0.,.5,.25,.75):
                     for f in fractions:
-                        yield {r:f if r==robot else phase if r==other else 0. for r in paths}
-    for progress in phase_samples():
+                        # Only this pair changes from the captured state.
+                        # Each member is still checked against the full scene,
+                        # including every idle peer and carried object.
+                        yield {r:f if r==robot else phase if r==other else 0. for r in paths},(robot,other)
+    for progress,changed_robots in phase_samples():
         s.data.qpos[:]=original
         for r,path in paths.items():
             index=progress[r]*(len(path)-1);low=min(int(index),len(path)-2);fraction=index-low
@@ -258,6 +261,6 @@ def sampled_motion_admission(request,runtime):
         # at every candidate phase adds no geometric evidence.
         mujoco.mj_kinematics(s.model,s.data)
         mujoco.mj_comPos(s.model,s.data)
-        for r in paths:
+        for r in changed_robots:
             if not s.pose_clear(r,s.data.qpos[s.arms[r].qids],(owners[r],) if r in owners else (),clearance_m=.001,inter_robot_clearance_m=.006):return False
     return True

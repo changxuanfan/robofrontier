@@ -137,3 +137,17 @@ uses6mm inter-robot clearance while preserving existing socket/payload tolerance
 These are planning margins only; physical geometry, controller and scoring stay
 unchanged. The old unsafe command is now rejected. This remains nominal sampling,
 not a guarantee against every dynamic or between-sample collision.
+
+## Eight-arm L1 qualification
+
+Source `c5ae460` completed24/24 without owner recovery input:964 robot commands,
+zero failed/unknown actions and zero violations,1080.36sim s and1039.76wall s.
+Actual multi-arm motion overlap470.00sim s; peak8 moving arms. All64823 source
+frames and visual events audited. This is a separate full witness from four-arm
+L1 and does not qualify the socket levels or twelve-arm scale.
+
+Pairwise phase screens now recheck the two arms whose poses changed against the
+entire scene; unchanged peers need not each repeat their own full-scene scan.
+Synchronized samples still check all moving arms. The collision regressions and
+a positive retained-load move/state-preservation case pass (76 tests total).
+This reduces repeated checks without pruning the selected pair's scene coverage.
