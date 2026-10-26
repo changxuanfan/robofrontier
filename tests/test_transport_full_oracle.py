@@ -51,6 +51,8 @@ class TransferCoverageTests(unittest.TestCase):
         with patch.object(full,'candidate_graph',return_value={'A':['B'],'B':['A','C'],'C':['B']}),patch.object(full,'goal_coverage',side_effect=lambda _,g:[g['robot']]),patch.object(full,'goal_pose',side_effect=lambda _,g:(np.array(g['point']),np.eye(3))),patch.object(full.ref,'_pickup_coverage',return_value={n:['A'] for n in ['cube','cylinder']}):
             jobs=full.plan_jobs(t)
         self.assertEqual(jobs[0]['id'],'far')
+        # Real event recording serializes the priority metadata to JSON.
+        json.dumps(t.event.call_args.kwargs)
 
     def test_equal_hop_route_cost_can_prefer_the_shorter_physical_relay(self):
         from types import SimpleNamespace

@@ -61,7 +61,7 @@ def plan_jobs(t):
     for goal in t.task['goals']:demand[goal['requires']['identity']].append(goal)
     coverage={g['goal_id']:goal_coverage(t,g) for g in t.task['goals']}
     pins_up={o['id']:(t.task['level']>1 and t.data.body(o['id']).xmat.reshape(3,3)[2,2]<-.8) for o in t.env['objects']}
-    rolling={o['id']:(t.task['level']>1 and o.get('shape')=='cylinder' and abs(t.data.body(o['id']).xmat.reshape(3,3)[2,2])<.8) for o in t.env['objects']}
+    rolling={o['id']:bool(t.task['level']>1 and o.get('shape')=='cylinder' and abs(t.data.body(o['id']).xmat.reshape(3,3)[2,2])<.8) for o in t.env['objects']}
     for identity,objects in supply.items():
         goals=demand[identity];cost=np.full((len(objects),len(goals)),1e6);options={}
         if len(objects)!=len(goals):raise ValueError('Transport identity inventory mismatch')
