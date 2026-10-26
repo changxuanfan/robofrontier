@@ -8,6 +8,7 @@ from copy import copy
 import json
 from pathlib import Path
 import time
+import fcntl
 
 import mujoco
 import numpy as np
@@ -17,9 +18,30 @@ from robofrontier.suite.oracle import Trial
 from robofrontier.suite.evaluate import Monitor
 from robofrontier.suite import relay_oracle_v2 as ref
 
+_helper_budget_file=None
+_helper_budget_run=None
+
+
+def reserve_helper_core(run):
+    """One CPU-bound helper beside each unchanged single-thread physics actor.
+
+    Keep the advisory slot until this helper exits or switches worlds. Repeated
+    reconstructions in one finite sequence reuse it instead of self-deadlocking.
+    This touches no live simulator state and starts no physical episode.
+    """
+    global _helper_budget_file,_helper_budget_run
+    run=Path(run).resolve()
+    if _helper_budget_run==run:return
+    if _helper_budget_file is not None:
+        fcntl.flock(_helper_budget_file,fcntl.LOCK_UN);_helper_budget_file.close()
+    handle=(run/'recovery/.helper-core-budget.lock').open('a+')
+    fcntl.flock(handle,fcntl.LOCK_EX)
+    _helper_budget_file=handle;_helper_budget_run=run
+
 
 def diagnostic_world(run):
     run=Path(run);recovery=run/'recovery'
+    reserve_helper_core(run)
     # Observations publish at repair boundaries. Do not combine an older
     # observation with motion chunks from an unresolved or queued movement.
     for folder in ('requests','accepted'):
