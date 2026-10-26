@@ -255,3 +255,37 @@ report and complete recording establish the actual result. A replacement
 read-only cohort observer recognizes zombie exit status before command text;
 both original queue parents stay paused and all six physical worlds survive.
 The authoritative cohort path is unchanged and records the observer provenance.
+
+
+## Subsequent live custody and supported terminal opening
+
+In the `ba8a19e`8-arm L2 retry, P2 is now physically complete with zero drops
+and zero violations. Its side-held F/E pair advanced through real H/E top/side
+and H/G top/top transfers. A raised turn and subsequent lower brought G into
+reach; x1.78,z1.30 transport was admitted and placement established all-component
+Goal support. The later release helper's positive bilateral-force gate failed
+as load shifted onto the table. Fresh native `goal_table_support=True` and
+inside-Goal evidence authorized the existing same-payload supported `open`
+operation. Both jaws physically opened to80mm; native evaluation subsequently
+confirmed released/stable/completed, with no added drop. Empty hands did not
+need a home posture to satisfy the task. P1 is still in this same live episode,
+advancing through F/C top/side toward balanced F/E top/top; no partial result is
+counted as a full pass.
+
+The retained16-arm L1 P2's inboard negative M station (.16) left a long beam tail
+crossing M link3/link5 during forward transport. Elevation and E side-to-top
+conversion alone did not solve it. P1 was physically transferred to K/C to free
+L; L/E then supported P2 while M withdrew. M regrasped its beam from above at a
+separated .54 station, with E top at .32. A fresh forward trajectory to
+[0,1.55,1.30] now passes where the original inboard grasp failed. Every temporary
+transfer/force overlap and the earlier P1 drop remain in the native history.
+
+Twelve-arm L2's third initial G/K grasp could not lift vertically because G was
+already extended. A checked diagonal lift toward G established real airborne
+custody. G/L then executed a qualified all-top handover at .44/.58 and carried
+into Goal, but low descent repeatedly reached a local arm boundary after real
+load roll. This scene stays live; supported opening is not used while its beam
+lacks environmental support. A checked upward/inward escape and high return to
+K-accessible space are continuing toward a less torsion-loaded final grasp.
+Current observations and original request results, rather than this prose,
+remain authoritative for pending motions and next commands.
