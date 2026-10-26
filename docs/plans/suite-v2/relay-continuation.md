@@ -324,3 +324,15 @@ freeing F for P3's required F/L then G/L airborne handovers. No zero-handover
 initial terminal grasp is counted as satisfying the task. P3 reached Goal but
 its first contact-seeking placement needs retained-world review after a native
 support-loss flag. Six worlds continue and complete-case passes remain3/9.
+
+Receiver search now rejects a seed-independent unreachable contact pose before
+iterating eight IK seeds. Pipeline ordering now completes ready receiving work
+before upstream broad searches, so a ready transfer can release occupied hands.
+Both regressions were exercised before the fixes; the selected suite now passes
+92 tests (historical missing-asset scene tests remain excluded). Existing frozen
+worlds retain their original code. The 8-arm L2 final translation genuinely lost
+G support again: its native history now records two drops. H remains original
+support and same-payload Goal support enabled physically opening empty G; the
+original H/G recovery is being reviewed. The 12-arm L3 P3 original G/L regrasp
+completed after opening empty L with empty F while preserving G. No failed
+motion has been reclassified as completed and no monitor history was reset.

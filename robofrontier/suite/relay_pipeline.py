@@ -345,7 +345,12 @@ def solve(t,*,flexible=False,terminal_observer=None,handover_observer=None):
                 f.phase='place';f.blocked='';f.blocked_at=None
                 f.milestone+=1;progress=True
         # Downstream terminal work frees scarce hands and goal access first.
-        for f in sorted(frontiers,key=lambda item:(0 if item.phase in ('place','release') else 1,-item.index if item.phase=='plan' else 0)):
+        # A committed receive can free the very sending arms that an upstream
+        # planner is waiting for. Complete it before another broad search;
+        # otherwise useful physical work waits behind impossible allocations.
+        priority=lambda item:(0 if item.phase in ('place','release') else 1 if item.phase=='receive' else 3 if item.phase=='plan' else 2,
+                              -item.index if item.phase=='plan' else 0)
+        for f in sorted(frontiers,key=priority):
             if t.monitor.result().get('payloads',{}).get(f.ident,{}).get('completed'):
                 if f.phase!='done':
                     if f.phase in ('verify','recheck'):notify(f,'terminal_complete')

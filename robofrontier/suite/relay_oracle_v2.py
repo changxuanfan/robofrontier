@@ -351,6 +351,15 @@ def _choose_team(t,ident,center,rotation,offset,exclude=(),future_region=None,fu
     contact=point+point_delta
     for flip in (False,True):
      r=frame@np.diag([-1.,-1.,1.]) if flip else frame
+     # This fixed-chain pose bound is independent of the IK seed. Reject it
+     # once before enumerating eight joint seeds, rather than rebuilding the
+     # same unreachable wrist query for every seed.
+     t.check_stop()
+     if not potentially_reachable(t,a,contact,r):
+      stats=getattr(t,'relay_ik_stats',None)
+      if stats is None:t.relay_ik_stats=stats={}
+      stats['pose_bound_rejections']=stats.get('pose_bound_rejections',0)+1
+      continue
      for seed in seeds:
       q=screened_ik(t,a,contact,r,seed=seed)
       if q is None or not t.pose_clear(a,q,(ident,),.001):continue

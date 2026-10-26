@@ -112,6 +112,20 @@ class RelayPipelineTests(unittest.TestCase):
                 with self.assertRaises(LookupError):solve(t)
         self.assertEqual(order,['place'])
 
+    def test_ready_receiving_precedes_search_for_its_sending_arms(self):
+        t=recorded_world();t.actions=[];t.started=time.monotonic();t.step=Mock();order=[]
+        step=t.step
+        t.relay_frontiers=[Frontier('payload_01',0,1,phase='plan',team=['A','B']),
+            Frontier('payload_02',1,2,phase='receive',team=['C','D'],receiver_offset=.38)]
+        def first(name):
+            order.append(name);raise LookupError('Stop before any physical action')
+        with tempfile.TemporaryDirectory() as folder:
+            t.directory=Path(folder)
+            with patch.object(t.monitor,'result',return_value={'payloads':{}}),patch('robofrontier.suite.relay_pipeline.ref.choose_team',side_effect=lambda *a,**k:first('receive')),patch('robofrontier.suite.relay_pipeline.ref.handover_plan',side_effect=lambda *a,**k:first('plan')):
+                with self.assertRaises(LookupError):solve(t)
+        self.assertEqual(order,['receive'])
+        step.assert_not_called()
+
     def upstream_holder(self):
         t=recorded_world();t.data.joint('payload_02_free').qpos[:3]=[.04,0,1.35];mujoco.mj_forward(t.model,t.data)
         t.held={'A':'payload_01','B':'payload_01','C':'payload_02','D':'payload_02'}
