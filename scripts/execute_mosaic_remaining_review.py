@@ -59,7 +59,22 @@ def run(a):
         return r
 
     def correct(job,robot,ident):
-        for height in ((.038,.040) if task['level']==1 else (.035,.038,.040)):
+        if task['level']>1:
+            from scripts.execute_mosaic_flat_pose_correction import seated_correction_geometry
+            from scripts.supervise_mosaic_dropped_payloads import plan_near_goal_pick
+            o=observation()
+            if o['evaluation']['assignments'].get(job['goal'])==job['object']:return
+            seated_correction_geometry(task,o['objects'][job['object']],goals[job['goal']])
+            option=plan_near_goal_pick(directory,o,task,robot,job['object'],job['goal'],ident+'-correction')
+            cid=ident+'-screened-correct'
+            r=child([sys.executable,str(Path(__file__).with_name('execute_mosaic_flat_pose_correction.py')),
+                '--trial',str(directory),'--robot',robot,'--object',job['object'],'--goal',job['goal'],
+                '--id',cid,'--contact-height',str(option['contact_height']),'--aperture','.064',
+                '--contact-offset-m',*map(str,option['contact_offset_m']),
+                '--centering-contact-m',str(option['centering_contact_m']),'--release-height-m','.015'],cid)
+            if r.returncode:raise RuntimeError('Correction needs owner review: '+str(review/'engineering'/f'{cid}-helper.log'))
+            return
+        for height in (.038,.040):
             cid=ident+f'-correct{round(height*1000)}'
             r=child([sys.executable,str(Path(__file__).with_name('execute_mosaic_flat_pose_correction.py')),
                 '--trial',str(directory),'--robot',robot,'--object',job['object'],'--goal',job['goal'],
