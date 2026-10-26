@@ -14,8 +14,9 @@ import numpy as np
 from robofrontier.robot_control import PandaArm,matrix_quat
 from robofrontier.run_setup import write_json
 from robofrontier.suite.oracle import Trial,joint_edge_clear
+from robofrontier.suite.joint_route import connect_route
 from robofrontier.suite.evaluate import Monitor
-from robofrontier.suite.mosaic_oracle_v2 import grasp_rotations,loaded_ik,screen_transfer_segments
+from robofrontier.suite.mosaic_oracle_v2 import grasp_rotations,loaded_ik,screen_transfer_segments,joint_margin
 
 
 def observed_trial(directory):
@@ -52,7 +53,7 @@ def plan(a):
     up_axis=int(np.argmax(abs(rotation[2])));up=rotation[:,up_axis]*np.sign(rotation[2,up_axis])
     axes=[rotation[:,axis]*sign for axis in range(3) if axis!=up_axis for sign in (1,-1)]
     base=np.asarray(t.task['arms'][robot]['base_position_m']);arm=t.arms[robot]
-    selected=None
+    selected=None;expanded=bool(getattr(a,'expanded',False));route=None;lift_vector=np.array([0.,0.,.14])
     height_override=getattr(a,'contact_height',None)
     heights=(height_override,) if height_override is not None else (t.task['cube_size_m']/2-.005,t.task['cube_size_m']/3,t.task['cube_size_m']*.2)
     if any(not 0<height<=t.task['cube_size_m']/2+.01 for height in heights):raise ValueError('Unsupported finite top-grasp contact height')
@@ -65,13 +66,40 @@ def plan(a):
                 hover=contact+[0,0,rise];q=loaded_ik(t,robot,hover,r)
                 if q is None or not joint_edge_clear(t.data.qpos[arm.qids],q,lambda value:t.pose_clear(robot,value),step_rad=.005):continue
                 if not screen_transfer_segments(t,robot,name,r,q,[('repair-contact',contact)],path_joint_margin_rad=0.):continue
-                selected=(contact,r,q,tilt);break
+                selected=(contact,r,q,tilt);route=[q];lift_vector=hover-contact if expanded else np.array([0.,0.,.14]);break
             if selected is not None:break
         if selected is not None:break
+    if selected is None and expanded:
+        # Preserve the demonstrated remote-elbow branches and bind the hover
+        # to its contact branch. A raised radial approach can avoid folding
+        # the elbow into its original limit near a stock beside the base.
+        direction=position[:2]-base[:2];direction/=max(np.linalg.norm(direction),1e-9)
+        vectors=[np.array([0.,0.,h]) for h in (.14,.10,.08)]
+        vectors += [np.r_[direction*radial,rise] for radial,rise in ((.10,.14),(.15,.14),(.10,.10))]
+        extra_heights=heights if height_override is not None else (.025,.020,.012,.006)
+        for height in extra_heights:
+            contact=position+up*height
+            for r,tilt in grasp_rotations(up,axes,position-base,tilts=(0,) if getattr(a,'flat_only',False) else (0,15,25)):
+                for first,third in ((2,2),(-2,-2),(2,-2),(-2,2),(2.6,0),(-2.6,0),(0,2.6),(0,-2.6)):
+                    seed=t.home_q[robot].copy();seed[0]=first;seed[2]=third;seed=np.clip(seed,*arm.ik.limits.T)
+                    seat=t.screen_ik(robot,contact,r,seed=seed)
+                    if seat is None or joint_margin(t,robot,seat)<.04 or not t.pose_clear(robot,seat,(name,)):continue
+                    for vector in vectors:
+                        hover=contact+vector;q=t.screen_ik(robot,hover,r,seed=seat)
+                        if q is None or joint_margin(t,robot,q)<.04 or not t.pose_clear(robot,q):continue
+                        if not screen_transfer_segments(t,robot,name,r,q,[('repair-contact',contact)],path_joint_margin_rad=0.):continue
+                        start=t.data.qpos[arm.qids].copy()
+                        edge=lambda x,y:joint_edge_clear(x,y,lambda value:t.pose_clear(robot,value),step_rad=.005)
+                        points=[start,q] if edge(start,q) else connect_route(start,q,arm.ik.limits,edge,np.random.default_rng(9901),iterations=300)
+                        if points is None or len(points)-1>13:continue
+                        selected=(contact,r,q,tilt);route=points[1:];lift_vector=vector;break
+                    if selected is not None:break
+                if selected is not None:break
+            if selected is not None:break
     if selected is None:raise ValueError('No finite screened repair pickup candidate; no command emitted')
     contact,r,q,tilt=selected
-    commands=[{robot:('gripper',dict(mode='move',width_m=aperture,speed_m_s=.05))},
-        {robot:('move',dict(joint_rad=q.tolist(),joint_speed_rad_s=.2))},
+    commands=[{robot:('gripper',dict(mode='move',width_m=aperture,speed_m_s=.05))}]+[
+        {robot:('move',dict(joint_rad=point.tolist(),joint_speed_rad_s=.2))} for point in route]+[
         {robot:('move',dict(target_m=contact.tolist(),quaternion_wxyz=matrix_quat(r).tolist(),speed_m_s=.035,angular_speed_rad_s=.6))},
         {robot:('gripper',dict(mode='grasp',width_m=.06,force_n=50.,speed_m_s=.04,epsilon_inner_m=.008,epsilon_outer_m=.008))}]
     color=next(item['color'] for item in t.task['objects'] if item['id']==name)
@@ -83,10 +111,12 @@ def plan(a):
     evidence=dict(scope='Observed-state kinematic candidate only; actual grasp/lift/placement must be verified',
         observation_sha256=hashlib.sha256(payload).hexdigest(),source_sim_s=o['sim_time_s'],robot=robot,object=name,
         candidate_tilt_deg=tilt,approach_width_m=aperture,contact_m=contact.tolist(),rotation=r.tolist(),suggested_unfilled_goal=goal,
+        expanded_branch_search=expanded,free_joint_route=[point.tolist() for point in route],lift_vector_m=lift_vector.tolist(),
         pending_held_payloads=o['held'],finger_state_reconstruction='Observed total opening split symmetrically for scratch screening')
     write_json(directory/'review/engineering'/f'{a.id}-plan.json',evidence)
     write_json(a.request,request)
     print(json.dumps(evidence),flush=True)
+    return evidence
 
 
 if __name__=='__main__':

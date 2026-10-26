@@ -90,6 +90,7 @@ def run(a):
                 leg=ident+f'-leg{index}'
                 command=[sys.executable,str(Path(__file__).with_name('execute_mosaic_repair_transfer.py')),
                     '--trial',str(directory),'--robot',robot,'--object',job['object'],'--id',leg,'--flat-only']
+                if a.expanded_pickups:command+=['--expanded']
                 command+=['--goal',target] if kind=='goal' else ['--target-m',*map(str,target)]
                 r=child(command,leg)
                 if r.returncode:
@@ -124,4 +125,5 @@ def run(a):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--trial',required=True,type=Path)
     p.add_argument('--supply-plan',required=True,type=Path);p.add_argument('--id',required=True)
+    p.add_argument('--expanded-pickups',action='store_true')
     p.add_argument('--resume-at-full',action='store_true');run(p.parse_args())
