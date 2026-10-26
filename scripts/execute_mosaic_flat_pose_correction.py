@@ -37,13 +37,17 @@ def run(a):
         raise ValueError('Begin this correction only with released free grippers')
     if a.goal in initial['evaluation']['assignments']:raise ValueError('Do not rework an accepted goal')
     body=initial['objects'][name];rotation=np.asarray(body['rotation']);position=np.asarray(body['position_m'])
-    if (np.linalg.norm(position[:2]-np.asarray(goal['position_m'])[:2])>.005 or
+    xy_error=float(np.linalg.norm(position[:2]-np.asarray(goal['position_m'])[:2]))
+    allowed_xy=.005 if t.task['level']==1 else .010
+    if (xy_error>allowed_xy or
             abs(position[2]-goal['position_m'][2])>.003 or rotation[2,2]<.999):
         raise ValueError('This finite in-place correction requires the actual seated planar pose')
     color=next(o['color'] for o in t.task['objects'] if o['id']==name)
     if color!=goal['requires']['color']:raise ValueError('Selected object color differs from the original goal')
     yaw=math.atan2(rotation[1,0],rotation[0,0]);delta=round(yaw/(math.pi/2))*math.pi/2-yaw
-    if not math.radians(8)<abs(delta)<math.radians(12):raise ValueError('Select the demonstrated small yaw correction class')
+    angular_case=math.radians(8)<abs(delta)<math.radians(12)
+    position_case=t.task['level']>1 and .005<xy_error<=.010 and abs(delta)<math.radians(12)
+    if not (angular_case or position_case):raise ValueError('Select a seated small-yaw or5..10mm flat position correction')
     world=initial['world_id'];epoch=initial['review_id'];protected=dict(initial['evaluation']['assignments'])
     if any(json.loads(p.read_text()).get('id','').startswith(a.id+'-') for p in (review/'requests').glob('*.json')):
         raise ValueError('Existing physical request prefix: inspect its original results, never restart it')
