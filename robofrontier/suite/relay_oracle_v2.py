@@ -566,13 +566,39 @@ def assembly_table_contact(t,ident):
  return any(contact.dist<=0 and any(int(a) in owned and (t.model.geom(int(b)).name or '').startswith('table_') for a,b in ((contact.geom1,contact.geom2),(contact.geom2,contact.geom1))) for contact in t.data.contact)
 
 
+def grounded_timber(t,ident):
+ """Wood supported by tabletop or an in-goal wood stack, excluding pendants.
+
+ A hanging weight can stand on its base and transmit compression through the
+ two eyes while the timber is still 30cm above the table. That instantaneous
+ assembly contact graph is useful benchmark evidence, but is not a sound
+ release policy. Keep this manipulation gate separate from task acceptance.
+ """
+ relay=t.monitor.relay_v2
+ eligible={name for name,state in relay.states.items() if relay.inside(state)}
+ owner={int(gid):name for name in eligible for gid in relay.states[name]['rod_geoms']}
+ edges={name:set() for name in eligible};ground=set()
+ for contact in t.data.contact:
+  if contact.dist>0:continue
+  a,b=int(contact.geom1),int(contact.geom2);left,right=owner.get(a),owner.get(b)
+  if left is not None and right is not None and left!=right:
+   edges[left].add(right);edges[right].add(left)
+  for name,other in ((left,b),(right,a)):
+   if name is not None and (t.model.geom(other).name or '').startswith('table_'):ground.add(name)
+ pending=list(ground)
+ while pending:
+  for neighbor in edges[pending.pop()]-ground:ground.add(neighbor);pending.append(neighbor)
+ return ident in ground
+
+
 def final_support(t,ident,team):
  state=t.monitor.relay_v2.states[ident];relay=t.monitor.relay_v2
  # A pendant weight touching the table cannot certify that the timber no
  # longer depends on the open lower fingers. Require actual beam support
  # before this reference ends descent and releases its two grasps. This is
  # a manipulation policy gate, not a change to benchmark acceptance.
- supported=(ident in relay.supported_payloads() if getattr(t,'task',{}).get('completion',{}).get('support_via_goal_payload') else assembly_table_contact(t,ident) if goal_contact_allowed(t) else beam_table_contact(t,ident))
+ stacking=getattr(t,'task',{}).get('completion',{}).get('support_via_goal_payload')
+ supported=(ident in relay.supported_payloads() and grounded_timber(t,ident)) if stacking else beam_table_contact(t,ident)
  return bool(relay.inside(state) and supported
              and set(team)<=t.monitor.bilateral(state['rod_geoms'],positive_force=True))
 

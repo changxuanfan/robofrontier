@@ -72,6 +72,32 @@ class RelayLiveRecoveryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'Joint target applies only'):
             self.recovery.process(dict(self.request,id='wrong-op',joint_rad=[0.]*7))
 
+    def test_cooperative_roll_is_a_normal_carry_orientation_not_a_pose_write(self):
+        request=dict(self.request,target_quaternion_wxyz=[np.sqrt(.5),0,np.sqrt(.5),0])
+        with patch('robofrontier.suite.relay_live_recovery.ref.carry') as carry:
+            result=self.recovery.process(request)
+        self.assertEqual(result['status'],'completed')
+        np.testing.assert_allclose(carry.call_args.kwargs['target_rotation'],[[0,0,1],[0,1,0],[-1,0,0]],atol=1e-12)
+        self.t.close.assert_not_called()
+
+    def test_roll_orientation_rejects_nonunit_or_conflicting_input_without_motion(self):
+        requests=[dict(self.request,target_quaternion_wxyz=[2,0,0,0]),
+                  dict(self.request,target_quaternion_wxyz=[1,0,0]),
+                  dict(self.request,target_quaternion_wxyz=[1,0,0,0],retain_attitude=True)]
+        with patch('robofrontier.suite.relay_live_recovery.ref.carry') as carry:
+            for index,request in enumerate(requests):
+                result=self.recovery.process(dict(request,id='bad-roll-'+str(index)))
+                self.assertEqual(result['status'],'failed')
+        carry.assert_not_called()
+
+    def test_canonical_owner_boundary_does_not_invent_a_recoverable_failure(self):
+        self.t.monitor.result=lambda:{'task_success':True}
+        self.t.wait=Mock();self.t.check_stop=Mock()
+        with patch.object(self.recovery,'publish'):
+            self.assertEqual(self.recovery.wait_for_repair(),'complete')
+        self.assertNotIn('recoverable_failures',self.recovery.report)
+        self.assertEqual(self.t.event.call_args.args[0],'relay_owner_boundary')
+
     def test_partial_original_custody_recovery_preserves_surviving_grasp(self):
         self.t.monitor.bilateral=lambda *a,**k:{'H'}
         self.t.monitor.relay_v2.states['p'].update(dropped=True,custody={'G','H'})

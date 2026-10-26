@@ -13,6 +13,7 @@ import uuid
 
 import numpy as np
 from ..run_setup import write_json
+from ..robot_control import quat_matrix
 from . import relay_oracle_v2 as ref
 
 
@@ -71,7 +72,7 @@ class RelayLiveRecovery:
             if old['request_sha256']!=digest:raise ValueError('Repair ID reused with different input')
             return old
         if request.get('world_id')!=self.world_id:raise ValueError('Request belongs to another world')
-        if set(request)-{'id','world_id','op','payload','robots','target_m','yaw_rad','retain_attitude','offset_m','seconds','review','assisted','retained_side','continuation','joint_rad'}:raise ValueError('Unsupported repair field')
+        if set(request)-{'id','world_id','op','payload','robots','target_m','yaw_rad','retain_attitude','offset_m','seconds','review','assisted','retained_side','continuation','joint_rad','target_quaternion_wxyz'}:raise ValueError('Unsupported repair field')
         if not request.get('review') or request.get('assisted') is not True:raise ValueError('External model repair requires review and assisted attestation')
         t=self.trial
         op=request.get('op')
@@ -79,6 +80,7 @@ class RelayLiveRecovery:
         if t.monitor.violations:raise ValueError('Irreversible process history retained; repair cannot erase it')
         if op not in {'carry','place','release','place_release','handover','grasp','open','move_empty','stop','wait','resume'}:raise ValueError('No state/reset/physics editing operation')
         if 'joint_rad' in request and op!='move_empty':raise ValueError('Joint target applies only to observed empty-robot movement')
+        if 'target_quaternion_wxyz' in request and op!='carry':raise ValueError('Payload orientation applies only to coupled carry')
         payload=request.get('payload');team=request.get('robots',[])
         if op not in {'wait','resume','stop'}:
             if payload not in t.monitor.relay_v2.states:raise ValueError('Unknown payload')
@@ -99,9 +101,16 @@ class RelayLiveRecovery:
             elif op=='carry':
                 point=np.asarray(request['target_m'],dtype=float)
                 if point.shape!=(3,) or not np.isfinite(point).all():raise ValueError('Finite XYZ required')
-                rotation=t.data.body(payload).xmat.reshape(3,3).copy();yaw=float(request.get('yaw_rad',math.atan2(rotation[1,0],rotation[0,0])))
+                rotation=t.data.body(payload).xmat.reshape(3,3).copy()
+                if 'target_quaternion_wxyz' in request:
+                    if request.get('retain_attitude') is True or 'yaw_rad' in request:raise ValueError('Choose one carried orientation: quaternion, retained attitude or yaw')
+                    quaternion=np.asarray(request['target_quaternion_wxyz'],dtype=float)
+                    if quaternion.shape!=(4,) or not np.isfinite(quaternion).all() or abs(np.linalg.norm(quaternion)-1.)>1e-6:raise ValueError('Finite unit wxyz quaternion required')
+                    target_rotation=quat_matrix(quaternion)
+                else:target_rotation=rotation if request.get('retain_attitude',True) else None
+                yaw=float(request.get('yaw_rad',math.atan2(rotation[1,0],rotation[0,0])))
                 if not math.isfinite(yaw):raise ValueError('Finite yaw required')
-                ref.carry(t,payload,team,point,yaw,target_rotation=rotation if request.get('retain_attitude',True) else None)
+                ref.carry(t,payload,team,point,yaw,target_rotation=target_rotation)
             elif op in {'place','place_release'}:
                 ref.place(t,payload,team);t.wait(.3)
                 if op=='place_release':ref.release(t,payload,team,terminal=True);t.wait(1.2)
@@ -160,11 +169,12 @@ class RelayLiveRecovery:
         t.event('relay_repair_result',detail=result);self.report.setdefault('repair_results',[]).append(result)
         return result
 
-    def wait_for_repair(self,error):
+    def wait_for_repair(self,error=None):
         t=self.trial
-        self.report.setdefault('recoverable_failures',[]).append(dict(error=repr(error),sim_time_s=t.time))
-        t.event('relay_recovery_boundary',error=repr(error),world_id=self.world_id)
-        self.publish(str(error));next_publish=time.monotonic()+2.;anchor_wall=time.monotonic();anchor_sim=t.time
+        if error is not None:
+            self.report.setdefault('recoverable_failures',[]).append(dict(error=repr(error),sim_time_s=t.time))
+        t.event('relay_recovery_boundary' if error is not None else 'relay_owner_boundary',error=repr(error) if error is not None else None,world_id=self.world_id)
+        self.publish(str(error) if error is not None else None);next_publish=time.monotonic()+2.;anchor_wall=time.monotonic();anchor_sim=t.time
         while True:
             t.check_stop()
             if t.monitor.result().get('task_success') and not any(a.job is not None for a in t.arms.values()):
@@ -186,5 +196,5 @@ class RelayLiveRecovery:
             for _ in range(25):
                 if t.time+.001>=desired:break
                 t.step()
-            if time.monotonic()>=next_publish:self.publish(str(error));next_publish=time.monotonic()+2.
+            if time.monotonic()>=next_publish:self.publish(str(error) if error is not None else None);next_publish=time.monotonic()+2.
             time.sleep(.01)

@@ -55,9 +55,12 @@ def diagnostic_world(run):
     t.screen_data=mujoco.MjData(t.screen_model);t.held=dict(observation['held']);t.carry_geoms={};t.hand_geoms={}
     t.monitor=Monitor(t)
     errors={a:float(np.linalg.norm(t.data.site_xpos[arm.site]-observation['robots'][a]['tcp_m'])) for a,arm in t.arms.items()}
-    # Remaining finger coordinates are float32 and can affect the TCP site by
-    # tens of nanometres. This checks reconstruction, not robot admission.
-    if max(errors.values())>1e-6:raise ValueError('Recorded FK does not match observation: '+str(errors))
+    # mj_step advances qpos after computing the cached Cartesian sites, so a
+    # published joint/TCP pair can differ by one 2ms integration step even at
+    # an idle boundary. Keep a 10um reconstruction audit (100x smaller than
+    # the narrowest path clearance); this is not a robot admission tolerance.
+    t.reconstruction_tcp_error_m=errors
+    if max(errors.values())>1e-5:raise ValueError('Recorded FK does not match observation: '+str(errors))
     return t,observation
 
 

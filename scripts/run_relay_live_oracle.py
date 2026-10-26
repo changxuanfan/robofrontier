@@ -14,10 +14,12 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--case',required=True);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--scene',type=Path);p.add_argument('--harness',type=Path);p.add_argument('--wall-s',type=float,default=0.,help='Optional explicit total limit;0(default) means no total deadline');p.add_argument('--frozen',action='store_true')
     p.add_argument('--flexible',action='store_true');p.add_argument('--pipeline',action='store_true');p.add_argument('--commission-transfers',type=int,default=0)
+    p.add_argument('--owner-start',action='store_true',help='Full canonical episode with reviewed typed Oracle control from the initial state; no saved-state restart')
     a=p.parse_args();out=a.output.resolve()
     if not math.isfinite(a.wall_s) or a.wall_s<0:raise ValueError('Total wall limit is nonnegative;0 disables it')
     if a.commission_transfers<0:raise ValueError('Commission transfer count must be nonnegative')
     if a.pipeline and a.commission_transfers:raise ValueError('Pipeline and bounded single-payload commissioning are separate runs')
+    if a.owner_start and a.commission_transfers:raise ValueError('Owner-start is a full canonical episode, not commissioning')
     from robofrontier.run_setup import write_json,load_harness
     if not a.frozen:
         from robofrontier.suite.v2 import cases,directory
@@ -30,12 +32,13 @@ def main():
         parent=out.parent;parent.mkdir(parents=True,exist_ok=True);setup=parent/(out.name+'-source');setup.mkdir(exist_ok=False)
         (setup/'harness.json').write_bytes(harness.read_bytes());write_json(setup/'catalog.json',dict(cases=[case]))
         frozen=freeze_executor(ROOT,setup/'executor',setup/'harness.json',setup/'catalog.json')
-        manifest=dict(git_commit=commit,worktree=str(ROOT),scene=str(scene),case_id=a.case,wall_budget_s=a.wall_s or None,initialization='Fresh canonical initial state; real actuators execute all prefixes again',runtime_recovery='Typed privileged assisted; no physical rollback/state injection',flexible_handover=a.flexible,commission_transfers=a.commission_transfers,pipeline=a.pipeline)
+        manifest=dict(git_commit=commit,worktree=str(ROOT),scene=str(scene),case_id=a.case,wall_budget_s=a.wall_s or None,initialization='Fresh canonical initial state; real actuators execute all prefixes again',runtime_recovery='Typed privileged assisted; no physical rollback/state injection',flexible_handover=a.flexible,commission_transfers=a.commission_transfers,pipeline=a.pipeline,owner_start=a.owner_start)
         write_json(setup/'run.json',manifest)
         env=os.environ.copy();env.update(PYTHONPATH=str(frozen),ROBOFRONTIER_ORACLE_FROZEN_ROOT=str(frozen),OPENBLAS_NUM_THREADS='1',OMP_NUM_THREADS='1',MKL_NUM_THREADS='1')
         command=[sys.executable,str(frozen/'scripts/run_relay_live_oracle.py'),'--case',a.case,'--output',str(out),'--scene',str(scene),'--harness',str(frozen/'inputs/harness.json'),'--wall-s',str(a.wall_s),'--frozen','--commission-transfers',str(a.commission_transfers)]
         if a.flexible:command.append('--flexible')
         if a.pipeline:command.append('--pipeline')
+        if a.owner_start:command.append('--owner-start')
         os.execve(sys.executable,command,env)
     from robofrontier.suite.oracle import Trial,ReferenceStopped
     from robofrontier.suite import relay_oracle_v2 as ref
@@ -54,6 +57,7 @@ def main():
     report['task_contract_sha256']=hashlib.sha256((a.scene/'task.json').read_bytes()).hexdigest()
     report['task_rule_revision']=t.task.get('completion',{}).get('rule_revision')
     report['total_wall_deadline_s']=a.wall_s or None
+    report['owner_control_from_canonical_start']=a.owner_start
     recovery=RelayLiveRecovery(t,report)
     def phase(name,ident,team):
         row=dict(phase=name,payload=ident,team=list(team),simulation_time_s=t.time);report['phases'].append(row);t.event('relay_live_phase',detail=row)
@@ -64,6 +68,7 @@ def main():
         if a.commission_transfers and len(report['handovers'])>=a.commission_transfers:raise CommissionComplete()
     try:
         t.wait(.6)
+        if a.owner_start:recovery.wait_for_repair()
         while not t.monitor.result().get('task_success'):
             t.check_stop()
             pending=[ident for ident,s in t.monitor.result()['payloads'].items() if not s['completed']]
@@ -84,7 +89,7 @@ def main():
         report.update(error=repr(error),evaluation=t.monitor.result(),unresolved_robot_actions=[r for r,v in t.arms.items() if v.job is not None])
     finally:
         report['payload_motion']=t.relay_motion_metrics
-        report['scheduling']='rolling-payload-frontier' if a.pipeline else 'sequential-payloads'
+        report['scheduling']='reviewed-owner-from-canonical-start' if a.owner_start else 'rolling-payload-frontier' if a.pipeline else 'sequential-payloads'
         relay_pipeline.finalize_frontier(t)
         t.close(report)
         if recovery.assisted:

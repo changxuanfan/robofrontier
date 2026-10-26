@@ -485,3 +485,79 @@ The full-case supervisor supports explicit1–9 concurrency and strictly reuses
 only byte-identical native L1 successes with complete original recordings.
 New cohort should start at3/9, with six fresh r16 L2/L3 worlds. Old original-size
 L2/L3 passes must not be imported into r16 acceptance. No GPT trials.
+
+## R16 live frontier and release-policy diagnosis (2026-10-26 19:20 HKT)
+
+Active root is `runs/oracle/relay-r16-38b5423-20261026-171651` (shared Repo
+runs directory). Supervisor52485; native children8L2/8L3/12L2/12L3/16L2/16L3
+are52505–52510. All six have now reached typed owner boundaries; no pending
+physical requests at this note. Whole successes remain3/9, exactly retained
+L1. Never count isolated completed rods as complete cases. Original worlds,
+all failed motor feedback and native counters are retained. No total deadline.
+
+Fresh compact state is in the ignored engineering note
+`runs/engineering/relay-descent-20261026/owner-frontier-current.json`; read it
+and current recovery observations/results before acting, never replay IDs.
+Important latest frontiers:
+
+-8L2: P2 released/qualified intermittently. P1 final H/G release failed twice;
+ original H/G physically regrasped/lifted it between attempts. Pendant/table
+ clear/contact chatter raised native marks to35, including the actual release
+ failures; do not describe these as35 distinct falls, or erase them. P1 now
+ table-supported, no holders, last custody G/H. No irreversible violations.
+-8L3: P1 successfully received by G/H despite original F donor-withdrawal
+ failure. F is truly open/empty; two finite ordinary local joint escapes and
+ a short loaded move are completed. A checked rise/turn to[.95,0,1.45] then
+ forward/lower to[1.5,0,1.3], yaw2.9 both physically completed (IDs endingv14/15).
+ P1 remains held over Goal, not released. P2 is released in Goal but its final
+ stable qualifier fluctuates; do not permanently count it. Zero native marks.
+-12L2: P2 F/K→E/K freed F. P3 initial G/L→F/L→G/L real qualified transfers
+ completed; transported to[2.36,1.62,1.25], placed, then release failed with
+ one native mark. P3 currently no holders; original custody G/L. P1 D/J, P2 E/K.
+-12L3: P3 recovered by original G/L, native complete with historical mark1.
+ P2 D/J→D/K→E/K, coupled inward/turning forward prefixes, then F/K; latest
+ F motor timeout left actual two supports at about[1.045,2.489,1.214]. No replay.
+ P1 A/H. Long K continuation needs reconfiguration or next inner L.
+-16L2: P4 J/O→J/P; J wrist branch blocks Goal continuation. Real temporary
+ I/P reframe completed (v2). Other frontiers D/L, F/M, G/N, no marks/violations.
+-16L3: P4 released/native complete. P2 D/L→E/N→F/N then[.5,1.6,1.3], yaw2.8.
+ P1 C/L at[-1.093,1.198,1.198], yaw−2.1 after short useful reorientation;
+ next previously screened[-.9,1.4,1.2] must be freshly checked (last guard
+ failed before any command). P3 I/P at[1.68,.3,1.147], yaw2.2; current J/P
+ receiving still rejected. No marks/violations. Never repeatedly shuttle back
+ without a concrete changed grasp/clearance successor.
+
+New progress movies were exported and decoded:8L2/8L3 under
+`outputs/oracle/relay-r16-progress-20261026/*-snapshot-1/global.mp4`.
+They start at canonical frame0 and end at declared cutoffs2283.984/4695.984s;
+4x action playback, low-motion waits compressed, not whole-case success videos.
+Actual peak moving robots now measured4/6/8 for8/12/16 arms, not just batch size.
+These are peaks, not average productive utilization. Meta repairs are still
+mostly serial within each world; six physical worlds run concurrently.
+
+Common release bug is reproduced by two red tests in `test_relay_oracle_v2`:
+with support_via_goal_payload enabled, `final_support` accepted the assembly
+graph through a pendant standing on the table while timber was still suspended.
+Opening then lets the timber tumble and possibly leave Goal. A policy-only
+`grounded_timber` check now additionally requires actual timber/table or
+timber/timber/table support; free weights/eyes cannot form this release gate.
+Benchmark acceptance, geometry and actuator parameters are unchanged. Both red
+tests now pass, including legitimate wood stacking;56 related tests and114
+Relay tests passed before the final owner-boundary test was added. Full physics
+validation is still required: a green unit test is not a full-case pass.
+
+Normal typed coupled carry now accepts a finite unit wxyz orientation, passing
+it to existing swept FK and ordinary motors. User's +90/+180 grasp-line roll
+was only screened read-only in the original8L3 D/C pose, not executed there.
+Current frozen38b actors cannot receive this new field and cannot be hotpatched.
+The runner has an explicit full-canonical owner-start mode to validate revised
+control without expensive native broad searches first; it is assisted Oracle
+execution with full recording, not checkpoint restart or commissioning. New
+control validation must use a fresh frozen canonical episode while preserving
+the six original worlds. Do not report the new policy as physically proven yet.
+
+Read-only diagnostic reconstruction now audits TCP error at10um: mj_step can
+leave published Cartesian sites one2ms step behind published qpos, producing
+1–2um idle differences. This does not relax any live collision/robot tolerance.
+Its scratch Monitor has no actual contact forces: use native observation
+actual_support for custody/force evidence, not scratch final_support/bilateral.
