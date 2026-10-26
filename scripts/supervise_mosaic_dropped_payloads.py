@@ -123,8 +123,10 @@ def select_near_goal(status,o,task):
 def near_goal_pick_options(o,task,name,goal):
     target=next(g for g in task['goals'] if g['goal_id']==goal)
     offset=np.r_[np.asarray(target['position_m'])[:2]-np.asarray(o['objects'][name]['position_m'])[:2],0.]
+    # Recorded C32/E15 offset38mm grasps closed outside the cube-width band.
+    # Retain the higher seat only for centered candidates.
     return [dict(contact_height=h,contact_offset_m=delta,centering_contact_m=centering)
-        for delta,centering in (((0.,0.,0.),0.),(tuple(offset),.0015)) for h in (.035,.038)]
+        for delta,centering in (((0.,0.,0.),0.),(tuple(offset),.0015)) for h in (.035,.038) if not centering or h<=.035]
 
 
 def plan_near_goal_pick(p,o,task,robot,name,goal,prefix):

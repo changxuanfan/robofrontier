@@ -172,6 +172,14 @@ class NearGoalAdmissionTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'Retained process violation'):
                 plan_near_goal_pick(root,self.o,self.task,'B','B_stock02','g','prefix')
 
+    def test_offset_correction_does_not_repeat_failed_high_tip_grip_geometry(self):
+        from scripts.supervise_mosaic_dropped_payloads import near_goal_pick_options
+        options=near_goal_pick_options(self.o,self.task,'B_stock02','g')
+        offset=[v for v in options if any(abs(x)>1e-8 for x in v['contact_offset_m'])]
+        self.assertTrue(offset)
+        self.assertTrue(all(v['contact_height']<=.035 for v in offset))
+        self.assertTrue(any(v['contact_height']==.038 and not v['centering_contact_m'] for v in options))
+
     def test_physical_failure_never_tries_a_second_candidate_or_resume(self):
         import json,os,subprocess,tempfile
         from pathlib import Path
