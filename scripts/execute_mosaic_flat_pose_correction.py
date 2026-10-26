@@ -37,6 +37,9 @@ def rotation_step(vector):
 
 
 def run(a):
+    release_height=float(getattr(a,'release_height_m',.0038))
+    if not np.isfinite(release_height) or not .0038<=release_height<=.015:
+        raise ValueError('Select a release clearance within the demonstrated3.8..15mm interval')
     directory=a.trial.resolve();review=directory/'review';t,initial,_=observed_trial(directory)
     goal=next(g for g in t.task['goals'] if g['goal_id']==a.goal);name=a.object;robot=a.robot
     if t.task.get('family')!='mosaic' or abs(t.task['cube_size_m']-.06)>1e-10:
@@ -146,10 +149,11 @@ def run(a):
     if np.linalg.norm(rotation_vector(aligned,r))>.22:raise RuntimeError('Actual grasp changed the correction class')
     turn=aligned@r.T;tcp=mirror.data.site_xpos[arm.site].copy();rot=mirror.data.site_xmat[arm.site].reshape(3,3).copy()
     move('rotate',centre+turn@(tcp-centre),turn@rot)
-    mirror,o,_=observed_trial(directory);arm=mirror.arms[robot];target=np.asarray(goal['position_m'])+[0,0,.0038]
+    mirror,o,_=observed_trial(directory);arm=mirror.arms[robot];target=np.asarray(goal['position_m'])+[0,0,release_height]
     tcp=mirror.data.site_xpos[arm.site].copy();body=mirror.data.body(name).xpos.copy()
     move('lower',tcp+target-body,mirror.data.site_xmat[arm.site].reshape(3,3).copy(),speed=.008)
     submit('open','commands',batches=[{robot:['gripper',dict(mode='move',width_m=.064,speed_m_s=.02)]}])
+    if release_height>.0038:observation(observation()['sim_time_s']+.7)
     submit('release','reconcile_released',robot=robot,object=name)
     mirror,o,_=observed_trial(directory);arm=mirror.arms[robot]
     move('withdraw',mirror.data.site_xpos[arm.site]+[0,0,.10],mirror.data.site_xmat[arm.site].reshape(3,3).copy(),speed=.025,omega=.2)
@@ -173,5 +177,6 @@ if __name__=='__main__':
     p.add_argument('--aperture',type=float,default=.064)
     p.add_argument('--grasp-tilts-deg',nargs='+',type=float,default=(0.,))
     p.add_argument('--centering-contact-m',type=float,default=0.)
+    p.add_argument('--release-height-m',type=float,default=.0038)
     p.add_argument('--force-n',type=float,default=50.)
     p.add_argument('--id',required=True);p.add_argument('--resume',action='store_true');run(p.parse_args())

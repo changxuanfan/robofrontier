@@ -1,4 +1,4 @@
-"""Continue reviewed empty-hand payload loss or measured loaded-retract errors.
+"""Continue explicitly reviewed Mosaic payload and near-goal placement errors.
 
 This external owner helper emits the same finite normal commands as the reviewed
 manual recoveries. Frozen native owners never import it. Unexpected feedback,
@@ -7,6 +7,7 @@ partial execution, occupied ports or inconsistent old caches leave review open.
 import argparse
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -96,6 +97,56 @@ def select_retract(status,o,task):
     return robot,name,job['goal_id']
 
 
+def select_near_goal(status,o,task):
+    if status['phase']!='review' or (status['world_id'],status['review_id'])!=(o['world_id'],o['review_id']) or o['evaluation']['violations']:
+        raise ValueError('Require matching compliant review')
+    match=re.fullmatch(r'RuntimeError: No pickup pose ([A-Z])/([A-Z]_stock\d+)',status['review_history'][-1]['error'])
+    if not match:raise ValueError('Not the reviewed near-goal pickup class')
+    robot,name=match.groups();job=o['job']
+    if not job or job['object']!=name or job.get('path')!=[robot]:raise ValueError('Require the single final actor of the current job')
+    if task['level']<=1 or o['held'] or any(v['grasp_force_setpoint_n'] is not None for v in o['robots'].values()):
+        raise ValueError('Require a flat-table task and released free grippers')
+    if not o['last_actions'] or any(not a.get('results') or any(v['status']!='completed' for v in a['results'].values()) for a in o['last_actions']):
+        raise ValueError('Original feedback needs review')
+    assignments=o['evaluation']['assignments']
+    if name in assignments.values() or job['goal_id'] in assignments:raise ValueError('Do not rework an accepted pairing')
+    protected=status['review_history'][-1]['protected_assignments']
+    if any(assignments.get(g)!=n for g,n in protected.items()):raise ValueError('Restore affected earlier pairings before local correction')
+    goal=next(g for g in task['goals'] if g['goal_id']==job['goal_id']);body=o['objects'][name]
+    position=np.asarray(body['position_m']);rotation=np.asarray(body['rotation'])
+    error=float(np.linalg.norm(position[:2]-np.asarray(goal['position_m'])[:2]))
+    yaw=math.atan2(rotation[1,0],rotation[0,0]);turn=abs(round(yaw/(math.pi/2))*math.pi/2-yaw)
+    if (not np.isfinite(position).all() or not np.isfinite(rotation).all() or
+            abs(position[2]-task['table_height_m']-task['cube_size_m']/2)>.001 or rotation[2,2]<.999 or
+            error>.010 or turn>=math.radians(12) or not (error>.005 or turn>math.radians(8))):
+        raise ValueError('Require the demonstrated seated small position or yaw error')
+    if next(v['color'] for v in task['objects'] if v['id']==name)!=goal['requires']['color']:raise ValueError('Object and goal colors differ')
+    return robot,name,job['goal_id']
+
+
+def near_goal_pick_options(o,task,name,goal):
+    target=next(g for g in task['goals'] if g['goal_id']==goal)
+    offset=np.r_[np.asarray(target['position_m'])[:2]-np.asarray(o['objects'][name]['position_m'])[:2],0.]
+    return [dict(contact_height=h,contact_offset_m=delta,centering_contact_m=centering)
+        for delta,centering in (((0.,0.,0.),0.),(tuple(offset),.0015)) for h in (.035,.038)]
+
+
+def plan_near_goal_pick(p,o,task,robot,name,goal,prefix):
+    # Only read-only candidates may be retried. The caller executes one physical
+    # prefix; any later failure exits the supervisor without trying another.
+    for index,option in enumerate(near_goal_pick_options(o,task,name,goal)):
+        ident=prefix+f'-candidate{index}'
+        try:
+            plan(SimpleNamespace(trial=p,robot=robot,object=name,id=ident,
+                request=p/'review/engineering'/f'{ident}.json',aperture=.064,flat_only=True,
+                defer_grasp=option['centering_contact_m']>0,**option))
+        except ValueError as error:
+            if not str(error).startswith('No finite screened repair pickup candidate; no command emitted'):raise
+            continue
+        return option
+    raise ValueError('No near-goal correction passed original full-scene screening; no physical request emitted')
+
+
 def vertical_clearance_plan(directory,robot,name):
     t,o,payload=observed_trial(directory);arm=t.arms[robot];start=t.data.site_xpos[arm.site].copy();rotation=t.data.site_xmat[arm.site].reshape(3,3).copy()
     q=t.data.qpos[arm.qids].copy();target=start+[0,0,.10];minimum=1.
@@ -122,7 +173,7 @@ def run(a):
         raise ValueError('This reviewed recovery is scoped to the eight-arm60mm Mosaic cases')
     source=Path(__file__).read_bytes();f=review/'engineering/sources'/(hashlib.sha256(source).hexdigest()+'.py');f.parent.mkdir(parents=True,exist_ok=True);f.write_bytes(source)
     world=None;handled=set()
-    print('WATCHING REVIEWED PAYLOAD-LOSS AND RETRACT CLASSES',p,flush=True)
+    print('WATCHING REVIEWED PAYLOAD AND NEAR-GOAL CLASSES',p,flush=True)
     while True:
         s=json.loads((p/'runner-status.json').read_text())
         if world is None:world=s['world_id']
@@ -139,9 +190,10 @@ def run(a):
         settled=bool(drop_match and drop_match.group(1) in o['evaluation']['assignments'].values())
         high_receiver=bool(re.fullmatch(r'RuntimeError: No transfer pickup with usable continuation ([A-Z])/([A-Z]_stock\d+)',error))
         retract=bool(re.fullmatch(r'RuntimeError: Transfer retract infeasible with measured payload ([A-Z]_stock\d+)',error))
-        selector=select_settled_drop if settled else select_high_receiver if high_receiver else select_retract if retract else select
+        near_goal=bool(re.fullmatch(r'RuntimeError: No pickup pose ([A-Z])/([A-Z]_stock\d+)',error))
+        selector=select_near_goal if near_goal else select_settled_drop if settled else select_high_receiver if high_receiver else select_retract if retract else select
         robot,name,goal=selector(s,o,task)
-        strategy='settled' if settled else 'high-receiver' if high_receiver else 'retract' if retract else 'drop'
+        strategy='near-goal' if near_goal else 'settled' if settled else 'high-receiver' if high_receiver else 'retract' if retract else 'drop'
         prefix=f'known-{strategy}-normal-{epoch:03d}';protected=dict(o['evaluation']['assignments'])
         goal_entry=next(g for g in task['goals'] if g['goal_id']==goal)
         if next(v['color'] for v in task['objects'] if v['id']==name)!=goal_entry['requires']['color']:raise ValueError('Current object and original goal colors differ')
@@ -179,7 +231,16 @@ def run(a):
                     if state['world_id']!=world or state['phase'] not in ('running','review'):raise ValueError('Owner ended before resume feedback')
                 time.sleep(.1)
 
-        if settled:
+        if near_goal:
+            option=plan_near_goal_pick(p,o,task,robot,name,goal,prefix)
+            write_json(review/'engineering'/f'{prefix}-selected-pick.json',dict(option,scope='Read-only original3mm full-scene screen; no positive-gap exceptions'))
+            subprocess.run([sys.executable,'-m','scripts.execute_mosaic_flat_pose_correction','--trial',str(p),'--robot',robot,'--object',name,
+                '--goal',goal,'--id',prefix+'-pose','--contact-height',str(option['contact_height']),'--aperture','.064',
+                '--contact-offset-m',*map(str,option['contact_offset_m']),'--centering-contact-m',str(option['centering_contact_m']),
+                '--release-height-m','.015'],check=True)
+            subprocess.run([sys.executable,'-m','scripts.park_mosaic_review_robot','--trial',str(p),'--robot',robot,'--id',prefix+'-park'],check=True)
+            path=[robot]
+        elif settled:
             submit('open-empty','commands',batches=[{robot:['gripper',dict(mode='move',width_m=.072,speed_m_s=.04)]}])
             submit('reconcile-qualified','reconcile_released',robot=robot,object=name)
             subprocess.run([sys.executable,'-m','scripts.park_mosaic_review_robot','--trial',str(p),'--robot',robot,'--id',prefix+'-park'],check=True)

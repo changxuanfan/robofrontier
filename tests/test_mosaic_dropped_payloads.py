@@ -1,6 +1,6 @@
 import copy
 import unittest
-from scripts.supervise_mosaic_dropped_payloads import select,select_retract,vertical_clearance_plan,full_original_goal_set,select_settled_drop,select_high_receiver
+from scripts.supervise_mosaic_dropped_payloads import select,select_retract,vertical_clearance_plan,full_original_goal_set,select_settled_drop,select_high_receiver,select_near_goal,plan_near_goal_pick
 
 
 class DroppedPayloadAdmissionTests(unittest.TestCase):
@@ -111,6 +111,86 @@ class DroppedPayloadAdmissionTests(unittest.TestCase):
             elif change=='not_flat':bad['objects']['H_stock17']['rotation']=[[1,0,0],[0,.7,-.7],[0,.7,.7]]
             else:bad['objects']['H_stock17']['position_m'][2]=.89
             with self.assertRaises(ValueError):select_high_receiver(s,bad,task)
+
+
+class NearGoalAdmissionTests(unittest.TestCase):
+    def setUp(self):
+        self.s=dict(phase='review',world_id='world',review_id=12,review_history=[dict(
+            error='RuntimeError: No pickup pose B/B_stock02',protected_assignments={'old':'A_stock05'})])
+        self.o=dict(world_id='world',review_id=12,held={},job=dict(object='B_stock02',goal_id='g',path=['B']),
+            evaluation=dict(violations=[],assignments={'old':'A_stock05'}),robots={'B':dict(grasp_force_setpoint_n=None)},
+            objects={'B_stock02':dict(position_m=[.0327,-.2825,.82998],rotation=[[0.,-1.,0.],[1.,0.,0.],[0.,0.,1.]])},
+            last_actions=[dict(results={'B':dict(status='completed')})])
+        self.task=dict(level=3,table_height_m=.8,cube_size_m=.06,objects=[dict(id='B_stock02',color='cream')],
+            goals=[dict(goal_id='g',position_m=[.0405,-.2835,.83],requires=dict(color='cream'))])
+
+    def test_accepts_seated_unmatched_small_error_without_changing_evidence(self):
+        before=copy.deepcopy((self.s,self.o,self.task))
+        self.assertEqual(select_near_goal(self.s,self.o,self.task),('B','B_stock02','g'))
+        self.assertEqual((self.s,self.o,self.task),before)
+
+    def test_rejects_incomplete_feedback_force_or_lost_protected_pair_before_planning(self):
+        for change in ('failed','unknown','no_feedback','force','held','protected','matched','path','identity','violation'):
+            s=copy.deepcopy(self.s);o=copy.deepcopy(self.o)
+            if change in ('failed','unknown'):o['last_actions'][0]['results']['B']['status']=change
+            elif change=='no_feedback':o['last_actions']=[]
+            elif change=='force':o['robots']['B']['grasp_force_setpoint_n']=50
+            elif change=='held':o['held']={'B':'B_stock02'}
+            elif change=='protected':o['evaluation']['assignments']={}
+            elif change=='matched':o['evaluation']['assignments']['g']='B_stock02'
+            elif change=='path':o['job']['path']=['A','B']
+            elif change=='identity':s['review_id']=11
+            else:o['evaluation']['violations']=[dict(kind='contact')]
+            with self.subTest(change=change),self.assertRaises(ValueError):select_near_goal(s,o,self.task)
+
+    def test_rejects_other_recovery_geometries_and_wrong_color(self):
+        for change in ('far','already_precise','stacked','tilted','other_up_face','pocket','color'):
+            o=copy.deepcopy(self.o);task=copy.deepcopy(self.task)
+            if change=='far':o['objects']['B_stock02']['position_m'][0]=.020
+            elif change=='already_precise':o['objects']['B_stock02']['position_m'][0]=.0405
+            elif change=='stacked':o['objects']['B_stock02']['position_m'][2]=.89
+            elif change=='tilted':o['objects']['B_stock02']['rotation']=[[1,0,0],[0,.98,-.2],[0,.2,.98]]
+            elif change=='other_up_face':o['objects']['B_stock02']['rotation']=[[0,0,-1],[0,1,0],[1,0,0]]
+            elif change=='pocket':task['level']=1
+            else:task['objects'][0]['color']='navy'
+            with self.subTest(change=change),self.assertRaises(ValueError):select_near_goal(self.s,o,task)
+
+    def test_candidate_exhaustion_emits_only_engineering_proposals_and_never_hides_unexpected_errors(self):
+        from pathlib import Path
+        from unittest.mock import patch
+        from scripts.supervise_mosaic_dropped_payloads import near_goal_pick_options
+        root=Path('/trial');called=[]
+        def blocked(a):
+            called.append(a);raise ValueError('No finite screened repair pickup candidate; no command emitted')
+        with patch('scripts.supervise_mosaic_dropped_payloads.plan',side_effect=blocked):
+            with self.assertRaisesRegex(ValueError,'no physical request emitted'):
+                plan_near_goal_pick(root,self.o,self.task,'B','B_stock02','g','prefix')
+        self.assertTrue(called)
+        self.assertTrue(all(a.request.parent==root/'review/engineering' for a in called))
+        for option in near_goal_pick_options(self.o,self.task,'B_stock02','g'):
+            self.assertLessEqual(sum(x*x for x in option['contact_offset_m']),.010**2)
+        with patch('scripts.supervise_mosaic_dropped_payloads.plan',side_effect=ValueError('Retained process violation')):
+            with self.assertRaisesRegex(ValueError,'Retained process violation'):
+                plan_near_goal_pick(root,self.o,self.task,'B','B_stock02','g','prefix')
+
+    def test_physical_failure_never_tries_a_second_candidate_or_resume(self):
+        import json,os,subprocess,tempfile
+        from pathlib import Path
+        from types import SimpleNamespace
+        from unittest.mock import patch
+        from scripts.supervise_mosaic_dropped_payloads import run
+        task=dict(self.task,family='mosaic',arms={r:{} for r in 'ABCDEFGH'})
+        option=dict(contact_height=.035,contact_offset_m=(0.,0.,0.),centering_contact_m=0.)
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);(root/'review/requests').mkdir(parents=True)
+            for filename,value in [('process.json',dict(git_commit='frozen123',pid=os.getpid())),('task.json',task),
+                    ('runner-status.json',self.s),('review/observation.json',self.o)]:
+                (root/filename).write_text(json.dumps(value))
+            with patch('scripts.supervise_mosaic_dropped_payloads.plan_near_goal_pick',return_value=option) as planning, \
+                    patch('scripts.supervise_mosaic_dropped_payloads.subprocess.run',side_effect=subprocess.CalledProcessError(1,['physical-helper'])) as physical:
+                with self.assertRaises(subprocess.CalledProcessError):run(SimpleNamespace(trial=root,expected_source_commit='frozen'))
+                self.assertEqual(planning.call_count,1);self.assertEqual(physical.call_count,1)
+                self.assertEqual(list((root/'review/requests').iterdir()),[])
 
 
 if __name__=='__main__':unittest.main()
