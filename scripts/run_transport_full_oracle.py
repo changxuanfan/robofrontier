@@ -23,7 +23,7 @@ def parse_args(argv=None):
     p.add_argument('--harness',type=Path,default=ROOT/'runs/oracle/transport-r13-units-20261025/harness.json')
     p.add_argument('--wall-s',type=float,help='Optional explicit episode wall cap; default is unlimited')
     p.add_argument('--sim-s',type=float,help='Optional explicit episode simulation cap; default is unlimited')
-    p.add_argument('--pause-on-handback',action='store_true',help='Explicitly pause a known-idle engineering frontier until owner control resumes it')
+    p.add_argument('--pause-on-handback',action='store_true',help='Pause idle handbacks and known grasp-fault reviews; preserve other in-flight controllers until owner resumes')
     return p.parse_args(argv)
 
 
@@ -73,8 +73,22 @@ def main():
         if unseen():
             request=dict(paused=False,reason='Owner input arrived during pause acknowledgement')
             write_json(out/'control.json',request);budget.update(request)
+    def pause_review(trial,runtime,notice):
+        # Affected actions are known terminal; unrelated in-flight actions
+        # remain in memory and resume their original commands after the gate.
+        # This is an engineering freeze, never an exact disk checkpoint.
+        if trial.motion is not None:
+            trial.motion.capture(trial.data,force=True);trial.motion.flush()
+        trial.event('transport_engineering_review_paused',**notice,
+            scope='Known affected actions; independent controller jobs preserved, never adopted or replayed')
+        request=dict(paused=True,reason='Measured grasp/preparation review: '+str(notice['reason'])[:300])
+        write_json(out/'control.json',request);budget.update(request)
+        if any(file.name not in recovery.seen for file in (recovery.path/'inbox').glob('*.json')):
+            request=dict(paused=False,reason='Owner recovery input already queued at review acknowledgement')
+            write_json(out/'control.json',request);budget.update(request)
+        trial.check_stop()
     recovery=EngineeringRecovery(out,on_idle=pause_idle if a.pause_on_handback else None,
-        inventory_check=unreachable_required_inventory)
+        inventory_check=unreachable_required_inventory,on_review=pause_review if a.pause_on_handback else None)
     signal.signal(signal.SIGTERM,lambda *_:stopped.update(requested=True))
     stop=lambda:stopped['requested'] or (a.wall_s is not None and budget.times()['active_wall_s']>a.wall_s) or (a.sim_s is not None and t.time>a.sim_s) or (out.parent.parent/'STOP').exists()
     t.stop_requested=lambda:budget.gate(stop)
@@ -83,7 +97,11 @@ def main():
         git_commit=os.environ['TRANSPORT_ORACLE_COMMIT'],worktree=os.environ['TRANSPORT_ORACLE_WORKTREE'],
         dependencies=dict(greenlet=importlib.metadata.version('greenlet'),binary_sha256=dependency_files),
         scope='Privileged geometry engineering Oracle; one real world, original full-order acceptance',
-        engineering_protocol=dict(pause_on_handback=a.pause_on_handback,inventory_guard=True),
+        engineering_protocol=dict(pause_on_handback=a.pause_on_handback,inventory_guard=True,
+            known_action_fault_review=a.pause_on_handback,prepared_reservations=True,
+            full_state_observation='Coherent qpos/qvel for engineering; not exact checkpoint restoration'),
+        oracle_grasp_policy=dict(preferred_force_n=50.,epsilon_inner_m=.008,pickup_probe_m=.02,
+            physical_force_bounds_unchanged=True),
         budgets=dict(wall_s=a.wall_s,simulation_s=a.sim_s,action_batches=None,
             wall_protocol='No default episode cap; all time recorded; only explicitly supplied caps apply'))
     try:

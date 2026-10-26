@@ -168,15 +168,19 @@ def direct_pick(t,robot,name,goal_pose,board,budget_s=45.,check_seating=False):
     t.move_free(robot,plan['approach'],plan['rotation'],'unit-side-approach',target_joints=plan['approach_q'],
         continuation=(plan['point'],plan['rotation'],(name,)))
     t.move(robot,plan['point'],plan['rotation'],'unit-side-contact',precise=True)
-    t.execute('pick-grasp',{robot:('gripper',dict(mode='grasp',width_m=width,force_n=min(70.,t.cfg['allowed_grasp_force_n'][1]),speed_m_s=.025,
+    t.execute('pick-grasp',{robot:('gripper',dict(mode='grasp',width_m=width,force_n=min(getattr(t,'transport_grasp_force_n',70.),t.cfg['allowed_grasp_force_n'][1]),speed_m_s=.025,
         epsilon_inner_m=.008,epsilon_outer_m=.008))})
     t.wait(.15)
     if not t.finger_contacts(robot,name):raise RuntimeError('Direct grasp did not establish real bilateral contact')
     before=t.data.body(name).xpos.copy();arm=t.arms[robot]
-    t.move(robot,t.data.site_xpos[arm.site]+np.array([0,0,.14]),plan['rotation'],'pick-lift',speed_m_s=.025)
-    t.wait(.1)
-    if not t.finger_contacts(robot,name) or t.data.body(name).xpos[2]<before[2]+.08:
-        raise RuntimeError('Direct side pickup lost real payload support')
+    if getattr(t,'transport_guarded_pickups',False):
+        from .transport_grasp_safety import guarded_pickup_lift
+        guarded_pickup_lift(t,robot,name,before[2],plan['rotation'])
+    else:
+        t.move(robot,t.data.site_xpos[arm.site]+np.array([0,0,.14]),plan['rotation'],'pick-lift',speed_m_s=.025)
+        t.wait(.1)
+        if not t.finger_contacts(robot,name) or t.data.body(name).xpos[2]<before[2]+.08:
+            raise RuntimeError('Direct side pickup lost real payload support')
     t.held[robot]=name;t.event('picked',robot=robot,object=name)
     if check_seating and t.task['level']>1:
         if not hasattr(t,'socket_seed_hints'):t.socket_seed_hints={}

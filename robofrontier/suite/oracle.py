@@ -363,8 +363,12 @@ class Trial:
         command=dict(mode='grasp',width_m=width,force_n=force,speed_m_s=.04,epsilon_inner_m=.008,epsilon_outer_m=.008) if force is not None else dict(mode='move',width_m=0.,speed_m_s=.04)
         self.execute('pick-grasp',{robot:('gripper',command)});self.wait(.15)
         if not self.finger_contacts(robot,name):raise RuntimeError('Bilateral cube contact missing '+name)
-        self.move(robot,self.data.site_xpos[arm.site]+np.array([0,0,.14]),rr,'pick-lift');self.wait(.1)
-        if self.data.body(name).xpos[2]<p[2]+.08:raise RuntimeError('Payload not retained '+name)
+        if getattr(self,'transport_guarded_pickups',False):
+            from .transport_grasp_safety import guarded_pickup_lift
+            guarded_pickup_lift(self,robot,name,p[2],rr)
+        else:
+            self.move(robot,self.data.site_xpos[arm.site]+np.array([0,0,.14]),rr,'pick-lift');self.wait(.1)
+            if self.data.body(name).xpos[2]<p[2]+.08:raise RuntimeError('Payload not retained '+name)
         self.held[robot]=name;self.event('picked',robot=robot,object=name)
     def place(self,robot,position,object_rotation=None,precise=False,pose_provider=None,motion_precise=None):
         approach_precise=False if motion_precise is None else motion_precise

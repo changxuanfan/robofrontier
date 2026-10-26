@@ -32,6 +32,77 @@ def command(duration):return ('move',dict(delta_m=[duration,0,0]))
 
 
 class TransportRuntimeTests(unittest.TestCase):
+    def test_fault_review_gate_resumes_the_same_independent_controller_job(self):
+        import threading
+        from pathlib import Path
+        from tempfile import TemporaryDirectory
+        from robofrontier.suite.transport_recovery import EngineeringRecovery
+        from robofrontier.suite.oracle_budget import ExplicitPauseBudget
+        from robofrontier.run_setup import write_json
+        with TemporaryDirectory() as tmp:
+            paused=threading.Event();state={};errors=[]
+            def worker():
+                try:
+                    t=trial();state['trial']=t;budget=ExplicitPauseBudget(tmp)
+                    def review(_t,_rt,_notice):
+                        request=dict(paused=True,reason='Known fault review')
+                        write_json(Path(tmp)/'control.json',request);budget.update(request)
+                        paused.set();budget.gate(lambda:False)
+                    handler=EngineeringRecovery(tmp,on_review=review)
+                    handler.observation=Mock(return_value=dict(failed_jobs={}))
+                    runtime=TransportRuntime(t,on_terminal=lambda i,j,k:handler.on_terminal(t,runtime,i,j,k))
+                    def failed():
+                        t.execute('probe',{'A':command(.1)})
+                        raise RuntimeError('Grasp stopped outside expected object-width tolerance')
+                    runtime.add('a',['A'],failed)
+                    runtime.add('b',['B'],lambda:t.execute('independent',{'B':command(.5)}))
+                    self.drain(runtime);runtime.close()
+                except Exception as error:errors.append(error);paused.set()
+            thread=threading.Thread(target=worker);thread.start()
+            self.assertTrue(paused.wait(2.))
+            t=state['trial'];self.assertFalse(errors)
+            self.assertEqual(t.time,.1);self.assertIsNotNone(t.arms['B'].job)
+            before=t.arms['B'].job
+            write_json(Path(tmp)/'control.json',dict(paused=False,reason='Measured repair queued'))
+            thread.join(2.);self.assertFalse(thread.is_alive());self.assertFalse(errors)
+            self.assertEqual(t.time,.5);self.assertEqual(len(t.arms['B'].starts),1)
+            self.assertEqual(t.arms['B'].starts[0][0],before[0])
+
+    def test_passive_payload_contact_retains_a_known_failed_receiver(self):
+        t=trial();touching={'A'}
+        runtime=TransportRuntime(t,payload_contacts=lambda r,n:r in touching)
+        runtime.add('grip',['A'],lambda:(_ for _ in ()).throw(RuntimeError('Known close failure')))
+        runtime.jobs['grip'].update(object='part')
+        self.drain(runtime)
+        self.assertEqual(runtime.leases,{'A':'grip'})
+        self.assertFalse(runtime.add('other-part',['A'],lambda:None))
+        touching.clear()
+        self.assertTrue(runtime.recover('grip','clear',['A'],lambda:None))
+        self.drain(runtime);self.assertFalse(runtime.leases)
+
+    def test_prepared_empty_reservation_is_explicit_and_recoverable(self):
+        t=trial();runtime=TransportRuntime(t)
+        def prepare():raise PreparationComplete(retain_robots={'A'},pause_after_prepare=True)
+        runtime.add('prepare',['A'],prepare);self.drain(runtime)
+        self.assertEqual(runtime.leases,{'A':'prepare'})
+        self.assertTrue(runtime.jobs['prepare']['pause_after_prepare'])
+        self.assertTrue(runtime.recover('prepare','release',['A'],lambda:None))
+        self.drain(runtime);self.assertFalse(runtime.leases)
+
+    def test_terminal_notice_preserves_independent_inflight_action(self):
+        t=trial();notices=[]
+        runtime=TransportRuntime(t,on_terminal=lambda ident,job,kind:notices.append((ident,kind,t.arms['B'].job)))
+        def fail_after_probe():
+            t.execute('probe',{'A':command(.1)})
+            raise RuntimeError('Known support loss')
+        runtime.add('a',['A'],fail_after_probe)
+        runtime.add('b',['B'],lambda:t.execute('independent',{'B':command(.5)}))
+        while runtime.jobs['a']['status']!='failed':runtime.cycle()
+        notice=next(row for row in notices if row[0]=='a')
+        self.assertEqual(notice[1],'failed');self.assertIsNotNone(notice[2])
+        self.assertEqual(len(t.arms['B'].starts),1)
+        self.drain(runtime);runtime.close()
+
     def drain(self,runtime):
         for _ in range(1000):
             if not runtime.active:return

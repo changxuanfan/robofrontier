@@ -14,21 +14,29 @@ from greenlet import getcurrent, greenlet
 
 class PreparationComplete(Exception):
     """Ordinary repair steps finished; keep the goal pending for observation."""
+    def __init__(self,retain_robots=(),pause_after_prepare=False):
+        self.retain_robots=set(retain_robots)
+        self.pause_after_prepare=bool(pause_after_prepare)
 
 
 class TransportRuntime:
-    def __init__(self, trial, admission=None):
+    def __init__(self, trial, admission=None, payload_contacts=None, on_terminal=None):
         if any(a.job is not None for a in trial.arms.values()):
             raise ValueError('Attach at a known idle boundary')
         self.t=trial;self.owner=getcurrent();self.thread=threading.get_ident()
         self.jobs={};self.leases={};self.requests={};self.running={};self.sequence=0
-        self.admission=admission;self.original=(trial.execute,trial.wait,trial.step)
+        self.admission=admission;self.payload_contacts=payload_contacts;self.on_terminal=on_terminal
+        self.original=(trial.execute,trial.wait,trial.step)
         trial.execute=self.execute;trial.wait=self.wait;trial.step=self.step
 
     def settled(self,r):
         arm=self.t.arms[r]
-        return (arm.job is None and not getattr(arm,'uncertainty_reported',False)
+        idle=(arm.job is None and not getattr(arm,'uncertainty_reported',False)
                 and getattr(arm,'grasp_force',None) is None and r not in self.t.held)
+        if not idle:return False
+        job=self.jobs.get(self.leases.get(r),{})
+        name=job.get('object')
+        return not (name is not None and self.payload_contacts is not None and self.payload_contacts(r,name))
 
     def acquire(self,robots):
         ident,job=self._current();robots=set(robots)
@@ -84,7 +92,11 @@ class TransportRuntime:
         if robots & set(self.leases):return False
         def run(*_):
             try:return dict(kind='done',job=ident,result=callback())
-            except PreparationComplete:return dict(kind='prepared',job=ident)
+            except PreparationComplete as prepared:
+                if prepared.retain_robots-robots:
+                    return dict(kind='failed',job=ident,error=ValueError('Prepared reservation must stay within the job scope'))
+                return dict(kind='prepared',job=ident,retain_robots=prepared.retain_robots,
+                    pause_after_prepare=prepared.pause_after_prepare)
             except Exception as error:return dict(kind='failed',job=ident,error=error)
         self.jobs[ident]=dict(robots=robots,fiber=greenlet(run,parent=self.owner),status='ready')
         for r in robots:self.leases[r]=ident
@@ -107,14 +119,17 @@ class TransportRuntime:
         kind=message['kind']
         if kind in ('done','failed','prepared'):
             job.update(status=kind,result=message.get('result'),error=message.get('error'))
+            keep=set(message.get('retain_robots',())) if kind=='prepared' else set()
+            job.update(prepared_reservations=sorted(keep),pause_after_prepare=message.get('pause_after_prepare',False))
             # A failed load retains its owner; independent jobs can finish,
             # but the scheduler cannot pretend this arm became available.
             for r in list(job['robots']):
-                if self.settled(r):
+                if r not in keep and self.settled(r):
                     self.leases.pop(r,None)
             self.t.event('transport_job_'+kind,job=ident,
                 error=str(message.get('error')) if kind=='failed' else None,
                 retained_robots=sorted(r for r in job['robots'] if r in self.leases))
+            if self.on_terminal is not None:self.on_terminal(ident,job,kind)
         else:
             self.requests[ident]=message;job['status']='waiting'
 

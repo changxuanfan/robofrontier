@@ -294,3 +294,40 @@ placed 71% and 79% of main-thread samples in native MuJoCo `mj_step`, primarily
 constraint/sparse-matrix work. Four running worlds used approximately one core
 each; single-world physics ownership and Python scheduling do not saturate all
 15 host cores. Engineering idle stepping is avoidable cost, now paused explicitly.
+
+
+## Known grasp faults preserve contact ownership and controller history
+
+Twelve-arm L3 attempt005 ended at530.508sim with K_item3 below the workspace,
+13/36 goals and an unresolved F action explicitly reported. The failed receiver
+was force-off but still mechanically in contact and had been released for a
+different job. Later width-based owner repairs failed and the source no longer
+had verified support; the paused pose represented a moving object, not a stable
+hold. Resuming unrelated movement advanced that failed physical situation.
+A zero-velocity mechanical fixture is not a prediction for that moving state.
+Failed attempts and fixture-only evidence remain separate from full successes.
+
+The next source keeps a force-off actor leased while it still touches its own
+job's payload. Known close/open/support faults require measured owner recovery
+rather than automatic retry on unrelated progress. A terminated affected scope
+can trigger immediate engineering review while other known in-flight controller
+jobs remain preserved in memory. Coherent qpos/qvel, actual geometric and positive
+force support, and immutable review snapshots are saved before the pause. No
+active or uncertain action is adopted, reset or replayed by this protocol.
+
+Owner preparations can explicitly retain empty robots with `retain_robots` and
+request `pause_after_prepare:true` when `resume_goal:false`. This supports measured
+multi-stage recovery without another job taking a receiver during diagnosis.
+Explicit owner inputs acquire resources before automatic heuristic retries.
+Normal preparations continue to release empty, contact-free actors by default.
+
+The full Transport Oracle now selects50N grasps within the original30..70N bounds
+and the already-supported8mm inner grasp tolerance. A2cm lift probe verifies both
+positive force-bearing opposed contact and real object rise before continuing
+to the original14cm total lift. These are command/planning choices; robot driver,
+MuJoCo integration, masses, meshes, friction, task geometry, force limits and
+final acceptance are unchanged. The physical-control fingerprint matches the
+previous source: ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479.
+New regression cases reproduce passive-contact lease loss, explicit reservations,
+known-fault review preserving a peer action, owner-priority admission and an
+unsupported short lift. Prior frozen live worlds are never hotpatched.

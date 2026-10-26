@@ -212,17 +212,18 @@ def execute_job(t,runtime,job,resume=False):
         runtime._current()[1]['object']=name
     p,r=pose();rotation=t.data.body(name).xmat.reshape(3,3).copy()
     height=ref._pickup_height(t.task,rotation,.006,obj['shape'])
+    force=getattr(t,'transport_grasp_force_n',70.)
     if resume and t.held.get(robot)==name and t.finger_contacts(robot,name):
         t.event('transport_resume_retained_load',robot=robot,object=name,goal=goal['goal_id'])
     elif t.task['level']>1 and len(path)==1:
         from .transport_unit_motion import direct_pick,DirectGraspPlanningError
         try:direct_pick(t,robot,name,(p,r),goal['board'],budget_s=12.,check_seating=True)
         except DirectGraspPlanningError:
-            if obj['shape']=='cylinder' and abs(rotation[2,2])<.8:ref._pick_side_cylinder(t,robot,name,height,70.)
-            else:t.pick(robot,name,height=height,force=70.,placement_hint=(p,r))
+            if obj['shape']=='cylinder' and abs(rotation[2,2])<.8:ref._pick_side_cylinder(t,robot,name,height,force)
+            else:t.pick(robot,name,height=height,force=force,placement_hint=(p,r))
     elif obj['shape']=='cylinder' and abs(rotation[2,2])<.8:
-        ref._pick_side_cylinder(t,robot,name,height,70.)
-    else:t.pick(robot,name,height=height,force=70.,placement_hint=(p,r))
+        ref._pick_side_cylinder(t,robot,name,height,force)
+    else:t.pick(robot,name,height=height,force=force,placement_hint=(p,r))
     for index,receiver in enumerate(path[1:],1):
         following=path[index+1] if index+1<len(path) else None
         donor=robot;robot=air_transfer(t,robot,name,[receiver],goal,next_receiver=following)
@@ -291,8 +292,15 @@ def pickup_resources(t,runtime,job):
 
 def solve(t,on_blocked=None):
     if t.task['family']!='transport':raise ValueError('Transport-only reference')
+    t.transport_grasp_force_n=50.;t.transport_grasp_epsilon_inner_m=.008
+    t.transport_guarded_pickups=True
+    t.event('transport_grasp_policy',force_n=50.,epsilon_inner_m=.008,pickup_probe_m=.02,
+        scope='Oracle command policy within unchanged physical API, force bounds and task acceptance')
     clear_idle_arms(t);jobs=plan_jobs(t)
-    runtime=TransportRuntime(t,admission=sampled_motion_admission)
+    runtime=TransportRuntime(t,admission=sampled_motion_admission,
+        payload_contacts=lambda robot,name:ref._robot_payload_contacts(t,robot,name),
+        on_terminal=lambda ident,job,kind:on_blocked.on_terminal(t,runtime,ident,job,kind)
+            if on_blocked is not None and hasattr(on_blocked,'on_terminal') else None)
     previous_execute=t.execute
     objects={o['id']:o for o in t.env['objects']}
     def execute(label,commands,allow_failure=False):

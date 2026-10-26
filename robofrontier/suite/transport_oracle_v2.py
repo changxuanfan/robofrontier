@@ -490,7 +490,7 @@ def unload_receiver_for_donor_release(trial,donor,receiver,name):
         if receiver not in trial.monitor.bilateral(trial.monitor.geoms[name],positive_force=True):
             raise RuntimeError('Receiver support unverified before release unloading')
         trial.execute('regrasp-receiver-unload',{receiver:('gripper',dict(mode='grasp',width_m=width,force_n=force,
-            speed_m_s=.025,epsilon_inner_m=.004,epsilon_outer_m=.008))})
+            speed_m_s=.025,epsilon_inner_m=getattr(trial,'transport_grasp_epsilon_inner_m',.004),epsilon_outer_m=.008))})
         trial.wait(.15)
         if receiver not in trial.monitor.bilateral(trial.monitor.geoms[name],positive_force=True) or float(trial.data.body(name).xpos[2])<initial_z-.01:
             raise RuntimeError('Receiver support changed during release unloading')
@@ -553,7 +553,7 @@ def withdraw_released_donor(trial,donor,receiver,name,restore_force=None):
     park(trial, donor)
     if restore_force is not None:
         trial.execute('regrasp-receiver-restore-pressure',{receiver:('gripper',dict(mode='grasp',width_m=width,
-            force_n=restore_force,speed_m_s=.025,epsilon_inner_m=.004,epsilon_outer_m=.008))})
+            force_n=restore_force,speed_m_s=.025,epsilon_inner_m=getattr(trial,'transport_grasp_epsilon_inner_m',.004),epsilon_outer_m=.008))})
         trial.wait(.15)
     if not trial.finger_contacts(receiver, name):
         raise RuntimeError('Air-regrasp payload not retained after donor withdrawal')
@@ -603,11 +603,11 @@ def regrasp_held_plug(trial, donor, name, *, keep_receiver_held=False,
                     continuation=(point, tool, (name,)), continuation_clearance=.001,
                     preferred_seed=plan.get('receiver_approach_q'))
     trial.move(receiver, point, tool, 'regrasp-contact', precise=True)
-    force = 70.
+    force = getattr(trial,'transport_grasp_force_n',70.)
     force = min(force, trial.cfg['allowed_grasp_force_n'][1])
     trial.execute('regrasp-receiver-close', {receiver: ('gripper', dict(
         mode='grasp', width_m=width, force_n=force, speed_m_s=.025,
-        epsilon_inner_m=.004, epsilon_outer_m=.008))})
+        epsilon_inner_m=getattr(trial,'transport_grasp_epsilon_inner_m',.004), epsilon_outer_m=.008))})
     trial.wait(.20)
     if not trial.finger_contacts(receiver, name) or not trial.finger_contacts(donor, name):
         raise RuntimeError('Air-regrasp requires actual bilateral support from both arms')
@@ -728,11 +728,15 @@ def _pick_side_cylinder(t, robot, name, height, force, tool_x_shift=0., lift_spe
     t.wait(.15)
     if not t.finger_contacts(robot, name):
         raise RuntimeError('Bilateral cylinder contact missing '+name)
-    t.move(robot, t.data.site_xpos[arm.site]+np.array([0.,0.,.14]), chosen,
-           'pick-lift', speed_m_s=lift_speed_m_s)
-    t.wait(.1)
-    if t.data.body(name).xpos[2] < before[2]+.08:
-        raise RuntimeError('Cylinder payload not retained '+name)
+    if getattr(t,'transport_guarded_pickups',False):
+        from .transport_grasp_safety import guarded_pickup_lift
+        guarded_pickup_lift(t,robot,name,before[2],chosen,speed_m_s=lift_speed_m_s)
+    else:
+        t.move(robot, t.data.site_xpos[arm.site]+np.array([0.,0.,.14]), chosen,
+               'pick-lift', speed_m_s=lift_speed_m_s)
+        t.wait(.1)
+        if t.data.body(name).xpos[2] < before[2]+.08:
+            raise RuntimeError('Cylinder payload not retained '+name)
     t.held[robot] = name
     t.event('picked', robot=robot, object=name)
 

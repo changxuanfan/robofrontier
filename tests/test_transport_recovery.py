@@ -9,6 +9,72 @@ from robofrontier.suite.transport_recovery import EngineeringRecovery
 
 
 class EngineeringRecoveryTests(unittest.TestCase):
+    def test_owner_input_claims_actor_before_automatic_retry(self):
+        with TemporaryDirectory() as tmp:
+            handler=EngineeringRecovery(tmp);handler.failed_progress['automatic']=0
+            state=dict(failed_jobs={'automatic':dict(goal=dict(goal_id='auto-goal'))},accepted_goals={'placed':'part'})
+            handler.observation=Mock(return_value=state);order=[]
+            runtime=SimpleNamespace(jobs={'manual':dict(status='failed'),'automatic':{}},leases={})
+            def retry(t,rt,ident,request):
+                order.append(ident)
+                if ident=='automatic' and 'A' in rt.leases:raise ValueError('Busy')
+                rt.leases['A']=ident;return 'recovery'
+            handler._retry=Mock(side_effect=retry)
+            request=dict(id='owner',job='manual',scene_sha256='scene',robots=['A'])
+            (handler.path/'inbox/owner.json').write_text(json.dumps(request))
+            t=SimpleNamespace(time=0.,task=dict(scene_sha256='scene'),event=Mock())
+            handler.poll(t,runtime,[],[],force=True)
+            self.assertEqual(order,['manual','automatic'])
+            self.assertEqual(runtime.leases,{'A':'manual'})
+
+    def test_prepared_reservation_cannot_escape_its_known_scope(self):
+        with TemporaryDirectory() as tmp:
+            handler=EngineeringRecovery(tmp)
+            runtime=SimpleNamespace(jobs={'old':dict(status='failed',goal=dict(goal_id='slot'),object='item',robots={'A'})},
+                leases={},recover=Mock())
+            t=SimpleNamespace(arms={'A':None,'B':None})
+            with self.assertRaisesRegex(ValueError,'reservation'):
+                handler._retry(t,runtime,'old',dict(robots=['A'],resume_goal=False,retain_robots=['B']))
+            runtime.recover.assert_not_called()
+
+    def test_known_grasp_fault_publishes_review_before_independent_action_resumes(self):
+        with TemporaryDirectory() as tmp:
+            pause=Mock();handler=EngineeringRecovery(tmp,on_review=pause)
+            handler.observation=Mock(return_value=dict(sim_time_s=1.,failed_jobs={}))
+            job=dict(robots={'A'},object='item',error=RuntimeError('Grasp stopped outside expected object-width tolerance'))
+            t=SimpleNamespace(arms={'A':SimpleNamespace(job=None,uncertainty_reported=False),
+                'B':SimpleNamespace(job='still-running-42',uncertainty_reported=False)})
+            runtime=SimpleNamespace(jobs={'failed':job},running={'B':{}})
+            handler.on_terminal(t,runtime,'failed',job,'failed')
+            self.assertTrue(job['manual_recovery_required'])
+            notice=pause.call_args.args[2]
+            self.assertEqual(notice['preserved_action_ids'],{'B':'still-running-42'})
+            self.assertTrue((handler.path/'frontier.json').exists())
+            self.assertEqual(t.arms['B'].job,'still-running-42')
+
+    def test_explicit_review_preparation_keeps_empty_actor_reservation(self):
+        from robofrontier.suite.transport_runtime import PreparationComplete
+        with TemporaryDirectory() as tmp:
+            handler=EngineeringRecovery(tmp,on_review=Mock())
+            old=dict(status='failed',goal=dict(goal_id='slot'),object='item',robots={'A'})
+            runtime=SimpleNamespace(jobs={'old':old},leases={},recover=Mock(return_value=True))
+            t=SimpleNamespace(arms={'A':SimpleNamespace(grasp_force=None)},held={})
+            handler._retry(t,runtime,'old',dict(robots=['A'],resume_goal=False,retain_robots=['A'],pause_after_prepare=True))
+            with self.assertRaises(PreparationComplete) as caught:runtime.recover.call_args.args[3]()
+            self.assertEqual(caught.exception.retain_robots,{'A'})
+            self.assertTrue(caught.exception.pause_after_prepare)
+
+    def test_manual_contact_fault_does_not_automatically_retry_after_unrelated_progress(self):
+        with TemporaryDirectory() as tmp:
+            handler=EngineeringRecovery(tmp);handler._retry=Mock()
+            state=dict(failed_jobs={'bad':dict(goal=dict(goal_id='remaining'))},accepted_goals={})
+            handler.observation=Mock(side_effect=lambda *_:state)
+            runtime=SimpleNamespace(jobs={'bad':dict(manual_recovery_required=True)})
+            t=SimpleNamespace(time=0.,event=Mock())
+            handler.poll(t,runtime,[],[],force=True)
+            state['accepted_goals']={'one':'part'};handler.poll(t,runtime,[],[],force=True)
+            handler._retry.assert_not_called()
+
     def test_automatic_retry_defers_without_discarding_busy_route_actors(self):
         with TemporaryDirectory() as tmp:
             handler=EngineeringRecovery(tmp)
