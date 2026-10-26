@@ -52,6 +52,9 @@ def plan(a):
     mujoco.mj_forward(t.model,t.data)
     up_axis=int(np.argmax(abs(rotation[2])));up=rotation[:,up_axis]*np.sign(rotation[2,up_axis])
     axes=[rotation[:,axis]*sign for axis in range(3) if axis!=up_axis for sign in (1,-1)]
+    offset=np.asarray(getattr(a,'contact_offset_m',(0.,0.,0.)),dtype=float)
+    if offset.shape!=(3,) or not np.isfinite(offset).all() or np.linalg.norm(offset)>t.task['cube_size_m']/4 or abs(np.dot(offset,up))>.0001:
+        raise ValueError('Contact offset must stay within the selected cube face')
     base=np.asarray(t.task['arms'][robot]['base_position_m']);arm=t.arms[robot]
     selected=None;expanded=bool(getattr(a,'expanded',False));route=None;lift_vector=np.array([0.,0.,.14])
     if expanded:
@@ -63,8 +66,9 @@ def plan(a):
     heights=(height_override,) if height_override is not None else (t.task['cube_size_m']/2-.005,t.task['cube_size_m']/3,t.task['cube_size_m']*.2)
     if any(not 0<height<=t.task['cube_size_m']/2+.01 for height in heights):raise ValueError('Unsupported finite top-grasp contact height')
     for height in heights:
-        contact=position+up*height
+        contact=position+up*height+offset
         for r,tilt in grasp_rotations(up,axes,position-base,tilts=(0,) if getattr(a,'flat_only',False) else (0,15,25)):
+            if abs(np.dot(offset,r[:,1]))>.001:continue
             seat=loaded_ik(t,robot,contact,r,(name,))
             if seat is None:continue
             for rise in (.14,.10,.08):
@@ -83,8 +87,9 @@ def plan(a):
         vectors += [np.r_[direction*radial,rise] for radial,rise in ((.10,.14),(.15,.14),(.10,.10))]
         extra_heights=heights if height_override is not None else (.025,.020,.012,.006)
         for height in extra_heights:
-            contact=position+up*height
+            contact=position+up*height+offset
             for r,tilt in grasp_rotations(up,axes,position-base,tilts=(0,) if getattr(a,'flat_only',False) else (0,15,25)):
+                if abs(np.dot(offset,r[:,1]))>.001:continue
                 for first,third in ((2,2),(-2,-2),(2,-2),(-2,2),(2.6,0),(-2.6,0),(0,2.6),(0,-2.6)):
                     seed=t.home_q[robot].copy();seed[0]=first;seed[2]=third;seed=np.clip(seed,*arm.ik.limits.T)
                     seat=t.screen_ik(robot,contact,r,seed=seed)
@@ -118,6 +123,7 @@ def plan(a):
         observation_sha256=hashlib.sha256(payload).hexdigest(),source_sim_s=o['sim_time_s'],robot=robot,object=name,
         candidate_tilt_deg=tilt,approach_width_m=aperture,contact_m=contact.tolist(),rotation=r.tolist(),suggested_unfilled_goal=goal,
         expanded_branch_search=expanded,free_joint_route=[point.tolist() for point in route],lift_vector_m=lift_vector.tolist(),
+        contact_offset_m=offset.tolist(),
         pending_held_payloads=o['held'],finger_state_reconstruction='Observed total opening split symmetrically for scratch screening')
     write_json(directory/'review/engineering'/f'{a.id}-plan.json',evidence)
     write_json(a.request,request)

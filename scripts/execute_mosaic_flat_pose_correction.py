@@ -115,7 +115,8 @@ def run(a):
         return submit(suffix,'commands',batches=[{robot:['move',dict(target_m=list(point),quaternion_wxyz=matrix_quat(rotation).tolist(),speed_m_s=speed,angular_speed_rad_s=omega)]}])
 
     ident=a.id+'-pick';path=review/'requests'/f'pose-{ident}.json'
-    pick(SimpleNamespace(trial=directory,robot=robot,object=name,id=ident,request=path,aperture=.064,contact_height=a.contact_height,flat_only=True))
+    pick(SimpleNamespace(trial=directory,robot=robot,object=name,id=ident,request=path,aperture=a.aperture,contact_height=a.contact_height,
+        flat_only=True,contact_offset_m=a.contact_offset_m))
     wait(ident,path);o=submit('adopt','adopt_hold',robot=robot,object=name)
     mirror,o,_=observed_trial(directory);arm=mirror.arms[robot]
     o=move('lift',mirror.data.site_xpos[arm.site]+[0,0,.014],mirror.data.site_xmat[arm.site].reshape(3,3).copy(),support=True)
@@ -148,4 +149,6 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--trial',required=True,type=Path)
     p.add_argument('--robot',required=True);p.add_argument('--object',required=True);p.add_argument('--goal',required=True)
     p.add_argument('--contact-height',type=float,default=.035)
+    p.add_argument('--contact-offset-m',nargs=3,type=float,default=(0.,0.,0.))
+    p.add_argument('--aperture',type=float,default=.064)
     p.add_argument('--id',required=True);p.add_argument('--resume',action='store_true');run(p.parse_args())
