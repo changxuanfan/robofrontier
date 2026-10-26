@@ -289,3 +289,38 @@ lacks environmental support. A checked upward/inward escape and high return to
 K-accessible space are continuing toward a less torsion-loaded final grasp.
 Current observations and original request results, rather than this prose,
 remain authoritative for pending motions and next commands.
+
+
+## Measured performance and observed release regression
+
+A short macOS sample measured six retained worlds at roughly80–90% of one CPU
+core each on a15-core,24GiB host. Physics uses500 unchanged2ms steps per simulated
+second; the16-arm L2 model has1,711 total geoms,723 collision-enabled geoms and192
+velocity DOFs. In the two-second8-arm sample,1,058 of1,533 main-thread samples were
+inside native `mj_step`; the16-arm planning sample spent substantial work in
+native collision queries. One recorded46.434s search made1,581,628 reach queries,
+4,156 numerical IK solves and found no candidate. These are short-window/log
+facts, not fabricated whole-run time percentages. Scene-keeping during owner
+reasoning and poor grasp/route choices also consume elapsed time. Source samples
+and measurements are in the run-local engineering `performance-review` folder.
+
+Two actual nonterminal releases reported `Requested aperture exceeded`: C opened
+to79.975mm for75mm, and J opened to77.690mm for75mm. Both hands physically separated
+but the controller stopped before clearing its held cache or withdrawing, creating
+false carried-object constraints. A regression now preserves the original failed
+motor feedback while allowing ordinary withdrawal only when opening is measured
+wider, force/job have ended and actual cargo contact is absent. Exit sweeps are
+still revalidated at the actual wider aperture. Four regression cases and76
+related controller checks pass. A wider96-test discovery exposed16 pre-existing
+historical-scene asset errors (missing r10 robot meshes/label PNGs); those are not
+new controller failures and the live frozen scenes remain intact.
+
+Frozen active executors are not hot-patched. Original8-arm L2 recovered its later
+G slip with original H/G only; original12-arm L2 recovered a later D/J drop on its
+exposed inverted timber face. Their native dropped flags cleared only after real
+original-team lifts removed environmental contact; both drop counters remain one.
+The12-arm L3 resource cycle was opened by physically handing P2 F/K to E/K,
+freeing F for P3's required F/L then G/L airborne handovers. No zero-handover
+initial terminal grasp is counted as satisfying the task. P3 reached Goal but
+its first contact-seeking placement needs retained-world review after a native
+support-loss flag. Six worlds continue and complete-case passes remain3/9.

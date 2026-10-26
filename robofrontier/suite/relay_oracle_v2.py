@@ -868,6 +868,22 @@ def sequential_terminal_release(t,ident,team):
  return False
 
 
+def observed_wider_release(t,ident,robot,feedback,width):
+ """A failed aperture command can still leave a genuinely empty open hand.
+
+ Preserve the failed motor feedback. Only the measured opening overshoot,
+ ended force/job and actual cargo separation authorize ordinary withdrawal;
+ an unknown failure or an undershot opening does not establish release.
+ """
+ actual=feedback.get('actual_width_m')
+ return bool(feedback.get('status')=='failed'
+     and feedback.get('reason')=='Requested aperture exceeded'
+     and feedback.get('direction')=='opening'
+     and isinstance(actual,(int,float)) and math.isfinite(actual) and actual>=width
+     and t.arms[robot].grasp_force is None and t.arms[robot].job is None
+     and not arm_payload_contact(t,ident,robot))
+
+
 def release(t,ident,team,terminal=False):
  width=.080 if terminal else .075
  permitted=terminal and goal_contact_allowed(t)
@@ -881,7 +897,11 @@ def release(t,ident,team,terminal=False):
   t.relay_release_plan=exits
  result=t.execute('relay-release',{a:('gripper',dict(mode='move',width_m=width,speed_m_s=.06)) for a in team},allow_failure=True)
  for a,r in result.items():
-  if r['status']!='completed':raise RuntimeError('Relay release aperture not verified '+a)
+  if r['status']!='completed':
+   if not observed_wider_release(t,ident,a,r,width):raise RuntimeError('Relay release aperture not verified '+a)
+   t.event('relay_release_observed_wider',robot=a,payload=ident,
+           requested_width_m=width,original_feedback=dict(r),
+           reason='Opening is wider than requested, force/job ended and actual cargo contact absent; original call remains failed')
   t.held.pop(a,None)
  t.wait(.25)
  if t.monitor.relay_v2.states[ident]['dropped']:raise RuntimeError('Independent receiver support lost at release '+ident)
