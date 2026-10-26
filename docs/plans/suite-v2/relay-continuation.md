@@ -434,3 +434,54 @@ plane horizontal, ideal top-view angle remains148.5° at hinge−25/0/+25°;
 this was checked geometrically. Projected half-length changes; whole-body tilt
 still changes world top-view projection. Updated v2 preview PNG/SVG files make
 these conditions and three-Level layout scope explicit. Still no scene applied.
+
+## Applied r16 geometry and restart authorization
+
+Latest user instruction supersedes the1.30m layout preview: preserve original
+16-arm1.40m radial gap and every L1 scene/result. Restart all six L2/L3 tasks
+from new canonical initial states. User clarified8/12-arm chords1.15m and16-arm
+chords1.20m. The other approved apparatus changes remain: L2 central63degrees;
+L3 interior148.5degrees, all transverse out-of-plane spring joints; underside
+fixed eye directly in wood with no bracket,100mm from tip along centreline;
+uniform170mm wooden shaft and600g scale-weight form. No live physics edits.
+
+All five still-live obsolete L2/L3 episodes received explicit user-superseded
+markers and graceful STOP requests; original recordings/reports were preserved.
+They were not stopped for slow progress or search budget. Three L1 native full
+successes remain valid: their current task files hash-match original reports.
+Old8L1 and12L1 recordings were decoded again to materialize missing verification
+sidecars; counts21,863/299,641, with16L1's1,771,939 proof already present.
+
+R16 source is generated independently from existing valid r13/r15 workstations.
+Old files are not overwritten. Robots, table, actuator/joint limits, solver
+parameters, timestep and completion predicates stay unchanged. A small initial
+beam pitch (about2.4–2.6degrees) puts the low timber end and underside fixed eye
+on the real tabletop; the independent pendulum lies naturally on the tabletop.
+No hidden stands or welded weight attachment. Static nonpenetration and Gauss
+linking integrals near1 were checked for every closed ring pair. Three-second
+passive initial physics checks for all six showed zero violations/drops and
+retained links. Separate five-second clamped hanging fixtures retained both
+representative suspensions with no numerical warnings; those are not Oracle
+or grasp evidence. Images/manifest are in`outputs/design/relay-r16-actual/`;
+full-scene initial views are real static states, hanging detail/hinge angle
+views are explicitly labelled FK inspection poses.
+
+The controller now respects declared L2 arc angles rather than fixed90degrees,
+and its candidate stations stay inside shorter timber endpoints. Added typed
+move_empty recovery permits a finite ordinary joint path only for an actually
+open, force-free, separated robot with established other support; it preserves
+failed feedback and clears a stale label only after successful physical feedback
+and another separation check. Contacting or force-held hands cannot use it.
+
+Regression recordings remain bound to their exact historical scene hashes;
+old load-moment tests explicitly use the manufactured geometry they captured.
+Previously missing historical assets/previews were restored only from exact
+matching hashes. The historical source-preservation test reverses exactly the
+already user-authorized Goal contact/stack metadata delta before comparing old
+Task hashes; geometry and other task bytes still must match.110 Relay tests
+passed, with four additional rigid-apparatus checks passing separately.
+
+The full-case supervisor supports explicit1–9 concurrency and strictly reuses
+only byte-identical native L1 successes with complete original recordings.
+New cohort should start at3/9, with six fresh r16 L2/L3 worlds. Old original-size
+L2/L3 passes must not be imported into r16 acceptance. No GPT trials.

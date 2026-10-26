@@ -257,6 +257,7 @@ class RelayReferenceTests(unittest.TestCase):
         from robofrontier.suite.evaluate import Monitor
         from robofrontier.suite.relay_oracle_v2 import grasp_horizon_score,grasp_load_moment
         case=next(c for c in cases() if c['id']=='relay-a08-d3')
+        case=dict(case,scene_revision=13)  # Recorded pre-r16 load-moment regression.
         source=Workstation(directory(case));mujoco.mj_forward(source.model,source.data)
         t=SimpleNamespace(model=source.model,data=source.data,task=json.loads((source.path/'task.json').read_text()))
         t.arms={robot:None for robot in t.task['arms']};t.monitor=Monitor(t)
@@ -387,6 +388,7 @@ class RelayReferenceTests(unittest.TestCase):
         from robofrontier.suite.evaluate import Monitor
         from robofrontier.suite.relay_oracle_v2 import grasp_load_moment
         case=next(c for c in cases() if c['id']=='relay-a08-d2')
+        case=dict(case,scene_revision=13)  # Its old end-mounted weight defines this ranking.
         source=Workstation(directory(case));mujoco.mj_forward(source.model,source.data)
         t=SimpleNamespace(model=source.model,data=source.data,task=json.loads((source.path/'task.json').read_text()))
         t.arms={robot:None for robot in t.task['arms']};t.monitor=Monitor(t)

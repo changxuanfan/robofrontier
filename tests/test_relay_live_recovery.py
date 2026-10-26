@@ -63,6 +63,15 @@ class RelayLiveRecoveryTests(unittest.TestCase):
         self.assertEqual(result['status'],'completed');self.assertEqual(self.t.held,{})
         self.assertEqual([call.args[1:] for call in contact.call_args_list],[('p','G'),('p','H')])
 
+    def test_single_empty_robot_joint_request_is_typed_and_not_replayed(self):
+        request=dict(self.request,op='move_empty',robots=['G'],joint_rad=[0.]*7)
+        with patch('robofrontier.suite.relay_live_recovery.ref.move_empty_robot') as move:
+            first=self.recovery.process(request);second=self.recovery.process(request)
+        self.assertEqual(first['status'],'completed');self.assertEqual(first,second)
+        move.assert_called_once_with(self.t,'p','G',[0.]*7)
+        with self.assertRaisesRegex(ValueError,'Joint target applies only'):
+            self.recovery.process(dict(self.request,id='wrong-op',joint_rad=[0.]*7))
+
     def test_partial_original_custody_recovery_preserves_surviving_grasp(self):
         self.t.monitor.bilateral=lambda *a,**k:{'H'}
         self.t.monitor.relay_v2.states['p'].update(dropped=True,custody={'G','H'})

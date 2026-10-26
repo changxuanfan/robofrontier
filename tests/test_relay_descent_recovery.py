@@ -17,7 +17,12 @@ from robofrontier.suite.v2 import cases,directory
 
 def recorded_world(fixture_name='relay_terminal_local_branch.json'):
     fixture=json.loads((Path(__file__).parent/'fixtures'/fixture_name).read_text())
-    scene=directory(next(c for c in cases() if c['id']==fixture['case_id']))
+    case=next(c for c in cases() if c['id']==fixture['case_id'])
+    # A recording remains bound to its exact source revision when the live
+    # catalogue moves to a new manufactured apparatus.
+    candidates=[directory(case)]+[directory(dict(case,scene_revision=r)) for r in (13,15,10)]
+    scene=next((p for p in candidates if (p/'task.json').exists() and
+                json.loads((p/'task.json').read_text())['scene_sha256']==fixture['source_scene_sha256']),candidates[0])
     t=Trial.__new__(Trial);t.model=mujoco.MjModel.from_xml_path(str(scene/'scene.xml'));t.data=mujoco.MjData(t.model)
     mujoco.mj_resetDataKeyframe(t.model,t.data,t.model.key('initial').id);mujoco.mj_forward(t.model,t.data)
     t.task=json.loads((scene/'task.json').read_text());t.stop_requested=None;t.live_preview=False

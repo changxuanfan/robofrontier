@@ -45,7 +45,7 @@ class RelayLiveRecovery:
         self.world_id=uuid.uuid4().hex;self.handled={};self.assisted=False
         write_json(self.directory/'world.json',dict(world_id=self.world_id,pid=__import__('os').getpid(),
             scope='Same live privileged Oracle world; finite typed repair; no reset/pose writes',
-            operations=['carry','place','release','place_release','handover','grasp','open','stop','wait','resume']))
+            operations=['carry','place','release','place_release','handover','grasp','open','move_empty','stop','wait','resume']))
 
     def publish(self,error=None):
         t=self.trial;result=t.monitor.result()
@@ -71,19 +71,20 @@ class RelayLiveRecovery:
             if old['request_sha256']!=digest:raise ValueError('Repair ID reused with different input')
             return old
         if request.get('world_id')!=self.world_id:raise ValueError('Request belongs to another world')
-        if set(request)-{'id','world_id','op','payload','robots','target_m','yaw_rad','retain_attitude','offset_m','seconds','review','assisted','retained_side','continuation'}:raise ValueError('Unsupported repair field')
+        if set(request)-{'id','world_id','op','payload','robots','target_m','yaw_rad','retain_attitude','offset_m','seconds','review','assisted','retained_side','continuation','joint_rad'}:raise ValueError('Unsupported repair field')
         if not request.get('review') or request.get('assisted') is not True:raise ValueError('External model repair requires review and assisted attestation')
         t=self.trial
         op=request.get('op')
         if any(a.job is not None for a in t.arms.values()) and op!='stop':raise ValueError('Original execution unresolved; request controlled stop, never replay')
         if t.monitor.violations:raise ValueError('Irreversible process history retained; repair cannot erase it')
-        if op not in {'carry','place','release','place_release','handover','grasp','open','stop','wait','resume'}:raise ValueError('No state/reset/physics editing operation')
+        if op not in {'carry','place','release','place_release','handover','grasp','open','move_empty','stop','wait','resume'}:raise ValueError('No state/reset/physics editing operation')
+        if 'joint_rad' in request and op!='move_empty':raise ValueError('Joint target applies only to observed empty-robot movement')
         payload=request.get('payload');team=request.get('robots',[])
         if op not in {'wait','resume','stop'}:
             if payload not in t.monitor.relay_v2.states:raise ValueError('Unknown payload')
-            if len(team)<2 or len(set(team))!=len(team) or any(a not in t.arms for a in team):raise ValueError('Use actual existing support robots')
+            if (len(team)!=1 if op=='move_empty' else len(team)<2) or len(set(team))!=len(team) or any(a not in t.arms for a in team):raise ValueError('Use one observed empty robot or an actual support team')
             support=t.monitor.bilateral(t.monitor.relay_v2.states[payload]['rod_geoms'],positive_force=True)
-            if op not in {'grasp','open'} and not set(team)<=support:raise ValueError('Declared holders lack actual bilateral support')
+            if op not in {'grasp','open','move_empty'} and not set(team)<=support:raise ValueError('Declared holders lack actual bilateral support')
         continuation=continuation_options(request.get('continuation',{}))
         if continuation and op!='handover':raise ValueError('Receiving continuation applies only to handover')
         side=request.get('retained_side')
@@ -93,7 +94,9 @@ class RelayLiveRecovery:
         t.event('relay_repair_admitted',request=request,request_sha256=digest,world_id=self.world_id)
         result=dict(id=ident,request_sha256=digest,status='running',world_id=self.world_id,start_sim_s=t.time)
         try:
-            if op=='carry':
+            if op=='move_empty':
+                ref.move_empty_robot(t,payload,team[0],request['joint_rad'])
+            elif op=='carry':
                 point=np.asarray(request['target_m'],dtype=float)
                 if point.shape!=(3,) or not np.isfinite(point).all():raise ValueError('Finite XYZ required')
                 rotation=t.data.body(payload).xmat.reshape(3,3).copy();yaw=float(request.get('yaw_rad',math.atan2(rotation[1,0],rotation[0,0])))

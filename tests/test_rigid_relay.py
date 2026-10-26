@@ -13,8 +13,9 @@ from robofrontier.workstation import Workstation
 
 
 class RigidRelayTests(unittest.TestCase):
-    def source(self,arms,level):
+    def source(self,arms,level,legacy=False):
         case=next(c for c in cases() if c['id']==f'relay-a{arms:02d}-d{level}')
+        if legacy:case=dict(case,scene_revision=15 if arms==12 else 13)
         source=Workstation(directory(case));source.frame();mujoco.mj_forward(source.model,source.data)
         task=json.loads((source.path/'task.json').read_text())
         return source,task
@@ -71,7 +72,7 @@ class RigidRelayTests(unittest.TestCase):
         for n,expected in ((8,['in_plane','out_of_plane']),
                            (12,['in_plane','out_of_plane','out_of_plane']),
                            (16,['in_plane','in_plane','out_of_plane','out_of_plane'])):
-            source,task=self.source(n,3);m,d=source.model,source.data
+            source,task=self.source(n,3,legacy=True);m,d=source.model,source.data
             assemblies=task['mechanism']['payload_assemblies']
             self.assertEqual([a['elastic_hinge']['mode'] for a in assemblies],expected)
             for item in assemblies:

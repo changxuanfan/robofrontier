@@ -103,7 +103,7 @@ def screened_ik(t,robot,point,rotation,seed=None):
 def cross_x(task,y):
  m=task['mechanism']
  if task['level']==1:return 0.
- if task['level']==2:return math.sqrt(max(0,m['radius_m']**2-y*y))-m['radius_m']*math.cos(math.pi/4)
+ if task['level']==2:return math.sqrt(max(0,m['radius_m']**2-y*y))-m['radius_m']*math.cos(math.radians(m.get('circular_angle_deg',90.))/2)
  return m['bend_rise_m']*(1-abs(y)/(.5*m['chord_m']))
 
 
@@ -116,6 +116,7 @@ def grasp_stations(offset):
 
 def grasp_targets(t,ident,center,rotation,offset):
  points=[]
+ if max(grasp_stations(offset))>=t.task['mechanism']['chord_m']/2:raise ValueError('Grasp station must lie inside the timber endpoint')
  for sign,station in zip((-1,1),grasp_stations(offset)):
   local=np.array([cross_x(t.task,sign*station),sign*station,.006])
   part_rotation=rotation
@@ -818,6 +819,41 @@ def arm_payload_contact(t,ident,robot):
  return any(contact.dist<=.0002 and any(int(a) in owned and t.model.body(int(t.model.geom_bodyid[b])).name.startswith(robot+'_') for a,b in ((contact.geom1,contact.geom2),(contact.geom2,contact.geom1))) for contact in t.data.contact)
 
 
+def move_empty_robot(t,ident,robot,joint_rad):
+ """Finite normal joint motion for an observed separated, open donor.
+
+ A stale held label is removed only after real action feedback and another
+ separation check. Planning uses a private empty-hand view, never a live
+ attachment/pose edit. A contacting or force-held hand cannot use this path.
+ """
+ arm=t.arms[robot];width=float(arm.observe()['gripper_width_m']);goal=np.asarray(joint_rad,dtype=float)
+ if arm.job is not None or arm.grasp_force is not None:raise ValueError('Empty movement requires resolved force-free execution')
+ if not math.isfinite(width) or width<t.task['mechanism']['cross_section_m'][0]+.012:raise ValueError('Empty movement requires measured open jaws')
+ if t.held.get(robot) not in (None,ident):raise ValueError('Different cargo label requires its own owner review')
+ if any(arm_payload_contact(t,name,robot) for name in t.monitor.relay_v2.states):raise ValueError('Robot still contacts cargo; review separation first')
+ state=t.monitor.relay_v2.states[ident]
+ def supported():
+  current=t.monitor.bilateral(state['rod_geoms'],positive_force=True)-{robot}
+  return len(current&set(state['custody']))>=2 or t.monitor.relay_v2.environment_contact(state['all_geoms'])
+ if not supported():raise ValueError('Established receivers or actual environment support required')
+ if goal.shape!=(7,) or not np.isfinite(goal).all() or np.any(goal<arm.ik.limits[:,0]) or np.any(goal>arm.ik.limits[:,1]):raise ValueError('Finite in-limit seven-joint target required')
+ probe=copy(t);probe.live_preview=False;probe.data=mujoco.MjData(t.model);probe.data.qpos[:]=t.data.qpos;probe.screen_data=mujoco.MjData(t.screen_model);probe.held={a:p for a,p in t.held.items() if a!=robot}
+ mujoco.mj_forward(t.model,probe.data);start=t.data.qpos[arm.qids].copy()
+ edge=lambda a,b:joint_edge_clear(a,b,lambda q:probe.pose_clear(robot,q,(),.001),step_rad=.01)
+ if not probe.pose_clear(robot,goal):raise RuntimeError('Empty-arm target collides with actual scene')
+ path=[start,goal] if edge(start,goal) else connect_route(start,goal,arm.ik.limits,edge,np.random.default_rng(7103+list(t.arms).index(robot)),iterations=500)
+ if path is None:raise RuntimeError('No screened empty-arm joint route')
+ t.event('relay_empty_joint_route',robot=robot,payload=ident,joint_target=goal.tolist(),waypoints=len(path),scope='Measured open/separated donor; ordinary actuators, unchanged physics and cargo poses')
+ for q in path[1:]:
+  if not supported():raise RuntimeError('Independent support changed before empty-arm motion')
+  if any(arm_payload_contact(t,name,robot) for name in t.monitor.relay_v2.states):raise RuntimeError('Empty-arm separation changed before motion')
+  probe.data.qpos[:]=t.data.qpos;mujoco.mj_forward(t.model,probe.data)
+  if not edge(t.data.qpos[arm.qids],q):raise RuntimeError('Actual scene changed before empty-arm motion')
+  t.execute('recovery-empty-joint-move',{robot:('move',dict(joint_rad=q.tolist(),joint_speed_rad_s=.3))})
+ if any(arm_payload_contact(t,name,robot) for name in t.monitor.relay_v2.states):raise RuntimeError('Empty motion ended with cargo contact; retain original held cache')
+ t.held.pop(robot,None)
+
+
 def terminal_recovery_state(t,ident,team):
  """A known grounded world, not an exception mask or a reset permission."""
  live=getattr(t,'_live_data',None)
@@ -990,12 +1026,14 @@ def _handover_plan(t,ident,team,offset,index):
  candidates=(.54,.56,.58,.44,.48,.40,.36,.38,.50,.20,.24,.28,.32) if curved else (.20,.24,.28,.32,.54,.56,.58,.40,.48,.50,.36,.38,.44)
  previous=np.asarray(grasp_stations(offset))
  if not curved and previous.mean()<=.35:candidates=(.44,.48,.40,.54,.56,.58,.50,.36,.38,.20,.24,.28,.32)
+ half=t.task['mechanism']['chord_m']/2
+ candidates=tuple(dict.fromkeys(v for v in (*candidates,round(half-.02,6)) if 0<v<half))
  offsets=[v for v in candidates if np.all(abs(np.asarray(grasp_stations(v))-previous)>=.035)]
  if t.task['level']>1 or curved:
   # A curved, end-weighted body need not balance on two symmetric stations.
   # Keep a small finite set; actual COM ranks it, geometry and physics judge it.
   asymmetric=[(.32,.54),(.54,.32),(.36,.54),(.54,.36),(.38,.56),(.56,.38),(.40,.56),(.56,.40),(.32,.50),(.50,.32),(.36,.50),(.50,.36),(.40,.54),(.54,.40)]
-  offsets += [v for v in asymmetric if np.all(abs(np.asarray(v)-previous)>=.035)]
+  offsets += [v for v in asymmetric if max(v)<half and np.all(abs(np.asarray(v)-previous)>=.035)]
  retained_side=getattr(t,'relay_retained_side',None)
  if retained_side is not None:
   if retained_side not in (0,1):raise ValueError('Unknown retained grasp side')
