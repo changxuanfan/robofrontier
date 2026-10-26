@@ -371,3 +371,17 @@ and unresolved actions,898 robot commands and2 known failed commands. All630275
 recorded states and the half-opening added-material FK audit passed. Long old
 engineering waits remain in the original10504.56sim-second timing; no speedup or
 optimality claim follows from this pass.
+
+## Twelve-arm L2 full qualification
+
+Frozenbbb80ce attempt003 completed36/36 with engineering assistance,1512robot
+commands/1known failed command, no process violations or unresolved actions.
+Original timing2554.88sim seconds, total24517.23wall seconds including17490.53
+acknowledged paused seconds is retained. All153310saved states and added-material
+half-opening FK checks passed. Complete4x two-view rendering is underway.
+
+The final two goals used a supported A→L southwest tabletop buffer for K1 and
+native K→L→A→B transfers for C3. At the last A/B handover, an admitted0.00694rad
+empty B joint adjustment raised actual link7 separation5.78→9.23mm, followed by
+measured core contact,50N grasp, native dual-support check and slow A release.
+No task dimensions, physical controls, force bounds or evaluator changed.
