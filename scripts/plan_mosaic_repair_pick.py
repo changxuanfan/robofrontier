@@ -54,6 +54,11 @@ def plan(a):
     axes=[rotation[:,axis]*sign for axis in range(3) if axis!=up_axis for sign in (1,-1)]
     base=np.asarray(t.task['arms'][robot]['base_position_m']);arm=t.arms[robot]
     selected=None;expanded=bool(getattr(a,'expanded',False));route=None;lift_vector=np.array([0.,0.,.14])
+    if expanded:
+        # An open approach must not touch the target either. Allowing finger
+        # contact all along a diagonal can tip the cube before jaws straddle it.
+        original_clear=t.pose_clear
+        t.pose_clear=lambda robot,q,allowed_objects=(),clearance_m=.003:original_clear(robot,q,(),clearance_m)
     height_override=getattr(a,'contact_height',None)
     heights=(height_override,) if height_override is not None else (t.task['cube_size_m']/2-.005,t.task['cube_size_m']/3,t.task['cube_size_m']*.2)
     if any(not 0<height<=t.task['cube_size_m']/2+.01 for height in heights):raise ValueError('Unsupported finite top-grasp contact height')
@@ -63,7 +68,7 @@ def plan(a):
             seat=loaded_ik(t,robot,contact,r,(name,))
             if seat is None:continue
             for rise in (.14,.10,.08):
-                hover=contact+[0,0,rise];q=loaded_ik(t,robot,hover,r)
+                hover=contact+(up*rise if expanded else np.array([0,0,rise]));q=loaded_ik(t,robot,hover,r)
                 if q is None or not joint_edge_clear(t.data.qpos[arm.qids],q,lambda value:t.pose_clear(robot,value),step_rad=.005):continue
                 if not screen_transfer_segments(t,robot,name,r,q,[('repair-contact',contact)],path_joint_margin_rad=0.):continue
                 selected=(contact,r,q,tilt);route=[q];lift_vector=hover-contact if expanded else np.array([0.,0.,.14]);break
@@ -74,7 +79,7 @@ def plan(a):
         # to its contact branch. A raised radial approach can avoid folding
         # the elbow into its original limit near a stock beside the base.
         direction=position[:2]-base[:2];direction/=max(np.linalg.norm(direction),1e-9)
-        vectors=[np.array([0.,0.,h]) for h in (.14,.10,.08)]
+        vectors=[up*h for h in (.14,.10,.08)]
         vectors += [np.r_[direction*radial,rise] for radial,rise in ((.10,.14),(.15,.14),(.10,.10))]
         extra_heights=heights if height_override is not None else (.025,.020,.012,.006)
         for height in extra_heights:
@@ -84,7 +89,8 @@ def plan(a):
                     seed=t.home_q[robot].copy();seed[0]=first;seed[2]=third;seed=np.clip(seed,*arm.ik.limits.T)
                     seat=t.screen_ik(robot,contact,r,seed=seed)
                     if seat is None or joint_margin(t,robot,seat)<.04 or not t.pose_clear(robot,seat,(name,)):continue
-                    for vector in vectors:
+                    nonclosing=[r[:,0]*side+up*rise for rise in (.14,.10) for side in (.10,-.10,.15,-.15)]
+                    for vector in vectors+nonclosing:
                         hover=contact+vector;q=t.screen_ik(robot,hover,r,seed=seat)
                         if q is None or joint_margin(t,robot,q)<.04 or not t.pose_clear(robot,q):continue
                         if not screen_transfer_segments(t,robot,name,r,q,[('repair-contact',contact)],path_joint_margin_rad=0.):continue
