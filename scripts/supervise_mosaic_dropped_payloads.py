@@ -160,7 +160,7 @@ def run(a):
         for candidate in ([robot] if retract else available):
             distance=np.linalg.norm(np.array(task['arms'][candidate]['base_position_m'])[:2]-np.array(o['objects'][name]['position_m'])[:2])
             if not retract and distance>.90:continue
-            try:path,ports=choose(rows,candidate,coverage,available,blocked)
+            try:path,ports=choose(rows,candidate,coverage,available,blocked,pickup_position=o['objects'][name]['position_m'],target_position=goal_entry['position_m'])
             except ValueError:continue
             choices.append((len(path),distance,candidate,path,ports))
         chosen=None
@@ -175,6 +175,8 @@ def run(a):
         if chosen is None:raise ValueError('No screened known normal recovery route; review remains open')
         path,ports=chosen;write_json(review/'engineering'/f'{prefix}-route.json',dict(world_id=world,review_id=epoch,object=name,goal=goal,path=path,
             protected_pairs=protected,scope='Finite observed-state shortest normal-port route among screened initial pickups; not global optimum'))
+        locations=[np.asarray(o['objects'][name]['position_m'])[:2]]+[np.asarray(ports[frozenset(edge)])[:2] for edge in zip(path,path[1:])]+[np.asarray(goal_entry['position_m'])[:2]]
+        write_json(review/'engineering'/f'{prefix}-transport-objective.json',dict(path=path,minimum_normal_handoffs=len(path)-1,estimated_payload_xy_distance_m=sum(float(np.linalg.norm(y-x)) for x,y in zip(locations,locations[1:])),scope='Shortest normal-port hop count, then less payload travel among destination alternatives; not a global makespan optimum'))
         for index,candidate in enumerate(path):
             target=['--goal',goal] if index==len(path)-1 else ['--target-m',*map(str,ports[frozenset(path[index:index+2])])]
             if retract and index==0:

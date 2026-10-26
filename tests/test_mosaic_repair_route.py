@@ -60,6 +60,12 @@ class RepairRouteTests(unittest.TestCase):
         self.assertEqual(choose(self.rows(),'C',['A','B'],['A','B','C'])[0],['C','B'])
     def test_use_intermediate_robot_when_only_the_original_receiver_reaches_the_goal(self):
         self.assertEqual(choose(self.rows(),'C',['A'],['A','B','C'])[0],['C','B','A'])
+    def test_equal_handoffs_prefer_less_payload_travel_instead_of_robot_letter(self):
+        rows=[dict(robots=['C','A'],position_m=[-1,-1,0],angled_grasp=None),dict(robots=['C','B'],position_m=[0,-.5,0],angled_grasp=None)]
+        self.assertEqual(choose(rows,'C',['A','B'],['A','B','C'])[0],['C','A'])
+        self.assertEqual(choose(rows,'C',['A','B'],['A','B','C'],pickup_position=[.8,-.2,1],target_position=[-.5,-.4,0])[0],['C','B'])
+        with self.assertRaisesRegex(ValueError,'both observed endpoints'):choose(rows,'C',['A','B'],['A','B','C'],pickup_position=[0,0,0])
+
     def test_occupied_port_is_not_silently_reused(self):
         with self.assertRaises(ValueError):choose(self.rows(),'C',['A'],['A','B','C'],[frozenset(('B','C'))])
 

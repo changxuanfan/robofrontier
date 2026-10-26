@@ -17,7 +17,7 @@ from robofrontier.run_setup import write_json
 from robofrontier.suite.placement_oracle import route
 
 
-def choose(rows,start,destinations,available,blocked=()):
+def choose(rows,start,destinations,available,blocked=(),pickup_position=None,target_position=None):
     graph={r:[] for r in available};points={}
     for row in rows:
         pair=row['robots'];key=frozenset(pair)
@@ -29,7 +29,13 @@ def choose(rows,start,destinations,available,blocked=()):
         try:paths.append(route(graph,start,destination))
         except ValueError:pass
     if not paths:raise ValueError('No free normal-port recovery route; leave current world for owner review')
-    return min(paths,key=lambda p:(len(p),p)),points
+    if (pickup_position is None)!=(target_position is None):raise ValueError('Supply both observed endpoints for the distance tie-break')
+    def score(path):
+        if pickup_position is None:return len(path),0.,path
+        locations=[np.asarray(pickup_position)[:2]]+[np.asarray(points[frozenset(edge)])[:2] for edge in zip(path,path[1:])]+[np.asarray(target_position)[:2]]
+        distance=sum(float(np.linalg.norm(y-x)) for x,y in zip(locations,locations[1:]))
+        return len(path),distance,path
+    return min(paths,key=score),points
 
 
 def run(a):
@@ -54,7 +60,7 @@ def run(a):
             blocked.append(frozenset(row['robots']))
     available=[r for r,arm in o['robots'].items() if r==carrier or (r not in o['held'] and arm['grasp_force_setpoint_n'] is None)]
     coverage=json.loads((directory/'coverage.json').read_text())['goals']
-    path,points=choose(rows,carrier,coverage[a.goal],available,blocked)
+    path,points=choose(rows,carrier,coverage[a.goal],available,blocked,pickup_position=o['objects'][obj]['position_m'],target_position=target['position_m'])
     evidence=dict(scope='Finite normal-port route, not a global optimum or task permission restriction',
         path=path,object=obj,goal=a.goal,world_id=o['world_id'],review_id=o['review_id'],
         source_ports_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),protected_pairs=dict(o['evaluation']['assignments']))
