@@ -1,6 +1,6 @@
 import copy
 import unittest
-from scripts.supervise_mosaic_dropped_payloads import select
+from scripts.supervise_mosaic_dropped_payloads import select,select_retract,vertical_clearance_plan,full_original_goal_set
 
 
 class DroppedPayloadAdmissionTests(unittest.TestCase):
@@ -39,6 +39,47 @@ class DroppedPayloadAdmissionTests(unittest.TestCase):
             elif change=='feedback':o['last_actions'][0]['results']['H']['status']='uncertain'
             else:o['held']={}
             with self.assertRaises(ValueError):select(self.s,o,self.task)
+
+
+    def test_measured_retract_requires_a_raised_close_supported_grip(self):
+        s=copy.deepcopy(self.s);o=copy.deepcopy(self.o)
+        s['review_history'][0]['error']='RuntimeError: Transfer retract infeasible with measured payload H_stock17'
+        o['objects']['H_stock17']['position_m']=[.84,1.21,.8615]
+        o['robots']['H'].update(gripper_width_m=.0598,tcp_m=[.84,1.21,.8877])
+        self.assertEqual(select_retract(s,o,self.task),('H','H_stock17','g'))
+        for change in ('width','height','distance','feedback','other_force'):
+            bad=copy.deepcopy(o)
+            if change=='width':bad['robots']['H']['gripper_width_m']=0
+            elif change=='height':bad['objects']['H_stock17']['position_m'][2]=.83
+            elif change=='distance':bad['robots']['H']['tcp_m']=[0,0,1]
+            elif change=='feedback':bad['last_actions'][0]['results']['H']['status']='uncertain'
+            else:bad['robots']['B']['grasp_force_setpoint_n']=50
+            with self.assertRaises(ValueError):select_retract(s,bad,self.task)
+
+    def test_only_the_full_original_goal_set_bypasses_the_empty_remaining_cache(self):
+        o=copy.deepcopy(self.o);o['held']={};o['robots']['H']['grasp_force_setpoint_n']=None
+        task=dict(goals=[dict(goal_id='g'),dict(goal_id='g2')])
+        o['evaluation'].update(task_success=True,assignments={'g':'x'})
+        self.assertFalse(full_original_goal_set(o,task))
+        o['evaluation']['assignments']['g2']='y';self.assertTrue(full_original_goal_set(o,task))
+        o['held']={'H':'x'};self.assertFalse(full_original_goal_set(o,task))
+
+    def test_vertical_plan_keeps_observed_state_and_rejects_any_blocked_segment(self):
+        from unittest.mock import patch
+        from types import SimpleNamespace
+        from pathlib import Path
+        import numpy as np
+        arm=SimpleNamespace(site=0,qids=np.arange(7),ik=SimpleNamespace(limits=np.tile([-1.,1.],(7,1))))
+        data=SimpleNamespace(site_xpos=np.array([[0.,0.,1.]]),site_xmat=np.eye(3).reshape(1,9),qpos=np.zeros(7))
+        t=SimpleNamespace(arms={'H':arm},data=data)
+        t.screen_ik=lambda robot,point,rotation,seed:np.full(7,(point[2]-1)*.1)
+        t.pose_clear=lambda robot,q,allowed:allowed==('H_stock17',)
+        observed=dict(sim_time_s=4.,robots={'H':dict(tcp_quaternion_wxyz=[1,0,0,0])})
+        with patch('scripts.supervise_mosaic_dropped_payloads.observed_trial',return_value=(t,observed,b'observation')):
+            result=vertical_clearance_plan(Path('.'),'H','H_stock17')
+            np.testing.assert_allclose(result['target_m'],[0,0,1.1]);np.testing.assert_array_equal(data.qpos,np.zeros(7))
+            t.pose_clear=lambda robot,q,allowed:False
+            with self.assertRaisesRegex(ValueError,'no screened route'):vertical_clearance_plan(Path('.'),'H','H_stock17')
 
 
 if __name__=='__main__':unittest.main()
