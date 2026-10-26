@@ -26,7 +26,7 @@ def select(status,o,task):
     if status['phase']!='review' or (status['world_id'],status['review_id'])!=(o['world_id'],o['review_id']):
         raise ValueError('Require matching current review identity')
     if o['evaluation']['violations']:raise ValueError('Retained process violation requires owner review')
-    match=re.fullmatch(r'RuntimeError: Payload contact missing before loaded transit ([A-Z]_stock\d+)',status['review_history'][-1]['error'])
+    match=re.fullmatch(r'RuntimeError: Payload (?:contact missing before loaded transit|still drifting during bounded re-observation) ([A-Z]_stock\d+)',status['review_history'][-1]['error'])
     if not match:raise ValueError('New error class requires owner review')
     name=match.group(1);job=o['job']
     if not job or job['object']!=name or list(o['held'].values())!=[name]:raise ValueError('Current job and single tracked payload must agree')

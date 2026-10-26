@@ -14,6 +14,12 @@ class DroppedPayloadAdmissionTests(unittest.TestCase):
     def test_accepts_the_observed_separated_empty_hand_and_flat_table_cube(self):
         self.assertEqual(select(self.s,self.o,self.task),('H','H_stock17','g'))
 
+    def test_a_previous_drift_error_can_recover_only_after_actual_empty_hand_table_drop(self):
+        s=copy.deepcopy(self.s);s['review_history'][0]['error']='RuntimeError: Payload still drifting during bounded re-observation H_stock17'
+        self.assertEqual(select(s,self.o,self.task),('H','H_stock17','g'))
+        held=copy.deepcopy(self.o);held['robots']['H']['gripper_width_m']=.06
+        with self.assertRaises(ValueError):select(s,held,self.task)
+
     def test_rejects_stale_identity_new_errors_and_prior_process_violations(self):
         for change in ('identity','error','violation'):
             s=copy.deepcopy(self.s);o=copy.deepcopy(self.o)
