@@ -34,7 +34,8 @@ def inspect(a):
         t.arms[robot].qref=q.copy()
     t.actions=[];t.event=lambda *args,**kwargs:None
     t.monitor.result=lambda:dict(o['evaluation']);t.monitor.violations=list(o['evaluation']['violations'])
-    old=json.loads((directory/'supply-plan.json').read_text())
+    old_path=directory/'supply-plan.json'
+    old=json.loads(old_path.read_text()) if old_path.exists() else dict(table_buffers=[])
     angles={frozenset(row['robots']):row['angled_grasp'] for row in old['table_buffers'] if row.get('angled_grasp')}
     t.mosaic_angled_edges=dict(angles);t.mosaic_edges={frozenset(row['robots']):np.asarray(row['position_m']) for row in old['table_buffers']}
     remaining,available,protected=reference.protected_remaining_inputs(t,o['evaluation']['assignments'])

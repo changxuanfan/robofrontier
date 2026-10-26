@@ -75,8 +75,9 @@ def plan(a):
         {robot:('move',dict(target_m=contact.tolist(),quaternion_wxyz=matrix_quat(r).tolist(),speed_m_s=.035,angular_speed_rad_s=.6))},
         {robot:('gripper',dict(mode='grasp',width_m=.06,force_n=50.,speed_m_s=.04,epsilon_inner_m=.008,epsilon_outer_m=.008))}]
     color=next(item['color'] for item in t.task['objects'] if item['id']==name)
-    coverage=json.loads((directory/'coverage.json').read_text())['goals']
-    goals=[g for g in t.task['goals'] if g['requires']['color']==color and g['goal_id'] not in o['evaluation']['assignments'] and robot in coverage[g['goal_id']]]
+    coverage_path=directory/'coverage.json'
+    coverage=json.loads(coverage_path.read_text())['goals'] if coverage_path.exists() else {}
+    goals=[g for g in t.task['goals'] if g['requires']['color']==color and g['goal_id'] not in o['evaluation']['assignments'] and robot in coverage.get(g['goal_id'],[])]
     goal=min(goals,key=lambda g:np.linalg.norm(np.asarray(g['position_m'])[:2]-base[:2])) if goals else None
     request=dict(id=a.id,world_id=o['world_id'],review_id=o['review_id'],operation='commands',batches=commands)
     evidence=dict(scope='Observed-state kinematic candidate only; actual grasp/lift/placement must be verified',
