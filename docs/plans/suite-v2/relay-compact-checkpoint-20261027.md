@@ -5,6 +5,51 @@
 **用户刚要求 compact 后仍保留细节，并明确“程序不要停”。不要停止、重启、
 另开原仿真，也不要把 compact 当作取消任务。继续直到9项完成。**
 
+## 已完成：9/9 项、27/27 根（最新，覆盖下文全部未完成前沿）
+
+**物理任务已经全部完成，不再推进任何 Oracle 控制或重跑任务。**
+两个原PID 52509、52510依用户“程序不要停”仍运行；没有给它们写STOP。
+L3最后P1完成最终J/P(v155)、I短撤离(v156)、Goal前移(v158)、下降v159-1..10、
+距表面约13mm时真实完整80mm开口v159-11和观察v160；4/4全部分离落在框内，
+第一验收时L3四根0越线。L2也4/4。根目录user-goal-batch-status.json已独立9/9，
+USER-GOAL-ALL-NINE-COMPLETE.json已保存，原native严格评分与历史不变（汇总仍3/9）。
+
+最终P抓姿问题用O24cm暂接、实际P空手撤离、I/O恢复level，再用完整后续运输
+筛选P58cm Top分支解决。真实v149 P空手free-wrist撤离、v150 level、v151新Top P
+交接、v152/v153 O撤离home、v154实际驶入最终窗、v155 J/P交接均已完成。
+之前v124 Side P及可选整杆roll耗尽腕限位的历史保留，绝无物理checkpoint回滚。
+
+最后安装的contact escape为**revision5**，同一52510里已ack，frozen
+`open-contact-withdraw-v5.py` SHA256
+`6d761f2e3ca1755bd4b5160e124da020d5ee6cbdc76f74aecd7a5f67872137bb`。
+仅当另外两臂有实际双边力支撑时，空手短距6cm撤离可转动最多0.20rad；
+仅Goal接地无双接收臂时仍0.04rad。81+点原几何非加深/无新穿透/机器人世界
+碰撞检查与真实分离后置检查不变，未改physics或monitor。该模块6个单测通过。
+最后Goal组合installer `final-goal-recovery-v2.py` SHA256
+`491e2b39120c79b7bb44d1f96967f7079a5ded87530bbb7313cfcbba499569e3`，
+只安装已测试Goal50、真实支持/低位80mm开口及contact withdrawal；同一实例/world。
+实验性的world-topdown/Top-only新语义从未装入活世界，源码已恢复原语义，不依赖它。
+
+**仅剩媒体导出/交付（物理已完成）**：
+- 只读前缀校验脚本 `scripts/verify_relay_completion_prefix.py` 已验证L2 565086帧、
+  L3 1517398帧（source从0起），每个chunk checksum/shape/time/finite，最后真记录帧
+  另验inside50/released/grounded/qualified handover；不新增物理episode。
+- 原进程继续运行，不使用close/STOP换视频。renderer现在支持--completion-sim-s，
+  使用真实记录截止帧而不伪造trial-end事件：L2截止9418.100001001016，
+  L3截止25289.960004234537，原始完整motion数据仍持续保留。
+- 输出 `/Users/fanchangxuan/Repos/roomscript2/outputs/oracle/relay-user-completed-20261027/`
+  的 `relay-a16-d2-full/global.mp4`、`relay-a16-d3-full/global.mp4` 正在导出。
+  exec sessions **22221 / 84382**，media PIDs32831/32832，子编码器32835/32836。
+  VideoToolbox硬件编码已smoke通过，ffmpeg线程/filters为1；观察总CPU每case<200%。
+- 仅媒体进程应用等待判定优化：去掉指令执行区间外机器人关节/夹爪微抖动的idle
+  检测，所有指令区间与所有payload自由体/被动关节运动阈值保持原值；原物理进程未触碰。
+  各输出目录 `export-idle-motion-policy.json`保存生效帧/时间，完成后并入manifest。
+  没有删去失败动作或物体真实运动；早期画面保留更多等待。
+- 完成后看首末PNG、ffprobe时长并确认manifest decode_passed，再给用户这两段完整录像。
+  报告 `completion-report.md` 已写在输出根目录；需要把最后两行“导出中”更新为可播放。
+- 还未最终commit的改动：contact escape revision5/6 tests；视频cutoff/hardware选项及
+  verify-prefix新脚本；本checkpoint。不要将9/9重新标成未完成或再次执行旧ID。
+
 ## 最后L3卡点已解开的最新动作
 
 仍26/27、8/9；16L2四根实际完成，52509依用户要求继续活着，未STOP。

@@ -31,7 +31,7 @@ def robot_cargo_contact(t, ident, robot):
         for a,b in ((c.geom1,c.geom2),(c.geom2,c.geom1))) for c in t.data.contact)
 
 
-def plan_open_contact_withdrawal(t, ident, robot, joint_rad, goal_names=None):
+def plan_open_contact_withdrawal(t, ident, robot, joint_rad, goal_names=None, actual_support=None):
     """Read-only short escape with the actual 80 mm opening and fixed cargo."""
     arm=t.arms[robot];observation=arm.observe()
     if arm.job is not None or arm.grasp_force is not None:
@@ -43,9 +43,12 @@ def plan_open_contact_withdrawal(t, ident, robot, joint_rad, goal_names=None):
     relay=t.monitor.relay_v2;state=relay.states[ident]
     accepted=None if goal_names is None else set(goal_names(t,ident))
     inside=relay.inside(state) if accepted is None else ident in accepted
-    if not inside or not (relay.environment_contact(state['all_geoms'])
-            or ident in relay.supported_payloads(goal_only=True,require_all=False,inside_ids=accepted)):
-        raise ValueError('Contact withdrawal requires actual grounded Goal cargo')
+    support=set(t.monitor.bilateral(state['rod_geoms'],positive_force=True)
+        if actual_support is None else actual_support)-{robot}
+    grounded=inside and (relay.environment_contact(state['all_geoms'])
+        or ident in relay.supported_payloads(goal_only=True,require_all=False,inside_ids=accepted))
+    if len(support)<2 and not grounded:
+        raise ValueError('Contact withdrawal requires two actual receivers or grounded Goal cargo')
     if any(robot_cargo_contact(t,name,robot) for name in relay.states if name!=ident):
         raise ValueError('Different cargo contact needs its own owner review')
     goal=np.asarray(joint_rad,dtype=float);start=t.data.qpos[arm.qids].copy()
@@ -53,8 +56,9 @@ def plan_open_contact_withdrawal(t, ident, robot, joint_rad, goal_names=None):
         raise ValueError('Finite in-limit seven-joint target required')
     old_point=t.data.site_xpos[arm.site].copy();old_rotation=t.data.site_xmat[arm.site].reshape(3,3).copy()
     point,rotation=arm.ik.pose(goal)
-    if np.linalg.norm(point-old_point)>.06 or np.linalg.norm(rotation_vector(rotation,old_rotation))>.04:
-        raise ValueError('Contact escape is limited to a short near-constant-attitude withdrawal')
+    angle_limit=.20 if len(support)>=2 else .04
+    if np.linalg.norm(point-old_point)>.06 or np.linalg.norm(rotation_vector(rotation,old_rotation))>angle_limit:
+        raise ValueError('Contact escape exceeds its short supported withdrawal scope')
     data=mujoco.MjData(t.screen_model);data.qpos[:]=t.data.qpos;mujoco.mj_forward(t.screen_model,data)
     owned=set(state['all_geoms']);owner=t.monitor.geom_owner;rid=list(t.arms).index(robot);baseline={}
     for c in data.contact:
@@ -86,6 +90,8 @@ def plan_open_contact_withdrawal(t, ident, robot, joint_rad, goal_names=None):
                 raise RuntimeError('Contact withdrawal would hit another robot or scene object')
     if final_contact:raise RuntimeError('Fixed-cargo withdrawal endpoint is not separated')
     return dict(joint_start_rad=start.tolist(),joint_target_rad=goal.tolist(),samples=count,
+        independent_receivers=sorted(support),grounded_goal=bool(grounded),
+        angle_limit_rad=angle_limit,
         initial_contacts={t.model.body(b).name:v for b,v in baseline.items()},
         tcp_start_m=old_point.tolist(),tcp_target_m=point.tolist())
 
@@ -108,7 +114,7 @@ def execute_open_contact_withdrawal(t, ident, robot, joint_rad, goal_names=None)
 
 def install(reference_module):
     """Explicitly add this bounded state to an existing recovery dispatcher."""
-    if getattr(reference_module,'_open_contact_withdrawal_revision',0)>=3:return
+    if getattr(reference_module,'_open_contact_withdrawal_revision',0)>=5:return
     original=getattr(reference_module,'_before_open_contact_withdrawal',reference_module.move_empty_robot)
     reference_module._before_open_contact_withdrawal=original
     def move_empty_robot(t,ident,robot,joint_rad):
@@ -117,4 +123,4 @@ def install(reference_module):
                 goal_names=reference_module.terminal_contact_names)
         return original(t,ident,robot,joint_rad)
     reference_module.move_empty_robot=move_empty_robot
-    reference_module._open_contact_withdrawal_revision=3
+    reference_module._open_contact_withdrawal_revision=5
