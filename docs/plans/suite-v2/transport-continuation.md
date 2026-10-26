@@ -231,3 +231,33 @@ rejections and complete live-state preservation.
 Only current lease owners now supply runtime target/contact permissions; old
 released scopes in failure history cannot overwrite them. An additional guard
 rejects empty recovery scopes before admission instead of raising path[0] later.
+
+## Completed twelve-arm L1 and efficiency measurement
+
+Twelve-arm L1 attempt003 (218c862) passed36/36 in one original-order world:
+1882 robot commands,6 known failed commands recovered, zero violations/unknown
+or unresolved actions;3143.88simulation/4080.84wall seconds. Four owner inputs
+make this engineering-assisted.188634 motion frames/checksums/events audited.
+Both full4x views are rendered and fully decoded; the gallery now has10 videos.
+
+The user added efficiency goals: reduce total makespan and primitive commands,
+increase useful simultaneous arm motion, prefer simple direct pickup/insertion
+and air transfers, and quantify remaining optimization room without claiming a
+global optimum. `scripts/analyze_transport_efficiency.py` audits the selected
+complete witnesses only. It preserves official wall/simulation timings, reports
+recorded engineering handback separately, counts real move/gripper/park/refine
+commands, and provides explicitly conditional fixed-command scheduling bounds.
+The JSON/Markdown results live at the continuation batch root.
+
+For twelve-arm L1, mean moving arms while any arm moves is1.62 (peak12), with
+132 explicitly labeled parking commands and707 precision-refine commands.
+These categories are optimization candidates, not proof they are all redundant.
+The current handover code waits for sender parking before receiver carrying;
+whole future routes are leased at pickup. Both deserve measured scheduling
+comparison. No near-optimality claim is supported by peak concurrency alone.
+
+Owner recovery now tests compact nearby retreats against the receiver's dense
+pickup/insertion and approach route, omitting a full park when proven clear.
+The eight-arm L2 A→H supported recovery reduces its owner prefix5→4 robot
+commands while retaining the same physical aperture and original acceptance.
+These owner recipes remain explicitly assisted, separate from frozen policy code.
