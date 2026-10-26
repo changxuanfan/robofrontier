@@ -44,3 +44,16 @@ class ExplicitPauseBudget:
                 if control.exists():self.update(json.loads(control.read_text()))
             if self.paused_at is None:return False
             time.sleep(.05)
+
+    def pause_for_review(self,trial,notice,has_pending_input):
+        """Preserve known controller jobs at an engineering review boundary."""
+        if trial.motion is not None:
+            trial.motion.capture(trial.data,force=True);trial.motion.flush()
+        trial.event('transport_engineering_review_paused',review=notice,
+            scope='Known affected actions; independent controller jobs preserved, never adopted or replayed')
+        request=dict(paused=True,reason='Measured grasp/preparation review: '+str(notice['reason'])[:300])
+        write_json(self.directory/'control.json',request);self.update(request)
+        if has_pending_input():
+            request=dict(paused=False,reason='Owner recovery input already queued at review acknowledgement')
+            write_json(self.directory/'control.json',request);self.update(request)
+        trial.check_stop()

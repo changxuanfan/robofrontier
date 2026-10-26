@@ -77,16 +77,8 @@ def main():
         # Affected actions are known terminal; unrelated in-flight actions
         # remain in memory and resume their original commands after the gate.
         # This is an engineering freeze, never an exact disk checkpoint.
-        if trial.motion is not None:
-            trial.motion.capture(trial.data,force=True);trial.motion.flush()
-        trial.event('transport_engineering_review_paused',**notice,
-            scope='Known affected actions; independent controller jobs preserved, never adopted or replayed')
-        request=dict(paused=True,reason='Measured grasp/preparation review: '+str(notice['reason'])[:300])
-        write_json(out/'control.json',request);budget.update(request)
-        if any(file.name not in recovery.seen for file in (recovery.path/'inbox').glob('*.json')):
-            request=dict(paused=False,reason='Owner recovery input already queued at review acknowledgement')
-            write_json(out/'control.json',request);budget.update(request)
-        trial.check_stop()
+        budget.pause_for_review(trial,notice,
+            lambda:any(file.name not in recovery.seen for file in (recovery.path/'inbox').glob('*.json')))
     recovery=EngineeringRecovery(out,on_idle=pause_idle if a.pause_on_handback else None,
         inventory_check=unreachable_required_inventory,on_review=pause_review if a.pause_on_handback else None)
     signal.signal(signal.SIGTERM,lambda *_:stopped.update(requested=True))

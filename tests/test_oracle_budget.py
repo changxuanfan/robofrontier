@@ -3,11 +3,23 @@ from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import patch
 import json
+from types import SimpleNamespace
 
 from robofrontier.suite.oracle_budget import ExplicitPauseBudget
 
 
 class PauseBudgetTests(unittest.TestCase):
+    def test_review_notice_kind_does_not_replace_the_trial_event_kind(self):
+        with TemporaryDirectory() as directory:
+            events=[];checks=[];budget=ExplicitPauseBudget(directory)
+            def event(kind,**fields):events.append((kind,fields))
+            t=SimpleNamespace(motion=None,event=event,check_stop=lambda:checks.append(True))
+            notice=dict(job='failed',kind='failed',reason='known grasp failure',preserved_action_ids={'B':'move42'})
+            budget.pause_for_review(t,notice,lambda:False)
+            self.assertEqual(events[0][0],'transport_engineering_review_paused')
+            self.assertEqual(events[0][1]['review'],notice)
+            self.assertIsNotNone(budget.paused_at);self.assertEqual(checks,[True])
+
     def test_full_task_has_no_default_episode_deadline(self):
         from scripts.run_transport_full_oracle import parse_args
         args=parse_args(['--case','transport-a12-d1','--output','unused'])
