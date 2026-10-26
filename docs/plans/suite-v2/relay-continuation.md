@@ -243,3 +243,15 @@ After context compaction, read each original immutable request result and fresh
 `OWNER-CONTINUATION.json` is a retrieval aid, not a substitute for current force
 support, orientation, pending/inflight commands and native evaluation. Stale
 held labels are not evidence of real bilateral support.
+
+
+Eight-arm L3 has now passed the complete native task in its original retained
+world: both assemblies released and stable, zero rule violations, one recovered
+drop retained, and no unresolved actions. All690,333 motion frames decode.
+Thus3/9 complete cases pass; six physical worlds continue. The observer helper
+initially mislabeled this exit as lost because Darwin replaces a zombie's
+command with `<defunct>`. Its preserved parent/PID and `xstat=0`, full success
+report and complete recording establish the actual result. A replacement
+read-only cohort observer recognizes zombie exit status before command text;
+both original queue parents stay paused and all six physical worlds survive.
+The authoritative cohort path is unchanged and records the observer provenance.
