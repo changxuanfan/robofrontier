@@ -58,6 +58,12 @@ def run(a):
         (review/'engineering'/f'{ident}-helper.log').write_text(r.stdout+'\n'+r.stderr)
         return r
 
+    def park_corrected(robot,cid):
+        ident=cid+'-park'
+        r=child([sys.executable,str(Path(__file__).with_name('park_mosaic_review_robot.py')),
+            '--trial',str(directory),'--robot',robot,'--id',ident],ident)
+        if r.returncode:raise RuntimeError('Correction parking needs owner review: '+str(review/'engineering'/f'{ident}-helper.log'))
+
     def correct(job,robot,ident):
         if task['level']>1:
             from scripts.execute_mosaic_flat_pose_correction import seated_correction_geometry
@@ -73,13 +79,15 @@ def run(a):
                 '--contact-offset-m',*map(str,option['contact_offset_m']),
                 '--centering-contact-m',str(option['centering_contact_m']),'--release-height-m','.015'],cid)
             if r.returncode:raise RuntimeError('Correction needs owner review: '+str(review/'engineering'/f'{cid}-helper.log'))
+            park_corrected(robot,cid)
             return
         for height in (.038,.040):
             cid=ident+f'-correct{round(height*1000)}'
             r=child([sys.executable,str(Path(__file__).with_name('execute_mosaic_flat_pose_correction.py')),
                 '--trial',str(directory),'--robot',robot,'--object',job['object'],'--goal',job['goal'],
                 '--id',cid,'--contact-height',str(height)],cid)
-            if r.returncode==0:return
+            if r.returncode==0:
+                park_corrected(robot,cid);return
             issued=any(json.loads(p.read_text()).get('id','').startswith(cid+'-') for p in (review/'requests').glob('*.json'))
             if issued or 'No finite screened repair pickup candidate; no command emitted' not in r.stderr:
                 raise RuntimeError('Correction needs owner review: '+str(review/'engineering'/f'{cid}-helper.log'))
