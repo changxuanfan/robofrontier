@@ -414,3 +414,11 @@ failure; L stale held, force ended. Real3cm rise,4cm normal move,5cm rise and a
 second4cm normal+3cm rise have progressed outside old L jaw envelope; P1drop0.
 Other cargos in this corrected sequential retry remain initially on the table.
 Always read fresh immutable feedback/observation before any next physical call.
+
+The user additionally proposed16-arm radial row gap1.30m. A separate optional
+layout drawing uses symmetric50mm row shifts (outer2.43→2.38m, inner1.03→1.08m),
+keeping the1.73m route centreline. Closest staggered cross-row pairs then span
+1.300–1.374462m; same-side adjacent distances become outer.826565m/inner.667477m.
+When asked whether this includes L1, the user replied“先不改”. Acknowledged:
+no actual scene changes, L1 remains in its present layout;1.30m is preview only.
+`16-arm-gap-1300-option.png/.svg` and`proposal.json` record this non-applied option.
