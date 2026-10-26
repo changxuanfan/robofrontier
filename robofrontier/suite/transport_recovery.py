@@ -12,16 +12,18 @@ import time
 import numpy as np
 
 from ..run_setup import write_json
-from .transport_full_oracle import execute_job
+from .transport_full_oracle import execute_job,goal_coverage,candidate_graph,path_between
 from .transport_runtime import PreparationComplete
+from .transport_oracle_v2 import _robot_payload_contacts
 
 
 class EngineeringRecovery:
-    def __init__(self,directory):
+    def __init__(self,directory,on_idle=None,inventory_check=None):
         self.path=Path(directory)/'recovery'
         for name in ('inbox','accepted','rejected'): (self.path/name).mkdir(parents=True,exist_ok=True)
         self.seen=set();self.external_inputs=[];self.next_poll=0.;self.counter=0
         self.waiting=False;self.failed_progress={};self.automatic_progress={}
+        self.on_idle=on_idle;self.inventory_check=inventory_check
 
     def observation(self,t,runtime):
         failed={ident:dict(goal=job.get('goal'),object=job.get('object'),error=str(job.get('error')),
@@ -33,6 +35,7 @@ class EngineeringRecovery:
             robots={r:a.observe() for r,a in t.arms.items()},
             objects={o['id']:dict(position_m=t.data.body(o['id']).xpos.tolist(),rotation=t.data.body(o['id']).xmat.tolist()) for o in t.env['objects']},
             held=dict(t.held),active_robots=sorted(runtime.running),updated_at_unix_s=time.time(),
+            state_qpos=t.data.qpos.tolist(),state_qvel=t.data.qvel.tolist(),
             source='Privileged engineering observation; never a GPT benchmark policy input')
 
     def _retry(self,t,runtime,ident,request):
@@ -50,6 +53,15 @@ class EngineeringRecovery:
         else:robots=retained|set(requested)
         if robots-set(t.arms):raise ValueError('Unknown recovery robot')
         if not robots:raise ValueError('No available recovery robot')
+        if requested is None and goal['goal_id'] not in t.monitor.result().get('assignments',{}):
+            starts=[r for r in robots if t.arms[r].grasp_force is not None and t.finger_contacts(r,name)]
+            if not starts:
+                point=t.data.body(name).xpos
+                starts=[r for r in robots if np.linalg.norm(np.asarray(t.stations[r]['base_position_m'])[:2]-point[:2])<=.90]
+            destinations=set(goal_coverage(t,goal))&robots
+            graph={r:[s for s in ns if s in robots] for r,ns in candidate_graph(t).items() if r in robots}
+            if not any(path_between(graph,start,end) for start in starts for end in destinations):
+                raise ValueError('No currently available recovery route; preserve the original failed scope')
         original=dict(id=goal['goal_id'],goal=goal,object=name,path=list(robots),attempts=1)
         steps=request.get('steps',[])
         resume=request.get('resume_goal',True)
@@ -64,7 +76,12 @@ class EngineeringRecovery:
             for step in steps:
                 if 'wait_s' in step:t.wait(float(step['wait_s']))
                 else:t.execute('engineering-repair',{step['robot']:(step['operation'],step['parameters'])})
-            if not resume:raise PreparationComplete()
+            if not resume:
+                for actor,held in list(t.held.items()):
+                    if actor in robots and t.arms[actor].grasp_force is None and not _robot_payload_contacts(t,actor,held):
+                        t.held.pop(actor)
+                        t.event('transport_measured_carrier_cleared',robot=actor,object=held)
+                raise PreparationComplete()
             return execute_job(t,runtime,original,resume=True)
         self.counter+=1;new_id=goal['goal_id']+'-recovery-'+str(self.counter)
         if not runtime.recover(ident,new_id,robots,recover):raise ValueError('Requested recovery resources are still busy')
@@ -72,6 +89,13 @@ class EngineeringRecovery:
 
     def poll(self,t,runtime,jobs,pending,force=False):
         if not force and time.monotonic()<self.next_poll:return False
+        if self.inventory_check is not None:
+            lost=self.inventory_check(t)
+            if lost:
+                from .transport_inventory import UnreachableTransportInventory
+                if t.motion is not None:t.motion.capture(t.data,force=True)
+                t.event('transport_inventory_unreachable',objects=lost)
+                raise UnreachableTransportInventory('Required stock left the admitted robot workspace: '+str(lost))
         self.next_poll=time.monotonic()+1.;state=self.observation(t,runtime)
         write_json(self.path/'frontier.json',state);changed=False
         # New accepted progress can free a previously unavailable carrier or
@@ -108,8 +132,10 @@ class EngineeringRecovery:
         self.poll(t,runtime,jobs,pending,force=True)
         next_wall=time.monotonic()
         while not runtime.active:
+            if self.on_idle is not None:self.on_idle(t,runtime)
             t.check_stop()
-            if self.poll(t,runtime,jobs,pending):break
+            if self.poll(t,runtime,jobs,pending,force=self.on_idle is not None):break
+            if self.on_idle is not None:continue
             # Keep gravity, contact and holding alive at approximately real
             # time during owner diagnosis. This waiting counts in the trial.
             runtime.step();next_wall+=float(t.model.opt.timestep)

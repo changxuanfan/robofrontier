@@ -261,3 +261,36 @@ pickup/insertion and approach route, omitting a full park when proven clear.
 The eight-arm L2 A→H supported recovery reduces its owner prefix5→4 robot
 commands while retaining the same physical aperture and original acceptance.
 These owner recipes remain explicitly assisted, separate from frozen policy code.
+
+
+## Engineering wait, inventory loss and recovery ownership
+
+Two twelve-arm configurations lost required sideways cylinder stock during long
+engineering waits: history records slow passive motion followed by leaving the
+admitted workspace. The affected L2 attempt001 and L3 attempts001/002 are sealed
+failed; their partial counts are never combined with a restart. Five qualified
+full witnesses remain unchanged. Inventory loss detection had been too late.
+
+New runs offer explicit `--pause-on-handback` at a fully idle, known-action
+engineering boundary. The physics owner records and acknowledges this pause,
+including wall time; owner input resumes the same live controller/world memory.
+This is an engineering-assisted protocol, never a real-time policy result or a
+checkpoint restoration. Coherent private float64 qpos/qvel observations permit
+FK diagnosis without waiting for delayed video chunks. A read-only stock guard
+ends an unreachable attempt instead of repeatedly trying impossible pickups.
+No geometry, dynamics, force limits, workspace or acceptance rules are changed.
+
+Planning prioritizes sideways rolling cylinders before stable stock and longer
+rolling-stock chains first; identity matching also charges measured base-edge
+route length. These are risk/critical-path heuristics, not optimal scheduling.
+Prepared releases clear bookkeeping only when force is off and actual payload
+contact is absent. Automatic retry now requires an available carrier-to-goal
+route before replacing the old scope, preserving needed busy peers for later.
+96 regression tests pass, including pause-without-physics, inventory detection,
+coherent observations, contact-aware bookkeeping and deferred retry ownership.
+
+Mac process sampling (three-second samples, not whole-episode attribution)
+placed 71% and 79% of main-thread samples in native MuJoCo `mj_step`, primarily
+constraint/sparse-matrix work. Four running worlds used approximately one core
+each; single-world physics ownership and Python scheduling do not saturate all
+15 host cores. Engineering idle stepping is avoidable cost, now paused explicitly.

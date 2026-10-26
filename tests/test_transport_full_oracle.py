@@ -41,6 +41,25 @@ def recorded_frontier(fixture_name='transport_air_frontier.json'):
 
 
 class TransferCoverageTests(unittest.TestCase):
+    def test_rolling_cylinder_long_route_is_not_left_after_stable_local_work(self):
+        from types import SimpleNamespace
+        side=np.array([[1.,0,0],[0,0,-1.],[0,1.,0]])
+        objects=[dict(id='cube',identity='one',shape='cube'),dict(id='cylinder',identity='two',shape='cylinder')]
+        goals=[dict(goal_id='local',robot='A',requires=dict(identity='one'),point=[0,0,.86]),dict(goal_id='far',robot='C',requires=dict(identity='two'),point=[1.4,0,.86])]
+        t=SimpleNamespace(arms={r:None for r in 'ABC'},stations={r:dict(base_position_m=[i*.7,0,.8]) for i,r in enumerate('ABC')},env=dict(objects=objects),task=dict(level=2,goals=goals),event=Mock(),
+            data=SimpleNamespace(body=lambda n:SimpleNamespace(xpos=np.array([0.,0.,.83]),xmat=(side if n=='cylinder' else np.eye(3)).reshape(-1))))
+        with patch.object(full,'candidate_graph',return_value={'A':['B'],'B':['A','C'],'C':['B']}),patch.object(full,'goal_coverage',side_effect=lambda _,g:[g['robot']]),patch.object(full,'goal_pose',side_effect=lambda _,g:(np.array(g['point']),np.eye(3))),patch.object(full.ref,'_pickup_coverage',return_value={n:['A'] for n in ['cube','cylinder']}):
+            jobs=full.plan_jobs(t)
+        self.assertEqual(jobs[0]['id'],'far')
+
+    def test_equal_hop_route_cost_can_prefer_the_shorter_physical_relay(self):
+        from types import SimpleNamespace
+        bases={'A':0.,'B':.7,'C':2.1,'D':1.4};goal=dict(goal_id='goal',robot='C',requires=dict(identity='same'))
+        t=SimpleNamespace(arms={r:None for r in bases},stations={r:dict(base_position_m=[x,0,.8]) for r,x in bases.items()},env=dict(objects=[dict(id='item',identity='same',shape='cube')]),task=dict(level=1,goals=[goal]),event=Mock(),data=SimpleNamespace(body=lambda _:SimpleNamespace(xpos=np.array([.1,0.,.83]),xmat=np.eye(3).reshape(-1))))
+        with patch.object(full,'candidate_graph',return_value={'A':['B'],'B':['A','C','D'],'C':['B'],'D':['B']}),patch.object(full,'goal_coverage',return_value=['C','D']),patch.object(full,'goal_pose',return_value=(np.array([1.9,0.,.833]),np.eye(3))),patch.object(full.ref,'_pickup_coverage',return_value={'item':['A']}):
+            jobs=full.plan_jobs(t)
+        self.assertEqual(jobs[0]['path'],['A','B','D'])
+
     def test_empty_receiver_can_withdraw_from_existing_positive_close_clearance(self):
         from types import SimpleNamespace
         from robofrontier.suite.transport_runtime import sampled_motion_admission

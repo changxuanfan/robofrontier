@@ -55,11 +55,13 @@ def goal_coverage(t,goal):
 
 def plan_jobs(t):
     neighbors=candidate_graph(t);pickups=ref._pickup_coverage(t)
+    bases={r:np.asarray(t.stations[r]['base_position_m'])[:2] for r in t.arms}
     supply=defaultdict(list);demand=defaultdict(list);jobs=[]
     for obj in t.env['objects']:supply[obj['identity']].append(obj)
     for goal in t.task['goals']:demand[goal['requires']['identity']].append(goal)
     coverage={g['goal_id']:goal_coverage(t,g) for g in t.task['goals']}
     pins_up={o['id']:(t.task['level']>1 and t.data.body(o['id']).xmat.reshape(3,3)[2,2]<-.8) for o in t.env['objects']}
+    rolling={o['id']:(t.task['level']>1 and o.get('shape')=='cylinder' and abs(t.data.body(o['id']).xmat.reshape(3,3)[2,2])<.8) for o in t.env['objects']}
     for identity,objects in supply.items():
         goals=demand[identity];cost=np.full((len(objects),len(goals)),1e6);options={}
         if len(objects)!=len(goals):raise ValueError('Transport identity inventory mismatch')
@@ -79,18 +81,20 @@ def plan_jobs(t):
                             # direct job and using existing transfer work for
                             # the hard orientation, rather than extra regrips.
                             posture=2.25 if any(r!=source for r in coverage[goal['goal_id']]) else 4.25
-                        candidates.append((2.*(len(path)-1)+pickup+.4*placement+posture,path,posture))
+                        route_length=sum(float(np.linalg.norm(bases[a]-bases[b])) for a,b in zip(path,path[1:]))
+                        candidates.append((2.*(len(path)-1)+pickup+.4*placement+posture+.3*route_length,path,posture,route_length))
                 if candidates:
-                    score,path,posture=min(candidates,key=lambda c:c[0]);cost[i,j]=score;options[i,j]=(path,posture)
+                    score,path,posture,route_length=min(candidates,key=lambda c:c[0]);cost[i,j]=score;options[i,j]=(path,posture,route_length)
         rows,cols=linear_sum_assignment(cost)
         for i,j in zip(rows,cols):
             if cost[i,j]>=1e6:raise RuntimeError('No finite pickup/destination route '+objects[i]['id'])
             jobs.append(dict(id=goals[j]['goal_id'],goal=goals[j],object=objects[i]['id'],
-                path=options[i,j][0],receiver_candidates=coverage[goals[j]['goal_id']],cost=float(cost[i,j]),posture_cost=options[i,j][1],attempts=0))
-    # Cheap local work can use capacity while a longer relay is progressing.
-    jobs.sort(key=lambda j:(len(j['path']),j['cost']))
-    t.event('transport_private_plan',jobs=[dict(id=j['id'],object=j['object'],path=j['path'],cost=j['cost'],posture_cost=j['posture_cost']) for j in jobs],
-        scope='Finite geometry/pose-aware identity matching; heuristic grip-change cost, not an optimality or dynamics certificate')
+                path=options[i,j][0],receiver_candidates=coverage[goals[j]['goal_id']],cost=float(cost[i,j]),posture_cost=options[i,j][1],route_length_m=options[i,j][2],rolling_stock=rolling[objects[i]['id']],attempts=0))
+    # Long rolling-stock chains must not wait behind all stable local work.
+    # This is a risk/critical-path heuristic, not a claimed optimal schedule.
+    jobs.sort(key=lambda j:(0 if j['rolling_stock'] else 1,-len(j['path']) if j['rolling_stock'] else len(j['path']),j['cost']))
+    t.event('transport_private_plan',jobs=[{k:j[k] for k in ('id','object','path','cost','posture_cost','route_length_m','rolling_stock')} for j in jobs],
+        scope='Finite geometry/pose-aware matching, route-length cost and rolling-stock critical-path priority; not an optimality or dynamics certificate')
     return jobs
 
 

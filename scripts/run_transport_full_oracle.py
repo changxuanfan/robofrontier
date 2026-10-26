@@ -23,6 +23,7 @@ def parse_args(argv=None):
     p.add_argument('--harness',type=Path,default=ROOT/'runs/oracle/transport-r13-units-20261025/harness.json')
     p.add_argument('--wall-s',type=float,help='Optional explicit episode wall cap; default is unlimited')
     p.add_argument('--sim-s',type=float,help='Optional explicit episode simulation cap; default is unlimited')
+    p.add_argument('--pause-on-handback',action='store_true',help='Explicitly pause a known-idle engineering frontier until owner control resumes it')
     return p.parse_args(argv)
 
 
@@ -41,6 +42,7 @@ def main():
             '--harness',str(frozen/'inputs/harness.json'),'--catalog',str(frozen/'inputs/catalog.json')]
         if a.wall_s is not None:args.extend(['--wall-s',str(a.wall_s)])
         if a.sim_s is not None:args.extend(['--sim-s',str(a.sim_s)])
+        if a.pause_on_handback:args.append('--pause-on-handback')
         os.execve(sys.executable,args,env)
     from robofrontier.suite.oracle import Trial,ReferenceStopped
     from robofrontier.suite.transport_full_oracle import solve
@@ -53,8 +55,26 @@ def main():
     sources={str(f.relative_to(frozen)):f.read_bytes() for f in files}
     t=Trial(frozen/case['directory'],out,controller_cfg=load_harness(a.harness),sources=sources)
     t.live_preview=True;t.abort_on_process_violation=True;t.reference_inter_robot_clearance_m=.006;stopped={'requested':False}
-    recovery=EngineeringRecovery(out)
     budget=ExplicitPauseBudget(out)
+    from robofrontier.suite.transport_inventory import unreachable_required_inventory
+    def pause_idle(trial,runtime):
+        if runtime.active or runtime.running or any(arm.job is not None or arm.uncertainty_reported for arm in trial.arms.values()):
+            raise RuntimeError('Engineering handback has unresolved robot actions; cannot adopt or replay them')
+        unseen=lambda:any(file.name not in recovery.seen for file in (recovery.path/'inbox').glob('*.json'))
+        if unseen():return
+        if trial.motion is not None:
+            trial.motion.capture(trial.data,force=True);trial.motion.flush()
+        trial.event('transport_engineering_paused',reason='Known-idle diagnosis boundary; preserve passive stock and controller state',
+            scope='Acknowledged engineering pause, not a real-time policy performance result')
+        request=dict(paused=True,reason='Known-idle Oracle engineering diagnosis; no physics or state changes while waiting')
+        write_json(out/'control.json',request);budget.update(request)
+        # An input published during the pause acknowledgement must not lose
+        # its accompanying wake request.
+        if unseen():
+            request=dict(paused=False,reason='Owner input arrived during pause acknowledgement')
+            write_json(out/'control.json',request);budget.update(request)
+    recovery=EngineeringRecovery(out,on_idle=pause_idle if a.pause_on_handback else None,
+        inventory_check=unreachable_required_inventory)
     signal.signal(signal.SIGTERM,lambda *_:stopped.update(requested=True))
     stop=lambda:stopped['requested'] or (a.wall_s is not None and budget.times()['active_wall_s']>a.wall_s) or (a.sim_s is not None and t.time>a.sim_s) or (out.parent.parent/'STOP').exists()
     t.stop_requested=lambda:budget.gate(stop)
@@ -63,6 +83,7 @@ def main():
         git_commit=os.environ['TRANSPORT_ORACLE_COMMIT'],worktree=os.environ['TRANSPORT_ORACLE_WORKTREE'],
         dependencies=dict(greenlet=importlib.metadata.version('greenlet'),binary_sha256=dependency_files),
         scope='Privileged geometry engineering Oracle; one real world, original full-order acceptance',
+        engineering_protocol=dict(pause_on_handback=a.pause_on_handback,inventory_guard=True),
         budgets=dict(wall_s=a.wall_s,simulation_s=a.sim_s,action_batches=None,
             wall_protocol='No default episode cap; all time recorded; only explicitly supplied caps apply'))
     try:
@@ -77,6 +98,7 @@ def main():
         if isinstance(error,(ReferenceStopped,KeyboardInterrupt)):report['interrupted']=True
     finally:
         report['timing']=budget.times()
+        report['engineering_paused']=report['timing']['paused_wall_s']>0
         report['evaluation']=t.monitor.result()
         report['unresolved_robot_actions']=[r for r,arm in t.arms.items() if arm.job is not None or arm.uncertainty_reported]
         report['final_robot_states']={r:arm.observe() for r,arm in t.arms.items()}
@@ -84,11 +106,12 @@ def main():
         except Exception as error:report['snapshot_error']=str(error)
         if recovery.external_inputs:
             report.update(llm_used=True,engineering_assisted=True,engineering_inputs=recovery.external_inputs)
+        elif report['engineering_paused']:report['engineering_assisted']=True
         t.close(report)
-        if recovery.external_inputs:
+        if recovery.external_inputs or report['engineering_paused']:
             # Trial.close describes the frozen executor by default. Explicit
             # owner-authored live repairs must not be mislabeled as pure code.
-            report.update(llm_used=True,engineering_assisted=True,engineering_inputs=recovery.external_inputs)
+            report.update(llm_used=bool(recovery.external_inputs),engineering_assisted=True,engineering_inputs=recovery.external_inputs)
             write_json(out/'report.json',report)
         write_json(out/'status.json',dict(phase='passed' if report['passed'] else 'failed',report=str(out/'report.json'),updated_at_unix_s=time.time()))
     print(json.dumps(dict(case_id=case['id'],passed=report['passed'],matched_goals=report['evaluation'].get('matched_goals'),
