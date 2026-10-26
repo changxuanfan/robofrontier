@@ -205,3 +205,41 @@ The completed12-arm L1 recording now has a continuous full-timeline16x video:
 `outputs/oracle/relay-nine-review-20261026/relay-a12-d1-full-16x/global.mp4`.
 All299,641 source frames were read and the entire exported video decoded; no
 physics or commands were replayed. Final images show the accepted stable stack.
+
+
+## Seven-world continuation and retained-scene recovery
+
+The authoritative cohort is now
+`runs/oracle/relay-parallel-ba8a19e-20261026-083314`: it imports the two verified
+passes, adopts the original live16-arm L1 and8-arm L3 worlds without restarting,
+and launches all five other unfinished cases from unchanged canonical scene
+inputs using frozen `ba8a19e`. Seven physical processes run concurrently; there
+is no total wall deadline. The old queue supervisor is paused so it cannot
+launch duplicate worlds; its two physical children and their history survive.
+The run-local cohort helper records frozen source, ownership and exit status.
+
+The closed8-arm L2 attempt was ended too early: later read-only FK found an
+exposed-face grasp which should have been explored while that world remained
+live. Its failure/recording remains intact and its canonical retry is now active.
+Finite candidate exhaustion does not authorize closing any retained scene.
+
+In the retained16-arm L1 world, P3 and P4 are complete. P1 suffered one real
+slip, recovered with its original K/C custody through supported opening and
+world-up face selection, then physically escaped the L-arm corridor, lifted
+and unrolled to upright. Its drop count remains one. P2 has advanced from M/D
+to M/E and executed a yaw-relieved clockwise carry; both actual support and
+outgoing-arm withdrawal were verified. Further handovers remain necessary.
+
+In retained8-arm L3, P2 is complete. P1 recovered its one earlier drop, then
+changed F/E to H/E with a balanced top/side grasp. E also had wrist self-contact
+under a pure lift; an outward rise admitted the G top approach. Actual H/G top
+handover succeeded at offsets .58/.44 (estimated gravity moment .555Nm), then
+physically lifted to1.45m and crossed to x1.30. A fresh full carry screen admits
+Goal hover x1.78,z1.25; placement/release is still pending at this note's write.
+These are privileged assisted physical continuations, not pure-program passes.
+
+After context compaction, read each original immutable request result and fresh
+`recovery/observation.json` before another dependent action. The batch
+`OWNER-CONTINUATION.json` is a retrieval aid, not a substitute for current force
+support, orientation, pending/inflight commands and native evaluation. Stale
+held labels are not evidence of real bilateral support.
