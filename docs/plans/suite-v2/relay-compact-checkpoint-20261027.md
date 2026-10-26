@@ -5,6 +5,33 @@
 **用户刚要求 compact 后仍保留细节，并明确“程序不要停”。不要停止、重启、
 另开原仿真，也不要把 compact 当作取消任务。继续直到9项完成。**
 
+## Compact 后继续工作的最新增量（2026-10-27）
+
+以下新进度覆盖下文旧前沿：**24/27根完成，仍7/9项**。原PID/world不变。
+- 16L2 P3：`r16-p3-P-current-normal-escape-v44` 已真实完成分离；独立50mm验收通过，
+  仅约1.56mm越线、无force/robot contact，native completed也为true，drops0。
+  `r16-p3-P-separated-home-v45`已完成，P可重新参与运输。16L2现2/4。
+- 16L2 P2：G/O→H/O(v41)完成；H为Side的中间抓姿不再被错误当作禁用。
+  多个普通carry前移到[1.55,.8,1.2]，`r16-p2-HO-to-IO-palm-clear-Top-v51`
+  已完成I/O Top；最新helper正在执行v52 I/P、v53前移、v54 J/P的有限前缀，
+  **先核对原results和pending，不能重放这些ID**。P1仍D/M Top，当前local站位约-.431/+.320m。
+- 16L3 P1：确认旧N Side张爪后本来已可无接触停留；把立即home当成交接条件是冗余约束。
+  新`robofrontier/suite/relay_donor_staging.py`只预测完整21点普通75mm开口并要求
+  停留点1mm全景无接触，不改活物理；后续carry仍包含静止donor的全部几何。
+  同一52510进程已按既有用户热更新授权加载`parked-donor-v1.py`，SHA256
+  `2fa937b9cbc878075ded78ae0ac6c30cc2b9584e07dad7ae3d95696a83e13126`；
+  ack/queue/detach均确认，runtime source/meta在原16L3 recovery/controller-extensions。
+  新loader `runs/engineering/relay-descent-20261026/relay_parked_hotload_loader.py`。
+  捕获现场正常75mm开口通过、45mm未张开负例拒绝、私有诊断qpos未变；21个已有recovery单测通过。
+- `r16-p1-HN-to-HO-safe-parked-N-v47`已实际完成H/O Top交接；
+  `r16-p1-HO-separate-parked-N-v50`已沿实测N tool Z移动120mm，木杆与N真实分开。
+  N直接home(v51)只规划失败无动作；N局部q[2]+.4的v54已真实完成。
+  下一段H/O forward仍被N_hand/O_link5..7挡住；不要重跑大范围IK。
+  最新helper正在验证/执行`N-compound-future-fold-v58-1..`和`HO-Ncompound-forward-v59`，
+  以完整后续carry清障为目标选有限空手折叠路径。单关节v56、carry v57未提交。
+  N复位并非必须，只需当前无力空手的完整实际短路径让开后续transport。
+- L2和L3两套原世界继续并行，各最多物理1核+辅助1核；不新建/停止原进程。
+
 ## 一分钟恢复
 
 1. 工作目录 `/Users/fanchangxuan/.codex/worktrees/relay-continuation/roomscript2`，
