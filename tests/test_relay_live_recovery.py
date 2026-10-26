@@ -72,6 +72,23 @@ class RelayLiveRecoveryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'Joint target applies only'):
             self.recovery.process(dict(self.request,id='wrong-op',joint_rad=[0.]*7))
 
+    def test_user_accepted_goal_stack_can_open_without_direct_table_contact(self):
+        self.t.execute=Mock();self.t.held={'G':'p','H':'p'}
+        self.t.monitor.relay_v2.states['p']['all_geoms']={1}
+        self.t.monitor.relay_v2.environment_contact=lambda _:False
+        with patch('robofrontier.suite.relay_live_recovery.ref.user_goal_open_supported',return_value=True,create=True),patch('robofrontier.suite.relay_live_recovery.ref.arm_payload_contact',return_value=True):
+            result=self.recovery.process(dict(self.request,op='open'))
+        self.assertEqual(result['status'],'completed')
+        self.assertEqual(self.t.execute.call_args.args[1]['G'][1]['width_m'],.08)
+        self.assertEqual(self.t.held,{'G':'p','H':'p'})
+
+    def test_supported_open_cannot_release_differently_labelled_cargo(self):
+        self.t.execute=Mock();self.t.held={'G':'other','H':'p'}
+        self.t.monitor.relay_v2.states['p']['all_geoms']={1}
+        self.t.monitor.relay_v2.environment_contact=lambda _:True
+        result=self.recovery.process(dict(self.request,op='open'))
+        self.assertEqual(result['status'],'failed');self.t.execute.assert_not_called()
+
     def test_cooperative_roll_is_a_normal_carry_orientation_not_a_pose_write(self):
         request=dict(self.request,target_quaternion_wxyz=[np.sqrt(.5),0,np.sqrt(.5),0])
         with patch('robofrontier.suite.relay_live_recovery.ref.carry') as carry:

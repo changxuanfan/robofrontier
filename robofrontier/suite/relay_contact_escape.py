@@ -31,7 +31,7 @@ def robot_cargo_contact(t, ident, robot):
         for a,b in ((c.geom1,c.geom2),(c.geom2,c.geom1))) for c in t.data.contact)
 
 
-def plan_open_contact_withdrawal(t, ident, robot, joint_rad):
+def plan_open_contact_withdrawal(t, ident, robot, joint_rad, goal_names=None):
     """Read-only short escape with the actual 80 mm opening and fixed cargo."""
     arm=t.arms[robot];observation=arm.observe()
     if arm.job is not None or arm.grasp_force is not None:
@@ -41,8 +41,10 @@ def plan_open_contact_withdrawal(t, ident, robot, joint_rad):
     if t.held.get(robot) not in (None,ident):
         raise ValueError('Contact withdrawal belongs to the actual cargo label')
     relay=t.monitor.relay_v2;state=relay.states[ident]
-    if not relay.inside(state) or not (relay.environment_contact(state['all_geoms'])
-            or ident in relay.supported_payloads(goal_only=True,require_all=False)):
+    accepted=None if goal_names is None else set(goal_names(t,ident))
+    inside=relay.inside(state) if accepted is None else ident in accepted
+    if not inside or not (relay.environment_contact(state['all_geoms'])
+            or ident in relay.supported_payloads(goal_only=True,require_all=False,inside_ids=accepted)):
         raise ValueError('Contact withdrawal requires actual grounded Goal cargo')
     if any(robot_cargo_contact(t,name,robot) for name in relay.states if name!=ident):
         raise ValueError('Different cargo contact needs its own owner review')
@@ -88,8 +90,8 @@ def plan_open_contact_withdrawal(t, ident, robot, joint_rad):
         tcp_start_m=old_point.tolist(),tcp_target_m=point.tolist())
 
 
-def execute_open_contact_withdrawal(t, ident, robot, joint_rad):
-    plan=plan_open_contact_withdrawal(t,ident,robot,joint_rad)
+def execute_open_contact_withdrawal(t, ident, robot, joint_rad, goal_names=None):
+    plan=plan_open_contact_withdrawal(t,ident,robot,joint_rad,goal_names=goal_names)
     digest=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     t.event('engineering_open_contact_withdrawal',payload=ident,robot=robot,
         controller_source_sha256=digest,controller_scope='privileged assisted normal actuators',plan=plan)
@@ -106,11 +108,13 @@ def execute_open_contact_withdrawal(t, ident, robot, joint_rad):
 
 def install(reference_module):
     """Explicitly add this bounded state to an existing recovery dispatcher."""
-    if hasattr(reference_module,'_before_open_contact_withdrawal'):return
-    original=reference_module.move_empty_robot
+    if getattr(reference_module,'_open_contact_withdrawal_revision',0)>=3:return
+    original=getattr(reference_module,'_before_open_contact_withdrawal',reference_module.move_empty_robot)
     reference_module._before_open_contact_withdrawal=original
     def move_empty_robot(t,ident,robot,joint_rad):
         if robot_cargo_contact(t,ident,robot):
-            return execute_open_contact_withdrawal(t,ident,robot,joint_rad)
+            return execute_open_contact_withdrawal(t,ident,robot,joint_rad,
+                goal_names=reference_module.terminal_contact_names)
         return original(t,ident,robot,joint_rad)
     reference_module.move_empty_robot=move_empty_robot
+    reference_module._open_contact_withdrawal_revision=3

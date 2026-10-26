@@ -140,7 +140,11 @@ class RelayLiveRecovery:
                 ref.grasp(t,payload,selected,offset);result['holders']=selected
             elif op=='open':
                 state=t.monitor.relay_v2.states[payload]
-                if not t.monitor.relay_v2.environment_contact(state['all_geoms']):raise ValueError('Opening recovery requires actual table support')
+                supported=t.monitor.relay_v2.environment_contact(state['all_geoms'])
+                policy=getattr(ref,'user_goal_open_supported',None)
+                if not supported and policy is not None:supported=policy(t,payload)
+                if not supported:raise ValueError('Opening recovery requires actual table or approved Goal support')
+                if any(t.held.get(a) not in (None,payload) for a in team):raise ValueError('Cannot open a hand labelled with different cargo')
                 t.execute('recovery-open-supported',{a:('gripper',dict(mode='move',width_m=.08,speed_m_s=.06)) for a in team})
                 for a in team:
                     if not ref.arm_payload_contact(t,payload,a):t.held.pop(a,None)

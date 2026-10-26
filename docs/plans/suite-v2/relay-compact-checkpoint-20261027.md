@@ -5,6 +5,68 @@
 **用户刚要求 compact 后仍保留细节，并明确“程序不要停”。不要停止、重启、
 另开原仿真，也不要把 compact 当作取消任务。继续直到9项完成。**
 
+## 最后L3卡点已解开的最新动作
+
+仍26/27、8/9；16L2四根实际完成，52509依用户要求继续活着，未STOP。
+16L3最后P1：`r16-p1-N-local-lattice-v117-1` 已实际完成空N局部姿态调整，
+`r16-p1-IO-past-lattice-N-v118` 已实际完成向前250mm，原来N臂阻塞已穿过。
+成功的只读规划器：`runs/engineering/relay-descent-20261026/finite_local_empty_lattice.py`。
+只在N四个相关关节的625/750候选局部网格中检查186个clear状态，135个有完整后续运输，
+局部visibility检查185条边，展开1个状态，用3.229秒找到可执行1段普通空手路线；
+不是再扩大百万次全局IK。原强求home和很多单关节直线未解决，禁止重复那些旧搜索。
+
+实际I/O双持P1 Root约[1.5022,.7573,1.2570]，测得yaw1.87037，仍倾斜/roll；
+**当前有限helper**正在执行 `IO-level-after-N-v119`（正常恢复level）→
+`IO-open-P-window-v120`（到[1.5,.65,1.2]等有限候选）→
+`IO-to-IP-final-Top-v121`。先看pending/results，不重放ID。
+然后I/P到J/P，Goal放置，独立50mm复验全部4根和所有原记录。
+
+用户尚未看到16L2完整成功影片；视频要保留全原episode动作/失误/修正，允许压缩静止段。
+当前两个原case都仍活，原renderer --user-goal-complete 要关闭stream后精确final event，
+不要冒充已完成封存/完整影片。最后9/9实际验收后可正常结束并封存记录，用户说九项完结束。
+
+## 最新：26/27根，8/9项（覆盖后文所有早期前沿）
+
+16L2已真实4/4完成，`user-goal-report.json` passed=true，`USER-GOAL-COMPLETE.json`已保存。
+为遵守用户“程序不要停”，**目前没有给16L2写STOP，52509仍运行**；剩余L3继续。
+16L2最后P1完整I/P→J/P(v78)、Goal(v79)、正常下降(v80)后遇到旧Goal5mm规则，
+新user50接触策略v81允许P1砝码接触P3，release开口P失败但无力；完整80mm开口v85
+及P最终+30mm正常撤离v86已完成，真正松开/无接触，全部Goal50内。旧native/drop历史未改。
+
+新控制/观察修正（均同一原进程已获授权热加载，记录在各case controller-extensions）：
+- `relay_user_goal_policy.py`：Goal50接触名单、真实Goal堆叠支持/组件离桌30mm低释放。
+  **只是操作策略，不修改native monitor/评分/历史/几何**。
+- 16L2 `goal-stack-open-v1-loaded.json`：49448a4f94d66c3c6788d902d5a54e1dc2dd7a7e4e6419f5f7e6e8e452b5d425，typed open可接受真实支持的
+  user50堆叠并开至80mm；不能打开标记为其他cargo的手，接触存在时保留held标签。
+  新process保留同实例/world和所有原guard；16个live_recovery测试通过。
+- `relay_contact_escape.py`现在revision3：相同短距/81采样/非加深接触约束，接地支持图
+  改用已批准user50 Goal名单，避免框边缘已完成P3被旧strict排除。
+  16L2 frozen `open-contact-withdraw-v3.py`；组合installer
+  `user-goal-withdraw-native-v1.py` SHA256
+  `3c34d1bec3a46a6ca3b021b3a56663b1af0474d707187d192295996edb84557b`。
+- `relay_observation_state.py`：只读native double joints + cached free-body poses，
+  包含砝码与关节，不再依赖最多2simsec旧的float32影片块；没有live qpos写入。
+  两个原case均已加载。`native-kinematic-state.required`要求diagnostic等待发布的
+  rendering窗口结束，**不能在原publisher先写普通JSON后暂缺native字段时fallback旧chunk**。
+  3个单测 + 真实场景全几何FK重建误差0通过。Goal策略4个测试/contact3个测试通过。
+
+**现在仅16L3 P1剩余，实际 I/O Top 相对木杆，已经倾斜并绕跨度滚转。**
+- v87空间倾斜约17deg已完成，v88-1/2前移完成；v93/v94继续空间转向，
+  v95 I/O交接已真实完成；v96空闲H已home。
+- v99绕长跨度roll -0.2已完成，v100前移80mm、v102前移至Root约x1.50已完成，
+  v103前移y-50mm已完成；v104再roll -0.15已完成，v105被原guard提前拒绝（无动作）。
+- 最重要的新解：**空N臂不该强求home，也不是只动手腕，应把forearm降到悬挂砝码下面**。
+  旧单关节折叠v54曾把N q[2]抬高.4，导致N_link5挡住O_link2；
+  现在真实v108已把N q[2]降低.15（约-1.74），frame路径4mm终点/10mrad完整扫掠已过。
+  这不是state rollback，是记录完整的普通空手动作。N仍force-free/open/cargo-separated。
+- 当前helper `runs/engineering/relay-descent-20261026/finite_spatial_local_progress.py`
+  是旧局部v92脚本（已结束），**不要重跑**。
+  新正在执行的有限前缀是 `r16-p1-IO-past-N-v110-1..3`，必要时
+  `r16-p1-N-under-cargo-v109-1..3`。先看immutable results/pending，不能重发。
+  目标让Root y降到约.8，再把杆恢复较平姿态，I/O→I/P→J/P→Goal。
+- 其他L3 P2/P3/P4在Goal，之后最终必须复验；大多数v69..107规划未提交，
+  不从编号推断执行。实际原world仍be2204c7cc834e2792271a959a435d9e/PID52510。
+
 ## 更晚的原现场前沿（覆盖后文早期增量）
 
 **25/27根、7/9项**。16L2 P2已完成，Top J/P最终正常release通过，框内0越界，drops0。

@@ -51,6 +51,15 @@ def diagnostic_world(run):
             if request.get('op')=='wait' and request.get('seconds')==0:continue
             raise RuntimeError('Original owner repair unresolved; inspect '+path.stem+' before new FK planning')
     observation=json.loads((recovery/'observation.json').read_text())
+    if (recovery/'native-kinematic-state.required').exists():
+        # The original publisher writes its ordinary view before rendering.
+        # Its read-only extension then atomically adds exact free-body poses.
+        # Never fall back to an older movie chunk in that publication window.
+        deadline=time.monotonic()+10.
+        while 'native_kinematic_state' not in observation:
+            if time.monotonic()>=deadline:raise RuntimeError('Exact native observation publication is unresolved')
+            time.sleep(.02)
+            observation=json.loads((recovery/'observation.json').read_text())
     if observation.get('active_jobs'):raise RuntimeError('Original robot execution unresolved; obtain fresh feedback')
     t=Trial.__new__(Trial);t.model=mujoco.MjModel.from_xml_path(str(run/'scene.xml'))
     t.data=mujoco.MjData(t.model)
@@ -60,10 +69,17 @@ def diagnostic_world(run):
     t.arms={a:PandaArm(t.model,t.data,a) for a in t.task['arms']}
     t.home_q={a:t.data.qpos[arm.qids].copy() for a,arm in t.arms.items()}
     t.home={a:(t.data.site_xpos[arm.site].copy(),t.data.site_xmat[arm.site].reshape(3,3).copy()) for a,arm in t.arms.items()}
-    stream=json.loads((run/'motion/stream.json').read_text());chunk=stream['chunks'][-1]
-    with np.load(run/'motion'/chunk['file'],allow_pickle=False) as z:
-        bits=np.bitwise_xor(np.bitwise_xor.accumulate(z['xor'],axis=0),z['base'])
-        t.data.qpos[:]=bits.view('<f4')[-1]
+    native=observation.get('native_kinematic_state')
+    if native is not None:
+        values=np.asarray(native['qpos'],dtype=float)
+        if native['version']!=1 or values.shape!=(t.model.nq,) or not np.isfinite(values).all() or abs(native['sim_time_s']-observation['sim_time_s'])>1e-8:
+            raise ValueError('Invalid exact native kinematic observation')
+        t.data.qpos[:]=values
+    else:
+        stream=json.loads((run/'motion/stream.json').read_text());chunk=stream['chunks'][-1]
+        with np.load(run/'motion'/chunk['file'],allow_pickle=False) as z:
+            bits=np.bitwise_xor(np.bitwise_xor.accumulate(z['xor'],axis=0),z['base'])
+            t.data.qpos[:]=bits.view('<f4')[-1]
     # Restore observed doubles for arm joints and body poses; remaining tiny
     # finger asymmetry comes from the final float32 visual record.
     for a,arm in t.arms.items():
