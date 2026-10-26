@@ -5,6 +5,31 @@
 **用户刚要求 compact 后仍保留细节，并明确“程序不要停”。不要停止、重启、
 另开原仿真，也不要把 compact 当作取消任务。继续直到9项完成。**
 
+## 更晚的原现场前沿（覆盖后文早期增量）
+
+**25/27根、7/9项**。16L2 P2已完成，Top J/P最终正常release通过，框内0越界，drops0。
+16L2现在3/4，只余P1；16L3仍3/4，只余P1。原PID/world不变。
+- L2 P1：D/M先正常前移，D/M→E/M(v63)、E/M→F/M(v65)、F/M→F/N(v66)、
+  F/N→G/N(v68)均实际完成。负侧站位已交替32/54cm避免相邻手掌重叠。
+  最新有限helper：v69 G/N前移已完成，v70 G/O交接已选择并在原进程执行；
+  随后v71前移、v72 H/O Top待实时反馈。必须先看pending/results，不能重发。
+- L3 P1：3个N空手fold(v65-1..3)和H/O前移v66已完成。
+  实际H/O Top，Root约[1.269,1.181,1.190]，N空手仍停在拥挤肩肘区。
+  大量只读的home、单关节fold、位置IK、整段carry未通过；这些未产生物理请求，
+  不是掉落、不是进程结束。不要重复这些静态搜索。
+- L3新增空间姿态typed接口已按现有用户授权热加载到同一52510的
+  RelayLiveRecovery.process方法；只有已测试target_quaternion_wxyz分支，
+  不替换wait循环或重新构建实例，不改状态/历史。14个相关单测通过。
+  frozen extension `spatial-carry-v1.py` SHA256
+  `93d3e04dab818bb67a7214b360354cd1a06ef93e70a6a0c012b9e6b76b88fbc5`，
+  ack installed=true，同PID/world；LLDB已detach。
+  loader `runs/engineering/relay-descent-20261026/relay_spatial_hotload_loader.py`。
+- 最新L3实际请求v87：绕H负侧握点倾斜17deg抬起正端，完整杆/机器人/硬件 sweep已过；
+  helper随后v88-1..8每段最多5cm，真实反馈后重建自由砝码姿态，不把同一砝码刚性预测
+  到整段远端。**这是当前执行前沿，先读结果**。普通执行/掉落/碰撞guard保持。
+- 普通物理反向退让允许保存真实历史；禁止live状态回滚。v84/v85退让完整方案
+  未通过，只读，无物理动作。其他v69..86静态L3编号多数未提交，勿从编号推断完成。
+
 ## Compact 后继续工作的最新增量（2026-10-27）
 
 以下新进度覆盖下文旧前沿：**24/27根完成，仍7/9项**。原PID/world不变。
