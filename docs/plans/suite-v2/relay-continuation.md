@@ -374,3 +374,43 @@ cleared the dropped guard physically, then native place_release completed. It
 later reached released/stable/completed without further object manipulation;
 P2/P3 are now2/3. P1 has physically transferred D/J to E/K. Latest immutable
 results and observations supersede this text for pending operations.
+
+## Five original-size passes; new geometry preview requested
+
+Original16-arm L1 now passed4/4 after its final P/J airborne handover, legal
+Goal hover [1.70,−.15,1.25], and actual descent. J reached a low local IK boundary
+near Rootz1.003. At that observed lower height, horizontal reposition to Goal
+row−.30 had a checked full successor descent to stacked support. Native place
+and terminal release completed. Exit0 and1,771,939 recorded frames verified.
+Original cohort is5/9. All three L1 cases are complete. These are original-scene
+results; do not mix later modified L2/L3 scene results into that ledger.
+
+The user now explicitly requests a design drawing before applying L2/L3 changes:
+L1 unchanged; L2/L3 initial endpoint chord1.15m; earlier30% bend-angle reduction
+retained for this preview (L2 central63°, L3 turn31.5°/interior148.5°); allL3
+hinges out-of-plane angular motion. Weight mount on beam underside,100mm back
+from tip along centreline. Latest correction removes the beam-to-eye short
+bracket entirely: fixed metal eye directly attached to wood. Uniform L2/L3
+contact-linked ring/wooden shaft/weight form. Interpret the additional50mm as
+the below-ring shaft, old L3 nominal120mm to170mm, explicitly labelled assumption
+on drawing; keep600g weight and±25° hinge limits unless separately changed.
+No scene geometry or physics has been changed. Preview PNG/SVG/proposal JSON:
+`outputs/design/relay-underslung-20261026/`.
+
+Side drawing deliberately shows an airborne configuration, not initial tabletop
+placement: underside hardware and a longer hanger require an explicit initial
+clearance/layout check before implementation. Do not silently intersect the
+worktop or change the acceptance contract to manufacture a pass.
+
+Retained current worlds:12L2 P2 actual F/L, inverted, raised/advanced to
+[1.2,2.6,1.4]; P3complete, P1stillA/H.12L3 P1 actualE/J after K opened but its
+send-clear failed; small verified lift/normal/staircase prefixes continue to
+clear old empty K geometry, no P1 drop. P2/P3 released inGoal; P2 instantaneous
+stable qualification can fluctuate, so reverify whole task at final release.
+16L2 P4complete0drops; P3 actualI/O after H opening feedback failed, H remains
+stale held but force ended; never count H as actual support.16L3 old world is
+unchanged. Corrected6a9c19e16L3 separate full retry P1 actualE/M after L aperture
+failure; L stale held, force ended. Real3cm rise,4cm normal move,5cm rise and a
+second4cm normal+3cm rise have progressed outside old L jaw envelope; P1drop0.
+Other cargos in this corrected sequential retry remain initially on the table.
+Always read fresh immutable feedback/observation before any next physical call.
