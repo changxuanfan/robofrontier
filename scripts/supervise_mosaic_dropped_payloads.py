@@ -7,7 +7,6 @@ partial execution, occupied ports or inconsistent old caches leave review open.
 import argparse
 import hashlib
 import json
-import math
 import os
 from pathlib import Path
 import re
@@ -19,6 +18,7 @@ import numpy as np
 
 from scripts.execute_mosaic_repair_route import choose
 from scripts.plan_mosaic_repair_pick import plan,observed_trial
+from scripts.execute_mosaic_flat_pose_correction import seated_correction_geometry
 from robofrontier.suite.oracle import joint_edge_clear
 from robofrontier.run_setup import write_json
 
@@ -113,13 +113,9 @@ def select_near_goal(status,o,task):
     protected=status['review_history'][-1]['protected_assignments']
     if any(assignments.get(g)!=n for g,n in protected.items()):raise ValueError('Restore affected earlier pairings before local correction')
     goal=next(g for g in task['goals'] if g['goal_id']==job['goal_id']);body=o['objects'][name]
-    position=np.asarray(body['position_m']);rotation=np.asarray(body['rotation'])
-    error=float(np.linalg.norm(position[:2]-np.asarray(goal['position_m'])[:2]))
-    yaw=math.atan2(rotation[1,0],rotation[0,0]);turn=abs(round(yaw/(math.pi/2))*math.pi/2-yaw)
-    if (not np.isfinite(position).all() or not np.isfinite(rotation).all() or
-            abs(position[2]-task['table_height_m']-task['cube_size_m']/2)>.001 or rotation[2,2]<.999 or
-            error>.010 or turn>=math.radians(12) or not (error>.005 or turn>math.radians(8))):
-        raise ValueError('Require the demonstrated seated small position or yaw error')
+    seated_correction_geometry(task,body,goal)
+    if abs(body['position_m'][2]-task['table_height_m']-task['cube_size_m']/2)>.001:
+        raise ValueError('Require the actual table-height cube')
     if next(v['color'] for v in task['objects'] if v['id']==name)!=goal['requires']['color']:raise ValueError('Object and goal colors differ')
     return robot,name,job['goal_id']
 

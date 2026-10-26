@@ -144,13 +144,12 @@ class NearGoalAdmissionTests(unittest.TestCase):
             with self.subTest(change=change),self.assertRaises(ValueError):select_near_goal(s,o,self.task)
 
     def test_rejects_other_recovery_geometries_and_wrong_color(self):
-        for change in ('far','already_precise','stacked','tilted','other_up_face','pocket','color'):
+        for change in ('far','already_precise','stacked','tilted','pocket','color'):
             o=copy.deepcopy(self.o);task=copy.deepcopy(self.task)
             if change=='far':o['objects']['B_stock02']['position_m'][0]=.020
             elif change=='already_precise':o['objects']['B_stock02']['position_m'][0]=.0405
             elif change=='stacked':o['objects']['B_stock02']['position_m'][2]=.89
             elif change=='tilted':o['objects']['B_stock02']['rotation']=[[1,0,0],[0,.98,-.2],[0,.2,.98]]
-            elif change=='other_up_face':o['objects']['B_stock02']['rotation']=[[0,0,-1],[0,1,0],[1,0,0]]
             elif change=='pocket':task['level']=1
             else:task['objects'][0]['color']='navy'
             with self.subTest(change=change),self.assertRaises(ValueError):select_near_goal(self.s,o,task)

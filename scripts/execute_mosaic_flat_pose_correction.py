@@ -36,6 +36,20 @@ def rotation_step(vector):
     return np.eye(3)+math.sin(angle)*cross+(1-math.cos(angle))*(cross@cross)
 
 
+def seated_correction_geometry(task,body,goal):
+    rotation=np.asarray(body['rotation']);position=np.asarray(body['position_m'])
+    if not np.isfinite(rotation).all() or not np.isfinite(position).all():raise ValueError('Require finite measured cube geometry')
+    xy_error=float(np.linalg.norm(position[:2]-np.asarray(goal['position_m'])[:2]))
+    allowed_xy=.005 if task['level']==1 else .010
+    if (xy_error>allowed_xy or abs(position[2]-goal['position_m'][2])>.003 or max(abs(rotation[2]))<.999):
+        raise ValueError('This finite in-place correction requires the actual seated planar pose')
+    angle=min(float(np.linalg.norm(rotation_vector(candidate,rotation))) for candidate in CUBE_ROTATIONS)
+    angular_case=math.radians(8)<angle<math.radians(12)
+    position_case=task['level']>1 and .005<xy_error<=.010 and angle<math.radians(12)
+    if not (angular_case or position_case):raise ValueError('Select a seated small-angle or5..10mm flat position correction')
+    return dict(xy_error_m=xy_error,orientation_error_rad=angle,up_body_axis=int(np.argmax(abs(rotation[2]))))
+
+
 def run(a):
     release_height=float(getattr(a,'release_height_m',.0038))
     if not np.isfinite(release_height) or not .0038<=release_height<=.015:
@@ -47,18 +61,9 @@ def run(a):
     if any(arm['grasp_force_setpoint_n'] is not None for arm in initial['robots'].values()) or initial['held']:
         raise ValueError('Begin this correction only with released free grippers')
     if a.goal in initial['evaluation']['assignments']:raise ValueError('Do not rework an accepted goal')
-    body=initial['objects'][name];rotation=np.asarray(body['rotation']);position=np.asarray(body['position_m'])
-    xy_error=float(np.linalg.norm(position[:2]-np.asarray(goal['position_m'])[:2]))
-    allowed_xy=.005 if t.task['level']==1 else .010
-    if (xy_error>allowed_xy or
-            abs(position[2]-goal['position_m'][2])>.003 or rotation[2,2]<.999):
-        raise ValueError('This finite in-place correction requires the actual seated planar pose')
+    body=initial['objects'][name];seated_correction_geometry(t.task,body,goal)
     color=next(o['color'] for o in t.task['objects'] if o['id']==name)
     if color!=goal['requires']['color']:raise ValueError('Selected object color differs from the original goal')
-    yaw=math.atan2(rotation[1,0],rotation[0,0]);delta=round(yaw/(math.pi/2))*math.pi/2-yaw
-    angular_case=math.radians(8)<abs(delta)<math.radians(12)
-    position_case=t.task['level']>1 and .005<xy_error<=.010 and abs(delta)<math.radians(12)
-    if not (angular_case or position_case):raise ValueError('Select a seated small-yaw or5..10mm flat position correction')
     world=initial['world_id'];epoch=initial['review_id'];protected=dict(initial['evaluation']['assignments'])
     if any(json.loads(p.read_text()).get('id','').startswith(a.id+'-') for p in (review/'requests').glob('*.json')):
         raise ValueError('Existing physical request prefix: inspect its original results, never restart it')
