@@ -606,3 +606,102 @@ or monitor reset. This episode still has the old contract and is not a r17 pass.
 New full r17 episodes must start canonically with full recordings; never reuse
 its physical checkpoint or relabel its old feedback. Existing old worlds are
 kept while the new contract is frozen and validated.
+
+## AUTHORITATIVE latest user steering: reuse originals, final-in-Goal only
+
+This supersedes the older "only legacy native pass counts" and mandatory new
+canonical-validation instructions above. The user explicitly said to continue
+the existing old physical worlds, open no new physical episodes, accept release
+near the table without prior timber/weight contact, and count final released
+placement in the white frame without an additional speed/static-duration gate.
+They explicitly accepted a few millimetres of boundary error;5mm was stated to
+the user and applied. Cargo contact and stacking remain allowed. Real airborne
+handover and collision history remain recorded/checked. No live code, physics,
+object pose or monitor state was injected or patched.
+
+Current completion is evaluated read-only by`scripts/check_relay_user_goal.py`.
+It reads the same existing world/recording, checks whole-assembly Goal bounds
+with5mm tolerance, actual release/contact geometry plus native force support,
+real prior qualified handover and no irreversible collision violations. There
+is no velocity/static-duration predicate. Results are separate
+`user-goal-report.json` and`user-goal-batch-status.json`; NEVER overwrite or
+relabel the original stricter native report or legacy failed RPC feedback.
+The root also has`user-goal-contract.json` recording the explicit clarification.
+For a closed episode the checker uses its exact final trial-end event qpos,
+not an older observation; all FK is private read-only, no physics integration.
+
+Authoritative active root is still
+`runs/oracle/relay-r16-38b5423-20261026-171651` (pointer
+`/tmp/relay-r16-active-root.txt`, also`/tmp/relay-parallel-active-root.txt`).
+The six r17 duplicate children75025–75030 and supervisor74995 are SIGSTOP,
+saved in`DUPLICATES-PAUSED.json`; do NOT resume or launch another episode.
+Intermediate duplicate fb57bfa PID66700 is also SIGSTOP after the original8L2
+completed. Its90degree roll remains genuine recorded engineering evidence,
+but it is not substituted for an original full episode. Older paused parents
+55214/99193 also remain stopped. No new physical runs are authorized now.
+
+**Five of nine full cases are complete under the user's current criterion:**
+all three unchanged L1 plus original8L2 and8L3. Original8L2's off-frame P1 was
+regrasped by its original H/G, moved in small ordinary checked prefixes and
+released; both full apparatuses are now inside and released. Original8L3's P1
+was similarly corrected after its first released landing was about100mm out.
+All old failures/marks remain35/1 respectively. Both original physical episodes
+were closed only after completion, with USER-GOAL-COMPLETE.json. Their legacy
+native reports say failed because STOP and the old rules remain unchanged;
+that does not mean corrupted/incomplete recording. All original chunks were
+decoded/checksummed:8L2 **294,816 frames**,8L3 **695,477 frames**, plus exact
+final event states. Proofs are RECORDING-VERIFIED-USER-GOAL.json. Never edit
+the original stream status to claim native success.
+
+Completed full videos were generated, visually checked and delivered inline:
+`outputs/oracle/relay-user-completed-20261026/relay-a08-d2-full/global.mp4`
+(6m13s), and corresponding`relay-a08-d3-full/global.mp4`(6m36s). Canonical start
+to final record,4x action playback, low-motion waits compressed, all actuator
+intervals and intermediate failures/corrections retained. Titles explicitly
+say completion is under the user's white-frame criterion; no new simulation.
+
+Four ORIGINAL cases continue:12L2 PID52507,12L3 PID52508,16L2 PID52509,
+16L3 PID52510; supervisor52485. Latest physical frontier (read original
+results/current observations before every new command, never replay IDs):
+
+-12L2: P3 original G/L correction fixed about10mm overrun; now released inside,
+ user-complete1/3. P2 E/K→F/K at32/54 completed, then forward to[1.6,2.3,1.2]
+ (`r16-owner-12l2-next-payload_02-carry-v1`). F Top, K Side. Current-only F/L
+ next witness at32/44 in`p2-forward-inner-candidate.json`. P1 D/J remains
+ near[.427,2.776,1.33]. Need continue P2 then P1, no reinitialization.
+-12L3: P3 user-complete. P2 was G/L with blocked Side wrist; real G/L→F/L
+ reframe(v15), F/L→F/K(v16) completed; then shorter lowering/forward prefix
+ to[1.6,2.3,1.2] completed. Current F/L next witness32/32 exists, but a
+ stronger full-Top G/L reframe search is also pending/session31105; inspect
+ actual tool axes rather than repeating Side grasp cycles. P1 A/H actual
+ original first prefix to[-1.7,2.2,1.2],yaw−2.5 completed (same v1 carry).
+-16L2: P4 user-complete (released,3.523mm boundary error accepted; do NOT
+ needlessly rework it). P3 G/N→G/O with positive58cm(v1) freed N; G/O→H/O
+ atnegative32/positive58(v2) completed. Next H/O forward/I/P transfer should
+ be planned from actual state. P2 F/M still near[.105,1.719,1.25], M forearm
+ blocks direct carry. N now free; simple retained-F N32/54/44/16 receiving
+ searches failed. Consider a local grasp reframe E/M then E/N or different
+ available positive station; do not expand the same failed search forever.
+ P1 D/L near[-.696,1.516,1.29], awaits freeing M/L resources.
+-16L3: P4 user-complete; P3 real I/P→J/P(v6), Goal carry(v7), normal
+ place_release(v8) completed; current checker counts **2/4**. P1 D/L→D/M(v6),
+ useful forward(v7), D/M→E/M(v8), central carry to[0,1.73,1.2] completed
+ (`r16-owner-16l3-next-payload_01-carry-v1`). P2 F/N: empty G's palm blocked
+ its loaded successor; verified ordinary G joint4+.3 clearance(v5) and real
+ F/N forward to[.8,1.5,1.2],yaw2.67(v6) completed. New O positive38/32/44/58
+ receiving search is pending/session28342. F must eventually be freed for
+ P1's next outer transfer; N can be freed for P1's next inner transfer.
+
+Finite ignored helper`ground_goal_correction.py` preserves exact old
+historical-drop errors AFTER real measured movement. It only continues a new
+unique-ID small prefix after fresh original two-force support, geometry and
+measured progress; never relabels the old failure. After opening a returned
+old-rule error can coexist with a correct actual final placement. Recheck
+release after passive settling: immediately after opening a finger can still
+touch, then clear naturally. Do not equate a failed legacy label with no motion.
+
+Remaining total is9 rods if16L3P3's current accepted landing persists (18/27
+placed). Whole cases remain5/9. Final user completion must still be checked
+from actual poses/release; do not mark a rod complete just for hovering above
+Goal. No whole-task timeout, new physical process, rollback, counter reset,
+source hotpatch or debugger injection.
