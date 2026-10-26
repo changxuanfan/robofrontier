@@ -46,7 +46,11 @@ def plan(a):
     directory=a.trial.resolve();t,o,payload=observed_trial(directory)
     if a.robot in o['held']:raise ValueError('Receiver must have a free gripper')
     robot=a.robot;name=a.object;body=t.data.body(name);position=body.xpos.copy();rotation=body.xmat.reshape(3,3).copy()
+    tilts=tuple(getattr(a,'tilts_deg',(0,) if getattr(a,'flat_only',False) else (0,15,25)))
+    if not tilts or any(not np.isfinite(v) or abs(v)>25 for v in tilts):raise ValueError('Use finite grasp tilts within the existing25degree template range')
     aperture=getattr(a,'aperture',.072)
+    force=float(getattr(a,'force_n',50.));centering=float(getattr(a,'centering_contact_m',0.))
+    if not 0<force<=50 or not 0<=centering<=.0015:raise ValueError('Use original bounded grasp force and at most1.5mm declared target centering contact')
     if not t.task['cube_size_m']+.002<aperture<=t.arms[robot].grip_max:raise ValueError('Select a legal approach opening with actual cube clearance')
     for suffix in ('finger_joint1','finger_joint2'):t.data.joint(robot+'_'+suffix).qpos[0]=aperture/2
     mujoco.mj_forward(t.model,t.data)
@@ -67,8 +71,8 @@ def plan(a):
     if any(not 0<height<=t.task['cube_size_m']/2+.01 for height in heights):raise ValueError('Unsupported finite top-grasp contact height')
     for height in heights:
         contact=position+up*height+offset
-        for r,tilt in grasp_rotations(up,axes,position-base,tilts=(0,) if getattr(a,'flat_only',False) else (0,15,25)):
-            if abs(np.dot(offset,r[:,1]))>.001:continue
+        for r,tilt in grasp_rotations(up,axes,position-base,tilts=tilts):
+            if abs(np.dot(offset,r[:,1]))>max(.001,(aperture-t.task['cube_size_m'])/2-.001)+centering:continue
             seat=loaded_ik(t,robot,contact,r,(name,))
             if seat is None:continue
             for rise in (.14,.10,.08):
@@ -88,8 +92,8 @@ def plan(a):
         extra_heights=heights if height_override is not None else (.025,.020,.012,.006)
         for height in extra_heights:
             contact=position+up*height+offset
-            for r,tilt in grasp_rotations(up,axes,position-base,tilts=(0,) if getattr(a,'flat_only',False) else (0,15,25)):
-                if abs(np.dot(offset,r[:,1]))>.001:continue
+            for r,tilt in grasp_rotations(up,axes,position-base,tilts=tilts):
+                if abs(np.dot(offset,r[:,1]))>max(.001,(aperture-t.task['cube_size_m'])/2-.001)+centering:continue
                 for first,third in ((2,2),(-2,-2),(2,-2),(-2,2),(2.6,0),(-2.6,0),(0,2.6),(0,-2.6)):
                     seed=t.home_q[robot].copy();seed[0]=first;seed[2]=third;seed=np.clip(seed,*arm.ik.limits.T)
                     seat=t.screen_ik(robot,contact,r,seed=seed)
@@ -111,8 +115,8 @@ def plan(a):
     contact,r,q,tilt=selected
     commands=[{robot:('gripper',dict(mode='move',width_m=aperture,speed_m_s=.05))}]+[
         {robot:('move',dict(joint_rad=point.tolist(),joint_speed_rad_s=.2))} for point in route]+[
-        {robot:('move',dict(target_m=contact.tolist(),quaternion_wxyz=matrix_quat(r).tolist(),speed_m_s=.035,angular_speed_rad_s=.6))},
-        {robot:('gripper',dict(mode='grasp',width_m=.06,force_n=50.,speed_m_s=.04,epsilon_inner_m=.008,epsilon_outer_m=.008))}]
+        {robot:('move',dict(target_m=contact.tolist(),quaternion_wxyz=matrix_quat(r).tolist(),speed_m_s=.01 if centering else .035,angular_speed_rad_s=.2 if centering else .6))}]
+    if not getattr(a,'defer_grasp',False):commands.append({robot:('gripper',dict(mode='grasp',width_m=.06,force_n=force,speed_m_s=.04,epsilon_inner_m=.008,epsilon_outer_m=.008))})
     color=next(item['color'] for item in t.task['objects'] if item['id']==name)
     coverage_path=directory/'coverage.json'
     coverage=json.loads(coverage_path.read_text())['goals'] if coverage_path.exists() else {}
@@ -124,6 +128,7 @@ def plan(a):
         candidate_tilt_deg=tilt,approach_width_m=aperture,contact_m=contact.tolist(),rotation=r.tolist(),suggested_unfilled_goal=goal,
         expanded_branch_search=expanded,free_joint_route=[point.tolist() for point in route],lift_vector_m=lift_vector.tolist(),
         contact_offset_m=offset.tolist(),
+        declared_target_centering_contact_m=centering,grasp_force_n=force,grasp_deferred=bool(getattr(a,'defer_grasp',False)),
         pending_held_payloads=o['held'],finger_state_reconstruction='Observed total opening split symmetrically for scratch screening')
     write_json(directory/'review/engineering'/f'{a.id}-plan.json',evidence)
     write_json(a.request,request)

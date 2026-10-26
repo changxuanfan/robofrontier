@@ -3,6 +3,15 @@ from scripts.execute_mosaic_repair_route import choose
 
 
 class RepairRouteTests(unittest.TestCase):
+    def test_small_full_orientation_correction_preserves_rotation_and_endpoint(self):
+        import numpy as np
+        from scripts.execute_mosaic_flat_pose_correction import rotation_step
+        from robofrontier.robot_control import rotation_vector
+        old=rotation_step(np.array([.1,-.07,.03]));target=rotation_step(np.array([-.04,.08,.12]))
+        delta=rotation_vector(target,old)
+        np.testing.assert_allclose(rotation_step(delta)@old,target,atol=1e-12)
+        np.testing.assert_allclose(rotation_step(delta/2).T@rotation_step(delta/2),np.eye(3),atol=1e-12)
+
     def test_review_completion_uses_normal_staging_before_final_original_goal(self):
         from scripts.execute_mosaic_remaining_review import legs
         job=dict(path=['A','D'],goal='g',object='cube');point=[-.8,0,.83]

@@ -13,9 +13,10 @@ import time
 from types import SimpleNamespace
 import numpy as np
 
-from robofrontier.robot_control import matrix_quat
+from robofrontier.robot_control import matrix_quat,rotation_vector
 from robofrontier.run_setup import write_json
 from robofrontier.suite.oracle import joint_edge_clear
+from robofrontier.suite.oracle import CUBE_ROTATIONS
 from scripts.plan_mosaic_repair_pick import observed_trial,plan as pick
 
 
@@ -26,6 +27,13 @@ def rz(angle):
 
 def original_support_contact(name,distance,normal):
     return name in ('table_0','pocket_bottom') and distance>=-.0002 and abs(normal[2])>.99
+
+
+def rotation_step(vector):
+    angle=float(np.linalg.norm(vector))
+    if angle<1e-12:return np.eye(3)
+    x,y,z=np.asarray(vector)/angle;cross=np.array([[0.,-z,y],[z,0.,-x],[-y,x,0.]])
+    return np.eye(3)+math.sin(angle)*cross+(1-math.cos(angle))*(cross@cross)
 
 
 def run(a):
@@ -86,7 +94,7 @@ def run(a):
         mirror,o,_=observed_trial(directory);arm=mirror.arms[robot];start=mirror.data.site_xpos[arm.site].copy()
         old_r=mirror.data.site_xmat[arm.site].reshape(3,3).copy();q=mirror.data.qpos[arm.qids].copy()
         # Rotation is either unchanged or a small yaw about the measured body.
-        angle=math.atan2((rotation@old_r.T)[1,0],(rotation@old_r.T)[0,0])
+        vector=rotation_vector(rotation,old_r)
         gids=set(mirror.monitor.geoms[name]);rid=mirror.monitor.robot_index[robot]
         def clear(value,allow_support):
             if mirror.pose_clear(robot,value,(name,)):return True
@@ -104,7 +112,7 @@ def run(a):
             try:return mirror.pose_clear(robot,value,(name,))
             finally:mirror.held[robot]=held
         for fraction in np.linspace(0,1,51)[1:]:
-            p=start+(np.asarray(point)-start)*fraction;r=rz(angle*fraction)@old_r
+            p=start+(np.asarray(point)-start)*fraction;r=rotation_step(vector*fraction)@old_r
             n=mirror.screen_ik(robot,p,r,seed=q)
             allow=support and p[2]-start[2]<.004
             if n is None or not joint_edge_clear(q,n,lambda v:clear(v,allow),step_rad=.002):
@@ -116,15 +124,27 @@ def run(a):
 
     ident=a.id+'-pick';path=review/'requests'/f'pose-{ident}.json'
     pick(SimpleNamespace(trial=directory,robot=robot,object=name,id=ident,request=path,aperture=a.aperture,contact_height=a.contact_height,
-        flat_only=True,contact_offset_m=a.contact_offset_m))
-    wait(ident,path);o=submit('adopt','adopt_hold',robot=robot,object=name)
+        flat_only=True,contact_offset_m=a.contact_offset_m,tilts_deg=a.grasp_tilts_deg,
+        force_n=a.force_n,centering_contact_m=a.centering_contact_m,defer_grasp=a.centering_contact_m>0))
+    o=wait(ident,path)
+    if a.centering_contact_m>0:
+        mirror,o,_=observed_trial(directory);arm=mirror.arms[robot];actual_r=mirror.data.body(name).xmat.reshape(3,3)
+        closing=mirror.data.site_xmat[arm.site].reshape(3,3)[:,1]
+        if t.task['cube_size_m']*sum(abs(actual_r.T@closing))>.068:raise RuntimeError('Observed approach tipped the cube outside the original grasp-width band; no grasp issued')
+        if o['evaluation']['assignments'].get(a.goal)==name:
+            move('already-qualified-withdraw',mirror.data.site_xpos[arm.site]+[0,0,.10],mirror.data.site_xmat[arm.site].reshape(3,3).copy(),speed=.025)
+            if observation()['evaluation']['assignments'].get(a.goal)!=name:raise RuntimeError('Actual centering result changed during withdrawal')
+            write_json(review/'engineering'/f'{a.id}-result.json',dict(passed=True,world_id=world,review_id=epoch,goal=a.goal,object=name,scope='Declared centering contact satisfied the original goal; unnecessary grasp/lift omitted'))
+            print('GOAL VERIFIED WITHOUT EXTRA GRASP',a.goal,flush=True);return
+        submit('grasp','commands',batches=[{robot:['gripper',dict(mode='grasp',width_m=.06,force_n=a.force_n,speed_m_s=.04,epsilon_inner_m=.008,epsilon_outer_m=.008)]}])
+    o=submit('adopt','adopt_hold',robot=robot,object=name)
     mirror,o,_=observed_trial(directory);arm=mirror.arms[robot]
     o=move('lift',mirror.data.site_xpos[arm.site]+[0,0,.014],mirror.data.site_xmat[arm.site].reshape(3,3).copy(),support=True)
     if o['objects'][name]['position_m'][2]<goal['position_m'][2]+.008:raise RuntimeError('Actual small lift not retained')
     mirror,o,_=observed_trial(directory);arm=mirror.arms[robot];body=mirror.data.body(name);centre=body.xpos.copy();r=body.xmat.reshape(3,3)
-    yaw=math.atan2(r[1,0],r[0,0]);delta=round(yaw/(math.pi/2))*math.pi/2-yaw
-    if abs(delta)>.22:raise RuntimeError('Actual grasp changed the correction class')
-    turn=rz(delta);tcp=mirror.data.site_xpos[arm.site].copy();rot=mirror.data.site_xmat[arm.site].reshape(3,3).copy()
+    aligned=min(CUBE_ROTATIONS,key=lambda candidate:np.linalg.norm(rotation_vector(candidate,r)))
+    if np.linalg.norm(rotation_vector(aligned,r))>.22:raise RuntimeError('Actual grasp changed the correction class')
+    turn=aligned@r.T;tcp=mirror.data.site_xpos[arm.site].copy();rot=mirror.data.site_xmat[arm.site].reshape(3,3).copy()
     move('rotate',centre+turn@(tcp-centre),turn@rot)
     mirror,o,_=observed_trial(directory);arm=mirror.arms[robot];target=np.asarray(goal['position_m'])+[0,0,.0038]
     tcp=mirror.data.site_xpos[arm.site].copy();body=mirror.data.body(name).xpos.copy()
@@ -151,4 +171,7 @@ if __name__=='__main__':
     p.add_argument('--contact-height',type=float,default=.035)
     p.add_argument('--contact-offset-m',nargs=3,type=float,default=(0.,0.,0.))
     p.add_argument('--aperture',type=float,default=.064)
+    p.add_argument('--grasp-tilts-deg',nargs='+',type=float,default=(0.,))
+    p.add_argument('--centering-contact-m',type=float,default=0.)
+    p.add_argument('--force-n',type=float,default=50.)
     p.add_argument('--id',required=True);p.add_argument('--resume',action='store_true');run(p.parse_args())
