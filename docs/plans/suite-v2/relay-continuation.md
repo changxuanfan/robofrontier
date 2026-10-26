@@ -422,3 +422,15 @@ keeping the1.73m route centreline. Closest staggered cross-row pairs then span
 When asked whether this includes L1, the user replied“先不改”. Acknowledged:
 no actual scene changes, L1 remains in its present layout;1.30m is preview only.
 `16-arm-gap-1300-option.png/.svg` and`proposal.json` record this non-applied option.
+
+Latest clarification supersedes that preview scope:16-arm radial gap1.30m applies
+to all three Levels. L1 rod/mechanism stays unchanged but16L1 bases do change;
+its old1.40m pass must not be counted as proof of a future1.30m layout.
+User also wants L3's horizontal top-view centreline opening fixed during the
+up/down motion. Existing local-X hinge does not guarantee that. New preview
+uses an in-plane hinge axis perpendicular to the moving half's centreline:
+[cos(15.75°),sin(15.75°),0] in the original L3 local convention. With the Root
+plane horizontal, ideal top-view angle remains148.5° at hinge−25/0/+25°;
+this was checked geometrically. Projected half-length changes; whole-body tilt
+still changes world top-view projection. Updated v2 preview PNG/SVG files make
+these conditions and three-Level layout scope explicit. Still no scene applied.
