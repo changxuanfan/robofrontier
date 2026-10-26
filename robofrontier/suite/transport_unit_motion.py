@@ -40,7 +40,8 @@ def insertion_grasps(frames,object_rotation,goal_rotation):
     return [(angle,tool) for _,angle,tool in sorted(candidates,key=lambda c:-c[0])]
 
 
-def direct_grasp_candidate(trial,robot,name,goal_pose,board,budget_s=45.,check_seating=False):
+def direct_grasp_candidate(trial,robot,name,goal_pose,board,budget_s=45.,check_seating=False,
+        axial_shift_m=0.,pickup_heights_m=None):
     t=ref._planning_copy(trial);start=time.monotonic();stats={}
     def count(key):stats[key]=stats.get(key,0)+1
     obj=t.data.body(name);p=obj.xpos.copy();rotation=obj.xmat.reshape(3,3).copy()
@@ -66,13 +67,13 @@ def direct_grasp_candidate(trial,robot,name,goal_pose,board,budget_s=45.,check_s
         (angle,turn(frame[:,1],math.radians(angle))@frame)
         for angle in (90,-90,105,-105,120,-120,75,-75,60,-60,0) for frame in frames]
     for angle,tool in choices:
-        for height in (0.,-.006,-.012,.006,.012,.020):
+        for height in ((0.,-.006,-.012,.006,.012,.020) if pickup_heights_m is None else pickup_heights_m):
             if time.monotonic()-start>budget_s:
                 return None,dict(stats,budget_exhausted=True,wall_s=time.monotonic()-start)
             t.data.qpos[:]=original;t.held={};ref._scratch_gap(t,robot,opening)
             import mujoco
             mujoco.mj_forward(t.model,t.data)
-            point=p+up*height;approach=point-tool[:,2]*.12
+            point=p+up*height+rotation[:,2]*axial_shift_m;approach=point-tool[:,2]*.12
             seating=None
             pickup_candidates=[]
             # Cheap source checks avoid performing long reverse-path

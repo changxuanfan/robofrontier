@@ -352,3 +352,22 @@ or a new physical execution/pass. New video overlays say SOURCE PASS and render
 only; manifests distinguish presentation geometry from the source task result.
 Three regression cases and a compiled-XML parity check verify the tabletop-only
 change and preservation of moving coordinates. Existing videos are not overwritten.
+
+## Axial grip offset closes the last eight-arm L3 target
+
+The final H3 cylinder in eight-arm L3 rolled near E's fixed base. The default
+central barrel grips admitted no source pickup; a finite 18 mm offset along the
+cylinder axis, 6 mm source height and -60 degree tool tilt admitted both the
+source pickup/lift and full final socket path. `direct_grasp_candidate` accepts
+optional axial offset and source-height candidates, with identical defaults.
+These alter private candidate search only and retain all existing collision,
+lift and insertion checks. No running source snapshot is modified.
+
+The engineering-assisted full case completed24/24 on frozen48020bc through
+ordinary recovery inputs: E grasp50N, actual21.5mm payload rise during a2cm
+probe, fresh grasp transform, direct E pre-seat path and measured socket descent,
+then30N preload and slow80mm release. Source acceptance reports zero violations
+and unresolved actions,898 robot commands and2 known failed commands. All630275
+recorded states and the half-opening added-material FK audit passed. Long old
+engineering waits remain in the original10504.56sim-second timing; no speedup or
+optimality claim follows from this pass.
