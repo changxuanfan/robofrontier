@@ -561,3 +561,48 @@ leave published Cartesian sites one2ms step behind published qpos, producing
 1–2um idle differences. This does not relax any live collision/robot tolerance.
 Its scratch Monitor has no actual contact forces: use native observation
 actual_support for custody/force evidence, not scratch final_support/bilateral.
+
+## Latest user clarification: low release is allowed (r17 rule, r16 physics)
+
+The user twice explicitly corrected the placement contract: neither timber nor
+weight needs prior tabletop contact; a low release is allowed if the complete
+assembly finally settles inside the white rectangle. Do not keep a pre-contact
+support requirement as an added acceptance condition. The old partial-contact
+drop guard was also stricter than this instruction: it called pendant/table
+contact a drop despite two established hands still holding the timber inside
+Goal. Two real examples were observed (new8L2 and old16L2); both had actual
+two-hand custody and no collision violation when interrupted.
+
+R17 is a declared **task-rule revision**, with byte-identical r16 XML, compiled
+physics, assets and canonical poses. All L1 files/results remain unchanged.
+The six independent r17 folders preserve the original frozen r16 inputs. New
+completion fields allow partial component contact inside Goal while original
+qualified hands hold the timber, and allow release from a measured prior
+two-hand timber pose at most20mm above the table without prior table contact.
+The native monitor derives the low-release transition from actual support and
+geometry, never an RPC flag. Leaving Goal revokes the exception; unsupported
+high release, foreign recovery/unverified handover and collisions keep their
+checks. Final full assembly inside/actual support/release/stability/handover
+predicates remain required. No live actor is patched and no old counter erased.
+
+The Oracle now stops descent at the low release height, not only exact wood
+contact. Tests exercise both actual Relay.sample paths that failed before:
+held partial Goal contact and a no-prior-contact low release, plus outside/high
+release, legacy semantics and the mandatory real handover. They were red on
+the previous evaluator and green with declared r17 flags. All123 Relay tests
+passed before the two r17 source-preservation checks; the56 affected/source
+checks then passed. Full physical validation remains pending.
+
+The intermediate fb57bfa8L2 episode is preserved at
+`runs/oracle/relay-grounded-fb57bfa-20261026-192159/relay-a08-d2/attempt-001`,
+PID66700, world ecd732dc205d4045b8ce976b646f7b48. From canonical initial state
+P2 was grasped by F/E, lifted and carried to.6m, then truly handed to H/G.
+The user's grasp-line90degree idea was **physically executed successfully**
+there (v5), followed by the rolled Goal transport to[1.6,0,1.25] (v6).
+Its old-rule descent raised native mark1 at pendant/table contact with both
+hands still holding. Five fresh original-hand5mm continuation calls preserved
+all failures and observed native full Goal support atRootz1.1013; no release
+or monitor reset. This episode still has the old contract and is not a r17 pass.
+New full r17 episodes must start canonically with full recordings; never reuse
+its physical checkpoint or relabel its old feedback. Existing old worlds are
+kept while the new contract is frozen and validated.

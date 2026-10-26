@@ -62,7 +62,7 @@ def cases():
                     c.update(source_scene_revision=10,scene_revision=13)
                 if family=='relay':
                     c.update(source_scene_revision=10,scene_revision=15 if n==12 else 13)
-                    if level>1:c.update(source_scene_revision=c['scene_revision'],scene_revision=16)
+                    if level>1:c.update(source_scene_revision=16,scene_revision=17)
                 c['directory']=str(directory(c).relative_to(ROOT));result.append(c)
     return result
 
@@ -935,6 +935,9 @@ def manifest(model,data,case,folder,env):
 
 
 def build(case,replace_draft=False,render=True):
+    if case.get('scene_revision')==17 and case['family']=='relay':
+        from .relay_goal_release import build as release_build
+        return release_build(case,replace_draft,render)
     if case.get('scene_revision')==16 and case['family']=='relay':
         from .relay_underslung import build as underslung_build
         return underslung_build(case,replace_draft,render)

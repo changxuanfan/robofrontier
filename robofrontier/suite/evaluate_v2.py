@@ -88,7 +88,7 @@ class Relay:
             beam_ids={monitor.m.body(n).id for n in item.get('beam_bodies',[ident])}
             rod=[g for g in all_geoms if monitor.m.geom_bodyid[g] in beam_ids
                  and ('_beam' in (monitor.m.geom(g).name or ''))]
-            self.states[ident]=dict(assembly=item,all_geoms=all_geoms,rod_geoms=rod,airborne=False,custody=set(),candidate=set(),candidate_since={},overlap_since=None,qualified=set(),gap_since=None,dropped=False,drops=0,transitions=[],goal_since=None,landed=False,spill=False)
+            self.states[ident]=dict(assembly=item,all_geoms=all_geoms,rod_geoms=rod,airborne=False,custody=set(),candidate=set(),candidate_since={},overlap_since=None,qualified=set(),gap_since=None,dropped=False,drops=0,transitions=[],goal_since=None,landed=False,spill=False,goal_release_ready=False,goal_release_active=False)
         self.payload_components={};self.geom_component={}
         for ident,state in self.states.items():
             names=[ident]+[state['assembly'][key] for key in ('weight_body','tray_body') if state['assembly'].get(key)]
@@ -144,6 +144,19 @@ class Relay:
                 if len(support)<2:mon.violation('unsupported_initial_lift',key=ident)
                 elif clear:state.update(airborne=True,custody=set(support))
             if state['airborne']:
+                completion=mon.task['completion'];original_support=len(support&state['custody'])>=2
+                near_release=bool(completion.get('allow_near_goal_release'))
+                if near_release:
+                    if not inside:
+                        state['goal_release_ready']=state['goal_release_active']=False
+                    elif original_support:
+                        # Permission comes from the measured prior two-hand
+                        # low pose, never from a commanded target or RPC flag.
+                        state['goal_release_ready']=mon.bottom(state['rod_geoms'])<=self.table+completion['max_timber_release_gap_m']
+                        state['goal_release_active']=False
+                    elif state['goal_release_ready']:
+                        state['goal_release_active']=True;state['goal_release_ready']=False
+                allowed_release=near_release and inside and state['goal_release_active']
                 if len(support)<2 and not state['landed']:
                     if state['gap_since'] is None:state['gap_since']=t
                 else:state['gap_since']=None
@@ -167,9 +180,10 @@ class Relay:
                                 retained=sorted(old&support),released=sorted(old-support),joined=sorted(fresh),protocol='qualified-members-v2'))
                             state['custody']=set(support);state['qualified']=set();state['candidate']=set();state['candidate_since']={};state['overlap_since']=None
                         else:mon.violation('unverified_handover',key=ident)
-                if on_table and inside and len(support&state['custody'])>=2:state['landed']=True
-                bad_contact=external and not(state['landed'] and inside)
-                gap=state['gap_since'] is not None and t-state['gap_since']>.20
+                if on_table and inside and (original_support or (allowed_release and mon.released(all_g))):state['landed']=True
+                goal_contact=bool(completion.get('allow_goal_partial_support')) and inside and (original_support or allowed_release)
+                bad_contact=external and not((state['landed'] and inside) or goal_contact)
+                gap=state['gap_since'] is not None and t-state['gap_since']>.20 and not allowed_release
                 if (bad_contact or gap) and not state['dropped']:state['dropped']=True;state['drops']+=1
                 if state['dropped']:
                     if support-state['custody']:mon.violation('receiver_recovered_drop',key=ident)

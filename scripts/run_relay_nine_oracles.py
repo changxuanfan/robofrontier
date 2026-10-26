@@ -39,7 +39,9 @@ def reusable_l1_records(base,cases,root=ROOT):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--output-root',type=Path,required=True)
     p.add_argument('--workers',type=int,choices=range(1,10),default=2);p.add_argument('--cases',nargs='*')
-    p.add_argument('--reuse-l1-from',type=Path,help='Retain verified L1 results only if current contracts are byte-identical');a=p.parse_args()
+    p.add_argument('--reuse-l1-from',type=Path,help='Retain verified L1 results only if current contracts are byte-identical')
+    p.add_argument('--owner-start',action='store_true',help='Full canonical reviewed-control episodes; retain complete recordings')
+    a=p.parse_args()
     from robofrontier.run_setup import write_json
     from robofrontier.motion_recording import freeze_source,MotionReader
     from robofrontier.suite.source_snapshot import freeze_executor
@@ -56,7 +58,7 @@ def main():
     for case in cases:
         destination=base/'scenes'/case['id'];destination.parent.mkdir(exist_ok=True)
         freeze_source(ROOT/case['directory'],destination,cache=base/'asset-cache')
-        if case.get('scene_revision')==16:
+        if case.get('scene_revision',0)>=16:
             (ROOT/case['directory']/'FROZEN').write_text(str(base)+'\n')
         case['frozen_scene']=str(destination)
         task=json.loads((destination/'task.json').read_text())
@@ -64,7 +66,7 @@ def main():
     write_json(base/'inputs/catalog.json',dict(cases=cases))
     frozen=freeze_executor(ROOT,base/'executor',base/'inputs/harness.json',base/'inputs/catalog.json')
     manifest=dict(git_commit=commit,worktree=str(ROOT),cases=cases,workers=a.workers,total_wall_deadline_s=None,
-        task_rule_revision='relay-goal-contact-stack-20261026',scope='Nine full Relay Oracle cases only; no GPT trials',retained_l1=retained,created_unix_s=time.time())
+        task_rule_revisions={c['id']:json.loads((Path(c['frozen_scene'])/'task.json').read_text())['completion'].get('rule_revision') for c in cases},owner_start=a.owner_start,scope='Nine full Relay Oracle cases only; no GPT trials',retained_l1=retained,created_unix_s=time.time())
     write_json(base/'run.json',manifest);write_json(base/'manifest.json',manifest)
     retained_ids={r['case_id'] for r in retained}
     pending=[c for c in cases if c['id'] not in retained_ids];active={};results=list(retained)
@@ -82,6 +84,7 @@ def main():
             env=os.environ.copy();env.update(PYTHONPATH=str(frozen),ROBOFRONTIER_ORACLE_FROZEN_ROOT=str(frozen),OPENBLAS_NUM_THREADS='1',OMP_NUM_THREADS='1',MKL_NUM_THREADS='1',PYTHONUNBUFFERED='1')
             cmd=[sys.executable,str(frozen/'scripts/run_relay_live_oracle.py'),'--case',cid,'--output',str(out),'--scene',case['frozen_scene'],'--harness',str(frozen/'inputs/harness.json'),'--wall-s','0','--pipeline','--frozen']
             if case['arms']>8 or case['level']>1:cmd.append('--flexible')
+            if a.owner_start:cmd.append('--owner-start')
             log=(out.parent/'stdout.log').open('x')
             process=subprocess.Popen(cmd,cwd=ROOT,env=env,stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
             active[cid]=dict(process=process,log=log,output=str(out),command=cmd)

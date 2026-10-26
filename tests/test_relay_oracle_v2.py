@@ -192,6 +192,33 @@ class RelayReferenceTests(unittest.TestCase):
         contacts[1].geom1=3
         self.assertFalse(final_support(t,'upper',('A','B')))
 
+    def test_supported_in_goal_release_may_leave_a_small_timber_gap(self):
+        from robofrontier.suite.relay_oracle_v2 import final_support
+        state={'all_geoms':{0,1},'rod_geoms':{0}}
+        relay=SimpleNamespace(states={'payload':state},inside=lambda _:True,
+                              supported_payloads=lambda:{'payload'})
+        t=SimpleNamespace(task={'table_height_m':.8,'completion':{'support_via_goal_payload':True}},
+                          model=SimpleNamespace(geom=lambda gid:SimpleNamespace(name='weight' if gid==1 else 'table_0')),
+                          data=SimpleNamespace(contact=[SimpleNamespace(dist=-.0001,geom1=1,geom2=2)]),
+                          monitor=SimpleNamespace(relay_v2=relay,bottom=lambda _:.815,
+                                                   bilateral=lambda *a,**k:{'A','B'}))
+        self.assertTrue(final_support(t,'payload',('A','B')))
+        t.monitor.bottom=lambda _:1.1
+        self.assertFalse(final_support(t,'payload',('A','B')))
+
+    def test_declared_low_release_does_not_need_any_prior_table_contact(self):
+        from robofrontier.suite.relay_oracle_v2 import final_support
+        state={'all_geoms':{0},'rod_geoms':{0}}
+        relay=SimpleNamespace(states={'payload':state},inside=lambda _:True,supported_payloads=lambda:set())
+        t=SimpleNamespace(task={'table_height_m':.8,'completion':{'support_via_goal_payload':True,
+                          'allow_near_goal_release':True,'max_timber_release_gap_m':.02}},
+                          data=SimpleNamespace(contact=[]),model=SimpleNamespace(),
+                          monitor=SimpleNamespace(relay_v2=relay,bottom=lambda _:.815,
+                                                   bilateral=lambda *a,**k:{'A','B'}))
+        self.assertTrue(final_support(t,'payload',('A','B')))
+        t.monitor.bottom=lambda _:1.1
+        self.assertFalse(final_support(t,'payload',('A','B')))
+
     def test_terminal_release_rejects_an_unsafe_opening_before_actuation(self):
         from unittest.mock import patch,Mock
         from robofrontier.suite.relay_oracle_v2 import release

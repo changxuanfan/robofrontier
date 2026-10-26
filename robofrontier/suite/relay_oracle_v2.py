@@ -594,11 +594,20 @@ def grounded_timber(t,ident):
 def final_support(t,ident,team):
  state=t.monitor.relay_v2.states[ident];relay=t.monitor.relay_v2
  # A pendant weight touching the table cannot certify that the timber no
- # longer depends on the open lower fingers. Require actual beam support
- # before this reference ends descent and releases its two grasps. This is
- # a manipulation policy gate, not a change to benchmark acceptance.
+ # longer depends on the open lower fingers. The user also accepts a short
+ # final fall inside Goal: timber within20mm of the table may release once
+ # native assembly Goal support has already been established. This avoids
+ # demanding exact timber contact; it never permits the old30cm free fall.
+ # This is a manipulation policy gate, not a change to benchmark acceptance.
  stacking=getattr(t,'task',{}).get('completion',{}).get('support_via_goal_payload')
- supported=(ident in relay.supported_payloads() and grounded_timber(t,ident)) if stacking else beam_table_contact(t,ident)
+ height=getattr(t,'task',{}).get('table_height_m')
+ near_table=stacking and height is not None and -.002<=t.monitor.bottom(state['rod_geoms'])-height<=.020
+ supported=(ident in relay.supported_payloads() and (near_table or grounded_timber(t,ident))) if stacking else beam_table_contact(t,ident)
+ if getattr(t,'task',{}).get('completion',{}).get('allow_near_goal_release'):
+  # User-authorized low release has no pre-existing table-contact condition.
+  # The unchanged final predicate still needs actual stable grounded cargo.
+  limit=t.task['completion']['max_timber_release_gap_m']
+  supported=grounded_timber(t,ident) or (height is not None and -.002<=t.monitor.bottom(state['rod_geoms'])-height<=limit)
  return bool(relay.inside(state) and supported
              and set(team)<=t.monitor.bilateral(state['rod_geoms'],positive_force=True))
 
