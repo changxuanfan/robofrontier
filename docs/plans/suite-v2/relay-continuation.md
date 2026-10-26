@@ -1,5 +1,9 @@
 # Relay continuation — 2026-10-26
 
+> **Latest compact recovery:** read [relay-compact-checkpoint-20261027.md](relay-compact-checkpoint-20261027.md)
+> first. It supersedes stale progress and pending-hotload statements below.
+> Original remaining simulations must keep running through compact.
+
 The original paused PID3559 disappeared before startup; its last snapshot is
 1/2 and is retained as an interrupted episode. Recorded geometry was used for
 FK diagnosis only. No stored state was injected into a live world.
@@ -608,6 +612,49 @@ its physical checkpoint or relabel its old feedback. Existing old worlds are
 kept while the new contract is frozen and validated.
 
 ## AUTHORITATIVE latest user steering: reuse originals, final-in-Goal only
+
+### Latest override, 2026-10-26: 50 mm and original-world continuation
+
+2026-10-27 update: **7/9 cases and 23/27 apparatuses are verified complete**.
+Original12L2 and12L3 both closed only after 3/3 actual released/grounded Goal
+checks under user50mm.12L2 P1's final35.9mm overrun is accepted, not reworked.
+Their exact final-event FK and all motion chunks are audited separately from
+unchanged failed strict-native statuses:12L2 472,741 frames;12L3 1,094,707.
+Full videos are in `outputs/oracle/relay-user-completed-20261026/relay-a12-d{2,3}-full/global.mp4`.
+12L3 is17m31s at4x, all actuator intervals retained, waits compressed;12L2
+is7m01s. Titles use actual50mm criterion and exact final event is included.
+Only original16L2/16L3 physical actors remain.16L3 P2 was released in Goal,
+so3/4 done; P1 moved to[1.204,1.301,1.221], G Top/N Side58. Do NOT require
+an already retained Side hand to be Top when choosing a new Top incoming hand.
+H has a force-free P2 ghost label after an aperture error; real all-cargo
+separation/direct P2 Table support verified, but a direct H-home route failed.
+Use a small staged empty move to clear its label if needed. O receiving Top
+preapproach remains constrained; current original requests/results supersede
+these approximate poses.16L2 P2 is G/O Top at[1.102,1.30,1.196]; P1 D/M,
+and P3 still rests on open P finger in Goal, so only P4 is counted (1/4).
+
+The P3 bottleneck is a controller-state bug: existing `move_empty` forbids
+any initial contact, and new-grasp planning shrinks jaws to65mm, deeply
+intersecting the static rod resting on the actually open80mm lower finger.
+Repeated receiving RRTs on that state are wasted. A read-only81-sample joint
+withdrawal witness moves P about20mm in -X and5mm down without deepening the
+initial light P_link4/finger contacts, and ends separated in fixed-cargo FK.
+It is `recovery/p3-P-open-withdraw-verified.json` in original16L2.
+`robofrontier/suite/relay_contact_escape.py` prepares an optional bounded
+ordinary-actuator contact-escape handler.3 unit tests and captured-world FK
+plus mocked dispatch/post-feedback cache checks pass. It has NOT been loaded
+into the physical actor as of this note. A frozen copy and SHA are in
+`recovery/controller-extensions/open-contact-withdraw-v1.*`. No live
+qpos/physics/monitor changes are involved; importing alone installs nothing.
+Any runtime loading needs explicit user approval before debugger attachment
+because the original process has no normal reload endpoint and losing it
+would lose the preserved scene. Continue independent16L3 work while pending.
+
+The explicit user answer first allowed 25 mm, followed by “其实50mm内都问题不大，继续，不用停”. Unified final boundary tolerance is now **50 mm**, overriding every older 5 mm/25 mm statement below. No velocity or static-duration requirement. Open jaws near the table are allowed; actual final landing/contact and qualified prior airborne handover remain checked separately. Do not tighten the task again around a diagnostic buffer. No new physical processes/episodes; keep four original worlds alive. User permits at most two cores per task if possible without restarting: one unchanged physics actor plus one external helper. `reserve_helper_core` enforces the helper slot; never spawn-and-wait a child using the same slot.
+
+Read fresh immutable RPC results/observations before acting. Current whole-case status remains 5/9 and placed count 20/27. Original 12L2 has P2/P3 accepted, P1 D/J after a small Y shift, +0.1 rad yaw and 80 mm lowering; receiver E/J approaches exist but donor D withdrawal fails. Original 12L3 has P2/P3 accepted under 50 mm; P1 advanced B/I → C/I → C/J → D/J and several finite translations/turns toward the centre. Original 16L2 P4 accepted; P3 is within Goal and force-free/open but still rests on P's left finger, so it is **not yet counted**; preserve its terminal aperture failure. P2 E/M has completed a -0.12 rad wrist reorientation; N receiving exists but M withdrawal fails. P1 remains D/L. Original 16L3 P3/P4 accepted; P2 H/O advanced to the O/P overlap area and P was staged home, but O forearm blocks P's reachable grasp; P1 F/N rose 80 mm and advanced to [0.30,1.69,1.2575]. Newer observations/results supersede these approximate positions.
+
+Read-only stage diagnostics are in each original `recovery/receiving-stage-diagnostic.json`; helper source `runs/engineering/relay-descent-20261026/inspect_receiving_stage.py`. These are FK geometry only, never a physical restart. Do not repeat broad grasp searches without changing the specific receiver/departure obstruction. Finite normal yaw/position carries can change elbow clearance while preserving original history. Latest outstanding immutable IDs must be checked in original `recovery/results` before any command; do not replay them.
 
 This supersedes the older "only legacy native pass counts" and mandatory new
 canonical-validation instructions above. The user explicitly said to continue
