@@ -2,6 +2,8 @@
 
 Only kinematics and appearance events are restored. No commands, IK, contact
 solve or new physical integration are executed to manufacture a video.
+New renders halve an existing rectangular central table opening by default;
+use --table-opening-scale 1 for the original frozen tabletop presentation.
 """
 import argparse,json,subprocess,time
 from pathlib import Path
@@ -13,9 +15,11 @@ from robofrontier.run_setup import write_json
 from robofrontier.motion_recording import MotionReader
 
 
-def render(directory,views=('global','global_rear'),speed=4,every=None,output=None):
+def render(directory,views=('global','global_rear'),speed=4,every=None,output=None,table_opening_scale=.5):
     directory=Path(directory).resolve();report=json.loads((directory/'report.json').read_text())
     model=mujoco.MjModel.from_xml_path(str(directory/'scene.xml'));data=mujoco.MjData(model)
+    from robofrontier.suite.table_presentation import scale_rectangular_opening_for_render
+    presentation=scale_rectangular_opening_for_render(model,table_opening_scale)
     shared=(directory/'motion/stream.json').exists();events=None;event=None
     if shared:
         reader=MotionReader(directory/'motion')
@@ -41,6 +45,7 @@ def render(directory,views=('global','global_rear'),speed=4,every=None,output=No
     commissioning=report.get('commissioning_only') or report.get('full_task_attempt') is False
     outcome=('MECHANICAL PASS' if report.get('passed') or report.get('local_passed') else 'MECHANICAL PARTIAL / FAILED') if commissioning else 'PASS' if report.get('passed') else 'UNIT PASS' if report.get('local_passed') else 'INTERRUPTED' if report.get('interrupted') else 'PARTIAL / FAILED'
     if report.get('engineering_assisted'):outcome+=' (engineering assisted)'
+    if presentation:outcome='SOURCE '+outcome
     try:
         with mujoco.Renderer(model,height=800,width=1280) as renderer:
             def emit(stamp,q):
@@ -50,7 +55,8 @@ def render(directory,views=('global','global_rear'),speed=4,every=None,output=No
                     renderer.update_scene(data,camera=view);image=Image.fromarray(renderer.render());draw=ImageDraw.Draw(image)
                     draw.rectangle((12,12,1000,73),fill=(245,242,235))
                     draw.text((23,18),f'{report["case_id"]} | Oracle {outcome} | recorded-state replay',font=font,fill=(23,32,43))
-                    draw.text((23,43),f'{view} | sim {stamp:.1f} s | {speed:g}x | {source_hz:.1f} Hz source',font=font,fill=(23,32,43))
+                    variant=f' | opening {table_opening_scale:g}x; render only' if presentation else ''
+                    draw.text((23,43),f'{view} | sim {stamp:.1f} s | {speed:g}x | {source_hz:.1f} Hz source'+variant,font=font,fill=(23,32,43))
                     process.stdin.write(image.tobytes())
             for index,(stamp,q,display) in enumerate(stream):
                 while event is not None and event['sim_time_s']<=stamp+1e-9:
@@ -75,11 +81,11 @@ def render(directory,views=('global','global_rear'),speed=4,every=None,output=No
     for view in views:
         path=target/(view+'.mp4');check=subprocess.run(['ffmpeg','-v','error','-i',str(path),'-f','null','-'],capture_output=True,text=True)
         checks[view]=dict(path=str(path.resolve()),decode_passed=check.returncode==0,error=check.stderr or None)
-    write_json(target/'manifest.json',dict(kind='Recorded-state FK rerender; no commands, IK, contacts or integration',source_trial=str(directory),source_scene_sha256=report['scene_sha256'],source_format='robofrontier.motion.v1' if shared else 'legacy_npz',recorded_source_hz=source_hz,speedup=speed,every=every,fps=fps,source_frames=source_frames,rendered_states=rendered,wall_time_s=time.monotonic()-started,trial_passed=report.get('passed'),local_unit_passed=report.get('local_passed'),commissioning_only=report.get('commissioning_only',False),views=checks))
+    write_json(target/'manifest.json',dict(kind='Recorded-state FK rerender; no commands, IK, contacts or integration',source_trial=str(directory),source_scene_sha256=report['scene_sha256'],presentation_table=presentation,source_format='robofrontier.motion.v1' if shared else 'legacy_npz',recorded_source_hz=source_hz,speedup=speed,every=every,fps=fps,source_frames=source_frames,rendered_states=rendered,wall_time_s=time.monotonic()-started,trial_passed=report.get('passed'),local_unit_passed=report.get('local_passed'),commissioning_only=report.get('commissioning_only',False),views=checks))
     if not all(c['decode_passed'] for c in checks.values()):raise RuntimeError('A video could not be fully decoded')
     print(target,flush=True)
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('trial');p.add_argument('--speed',type=float,default=4);p.add_argument('--every',type=int);p.add_argument('--output',type=Path);p.add_argument('--views',nargs='+',default=['global','global_rear']);a=p.parse_args()
-    render(a.trial,a.views,a.speed,a.every,a.output)
+    p=argparse.ArgumentParser();p.add_argument('trial');p.add_argument('--speed',type=float,default=4);p.add_argument('--every',type=int);p.add_argument('--output',type=Path);p.add_argument('--views',nargs='+',default=['global','global_rear']);p.add_argument('--table-opening-scale',type=float,default=.5,help='Offline presentation only; 1 preserves the original table');a=p.parse_args()
+    render(a.trial,a.views,a.speed,a.every,a.output,a.table_opening_scale)

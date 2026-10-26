@@ -331,3 +331,24 @@ previous source: ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc1347
 New regression cases reproduce passive-contact lease loss, explicit reservations,
 known-fault review preserving a peer action, owner-priority admission and an
 unsupported short lift. Prior frozen live worlds are never hotpatched.
+
+
+## Half-size central opening as a separate rendering default
+
+The user requested half the linear size of the tabletop's central opening,
+without changing running experiments. New offline renders now default to
+`--table-opening-scale .5`; scale1 retains the original presentation. Only the
+four tabletop boxes are changed on an independent FK render model. Outer bounds,
+top height, legs, cameras, robot/object/goal poses and registry counts stay fixed.
+The four-arm top is solid and stays unchanged. No frozen R13 scene file or live
+MuJoCo world is modified. Standalone derived XMLs are saved separately.
+
+Eight-arm opening width/height changes0.952→0.476m; twelve-arm1.666→0.833m.
+A side-by-side4x video uses the exact same300 saved states from successful8L1.
+The complete recorded streams of8L1,8L2,12L1 were independently checked at60Hz
+against the newly filled tabletop volume:1,047,114 states, zero new contacts.
+This is recorded-state geometric compatibility, not a continuous collision proof
+or a new physical execution/pass. New video overlays say SOURCE PASS and render
+only; manifests distinguish presentation geometry from the source task result.
+Three regression cases and a compiled-XML parity check verify the tabletop-only
+change and preservation of moving coordinates. Existing videos are not overwritten.
