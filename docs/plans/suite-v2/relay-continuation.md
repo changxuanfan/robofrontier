@@ -336,3 +336,41 @@ support and same-payload Goal support enabled physically opening empty G; the
 original H/G recovery is being reviewed. The 12-arm L3 P3 original G/L regrasp
 completed after opening empty L with empty F while preserving G. No failed
 motion has been reclassified as completed and no monitor history was reset.
+
+## Four full passes and user-requested review media
+
+8-arm L2 has now passed its complete retained original retry episode, exit0,
+2/2 released/stable cargos, zero process violations, and433,565 frames verified.
+Its three real drops remain in native history. After the tilted landing tipped
+out of Goal, original H/G physically recovered the now-flat timber, lifted it,
+then translated the measured complete footprint to the middle of its legal Goal
+interval with25mm margin. Ordinary place_release then completed. Complete-case
+count is4/9; all8-arm levels passed. All27 cargos remain the overall objective.
+
+The user's four requested continuous global videos and three before/after
+incident collages with two close camera angles are now generated and decoded.
+They use actual saved motion, no new physical integration. Corresponding files
+and the Chinese failure/geometry analysis are in
+`outputs/oracle/relay-nine-review-20261026/`. The8-arm L1 video was regenerated
+from the exact21,863-frame cohort episode, rather than reusing a different older
+successful run. Other exact source counts:8L3=690,333;12L1=299,641.
+
+No shortened/flattened scene has been tested or substituted. Candidate simplifier
+hypotheses are recorded separately; reducing curvature radius at fixed chord
+would increase bending, so chord and rise must be specified independently.
+The current nine original episodes showed zero actual inter-robot contacts at
+this review; geometric rejection is not a claim that an actual collision occurred.
+
+A corrected full16-arm L3 retry now runs sequential cargo scheduling from the
+unchanged canonical scene under frozen6a9c19e, no total deadline and no
+commissioning. Old16L3 world remains alive. Its separate supervisor/result root
+is recorded in`/tmp/relay-corrected-active-root.txt`; this retry must not be added
+to the case success count without full native pass/exit/record validation.
+
+12-arm L3 P2 needed two native terminal-contact drop recoveries. Both original
+G/L supports were retained through the later contact flag. A reviewed new native
+contact continuation established all-component Goal support; original-team lift
+cleared the dropped guard physically, then native place_release completed. It
+later reached released/stable/completed without further object manipulation;
+P2/P3 are now2/3. P1 has physically transferred D/J to E/K. Latest immutable
+results and observations supersede this text for pending operations.
