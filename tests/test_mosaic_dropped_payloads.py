@@ -1,6 +1,6 @@
 import copy
 import unittest
-from scripts.supervise_mosaic_dropped_payloads import select,select_retract,vertical_clearance_plan,full_original_goal_set
+from scripts.supervise_mosaic_dropped_payloads import select,select_retract,vertical_clearance_plan,full_original_goal_set,select_settled_drop,select_high_receiver
 
 
 class DroppedPayloadAdmissionTests(unittest.TestCase):
@@ -86,6 +86,31 @@ class DroppedPayloadAdmissionTests(unittest.TestCase):
             np.testing.assert_allclose(result['target_m'],[0,0,1.1]);np.testing.assert_array_equal(data.qpos,np.zeros(7))
             t.pose_clear=lambda robot,q,allowed:False
             with self.assertRaisesRegex(ValueError,'no screened route'):vertical_clearance_plan(Path('.'),'H','H_stock17')
+
+
+    def test_already_qualified_pocket_drop_is_kept_without_regrasping(self):
+        o=copy.deepcopy(self.o);o['objects']['H_stock17']['position_m'][2]=.81
+        o['evaluation']['assignments']={'actual_slot':'H_stock17'}
+        self.assertEqual(select_settled_drop(self.s,o,self.task),('H','H_stock17','actual_slot'))
+        o['robots']['H']['gripper_width_m']=.06
+        with self.assertRaises(ValueError):select_settled_drop(self.s,o,self.task)
+        o['robots']['H']['gripper_width_m']=0;o['evaluation']['assignments']={}
+        with self.assertRaises(ValueError):select_settled_drop(self.s,o,self.task)
+
+    def test_high_receiver_requires_uncommitted_flat_table_and_final_job_actor(self):
+        s=copy.deepcopy(self.s);o=copy.deepcopy(self.o);task=dict(self.task,goals=[dict(goal_id='g',position_m=[-.85,-.04,.83])])
+        s['review_history'][0]['error']='RuntimeError: No transfer pickup with usable continuation A/H_stock17'
+        o['held']={};o['robots']={'A':dict(grasp_force_setpoint_n=None)};o['job']['path']=['C','A']
+        o['objects']['H_stock17']['position_m']=[-.348,-1.078,.83]
+        self.assertEqual(select_high_receiver(s,o,task),('A','H_stock17','g'))
+        for change in ('not_final','force','near_goal','not_flat','stacked'):
+            bad=copy.deepcopy(o)
+            if change=='not_final':bad['job']['path']=['C','A','B']
+            elif change=='force':bad['robots']['A']['grasp_force_setpoint_n']=50
+            elif change=='near_goal':bad['objects']['H_stock17']['position_m']=[-.85,-.04,.83]
+            elif change=='not_flat':bad['objects']['H_stock17']['rotation']=[[1,0,0],[0,.7,-.7],[0,.7,.7]]
+            else:bad['objects']['H_stock17']['position_m'][2]=.89
+            with self.assertRaises(ValueError):select_high_receiver(s,bad,task)
 
 
 if __name__=='__main__':unittest.main()
