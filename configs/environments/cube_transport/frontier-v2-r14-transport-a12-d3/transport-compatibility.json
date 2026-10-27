@@ -1,0 +1,212 @@
+{
+  "schema": "robofrontier.transport-half-opening-check.v1",
+  "case_id": "transport-a12-d3",
+  "source_scene_sha256": "ca9158a2f824f9dd3dcffe46a4bf7e72cb85375d672dbe200dc96cb4cccc2300",
+  "variant_scene_sha256": "be4474d54fae3f9817a6bf5ae0edc70f408deba684a3df3ee996f7e7f1d84b9d",
+  "original_geometry": {
+    "tabletop_z_m": 0.8,
+    "outer_bounds_xy_m": [
+      [
+        -1.768,
+        -1.768
+      ],
+      [
+        1.768,
+        1.768
+      ]
+    ],
+    "outer_size_xy_m": [
+      3.536,
+      3.536
+    ],
+    "central_opening_size_m": [
+      1.666,
+      1.666
+    ],
+    "central_opening_is_insertion_socket": false,
+    "boxes_world": [
+      {
+        "id": "table_0",
+        "center_m": [
+          0.0,
+          -1.3005,
+          0.775
+        ],
+        "half_size_m": [
+          1.768,
+          0.4675000000000001,
+          0.025
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "id": "table_1",
+        "center_m": [
+          0.0,
+          1.3005,
+          0.775
+        ],
+        "half_size_m": [
+          1.768,
+          0.4675000000000001,
+          0.025
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "id": "table_2",
+        "center_m": [
+          -1.3005,
+          0.0,
+          0.775
+        ],
+        "half_size_m": [
+          0.4675000000000001,
+          0.8329999999999999,
+          0.025
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "id": "table_3",
+        "center_m": [
+          1.3005,
+          0.0,
+          0.775
+        ],
+        "half_size_m": [
+          0.4675000000000001,
+          0.8329999999999999,
+          0.025
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  "physical_geometry": {
+    "tabletop_z_m": 0.8,
+    "outer_bounds_xy_m": [
+      [
+        -1.768,
+        -1.768
+      ],
+      [
+        1.768,
+        1.768
+      ]
+    ],
+    "outer_size_xy_m": [
+      3.536,
+      3.536
+    ],
+    "central_opening_size_m": [
+      0.8329999999999997,
+      0.8329999999999997
+    ],
+    "central_opening_is_insertion_socket": false,
+    "boxes_world": [
+      {
+        "id": "table_0",
+        "center_m": [
+          0.0,
+          -1.09225,
+          0.775
+        ],
+        "half_size_m": [
+          1.768,
+          0.6757500000000001,
+          0.025
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "id": "table_1",
+        "center_m": [
+          0.0,
+          1.09225,
+          0.775
+        ],
+        "half_size_m": [
+          1.768,
+          0.6757500000000001,
+          0.025
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "id": "table_2",
+        "center_m": [
+          -1.09225,
+          0.0,
+          0.775
+        ],
+        "half_size_m": [
+          0.6757500000000001,
+          0.4165,
+          0.025
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "id": "table_3",
+        "center_m": [
+          1.09225,
+          0.0,
+          0.775
+        ],
+        "half_size_m": [
+          0.6757500000000001,
+          0.4165,
+          0.025
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  "compiled_parity_passed": true,
+  "identical_to_half_opening_fk_model": true,
+  "simulated_seconds_advanced": 0.0,
+  "original_oracle_pass_inherited": false,
+  "physical_execution_verified": false,
+  "scope": "Compiled tabletop-only revision and exact parity with the source half-opening FK model; no new physics execution"
+}

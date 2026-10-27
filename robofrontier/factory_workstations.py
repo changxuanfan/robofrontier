@@ -22,14 +22,14 @@ from .run_setup import write_json
 def vec(values):return ' '.join(repr(float(x)) for x in np.asarray(values).ravel())
 
 
-def placements(catalog,regions,root,aisle=1.2):
+def placements(catalog,regions,root,aisle=1.2,source_overrides=None):
     """Size-aware 3x3 shelves; physical hardware is never scaled."""
     result=[]
     for region in regions:
         family=region['id'];entries=[];gap=float(region.get('workstation_gap_m',aisle))
         for case in catalog['cases']:
             if case['family']!=family:continue
-            source=Workstation(root/case['directory']);m,d=source.model,source.data;source.frame()
+            source=Workstation((source_overrides or {}).get(case['id'],root/case['directory']));m,d=source.model,source.data;source.frame()
             corners=[]
             for g in range(m.ngeom):
                 name=m.geom(g).name
@@ -86,10 +86,10 @@ class Assets:
         return mapping
 
 
-def compose(shell,catalog_path,output):
+def compose(shell,catalog_path,output,table_opening_scale=.5,source_overrides=None,source_root=None):
     shell=Path(shell).resolve();output=Path(output).resolve();output.mkdir(parents=True,exist_ok=False)
-    root_dir=Path(__file__).resolve().parents[1];catalog=json.loads(Path(catalog_path).read_text())
-    shell_manifest=json.loads((shell.parent/'manifest.json').read_text());plan=placements(catalog,shell_manifest['regions'],root_dir)
+    root_dir=Path(source_root).resolve() if source_root else Path(__file__).resolve().parents[1];catalog=json.loads(Path(catalog_path).read_text())
+    shell_manifest=json.loads((shell.parent/'manifest.json').read_text());plan=placements(catalog,shell_manifest['regions'],root_dir,source_overrides=source_overrides)
     root=ET.parse(shell).getroot();shutil.copytree(shell.parent/'assets',output/'assets')
     option=root.find('option')
     if option is None:option=ET.SubElement(root,'option')
@@ -110,7 +110,9 @@ def compose(shell,catalog_path,output):
     types={int(v):str(k)[7:].lower() for k,v in mujoco.mjtGeom.__members__.items()}
     # enum names are mjGEOM_BOX etc; conversion strips mjGEOM_.
     for place in plan:
-        source=Workstation(root_dir/place['source_directory']);source.frame();m,d=source.model,source.data;amap=assets.import_source(source)
+        source=Workstation((source_overrides or {}).get(place['case_id'],root_dir/place['source_directory']));source.frame();m,d=source.model,source.data;amap=assets.import_source(source)
+        from .suite.table_presentation import scale_rectangular_opening_for_render
+        if place['family']=='transport':scale_rectangular_opening_for_render(m,table_opening_scale)
         t=np.asarray(place['translation_m']);yaw=place['yaw_rad'];c,s=math.cos(yaw),math.sin(yaw);rotation=np.array([[c,-s,0],[s,c,0],[0,0,1.]])
         prefix=place['case_id']+'__';bodymap={};geommap={};animated=set(source.manifest['motion_recording_contract']['dynamic_bodies'])
         for bid in range(m.nbody):
@@ -138,7 +140,7 @@ def compose(shell,catalog_path,output):
         floor_label('ws_caption_'+place['case_id'],place['case_id'].upper(),[(lowx+highx)/2,lowy+.18,.0007],[min(1.4,(highx-lowx)/2-.10),.13])
     ET.indent(root);scene=output/'scene.xml';ET.ElementTree(root).write(scene,encoding='unicode')
     manifest=deepcopy(shell_manifest);manifest.update(id=shell_manifest['id']+'-workstations',scope='36 visual workstations; recorded-state playback only; zero task dynamics',
-        scene_sha256=hashlib.sha256(scene.read_bytes()).hexdigest(),placements=plan,workstation_names=mapping,task_workstations=len(plan),source_catalog=str(Path(catalog_path).resolve()))
+        scene_sha256=hashlib.sha256(scene.read_bytes()).hexdigest(),placements=plan,workstation_names=mapping,task_workstations=len(plan),source_catalog=str(Path(catalog_path).resolve()),table_opening_linear_scale=table_opening_scale,source_overrides={k:str(Path(v).resolve())for k,v in (source_overrides or {}).items()})
     manifest['workstation_assets']=[dict(path=str(p.relative_to(output)),sha256=hashlib.sha256(p.read_bytes()).hexdigest(),bytes=p.stat().st_size) for p in sorted((output/'workstation-assets').iterdir())]
     write_json(output/'manifest.json',manifest)
     return scene
@@ -150,7 +152,41 @@ class FactoryPlayback:
         if hashlib.sha256(self.path.read_bytes()).hexdigest()!=self.manifest['scene_sha256']:raise ValueError('Factory scene checksum mismatch')
         self.model=model if model is not None else mujoco.MjModel.from_xml_path(str(self.path));self.data=data if data is not None else mujoco.MjData(self.model)
         if self.model.nv or self.model.nu:raise ValueError('Presentation must contain no task dynamics')
-        self.sources={}
+        self.sources={};self.presentations={}
+    def configure_workstation(self,case_id,source,table_opening_scale=.5,translation_m=None,yaw_rad=None):
+        """Configure a visual-only instance; source recordings stay immutable.
+
+        One rigid transform moves the whole workstation, including static table
+        and robot bases. Moving bodies subsequently use the same transform in FK.
+        Relative layout, geometry scale and qpos must remain source-compatible.
+        """
+        if case_id in self.presentations:raise ValueError('Workstation presentation is already configured')
+        if not 0<float(table_opening_scale)<=1:raise ValueError('Opening scale must be in (0,1]')
+        entry=self.manifest['workstation_names'][case_id]
+        if entry['source_scene_sha256']!=source.manifest['scene_sha256']:raise ValueError('Presentation source revision differs from factory')
+        place=next(p for p in self.manifest['placements'] if p['case_id']==case_id)
+        shift=np.asarray(place['translation_m'] if translation_m is None else translation_m,dtype=float)
+        yaw=float(place['yaw_rad'] if yaw_rad is None else yaw_rad)
+        if shift.shape!=(3,)or not np.isfinite(shift).all()or not np.isfinite(yaw):raise ValueError('Invalid rigid workstation placement')
+        old_yaw=place['yaw_rad'];old_shift=np.asarray(place['translation_m'])
+        angle=yaw-old_yaw;c,s=np.cos(angle),np.sin(angle);delta=np.array([[c,-s,0],[s,c,0],[0,0,1.]])
+        for target in entry['body_names'].values():
+            bid=self.model.body(target).id;mid=int(self.model.body_mocapid[bid])
+            self.model.body_pos[bid]=delta@(self.model.body_pos[bid]-old_shift)+shift
+            self.model.body_quat[bid]=matrix_quat(delta@quat_matrix(self.model.body_quat[bid]))
+            if mid>=0:
+                self.data.mocap_pos[mid]=delta@(self.data.mocap_pos[mid]-old_shift)+shift
+                self.data.mocap_quat[mid]=matrix_quat(delta@quat_matrix(self.data.mocap_quat[mid]))
+        place['translation_m']=shift.tolist();place['yaw_rad']=yaw
+        from .suite.table_presentation import scale_rectangular_opening_for_render
+        table=scale_rectangular_opening_for_render(source.model,table_opening_scale)
+        if table:
+            for name in table['table_geoms']:
+                src=source.model.geom(name).id;dst=self.model.geom(entry['geom_names'][name]).id
+                for field in ['geom_pos','geom_size','geom_rbound','geom_aabb']:
+                    getattr(self.model,field)[dst]=getattr(source.model,field)[src]
+        self.presentations[case_id]=dict(table=table,translation_m=shift.tolist(),yaw_rad=yaw)
+        return self.presentations[case_id]
     def apply(self,case_id,source,qpos,time_s):
         entry=self.manifest['workstation_names'][case_id]
         if source.manifest['scene_sha256']!=entry['source_scene_sha256']:raise ValueError('Replay source revision differs from factory workstation')

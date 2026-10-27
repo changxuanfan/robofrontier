@@ -228,7 +228,7 @@ def _receiver_tilt(tool,degrees):
     return np.column_stack((c*tool[:,0]-s*tool[:,2],tool[:,1],s*tool[:,0]+c*tool[:,2]))
 
 
-def _receiver_successor_clear(t,donor,receiver,name,goal,point,tool):
+def _receiver_successor_clear(t,donor,receiver,name,goal,point,tool,contact_q=None):
     """Private successor screen; optional sampled fit/release/descent check.
 
     Neither mode predicts physical slipping, tracking or the full transit.
@@ -240,6 +240,25 @@ def _receiver_successor_clear(t,donor,receiver,name,goal,point,tool):
     try:
         body=t.data.body(name);object_r=body.xmat.reshape(3,3).copy()
         offset=object_r.T@(point-body.xpos);relative=object_r.T@tool
+        if 'next_handover_center_m' in goal:
+            # A middle carrier need not reach the final board. Check that
+            # this proposed grasp can carry to its next transfer neighborhood.
+            # The next pair's grasp, route and actual support are checked when
+            # that handover is planned/executed, not assumed certified here.
+            from .scenes import rz
+            contact=contact_q if contact_q is not None else t.screen_ik(receiver,point,tool,t.data.qpos[t.arms[receiver].qids])
+            if contact is None:return False
+            t.data.qpos[t.arms[receiver].qids]=contact
+            if donor in getattr(t,'parking_q',{}):t.data.qpos[t.arms[donor].qids]=t.parking_q[donor]
+            mujoco.mj_kinematics(t.model,t.data);t.held={receiver:name}
+            center=np.asarray(goal['next_handover_center_m'],dtype=float)
+            for height in (.22,.30,.38):
+                p=np.r_[center[:2],t.task['table_height_m']+height]
+                for yaw in (0.,math.pi/2,-math.pi/2,math.pi):
+                    r=rz(yaw)@object_r;end_tool=r@relative
+                    q=t.screen_ik(receiver,p+r@offset,end_tool,contact)
+                    if q is not None and t.pose_clear(receiver,q):return True
+            return False
         board=t.data.body(goal['board']);board_r=board.xmat.reshape(3,3).copy()
         position=board.xpos+board_r@np.asarray(goal['local_position_m'])
         if t.task['level']==1:position=position+board_r[:,2]*float(goal.get('release_clearance_m',0.))
@@ -410,6 +429,7 @@ def plan_air_regrasp(trial, donor, name, diagnostics=None, planning_budget_s=120
                                     point = center + rotation[:, 2]*depth + tangent*shift
                                     approach = point-tool[:,2]*.15
                                     for seed in seeds(receiver):
+                                        if budget():return None
                                         q = t.screen_ik(receiver, approach, tool, seed)
                                         if q is None:
                                             continue
@@ -439,7 +459,8 @@ def plan_air_regrasp(trial, donor, name, diagnostics=None, planning_budget_s=120
                                         if not _release_sweep_clear(t, donor, receiver, name, near, width):
                                             continue
                                         count('gripper_sweeps_and_release_clear')
-                                        if future_goal is not None and not _receiver_successor_clear(t,donor,receiver,name,future_goal,point,tool):
+                                        if budget():return None
+                                        if future_goal is not None and not _receiver_successor_clear(t,donor,receiver,name,future_goal,point,tool,contact_q=near):
                                             count('receiver_successor_rejected');continue
                                         if future_goal is not None:count('receiver_successor_endpoints_clear')
                                         return dict(receiver=receiver, donor_point=donor_point,
@@ -452,70 +473,49 @@ def plan_air_regrasp(trial, donor, name, diagnostics=None, planning_budget_s=120
     return None
 
 
-def regrasp_held_plug(trial, donor, name, *, keep_receiver_held=False,
-                     allowed_receivers=None,candidate_centers=None,receiver_tilt_deg=0.,receiver_depths=None,future_goal=None):
-    """Real handover, optionally retaining its actual carrier for a successor.
+def unload_receiver_for_donor_release(trial,donor,receiver,name):
+    """Try legal receiver pressures after a known, blocked donor opening.
 
-    Default staging behavior is retained. The optional branch returns only
-    after real receiver support, donor release and withdrawal; its caller
-    must plan/execute the next operation from that actual carrier.
+    The receiver must retain real force-bearing support. Lower pressure can
+    remove frictional preload without changing contact physics or drive limits.
+    Every retry is a new ordinary command after a known result, never unknown
+    action replay. The caller restores pressure after donor withdrawal.
     """
+    arm=trial.arms[receiver];original=arm.grasp_force
+    if original is None:raise RuntimeError('Receiver has no active grasp for release unloading')
+    minimum=float(trial.cfg['allowed_grasp_force_n'][0]);width=float(trial.task['cube_size_m'])
+    initial_z=float(trial.data.body(name).xpos[2])
+    for force in sorted({(minimum+original)/2,minimum},reverse=True):
+        if force>=original:continue
+        if receiver not in trial.monitor.bilateral(trial.monitor.geoms[name],positive_force=True):
+            raise RuntimeError('Receiver support unverified before release unloading')
+        trial.execute('regrasp-receiver-unload',{receiver:('gripper',dict(mode='grasp',width_m=width,force_n=force,
+            speed_m_s=.025,epsilon_inner_m=getattr(trial,'transport_grasp_epsilon_inner_m',.004),epsilon_outer_m=.008))})
+        trial.wait(.15)
+        if receiver not in trial.monitor.bilateral(trial.monitor.geoms[name],positive_force=True) or float(trial.data.body(name).xpos[2])<initial_z-.01:
+            raise RuntimeError('Receiver support changed during release unloading')
+        result=trial.execute('regrasp-donor-release-unloaded',{donor:('gripper',dict(mode='move',
+            width_m=trial.arms[donor].grip_max,speed_m_s=.005))},allow_failure=True)[donor]
+        if trial.arms[donor].grasp_force is not None or result['status']=='uncertain':
+            raise RuntimeError('Donor release unresolved after unloading')
+        if result['status']!='completed' and result.get('reason') not in ('Requested opening not reached','Requested aperture exceeded'):
+            raise RuntimeError('Donor release failed after unloading: '+str(result))
+        trial.wait(.15)
+        supported=receiver in trial.monitor.bilateral(trial.monitor.geoms[name],positive_force=True)
+        contact=_robot_payload_contacts(trial,donor,name)
+        trial.event('reference_release_unloading',donor=donor,receiver=receiver,object=name,
+            receiver_force_setpoint_n=force,donor_result=result,donor_still_contacts=contact,receiver_support=supported)
+        if not supported or float(trial.data.body(name).xpos[2])<initial_z-.01:
+            raise RuntimeError('Receiver did not retain payload during donor release')
+        if not contact:return original
+    raise RuntimeError('Donor still contacts payload after legal pressure unloading')
+
+
+def withdraw_released_donor(trial,donor,receiver,name,restore_force=None):
+    """Complete a known released sender retreat before the carrier continues."""
     from .placement_oracle import park
-    diagnostics = {}
-    if candidate_centers is not None or future_goal is not None:
-        plan=plan_air_regrasp(trial,donor,name,diagnostics,
-            allowed_receivers=allowed_receivers,candidate_centers=candidate_centers,receiver_tilt_deg=receiver_tilt_deg,receiver_depths=receiver_depths,future_goal=future_goal)
-    elif allowed_receivers is None:
-        plan = plan_air_regrasp(trial, donor, name, diagnostics)
-    else:
-        plan = plan_air_regrasp(trial, donor, name, diagnostics,
-                               allowed_receivers=allowed_receivers)
-    trial.event('reference_air_regrasp_search', donor=donor, object=name, diagnostics=diagnostics,
-                scope='Bounded private candidate screening, not a feasibility certificate')
-    if plan is None:
-        raise RuntimeError('No bounded physical air-regrasp candidate '+donor+'/'+name+'; '+str(diagnostics))
-    receiver = plan['receiver']
-    trial.event('reference_air_regrasp_plan', donor=donor, receiver=receiver,
-                object=name, scope='Candidate endpoints; actual route and contacts still required')
-    trial.move_free(donor, plan['donor_point'], plan['donor_tool'],
-                    'regrasp-donor-transit', target_joints=plan['donor_q'])
-    if not trial.finger_contacts(donor, name):
-        raise RuntimeError('Donor grasp lost during air-regrasp transit '+name)
-    obj = trial.data.body(name)
-    rotation = obj.xmat.reshape(3, 3).copy()
-    normal = rotation[:, 2]
-    axis, sign = plan['receiver_axis'], plan['receiver_sign']
-    y, z = rotation[:, axis]*sign, -normal
-    tool = obj.xmat.reshape(3,3)@plan['receiver_relative_rotation'] if 'receiver_relative_rotation' in plan else np.column_stack((np.cross(y, z), y, z))
-    point = obj.xpos + normal*plan['receiver_depth'] + rotation[:, 1-axis]*plan['receiver_shift']
-    width = float(trial.task['cube_size_m'])
-    opening = min(trial.arms[receiver].grip_max, width+.012)
-    trial.execute('regrasp-receiver-open', {receiver: ('gripper', dict(
-        mode='move', width_m=opening, speed_m_s=.05))})
-    trial.move_free(receiver, point-tool[:,2]*.15, tool, 'regrasp-receiver-approach',
-                    continuation=(point, tool, (name,)), continuation_clearance=.001,
-                    preferred_seed=plan.get('receiver_approach_q'))
-    trial.move(receiver, point, tool, 'regrasp-contact', precise=True)
-    force = 70.
-    force = min(force, trial.cfg['allowed_grasp_force_n'][1])
-    trial.execute('regrasp-receiver-close', {receiver: ('gripper', dict(
-        mode='grasp', width_m=width, force_n=force, speed_m_s=.025,
-        epsilon_inner_m=.004, epsilon_outer_m=.008))})
-    trial.wait(.20)
-    if not trial.finger_contacts(receiver, name) or not trial.finger_contacts(donor, name):
-        raise RuntimeError('Air-regrasp requires actual bilateral support from both arms')
-    released = trial.execute('regrasp-donor-release', {donor: ('gripper', dict(
-        mode='move', width_m=trial.arms[donor].grip_max, speed_m_s=.005))}, allow_failure=True)[donor]
-    if trial.arms[donor].grasp_force is not None or released['status'] == 'uncertain':
-        raise RuntimeError('Air-regrasp donor release unresolved')
-    if released['status'] == 'failed' and released.get('reason') not in (
-            'Requested opening not reached', 'Requested aperture exceeded'):
-        raise RuntimeError('Air-regrasp donor release failed: '+str(released))
-    if _robot_payload_contacts(trial, donor, name):
-        raise RuntimeError('Donor still contacts payload after full opening '+donor+'/'+name)
-    trial.event('reference_donor_release_verified', robot=donor, object=name,
-                actual_width_m=trial.arms[donor].observe()['gripper_width_m'])
-    trial.held.pop(donor)
+    width=float(trial.task['cube_size_m'])
+    trial.held.pop(donor,None)
     trial.held[receiver] = name
     pose = trial.data.site_xpos[trial.arms[donor].site].copy()
     donor_tool = trial.data.site_xmat[trial.arms[donor].site].reshape(3, 3).copy()
@@ -551,8 +551,79 @@ def regrasp_held_plug(trial, donor, name, *, keep_receiver_held=False,
     if not cleared:
         raise RuntimeError('No fully screened donor withdrawal '+donor+'/'+name)
     park(trial, donor)
+    if restore_force is not None:
+        trial.execute('regrasp-receiver-restore-pressure',{receiver:('gripper',dict(mode='grasp',width_m=width,
+            force_n=restore_force,speed_m_s=.025,epsilon_inner_m=getattr(trial,'transport_grasp_epsilon_inner_m',.004),epsilon_outer_m=.008))})
+        trial.wait(.15)
     if not trial.finger_contacts(receiver, name):
         raise RuntimeError('Air-regrasp payload not retained after donor withdrawal')
+
+
+def regrasp_held_plug(trial, donor, name, *, keep_receiver_held=False,
+                     allowed_receivers=None,candidate_centers=None,receiver_tilt_deg=0.,receiver_depths=None,future_goal=None,planning_budget_s=120.):
+    """Real handover, optionally retaining its actual carrier for a successor.
+
+    Default staging behavior is retained. The optional branch returns only
+    after real receiver support, donor release and withdrawal; its caller
+    must plan/execute the next operation from that actual carrier.
+    """
+    from .placement_oracle import park
+    diagnostics = {}
+    if candidate_centers is not None or future_goal is not None:
+        plan=plan_air_regrasp(trial,donor,name,diagnostics,planning_budget_s=planning_budget_s,
+            allowed_receivers=allowed_receivers,candidate_centers=candidate_centers,receiver_tilt_deg=receiver_tilt_deg,receiver_depths=receiver_depths,future_goal=future_goal)
+    elif allowed_receivers is None:
+        plan = plan_air_regrasp(trial, donor, name, diagnostics)
+    else:
+        plan = plan_air_regrasp(trial, donor, name, diagnostics,
+                               allowed_receivers=allowed_receivers)
+    trial.event('reference_air_regrasp_search', donor=donor, object=name, diagnostics=diagnostics,
+                scope='Bounded private candidate screening, not a feasibility certificate')
+    if plan is None:
+        raise RuntimeError('No bounded physical air-regrasp candidate '+donor+'/'+name+'; '+str(diagnostics))
+    receiver = plan['receiver']
+    trial.event('reference_air_regrasp_plan', donor=donor, receiver=receiver,
+                object=name, scope='Candidate endpoints; actual route and contacts still required')
+    trial.move_free(donor, plan['donor_point'], plan['donor_tool'],
+                    'regrasp-donor-transit', target_joints=plan['donor_q'])
+    if not trial.finger_contacts(donor, name):
+        raise RuntimeError('Donor grasp lost during air-regrasp transit '+name)
+    obj = trial.data.body(name)
+    rotation = obj.xmat.reshape(3, 3).copy()
+    normal = rotation[:, 2]
+    axis, sign = plan['receiver_axis'], plan['receiver_sign']
+    y, z = rotation[:, axis]*sign, -normal
+    tool = obj.xmat.reshape(3,3)@plan['receiver_relative_rotation'] if 'receiver_relative_rotation' in plan else np.column_stack((np.cross(y, z), y, z))
+    point = obj.xpos + normal*plan['receiver_depth'] + rotation[:, 1-axis]*plan['receiver_shift']
+    width = float(trial.task['cube_size_m'])
+    opening = min(trial.arms[receiver].grip_max, width+.012)
+    trial.execute('regrasp-receiver-open', {receiver: ('gripper', dict(
+        mode='move', width_m=opening, speed_m_s=.05))})
+    trial.move_free(receiver, point-tool[:,2]*.15, tool, 'regrasp-receiver-approach',
+                    continuation=(point, tool, (name,)), continuation_clearance=.001,
+                    preferred_seed=plan.get('receiver_approach_q'))
+    trial.move(receiver, point, tool, 'regrasp-contact', precise=True)
+    force = getattr(trial,'transport_grasp_force_n',70.)
+    force = min(force, trial.cfg['allowed_grasp_force_n'][1])
+    trial.execute('regrasp-receiver-close', {receiver: ('gripper', dict(
+        mode='grasp', width_m=width, force_n=force, speed_m_s=.025,
+        epsilon_inner_m=getattr(trial,'transport_grasp_epsilon_inner_m',.004), epsilon_outer_m=.008))})
+    trial.wait(.20)
+    if not trial.finger_contacts(receiver, name) or not trial.finger_contacts(donor, name):
+        raise RuntimeError('Air-regrasp requires actual bilateral support from both arms')
+    released = trial.execute('regrasp-donor-release', {donor: ('gripper', dict(
+        mode='move', width_m=trial.arms[donor].grip_max, speed_m_s=.005))}, allow_failure=True)[donor]
+    if trial.arms[donor].grasp_force is not None or released['status'] == 'uncertain':
+        raise RuntimeError('Air-regrasp donor release unresolved')
+    if released['status'] == 'failed' and released.get('reason') not in (
+            'Requested opening not reached', 'Requested aperture exceeded'):
+        raise RuntimeError('Air-regrasp donor release failed: '+str(released))
+    restore_force=None
+    if _robot_payload_contacts(trial, donor, name):
+        restore_force=unload_receiver_for_donor_release(trial,donor,receiver,name)
+    trial.event('reference_donor_release_verified', robot=donor, object=name,
+                actual_width_m=trial.arms[donor].observe()['gripper_width_m'])
+    withdraw_released_donor(trial,donor,receiver,name,restore_force=restore_force)
     if keep_receiver_held:
         trial.event('reference_air_regrasp_carrier_retained', object=name,
                     donor=donor, receiver=receiver,
@@ -657,11 +728,15 @@ def _pick_side_cylinder(t, robot, name, height, force, tool_x_shift=0., lift_spe
     t.wait(.15)
     if not t.finger_contacts(robot, name):
         raise RuntimeError('Bilateral cylinder contact missing '+name)
-    t.move(robot, t.data.site_xpos[arm.site]+np.array([0.,0.,.14]), chosen,
-           'pick-lift', speed_m_s=lift_speed_m_s)
-    t.wait(.1)
-    if t.data.body(name).xpos[2] < before[2]+.08:
-        raise RuntimeError('Cylinder payload not retained '+name)
+    if getattr(t,'transport_guarded_pickups',False):
+        from .transport_grasp_safety import guarded_pickup_lift
+        guarded_pickup_lift(t,robot,name,before[2],chosen,speed_m_s=lift_speed_m_s)
+    else:
+        t.move(robot, t.data.site_xpos[arm.site]+np.array([0.,0.,.14]), chosen,
+               'pick-lift', speed_m_s=lift_speed_m_s)
+        t.wait(.1)
+        if t.data.body(name).xpos[2] < before[2]+.08:
+            raise RuntimeError('Cylinder payload not retained '+name)
     t.held[robot] = name
     t.event('picked', robot=robot, object=name)
 

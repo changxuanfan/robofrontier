@@ -132,6 +132,30 @@ class MotionReader:
                     if file.read().strip():raise ValueError('Corrupted event record before the interrupted tail')
                     break # Interrupted trailing write, never fabricate its event.
 
+    def selected_frames(self,indices):
+        """Decode selected original states without iterating over omitted frames.
+
+        Each used chunk is checksum-verified, then reconstructed bit-exactly.
+        This is an offline rendering optimization, not a new physics trajectory.
+        """
+        indices=np.asarray(indices,dtype=np.int64)
+        if indices.ndim!=1 or not len(indices) or indices[0]<0 or indices[-1]>=self.meta['frames'] or np.any(np.diff(indices)<=0):raise ValueError('Selected source indices must be sorted, unique and in range')
+        offset=0;cursor=0;last=-np.inf
+        for chunk in self.meta['chunks']:
+            end=offset+chunk['frames'];stop=int(np.searchsorted(indices,end))
+            if stop>cursor:
+                path=self.path/chunk['file']
+                if digest(path)!=chunk['sha256']:raise ValueError('Recording chunk checksum mismatch')
+                with np.load(path,allow_pickle=False)as z:
+                    q=np.bitwise_xor(np.bitwise_xor.accumulate(z['xor'],axis=0),z['base']).view('<f4');times=z['time_s']
+                    if q.shape!=(chunk['frames'],self.meta['nq']) or len(times)!=len(q):raise ValueError('Invalid recording chunk shape')
+                    for index in indices[cursor:stop]:
+                        local=int(index)-offset;t=float(times[local]);state=q[local]
+                        if not np.isfinite(t) or t<=last or not np.isfinite(state).all():raise ValueError('Invalid selected recording state')
+                        last=t;yield int(index),t,state.copy()
+            cursor=stop;offset=end
+            if cursor==len(indices):break
+
     @classmethod
     def recover(cls,path):
         """Reindex finalized chunks after interruption; never use a .tmp tail."""

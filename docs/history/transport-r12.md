@@ -1,3 +1,5 @@
+> 历史归档。当前规格与状态见 [Transport任务说明](../tasks/transport.md)；合并操作见 [交接](../plans/suite-v2/transport-merge-handoff.md)。本文保留当时的过程与证据。
+
 # Transport R12：相邻目标间隔增加20 mm
 
 仅调整白板目标间隔并重新静态渲染九个Transport场景，不运行Oracle。

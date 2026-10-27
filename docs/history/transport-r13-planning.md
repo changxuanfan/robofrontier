@@ -1,3 +1,5 @@
+> 历史归档。当前规格与状态见 [Transport任务说明](../tasks/transport.md)；合并操作见 [交接](../plans/suite-v2/transport-merge-handoff.md)。本文保留当时的过程与证据。
+
 # Transport R13：抓姿接续、前向恢复与独立推进
 
 范围：Transport 最小单元及十二臂 L2 两目标对照。没有运行九项完整订单，也没有恢复用户停止的 Codex fork。Oracle 是读取私有几何、执行真实控制指令的工程参考，不是 GPT 策略试验。

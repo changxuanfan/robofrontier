@@ -40,7 +40,8 @@ def insertion_grasps(frames,object_rotation,goal_rotation):
     return [(angle,tool) for _,angle,tool in sorted(candidates,key=lambda c:-c[0])]
 
 
-def direct_grasp_candidate(trial,robot,name,goal_pose,board,budget_s=45.,check_seating=False):
+def direct_grasp_candidate(trial,robot,name,goal_pose,board,budget_s=45.,check_seating=False,
+        axial_shift_m=0.,pickup_heights_m=None):
     t=ref._planning_copy(trial);start=time.monotonic();stats={}
     def count(key):stats[key]=stats.get(key,0)+1
     obj=t.data.body(name);p=obj.xpos.copy();rotation=obj.xmat.reshape(3,3).copy()
@@ -66,13 +67,13 @@ def direct_grasp_candidate(trial,robot,name,goal_pose,board,budget_s=45.,check_s
         (angle,turn(frame[:,1],math.radians(angle))@frame)
         for angle in (90,-90,105,-105,120,-120,75,-75,60,-60,0) for frame in frames]
     for angle,tool in choices:
-        for height in (0.,-.006,-.012,.006,.012,.020):
+        for height in ((0.,-.006,-.012,.006,.012,.020) if pickup_heights_m is None else pickup_heights_m):
             if time.monotonic()-start>budget_s:
                 return None,dict(stats,budget_exhausted=True,wall_s=time.monotonic()-start)
             t.data.qpos[:]=original;t.held={};ref._scratch_gap(t,robot,opening)
             import mujoco
             mujoco.mj_forward(t.model,t.data)
-            point=p+up*height;approach=point-tool[:,2]*.12
+            point=p+up*height+rotation[:,2]*axial_shift_m;approach=point-tool[:,2]*.12
             seating=None
             pickup_candidates=[]
             # Cheap source checks avoid performing long reverse-path
@@ -168,15 +169,19 @@ def direct_pick(t,robot,name,goal_pose,board,budget_s=45.,check_seating=False):
     t.move_free(robot,plan['approach'],plan['rotation'],'unit-side-approach',target_joints=plan['approach_q'],
         continuation=(plan['point'],plan['rotation'],(name,)))
     t.move(robot,plan['point'],plan['rotation'],'unit-side-contact',precise=True)
-    t.execute('pick-grasp',{robot:('gripper',dict(mode='grasp',width_m=width,force_n=min(70.,t.cfg['allowed_grasp_force_n'][1]),speed_m_s=.025,
+    t.execute('pick-grasp',{robot:('gripper',dict(mode='grasp',width_m=width,force_n=min(getattr(t,'transport_grasp_force_n',70.),t.cfg['allowed_grasp_force_n'][1]),speed_m_s=.025,
         epsilon_inner_m=.008,epsilon_outer_m=.008))})
     t.wait(.15)
     if not t.finger_contacts(robot,name):raise RuntimeError('Direct grasp did not establish real bilateral contact')
     before=t.data.body(name).xpos.copy();arm=t.arms[robot]
-    t.move(robot,t.data.site_xpos[arm.site]+np.array([0,0,.14]),plan['rotation'],'pick-lift',speed_m_s=.025)
-    t.wait(.1)
-    if not t.finger_contacts(robot,name) or t.data.body(name).xpos[2]<before[2]+.08:
-        raise RuntimeError('Direct side pickup lost real payload support')
+    if getattr(t,'transport_guarded_pickups',False):
+        from .transport_grasp_safety import guarded_pickup_lift
+        guarded_pickup_lift(t,robot,name,before[2],plan['rotation'])
+    else:
+        t.move(robot,t.data.site_xpos[arm.site]+np.array([0,0,.14]),plan['rotation'],'pick-lift',speed_m_s=.025)
+        t.wait(.1)
+        if not t.finger_contacts(robot,name) or t.data.body(name).xpos[2]<before[2]+.08:
+            raise RuntimeError('Direct side pickup lost real payload support')
     t.held[robot]=name;t.event('picked',robot=robot,object=name)
     if check_seating and t.task['level']>1:
         if not hasattr(t,'socket_seed_hints'):t.socket_seed_hints={}

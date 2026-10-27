@@ -224,12 +224,14 @@ class Trial:
         if getattr(self,'live_preview',False) and self.data is getattr(self,'_live_data',None) and time.monotonic()-getattr(self,'last_heartbeat',0)>5:self._heartbeat('planning')
         arm=self.arms[robot];q,e=arm.ik.solve(np.asarray(target),rotation,arm.qref if seed is None else seed,220);_,r=arm.ik.pose(q)
         return q if e<.0018 and np.linalg.norm(rotation_vector(rotation,r))<.02 else None
-    def pose_clear(self,robot,q,allowed_objects=(),clearance_m=.003):
+    def pose_clear(self,robot,q,allowed_objects=(),clearance_m=.003,inter_robot_clearance_m=None):
         """Scratch endpoint check, including every arm link and world geometry.
 
         Target finger contact is permitted, never palm/arm contact. The live
         physics and continuous process monitor remain the execution evidence.
         """
+        if inter_robot_clearance_m is None:
+            inter_robot_clearance_m=getattr(self,'reference_inter_robot_clearance_m',None)
         self.check_stop();scratch=self.screen_data;scratch.qpos[:]=self.data.qpos;scratch.qpos[self.arms[robot].qids]=q
         mujoco.mj_kinematics(self.screen_model,scratch)
         tcp=scratch.site_xpos[self.arms[robot].site];workspace=self.task['workspace_world_m']
@@ -245,8 +247,11 @@ class Trial:
         allowed=set(g for name in allowed_objects for g in self.monitor.geoms[name])
         allowed|=carried_geoms
         for c in scratch.contact:
-            if c.dist>=clearance_m:continue
             a,b=map(int,c.geom)
+            if (inter_robot_clearance_m is not None and owner[a]>=0 and owner[b]>=0
+                    and owner[a]!=owner[b] and rid in (owner[a],owner[b])
+                    and c.dist<inter_robot_clearance_m):return False
+            if c.dist>=clearance_m:continue
             if owner[a]==rid and owner[b]==rid:
                 names=[self.model.body(int(self.model.geom_bodyid[g])).name for g in (a,b)]
                 if c.dist<-.001 and not all('finger' in name for name in names):return False
@@ -268,7 +273,8 @@ class Trial:
         """Finite robot-joint route, with static full-scene collision screening
         and a kinematic carried-object prediction when applicable. That
         prediction exists only in scratch data; live loads are never attached.
-        Other arms are held during this reference move.
+        The route screen treats other arms at their captured poses. A
+        cooperative runtime must additionally screen concurrent progress.
         Screens are not certificates: the live monitor still audits execution.
         """
         arm=self.arms[robot];start=self.data.qpos[arm.qids].copy();seeds=([np.asarray(preferred_seed)] if preferred_seed is not None else [])+[arm.qref,self.home_q[robot]]
@@ -357,10 +363,16 @@ class Trial:
         command=dict(mode='grasp',width_m=width,force_n=force,speed_m_s=.04,epsilon_inner_m=.008,epsilon_outer_m=.008) if force is not None else dict(mode='move',width_m=0.,speed_m_s=.04)
         self.execute('pick-grasp',{robot:('gripper',command)});self.wait(.15)
         if not self.finger_contacts(robot,name):raise RuntimeError('Bilateral cube contact missing '+name)
-        self.move(robot,self.data.site_xpos[arm.site]+np.array([0,0,.14]),rr,'pick-lift');self.wait(.1)
-        if self.data.body(name).xpos[2]<p[2]+.08:raise RuntimeError('Payload not retained '+name)
+        if getattr(self,'transport_guarded_pickups',False):
+            from .transport_grasp_safety import guarded_pickup_lift
+            guarded_pickup_lift(self,robot,name,p[2],rr)
+        else:
+            self.move(robot,self.data.site_xpos[arm.site]+np.array([0,0,.14]),rr,'pick-lift');self.wait(.1)
+            if self.data.body(name).xpos[2]<p[2]+.08:raise RuntimeError('Payload not retained '+name)
         self.held[robot]=name;self.event('picked',robot=robot,object=name)
-    def place(self,robot,position,object_rotation=None,precise=False,pose_provider=None):
+    def place(self,robot,position,object_rotation=None,precise=False,pose_provider=None,motion_precise=None):
+        approach_precise=False if motion_precise is None else motion_precise
+        motion_precise=precise if motion_precise is None else motion_precise
         name=self.held[robot];arm=self.arms[robot];obj=self.data.body(name);old_r=obj.xmat.reshape(3,3).copy();tcp_r=self.data.site_xmat[arm.site].reshape(3,3).copy()
         offset=old_r.T@(self.data.site_xpos[arm.site]-obj.xpos);relative=old_r.T@tcp_r
         from .scenes import rz
@@ -436,7 +448,7 @@ class Trial:
             raise PlacementPlanningError(robot,name,diagnostics)
         target,rr,r=chosen;symmetry=base_r.T@r
         normal=np.array([0,0,1.]) if self.task['family']=='mosaic' else r[:,2]
-        if not mosaic:self.move(robot,target+np.array([0,0,.14]),rr,'place-approach')
+        if not mosaic:self.move(robot,target+np.array([0,0,.14]),rr,'place-approach',precise=approach_precise)
         buffer=self.task['family']=='transport' and not precise
         heights=() if mosaic else (.07,.035,.015) if buffer else (.07,.035,.015,.005,0)
         # A pocket rim does not admit the complete finger envelope. Release
@@ -450,7 +462,7 @@ class Trial:
             rr=r@relative
             if self.task['family']=='mosaic':height=max(height,self.release_clearance_height(robot,rr,float((r@offset)[2])))
             target=np.asarray(position)+r@offset+normal*height
-            self.move(robot,target,rr,'place-prealign' if height else 'place-seat',precise=precise)
+            self.move(robot,target,rr,'place-prealign' if height else 'place-seat',precise=motion_precise)
         self.wait(.15)
         if self.task['family']=='mosaic' and not pocket and np.linalg.norm(self.data.site_xpos[arm.site,:2]-np.asarray(position)[:2])>.002:
             # A cube can settle along a fingertip during a joint-space carry.

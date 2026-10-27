@@ -1,0 +1,92 @@
+{
+  "schema": "robofrontier.transport-half-opening-check.v1",
+  "case_id": "transport-a04-d1",
+  "source_scene_sha256": "53713645c019e1625f20a4b0355ad9979578bf73bb6fa110571d6b7b90f47201",
+  "variant_scene_sha256": "53713645c019e1625f20a4b0355ad9979578bf73bb6fa110571d6b7b90f47201",
+  "original_geometry": {
+    "tabletop_z_m": 0.8,
+    "outer_bounds_xy_m": [
+      [
+        -0.9690000000000001,
+        -0.9690000000000001
+      ],
+      [
+        0.9690000000000001,
+        0.9690000000000001
+      ]
+    ],
+    "outer_size_xy_m": [
+      1.9380000000000002,
+      1.9380000000000002
+    ],
+    "central_opening_size_m": null,
+    "central_opening_is_insertion_socket": false,
+    "boxes_world": [
+      {
+        "id": "table_0",
+        "center_m": [
+          0.0,
+          0.0,
+          0.775
+        ],
+        "half_size_m": [
+          0.9690000000000001,
+          0.9690000000000001,
+          0.025
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  "physical_geometry": {
+    "tabletop_z_m": 0.8,
+    "outer_bounds_xy_m": [
+      [
+        -0.9690000000000001,
+        -0.9690000000000001
+      ],
+      [
+        0.9690000000000001,
+        0.9690000000000001
+      ]
+    ],
+    "outer_size_xy_m": [
+      1.9380000000000002,
+      1.9380000000000002
+    ],
+    "central_opening_size_m": null,
+    "central_opening_is_insertion_socket": false,
+    "boxes_world": [
+      {
+        "id": "table_0",
+        "center_m": [
+          0.0,
+          0.0,
+          0.775
+        ],
+        "half_size_m": [
+          0.9690000000000001,
+          0.9690000000000001,
+          0.025
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  "compiled_parity_passed": true,
+  "identical_to_half_opening_fk_model": true,
+  "simulated_seconds_advanced": 0.0,
+  "original_oracle_pass_inherited": false,
+  "physical_execution_verified": false,
+  "scope": "Compiled tabletop-only revision and exact parity with the source half-opening FK model; no new physics execution"
+}

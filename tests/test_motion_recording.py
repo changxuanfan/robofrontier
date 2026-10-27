@@ -31,6 +31,20 @@ class MotionRecordingTests(unittest.TestCase):
             writer.close();reader=MotionReader(path);frames=list(reader.frames())
             np.testing.assert_array_equal(np.asarray([q for _,q in frames]),captured)
             np.testing.assert_allclose([t for t,_ in frames],times)
+            indices=[0,2,len(frames)-1]
+            selected=list(reader.selected_frames(indices))
+            self.assertEqual([i for i,_,_ in selected],indices)
+            for i,t,q in selected:
+                self.assertEqual(t,frames[i][0]);np.testing.assert_array_equal(q,frames[i][1])
+            for invalid in [[-1],[len(frames)],[2,1],[0,0],[]]:
+                with self.assertRaises(ValueError):list(reader.selected_frames(invalid))
+            from robofrontier.motion_timeline import write_timeline,MotionTimeline
+            timeline=Path(td)/'edit.json'
+            write_timeline(timeline,path,times,[0,len(frames)-1],[True,True],{})
+            edit=MotionTimeline(timeline,reader)
+            self.assertEqual(edit.select()[0],0);self.assertEqual(edit.select()[-1],len(frames)-1)
+            timeline.with_suffix('.npz').write_bytes(b'corrupt')
+            with self.assertRaisesRegex(ValueError,'checksum'):MotionTimeline(timeline,reader)
             self.assertTrue(any(e['event']=='rgba' for e in reader.events()))
             portable=Workstation(path/'source');self.assertEqual(portable.manifest['scene_sha256'],self.w.manifest['scene_sha256'])
     def test_interrupted_orphan_complete_chunk_is_recovered(self):
