@@ -1,0 +1,268 @@
+{
+  "physics": {
+    "table_height_m": 0.8,
+    "cube_size_m": 0.06,
+    "object_mass_kg": 0.16874999999999996,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "noslip_iterations": 10,
+    "timestep_s": 0.002,
+    "gravity_m_s2": [
+      0,
+      0,
+      -9.81
+    ],
+    "solid_cube_density_kg_m3": 781.2499999999999,
+    "material_scope": "Declared engineering assumptions, not material measurements",
+    "contact_time_constant_s": 0.004,
+    "contact_damping_ratio": 1.0
+  },
+  "mechanism": {
+    "kind": "recessed_grid",
+    "stock_packing": "Single layer; non-exclusive station allocation",
+    "stock_count": 72,
+    "robot_to_grid_edge_m": 0.39669872981077803,
+    "stock_edge_clearance_m": 0.055,
+    "row_spacing_scale_from_r3": 0.95,
+    "table_side_scale_from_r3": 1.25,
+    "table_vertical_scale_from_r4": 0.9,
+    "outer_base_axis_inset_from_grid_end_m": 0.10505000000000003,
+    "layout_revision": {
+      "name": "corner-facing-r12-inward50mm",
+      "source_revision": 11,
+      "inward_distance_m": 0.05,
+      "direction": "Existing robot forward axis in tabletop plane",
+      "unchanged": "All yaw angles; middle robots in six/eight-arm scenes",
+      "changes": [
+        {
+          "robot": "A",
+          "previous_base_m": [
+            -0.48095,
+            -0.6829999999999999,
+            0.8
+          ],
+          "base_m": [
+            -0.45594999999999997,
+            -0.639698729810778,
+            0.8
+          ],
+          "translation_m": [
+            0.024999999999999994,
+            0.04330127018922194,
+            0.0
+          ],
+          "yaw_deg": 60.00000000000001
+        },
+        {
+          "robot": "B",
+          "previous_base_m": [
+            0.48095,
+            -0.6829999999999999,
+            0.8
+          ],
+          "base_m": [
+            0.45594999999999997,
+            -0.639698729810778,
+            0.8
+          ],
+          "translation_m": [
+            -0.024999999999999994,
+            0.04330127018922194,
+            0.0
+          ],
+          "yaw_deg": 119.99999999999999
+        },
+        {
+          "robot": "C",
+          "previous_base_m": [
+            -0.48095,
+            0.6829999999999999,
+            0.8
+          ],
+          "base_m": [
+            -0.45594999999999997,
+            0.639698729810778,
+            0.8
+          ],
+          "translation_m": [
+            0.024999999999999994,
+            -0.04330127018922194,
+            0.0
+          ],
+          "yaw_deg": -60.00000000000001
+        },
+        {
+          "robot": "D",
+          "previous_base_m": [
+            0.48095,
+            0.6829999999999999,
+            0.8
+          ],
+          "base_m": [
+            0.45594999999999997,
+            0.639698729810778,
+            0.8
+          ],
+          "translation_m": [
+            -0.024999999999999994,
+            -0.04330127018922194,
+            0.0
+          ],
+          "yaw_deg": -119.99999999999999
+        }
+      ],
+      "relocated_stock_count": 0
+    },
+    "station_x_positions_m": [
+      -0.45594999999999997,
+      0.45594999999999997
+    ],
+    "robot_to_grid_edge_m_by_robot": {
+      "A": 0.39669872981077803,
+      "B": 0.39669872981077803,
+      "C": 0.39669872981077803,
+      "D": 0.39669872981077803
+    },
+    "stock_layout_revision": {
+      "name": "individually-graspable-r13",
+      "source_revision": 12,
+      "changed_stock_count": 3,
+      "robot_poses_changed": false
+    }
+  },
+  "grid": {
+    "rows": 6,
+    "columns": 12,
+    "colors": 4,
+    "pitch_m": 0.081,
+    "cube_side_m": 0.06,
+    "pattern": [
+      [
+        "navy",
+        "sage",
+        "sage",
+        "navy",
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "cream",
+        "navy"
+      ],
+      [
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "sage",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream"
+      ],
+      [
+        "navy",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream"
+      ],
+      [
+        "navy",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream"
+      ],
+      [
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "sage",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream"
+      ],
+      [
+        "navy",
+        "navy",
+        "sage",
+        "navy",
+        "navy",
+        "navy",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "cream",
+        "navy"
+      ]
+    ],
+    "pocket_opening_m": 0.08,
+    "depth_m": 0.02,
+    "floor_z_m": 0.78,
+    "rim_z_m": 0.8,
+    "color_counts": {
+      "navy": 14,
+      "sage": 15,
+      "cream": 21,
+      "coral": 22
+    },
+    "palette": {
+      "cream": "#FFF4DA",
+      "navy": "#173F73",
+      "coral": "#F03F5B",
+      "sage": "#16A16E"
+    },
+    "reference": {
+      "name": "Tulip",
+      "original_width": 6,
+      "original_height": 12,
+      "rotation_clockwise_deg": 90,
+      "source_sha256": "25a210531d2d0637480ae1fc2b3e40223f4e0f75710064f00ed6d15ea68ced87",
+      "source_file": "assets/tulip_parameters.json",
+      "color_hex": {
+        "cream": "#FFF4DA",
+        "navy": "#173F73",
+        "coral": "#F03F5B",
+        "sage": "#16A16E"
+      },
+      "palette_id": "bright",
+      "palette_selection_status": "selected_by_user",
+      "counts": {
+        "navy": 14,
+        "sage": 15,
+        "cream": 21,
+        "coral": 22
+      }
+    },
+    "printed_line_width_m": 0
+  }
+}

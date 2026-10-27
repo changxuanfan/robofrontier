@@ -1,5 +1,17 @@
 # Mosaic 家族提交给共享整合的接口清单
 
+2026-10-27版本选择已更新：未来GPT使用
+`configs/task_families/mosaic/r14.json`；原Oracle及工厂回放继续使用`r13.json`。
+选择声明在`configs/task_families/mosaic/selection.json`。R14仅改初始供料颜色，
+物理/初态几何等价，但不是一次新的Oracle成功；详细规格与证据范围见
+`mosaic-r14-local-colours.md`。以下原R13证据继续保留，不能覆盖新版选择。
+
+G1接入需区分“原R13完整Oracle资格”和“R14颜色变体的几何等价/本地供料设计”。
+不能把原Oracle的完成颜色资格复制到新场景；共享门禁应明确颜色变体接入协议，
+登记新scene/task/公开材料身份及证据范围。G2为新GPT加载R14公开task和
+mosaic-r14.md prompt，沿用Mosaic操作skill；G4仍绑定原R13冻结轨迹/配色。
+正式启动前继续保持policy_launch_ready=false，不自动启动或重跑Oracle。
+
 本分支提供Mosaic R13家族包与私有轨迹审查器。以下公共修改仅登记需求，未在本轮
 实施。共享文件应由整合负责人统一修改，避免各worktree分别覆盖相同模块。
 

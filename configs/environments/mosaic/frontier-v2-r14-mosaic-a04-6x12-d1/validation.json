@@ -1,0 +1,14 @@
+{
+  "status": "colour_only_design_geometry_equivalent_to_r13",
+  "oracle_verified": false,
+  "policy_verified": false,
+  "frozen_input": false,
+  "physics_steps": 0,
+  "robot_count": 4,
+  "physics_sha256": "e06c9651b8a220de8daa1073255807b01f8fe0ab32f3817549be3891a9d5688c",
+  "source_scene_sha256": "08e15714ce39dae36b7cfa215edb1867414f23f4bb3ea57e4e7a6e2cbb081652",
+  "source_revision": 13,
+  "certified_local_fraction_min": 0.7222222222222222,
+  "old_oracle_applies_to": "Original R13 colours only; not an Oracle success of this R14 task",
+  "scope": "One-to-one colour design with same-robot sampled pickup and target approach/open/withdraw witnesses; no loaded connecting path, dynamic or parallel execution certification"
+}

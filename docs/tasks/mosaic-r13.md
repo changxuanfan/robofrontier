@@ -1,5 +1,9 @@
 # Mosaic R13：最终任务规格与 GPT 审查包
 
+2026-10-27后续变更：用户已指定未来GPT使用只改初始供料颜色的R14；见
+`mosaic-r14-local-colours.md`与`configs/task_families/mosaic/selection.json`。
+本页和R13审查包保留为原Oracle/工厂回放的历史依据，不再作为未来GPT的版本选择。
+
 Mosaic 九个完整 Oracle 已通过，合计1566格；原始场景、执行记录和成功证据保持
 不变。本任务包把公开静态规格、完成规则与操作说明整理出来，供合并后的 GPT
 准备链加载。**它是审查包，不是已经解锁运行门禁的 GPT run。**
