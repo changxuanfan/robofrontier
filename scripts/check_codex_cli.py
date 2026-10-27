@@ -43,7 +43,7 @@ def check(output):
     server=ThreadingHTTPServer(('127.0.0.1',0),Handler)
     threading.Thread(target=server.serve_forever,daemon=True).start()
     p=dict(model='offline-protocol',provider='offline_protocol',effort='high',vision=True,
-        context_window=400000,auto_compact_token_limit=350000,
+        context_window=272000,auto_compact_token_limit=245000,
         base_url=f'http://127.0.0.1:{server.server_port}',env_key='ROBOFRONTIER_OFFLINE_STUB_TOKEN')
     write_json(output/'launch.json',launch_config(p,output))
     pixels=io.BytesIO();Image.new('RGB',(32,32),'red').save(pixels,format='PNG')

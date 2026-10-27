@@ -10,6 +10,22 @@ from robofrontier.task_families import (ROOT, RELEASE, read, resolve_case,
 
 
 class FamilyReleaseTests(unittest.TestCase):
+    def test_asset_audit_detects_missing_changed_and_unsafe_paths(self):
+        import hashlib
+        from scripts.tasks import check_case_assets
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);scene=root/'scene';(scene/'assets').mkdir(parents=True)
+            file=scene/'assets/a';file.write_bytes(b'original')
+            digest=hashlib.sha256(b'original').hexdigest()
+            manifest=scene/'workstation.json'
+            def save(path):manifest.write_text(json.dumps({'assets':[{'path':path,'sha256':digest}]}))
+            case={'id':'test','directory':'scene'};save('assets/a')
+            self.assertEqual(check_case_assets(case,root)['changed'],[])
+            file.write_bytes(b'altered');self.assertEqual(len(check_case_assets(case,root)['changed']),1)
+            file.unlink();self.assertEqual(len(check_case_assets(case,root)['missing']),1)
+            save('../outside')
+            with self.assertRaisesRegex(ValueError,'Invalid asset path'):check_case_assets(case,root)
+
     def test_all_purposes_have_36_exact_sources_and_preserve_version_split(self):
         release = read(ROOT/RELEASE)
         for purpose in ('gpt', 'oracle'):

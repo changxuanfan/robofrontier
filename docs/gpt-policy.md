@@ -1,14 +1,14 @@
 # 用 Codex CLI 运行模型基准
 
-入口是 `python -m scripts.benchmark`。一个 Desktop 主会话可以执行这个命令并查询状态；实际策略团队由独立的 Codex CLI `app-server` 进程运行，不依赖 Desktop 主聊天一直占用工具轮次。现有 Desktop 固定调度器仍可使用。
+入口是 `python -m scripts.benchmark`。Linux 配置与数据准备见[服务器指南](server-benchmark.md)。一个 Desktop 主会话可以执行这个命令并查询状态；实际策略团队由独立的 Codex CLI `app-server` 进程运行，不依赖 Desktop 主聊天一直占用工具轮次。现有 Desktop 固定调度器仍可使用。
 
 每个模型／任务组合拥有独立 run、MuJoCo 世界、SQLite、连接、策略会话和工作笔记。默认 adaptive；只由 Controller 自行选择任务内 fork 范围，宿主不规划抓放路线。9／36 指并行任务数，同一批次同一Dial题目在各模型间共享新生成的私有密码，仍使用独立世界与工作笔记。任务内分身可能增加模型请求并发，不能把任务数当作厂商配额保证。
 
 ## 模型与 API
 
-配置在 `configs/models.json`，默认仍为 `gpt-6.1-sol/high`，没有把这个默认值当作唯一可选模型。所有配置只作为该 CLI 子进程的参数，不修改用户全局 Codex 默认模型或登录。
+配置在 `configs/models.json`，默认 `astra`（`gpt-6-astra/high`），另有 `luna`（`gpt-6-luna/high`）。所有配置只作为该 CLI 子进程的参数，不修改用户全局 Codex 默认模型或登录。
 
-截至 2026-10-27 的官方文档：
+截至 2026-10-28 的官方文档：
 
 | 厂商 | 当前旗舰／相关型号 | 视觉任务使用 | 官方依据 |
 | --- | --- | --- | --- |
@@ -19,7 +19,7 @@
 
 旗舰是厂商定位，不是我们的实测排名。纯文本型号不会被偷偷加上另一个视觉模型后混入同一成绩。智谱官方说明：订阅过 GLM Coding Plan 的部分账号当前仅可使用 Chat Completions，可能无法直连 Codex 所需的 Responses，需以账号实际预检为准。
 
-密钥只通过对应环境变量进入 CLI：`DEEPSEEK_API_KEY`、`DASHSCOPE_API_KEY`、`ZAI_API_KEY`、`KIMI_API_KEY`。不要写入仓库或聊天。千问另设 `DASHSCOPE_BASE_URL`，填写你在官方控制台得到的工作空间／地域地址，例如 `https://你的WorkspaceId.cn-beijing.maas.aliyuncs.com/compatible-mode/v1`。
+复制仓库的 `.env.example` 为 `.env`，填入需要的凭证；benchmark 读取该文件，已有进程环境变量优先。文件只解析字面赋值，不执行 shell。`.env` 不纳入 Git。密钥只通过对应环境变量进入 CLI：`DEEPSEEK_API_KEY`、`DASHSCOPE_API_KEY`、`ZAI_API_KEY`、`KIMI_API_KEY`。不要写入仓库或聊天。千问另设 `DASHSCOPE_BASE_URL`，填写你在官方控制台得到的工作空间／地域地址，例如 `https://你的WorkspaceId.cn-beijing.maas.aliyuncs.com/compatible-mode/v1`。
 
 底层等价的 Codex provider 配置如下，实际 benchmark 会自动按进程生成，无需覆盖全局配置：
 
@@ -67,12 +67,12 @@ Codex 当前只支持 `wire_api="responses"`。支持 OpenAI Chat Completions �
 # 查看配置；不调用模型
 .venv/bin/python -m scripts.benchmark models
 
-# 真实 API 小预检：图片辨色、函数工具、上下文压缩；会消耗少量 API 额度
-.venv/bin/python -m scripts.benchmark preflight --models gpt
+# 真实 API 小预检：图片辨色、函数工具、手动上下文压缩、fork及分身工具；会消耗少量 API 额度
+.venv/bin/python -m scripts.benchmark preflight --models astra
 # 配好各自环境变量后，可用 --models deepseek qwen glm kimi
 
 # 冻结全新输入；不启动模型或物理。可同时给多个 --models
-.venv/bin/python -m scripts.benchmark prepare --models gpt --families mosaic --output runs/policy/my-mosaic-batch
+.venv/bin/python -m scripts.benchmark prepare --models astra --families mosaic --output runs/policy/my-mosaic-batch
 # 不指定 --families／--cases 则每个模型准备全部36项
 
 # 真正开始；不能恢复或重建曾启动过的物理世界
@@ -82,7 +82,7 @@ Codex 当前只支持 `wire_api="responses"`。支持 OpenAI Chat Completions �
 .venv/bin/python -m scripts.benchmark stop runs/policy/my-mosaic-batch
 ```
 
-run 会检查预检结果与实际模型、provider 地址、上下文和 effort 配置一致。修改执行源码／冻结输入后必须重新 prepare。preflight 是小样本接口兼容性检查，不是40万 token 压力测试，更不是机器人任务成绩。
+run 会检查预检结果与实际模型、provider 地址、上下文、effort、生成的模型 catalog 和 Codex CLI 版本一致。修改执行源码／冻结输入后必须重新 prepare。preflight 是小样本接口兼容性检查，包含手动 compact 和 fork 后继续调用工具；它不验证自动 compact 阈值、完整 272K 窗口或机器人任务成绩。
 
 任务版本继续由 `configs/task_families/current.json` 选择：GPT 的 Mosaic 是最新 R14，Oracle 展示仍使用自己的 R13 冻结录制。`scripts.tasks` 的纯准备／来源检查入口仍保留；正式 CLI 启动使用 benchmark 入口生成的包。
 
@@ -92,7 +92,7 @@ run 会检查预检结果与实际模型、provider 地址、上下文和 effort
 
 已明确失败、属于容量／速率限制的模型轮次，等待至少10秒，在没有未解决物理调用时续接同一会话；不重发机械臂动作、不重置物理、不延长期限。身份／配额不足／普通任务错误不当作容量错误盲目循环。创建、fork 或投递回执未知时保留现场并停止自动重试。原调用编号的客户端恢复规则保持不变。
 
-统一请求 `model_context_window=400000`、`model_auto_compact_token_limit=350000`。模型必须原生支持这个窗口，且有足够输出／系统空间；配置数值不会扩大服务端窗口。CLI catalog 的95%有效窗口预留仍可能使显示值约为380000。第三方各自的压缩行为、tokenizer 和 effort 档位需记录，不能把同名 effort 当作相同计算预算。厂商滚动别名可能升级，结果要保留实际返回型号与日期。
+统一请求 `model_context_window=272000`、`model_auto_compact_token_limit=245000`。模型必须原生支持这个窗口，且有足够输出／系统空间；配置数值不会扩大服务端窗口。CLI catalog 的95%有效窗口预留仍可能使显示值约为258400。第三方各自的压缩行为、tokenizer 和 effort 档位需记录，不能把同名 effort 当作相同计算预算。厂商滚动别名可能升级，结果要保留实际返回型号与日期。
 
 ## 图像、动作与后续工厂展示
 

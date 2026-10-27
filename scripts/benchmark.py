@@ -9,9 +9,34 @@ from pathlib import Path
 import subprocess
 import sys
 import time
+import shlex
 
 from robofrontier.task_families import ROOT, RELEASE, read, prepare
 from robofrontier.run_setup import write_json, verify_inputs
+
+
+def load_env(path):
+    """Load literal KEY=value entries; existing process environment wins."""
+    path = Path(path)
+    if not path.is_file():
+        return
+    import re
+    for number, line in enumerate(path.read_text().splitlines(), 1):
+        line = line.strip()
+        if not line or line.startswith('#'):
+            continue
+        if line.startswith('export '):
+            line = line[7:].lstrip()
+        key, sep, raw = line.partition('=')
+        if not sep or not re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*', key):
+            raise ValueError(f'Invalid .env entry at line {number}')
+        try:
+            values = shlex.split(raw, comments=True, posix=True)
+        except ValueError as error:
+            raise ValueError(f'Invalid .env value at line {number}') from error
+        if len(values) > 1:
+            raise ValueError(f'Quote whitespace in .env value at line {number}')
+        os.environ.setdefault(key, values[0] if values else '')
 
 
 def profile(name, config=None):
@@ -48,8 +73,12 @@ def launch_config(p, folder):
             prefix+'request_max_retries':3, prefix+'stream_max_retries':3})
     # Local Codex model catalog teaches the CLI that this exact model accepts
     # images. No global provider/auth/default settings are modified.
-    cache=read(Path(os.environ.get('CODEX_HOME',Path.home()/'.codex'))/'models_cache.json')
-    model=deepcopy(next(m for m in cache['models'] if m['slug']=='gpt-6.1-sol'))
+    cache_path=Path(os.environ.get('CODEX_HOME',Path.home()/'.codex'))/'models_cache.json'
+    cached = read(cache_path).get('models', []) if cache_path.is_file() else []
+    # Preserve exact OpenAI model metadata if available; the checked-in generic
+    # template also permits an empty CODEX_HOME on a new server.
+    model=deepcopy(next((m for m in cached if m.get('slug')==p['model']),
+                        read(ROOT/'configs/codex-model-template.json')))
     model.update(slug=p['model'], display_name=p['model'], description='Benchmark provider model',
         context_window=p['context_window'],max_context_window=p['context_window'],
         input_modalities=['text','image'],tool_mode=None,shell_type='shell_command',
@@ -78,7 +107,8 @@ def prepare_batch(output, names, families=None, cases=None, config=None):
               if not cases or c['id'] in cases]
     if not selected or cases and set(cases)-set(selected):raise ValueError('Unknown/empty released cases')
     batch=dict(schema='robofrontier.cli-benchmark.v1',status='preparing',created_at=time.time(),
-        cwd=str(ROOT),python=sys.executable,context_window=400000,auto_compact_token_limit=350000,
+        cwd=str(ROOT),python=sys.executable,context_window=next(iter(profiles.values()))['context_window'],
+        auto_compact_token_limit=next(iter(profiles.values()))['auto_compact_token_limit'],
         task_wall_limit_s=86400,model_calls=0,jobs=[])
     write_json(output/'batch.json',batch)
     # Match private Dial instances across model arms of this batch. These are
@@ -119,8 +149,15 @@ def run_batch(folder, parallel):
     folder=Path(folder).resolve();batch=read(folder/'batch.json')
     if batch['status']!='prepared_not_started':raise ValueError('Never automatically restart a batch/world')
     if not 1<=parallel<=36:raise ValueError('Parallel tasks must be 1..36')
-    lock=(folder/'supervisor.lock').open('a+')
-    fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+    with (folder/'supervisor.lock').open('a+') as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        # Another supervisor may have changed the batch before the lock.
+        batch=read(folder/'batch.json')
+        if batch['status']!='prepared_not_started':raise ValueError('Never automatically restart a batch/world')
+        return _run_batch_locked(folder, parallel, batch)
+
+
+def _run_batch_locked(folder, parallel, batch):
     for job in batch['jobs']:
         run=Path(job['run_directory']);launch=read(run/'private/inputs/codex.json')
         if verify_inputs(run):raise ValueError('Prepared code/inputs changed; prepare a new batch')
@@ -132,6 +169,10 @@ def run_batch(folder, parallel):
         expected=__import__('hashlib').sha256(json.dumps(launch['profile'],sort_keys=True).encode()).hexdigest()
         if not checked.get('passed') or checked.get('profile_sha256')!=expected:
             raise ValueError('Model compatibility preflight missing/failed or provider configuration changed')
+        catalog_sha=__import__('hashlib').sha256((run/'private/inputs/models.json').read_bytes()).hexdigest()
+        version=subprocess.check_output(['codex','--version'],text=True).strip()
+        if checked.get('catalog_sha256')!=catalog_sha or checked.get('codex_version')!=version:
+            raise ValueError('Model catalog or Codex CLI changed; rerun preflight')
         # Validate configuration without inference before starting any task.
         subprocess.run(['codex','app-server',*launch['args'],'--print-startup-config'],
                        check=True,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
@@ -140,7 +181,7 @@ def run_batch(folder, parallel):
     write_json(folder/'batch.json',batch)
     def task(job):
         run=Path(job['run_directory'])
-        if (run/'STOP').exists():return 0
+        if (run/'STOP').exists():return None
         with (run/'private/outputs/supervisor.log').open('a') as log:
             proc=subprocess.Popen(['node',str(ROOT/'scripts/codex_policy_host.js'),str(run),str(ROOT),sys.executable],
                                   cwd=ROOT,stdout=log,stderr=log)
@@ -150,18 +191,22 @@ def run_batch(folder, parallel):
         futures={pool.submit(task,job):job for job in batch['jobs']}
         for future in as_completed(futures):
             job=futures[future]
-            try:job.update(status='closed' if future.result()==0 else 'needs_review')
+            try:
+                result=future.result()
+                job.update(status='stopped_before_start' if result is None else 'closed' if result==0 else 'needs_review')
             except Exception as error:job.update(status='needs_review',error=str(error))
             write_json(folder/'batch.json',batch)
-    batch.update(status='closed',finished_at=time.time());write_json(folder/'batch.json',batch)
+    batch.update(status='needs_review' if any(j['status']=='needs_review' for j in batch['jobs']) else 'closed',
+                 finished_at=time.time());write_json(folder/'batch.json',batch)
 
 
 def main():
+    load_env(ROOT/'.env')
     p=argparse.ArgumentParser(description=__doc__);sub=p.add_subparsers(dest='command',required=True)
     sub.add_parser('models')
-    a=sub.add_parser('preflight');a.add_argument('--models',nargs='+',default=['gpt']);a.add_argument('--model-config',type=Path)
+    a=sub.add_parser('preflight');a.add_argument('--models',nargs='+',default=['astra']);a.add_argument('--model-config',type=Path)
     a=sub.add_parser('prepare');a.add_argument('--output',type=Path,required=True)
-    a.add_argument('--models',nargs='+',default=['gpt']);a.add_argument('--families',nargs='+')
+    a.add_argument('--models',nargs='+',default=['astra']);a.add_argument('--families',nargs='+')
     a.add_argument('--cases',nargs='+');a.add_argument('--model-config',type=Path)
     a=sub.add_parser('run');a.add_argument('batch',type=Path);a.add_argument('--parallel',type=int,default=9)
     a=sub.add_parser('status');a.add_argument('batch',type=Path)
@@ -184,6 +229,9 @@ def main():
             result=subprocess.run(['node',str(ROOT/'scripts/codex_preflight.js'),str(target)])
             receipt=read(target/'report.json');receipt['profile_sha256']=hashlib.sha256(json.dumps(selected,sort_keys=True).encode()).hexdigest()
             if result.returncode:receipt['passed']=False
+            if receipt.get('passed'):
+                receipt['catalog_sha256']=hashlib.sha256((target/'models.json').read_bytes()).hexdigest()
+                receipt['codex_version']=subprocess.check_output(['codex','--version'],text=True).strip()
             write_json(target/'report.json',receipt)
             if result.returncode:raise SystemExit(result.returncode)
     elif args.command=='prepare':print(prepare_batch(args.output,args.models,args.families,args.cases,args.model_config))

@@ -1615,6 +1615,6 @@
   },
   "harness": {
     "path": "configs/harnesses/policy.json",
-    "sha256": "c8e204946e347757150208ae7953537fa69a1a67972ad5785ab06528d44d58df"
+    "sha256": "8dfee2da8b1f38fe0340c6f6b707fca36f736d003a7ff0e9665c1ec569bd31a4"
   }
 }

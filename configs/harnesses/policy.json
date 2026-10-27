@@ -3,7 +3,7 @@
   "topology": "adaptive",
   "manager": "Meta",
   "coordinator": "Coordinator",
-  "model": "gpt-6.1-sol",
+  "model": "gpt-6-astra",
   "effort": "high",
   "poll_interval_s": 2.0,
   "integrity_check_interval_s": 30.0,

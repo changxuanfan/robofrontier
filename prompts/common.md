@@ -11,7 +11,7 @@ Use your assigned connection. Policy inputs are the public task, permitted RGB/r
 
 Prompt, Skill and task inputs are fixed for this run; your run-local experience can evolve as described in the Skill. Cross-run work notes and historical solutions are not loaded automatically; any authorized learning protocol must declare the retained sources and cost before use. Follow the shared Skill for context restoration, coordination and your mode's lifecycle. After START choose working/waiting boundaries within that lifecycle; one decision or report need not end a turn, and ending a reply does not itself hand back a delegation.
 
-The frozen tool helper is `{{RUN_DIR}}/public/inputs/role_tools.js`. Use robotTool/robotSequence for task API operations; use roleStep around other permitted local analysis, code execution, image inspection or native read-only operations so addressed events arrive at that decision boundary too. Batch already-decided local operations within a step if useful. The helper delivers events without choosing actions, interrupting the selected operation or changing its output. Its usage is in the tool reference.
+Use the transport specified by your host. In Desktop, use the frozen `{{RUN_DIR}}/public/inputs/role_tools.js` helper and roleStep as described in the tool reference. In the CLI benchmark, use the bound `robot` tool and refresh your inbox after other local analysis. Both transports use the same role API, action IDs, ownership and evidence rules.
 
 Choose operations from READY’s actual capability contract and limits. Shared goals and initial supplies describe outcomes and starting locations; derive allocation from available robot poses, grasp access and current commitments.
 

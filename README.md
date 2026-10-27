@@ -9,6 +9,7 @@ RoboFrontier 用 MuJoCo 多机械臂任务研究 GPT 的分工、规划与协作
 - [四类任务说明图谱 UI](outputs/task-atlas/v1-20261027/index.html)（[离线 ZIP](outputs/exports/task-atlas-four-families-20261027.zip)）
 - [各类任务与版本入口](docs/frontier-v2-environments.md)
 - [Codex CLI 多模型、并行运行与公开材料](docs/gpt-policy.md)
+- [Linux 服务器策略基准准备](docs/server-benchmark.md)
 - [最终视频、数据保留与目录](docs/repository-layout.md)
 - [本次合并、数据保全与验收](docs/oracle-integration.md)
 - [架构、目录与运行数据](docs/architecture.md)
@@ -38,7 +39,7 @@ uv run --extra oracle python -m scripts.check_harness
 ```sh
 .venv/bin/python -m scripts.tasks list
 .venv/bin/python -m scripts.tasks check --purpose gpt
-.venv/bin/python -m scripts.benchmark prepare --models gpt --cases transport-a04-d1 --output runs/policy/my-new-batch
+.venv/bin/python -m scripts.benchmark prepare --models astra --cases transport-a04-d1 --output runs/policy/my-new-batch
 .venv/bin/python -m scripts.factory video --renderer cycles --camera orbit --duration 8 --output outputs/robo-factory/my-gpu-demo
 ```
 

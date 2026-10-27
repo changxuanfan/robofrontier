@@ -55,6 +55,8 @@ def main():
     print(local_step.stdout,end='');print(local_step.stderr,end='',file=sys.stderr)
     cli_rpc=subprocess.run(['node','--test',str(ROOT/'tests/test_codex_rpc.js')],capture_output=True,text=True,cwd=ROOT)
     print(cli_rpc.stdout,end='');print(cli_rpc.stderr,end='',file=sys.stderr)
+    cli_preflight=subprocess.run(['node','--test',str(ROOT/'tests/test_codex_preflight.js')],capture_output=True,text=True,cwd=ROOT)
+    print(cli_preflight.stdout,end='');print(cli_preflight.stderr,end='',file=sys.stderr)
     js_syntax=[]
     for source in sorted(p for folder in ('scripts','tests') for p in (ROOT/folder).iterdir() if p.suffix in ('.js','.cjs')):
         parsed=subprocess.run(['node','--check',str(source)],capture_output=True,text=True,cwd=ROOT)
@@ -80,7 +82,7 @@ def main():
     if args.skill_validator:
         validator=subprocess.run([args.skill_python,str(args.skill_validator),str(ROOT/'.agents/skills/robot-collaboration')],capture_output=True,text=True)
         print(validator.stdout,end='');print(validator.stderr,end='',file=sys.stderr)
-    passed=result.wasSuccessful() and node.returncode==0 and bridge.returncode==0 and sequence.returncode==0 and local_step.returncode==0 and cli_rpc.returncode==0 and all(s['passed'] for s in js_syntax) and ui.returncode==0 and runbook.returncode==0 and tool_docs.returncode==0 and not broken_links and (validator is None or validator.returncode==0)
+    passed=result.wasSuccessful() and node.returncode==0 and bridge.returncode==0 and sequence.returncode==0 and local_step.returncode==0 and cli_rpc.returncode==0 and cli_preflight.returncode==0 and all(s['passed'] for s in js_syntax) and ui.returncode==0 and runbook.returncode==0 and tool_docs.returncode==0 and not broken_links and (validator is None or validator.returncode==0)
     report={'checked_at':datetime.now(ZoneInfo('Asia/Hong_Kong')).isoformat(),'passed':passed,
             'scope':('Protocol-only engineering: FakeWorld/HTTP, private scoring on synthetic records, frozen inputs and encoder recovery. Physics creation/stepping prohibited; no native sessions, model inference or GUI.' if args.protocol_only else 'Offline engineering; synthetic sessions, FakeWorld/HTTP, robot kinematics/contacts and FFmpeg encode/decode/crash regressions when tools are installed. No live model inference, native session wakeups, GUI or multi-agent policy trial.'),
             'physics_entrypoints_blocked':args.protocol_only,
@@ -90,6 +92,7 @@ def main():
             'finite_sequence_js':{'passed':sequence.returncode==0,'error':sequence.stderr or None},
             'local_role_step_js':{'passed':local_step.returncode==0,'error':local_step.stderr or None},
             'codex_cli_rpc_js':{'passed':cli_rpc.returncode==0,'error':cli_rpc.stderr or None},
+            'codex_preflight_js':{'passed':cli_preflight.returncode==0,'error':cli_preflight.stderr or None},
             'javascript_syntax':{'passed':all(s['passed'] for s in js_syntax),'files':js_syntax},
             'ui_script_syntax':{'passed':ui.returncode==0,'error':ui.stderr or None},
             'runbook_script_syntax':{'passed':runbook.returncode==0,'error':runbook.stderr or None},
