@@ -147,6 +147,8 @@ class Trial:
         self.last_heartbeat=stamp
     def step(self):
         if self.data is not getattr(self,'_live_data',self.data):raise RuntimeError('Planning scratch cannot step a physical world')
+        guard=getattr(self,'reference_step_guard',None)
+        if guard is not None:guard()
         if self.tick%self.stride==0:
             self.check_stop()
             for arm in self.arms.values():arm.control(.02)
@@ -184,13 +186,21 @@ class Trial:
         index=len(self.actions);self.event('action_start',label=label,commands=commands)
         for r,c in validated.items():self.arms[r].start(f'oracle-{index}-{r}',c,self.time)
         pending=set(commands);results={};start=self.time
-        while pending:
-            self.step()
-            if self.tick%self.stride:continue
-            for r in list(pending):
-                result=self.arms[r].poll(self.time,15)
-                if result:results[r]=result;pending.remove(r)
-            if self.time-start>605:raise RuntimeError('Unresolved action: '+label)
+        try:
+            while pending:
+                self.step()
+                if self.tick%self.stride:continue
+                for r in list(pending):
+                    result=self.arms[r].poll(self.time,15)
+                    if result:results[r]=result;pending.remove(r)
+                if self.time-start>605:raise RuntimeError('Unresolved action: '+label)
+        except Exception as error:
+            # Preserve submitted calls and advance IDs before live recovery.
+            # Unresolved calls stay uncertain until an actual stop/poll event.
+            interrupted={r:results.get(r,dict(call_id=f'oracle-{index}-{r}',status='uncertain',reason=str(error))) for r in commands}
+            self.actions.append(dict(label=label,commands=commands,results=interrupted,start_sim_s=start,end_sim_s=self.time,interrupted=True))
+            self.event('action_interrupted',label=label,results=interrupted)
+            raise
         rec=dict(label=label,commands=commands,results=results,start_sim_s=start,end_sim_s=self.time);self.actions.append(rec);self.event('action_end',label=label,results=results)
         if index%10==0:print(json.dumps(dict(case=self.task['id'],batch=index,label=label,sim_time_s=self.time,status='working')),flush=True)
         if any(v['status']!='completed' for v in results.values()) and not allow_failure:raise RuntimeError(label+': '+str(results))
@@ -492,7 +502,7 @@ class Trial:
         if self.renderer:self.renderer.close()
         np.savez_compressed(self.directory/'frame-states.npz',qpos=np.asarray(self.frame_qpos),time_s=np.asarray(self.frame_times),display=np.asarray(self.frame_scores),robot_ids=np.asarray(list(self.arms)),gripper_actuator_force_n=np.asarray(self.frame_grip_force),gripper_force_setpoint_n=np.asarray(self.frame_grip_setpoint))
         np.savez_compressed(self.directory/'event-states.npz',qpos=np.asarray(self.event_qpos),qvel=np.asarray(self.event_qvel))
-        report.update(scene_sha256=self.task['scene_sha256'],scene_bundle_sha256=self.source_bundle['sha256'],oracle_scene_sha256=hashlib.sha256((self.directory/'scene.xml').read_bytes()).hexdigest(),executor_sha256=self.executor_sha256,verification_initialization=self.initial_perturbation,llm_used=False,live_object_state_writes_after_initialization=False,robot_action_count=sum(len(a['commands']) for a in self.actions),failed_robot_actions=sum(r['status']=='failed' for a in self.actions for r in a['results'].values()),action_batches=len(self.actions),wall_time_s=time.monotonic()-self.started,finished_at_unix_s=time.time())
+        report.update(scene_sha256=self.task['scene_sha256'],scene_bundle_sha256=self.source_bundle['sha256'],oracle_scene_sha256=hashlib.sha256((self.directory/'scene.xml').read_bytes()).hexdigest(),executor_sha256=self.executor_sha256,verification_initialization=self.initial_perturbation,llm_used=bool(getattr(self,'oracle_repair_interventions',0)),live_object_state_writes_after_initialization=False,robot_action_count=sum(len(a['commands']) for a in self.actions),failed_robot_actions=sum(r['status']=='failed' for a in self.actions for r in a['results'].values()),action_batches=len(self.actions),wall_time_s=time.monotonic()-self.started,finished_at_unix_s=time.time())
         write_json(self.directory/'actions.json',self.actions)
         report.update(physical_control_sha256=self.physical_control_sha256,environment_logic_sha256=self.environment_logic_sha256,environment_logic_provenance=self.environment_logic_provenance)
         if self.executor_launch:report['executor_launch']=self.executor_launch

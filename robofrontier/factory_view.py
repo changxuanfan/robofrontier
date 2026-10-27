@@ -132,6 +132,8 @@ class FactoryRenderer:
     def render(self):
         start=time.perf_counter()
         if self.renderer_name=='filament':
+            self.renderables.update(self.data)
+            self.lights.update(self.data)
             self.renderer.render();pixels=self.pixels
         else:
             self.renderer.update_scene(self.data,camera=self.vcam,scene_option=self.options);pixels=self.renderer.render()

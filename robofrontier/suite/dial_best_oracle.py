@@ -4,6 +4,7 @@ The isolated solver receives observed complete inputs and the public record.
 The evaluator alone loads the secret; no private trial history is relayed.
 """
 import math
+from itertools import count
 from pathlib import Path
 import numpy as np
 import mujoco
@@ -79,9 +80,85 @@ class BestManipulator(HoldingManipulator):
         self.red_capture_offset_m=0.;self.red_grasp_force_n=30.
         self.robot_geometry=None
         self.hold_recoveries={}
+    def blue_pressure_issue(self,a):
+        arm=self.t.arms[a['nominal_robots'][1]]
+        if arm.job is not None:return False
+        if arm.grasp_force is None:return True
+        width=arm.observe()['gripper_width_m']
+        closing=min(float(self.t.data.joint(arm.name+'_'+suffix).qvel[0]) for suffix in ('finger_joint1','finger_joint2'))<-.01
+        return arm.grasp_phase!='hold' or (closing and width<arm.grasp_width-arm.grasp_epsilon[0]+.002)
+    def requalify_blue_pressure(self,entries):
+        t=self.t
+        for a in entries:
+            robot=a['nominal_robots'][1];arm=t.arms[robot]
+            width=arm.observe()['gripper_width_m']
+            if not .010<width<.030:raise RuntimeError('Blue pressure repair needs geometry review '+a['id'])
+            # The declared stem has 16/20 mm faces. This is a new ordinary
+            # grasp, not a driver-state write or proof based on aperture alone.
+            expected=.020 if width>=.018 else .016
+            force=arm.grasp_force if arm.grasp_force is not None else 70.
+            t.execute('blue-pressure-requalify',{robot:('gripper',dict(mode='grasp',width_m=expected,
+                force_n=force,speed_m_s=.02,epsilon_inner_m=.005,epsilon_outer_m=.005))})
+            t.wait(.3)
+            super().wait_support([a])
+            t.event('reference_blue_pressure_requalified',dial=a['id'],robot=robot,expected_width_m=expected,
+                scope='Ordinary actuator regrasp; actual bilateral airborne support reverified')
+    def wait_support(self,entries):
+        if self.t.task['level']==3:
+            affected=[a for a in entries if self.blue_pressure_issue(a)]
+            if affected:self.requalify_blue_pressure(affected)
+        return super().wait_support(entries)
+    def guarded_turn(self,label,commands):
+        t=self.t;affected={};previous=getattr(t,'reference_step_guard',None)
+        def guard():
+            if previous is not None:previous()
+            if t.task['level']!=3:return
+            for a in self.dials:
+                red=a['nominal_robots'][0]
+                if red not in commands or a['id'] in affected:continue
+                arm=t.arms[red]
+                if arm.job is not None and arm.job_op=='move' and self.blue_pressure_issue(a):
+                    affected[a['id']]=a
+                    arm.request_stop(t.time,'Blue support pressure requires requalification')
+                    t.event('reference_blue_pressure_guard',dial=a['id'],red_robot=red,
+                        scope='Early controlled stop; no object state or process-rule edits')
+        t.reference_step_guard=guard
+        try:results=t.execute(label,commands,allow_failure=True)
+        finally:t.reference_step_guard=previous
+        if affected:
+            if any(v['status'] not in ('completed','failed') or (v['status']=='failed' and
+                v.get('reason')!='Blue support pressure requires requalification') for v in results.values()):
+                raise RuntimeError(label+': '+str(results))
+            self.requalify_blue_pressure(list(affected.values()))
+        elif any(v['status']!='completed' for v in results.values()):raise RuntimeError(label+': '+str(results))
+        return results
+    def blue_approach_aperture(self,width):
+        return min(.08,width+.012) if self.t.task['level']==3 else None
     def set_symbols(self,symbols,finish_when_solved=False):
         self.hold_recoveries={}
         return super().set_symbols(symbols,finish_when_solved)
+    def release(self,entries):
+        for attempt in range(3):
+            try:return super().release(entries)
+            except RuntimeError as error:
+                message=str(error);t=self.t
+                if attempt==2 or not message.startswith(('No reachable small open-crank exit','No reachable clear released-crank exit',
+                    'Crank clear requires terminal opening and real separation')):raise
+                robot=message.rsplit(' ',1)[-1]
+                dial=next((a for a in entries if self.grips.get(a['id'],{}).get('robot')==robot),None)
+                if dial is None or t.arms[robot].grasp_force is not None or any(a.job is not None for a in t.arms.values()):raise
+                if not t.monitor.dial_ready[dial['index']]:raise
+                blue=dial['nominal_robots'][1];arm=t.arms[blue]
+                # Relative withdrawal can be made by the supported apparatus,
+                # rather than extending an already stretched open red arm.
+                delta=t.data.site_xmat[t.arms[robot].site].reshape(3,3)[:,2]*.012
+                point=t.data.site_xpos[arm.site]+delta;rotation=t.data.site_xmat[arm.site].reshape(3,3).copy()
+                q=t.screen_ik(blue,point,rotation)
+                if q is None or not self.arc_joint_clear(blue,t.data.qpos[arm.qids],q):raise
+                t.event('reference_cooperative_release',dial=dial['id'],red_robot=robot,blue_robot=blue,delta_m=delta.tolist(),
+                        scope='Real supported module translation against an open, force-off red gripper; no pose assignments')
+                t.execute('blue-free-open-crank',{blue:t.pose_command(blue,point,rotation,.015,.2)})
+                t.wait(.1)
     def maintain_holds(self,symbols):
         # An unchanged angle is not proof that its gripper is still holding.
         t=self.t;lost=[]
@@ -130,14 +207,14 @@ class BestManipulator(HoldingManipulator):
         return True
     def execute_turn(self,label,commands):
         t=self.t
-        if self.batch_arc_clear(commands):return t.execute(label,commands)
+        if self.batch_arc_clear(commands):return self.guarded_turn(label,commands)
         # A bounded reference scheduling fallback, not a harness restriction.
         t.event('reference_turn_batch_conflict',robots=list(commands),scope='Sampled nominal whole-arm joint interpolation; no dynamics guarantee')
         pending=dict(commands);results={}
         while pending:
             robot=next((r for r,c in pending.items() if self.batch_arc_clear({r:c})),None)
             if robot is None:raise RuntimeError('No screened turn batch or single-arm ordering')
-            results.update(t.execute(label+'-separate-'+robot,{robot:pending.pop(robot)}))
+            results.update(self.guarded_turn(label+'-separate-'+robot,{robot:pending.pop(robot)}))
         return results
     def update_decoder(self,guess):
         # Updates occur on every actual observed ready combination, including
@@ -150,19 +227,31 @@ class BestManipulator(HoldingManipulator):
         return bool(np.all(abs((angles-np.asarray(symbols)*self.angle_step_deg+180)%360-180)<=4))
 
 
-def solve(trial,max_guesses=48):
+def solve(trial,max_guesses=None):
     """Available after commissioning; not invoked by the mechanical runner."""
     decoder=BestDecoder(len(trial.task['dials']),trial.directory)
     trial.monitor.game.observer=decoder.observe
     m=BestManipulator(trial,decoder)
+    from .dial_live_repair import LiveRepair
+    from .oracle import ReferenceStopped
+    repair=LiveRepair(trial,m)
     try:
-        m.lift()
-        for index in range(max_guesses):
+        try:m.lift()
+        except ReferenceStopped:raise
+        except (RuntimeError,ValueError) as error:
+            repair.recover(error,None)
+            while trial.task['level']>1 and not all(trial.monitor.dial_ready):
+                repair.recover(RuntimeError('Initial supports still need repair; partial lift is not replayed'),None)
+        for index in count():
             if trial.monitor.game.won:break
+            if max_guesses is not None and index>=max_guesses:break
             current=[round(math.degrees(float(trial.data.joint(a['id']+'_hinge').qpos[0]))/60)%6 for a in m.dials]
             guess=decoder.choose(current)
             trial.event('blind_best_guess',attempt=index+1,requested=guess,candidates=len(decoder.candidates))
-            m.set_symbols(guess,finish_when_solved=True)
+            while True:
+                try:m.set_symbols(guess,finish_when_solved=True);break
+                except ReferenceStopped:raise
+                except (RuntimeError,ValueError) as error:repair.recover(error,guess)
         if not trial.monitor.game.won:raise RuntimeError('BEST-only guess budget exhausted')
         trial.wait(.3)
         trial.event('blind_best_solved',trials=trial.monitor.game.queries)

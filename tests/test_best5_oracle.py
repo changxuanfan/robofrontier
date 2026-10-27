@@ -15,6 +15,41 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 class BestOracleTests(unittest.TestCase):
+    def test_unlimited_run_keeps_progressing_but_explicit_stops_still_apply(self):
+        from scripts.run_blind_dial_oracle import make_stop_check
+        from types import SimpleNamespace
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as tmp:
+            output=Path(tmp)/'attempt';trial=SimpleNamespace(time=100000.,actions=range(100000))
+            signal=[False]
+            with patch('scripts.run_blind_dial_oracle.time.monotonic',return_value=100000.):
+                unlimited=make_stop_check(trial,signal,output,0)
+                self.assertFalse(unlimited())
+                self.assertTrue(make_stop_check(trial,signal,output,0,wall_s=1)())
+                self.assertTrue(make_stop_check(trial,signal,output,0,sim_s=1)())
+                self.assertTrue(make_stop_check(trial,signal,output,0,actions=1)())
+                signal[0]=True;self.assertTrue(unlimited());signal[0]=False
+                (Path(tmp)/'STOP').touch();self.assertTrue(unlimited())
+
+    def test_final_win_is_rechecked_after_cleanup(self):
+        from scripts.run_blind_dial_oracle import final_success
+        good=dict(passed=True,evaluation=dict(task_success=True,violations=[]),unresolved_robot_actions=[])
+        self.assertTrue(final_success(good))
+        self.assertFalse(final_success({**good,'evaluation':dict(task_success=False,violations=['late contact'])}))
+        self.assertFalse(final_success({**good,'unresolved_robot_actions':['A']}))
+        self.assertFalse(final_success({**good,'passed':False}))
+        self.assertFalse(final_success({**good,'error':'interrupted'}))
+
+    def test_worker_response_deadline_is_bounded(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p=Path(tmp);worker=p/'silent.py';worker.write_text('import sys,time\nsys.stdin.readline()\nsys.stdout.write("{");sys.stdout.flush()\ntime.sleep(10)\n')
+            c=Channel('solver',[],p/'io.jsonl',worker=worker,timeout_s=.1)
+            try:
+                with self.assertRaises(TimeoutError):c.call(dict(op='choose',current=[0]*4))
+                self.assertIsNotNone(c.process.poll())
+            finally:
+                with self.assertRaises(RuntimeError):c.close()
+
     def test_unchanged_angle_does_not_hide_a_lost_grip(self):
         from types import SimpleNamespace
         m=object.__new__(BestManipulator);m.dials=[{'id':'D01','index':0}]

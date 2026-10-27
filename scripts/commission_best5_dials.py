@@ -49,17 +49,21 @@ def turn(m,entries,symbols):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--case',required=True);p.add_argument('--output',required=True,type=Path)
+    p=argparse.ArgumentParser();p.add_argument('--case',required=True,choices=[f'dial-best5-n{n:02d}-d{level}' for n in (4,6,8) for level in (1,2,3)]);p.add_argument('--output',required=True,type=Path)
     p.add_argument('--dial',action='append');p.add_argument('--marks',default='1,2,3,4,5,1');p.add_argument('--wall-s',type=float,default=240)
     p.add_argument('--harness',type=Path);p.add_argument('--release',action='store_true');p.add_argument('--grasp-force',type=float,default=30.)
+    p.add_argument('--live-repair',action='store_true',help='Retain this engineering world for owner-supplied forward repairs')
     args=p.parse_args();root=Path(__file__).resolve().parents[1]
-    harness=args.harness or root/'runs/oracle/suite-v2-r10-closure-20261025/inputs/harness.json'
+    harness=args.harness or root/'configs/harness-frontier-v2-servo2.json'
     catalog=root/'configs/suites/dial-best5-r11.json'
     from robofrontier.suite.source_snapshot import reexec_entry
     reexec_entry(root,args.output,Path(__file__),sys.argv[1:],harness,catalog)
     import numpy as np
     from robofrontier.suite.oracle import Trial
     from robofrontier.suite.dial_best_oracle import BestMonitor,BestManipulator
+    from robofrontier.suite.dial_live_repair import LiveRepair
+    from robofrontier.suite.oracle import ReferenceStopped
+    from scripts.run_blind_dial_oracle import close_trial
     from robofrontier.run_setup import write_json
     cat=json.loads((root/'inputs/catalog.json').read_text());case=next(c for c in cat['cases'] if c['id']==args.case)
     scene=root/case['directory'];puzzle=root/f"configs/evaluations/private/dial-best5-r11/{args.case}.json"
@@ -77,10 +81,26 @@ def main():
         m=BestManipulator(t);m.red_grasp_force_n=args.grasp_force
         entries=[a for a in m.dials if not args.dial or a['id'] in args.dial]
         if not entries or (args.dial and len(entries)!=len(set(args.dial))):raise ValueError('Unknown commissioning dial')
-        report['devices']=[a['id'] for a in entries];m.lift();t.snapshot('supported')
+        repair=LiveRepair(t,m) if args.live_repair else None
+        def stage(operation,symbols=None):
+            while True:
+                try:return operation()
+                except ReferenceStopped:raise
+                except (RuntimeError,ValueError) as error:
+                    if repair is None:raise
+                    repair.recover(error,symbols)
+        report['devices']=[a['id'] for a in entries]
+        try:m.lift(entries)
+        except ReferenceStopped:raise
+        except (RuntimeError,ValueError) as error:
+            if repair is None:raise
+            repair.recover(error,None)
+            while not all(t.monitor.dial_ready[a['index']] for a in entries):
+                repair.recover(RuntimeError('Selected supports still need repair; partial lift is not replayed'),None)
+        t.snapshot('supported')
         for mark in map(int,args.marks.split(',')):
             if not 1<=mark<=5:raise ValueError('Invalid mark')
-            symbols=[mark]*len(m.dials);turn(m,entries,symbols)
+            symbols=[mark]*len(m.dials);stage(lambda:turn(m,entries,symbols),symbols)
             # A positive hold interval, not merely a reached setpoint.
             worst=np.zeros(len(entries));gaps=np.zeros(len(entries));maxgap=np.zeros(len(entries))
             for _ in range(50):
@@ -96,7 +116,7 @@ def main():
             report['marks'].append(result);t.event('mechanical_mark',**result);t.snapshot('mark-'+str(len(report['marks'])),cameras=('global','global_rear','board'))
             if not result['passed']:raise RuntimeError('Mechanical held-mark check failed '+str(mark))
         if args.release:
-            m.release(entries);t.wait(4.)
+            stage(lambda:m.release(entries));t.wait(4.)
             residual=[abs(math.degrees(float(t.data.joint(a['id']+'_hinge').qpos[0]))) for a in entries]
             released=[t.monitor.released(m.red_geoms(a)) for a in entries]
             report['release']=dict(residual_deg=residual,released=released,all_supported=all(t.monitor.dial_ready[a['index']] for a in entries))
@@ -104,23 +124,11 @@ def main():
         report['passed']=True
     except Exception as error:report['error']=type(error).__name__+': '+str(error)
     finally:
-        pending=[r for r,a in t.arms.items() if a.job is not None];cleanup=[]
-        for r in pending:t.arms[r].request_stop(t.time,reason='commissioning_closed')
-        t.stop_requested=None;t.abort_on_process_violation=False
-        for _ in range(round(16/t.model.opt.timestep)):
-            busy=[a for a in t.arms.values() if a.job is not None]
-            if not busy:break
-            try:
-                t.step()
-                for a in busy:
-                    feedback=a.poll(t.time,15.)
-                    if feedback:cleanup.append(feedback)
-            except Exception:break
-        report['cleanup_feedback']=cleanup;report['unresolved_robot_actions']=[r for r,a in t.arms.items() if a.job is not None]
-        if report['unresolved_robot_actions']:report['passed']=False
-        report['evaluation']=t.monitor.result();report['local_passed']=report['passed'];report['passed']=False
+        report['local_passed']=report['passed'];report['passed']=False
         try:t.snapshot('final')
-        finally:t.close(report)
+        finally:close_trial(t,report)
+        if report['unresolved_robot_actions'] or report['evaluation']['violations'] or report.get('cleanup_error'):
+            report['local_passed']=False;write_json(t.directory/'report.json',report)
     print(json.dumps({k:report.get(k) for k in ('case_id','passed','local_passed','error','devices','marks','release')}),flush=True)
     return 0 if report['local_passed'] else 1
 

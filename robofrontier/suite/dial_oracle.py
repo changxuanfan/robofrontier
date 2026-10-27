@@ -44,49 +44,61 @@ class Manipulator:
         return self.t.execute(label,commands)
     def maintain_holds(self,symbols):
         pass
+    def rule_failure(self):
+        return bool(self.t.monitor.violations and not getattr(self.t,'continue_after_recorded_violation',False))
     def update_decoder(self,guess):
         # The physical Oracle may measure apparatus pose. Its code solver gets
         # only its requested input and the currently visible count, never the
         # evaluator's history of unobserved intermediate configurations.
         count=self.t.monitor.game.display
         if count is not None and count!=len(self.dials):self.decoder.update(guess,count)
-    def lift(self):
+    def blue_capture_options(self,a,mr,point):
+        return [(np.column_stack((sign*mr[:,2],mr[:,1],-sign*mr[:,0])),point,.020) for sign in (1,-1)]
+    def blue_approach_aperture(self,width):
+        return None
+    def lift(self,entries=None):
         t=self.t
         if t.task['level']==1:return
-        commands={};side_access=bool(t.task['mechanism'].get('parking_fixture'))
-        for a in self.dials:
+        entries=self.dials if entries is None else list(entries)
+        if not entries:return
+        supports={}
+        commands={};widths={};side_access=bool(t.task['mechanism'].get('parking_fixture'))
+        for a in entries:
             robot=a['nominal_robots'][1];g=t.data.geom(a['id']+'_module_stem');mr=g.xmat.reshape(3,3).copy();bar_point=g.xpos.copy()+mr@np.array([0,0,.09 if side_access else .10]);point=bar_point.copy();r=t.home[robot][1]
             if side_access:
                 selected=False
-                for sign in (1,-1):
-                    candidate=np.column_stack((sign*mr[:,2],mr[:,1],-sign*mr[:,0]))
-                    point=bar_point.copy()
+                for candidate,point,width in self.blue_capture_options(a,mr,bar_point):
+                    aperture=self.blue_approach_aperture(width)
+                    if aperture is not None and abs(t.arms[robot].observe()['gripper_width_m']-aperture)>.001:
+                        t.execute('blue-approach-width',{robot:('gripper',dict(mode='move',width_m=aperture,speed_m_s=.05))})
                     try:t.move_free(robot,point-candidate[:,2]*.10,candidate,'blue-side-approach',continuation=(point,candidate,()))
                     except RuntimeError as error:
                         if str(error).startswith(('No clear free-arm IK','No collision-free sampled free-arm route')):continue
                         raise
-                    r=candidate;selected=True;break
+                    r=candidate;widths[robot]=width;selected=True;break
                 if not selected:raise RuntimeError('No side-access blue grasp '+a['id'])
-            else:commands[robot]=t.pose_command(robot,point+np.array([0,0,.10]),r,.06,.4)
-            self.supports[a['id']]=(robot,point,r)
+            else:
+                commands[robot]=t.pose_command(robot,point+np.array([0,0,.10]),r,.06,.4);widths[robot]=.016
+            supports[a['id']]=(robot,point,r)
+        self.supports.update(supports)
         if commands:t.execute('blue-approach',commands)
-        t.execute('blue-contact',{r:t.pose_command(r,p,rot,.04,.3) for r,p,rot in self.supports.values()})
-        t.execute('blue-grasp',{r:('gripper',dict(mode='grasp',width_m=.020 if side_access else .016,force_n=70.,speed_m_s=.02,epsilon_inner_m=.005,epsilon_outer_m=.005)) for r,_,_ in self.supports.values()});t.wait(.35)
-        for a in self.dials:
+        t.execute('blue-contact',{r:t.pose_command(r,p,rot,.04,.3) for r,p,rot in supports.values()})
+        t.execute('blue-grasp',{r:('gripper',dict(mode='grasp',width_m=widths[r],force_n=70.,speed_m_s=.02,epsilon_inner_m=.005,epsilon_outer_m=.005)) for r,_,_ in supports.values()});t.wait(.35)
+        for a in entries:
             robot=self.supports[a['id']][0]
             if robot not in t.monitor.bilateral([g for g,index in t.monitor.blue.items() if index==a['index']]):raise RuntimeError('Blue support absent '+a['id'])
             t.held[robot]=a['id']+'_module'
         lift=.14 if side_access else .24
-        t.execute('lift-all',{r:t.pose_command(r,t.data.site_xpos[t.arms[r].site]+np.array([0,0,lift]),rotation,.05,.3) for r,_,rotation in self.supports.values()});t.wait(.35)
+        t.execute('lift-all',{r:t.pose_command(r,t.data.site_xpos[t.arms[r].site]+np.array([0,0,lift]),rotation,.05,.3) for r,_,rotation in supports.values()});t.wait(.35)
         if side_access:
             t.wait(.3);t.snapshot('airborne')
-            if not all(x>=.02 for x in t.monitor.result()['private_clearance_m']):raise RuntimeError('Side grasp did not lift all complete modules')
+            if not all(t.monitor.result()['private_clearance_m'][a['index']]>=.02 for a in entries):raise RuntimeError('Side grasp did not lift selected complete modules')
             return
         # Let a lower finger bear the weight. Incremental physical motion is
         # used here because a frictional grasp can settle relative to the tool;
         # a rigid carried-object prediction is not a contact-dynamics proof.
         frames={}
-        for a in self.dials:
+        for a in entries:
             robot=self.supports[a['id']][0];arm=t.arms[robot];frames[robot]=(a,t.data.site_xpos[arm.site].copy(),t.data.site_xmat[arm.site].reshape(3,3).copy())
         for step in range(1,9):
             commands={};f=step/8
@@ -95,7 +107,7 @@ class Manipulator:
                 commands[robot]=t.pose_command(robot,point+np.array([0,0,.10*f]),r,.045,.3)
             t.execute('support-bearing-'+str(step),commands)
         t.wait(.5);t.snapshot('airborne')
-        if not all(x>=.02 for x in t.monitor.result()['private_clearance_m']):raise RuntimeError('Not all complete modules are airborne')
+        if not all(t.monitor.result()['private_clearance_m'][a['index']]>=.02 for a in entries):raise RuntimeError('Selected complete modules are not airborne')
     def red_geoms(self,a):return [g for g,i in self.t.monitor.red.items() if i==a['index']]
     def red_pose(self,a,twist):
         t=self.t;name=a['id'];mr=t.data.body(name+'_module').xmat.reshape(3,3);crank=t.task['level']==3
@@ -215,7 +227,7 @@ class Manipulator:
             if not commands:break
             t.execute('red-contact-'+str(refinement),commands);t.wait(.10)
         closed=t.execute('red-grasp',{p['robot']:('gripper',dict(mode='grasp',width_m=.022 if t.task['level']==3 else .056,force_n=30.,speed_m_s=.08,epsilon_inner_m=.004 if t.task['level']==3 else .008,epsilon_outer_m=.004 if t.task['level']==3 else .008)) for p in plans.values()},allow_failure=True);t.wait(.25)
-        if t.monitor.violations:raise RuntimeError('Process violation during red capture '+str(t.monitor.violations))
+        if self.rule_failure():raise RuntimeError('Process violation during red capture '+str(t.monitor.violations))
         bad=[]
         for a in entries:
             robot=plans[a['id']]['robot'];value=closed[robot]
@@ -266,7 +278,7 @@ class Manipulator:
                 old={affected['id']:self.grips[affected['id']]['twist']};self.release([affected]);self.grasp([affected],symbols,avoid=old);continue
             except RuntimeError:
                 last=t.actions[-1] if t.actions else None
-                if last is None or last['label']!='dial-turn-'+str(segment) or t.monitor.violations:raise
+                if last is None or last['label']!='dial-turn-'+str(segment) or self.rule_failure():raise
                 results=last['results'];failed=[robot for robot,value in results.items() if value['status']=='failed']
                 if not failed or any(value['status'] not in ('completed','failed') or (value['status']=='failed' and value.get('reason')!='Action timeout; stopped at current reference') for value in results.values()):raise
                 affected=[a for a in tracking if self.grips[a['id']]['robot'] in failed]
@@ -276,7 +288,7 @@ class Manipulator:
                 t.event('reference_replan_stopped_arc',robots=failed,scope='Known terminal controlled stops only; failed actions stay recorded, uncertain executions are never replayed')
                 old={a['id']:self.grips[a['id']]['twist'] for a in affected};self.release(affected);self.grasp(affected,symbols,avoid=old);continue
             t.wait(.10)
-            if t.monitor.violations:raise RuntimeError('Process violation during red turn '+str(t.monitor.violations))
+            if self.rule_failure():raise RuntimeError('Process violation during red turn '+str(t.monitor.violations))
             if finish_when_solved and t.monitor.game.display==len(self.dials):
                 t.event('visible_win_reached',scope='Logical search stops on the visible latched win, after mechanical mark verification');return
             bad=[]
@@ -296,7 +308,7 @@ class Manipulator:
         angles=np.degrees(t.data.qpos[t.monitor.qids])%360;errors=abs((angles-np.asarray(symbols)*self.angle_step_deg+180)%360-180)
         t.event('dial_configuration',requested=symbols,actual_angles_deg=angles.tolist(),errors_deg=errors.tolist(),score=t.monitor.game.display,candidates=len(self.decoder.candidates))
         if max(errors)>4:raise RuntimeError('Red mark tracking failed '+str(errors.tolist()))
-        if t.monitor.violations:raise RuntimeError('Process violation '+str(t.monitor.violations))
+        if self.rule_failure():raise RuntimeError('Process violation '+str(t.monitor.violations))
         for _ in range(30):
             if self.input_settled(symbols):break
             self.wait_support(self.dials);t.wait(.1)

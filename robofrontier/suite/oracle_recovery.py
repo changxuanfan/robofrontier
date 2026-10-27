@@ -270,6 +270,29 @@ class OracleRecovery:
         self.attached = False
         self.trial.event('oracle_recovery_legacy_handoff', owner=owner)
 
+    def reattach(self, owner):
+        """Allow a later repair boundary without creating a second owner."""
+        self._thread(False)
+        if (owner != self.owner or self.attached or self.running or self.reserved or self.unknown
+            or any(a.job is not None for a in self.trial.arms.values())
+            or self.trial.execute != self.original_execute):
+            raise ValueError('Reattach only from a known idle legacy handover')
+        self.attached=True;self.paused=False
+        self.trial.execute=self._blocked_legacy_execute
+        self.trial.event('oracle_recovery_reattached', owner=owner)
+
+    def acknowledge(self, owner, ident, review, assisted=False):
+        """Owner closes a reviewed boundary only after all feedback is known."""
+        self._thread()
+        if (owner != self.owner or ident not in self.recoveries or not review
+            or self.running or self.reserved or self.unknown
+            or any(a.job is not None for a in self.trial.arms.values())):
+            raise ValueError('Known idle reviewed recovery required')
+        if not isinstance(assisted,bool):raise ValueError('Assistance must be explicit')
+        self.assisted |= assisted
+        self.recoveries[ident].update(status='feedback_ready',review=str(review))
+        self.trial.event('oracle_recovery_reviewed', recovery_id=ident,review=str(review))
+
     def pause(self, owner):
         self._thread()
         if owner != self.owner:
@@ -277,6 +300,13 @@ class OracleRecovery:
         self.paused = True
         for robot in self.running:
             self.trial.arms[robot].request_stop(self.trial.time, 'Paused by Oracle owner')
+
+    def resume(self, owner):
+        self._thread()
+        if owner != self.owner or self.running or self.reserved or self.unknown:
+            raise ValueError('Resume only after known terminal feedback')
+        self.paused=False
+        self.trial.event('oracle_recovery_resumed', owner=owner)
 
     def fence(self, owner, ident, reason):
         """Preserve an uncertain acknowledgement; terminal feedback cannot auto-clear it."""
@@ -306,7 +336,7 @@ class OracleRecovery:
                 restart_supported=False, source_modules_hot_executed=False))
         report.update(metadata)  # trial_end must already carry the correct classification.
         self.trial.close(report)
-        report.update(metadata)  # Core close hardcodes llm_used=False; do not alter core.
+        report.update(metadata)  # Preserve adapter classification after core close.
         write_json(self.trial.directory/'report.json', report)
         self.trial.execute = self.original_execute
         self.closed = True
