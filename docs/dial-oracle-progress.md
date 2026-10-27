@@ -45,6 +45,26 @@ All rendering processes ended. No main merge, new physical task or GPT policy ru
 
 ## Historical continuation log
 
+### Dial-owned policy preparation — 2026-10-27
+
+After reviewing `docs/plans/suite-v2/dial-gpt-readiness-and-replay-plan-20261027.md`,
+user authorized the family-owned implementation. Added a nine-case evidence
+registry, public task/geometry/camera/guide review, family prompt, consistency
+checks, progress-aware edit profile and an independent `DialReplayTrack`.
+All new implementation is dial-namespaced; generic harness/runtime/roles/Skill,
+recording/editing core, and factory scheduler remain unchanged in this phase.
+Their precise requirements are in `configs/task_families/dial/integration-requests.json`.
+
+Review artifacts: `outputs/engineering/dial-family-handoff-20261027-v2/`.
+26 related checks passed;14,163 chosen source samples matched original states
+and timestamps. Nine process streams have complete event coverage.13.733 source
+seconds removed; no actual large oscillation satisfied the conservative full
+criteria in these nine records. Large repetitive motion is covered by independent
+tests; slow drift, new attempts with unchanged BEST, force-setpoint changes,
+failures and unknown evidence are retained. Original physics evidence unchanged.
+No new Oracle/GPT run, renderer batch or main merge was started. Family review
+is complete; formal GPT readiness explicitly remains pending shared integration.
+
 User resumed work and authorized the recovery-first plan. Current checkout is
 `/Users/fanchangxuan/.codex/worktrees/dial-continuation/roomscript2`, branch
 `codex/dial-continuation`. The original checkout was externally archived during

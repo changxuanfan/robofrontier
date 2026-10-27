@@ -1,0 +1,247 @@
+{
+  "schema": "robofrontier.dial-family-review.v1",
+  "family": "dial",
+  "revision": "best5-r11",
+  "catalog": "configs/suites/dial-best5-r11.json",
+  "catalog_sha256": "02bcaec516267393aa127c801b9b44aa3ec7eb9769c27e110860280544090adf",
+  "selection": "runs/oracle/dial-best5-recovery-20261026/batch-status.json",
+  "selection_sha256": "f98d3437a3a5a7cac54d6394382b3a81e98de65a382c78d3f4c5d36df4f4ee51",
+  "presentation": {
+    "speedup": 10,
+    "fps": 30
+  },
+  "policy_guidance": "prompts/tasks/dial-best5.md",
+  "formal_policy_ready": false,
+  "shared_integration_required": [
+    "Shared runtime must recognize version-bound formal readiness evidence.",
+    "Shared preparation must select R11 and freeze the dial family guidance/projection.",
+    "Confirm the new GPT experiment protocol and use a fresh policy context."
+  ],
+  "cases": [
+    {
+      "case_id": "dial-best5-n04-d1",
+      "dials": 4,
+      "level": 1,
+      "arms": 4,
+      "source_directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n04-d1",
+      "source_sha256": {
+        "scene.xml": "f201cbea9e207b22cf727b5e4209a6e73cdfb674eafedbb23d22beda07efc0da",
+        "task.json": "a5565175299bab19d5e3319837260ca67f04dbc00a7c8b71bca7c338f59a4173",
+        "environment.json": "2980da08f45d1d7e614d1907d39a1caf7bb4bc2a1128358d3e2bba37e9080f09",
+        "workstation.json": "542ba44715dc1a4ae679e616b751b86bb78dc3079c821d7041aebd7b96cd7aa6"
+      },
+      "oracle_evidence": {
+        "report": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n04-d1/attempt-001/report.json",
+        "report_sha256": "b8cf51f82dd0b7bbeb55c8ac9d8d8f6159bf3dd73bff533d4103240aeed9ea39",
+        "recording": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n04-d1/attempt-001/motion",
+        "motion_index_sha256": "664450edd2fa9316a2074a3d6a883273d46b30a3e9e5f166aca95913f02f82d5",
+        "executor_sha256": "08f3b99365bc4eb188aba256d43ba5125303b66be625de07b9b958a5e4868014",
+        "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+        "environment_logic_sha256": "76637a37db6f5bc52891e3dbc3442ceec8ff112c6bea7fa733d405ac77d800b9",
+        "assisted": false,
+        "evidence_kind": "pure_program"
+      },
+      "runtime_readiness": "pending_shared_integration"
+    },
+    {
+      "case_id": "dial-best5-n04-d2",
+      "dials": 4,
+      "level": 2,
+      "arms": 8,
+      "source_directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n04-d2",
+      "source_sha256": {
+        "scene.xml": "d633603910e5bba92a2c07643c98cc4ca331f7191e0127ab693ad065d3cca1fc",
+        "task.json": "7119d93d17eba21217b91688089220dfb9f06674d8ed01c6cfb63ab6306c36be",
+        "environment.json": "8bc7239c72792c4a6e00ef688f58f63a9f1e022e1be522e9489202c754e6a70a",
+        "workstation.json": "654033dfdd7209d3b5ea1a8d8830eed60ba3ac15c8f1a2abe50eda28ca1b8220"
+      },
+      "oracle_evidence": {
+        "report": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n04-d2/attempt-001/report.json",
+        "report_sha256": "2d2822f7bc961d59b5de7fd93b2b54055e79223119e017dcf67bae7666d65127",
+        "recording": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n04-d2/attempt-001/motion",
+        "motion_index_sha256": "e27b85b69e686ff501c2ecf1b615faf873ddbea262e32b1372a491b8f31533d8",
+        "executor_sha256": "08f3b99365bc4eb188aba256d43ba5125303b66be625de07b9b958a5e4868014",
+        "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+        "environment_logic_sha256": "76637a37db6f5bc52891e3dbc3442ceec8ff112c6bea7fa733d405ac77d800b9",
+        "assisted": false,
+        "evidence_kind": "pure_program"
+      },
+      "runtime_readiness": "pending_shared_integration"
+    },
+    {
+      "case_id": "dial-best5-n04-d3",
+      "dials": 4,
+      "level": 3,
+      "arms": 8,
+      "source_directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n04-d3",
+      "source_sha256": {
+        "scene.xml": "8a8ec1bacc42c66e37aa61b43c00ee4de712364ffc108afa36f4a649609304fb",
+        "task.json": "ba523015174ed1e2b1d0a1d06adb42c910a0c12fc4b372c05fcd6d7b57d3e745",
+        "environment.json": "3f5ebc2fb705aa4fa06ff4ddf6aad91d9168a28710bc86930b932625668914ab",
+        "workstation.json": "4f57ea5618619a96bdfa0ffdfe22678a9fca510b498faf8cd13fc7a78b1a1eca"
+      },
+      "oracle_evidence": {
+        "report": "runs/oracle/dial-best5-recovery-20261026/dial-best5-n04-d3/attempt-001/report.json",
+        "report_sha256": "e4324426d16e538a34f850aeb51a273664c800eb45615c0609fa083a1e6b4248",
+        "recording": "runs/oracle/dial-best5-recovery-20261026/dial-best5-n04-d3/attempt-001/motion",
+        "motion_index_sha256": "7810ccd2e23796c805687c9d4c458ef5c01dc07d7be8a079c71c79add6efa0ba",
+        "executor_sha256": "8209c20dd951ec5a4cd7baaf825307d64da9511fc5aec1c38a43ea52649a3cfb",
+        "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+        "environment_logic_sha256": "76637a37db6f5bc52891e3dbc3442ceec8ff112c6bea7fa733d405ac77d800b9",
+        "assisted": false,
+        "evidence_kind": "pure_program"
+      },
+      "runtime_readiness": "pending_shared_integration"
+    },
+    {
+      "case_id": "dial-best5-n06-d1",
+      "dials": 6,
+      "level": 1,
+      "arms": 6,
+      "source_directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n06-d1",
+      "source_sha256": {
+        "scene.xml": "cd08f46913c0daeff291eb714d525b201b35f7a4d866d6bd180dd05718b485f2",
+        "task.json": "0cb5d69885d269918c7bd10b4e08253cd8b364c86e18b9ee8c15b6a20ddd375d",
+        "environment.json": "c6b018b45bff8a4a82ffd09c881939f0cf46d52a1e2ff9dd909bc028189fedcf",
+        "workstation.json": "91d961866d70b2bda9e84746f3b6a67decd8c0c573e59338eaf083188fb52311"
+      },
+      "oracle_evidence": {
+        "report": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n06-d1/attempt-001/report.json",
+        "report_sha256": "914cb4cee2773235f773f72226cd6c0b28c605b76f9e9bced574616beddbc1fe",
+        "recording": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n06-d1/attempt-001/motion",
+        "motion_index_sha256": "cff02bae9d228a9e133b447da8c6348795f1127c4ad5d3608a273c298fdc53f2",
+        "executor_sha256": "08f3b99365bc4eb188aba256d43ba5125303b66be625de07b9b958a5e4868014",
+        "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+        "environment_logic_sha256": "76637a37db6f5bc52891e3dbc3442ceec8ff112c6bea7fa733d405ac77d800b9",
+        "assisted": false,
+        "evidence_kind": "pure_program"
+      },
+      "runtime_readiness": "pending_shared_integration"
+    },
+    {
+      "case_id": "dial-best5-n06-d2",
+      "dials": 6,
+      "level": 2,
+      "arms": 12,
+      "source_directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n06-d2",
+      "source_sha256": {
+        "scene.xml": "9080640b0f841605d62fa7ec808e8f4b9ee0fb13c0a8d6a9cf3c24c15c4f4e37",
+        "task.json": "f9785453241139baaddfdc965490f6e22bb0e2fdbf5db58fd0f91f881d30324f",
+        "environment.json": "dbfe3192cfd16cace648d6271c441f627f0a09a632a5c96590e15246a92dc5e7",
+        "workstation.json": "0b081beb141c06ede11fa9736b6507a52d03e9c3b8bd3f22250d93d0ae22a417"
+      },
+      "oracle_evidence": {
+        "report": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n06-d2/attempt-001/report.json",
+        "report_sha256": "1469cb1292f3f969ecc41ef0959eed7f805a9c4a01b9ffb34dc4d9ca9c52cd1d",
+        "recording": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n06-d2/attempt-001/motion",
+        "motion_index_sha256": "d7b48184474dad80a31192249b71aa8c62c5003603f88fa970578e048bb60173",
+        "executor_sha256": "08f3b99365bc4eb188aba256d43ba5125303b66be625de07b9b958a5e4868014",
+        "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+        "environment_logic_sha256": "76637a37db6f5bc52891e3dbc3442ceec8ff112c6bea7fa733d405ac77d800b9",
+        "assisted": false,
+        "evidence_kind": "pure_program"
+      },
+      "runtime_readiness": "pending_shared_integration"
+    },
+    {
+      "case_id": "dial-best5-n06-d3",
+      "dials": 6,
+      "level": 3,
+      "arms": 12,
+      "source_directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n06-d3",
+      "source_sha256": {
+        "scene.xml": "ef02a7f7441625cf29b3cda9799701bdc229916a46d3e8a1509133f084091eba",
+        "task.json": "20d9b16a32c01c3ca3ab5dcf72517b9ebec33c49e39684caa0dd15b22b1444ba",
+        "environment.json": "c8f7ab7aed53e7bc3da9f2e696f3091adf67d54de69850793cea92dc09afddcc",
+        "workstation.json": "48989546d01fb3dfc09bc6e47e888691b6832e03888a107ed7a769b461a4ec7d"
+      },
+      "oracle_evidence": {
+        "report": "runs/oracle/dial-best5-recovery-20261026/dial-best5-n06-d3/attempt-001/report.json",
+        "report_sha256": "848659c67d7f95381255d2132d561797bb5110009fbe62b1944f560aab64a579",
+        "recording": "runs/oracle/dial-best5-recovery-20261026/dial-best5-n06-d3/attempt-001/motion",
+        "motion_index_sha256": "dbefd8a9a4b595d831a4341ca2f4d538f61e5ca2a7311d351cca48d47b09b4e0",
+        "executor_sha256": "8209c20dd951ec5a4cd7baaf825307d64da9511fc5aec1c38a43ea52649a3cfb",
+        "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+        "environment_logic_sha256": "76637a37db6f5bc52891e3dbc3442ceec8ff112c6bea7fa733d405ac77d800b9",
+        "assisted": false,
+        "evidence_kind": "pure_program"
+      },
+      "runtime_readiness": "pending_shared_integration"
+    },
+    {
+      "case_id": "dial-best5-n08-d1",
+      "dials": 8,
+      "level": 1,
+      "arms": 8,
+      "source_directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n08-d1",
+      "source_sha256": {
+        "scene.xml": "2f2de801229fa18bde2ef659cdf99dbaa1d121cd0eb483c60f6c88647dc03e72",
+        "task.json": "4740997db55123b5ecce8be724d61c21a7377d23eed70583e953f0c292466666",
+        "environment.json": "0eea13f357289fdbc87812f1eafe8b6587084d71fdb2fbc7bf4a97f4d1ae9e0b",
+        "workstation.json": "87aecc9d4b22983615c401d060806290bf774faf2707b76f6d6fcc718eb4cb8e"
+      },
+      "oracle_evidence": {
+        "report": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n08-d1/attempt-001/report.json",
+        "report_sha256": "1a86ca6d79f8b668bc2c164a0726c45d1e73c35d977bf095b3ba7fa487ce8c11",
+        "recording": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n08-d1/attempt-001/motion",
+        "motion_index_sha256": "36ae23383de1ee6f539a5ce9c788f478a4644ad10316a50c6017a55e9cd678df",
+        "executor_sha256": "08f3b99365bc4eb188aba256d43ba5125303b66be625de07b9b958a5e4868014",
+        "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+        "environment_logic_sha256": "76637a37db6f5bc52891e3dbc3442ceec8ff112c6bea7fa733d405ac77d800b9",
+        "assisted": false,
+        "evidence_kind": "pure_program"
+      },
+      "runtime_readiness": "pending_shared_integration"
+    },
+    {
+      "case_id": "dial-best5-n08-d2",
+      "dials": 8,
+      "level": 2,
+      "arms": 16,
+      "source_directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n08-d2",
+      "source_sha256": {
+        "scene.xml": "b8e4149dcc226d1cf9ba824d17687024154e89eba97286df5bb0fb39fdec2966",
+        "task.json": "e4442c007ae48752670b548a2c7b3e4dbb7fb0133118354c118bf6f8e3c5af7e",
+        "environment.json": "2e2af1100435d181259f82772dd3778e5eb05402875d509d35a9e11b0c43e702",
+        "workstation.json": "629098290cf7b6b93bf7173737026a75a37c5ba4366f21c1657390502f447d01"
+      },
+      "oracle_evidence": {
+        "report": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n08-d2/attempt-001/report.json",
+        "report_sha256": "69c8dc60a25f582235cbbe24dacdc15cdb63600f8f85e73d450cef6dc5d27f66",
+        "recording": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n08-d2/attempt-001/motion",
+        "motion_index_sha256": "2eaee28121a4d2543806b394bf7499d8b7081118bef8887207b83cdcd3ca179e",
+        "executor_sha256": "08f3b99365bc4eb188aba256d43ba5125303b66be625de07b9b958a5e4868014",
+        "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+        "environment_logic_sha256": "76637a37db6f5bc52891e3dbc3442ceec8ff112c6bea7fa733d405ac77d800b9",
+        "assisted": false,
+        "evidence_kind": "pure_program"
+      },
+      "runtime_readiness": "pending_shared_integration"
+    },
+    {
+      "case_id": "dial-best5-n08-d3",
+      "dials": 8,
+      "level": 3,
+      "arms": 16,
+      "source_directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n08-d3",
+      "source_sha256": {
+        "scene.xml": "ffe0032e1ee31f32e18fe1538d116fa7babd6469840917756c88ceb925cb4c4b",
+        "task.json": "5bbc0bafe7b1e80f57a21e039a5d2b90113b7a87d5d2b0bd0cde31b2762b0334",
+        "environment.json": "5e8794c941abc4ae3ffcd2972df71a3342f949971b6f4a25f9eaf0f4f8f5e2a8",
+        "workstation.json": "24f6cfd5e83dea9150139816ace338b27b4210e46bf29e210e5279500a1af39d"
+      },
+      "oracle_evidence": {
+        "report": "runs/oracle/dial-best5-recovery-20261026/dial-best5-n08-d3/attempt-003/report.json",
+        "report_sha256": "203c1b1da4795430dcccd0e3bfd67c4c4736562ebc24a425e514da98d91f9350",
+        "recording": "runs/oracle/dial-best5-recovery-20261026/dial-best5-n08-d3/attempt-003/motion",
+        "motion_index_sha256": "1d8aa580f78e55b9d9159b36f906e6c1d2e711659f2fec88898458179245b47e",
+        "executor_sha256": "deaf3f722b19a204d858c39eaf80c3d6b1d8f732a07f55c44be3217d6c5a4e70",
+        "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+        "environment_logic_sha256": "76637a37db6f5bc52891e3dbc3442ceec8ff112c6bea7fa733d405ac77d800b9",
+        "assisted": true,
+        "evidence_kind": "privileged_assisted"
+      },
+      "runtime_readiness": "pending_shared_integration"
+    }
+  ]
+}
