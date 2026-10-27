@@ -1,5 +1,11 @@
 # Mosaic R13 Oracle worktree
 
+Status (2026-10-27): the nine selected full Oracle cases and independent motion
+audits are complete. The pilot/budget instructions below describe the historical
+commissioning phase, not defaults for new GPT experiments. Use the Mosaic family
+review package in `docs/tasks/mosaic-r13.md`; shared launch/readiness integration
+is tracked separately and no policy run is activated by this document.
+
 This branch owns mosaic adapters, mosaic tests and mosaic run protocols. Shared
 controller/evaluator/recording changes require explicit review before merging;
 other task worktrees are not modified here. Main and dial branches are retained.
@@ -30,7 +36,7 @@ A rejected candidate is not physical infeasibility. Unknown execution is recorde
 and not blindly replayed; a new independent engineering attempt is declared and
 keeps the previous evidence. Physics records stay60Hz for offline reconstruction.
 
-## Sequence and bounds
+## Historical commissioning sequence and bounds (completed)
 
 Run a full72-goal four-arm L1 pilot from a committed frozen source first. Budget:
 1800wall seconds,8000simulation seconds,20000action batches. Record failures and

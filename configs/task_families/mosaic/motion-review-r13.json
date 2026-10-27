@@ -1,0 +1,17 @@
+{
+  "schema": "robofrontier.mosaic-motion-review-settings.v1",
+  "minimum_candidate_duration_s": 4.0,
+  "transition_context_s": 1.0,
+  "arm_excursion_rad": 0.001,
+  "gripper_excursion_m": 0.0002,
+  "object_excursion_m": 0.0002,
+  "object_rotation_rad": 0.001,
+  "linear_noise_m": 0.0000001,
+  "angular_noise_rad": 0.000001,
+  "monotonic_net_to_path_ratio": 0.7,
+  "repeated_path_to_range_ratio": 4.0,
+  "repeated_net_to_range_ratio": 0.25,
+  "force_evidence": "Commanded grasp lifetime only; measured contact forces unavailable",
+  "apply_edits": false,
+  "end_policy": "hold_final"
+}
