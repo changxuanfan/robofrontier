@@ -6,7 +6,7 @@ from unittest.mock import patch
 import numpy as np
 
 from robofrontier.task_families import ROOT,RELEASE,read
-from robofrontier.factory_playback import StationTrack,FactoryTimeline
+from robofrontier.factory_playback import StationTrack,FactoryTimeline,current_scene
 from robofrontier.factory_cameras import shots,camera_at
 
 
@@ -34,8 +34,8 @@ class FactoryTimelineTests(unittest.TestCase):
                 finally:track.close()
 
     def test_two_different_clocks_commit_one_global_frame(self):
-        scene=ROOT/'outputs/robo-factory/v7-workstations/scene.xml'
-        if not scene.exists():self.skipTest('Generated v7 factory not present')
+        scene=current_scene()
+        if not scene.exists():self.skipTest('Generated current factory not present')
         release=deepcopy(read(ROOT/RELEASE))
         release['families']={n:f for n,f in release['families'].items()if n in ('dial','transport')}
         for f in release['families'].values():f['oracle']=f['oracle'][:1]

@@ -313,7 +313,7 @@ def main():
         metadata['cameras'].append(recorded['camera'])
         if max_position_error>1e-5 or max_rotation_error>1e-6:raise RuntimeError('Recorded visual transform precision exceeded')
     # Offline interior lighting: large soft ceiling fixtures, calibrated separately
-    # from Filament intensity units. These lights never enter task source models.
+    # from interactive renderer intensity units. These lights never enter task source models.
     world=bpy.data.worlds.new('Factory ambient');scene.world=world;world.use_nodes=True
     world.node_tree.nodes['Background'].inputs[0].default_value=(*lighting.get('world_color',[.65,.72,.85]),1.)
     world.node_tree.nodes['Background'].inputs[1].default_value=lighting.get('world_strength',.25)

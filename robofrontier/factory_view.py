@@ -28,7 +28,7 @@ def _rss_mib():
 
 class FactoryRenderer:
     """One retained factory scene; camera/layer changes never step physics."""
-    def __init__(self, scene, renderer='filament', width=1280, height=720):
+    def __init__(self, scene, renderer='classic', width=1280, height=720):
         self.path=Path(scene).resolve();self.width,self.height=width,height
         self.manifest=json.loads((self.path.parent/'manifest.json').read_text())
         self.scene_hash=hashlib.sha256(self.path.read_bytes()).hexdigest()
@@ -42,26 +42,8 @@ class FactoryRenderer:
         self.renderer_name=renderer;self.options=mujoco.MjvOption();self.camera_id='interior_south'
         self.camera=next(c.copy() for c in self.manifest['cameras'] if c['id']==self.camera_id)
         self.render_times=[];self.last_pixels=None
-        if renderer=='filament':
-            from mujoco import mjrf
-            from mujoco.experimental.studio import window
-            from mujoco.rendering.filament.renderer import Renderer
-            # Explicit GL is necessary here: the default chooses Vulkan on this Mac.
-            self.window=window.Window('Robo Factory offscreen renderer',width,height,'opengl_headless')
-            self.context=mjrf.Context(mjrf.ContextConfig(graphics_api=mjrf.GraphicsApi.GRAPHICS_API_OPENGL))
-            self.renderer=Renderer(self.context);self.scene=self.renderer.scene('factory')
-            self.scene.configure_from_model(self.model)
-            self.resources=mjrf.ModelResources(self.context,self.model)
-            self.lights=mjrf.ModelLights(self.scene,self.resources)
-            self.renderables=mjrf.ModelRenderables(self.scene,self.resources)
-            self.pixels=np.empty((height,width,3),np.uint8);self.renderer.target('image',self.pixels)
-            self.renderer.view('main',scene='factory',target='image')
-            self.lights.update(self.data);self.scene.set_msaa(4)
-            # Apply presentation settings once targets and renderables exist.
-            self.scene.configure_from_model(self.model)
-        elif renderer=='classic':
-            self.renderer=mujoco.Renderer(self.model,height=height,width=width,max_geom=max(self.model.ngeom+1000,5000))
-        else:raise ValueError('Unknown renderer '+renderer)
+        if renderer!='classic':raise ValueError('Interactive renderer must be classic; use Blender for Cycles/Eevee')
+        self.renderer=mujoco.Renderer(self.model,height=height,width=width,max_geom=max(self.model.ngeom+1000,5000))
         self.set_camera(self.camera)
         # Settle initial material compilation/post-processing before inspecting output.
         for _ in range(12):self.render()
@@ -88,17 +70,6 @@ class FactoryRenderer:
         self.model.cam_projection[idx]=1 if state.get('projection')=='orthographic' else 0
         mujoco.mj_camlight(self.model,self.data)
         vcam=mujoco.MjvCamera();vcam.type=mujoco.mjtCamera.mjCAMERA_FIXED;vcam.fixedcamid=idx;self.vcam=vcam
-        if self.renderer_name=='filament':
-            from mujoco import mjrf
-            self.renderables.set_options(self.options);self.renderables.update(self.data)
-            gl=mujoco.mjv_camera2GLCamera(self.model,self.data,vcam)
-            # The bundled generic converter omits orthographic/width fields.
-            camera=mjrf.Camera(pos=gl.pos,forward=gl.forward,up=gl.up,
-                frustum_bottom=gl.frustum_bottom,frustum_top=gl.frustum_top,
-                frustum_near=gl.frustum_near,frustum_far=gl.frustum_far,
-                frustum_center=gl.frustum_center,frustum_width=gl.frustum_width,
-                orthographic=bool(gl.orthographic))
-            self.renderer.update_camera('main',camera)
 
     def select(self, name):
         camera=next((c for c in self.manifest['cameras'] if c['id']==name),None)
@@ -131,12 +102,8 @@ class FactoryRenderer:
 
     def render(self):
         start=time.perf_counter()
-        if self.renderer_name=='filament':
-            self.renderables.update(self.data)
-            self.lights.update(self.data)
-            self.renderer.render();pixels=self.pixels
-        else:
-            self.renderer.update_scene(self.data,camera=self.vcam,scene_option=self.options);pixels=self.renderer.render()
+        self.renderer.update_scene(self.data,camera=self.vcam,scene_option=self.options)
+        pixels=self.renderer.render()
         self.render_times.append(time.perf_counter()-start);self.last_pixels=pixels.copy()
         return pixels
 
@@ -145,10 +112,10 @@ class FactoryRenderer:
         return dict(renderer=self.renderer_name,mujoco_version=mujoco.__version__,platform=sys.platform,source_scene_sha256=self.scene_hash,resolution=[self.width,self.height],dimensions_m=self.manifest['dimensions_m'],camera=self.camera_id,camera_state=self.camera,frames=len(self.render_times),mean_frame_ms=1000*float(np.mean(times)) if times else None,peak_process_rss_mib=_rss_mib(),model_buffer_mib=self.model.nbuffer/2**20,decoded_texture_mib=self.model.ntexdata/2**20,geoms=self.model.ngeom,bodies=self.model.nbody,dynamic_dofs=self.model.nv,actuators=self.model.nu,physics_stepped=False)
 
     def close(self):
-        if self.renderer_name=='classic':self.renderer.close()
+        self.renderer.close()
 
 
-def render_views(scene, output, renderer='filament', width=1600, height=1000, views=None, benchmark_frames=8):
+def render_views(scene, output, renderer='classic', width=1600, height=1000, views=None, benchmark_frames=8):
     output=Path(output);output.mkdir(parents=True,exist_ok=True)
     r=FactoryRenderer(scene,renderer,width,height);reports=[]
     try:
@@ -166,7 +133,7 @@ def render_views(scene, output, renderer='filament', width=1600, height=1000, vi
     return reports
 
 
-def serve(scene, renderer='filament', width=1280, height=720, port=0, play=False):
+def serve(scene, renderer='classic', width=1280, height=720, port=0, play=False):
     """GPU calls stay on the main thread; HTTP handlers only enqueue camera edits."""
     r=FactoryRenderer(scene,renderer,width,height);commands=queue.Queue(maxsize=128);lock=threading.Lock()
     timeline=None;playback_started=time.perf_counter();playback_state=None

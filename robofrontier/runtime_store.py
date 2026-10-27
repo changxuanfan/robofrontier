@@ -452,7 +452,7 @@ class RuntimeStore:
             return len(rows)
 
     def observe_session(self, actor, status, turn_id, observed_at, source, turn_status=None):
-        if source != 'codex.wait_threads' or status not in ('idle', 'active', 'notLoaded', 'error', 'needsAttention'):
+        if source not in ('codex.wait_threads', 'codex.app-server') or status not in ('idle', 'active', 'notLoaded', 'error', 'needsAttention'):
             raise ValueError('Use an actual Codex status observation')
         with self.transaction():
             self.update_agent(actor, session_status=status, session_turn=turn_id,

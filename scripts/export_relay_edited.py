@@ -214,8 +214,6 @@ def render_case(folder, output, factory_renderer=None, play=None, fps=30, speed=
                 renderer.scene.flags[mujoco.mjtRndFlag.mjRND_REFLECTION]=False
                 images={'simple':renderer.render()}
                 if factory_renderer:
-                    if factory_renderer.renderer_name=='filament':
-                        factory_renderer.renderables.update(factory_renderer.data)
                     images['factory']=factory_renderer.render()
                 for name,pixels in images.items():
                     image=Image.fromarray(pixels);draw=ImageDraw.Draw(image)
@@ -264,8 +262,8 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     sub=parser.add_subparsers(dest='action',required=True)
     p=sub.add_parser('prepare');p.add_argument('analysis',type=Path);p.add_argument('--output',type=Path,required=True)
-    p=sub.add_parser('factory');p.add_argument('bundle',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--shell',type=Path,default=Path('outputs/robo-factory/v6-shell/scene.xml'));p.add_argument('--catalog',type=Path,default=Path('configs/suites/frontier-v2-r10.json'))
-    p=sub.add_parser('render');p.add_argument('bundle',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--factory',type=Path);p.add_argument('--renderer',choices=['classic','filament'],default='filament');p.add_argument('--only')
+    p=sub.add_parser('factory');p.add_argument('bundle',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--shell',type=Path,required=True);p.add_argument('--catalog',type=Path,default=Path('configs/suites/frontier-current-oracle.json'))
+    p=sub.add_parser('render');p.add_argument('bundle',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--factory',type=Path);p.add_argument('--renderer',choices=['classic'],default='classic');p.add_argument('--only')
     args=parser.parse_args()
     if args.action=='prepare':prepare(args.analysis.resolve(),args.output.resolve())
     elif args.action=='factory':build_factory(args.bundle.resolve(),args.output.resolve(),args.shell.resolve(),args.catalog.resolve())

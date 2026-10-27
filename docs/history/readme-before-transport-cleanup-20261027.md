@@ -13,16 +13,16 @@
 - [Transport R13最小单元、真实并行对照及后续计划](transport-r13-units.md)
 - [R10／工厂 V6／离线回放与运行目录](../plans/suite-v2/implementation-r10.md)
 - [冻结的 36 项输入清单](../../configs/suites/frontier-v2-r10.json)
-- [当前 R10 pd1000-v1 Oracle 结果索引](../../runs/oracle/suite-v2-r10-closure-20261025/coverage-current.json)
-- [成功与未通过Oracle录像](../../outputs/oracle/review-20261025/index.html)
-- [本轮并行 Oracle 复盘与剩余缺口](../../runs/oracle/suite-v2-r10-servo2-20261025/review.md)
-- [原 legacy 驱动工程结果](../../runs/oracle/suite-v2-r10-20261025/summary.json)
-- [工厂当前预览](../../outputs/robo-factory/v6-cycles-final/interior_diagonal.png)
+- 当前 R10 pd1000-v1 Oracle 结果索引（历史产物已退役：`../../runs/oracle/suite-v2-r10-closure-20261025/coverage-current.json`）
+- 成功与未通过Oracle录像（历史产物已退役：`../../outputs/oracle/review-20261025/index.html`）
+- 本轮并行 Oracle 复盘与剩余缺口（历史产物已退役：`../../runs/oracle/suite-v2-r10-servo2-20261025/review.md`）
+- 原 legacy 驱动工程结果（历史产物已退役：`../../runs/oracle/suite-v2-r10-20261025/summary.json`）
+- 工厂当前预览（历史产物已退役：`../../outputs/robo-factory/v6-cycles-final/interior_diagonal.png`）
 
 下列链接包含早期多臂试点与原单臂键盘练习；其通过记录不自动适用于当前 36 环境。
 
 - [下一阶段计划与验收顺序](../next-iteration-plan.md)
-- [trial04 效率诊断](../../runs/trial04-efficiency-audit-20261020/report.md) 与 [针对性修复](../../runs/efficiency-fixes-20261020/report.md)
+- trial04 效率诊断（历史产物已退役：`../../runs/trial04-efficiency-audit-20261020/report.md`） 与 针对性修复（历史产物已退役：`../../runs/efficiency-fixes-20261020/report.md`）
 - [目录、状态与上下文](../architecture.md)
 - [Meta 启动与管理](../meta-runbook.md)
 - [当前验收范围](../harness-v2-verification.md)

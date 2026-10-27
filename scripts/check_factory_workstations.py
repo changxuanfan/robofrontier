@@ -4,6 +4,7 @@ from pathlib import Path
 import mujoco,numpy as np
 from PIL import Image
 from robofrontier.factory_workstations import FactoryPlayback
+from robofrontier.factory_playback import current_scene
 from robofrontier.workstation import Workstation
 from robofrontier.run_setup import write_json
 
@@ -33,4 +34,4 @@ def check(scene,output,render=False):
  if not report['passed']:raise SystemExit('Factory pose mismatch')
  return report
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--scene',type=Path,default=Path('outputs/robo-factory/v5-workstations/scene.xml'));p.add_argument('--output',type=Path,default=Path('outputs/robo-factory/v5-checks'));p.add_argument('--render',action='store_true');a=p.parse_args();check(a.scene,a.output,a.render)
+ p=argparse.ArgumentParser();p.add_argument('--scene',type=Path,default=current_scene());p.add_argument('--output',type=Path,required=True);p.add_argument('--render',action='store_true');a=p.parse_args();check(a.scene,a.output,a.render)

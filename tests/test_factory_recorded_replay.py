@@ -5,13 +5,14 @@ import numpy as np
 from robofrontier.factory_workstations import FactoryPlayback
 from robofrontier.motion_recording import MotionWriter,MotionReader
 from robofrontier.workstation import Workstation
-from robofrontier.suite.v2 import ROOT,cases,directory
+from robofrontier.task_families import ROOT,RELEASE,read
+from robofrontier.factory_playback import current_scene
 
 class FactoryRecordedReplayTests(unittest.TestCase):
  def test_moving_robot_module_and_display_reconstruct_without_physics(self):
-  scene=ROOT/'outputs/robo-factory/v6-workstations/scene.xml'
+  scene=current_scene()
   if not scene.exists():self.skipTest('Generated factory not present')
-  source=Workstation(directory(next(c for c in cases() if c['id']=='dial-n04-d3')))
+  source=Workstation(ROOT/read(ROOT/RELEASE)['families']['dial']['oracle'][2]['directory'])
   with tempfile.TemporaryDirectory() as td,patch('mujoco.mj_step',side_effect=AssertionError('No replay physics')):
    writer=MotionWriter(Path(td)/'motion',source.path,source.model,source.data,hz=60)
    robot=source.model.joint('A_joint1').qposadr[0];body=source.model.joint('D01_module_free').qposadr[0];gid=source.model.geom('score_0_0').id
@@ -33,9 +34,9 @@ class FactoryRecordedReplayTests(unittest.TestCase):
   from scripts.replay_motion_in_factory import replay
   from scripts.export_factory_recorded_pose import export
   from robofrontier.robot_control import quat_matrix
-  scene=ROOT/'outputs/robo-factory/v6-workstations/scene.xml'
+  scene=current_scene()
   if not scene.exists():self.skipTest('Generated factory not present')
-  source=Workstation(directory(next(c for c in cases() if c['id']=='dial-n04-d3')))
+  source=Workstation(ROOT/read(ROOT/RELEASE)['families']['dial']['oracle'][2]['directory'])
   with tempfile.TemporaryDirectory() as td,patch('mujoco.mj_step',side_effect=AssertionError('No replay physics')):
    root=Path(td);writer=MotionWriter(root/'motion',source.path,source.model,source.data,hz=60)
    robot=source.model.joint('A_joint1').qposadr[0];gid=source.model.geom('score_0_0').id

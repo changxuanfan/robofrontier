@@ -171,3 +171,7 @@ Blender集成检查读取最终求值几何的面材质，验证独立变色、�
 - 对照图、打包贴图的Blender文件与索引在`outputs/robo-factory/v9-review/`。
 - 本轮已重新prepare 36项至`runs/policy/prepared-factory-v9-20261027/`，模型调用0次、仿真未启动。
   后续再改执行源码时需新prepare，旧准备目录保留。
+
+## 数据清理后的交付入口
+
+`outputs/final/factory/` 提供当前 top、side 和环视 MP4 的链接。当前场景、Blender导出、光照配置、36条源流和v3剪辑保留；旧版本试图和编码后的逐帧PNG缓存按保留策略清理。旧验收中的帧数／解码结果是当时检查记录，不能据此声称PNG缓存现在仍存在。更新后的独立渲染输出不纳入本轮清理。

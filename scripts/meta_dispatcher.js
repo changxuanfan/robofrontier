@@ -1,6 +1,6 @@
 // Loaded by Meta into functions.exec; definitions alone perform no I/O.
 // It has no task planner and never selects robot actions or delegation scopes.
-async function runMetaDispatcher({runDir, python, cwd, tools, onEvent = () => {}, stopRequested = () => false, maxCycles = Infinity, startWhenReady = false}) {
+async function runMetaDispatcher({runDir, python, cwd, tools, onEvent = () => {}, stopRequested = () => false, maxCycles = Infinity, startWhenReady = false, observationSource = 'codex.wait_threads'}) {
   const quote = value => "'" + String(value).replaceAll("'", "'\\''") + "'";
   const owner = 'meta-' + Date.now() + '-' + Math.random().toString(16).slice(2);
   const cursors = new Map();
@@ -55,7 +55,7 @@ async function runMetaDispatcher({runDir, python, cwd, tools, onEvent = () => {}
     if (p.cursor) cursors.set(actor,p.cursor);
     return {actor,thread_id:agent.thread_id,status,
             turn_id:p.latestTurn?.id ?? null,turn_status:p.latestTurn?.status ?? null,
-            observed_at:Date.now()/1000,source:'codex.wait_threads'};
+            observed_at:Date.now()/1000,source:observationSource};
   }
   async function safeObserve(actor, agent) {
     let error;

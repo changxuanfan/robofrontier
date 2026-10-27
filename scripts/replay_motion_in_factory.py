@@ -12,6 +12,7 @@ from robofrontier.motion_timeline import sample_timeline,resolve_timeline
 from robofrontier.replay_edit import ReplayEdit
 from robofrontier.workstation import Workstation
 from robofrontier.factory_workstations import FactoryPlayback
+from robofrontier.factory_playback import current_scene
 from robofrontier.robot_control import quat_matrix,matrix_quat
 from robofrontier.cube_transport import _font
 from robofrontier.run_setup import write_json
@@ -86,4 +87,4 @@ def replay(recording,factory,output,render=False,timeline=None,speed=20.,fps=30.
     print(json.dumps({k:v for k,v in report.items()if k not in ['video_source_timestamps_s','video_source_indices']}),flush=True);return report
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('recording',type=Path);p.add_argument('--factory',type=Path,default=Path('outputs/robo-factory/v6-workstations/scene.xml'));p.add_argument('--output',type=Path,required=True);p.add_argument('--render',action='store_true');p.add_argument('--timeline','--edit-timeline',type=Path);p.add_argument('--keep-idle',action='store_true');p.add_argument('--speed',type=float,default=20);p.add_argument('--fps',type=float,default=30);p.add_argument('--table-opening-scale',type=float,default=.5);p.add_argument('--translation-m',type=float,nargs=3);p.add_argument('--yaw-rad',type=float);p.add_argument('--max-frames',type=int);a=p.parse_args();replay(a.recording,a.factory,a.output,a.render,a.timeline,a.speed,a.fps,a.table_opening_scale,a.translation_m,a.yaw_rad,a.max_frames,a.keep_idle)
+    p=argparse.ArgumentParser();p.add_argument('recording',type=Path);p.add_argument('--factory',type=Path,default=current_scene());p.add_argument('--output',type=Path,required=True);p.add_argument('--render',action='store_true');p.add_argument('--timeline','--edit-timeline',type=Path);p.add_argument('--keep-idle',action='store_true');p.add_argument('--speed',type=float,default=20);p.add_argument('--fps',type=float,default=30);p.add_argument('--table-opening-scale',type=float,default=.5);p.add_argument('--translation-m',type=float,nargs=3);p.add_argument('--yaw-rad',type=float);p.add_argument('--max-frames',type=int);a=p.parse_args();replay(a.recording,a.factory,a.output,a.render,a.timeline,a.speed,a.fps,a.table_opening_scale,a.translation_m,a.yaw_rad,a.max_frames,a.keep_idle)

@@ -17,7 +17,7 @@ def current_scene():
     if pointer.exists():
         path=Path(json.loads(pointer.read_text())['scene'])
         return (ROOT/path).resolve()
-    return ROOT/'outputs/robo-factory/v7-workstations/scene.xml'
+    return ROOT/'outputs/robo-factory/scene/scene.xml'
 
 
 class StationTrack:

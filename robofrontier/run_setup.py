@@ -107,7 +107,8 @@ def prepare_run(directory, task_path=None, harness_path=None, private_puzzle_pat
     paths = list((ROOT/'robofrontier').rglob('*.py'))
     paths += list((ROOT/'prompts').rglob('*.md'))
     paths += list((ROOT/'.agents/skills/robot-collaboration').rglob('*'))
-    paths += [ROOT/'scripts'/name for name in ('create_pipeline_run.py','meta_dispatcher.js','export_run_report.py','role_tools.js')]
+    paths += [ROOT/'scripts'/name for name in ('create_pipeline_run.py','meta_dispatcher.js','export_run_report.py','role_tools.js',
+                                             'benchmark.py','codex_rpc.js','codex_policy_host.js','codex_preflight.js')]
     paths += [ROOT/'docs'/name for name in ('meta-runbook.md','architecture.md','harness-v2-verification.md')]
     source_hashes = {}
     for source in paths:

@@ -2,21 +2,21 @@
 
 本文保留 2026-10-20/21 三臂阶段的计划与历史进展，不是当前四臂拼图的启动配置。当前通用接口与准备流程以 [架构说明](architecture.md)、[Meta runbook](meta-runbook.md) 和本次 task.json 为准。
 
-状态：A任务/算法、B物理参考、C离线交互检查已完成，模型对照尚未完成。三臂九方块配置、工具边界合并收件、wait_events及可选非阻塞动作已接入；工程结果见 [验收记录](../runs/autonomous-loop-engineering-20261020/report.md)。沿用当前三台 Panda，不增加第四臂。运行协议以 [Meta runbook](meta-runbook.md) 和 [共享 Skill](../.agents/skills/robot-collaboration/SKILL.md) 为准。
+状态：A任务/算法、B物理参考、C离线交互检查已完成，模型对照尚未完成。三臂九方块配置、工具边界合并收件、wait_events及可选非阻塞动作已接入；工程结果见 验收记录（历史产物已退役：`../runs/autonomous-loop-engineering-20261020/report.md`）。沿用当前三台 Panda，不增加第四臂。运行协议以 [Meta runbook](meta-runbook.md) 和 [共享 Skill](../.agents/skills/robot-collaboration/SKILL.md) 为准。
 
-trial04模型试点在用户暂停后封存，未完成任务；[效率诊断](../runs/trial04-efficiency-audit-20261020/report.md)确认批量屏障、工具间隔及陈旧笔记问题。[针对性修复](../runs/efficiency-fixes-20261020/report.md)已接入时间标记/独立执行事实、可选结果与图像同次交付和Agent总等待期限。随后trial05重跑仍出现本区准备随交接条件一起等待，[复盘](../runs/trial05-concurrency-audit-20261020/report.md)定位为依赖与授权粒度问题；运行在用户暂停后发生进程退出，已登记中断。
+trial04模型试点在用户暂停后封存，未完成任务；效率诊断（历史产物已退役：`../runs/trial04-efficiency-audit-20261020/report.md`）确认批量屏障、工具间隔及陈旧笔记问题。针对性修复（历史产物已退役：`../runs/efficiency-fixes-20261020/report.md`）已接入时间标记/独立执行事实、可选结果与图像同次交付和Agent总等待期限。随后trial05重跑仍出现本区准备随交接条件一起等待，复盘（历史产物已退役：`../runs/trial05-concurrency-audit-20261020/report.md`）定位为依赖与授权粒度问题；运行在用户暂停后发生进程退出，已登记中断。
 
-[本次规则修订](../runs/dependency-boundaries-20261020/review.md)只替换现有Skill与角色/通信指导，使条件绑定到实际依赖步骤，保留权限、安全与准备净收益约束；没有修改Harness或再启动试验。下一步先验证短场景中的实际行为，不能用文字检查证明并行改善。
+本次规则修订（历史产物已退役：`../runs/dependency-boundaries-20261020/review.md`）只替换现有Skill与角色/通信指导，使条件绑定到实际依赖步骤，保留权限、安全与准备净收益约束；没有修改Harness或再启动试验。下一步先验证短场景中的实际行为，不能用文字检查证明并行改善。
 
 2026-10-21：纸面规划检查显示模型会利用显式提供的独立空间与依赖，但不是闭环提速证据。当前补充通用运动证据规则、robot_model 与 check_motion；后者只做只读、有限时域的名义跨臂采样检查，未覆盖连续时间、负载、桌面和动力学误差，不执行候选动作。本轮只做离线工程验证，不恢复旧世界或启动实验。
 
-trial06 已用最新接口真实运行并复现全局串行，按用户要求暂停封存，九目标未完成；[诊断](../runs/pipeline-coordinator-nine-20261021-trial06/private/outputs/efficiency-audit/report.md)记录了零运输重叠、单臂检查及授权间隔。[策略输入修订](../runs/coordination-objective-fixes-20261021/report.md)仅补充任务效率/仿真背景、资源互斥范围、队友证据和决策分组指导，尚无新的模型行为验证。下一步先做短真实运输验证，不直接再跑完整九目标。
+trial06 已用最新接口真实运行并复现全局串行，按用户要求暂停封存，九目标未完成；诊断（历史产物已退役：`../runs/pipeline-coordinator-nine-20261021-trial06/private/outputs/efficiency-audit/report.md`）记录了零运输重叠、单臂检查及授权间隔。策略输入修订（历史产物已退役：`../runs/coordination-objective-fixes-20261021/report.md`）仅补充任务效率/仿真背景、资源互斥范围、队友证据和决策分组指导，尚无新的模型行为验证。下一步先做短真实运输验证，不直接再跑完整九目标。
 
-启动上下文已补充现有 READY 的 robot_facts，[实现与离线验证](../runs/robot-facts-context-20261021/report.md)记录了实际基座/TCP 界限与能力摘要、通用 Skill 和精简 Coordinator Prompt；没有新会话或物理试验，尚未验证模型行为改善。
+启动上下文已补充现有 READY 的 robot_facts，实现与离线验证（历史产物已退役：`../runs/robot-facts-context-20261021/report.md`）记录了实际基座/TCP 界限与能力摘要、通用 Skill 和精简 Coordinator Prompt；没有新会话或物理试验，尚未验证模型行为改善。
 
 ## 1. 已有证据与本次目标
 
-[试验02](../runs/pipeline-coordinator-20261020-trial02/private/outputs/report.md) 和 [试验03](../runs/pipeline-coordinator-20261020-trial03/private/outputs/report.md) 均完成六槽目标，但运输阶段两臂动作重叠均为零。策略更新后消息57→42、Coordinator轮次56→41，墙钟20分44秒→26分52秒；不能把提示文字、唤醒频率或并发峰值当作效率改善证据。样本各一次，不支持总体因果结论。
+试验02（历史产物已退役：`../runs/pipeline-coordinator-20261020-trial02/private/outputs/report.md`） 和 试验03（历史产物已退役：`../runs/pipeline-coordinator-20261020-trial03/private/outputs/report.md`） 均完成六槽目标，但运输阶段两臂动作重叠均为零。策略更新后消息57→42、Coordinator轮次56→41，墙钟20分44秒→26分52秒；不能把提示文字、唤醒频率或并发峰值当作效率改善证据。样本各一次，不支持总体因果结论。
 
 目标分两部分验证：环境是否真实提供可利用的流水窗口；Agent是否会主动前瞻、提前准备并使用这些窗口。二者分开验收。
 

@@ -187,11 +187,6 @@ class _Builder:
         ET.SubElement(v, 'headlight', ambient='.23 .23 .23', diffuse='.42 .42 .42', specular='.12 .12 .12')
         ET.SubElement(v, 'map', znear='.005', zfar='5', shadowclip='2', shadowscale='1')
         ET.SubElement(self.root, 'statistic', center='0 0 2.5', extent=str(max(self.width, self.depth)*.55))
-        custom = ET.SubElement(self.root, 'custom')
-        for name, data in [('cg.exposure', config['lighting']['exposure']), ('ao.enabled', 1), ('shadows.map_size', config['lighting']['shadow_map_size'])]:
-            ET.SubElement(custom, 'numeric', name='filament.'+name, data=str(data))
-        for name, value in [('ao.quality', config['lighting']['ambient_occlusion_quality']), ('cg.tone_mapping', 'aces')]:
-            ET.SubElement(custom, 'text', name='filament.'+name, data=value)
         self.meshes, self.mesh_triangles, self.serial = {}, 0, 0
         self.objects, self.cameras = [], []
         self.props = []
