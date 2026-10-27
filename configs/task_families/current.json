@@ -211,7 +211,7 @@
           },
           "qualification": "r13_frozen_oracle",
           "recording": "runs/oracle/transport-continuation-20261026/full/transport-a04-d1/attempt-003/motion",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/transport-a04-d1/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/transport-a04-d1/edit.json",
           "edit_sha256": "79a61825f30f2b053e39523ca9b8fe3a866175e734656e76ff794dbd0cced61f",
           "table_opening_scale": 0.5,
           "historical_edit": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a04-d1/edit.json",
@@ -228,7 +228,7 @@
           },
           "qualification": "r13_frozen_oracle",
           "recording": "runs/oracle/transport-continuation-20261026/full/transport-a04-d2/attempt-003/motion",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/transport-a04-d2/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/transport-a04-d2/edit.json",
           "edit_sha256": "1056857bb1687ae7d473cdfca560184a99e053b7128ef140d912c73cf9420506",
           "table_opening_scale": 0.5,
           "historical_edit": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a04-d2/edit.json",
@@ -245,7 +245,7 @@
           },
           "qualification": "r13_frozen_oracle",
           "recording": "runs/oracle/transport-continuation-20261026/full/transport-a04-d3/attempt-001/motion",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/transport-a04-d3/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/transport-a04-d3/edit.json",
           "edit_sha256": "a355e7d446d112a2234266a5738bb92d4eeefdf85d97a2beb675a1d757e3b944",
           "table_opening_scale": 0.5,
           "historical_edit": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a04-d3/edit.json",
@@ -262,7 +262,7 @@
           },
           "qualification": "r13_frozen_oracle",
           "recording": "runs/oracle/transport-continuation-20261026/full/transport-a08-d1/attempt-002/motion",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/transport-a08-d1/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/transport-a08-d1/edit.json",
           "edit_sha256": "03bbe0768daa6f21372e875ca19199ff7286a1e34a55b772d08edc7c58c417ed",
           "table_opening_scale": 0.5,
           "historical_edit": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a08-d1/edit.json",
@@ -279,7 +279,7 @@
           },
           "qualification": "r13_frozen_oracle",
           "recording": "runs/oracle/transport-continuation-20261026/full/transport-a08-d2/attempt-002/motion",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/transport-a08-d2/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/transport-a08-d2/edit.json",
           "edit_sha256": "bc723d5fd641fb70dc72a0edf3875b951b2082ae57c8f2b8ae408aa7775cd5e8",
           "table_opening_scale": 0.5,
           "historical_edit": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a08-d2/edit.json",
@@ -296,7 +296,7 @@
           },
           "qualification": "r13_frozen_oracle",
           "recording": "runs/oracle/transport-continuation-20261026/full/transport-a08-d3/attempt-002/motion",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/transport-a08-d3/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/transport-a08-d3/edit.json",
           "edit_sha256": "d4ab7347e935fa80832fb51a15f6c5d9136758506935d98aa8125d16080f4b2a",
           "table_opening_scale": 0.5,
           "historical_edit": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a08-d3/edit.json",
@@ -313,7 +313,7 @@
           },
           "qualification": "r13_frozen_oracle",
           "recording": "runs/oracle/transport-continuation-20261026/full/transport-a12-d1/attempt-003/motion",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/transport-a12-d1/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/transport-a12-d1/edit.json",
           "edit_sha256": "50d0f192b00e33f9b03ff9bf4ecda49f8fa5fbe8362e9251ab9dce0feb417ba8",
           "table_opening_scale": 0.5,
           "historical_edit": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a12-d1/edit.json",
@@ -330,7 +330,7 @@
           },
           "qualification": "r13_frozen_oracle",
           "recording": "runs/oracle/transport-continuation-20261026/full/transport-a12-d2/attempt-003/motion",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/transport-a12-d2/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/transport-a12-d2/edit.json",
           "edit_sha256": "5a8a8563a8cb391e8333e7b7ba2f7c1abcf9c2dc2b30a8f55c0fc0aafdcd51c3",
           "table_opening_scale": 0.5,
           "historical_edit": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a12-d2/edit.json",
@@ -347,7 +347,7 @@
           },
           "qualification": "r13_frozen_oracle",
           "recording": "runs/oracle/transport-continuation-20261026/full/transport-a12-d3/attempt-007/motion",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/transport-a12-d3/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/transport-a12-d3/edit.json",
           "edit_sha256": "7e96ed4184bd362da0aaafc99f5cdf9e403970b6ac9b3847ac53d15666257067",
           "table_opening_scale": 0.5,
           "historical_edit": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a12-d3/edit.json",
@@ -601,7 +601,7 @@
             "workstation.json": "3af506787e623bdcf1f8d0bca9479f53ae402c455a75019e791ac1488bd0238f"
           },
           "qualification": "r13_pure_program",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/mosaic-a04-6x12-d1/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/mosaic-a04-6x12-d1/edit.json",
           "edit_sha256": "2f13f1620184f58f31bd9a5985d04b72f3ee768c89fb22712a000dfb7ce9252a",
           "historical_edit": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表/mosaic-a04-6x12-d1.json",
           "historical_edit_sha256": "41d37473da270298771bebb7fe8c96b44528d5405bf0585c3553d84f83ef3c55"
@@ -617,7 +617,7 @@
             "workstation.json": "9919e7bf22d9ebab35f0e0e8da106801a613254d449a3d1a8aefc45031a3c39e"
           },
           "qualification": "r13_pure_program",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/mosaic-a04-6x12-d2/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/mosaic-a04-6x12-d2/edit.json",
           "edit_sha256": "39c30230a53a1443e7815cc022e876155ae21e0143927a717eefde4e6508ce9c",
           "historical_edit": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表/mosaic-a04-6x12-d2.json",
           "historical_edit_sha256": "3d3e6a3c4f9dd5e9d7a8cea5d9fa20f02e9abc00c04e7e651a404dbf35ec5e02"
@@ -633,7 +633,7 @@
             "workstation.json": "3ec7c5bc0d3c9282405fba120f8e1009b9efc09968a963a9d4be3f7c3718c3de"
           },
           "qualification": "r13_pure_program",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/mosaic-a04-6x12-d3/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/mosaic-a04-6x12-d3/edit.json",
           "edit_sha256": "bb92f732ebd33f787836b761e41c2b1dd6771003db70717411d13074eb5cb9f4",
           "historical_edit": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表/mosaic-a04-6x12-d3.json",
           "historical_edit_sha256": "e8850d9823c509a071622a7d7b765b9f70c09a222e7d390ce0407f3fd28c8879"
@@ -649,7 +649,7 @@
             "workstation.json": "34036fc49e7e0a42261e6697c3915a2cf801f3a851ac7bb1b49185c6eb25bd46"
           },
           "qualification": "r13_privileged_assisted",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/mosaic-a06-9x18-d1/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/mosaic-a06-9x18-d1/edit.json",
           "edit_sha256": "1ce183a0cbdc34f187fecb309e991bff51369f0bd0d084ff044321bdfd3a627d",
           "historical_edit": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表/mosaic-a06-9x18-d1.json",
           "historical_edit_sha256": "45f09932f820fe04ac8c4bac231953a4ad559ca8282e47b84705be76dd869b31"
@@ -665,7 +665,7 @@
             "workstation.json": "7ffbe6838fb6e8a2e8e9db01416fc4148dd9b9a60872e48cc9a84004acfc90d7"
           },
           "qualification": "r13_privileged_assisted",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/mosaic-a06-9x18-d2/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/mosaic-a06-9x18-d2/edit.json",
           "edit_sha256": "fa1ad1f8b3940085a13616ae20588574e24dfa62c4fa3cf847b6ff0763006823",
           "historical_edit": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表/mosaic-a06-9x18-d2.json",
           "historical_edit_sha256": "64bcb24be3be1bc4430c1c1eede818ae271d12ec8cc8ab71b7ae2c150101e53f"
@@ -681,7 +681,7 @@
             "workstation.json": "a5d51097f22654e857d82c21456fb47abcbd80e7b1cf3348280df803cf6d0f7e"
           },
           "qualification": "r13_privileged_assisted",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/mosaic-a06-9x18-d3/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/mosaic-a06-9x18-d3/edit.json",
           "edit_sha256": "8cdea53d348c0814cc8575cded5902cc6ed797cb57e0f064fd16442eb0e4374e",
           "historical_edit": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表/mosaic-a06-9x18-d3.json",
           "historical_edit_sha256": "96d8fd82132ba06588e6ba30565f5e1c9505e079d2aa4bd3f30680cf1e6c80cc"
@@ -697,7 +697,7 @@
             "workstation.json": "0d1866499565e3852fc6cfe9450eb2fb94d35ec62e80268fa7650e376abb8979"
           },
           "qualification": "r13_privileged_assisted",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/mosaic-a08-12x24-d1/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/mosaic-a08-12x24-d1/edit.json",
           "edit_sha256": "4e6fa6d7b5c1092d203bd860bae0510c8054276c61c996e641a121bee9a3c0a7",
           "historical_edit": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表/mosaic-a08-12x24-d1.json",
           "historical_edit_sha256": "0fecd23e2ed5c0dbd84ccce29f1c091c76fb70bdb06c6a972026fb6ab2767c14"
@@ -713,7 +713,7 @@
             "workstation.json": "afda48493605f724c6f29055fe66b61a971432207aa1e42da9d567e17ea3fd73"
           },
           "qualification": "r13_privileged_assisted",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/mosaic-a08-12x24-d2/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/mosaic-a08-12x24-d2/edit.json",
           "edit_sha256": "9c32528c52123f429b294d4a4e5de16b01224b229b75c39d439dddde13de4c7d",
           "historical_edit": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表/mosaic-a08-12x24-d2.json",
           "historical_edit_sha256": "e2a4609e218fad5b58a48a11d5523645efa4fb6f2cf498305599b6cb74593840"
@@ -729,7 +729,7 @@
             "workstation.json": "cff6da1e87a1c98df43873647248a08dcfd7ae57fc410f3b08959490dd668627"
           },
           "qualification": "r13_privileged_assisted",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/mosaic-a08-12x24-d3/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/mosaic-a08-12x24-d3/edit.json",
           "edit_sha256": "15ecd01d4efa46186c69c7b0aedebb56b2ef877b467b829b67bb221f55c438e8",
           "historical_edit": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表/mosaic-a08-12x24-d3.json",
           "historical_edit_sha256": "eaf2f8684565434b95ff8bc74724a18c3af55857ba3e8833158f986a66553449"
@@ -910,7 +910,7 @@
             "workstation.json": "b783aab2b8febc1b78ad0b263f546e3a2ac40ae620e7ffe11f5e46d38a2e4387"
           },
           "qualification": "historical_user_goal_completion_not_relabelled_native",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/relay-a08-d1/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/relay-a08-d1/edit.json",
           "edit_sha256": "a6330446fde8d32ce4ce8ec4cb7377a55fe929934a92128962d95537c5ecf870",
           "historical_edit": "outputs/oracle/relay-edited-tracks-20261027/relay-a08-d1/edit.json",
           "historical_edit_sha256": "b34f4b1878a94436d4c140c19dba5d708f7bf3da4c31c5e9f7cd0ad98233deb0"
@@ -926,8 +926,8 @@
             "workstation.json": "daf68324370094065116b4842e662bc692411d0c4fd81f36c7138ee6bc1ebf41"
           },
           "qualification": "historical_user_goal_completion_not_relabelled_native",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/relay-a08-d2/edit.json",
-          "edit_sha256": "ef2abf4be22839d0ec206217b06061764ad148e6c8fc15d5d6d09a1ad496c3e0",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/relay-a08-d2/edit.json",
+          "edit_sha256": "3fefa67802080afcb67170f192ba1b5e8ce775328c4153c635688a385b2be587",
           "historical_edit": "outputs/oracle/relay-edited-tracks-20261027/relay-a08-d2/edit.json",
           "historical_edit_sha256": "e7f962384eff04fa02974b8fbaad7b3f07ba88cd626a1a10f373aff62c292ce8"
         },
@@ -942,8 +942,8 @@
             "workstation.json": "1db042840949d81dfd5544db4aaa801ec94035fdce1c30e9e9a129adb1c98411"
           },
           "qualification": "historical_user_goal_completion_not_relabelled_native",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/relay-a08-d3/edit.json",
-          "edit_sha256": "06e2a2f9227c90b2a4b3e4e9e927d10acb27b8d5b2fcd27097ed7fddcde9db27",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/relay-a08-d3/edit.json",
+          "edit_sha256": "9610fc06441895c27b1c5db3e3f8b7288d5bc67bf62cc861a5a42bb3fbe57255",
           "historical_edit": "outputs/oracle/relay-edited-tracks-20261027/relay-a08-d3/edit.json",
           "historical_edit_sha256": "bd625269626d43dc750d61d71bf0469db5b0ec3bce7ab6b36423dd83c1f8a861"
         },
@@ -958,7 +958,7 @@
             "workstation.json": "b60ba27866c50d63fcc059e73ede6d6106d7fcfaf1e1231b5d7ad3472ba049c7"
           },
           "qualification": "historical_user_goal_completion_not_relabelled_native",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/relay-a12-d1/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/relay-a12-d1/edit.json",
           "edit_sha256": "1b861f0403933032b0a3f2be271012a4549afd21d49b599b6d33dbe1b634cb52",
           "historical_edit": "outputs/oracle/relay-edited-tracks-20261027/relay-a12-d1/edit.json",
           "historical_edit_sha256": "3acb3db12ab44e064a0470ef76076abeaeb0f8f46731345d8068a8bb55b081e5"
@@ -974,8 +974,8 @@
             "workstation.json": "b3e84d6ec4fa1db791d517100b7abe0cbe0db4e79bced3203b1ffbda5d45204c"
           },
           "qualification": "historical_user_goal_completion_not_relabelled_native",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/relay-a12-d2/edit.json",
-          "edit_sha256": "9deb1e177948805ed51019c337198356d108a0bcf7d704da9f9501780094976d",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/relay-a12-d2/edit.json",
+          "edit_sha256": "5175312ebdb36012b0daea785ab26d10182d4b862b82e42c975902743bd1936c",
           "historical_edit": "outputs/oracle/relay-edited-tracks-20261027/relay-a12-d2/edit.json",
           "historical_edit_sha256": "10934997db1805f091be51f2ab7a7f38b4ddaaaaf5f4d85330043b19f7fe924a"
         },
@@ -990,8 +990,8 @@
             "workstation.json": "b18c7a61fef7a304a88c4a2383ae292c0ca3173369e5abac68207e3cf5e39954"
           },
           "qualification": "historical_user_goal_completion_not_relabelled_native",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/relay-a12-d3/edit.json",
-          "edit_sha256": "73a8ad37143c88b610d26e8d0f54d7e8c116534891b96835a7bbe83d3fda9d35",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/relay-a12-d3/edit.json",
+          "edit_sha256": "30e016190605031115108b6d38b1028eb3652a82e731c0c1a605fabb604a58e7",
           "historical_edit": "outputs/oracle/relay-edited-tracks-20261027/relay-a12-d3/edit.json",
           "historical_edit_sha256": "6cd9274ba05988fdee9cec2995748dd050ff0c1c9c8787a6075d790306cb5355"
         },
@@ -1006,7 +1006,7 @@
             "workstation.json": "bbcf6c82f964d0e2f98dc29f11e64387066d413affa65800df1037b34d4c9203"
           },
           "qualification": "historical_user_goal_completion_not_relabelled_native",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/relay-a16-d1/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/relay-a16-d1/edit.json",
           "edit_sha256": "8c238d28ae5ff687f1d7987e79fad8e8554dfc943188f2851668d729d6635c45",
           "historical_edit": "outputs/oracle/relay-edited-tracks-20261027/relay-a16-d1/edit.json",
           "historical_edit_sha256": "65e2efd22dcec3758c8605fe966a467a42a7b83cba52723b6486b43b81f20ad9"
@@ -1022,8 +1022,8 @@
             "workstation.json": "a1e8eb7e010df2ab608e28f688c910e54eebbf8ec9c0a74166bb33e52429e09d"
           },
           "qualification": "historical_user_goal_completion_not_relabelled_native",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/relay-a16-d2/edit.json",
-          "edit_sha256": "7a48f1ab15c58cbddc85bccbcf6476c67922932560a66483482b674092115062",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/relay-a16-d2/edit.json",
+          "edit_sha256": "b0e0f2bb61e192a112b166f91f616a1fef29cd8973d1af1a684957b096f243f8",
           "historical_edit": "outputs/oracle/relay-edited-tracks-20261027/relay-a16-d2/edit.json",
           "historical_edit_sha256": "d7a6fe9ea7f8f64a564e7960fba7b766957a627a6733dfc3ad395586cbe5e9b2"
         },
@@ -1038,8 +1038,8 @@
             "workstation.json": "b857bb8686c4d3d0607b64a683de67474394988b6fb24ff7fdcfecc98b61b2e0"
           },
           "qualification": "historical_user_goal_completion_not_relabelled_native",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/relay-a16-d3/edit.json",
-          "edit_sha256": "7ebd212ebc6452824610b115e9616bc1d11400ace483cdca0d6ce30a3a1e6467",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/relay-a16-d3/edit.json",
+          "edit_sha256": "2d73045063edf754529eddcf60f6d6f89430f7a3143d122dce4f141042c18e1f",
           "historical_edit": "outputs/oracle/relay-edited-tracks-20261027/relay-a16-d3/edit.json",
           "historical_edit_sha256": "96f4efe639e561340df0182f3090e2bf6a4953ff22e0883a2814fab978a59a4e"
         }
@@ -1471,7 +1471,7 @@
             "workstation.json": "542ba44715dc1a4ae679e616b751b86bb78dc3079c821d7041aebd7b96cd7aa6"
           },
           "qualification": "pure_program",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/dial-best5-n04-d1/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/dial-best5-n04-d1/edit.json",
           "edit_sha256": "0005ef80c95ff411807e0948999d827da839f58e19f61c1e3276f924d49b2a9a",
           "historical_edit": "outputs/engineering/dial-family-current/motion-edits/dial-best5-n04-d1.json",
           "historical_edit_sha256": "ca11cd47e53be8ba782f8736ee8a30a87c78fdfb346192a7ad7dd5b6134094e6"
@@ -1487,7 +1487,7 @@
             "workstation.json": "654033dfdd7209d3b5ea1a8d8830eed60ba3ac15c8f1a2abe50eda28ca1b8220"
           },
           "qualification": "pure_program",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/dial-best5-n04-d2/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/dial-best5-n04-d2/edit.json",
           "edit_sha256": "ad9e1391cb7ee88ecf11a3432ed272250564cd1f89ee6035cd711c0cc8feb833",
           "historical_edit": "outputs/engineering/dial-family-current/motion-edits/dial-best5-n04-d2.json",
           "historical_edit_sha256": "8f8fdbd561a413ded0ac6f4d2751d8eb2502e614ba15898df9c00b3378046de0"
@@ -1503,7 +1503,7 @@
             "workstation.json": "4f57ea5618619a96bdfa0ffdfe22678a9fca510b498faf8cd13fc7a78b1a1eca"
           },
           "qualification": "pure_program",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/dial-best5-n04-d3/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/dial-best5-n04-d3/edit.json",
           "edit_sha256": "1b22245b246001a89da2928f664b517f707b3f6e5020c880b38d37e59e6ee4bb",
           "historical_edit": "outputs/engineering/dial-family-current/motion-edits/dial-best5-n04-d3.json",
           "historical_edit_sha256": "8548cac3e0d97ad6093a1b0e5b1c0b9a55ae6f74a2aefd64b1fd17ea37162eb8"
@@ -1519,7 +1519,7 @@
             "workstation.json": "91d961866d70b2bda9e84746f3b6a67decd8c0c573e59338eaf083188fb52311"
           },
           "qualification": "pure_program",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/dial-best5-n06-d1/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/dial-best5-n06-d1/edit.json",
           "edit_sha256": "ad46ac52c67579507b7fb8fc88c9b9491d20f3af061caaba6a2e1679b7b14849",
           "historical_edit": "outputs/engineering/dial-family-current/motion-edits/dial-best5-n06-d1.json",
           "historical_edit_sha256": "eb751f624a89be701cb8d5de8d05083b6bc737f09c2f0507637b17fc8b393752"
@@ -1535,7 +1535,7 @@
             "workstation.json": "0b081beb141c06ede11fa9736b6507a52d03e9c3b8bd3f22250d93d0ae22a417"
           },
           "qualification": "pure_program",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/dial-best5-n06-d2/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/dial-best5-n06-d2/edit.json",
           "edit_sha256": "185971d99edbd542a3bd8a1edff41f2846b6ffb95537127495ac0c4f37aa1df1",
           "historical_edit": "outputs/engineering/dial-family-current/motion-edits/dial-best5-n06-d2.json",
           "historical_edit_sha256": "cae977be83e98f4c0a4e2964bdac3e01bb125aa6f7ec2fb64a63fc04342a9c47"
@@ -1551,7 +1551,7 @@
             "workstation.json": "48989546d01fb3dfc09bc6e47e888691b6832e03888a107ed7a769b461a4ec7d"
           },
           "qualification": "pure_program",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/dial-best5-n06-d3/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/dial-best5-n06-d3/edit.json",
           "edit_sha256": "3b62fcbe7b88ad0a51b73fe3f9d694d017ea338462e4c81f23ba4b4162415bf8",
           "historical_edit": "outputs/engineering/dial-family-current/motion-edits/dial-best5-n06-d3.json",
           "historical_edit_sha256": "cccd9d909b62a77e9db050b2db6606704588eae0e433230b81287baa3a9bc5fd"
@@ -1567,7 +1567,7 @@
             "workstation.json": "87aecc9d4b22983615c401d060806290bf774faf2707b76f6d6fcc718eb4cb8e"
           },
           "qualification": "pure_program",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/dial-best5-n08-d1/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/dial-best5-n08-d1/edit.json",
           "edit_sha256": "8178127914ed5718fc10bd0a9d72e49e2ae91220977d9c44ecbb2dbdc4b070a1",
           "historical_edit": "outputs/engineering/dial-family-current/motion-edits/dial-best5-n08-d1.json",
           "historical_edit_sha256": "8b641ff6094484d24056ecb31b9667011b325ea28748b78ca73ba66fe4859473"
@@ -1583,7 +1583,7 @@
             "workstation.json": "629098290cf7b6b93bf7173737026a75a37c5ba4366f21c1657390502f447d01"
           },
           "qualification": "pure_program",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/dial-best5-n08-d2/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/dial-best5-n08-d2/edit.json",
           "edit_sha256": "d461dcece19318c855a7b18d1825abc02f1d77e7a2fb71d277652d073d11a657",
           "historical_edit": "outputs/engineering/dial-family-current/motion-edits/dial-best5-n08-d2.json",
           "historical_edit_sha256": "7ecbf2692ca869ac1d3a1ce09a446c7b4f11197926002e9ce33257cbcd6d983f"
@@ -1599,7 +1599,7 @@
             "workstation.json": "24f6cfd5e83dea9150139816ace338b27b4210e46bf29e210e5279500a1af39d"
           },
           "qualification": "privileged_assisted",
-          "edit": "outputs/robo-factory/source-edits-v2-20261027/dial-best5-n08-d3/edit.json",
+          "edit": "outputs/robo-factory/source-edits-v3-20261027/dial-best5-n08-d3/edit.json",
           "edit_sha256": "80d95c067806797e66ea191a975114b88d03211a0e614b63e1bfc9ce30aea0b6",
           "historical_edit": "outputs/engineering/dial-family-current/motion-edits/dial-best5-n08-d3.json",
           "historical_edit_sha256": "e6c89b5e26d932a031ab9cdb7503b0aa324e30836603da098d0e840c1b9b81f1"
