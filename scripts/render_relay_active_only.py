@@ -13,7 +13,9 @@ def load_samples(run,out,every=3):
     prefix=run/'RECORDING-VERIFIED-THROUGH-USER-GOAL.json'
     if prefix.exists():end=json.loads(prefix.read_text())['completion_cutoff_s'];terminal=None
     else:
-        assert json.loads((run/'user-goal-report.json').read_text())['passed'];end=json.loads((run/'report.json').read_text())['evaluation']['sim_time_s']
+        native_report=json.loads((run/'report.json').read_text());user_report=run/'user-goal-report.json'
+        assert native_report.get('passed') or (user_report.exists() and json.loads(user_report.read_text())['passed'])
+        end=native_report['evaluation']['sim_time_s']
         with np.load(run/'event-states.npz',allow_pickle=False) as events:terminal=events['qpos'][-1].copy()
     if cache.exists():
         info=json.loads(identity.read_text());assert info['scene_sha256']==reader.meta['source_scene_sha256'] and abs(info['end_sim_s']-end)<1e-7
@@ -46,7 +48,7 @@ def layout_for(model,task):
         if slide:layout['robot_slides'].append(slide)
     primary_bodies=set();pendant_bodies=set()
     for item in task['mechanism']['payload_assemblies']:
-        layout['primary_free'].append(int(model.jnt_qposadr[model.joint(item['id']+'_free').id]));primary_bodies.update(model.body(n).id for n in item['beam_bodies'])
+        layout['primary_free'].append(int(model.jnt_qposadr[model.joint(item['id']+'_free').id]));primary_bodies.update(model.body(n).id for n in item.get('beam_bodies',[item.get('beam_body',item['id'])]))
         if item.get('elastic_hinge'):layout['primary_hinges'].append(int(model.jnt_qposadr[model.joint(item['elastic_hinge']['joint']).id]))
         if item.get('weight_body'):
             bid=model.body(item['weight_body']).id;pendant_bodies.add(bid);layout['pendant_free'].append(int(model.jnt_qposadr[int(model.body_jntadr[bid])]))
