@@ -15,6 +15,109 @@ def task():
 
 
 class MosaicReferenceTests(unittest.TestCase):
+    def test_narrow_margin_empty_route_selects_a_slower_command_without_overriding_loaded_speed(self):
+        from unittest.mock import Mock
+        from robofrontier.suite.mosaic_oracle_v2 import install_fine_route_screen
+        original=Mock();trial=SimpleNamespace(move_free=original,held={},event=Mock(),
+            arms={'A':SimpleNamespace(ik=SimpleNamespace(limits=np.array([[-1.,1.]]*7)))})
+        install_fine_route_screen(trial)
+        trial.move_free('A',np.zeros(3),np.eye(3),target_joints=np.full(7,.95))
+        self.assertEqual(original.call_args.kwargs['joint_speed_rad_s'],.2)
+        trial.held['A']='cube'
+        trial.move_free('A',np.zeros(3),np.eye(3),target_joints=np.full(7,.95),joint_speed_rad_s=.35)
+        self.assertEqual(original.call_args.kwargs['joint_speed_rad_s'],.35)
+
+    def test_goal_access_can_use_the_references_actual_release_height_and_keep_tilt_requirement(self):
+        from unittest.mock import Mock
+        from robofrontier.suite.mosaic_oracle_v2 import goal_endpoint_candidates
+        source=task();source['arms']={'A':{'base_position_m':[-.5,0.,.8]}}
+        trial=SimpleNamespace(task=source,arms={'A':object()},event=Mock())
+        def tilted(_,robot,point,rotation):
+            return np.zeros(7) if -.97<rotation[2,2]<-.96 else None
+        with patch('robofrontier.suite.mosaic_oracle_v2.helpers.goal_coverage',side_effect=RuntimeError('No candidate goal approach/seat/withdraw endpoints r1c1')), \
+             patch('robofrontier.suite.mosaic_oracle_v2.loaded_ik',side_effect=tilted), \
+             patch('robofrontier.suite.mosaic_oracle_v2.screen_release',return_value={'clearance_m':.04,'minimum_joint_margin_rad':.1}):
+            result=goal_endpoint_candidates(trial)
+        self.assertEqual(result,{'r1c1':['A']})
+        self.assertTrue(trial.mosaic_goal_tilted_coverage['r1c1']['A'])
+
+    def test_destination_tilt_requirement_reaches_the_actual_pick_operation(self):
+        from unittest.mock import Mock
+        trial=SimpleNamespace(task={'cube_size_m':.06},env={'stations':[],'edges':[]},
+            data=SimpleNamespace(body=lambda _:SimpleNamespace(xpos=np.array([.5,0.,.83]))),
+            mosaic_current_job={'goal_id':'r1c1'},mosaic_goal_tilted_coverage={'r1c1':{'A':True}})
+        with patch('robofrontier.suite.mosaic_oracle_v2.pick_transfer') as angled, \
+             patch('robofrontier.suite.mosaic_oracle_v2.pick_for_transport') as normal, \
+             patch('robofrontier.suite.mosaic_oracle_v2.place_cube'), \
+             patch('robofrontier.suite.mosaic_oracle_v2.helpers.park'):
+            deliver_cube(trial,'cube',['A'],np.array([0.,0.,.83]))
+        normal.assert_not_called();self.assertTrue(angled.call_args.kwargs['required_tilt'])
+        self.assertTrue(angled.call_args.kwargs['check_release'])
+
+    def test_transfer_edge_checks_receiving_release_before_committing_the_grasp(self):
+        point=np.array([0.,0.,.83])
+        trial=SimpleNamespace(task={'cube_size_m':.06},env={'stations':[],'edges':[]},
+            data=SimpleNamespace(body=lambda _:SimpleNamespace(xpos=np.array([.5,0.,.83]))),
+            mosaic_edges={frozenset(('A','B')):point},mosaic_angled_edges={frozenset(('A','B')):{'tilt_deg_by_robot':{'A':15,'B':15}}})
+        with patch('robofrontier.suite.mosaic_oracle_v2.pick_transfer') as transfer, \
+             patch('robofrontier.suite.mosaic_oracle_v2.place_cube'), \
+             patch('robofrontier.suite.mosaic_oracle_v2.helpers.park'):
+            deliver_cube(trial,'cube',['A'],point)
+        self.assertTrue(transfer.call_args.kwargs['check_release'])
+
+    def test_endpoint_map_keeps_a_supply_reachable_only_with_an_existing_transfer_tilt(self):
+        body=SimpleNamespace(xpos=np.array([.5,0.,.83]),xmat=np.eye(3))
+        trial=SimpleNamespace(task={'cube_size_m':.06,'arms':{'A':{'base_position_m':[0.,0.,.8]}}},
+            env={'objects':[{'id':'cube'}]},arms={'A':object()},home_q={'A':np.zeros(7)},
+            data=SimpleNamespace(body=lambda _:body),
+            screen_ik=lambda robot,point,rotation,seed=None:np.zeros(7) if -.95<rotation[2,2]<-.85 else None)
+        from robofrontier.suite.mosaic_oracle_v2 import pickup_endpoint_candidates
+        with patch('robofrontier.suite.mosaic_oracle_v2.helpers.pickup_coverage',return_value={'cube':[]}):
+            self.assertEqual(pickup_endpoint_candidates(trial),{'cube':['A']})
+
+    def test_narrow_transfer_search_is_empty_hand_only(self):
+        from unittest.mock import Mock
+        from robofrontier.suite.mosaic_oracle_v2 import pick_transfer
+        for job in (None,'unresolved-id'):
+            arm=SimpleNamespace(grip_max=.08,grasp_force=None,job=job,observe=lambda:{'gripper_width_m':.072})
+            trial=SimpleNamespace(arms={'A':arm},task={'cube_size_m':.06,'arms':{'A':{'base_position_m':[0,0,.8]}}},
+                data=SimpleNamespace(body=lambda _:SimpleNamespace(xpos=np.array([.5,0.,.83]),xmat=np.eye(3))),
+                actions=[],held={},execute=Mock(),event=Mock())
+            with patch('robofrontier.suite.mosaic_oracle_v2.loaded_ik',return_value=None):
+                with self.assertRaisesRegex(RuntimeError,'No transfer pickup'):pick_transfer(trial,'A','cube',[.1,0.,.83])
+            self.assertEqual(trial.execute.call_count,1 if job is None else 0)
+            if job is None:self.assertAlmostEqual(trial.execute.call_args.args[1]['A'][1]['width_m'],.064)
+    def stopped_motion_trial(self):
+        from unittest.mock import Mock
+        arm=SimpleNamespace(job=None,grasp_force=50.,qids=np.arange(7),dofs=np.arange(7))
+        result={'C':{'status':'failed','call_id':'original-call','reason':'Action timeout; stopped at current reference'}}
+        trial=SimpleNamespace(arms={'C':arm},held={'C':'cube'},task={'table_height_m':.8},
+            monitor=SimpleNamespace(violations=[]),data=SimpleNamespace(qpos=np.zeros(7),qvel=np.zeros(7),body=lambda _:SimpleNamespace(xpos=np.array([0.,0.,1.]))),
+            actions=[{'label':'mosaic-feedback-transit-0','commands':{'C':('move',{'joint_rad':[0.]*7})},'results':result}],
+            event=Mock(),wait=Mock(),finger_contacts=Mock(return_value=True),pose_clear=Mock(return_value=True),
+            move_free=Mock(side_effect=RuntimeError('Original motion stopped')))
+        return trial,result
+
+    def test_loaded_transit_can_continue_after_verified_terminal_failure_without_changing_feedback(self):
+        from copy import deepcopy
+        from robofrontier.suite.mosaic_oracle_v2 import execute_loaded_transit
+        trial,result=self.stopped_motion_trial();original=deepcopy(result)
+        execute_loaded_transit(trial,'C',np.zeros(3),np.eye(3),np.zeros(7))
+        self.assertEqual(result,original)
+        self.assertEqual(len(trial.mosaic_recovered_motion_failures),1)
+        self.assertGreater(trial.wait.call_count,0)
+
+    def test_loaded_transit_never_retries_or_accepts_unknown_execution(self):
+        from robofrontier.suite.mosaic_oracle_v2 import execute_loaded_transit
+        trial,result=self.stopped_motion_trial();trial.arms['C'].job='original-call';result['C']['status']='uncertain'
+        with self.assertRaises(RuntimeError):execute_loaded_transit(trial,'C',np.zeros(3),np.eye(3),np.zeros(7))
+        trial.wait.assert_not_called()
+
+    def test_loaded_transit_does_not_accept_a_stopped_pose_away_from_target(self):
+        from robofrontier.suite.mosaic_oracle_v2 import execute_loaded_transit
+        trial,_=self.stopped_motion_trial();trial.data.qpos[:]=.1
+        with self.assertRaises(RuntimeError):execute_loaded_transit(trial,'C',np.zeros(3),np.eye(3),np.zeros(7))
+
     def recovery_inputs_trial(self, assignments):
         objects=[dict(id='settled',color='red'),dict(id='unused',color='red')]
         goals=[dict(goal_id='done',requires={'color':'red'},position_m=[0.,0.,.83]),
@@ -576,6 +679,69 @@ class MosaicReferenceTests(unittest.TestCase):
                 result=solve(trial)
             self.assertEqual(result['reference_placed'],1)
             self.assertFalse(result['commissioning_only'])
+
+    def test_resume_preserves_completed_pairs_and_never_reparks(self):
+        with tempfile.TemporaryDirectory() as directory,self.helper_patches():
+            trial,accepted=self.fake_trial(directory)
+            trial.held={}
+            trial.task['objects']=[dict(id='cube',color='red'),dict(id='next',color='red')]
+            trial.env['objects']=trial.task['objects']
+            trial.task['goals'].append(dict(goal_id='next-goal',requires={'color':'red'},position_m=[.1,0,.83]))
+            accepted['r1c1']='cube';trial.mosaic_protected_assignments=dict(accepted)
+            def deliver(_,name,path,position):
+                self.assertEqual(name,'next');accepted['next-goal']=name
+            with patch('robofrontier.suite.mosaic_oracle_v2.helpers.clear_idle_arms') as park, \
+                 patch('robofrontier.suite.mosaic_oracle_v2.helpers.goal_coverage',return_value={'next-goal':['A']}), \
+                 patch('robofrontier.suite.mosaic_oracle_v2.pickup_endpoint_candidates',return_value={'next':['A']}), \
+                 patch('robofrontier.suite.mosaic_oracle_v2.deliver_cube',side_effect=deliver):
+                result=solve(trial,resume=True)
+            park.assert_not_called()
+            self.assertEqual(result['reference_placed'],2)
+            self.assertTrue(result['resumed'])
+            self.assertFalse(result['commissioning_only'])
+
+    def test_resume_refuses_rematching_while_an_object_is_held(self):
+        with tempfile.TemporaryDirectory() as directory,self.helper_patches():
+            trial,_=self.fake_trial(directory);trial.held={'A':'cube'}
+            with patch('robofrontier.suite.mosaic_oracle_v2.assign_supply') as assign:
+                with self.assertRaisesRegex(RuntimeError,'held payload'):solve(trial,resume=True)
+            assign.assert_not_called()
+
+    def test_direct_replan_drops_angled_metadata_from_an_earlier_augmented_graph(self):
+        with tempfile.TemporaryDirectory() as directory,self.helper_patches():
+            trial,accepted=self.fake_trial(directory);trial.held={}
+            trial.mosaic_angled_edges={frozenset(('A','C')):{'tilt_deg_by_robot':{'A':15,'C':15}}}
+            def deliver(*args):
+                self.assertEqual(trial.mosaic_angled_edges,{})
+                accepted['r1c1']='cube'
+            with patch('robofrontier.suite.mosaic_oracle_v2.deliver_cube',side_effect=deliver):
+                result=solve(trial,resume=True)
+            self.assertEqual(result['reference_placed'],1)
+
+    def test_buffer_graph_does_not_inherit_absent_edges_from_old_metadata(self):
+        from robofrontier.suite.mosaic_oracle_v2 import buffer_graph
+        trial=SimpleNamespace(task=dict(cube_size_m=.06,table_height_m=.8,goals=[dict(position_m=[0,0,.83])],
+            arms={r:dict(base_position_m=[x,0,.8]) for r,x in [('A',0),('B',1)]}),
+            env=dict(objects=[],tables=[]),mosaic_angled_edges={frozenset(('A','C')):{'tilt_deg_by_robot':{'A':15}}})
+        graph,edges=buffer_graph(trial,{'A':[],'B':[]},{})
+        self.assertEqual(edges,{});self.assertEqual(trial.mosaic_angled_edges,{})
+
+    def test_resume_completed_world_never_builds_another_pickup_plan(self):
+        with tempfile.TemporaryDirectory() as directory,self.helper_patches():
+            trial,accepted=self.fake_trial(directory);trial.held={};accepted['r1c1']='cube'
+            with patch('robofrontier.suite.mosaic_oracle_v2.pickup_endpoint_candidates') as pickups:
+                result=solve(trial,resume=True)
+            pickups.assert_not_called();self.assertEqual(result['reference_placed'],1)
+
+    def test_exhausted_supply_search_enters_owner_review_after_trying_buffers(self):
+        from unittest.mock import Mock
+        with tempfile.TemporaryDirectory() as directory,self.helper_patches():
+            trial,_=self.fake_trial(directory);trial.event=Mock()
+            with patch('robofrontier.suite.mosaic_oracle_v2.assign_supply',side_effect=ValueError('No complete unique supply assignment')) as assign, \
+                 patch('robofrontier.suite.mosaic_oracle_v2.buffer_graph',return_value=({'A':[]},{})):
+                with self.assertRaisesRegex(RuntimeError,'needs owner review'):solve(trial)
+            self.assertEqual(assign.call_count,2)
+            self.assertTrue(any(call.args[0]=='mosaic_supply_plan_exhausted' for call in trial.event.call_args_list))
 
     def test_uncommitted_admission_defers_until_independent_goal_progress(self):
         from unittest.mock import Mock

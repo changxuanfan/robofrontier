@@ -1,0 +1,340 @@
+{
+  "schema": "robofrontier.mosaic-family.v1",
+  "family": "mosaic",
+  "scene_revision": 13,
+  "suite_version": 2,
+  "catalog": "configs/suites/frontier-mosaic-r13.json",
+  "catalog_sha256": "dd5efd78c20a260586dc9617c5bef5fc9534ec0fb47436773c28f1bf531d544c",
+  "harness": "configs/harness-frontier-v2-servo2.json",
+  "harness_sha256": "035ad5c3703d0ed0bde8c99e9d5c0e8e2e98f282b956577fe16fe0d2ffe4ae58",
+  "evaluator_sources": {
+    "robofrontier/suite/evaluate.py": "03ce9326e21899d3117ea78a4c69a2398421ca5368e4878cbe7d9f23de618fe6",
+    "robofrontier/suite/evaluate_v2.py": "ee2efac94d55253a63197adf4ddf364ec43a373a6959eba1bd5ef0886af7c035"
+  },
+  "completion": {
+    "stable_duration_sim_s": 1.0,
+    "stable_linear_speed_m_s_exclusive": 0.01,
+    "stable_angular_speed_rad_s_exclusive": 0.1,
+    "axis_alignment_tolerance_deg_inclusive": 8.0,
+    "robot_contact_release_distance_m_inclusive": 0.0002,
+    "flat": {
+      "xy_center_tolerance_m_inclusive": 0.005,
+      "z_center_tolerance_m_inclusive": 0.003
+    },
+    "recessed": {
+      "footprint_containment_margin_m_inclusive": 0.0003,
+      "bottom_height_tolerance_m_inclusive": 0.0008,
+      "floor_contact_distance_m_inclusive": 0.0002
+    }
+  },
+  "guidance": {
+    "prompt": "prompts/tasks/mosaic-r13.md",
+    "skill": ".agents/skills/mosaic-r13/SKILL.md"
+  },
+  "presentation_defaults": {
+    "speedup": 30,
+    "fps": 30,
+    "source_sample_hz": 60,
+    "end_policy": "hold_final"
+  },
+  "readiness": {
+    "oracle_cases_verified": 9,
+    "policy_launch_ready": false,
+    "status": "family_review_package_only",
+    "shared_dependencies": [
+      "formal_readiness_registration",
+      "public_projection_supplement_loading",
+      "family_prompt_and_skill_freezing"
+    ]
+  },
+  "cases": [
+    {
+      "case_id": "mosaic-a04-6x12-d1",
+      "environment": "configs/environments/mosaic/frontier-v2-r13-mosaic-a04-6x12-d1",
+      "scene_sha256": "08e15714ce39dae36b7cfa215edb1867414f23f4bb3ea57e4e7a6e2cbb081652",
+      "source_frames": 215841,
+      "arms": 4,
+      "rows": 6,
+      "columns": 12,
+      "level": 1,
+      "source_files": {
+        "scene.xml": "08e15714ce39dae36b7cfa215edb1867414f23f4bb3ea57e4e7a6e2cbb081652",
+        "task.json": "1df3155524377102e90658c9863f8be63c3cc9763a5fda34a54334fbc8d3ac31",
+        "environment.json": "5c3d3d7f2234ad75a83fd9bdc9c4ffb639595289e3a505d435915241b96f5fdb",
+        "public-task.json": "5ed0a6c47449d8de2c650bd72f46d4520e2933209d37c2bd57b47f8a63bd9d84",
+        "workstation.json": "3af506787e623bdcf1f8d0bca9479f53ae402c455a75019e791ac1488bd0238f"
+      },
+      "oracle": {
+        "trial": "runs/oracle/mosaic-continuation-20261026/mosaic-a04-6x12-d1/seed-0/attempt-001",
+        "report_sha256": "9654b0b0bfd25d43ca7ec10bbbad51a7a419cc5e1cf8f69e41fc046111fd05f3",
+        "audit_sha256": "7cb85b7281fbf99f0f66871033feff286570486756366372f3c2f1509af67ab2",
+        "motion_index_sha256": "fa9952d9da595af79ad549e162fe6a453036b7454af4f7f8ccb9b5b950499c3d",
+        "executor_sha256": "ef74f7eb9c43179175b4f05b0d8293a099fd3f211aaf477c05bb3724dd6e0e81",
+        "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+        "environment_logic_sha256": "cd615e0bd2d31d99266f2bafe37705736ed51bbb04483b2c015f1ae2210c135b",
+        "mode": "pure_program",
+        "assisted": false,
+        "failed_robot_actions": 0,
+        "actions_sha256": "4791a813bfd23c3401392b11d74f5d486036c633367bb21f6682696961d55ca6",
+        "trace_sha256": "d30da167a758255ada142bdffe28637d91a3e52ed94df1e05611b57bde97162a",
+        "process_sha256": "af7c003660aa9effc27a5ec630039dd41dfee1966ddbb23962eda9b279b3863a"
+      }
+    },
+    {
+      "case_id": "mosaic-a04-6x12-d2",
+      "environment": "configs/environments/mosaic/frontier-v2-r13-mosaic-a04-6x12-d2",
+      "scene_sha256": "ba65b6cf96ab4697f426001ae57ffe8f6f4f336a0a0469a36bf028c4684acaf3",
+      "source_frames": 208860,
+      "arms": 4,
+      "rows": 6,
+      "columns": 12,
+      "level": 2,
+      "source_files": {
+        "scene.xml": "ba65b6cf96ab4697f426001ae57ffe8f6f4f336a0a0469a36bf028c4684acaf3",
+        "task.json": "60912a12790b5bdb191875014cdb62eda9a927455afd77ac2221cc799fb7fdae",
+        "environment.json": "5d48e0b80bd88045ff760b5cf0778b939f93664ff539965cceed71359b293559",
+        "public-task.json": "ae4aea2f6f1999b64fc1ace33e03a8ed16f588005a1e69d1ddd2d479e5704f11",
+        "workstation.json": "9919e7bf22d9ebab35f0e0e8da106801a613254d449a3d1a8aefc45031a3c39e"
+      },
+      "oracle": {
+        "trial": "runs/oracle/mosaic-continuation-20261026/mosaic-a04-6x12-d2/seed-0/attempt-001",
+        "report_sha256": "fe285b63620f27ef2108b6bd1e901f9543b74b286de39315bd691aa0702df7f1",
+        "audit_sha256": "3c2a44567fa8a85f9286da736841ed6ea840dceab2ba891cec1725ca4a880910",
+        "motion_index_sha256": "4d4b7fe1d5c4c1720bcf4525144d0ba57ea8f77bd78f297f83758f2de4825a40",
+        "executor_sha256": "cb3a3cbfda1304838611e56f621ea66f8bc0b8a5e7e6ff9d0c4cf5a0062b907f",
+        "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+        "environment_logic_sha256": "cd615e0bd2d31d99266f2bafe37705736ed51bbb04483b2c015f1ae2210c135b",
+        "mode": "pure_program",
+        "assisted": false,
+        "failed_robot_actions": 0,
+        "actions_sha256": "c5a7894c332d5076bc34604425a69e0bf4473d9c6b868ade820de5db13aaa362",
+        "trace_sha256": "3a159dd7d68a65b1acd980d536a5cbff5f5e7066cafc1173c79f567038d5a0e8",
+        "process_sha256": "3700baefa68bb948c3148bb1270f1397550a6084f39e72617b332032b8611959"
+      }
+    },
+    {
+      "case_id": "mosaic-a04-6x12-d3",
+      "environment": "configs/environments/mosaic/frontier-v2-r13-mosaic-a04-6x12-d3",
+      "scene_sha256": "da6fa55d17b49558ab296e1ffad2e1016d3047abb5603e9da538f02731441089",
+      "source_frames": 152633,
+      "arms": 4,
+      "rows": 6,
+      "columns": 12,
+      "level": 3,
+      "source_files": {
+        "scene.xml": "da6fa55d17b49558ab296e1ffad2e1016d3047abb5603e9da538f02731441089",
+        "task.json": "e53ddbba4390b6bb4d6af0d1bc700ca0768478524167901521a971737eb1a04d",
+        "environment.json": "33a23743c41e00f6298246b2c7b8650c90d1f14c60f25ee62516a7a73a5232e8",
+        "public-task.json": "1bc57bb9c45f14035405cb6a49b76a12a04be208093156497ef600f759d22b1f",
+        "workstation.json": "3ec7c5bc0d3c9282405fba120f8e1009b9efc09968a963a9d4be3f7c3718c3de"
+      },
+      "oracle": {
+        "trial": "runs/oracle/mosaic-async-20261026/mosaic-a04-6x12-d3/seed-0/attempt-002",
+        "report_sha256": "b44aa84e00594348258420eb1889701cf64c40ce0877007b2683815bedde6bda",
+        "audit_sha256": "8dc50f8c7239926dfa895678b33e04c11ef768650bfe15f54f331af73ab887fe",
+        "motion_index_sha256": "178b58ab09f8c5bb0e6391c04a1d0bc837439920a9763597f27172830003cc3b",
+        "executor_sha256": "11be954e40016a61e2169671d3c11c4b75c8a1797ccef31a88ecd7c21e5a015d",
+        "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+        "environment_logic_sha256": "cd615e0bd2d31d99266f2bafe37705736ed51bbb04483b2c015f1ae2210c135b",
+        "mode": "pure_program",
+        "assisted": false,
+        "failed_robot_actions": 0,
+        "actions_sha256": "e47d1d75227980861e04059b2a93ce1736f421903c07bdd6bfaf12ac633abb79",
+        "trace_sha256": "54da460ff2d8e02bcc391854c8be1c5ad20417091a5e37dd9d16d3adebf1cc60",
+        "process_sha256": "8f2653173760ea6f964971ffc6249140062b1ccd0c469465c4766ecc889757b5"
+      }
+    },
+    {
+      "case_id": "mosaic-a06-9x18-d1",
+      "environment": "configs/environments/mosaic/frontier-v2-r13-mosaic-a06-9x18-d1",
+      "scene_sha256": "aa280f70d14d49fc2fc7a91e9d7ffb092b279b5a8741dcd6aad9670f5d55b177",
+      "source_frames": 1014323,
+      "arms": 6,
+      "rows": 9,
+      "columns": 18,
+      "level": 1,
+      "source_files": {
+        "scene.xml": "aa280f70d14d49fc2fc7a91e9d7ffb092b279b5a8741dcd6aad9670f5d55b177",
+        "task.json": "42d3e723ca5985af8cba373b5f5f8d37149e40bd3d6020261222413a5403f5e0",
+        "environment.json": "b11d38f0572cdcc152aacb03d85b65e5c9229f070265a29352ed9336f5b8f1c9",
+        "public-task.json": "e955944dace3ec09a59e40411ff9afca4012bca85a375def3b742061d33b9fc6",
+        "workstation.json": "34036fc49e7e0a42261e6697c3915a2cf801f3a851ac7bb1b49185c6eb25bd46"
+      },
+      "oracle": {
+        "trial": "runs/oracle/mosaic-six-r13-20261026/mosaic-a06-9x18-d1/seed-0/attempt-001",
+        "report_sha256": "bbdbce3ac38e3fdea9b3d62790cf4deb57c00cadd59bc7a363b926776461d1b4",
+        "audit_sha256": "c60f63d6bf24cc290d521f2fec1b43e72ff4e74fdccadf04f029d371f3c6b148",
+        "motion_index_sha256": "f794affd6d5654e9c0ee37eedb2dc04d67396cb774d8ce91b9860c638678c22c",
+        "executor_sha256": "4879ad2c5e5de732cfe8e3515accdc283a8a1111f79f5a07862953729183d751",
+        "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+        "environment_logic_sha256": "cd615e0bd2d31d99266f2bafe37705736ed51bbb04483b2c015f1ae2210c135b",
+        "mode": "privileged_assisted",
+        "assisted": true,
+        "failed_robot_actions": 1,
+        "actions_sha256": "5ed38120bc147e60b7ad1bb6b719e02f314cb1d37bc85a129ffb319196436d9e",
+        "trace_sha256": "956ca60e9ea7eca3f11047c18d42450a42406f99b7b1f312f47ffce75557e961",
+        "process_sha256": "e4d90eaf9ba99feac9d698cb681c4e11e51c3ef9f8d25ba51a5eaea882a0f77c"
+      }
+    },
+    {
+      "case_id": "mosaic-a06-9x18-d2",
+      "environment": "configs/environments/mosaic/frontier-v2-r13-mosaic-a06-9x18-d2",
+      "scene_sha256": "5f68cd53cfae33eaa1df1f51677eaaa93777f6afeb167045bd6f83df96b59b91",
+      "source_frames": 501321,
+      "arms": 6,
+      "rows": 9,
+      "columns": 18,
+      "level": 2,
+      "source_files": {
+        "scene.xml": "5f68cd53cfae33eaa1df1f51677eaaa93777f6afeb167045bd6f83df96b59b91",
+        "task.json": "26a40c1ea1f24f588aa9a1be2cbc30964158ebf0e69ca12ef0c3306a6f81bf0e",
+        "environment.json": "7ba025e67e22604b0bccd2b9d440d74eac45a71f641885bf9bfbb6b89099601e",
+        "public-task.json": "9251ee7f4697360b1090b0981b8ab286dd9d67b3002483f1236075f86490df65",
+        "workstation.json": "7ffbe6838fb6e8a2e8e9db01416fc4148dd9b9a60872e48cc9a84004acfc90d7"
+      },
+      "oracle": {
+        "trial": "runs/oracle/mosaic-six-r13-20261026/mosaic-a06-9x18-d2/seed-0/attempt-003",
+        "report_sha256": "a4274d8c98c6a093bfac4bc7fd621fc649b3bb60f88327c20a83f2a673b072e3",
+        "audit_sha256": "363d03c802bca7998a67685d18c9568a6871760d52be08904990a1a7310d2732",
+        "motion_index_sha256": "21b589011c22e7d68c008ddef46214882a6021dea563fb41b5386f7f2ff9ff4e",
+        "executor_sha256": "1ffaa74e957185d3f7c7eb0aa624b511286e845877afa3aabffe7919546f097f",
+        "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+        "environment_logic_sha256": "cd615e0bd2d31d99266f2bafe37705736ed51bbb04483b2c015f1ae2210c135b",
+        "mode": "privileged_assisted",
+        "assisted": true,
+        "failed_robot_actions": 0,
+        "actions_sha256": "3462030018476783f7d5949e73eddf864fcab75e5b4f9b3b98831b15c8e2cf41",
+        "trace_sha256": "7e7edc373af11f3aa25db225dd466916b234c8fcfd986122f8cb81a397205570",
+        "process_sha256": "e0cb3a44825902b8ea2a0ddf408407c20d2d70c748c15e6a6f3c20addf2188a6"
+      }
+    },
+    {
+      "case_id": "mosaic-a06-9x18-d3",
+      "environment": "configs/environments/mosaic/frontier-v2-r13-mosaic-a06-9x18-d3",
+      "scene_sha256": "b10a0fe2b333a454b18644ee919663dc5310c30cdea9acb0a36c1f044cdbd4bc",
+      "source_frames": 1032408,
+      "arms": 6,
+      "rows": 9,
+      "columns": 18,
+      "level": 3,
+      "source_files": {
+        "scene.xml": "b10a0fe2b333a454b18644ee919663dc5310c30cdea9acb0a36c1f044cdbd4bc",
+        "task.json": "e7d139adb16990734716fc16a3cedd7f56d391ade542fbb16828255033f80ff5",
+        "environment.json": "e800845fcb22ea4d3632371a3f2701c7e0407578cb9cf3c908b17969de2ead13",
+        "public-task.json": "123c5115f41b75d61d61d5bfde4f7f0cf8c9a6d1b2776d131083959a2c7ecadc",
+        "workstation.json": "a5d51097f22654e857d82c21456fb47abcbd80e7b1cf3348280df803cf6d0f7e"
+      },
+      "oracle": {
+        "trial": "runs/oracle/mosaic-stream-20261026/mosaic-a06-9x18-d3/seed-0/attempt-001",
+        "report_sha256": "bc908d6bcdb99db33e8f262a183c59c0c15adbe1aebadfe17f469071854a8ef6",
+        "audit_sha256": "9065e72335d3b3ec6e75799e9328707b6e95649016a44708dfd55c3887a70f3f",
+        "motion_index_sha256": "2730ace77a8c262386911fcf7bec65fa7cca549d679147735af43e422d67fc8b",
+        "executor_sha256": "bb8653e290e7e3fda1706688c7df529f8b2eff42f1c734d0169aaedef82a86dd",
+        "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+        "environment_logic_sha256": "cd615e0bd2d31d99266f2bafe37705736ed51bbb04483b2c015f1ae2210c135b",
+        "mode": "privileged_assisted",
+        "assisted": true,
+        "failed_robot_actions": 1,
+        "actions_sha256": "895f843f34bc5293dbf6256aa2738f1bf1937a003529f8ed3de2e8e37cb34ab5",
+        "trace_sha256": "c878cfe030ebf6c7d011d2256d749d4e1c9df564c3625e32343460ad462df18b",
+        "process_sha256": "a8efa20ac4ee80cbc328b94a4f2d092a981da5a11283afa9296a565d41f8153b"
+      }
+    },
+    {
+      "case_id": "mosaic-a08-12x24-d1",
+      "environment": "configs/environments/mosaic/frontier-v2-r13-mosaic-a08-12x24-d1",
+      "scene_sha256": "60725536b5eea206d40fb86ce1aee852e8e417110d9b8634c27201558c8e5688",
+      "source_frames": 1673111,
+      "arms": 8,
+      "rows": 12,
+      "columns": 24,
+      "level": 1,
+      "source_files": {
+        "scene.xml": "60725536b5eea206d40fb86ce1aee852e8e417110d9b8634c27201558c8e5688",
+        "task.json": "456b514235f2d40779e36eda8cfc1536ba532371db4ccb6d51d2d8dca341c439",
+        "environment.json": "0263ba44b2c8dbe4cab38e0679aeb85e50c69ebe68d8877581f15bae01384dbb",
+        "public-task.json": "f3107107efed6b91c92d875feeac48ff0ecd824d2732beaa2c3a49647b34daf0",
+        "workstation.json": "0d1866499565e3852fc6cfe9450eb2fb94d35ec62e80268fa7650e376abb8979"
+      },
+      "oracle": {
+        "trial": "runs/oracle/mosaic-eight-r13-20261026/mosaic-a08-12x24-d1/seed-0/attempt-001",
+        "report_sha256": "3970655eff303ab30f6f0a4aaafe9051b43cc4302260a5c42247eaf58c32367b",
+        "audit_sha256": "8e49de250efdba475993db88ed75d7a8f6a34f2ea204576abd196675600e7508",
+        "motion_index_sha256": "0f7312b23d0304f2a5ed3f7682c48fb5df122ebda4db415c048cb1e4a5006417",
+        "executor_sha256": "0c21823063db4508b02d85537cdef2b25731187198f4f03d40165bddd41f12de",
+        "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+        "environment_logic_sha256": "cd615e0bd2d31d99266f2bafe37705736ed51bbb04483b2c015f1ae2210c135b",
+        "mode": "privileged_assisted",
+        "assisted": true,
+        "failed_robot_actions": 0,
+        "actions_sha256": "1faed0b0baecf2033ee865e13b7eff25b6598392069086b2cbdfbea7b30b401f",
+        "trace_sha256": "9352d0637d1163633f675f501bd5be39655dafc812a6d2742a89869d80514457",
+        "process_sha256": "3ecd8de4bb5929a6af48cccb82aa10ffcdb6b688b3fc34c01694e5d388b5aa5a"
+      }
+    },
+    {
+      "case_id": "mosaic-a08-12x24-d2",
+      "environment": "configs/environments/mosaic/frontier-v2-r13-mosaic-a08-12x24-d2",
+      "scene_sha256": "56f221e638a80cb1756bb471d0fb66fa595aa76515d3ed92d2cfc6ed1a7a2c32",
+      "source_frames": 1935165,
+      "arms": 8,
+      "rows": 12,
+      "columns": 24,
+      "level": 2,
+      "source_files": {
+        "scene.xml": "56f221e638a80cb1756bb471d0fb66fa595aa76515d3ed92d2cfc6ed1a7a2c32",
+        "task.json": "e3c30f755b807c19b048e249c4d6fbec08b3191dd6b9edb46bcd11bf6cff7e0e",
+        "environment.json": "3243bde15cbe57c576750116080f38cb20016b60d5493849e5f1d2d3918ee46c",
+        "public-task.json": "bfa3a7a6db966d856ea946f6b93c64d99fa31511d512030543adeaf5bd58e765",
+        "workstation.json": "afda48493605f724c6f29055fe66b61a971432207aa1e42da9d567e17ea3fd73"
+      },
+      "oracle": {
+        "trial": "runs/oracle/mosaic-eight-r13-20261026/mosaic-a08-12x24-d2/seed-0/attempt-001",
+        "report_sha256": "e4f52d11ec04a7cbeaf36882368c713d5ad2bfb059a95e10f6e3d7bbd7553d19",
+        "audit_sha256": "35f0a7bd41b19a486b8269909be736ba1f8f613f2bac96b577265e9c0642440f",
+        "motion_index_sha256": "0483fa9be599171c27c3fa1f440da223d12c2e3de08fe9d5c854b82bc5d250cb",
+        "executor_sha256": "0b2dc3db5602c95f17bab13ed18ee156e06ffc44457c77944e898fc0dbf8e928",
+        "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+        "environment_logic_sha256": "cd615e0bd2d31d99266f2bafe37705736ed51bbb04483b2c015f1ae2210c135b",
+        "mode": "privileged_assisted",
+        "assisted": true,
+        "failed_robot_actions": 2,
+        "actions_sha256": "5ca7acad20ff6670713ac9f5dea00ec31a8be3aea3626e1a6507c5fe01e96786",
+        "trace_sha256": "c42cbefd61329175a25f89d45becc7e3154160298fea535d78df89c0c2519bc0",
+        "process_sha256": "8918e1606775b108fec18e72ba9d1e8d62c71fee512c9b3bfcf3cb406ed822ae"
+      }
+    },
+    {
+      "case_id": "mosaic-a08-12x24-d3",
+      "environment": "configs/environments/mosaic/frontier-v2-r13-mosaic-a08-12x24-d3",
+      "scene_sha256": "16e8f60824abcc78c778d13eb2f27259b1dfe4bf4b05794faf4fd2a8c1183a19",
+      "source_frames": 1922797,
+      "arms": 8,
+      "rows": 12,
+      "columns": 24,
+      "level": 3,
+      "source_files": {
+        "scene.xml": "16e8f60824abcc78c778d13eb2f27259b1dfe4bf4b05794faf4fd2a8c1183a19",
+        "task.json": "b0d09712f912cdaa5fa5817232686556e063403a106f7ebeb8a0c409396cbfc8",
+        "environment.json": "697a39892779d526f01ce75f2333a0cf0a696cbe5ade0d8c966726c81af9dcce",
+        "public-task.json": "70fbae7e08b45b1cb271a7407681ea503a9e7b138214b130d5d82d8543497226",
+        "workstation.json": "cff6da1e87a1c98df43873647248a08dcfd7ae57fc410f3b08959490dd668627"
+      },
+      "oracle": {
+        "trial": "runs/oracle/mosaic-stream-20261026/mosaic-a08-12x24-d3/seed-0/attempt-001",
+        "report_sha256": "3bd39d35821c00232642ae9f4909394323ce096582f11bef3c12bba8e68354bd",
+        "audit_sha256": "4a60e8244ea907445c8506380d6a99ffbf7789add7263309f485382ab9983be1",
+        "motion_index_sha256": "ddd84ecc8f86ba57796d3ba4efc1f3033aa8add3c24accbe332bcf6fb9534d14",
+        "executor_sha256": "bb8653e290e7e3fda1706688c7df529f8b2eff42f1c734d0169aaedef82a86dd",
+        "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+        "environment_logic_sha256": "cd615e0bd2d31d99266f2bafe37705736ed51bbb04483b2c015f1ae2210c135b",
+        "mode": "privileged_assisted",
+        "assisted": true,
+        "failed_robot_actions": 3,
+        "actions_sha256": "0acb18b541bdfadc892db80f8be5750a611be19b3ae2dea72b749ceb65acb9d7",
+        "trace_sha256": "4a20a803bc92bb3e76c61b494bed6fb77625877c03b344115bcdf0816455e177",
+        "process_sha256": "514745eb2d3d1e59068b43b0c835ae07793c8179eb5c80fe250a01891dbd84ac"
+      }
+    }
+  ]
+}

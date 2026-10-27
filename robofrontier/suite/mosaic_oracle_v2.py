@@ -363,6 +363,45 @@ def lower_pocket_release(trial, robot, position):
     trial.wait(.10)
 
 
+def execute_loaded_transit(trial, robot, target, rotation, joints):
+    """Recover a task outcome, never rewrite an original failed tool result.
+
+    A controller can report a stopped timeout while the physical endpoint is
+    subsequently satisfied. Only a clean terminal move, stable original joint
+    target and continuously retained payload may pass this independent gate.
+    """
+    try:
+        return trial.move_free(robot,target,rotation,'mosaic-feedback-transit',target_joints=joints,
+            **speed_kwargs(trial,'loaded_joint_speed_rad_s','joint_speed_rad_s'))
+    except RuntimeError:
+        actions=getattr(trial,'actions',[]);arm=trial.arms[robot]
+        last=actions[-1] if actions else {};result=last.get('results',{}).get(robot,{})
+        if (result.get('status')!='failed' or result.get('reason')!='Action timeout; stopped at current reference' or
+                not last.get('label','').startswith('mosaic-feedback-transit') or
+                any(a.job is not None for a in trial.arms.values()) or trial.monitor.violations or
+                trial.held.get(robot) is None or arm.grasp_force is None):raise
+        name=trial.held[robot];observations=[]
+        if not trial.finger_contacts(robot,name):raise
+        for _ in range(20):
+            trial.wait(.02)
+            observations.append(dict(joint_error_rad=float(np.max(abs(trial.data.qpos[arm.qids]-joints))),
+                joint_speed_rad_s=float(np.max(abs(trial.data.qvel[arm.dofs]))),
+                bilateral=bool(trial.finger_contacts(robot,name)),position_m=trial.data.body(name).xpos.copy().tolist()))
+        positions=np.asarray([x['position_m'] for x in observations])
+        verified=bool(all(x['joint_error_rad']<.004 and x['joint_speed_rad_s']<.03 and x['bilateral'] for x in observations) and
+            np.max(np.linalg.norm(positions-positions[0],axis=1))<.002 and
+            positions[:,2].min()>trial.task['table_height_m']+.08 and
+            not trial.monitor.violations and trial.pose_clear(robot,trial.data.qpos[arm.qids]))
+        evidence=dict(robot=robot,object=name,original_call_id=result.get('call_id'),
+            original_status='failed',original_feedback_preserved=True,target_joint_rad=np.asarray(joints).tolist(),
+            observations=observations,verified=verified)
+        trial.event('mosaic_stopped_motion_outcome_review',**evidence)
+        if not verified:raise
+        if not hasattr(trial,'mosaic_recovered_motion_failures'):trial.mosaic_recovered_motion_failures=[]
+        trial.mosaic_recovered_motion_failures.append(evidence)
+        return dict(task_endpoint_verified_after_stop=True,original_feedback=result)
+
+
 def place_cube(trial, robot, position, _grip_replans=0):
     """Transit high, remeasure grip, align before release, then withdraw."""
     from .oracle import CUBE_ROTATIONS
@@ -393,8 +432,7 @@ def place_cube(trial, robot, position, _grip_replans=0):
     candidates.sort(key=lambda c:(-min(c[0],.30),c[1]))
     for margin,_,q,target,tool_r,rotation,hover in candidates:
         try:
-            trial.move_free(robot,target,tool_r,'mosaic-feedback-transit',target_joints=q,
-                            **speed_kwargs(trial,'loaded_joint_speed_rad_s','joint_speed_rad_s'))
+            execute_loaded_transit(trial,robot,target,tool_r,q)
         except RuntimeError as error:
             if str(error).startswith(('No clear free-arm IK','No collision-free sampled free-arm route')):continue
             raise
@@ -517,47 +555,62 @@ def transfer_continuation_available(trial, robot, name, target):
     return False
 
 
-def pick_transfer(trial,robot,name,target):
+def pick_transfer(trial,robot,name,target,aperture=None,required_tilt=False,check_release=False):
     """Finite angled top-grasp candidates, then clear support and retract."""
     from .oracle import CUBE_ROTATIONS
     from ..robot_control import rotation_vector
     arm=trial.arms[robot];width=trial.task['cube_size_m']
-    aperture=approach_width(trial,robot)
+    default_aperture=approach_width(trial,robot)
+    aperture=default_aperture if aperture is None else aperture
+    first_action=len(getattr(trial,'actions',[]))
     if arm.grasp_force is not None or abs(arm.observe()['gripper_width_m']-aperture)>.0005:
         trial.execute('transfer-open',{robot:('gripper',dict(mode='move',width_m=aperture,speed_m_s=.05))})
     body=trial.data.body(name);position=body.xpos.copy();rotation=body.xmat.reshape(3,3).copy()
     up_index=int(np.argmax(abs(rotation[2])));up=rotation[:,up_index]*np.sign(rotation[2,up_index])
     axes=[rotation[:,axis]*sign for axis in range(3) if axis!=up_index for sign in (1,-1)]
-    point=position+up*(width/2-.005);base=np.asarray(trial.task['arms'][robot]['base_position_m'])
+    base=np.asarray(trial.task['arms'][robot]['base_position_m'])
     directions=[np.asarray(target)-base,position-base];candidate=None;chosen_tilt=0;chosen_radial_sign=1
-    for forward in directions:
-        for r,tilt in grasp_rotations(up,axes,forward):
-            seat=loaded_ik(trial,robot,point,r,(name,))
-            if seat is None:continue
-            # Close-to-base stock can need extension rather than further folding.
-            # Both choices retain the same lift, distance and full-path margins.
-            radial_sign=next((sign for sign in (1,-1) if screen_transfer_segments(
-                trial,robot,name,r,seat,transfer_lift_segments(point,base,sign))),None)
-            if radial_sign is None:continue
-            relative=rotation.T@r;offset=rotation.T@(point-position)
-            future=False
-            for desired in sorted(CUBE_ROTATIONS,key=lambda rr:np.linalg.norm(rotation_vector(rr,rotation))):
-                tool=desired@relative
-                if tool[2,2]>-np.cos(np.deg2rad(30)):continue
-                if loaded_ik(trial,robot,np.asarray(target)+[0,0,.08]+desired@offset,tool) is not None:future=True;break
-            if not future:continue
-            for height in (.04,.08,.12):
-                approach=transfer_approach_branch(trial,robot,name,point,r,seat,height)
-                if approach is None:continue
-                try:trial.move_free(robot,point+[0,0,height],r,'transfer-pick-approach',
-                    continuation=(point,r,(name,)),target_joints=approach)
-                except RuntimeError as error:
-                    if str(error).startswith(('No clear free-arm IK','No collision-free sampled free-arm route')):continue
-                    raise
-                candidate=r;chosen_tilt=tilt;chosen_radial_sign=radial_sign;break
-            if candidate is not None:break
+    candidates=((position+up*height,r,tilt) for height in (width/2-.005,*reversed(normal_grasp_heights(trial)))
+        for forward in directions for r,tilt in grasp_rotations(up,axes,forward) if not required_tilt or tilt>0)
+    for point,r,tilt in candidates:
+        seat=loaded_ik(trial,robot,point,r,(name,))
+        if seat is None:continue
+        # Close-to-base stock can need extension rather than further folding.
+        # Both choices retain the same lift, distance and full-path margins.
+        radial_sign=next((sign for sign in (1,-1) if screen_transfer_segments(
+            trial,robot,name,r,seat,transfer_lift_segments(point,base,sign))),None)
+        if radial_sign is None:continue
+        relative=rotation.T@r;offset=rotation.T@(point-position)
+        future=False
+        for desired in sorted(CUBE_ROTATIONS,key=lambda rr:np.linalg.norm(rotation_vector(rr,rotation))):
+            tool=desired@relative
+            if tool[2,2]>-np.cos(np.deg2rad(30)):continue
+            future_q=loaded_ik(trial,robot,np.asarray(target)+[0,0,.08]+desired@offset,tool)
+            if future_q is not None and (not check_release or screen_release(trial,robot,target,desired,offset,relative,future_q) is not None):
+                future=True;break
+        if not future:continue
+        for height in (.04,.08,.12):
+            approach=transfer_approach_branch(trial,robot,name,point,r,seat,height)
+            if approach is None:continue
+            try:trial.move_free(robot,point+[0,0,height],r,'transfer-pick-approach',
+                continuation=(point,r,(name,)),target_joints=approach)
+            except RuntimeError as error:
+                if str(error).startswith(('No clear free-arm IK','No collision-free sampled free-arm route')):continue
+                raise
+            candidate=r;chosen_tilt=tilt;chosen_radial_sign=radial_sign;break
         if candidate is not None:break
-    if candidate is None:raise RuntimeError('No transfer pickup with usable continuation '+robot+'/'+name)
+    if candidate is None:
+        # A narrower legal opening can clear adjacent stock. Only retry the
+        # finite search before any approach/grasp, never a failed action.
+        arm_idle=getattr(arm,'job',None) is None and arm.grasp_force is None and robot not in getattr(trial,'held',{})
+        uncommitted=all(a['label']=='transfer-open' and all(r['status']=='completed' for r in a['results'].values())
+            for a in getattr(trial,'actions',[])[first_action:])
+        narrow=width+.004
+        if aperture==default_aperture and narrow<aperture and arm_idle and uncommitted:
+            trial.event('transfer_narrow_admission_search',robot=robot,object=name,aperture_m=narrow,
+                scope='Empty-hand geometry search only; unchanged controller, full-arm checks and physical evaluation')
+            return pick_transfer(trial,robot,name,target,aperture=narrow,required_tilt=required_tilt,check_release=check_release)
+        raise RuntimeError('No transfer pickup with usable continuation '+robot+'/'+name)
     trial.move(robot,point,candidate,'transfer-pick-contact',precise=True)
     trial.execute('transfer-pick-grasp',{robot:('gripper',dict(mode='grasp',width_m=width,force_n=50.,speed_m_s=.04,epsilon_inner_m=.008,epsilon_outer_m=.008))})
     trial.wait(.15)
@@ -685,9 +738,9 @@ def normal_grasp_heights(trial):
 def pickup_endpoint_candidates(trial):
     """Extend the generic map with the actual ordinary picker's finite grasps.
 
-    The generic template uses one height, two closing directions and a 150 mm
-    lift. Actual ordinary picks try three heights, both signs and a 140 mm
-    lift. This map still proves only endpoints, never contact or whole routes.
+    Include the finite normal/transfer heights and transfer tilts, rather than
+    losing a supply that the existing angled picker can use. This map still
+    proves only endpoints, never aperture clearance, contact or whole routes.
     Provenance alone never adds an operating robot.
     """
     result=helpers.pickup_coverage(trial)
@@ -701,13 +754,58 @@ def pickup_endpoint_candidates(trial):
             base=np.asarray(trial.task['arms'][robot]['base_position_m'])
             if np.linalg.norm(position[:2]-base[:2])>.88:continue
             found=False
-            for height in normal_grasp_heights(trial):
+            for height in (*normal_grasp_heights(trial),trial.task['cube_size_m']/2-.005):
                 point=position+up*height
-                for pose,_ in grasp_rotations(up,axes,position-base,tilts=(0,)):
+                for pose,_ in grasp_rotations(up,axes,position-base):
                     seat=trial.screen_ik(robot,point,pose,seed=trial.home_q[robot])
                     if seat is not None and trial.screen_ik(robot,point+[0,0,.14],pose,seed=seat) is not None:
                         result[name].append(robot);found=True;break
                 if found:break
+    return result
+
+
+def goal_endpoint_candidates(trial):
+    """Retain nominal access, then the actual reference's release/exit poses.
+
+    A free-drop placement need not reach a fictitious seated TCP. A template
+    does not prove grasp dynamics; execution rechecks the measured held offset.
+    Tilt requirements remain explicit so allocation cannot silently pick an
+    incompatible flat grasp for a destination that needs the angled template.
+    """
+    from copy import copy
+    trial.mosaic_goal_tilted_coverage={}
+    try:return helpers.goal_coverage(trial)
+    except RuntimeError as error:
+        if not str(error).startswith('No candidate goal approach/seat/withdraw endpoints '):raise
+    result={};axes=[np.array(v,dtype=float) for v in ((1,0,0),(-1,0,0),(0,1,0),(0,-1,0))]
+    for goal in trial.task['goals']:
+        proxy=copy(trial);proxy.task=dict(trial.task,goals=[goal])
+        try:
+            result[goal['goal_id']]=helpers.goal_coverage(proxy)[goal['goal_id']]
+            continue
+        except RuntimeError as error:
+            if not str(error).startswith('No candidate goal approach/seat/withdraw endpoints '):raise
+        position=np.asarray(goal['position_m']);options=[];tilts={}
+        robots=sorted(trial.arms,key=lambda r:np.linalg.norm(position[:2]-np.asarray(trial.task['arms'][r]['base_position_m'])[:2]))
+        for robot in robots:
+            base=np.asarray(trial.task['arms'][robot]['base_position_m'])
+            if np.linalg.norm(position[:2]-base[:2])>.88:continue
+            found=False
+            for height in (trial.task['cube_size_m']*.2,trial.task['cube_size_m']/3,trial.task['cube_size_m']/2-.005,trial.task['cube_size_m']*.1):
+                offset=np.array([0.,0.,height])
+                for rotation,tilt in grasp_rotations(np.array([0.,0.,1.]),axes,position-base):
+                    hover=loaded_ik(trial,robot,position+[0,0,.08]+offset,rotation)
+                    if hover is None:continue
+                    release=screen_release(trial,robot,position,np.eye(3),offset,rotation,hover)
+                    if release is None:continue
+                    options.append(robot);tilts[robot]=tilt>0;found=True
+                    trial.event('mosaic_goal_release_access_template',goal=goal['goal_id'],robot=robot,
+                        tilt_deg=tilt,capture_height_m=height,**release,
+                        scope='Finite endpoint/lowering/opening/exit screen; not grasp or placement dynamics proof')
+                    break
+                if found:break
+        if not options:raise RuntimeError('No finite Mosaic release/withdrawal access candidate '+goal['goal_id'])
+        result[goal['goal_id']]=options;trial.mosaic_goal_tilted_coverage[goal['goal_id']]=tilts
     return result
 
 
@@ -744,7 +842,10 @@ def deliver_cube(trial, name, path, position):
         current=trial.data.body(name).xpos
         angled_positions=[edges[key] for key in getattr(trial,'mosaic_angled_edges',{})]
         needs_angle=any(np.linalg.norm(np.asarray(p)[:2]-np.asarray(target)[:2])<.02 or np.linalg.norm(np.asarray(p)[:2]-current[:2])<.02 for p in angled_positions)
-        if needs_angle:pick_transfer(trial,robot,name,target)
+        goal_id=(getattr(trial,'mosaic_current_job',None) or {}).get('goal_id')
+        required_tilt=bool(index+1==len(path) and getattr(trial,'mosaic_goal_tilted_coverage',{}).get(goal_id,{}).get(robot))
+        if needs_angle or required_tilt:
+            pick_transfer(trial,robot,name,target,check_release=True,**({'required_tilt':True} if required_tilt else {}))
         else:
             first_action=len(getattr(trial,'actions',[]))
             try:pick_for_transport(trial,robot,name,target)
@@ -782,7 +883,8 @@ def buffer_graph(trial, neighbors, edges):
     from itertools import combinations
     graph = {r:list(v) for r,v in neighbors.items()}
     buffers = dict(edges)
-    angled = dict(getattr(trial,'mosaic_angled_edges',{}))
+    # Metadata belongs to the graph being proposed, not a previous replan.
+    angled = {key:value for key,value in getattr(trial,'mosaic_angled_edges',{}).items() if key in buffers}
     size = trial.task['cube_size_m']
     goals = np.asarray([g['position_m'] for g in trial.task['goals']])
     lo, hi = goals[:,:2].min(axis=0)-size/2, goals[:,:2].max(axis=0)+size/2
@@ -890,6 +992,14 @@ def install_fine_route_screen(trial):
     if previous is None:return
     def fine_route(*args,**kwargs):
         kwargs.setdefault('route_joint_step_rad',.005)
+        robot=args[0] if args else kwargs.get('robot')
+        q=kwargs.get('target_joints')
+        if (q is not None and robot in getattr(trial,'arms',{}) and
+                robot not in getattr(trial,'held',{}) and 'joint_speed_rad_s' not in kwargs and
+                joint_margin(trial,robot,q)<.10):
+            kwargs['joint_speed_rad_s']=.20
+            trial.event('mosaic_empty_narrow_margin_speed',robot=robot,joint_margin_rad=joint_margin(trial,robot,q),
+                joint_speed_rad_s=.20,scope='Private command choice based on actual joint margin; original limits and feedback unchanged')
         return previous(*args,**kwargs)
     trial.move_free=fine_route
     trial.mosaic_fine_route_installed=True
@@ -906,7 +1016,7 @@ def install_process_guard(trial):
     trial.mosaic_process_guard_installed=True
 
 
-def solve(trial, max_goals=None, goal_ids=None, motion_profile=None):
+def solve(trial, max_goals=None, goal_ids=None, motion_profile=None, resume=False):
     """Execute bounded physical placements; max_goals is commissioning only.
 
     A partial witness never constitutes task success. The caller independently
@@ -919,24 +1029,42 @@ def solve(trial, max_goals=None, goal_ids=None, motion_profile=None):
     trial.event('mosaic_reference_speed_profile',profile=trial.mosaic_motion_profile,normal_grasp_force_n=50.,repair_grasp_force_n=30.,contact_and_refine_unchanged=True)
     if max_goals is not None and (not isinstance(max_goals, int) or max_goals < 1):
         raise ValueError('max_goals must be a positive commissioning limit')
-    helpers.clear_idle_arms(trial)
+    protected={};available=None
+    if resume:
+        if trial.held:raise RuntimeError('Stage or finish the held payload before rematching remaining work')
+        remaining,available,protected=protected_remaining_inputs(trial,getattr(trial,'mosaic_protected_assignments',{}))
+        trial.event('mosaic_resume_from_actual_progress',protected_assignments=protected,
+            remaining_goals=[g['goal_id'] for g in remaining],scope='Same live world; no reset, initial parking or completed-object reuse')
+    else:
+        helpers.clear_idle_arms(trial)
+        remaining=trial.task['goals']
+    trial.mosaic_protected_assignments=protected
+    if not remaining:
+        trial.wait(1.2)
+        return dict(reference_placed=len(protected),total_goals=len(trial.task['goals']),commissioning_only=False,resumed=resume)
     neighbors, _ = helpers.graph(trial.env)
-    coverage = helpers.goal_coverage(trial)
+    coverage = goal_endpoint_candidates(trial)
     pickups = pickup_endpoint_candidates(trial)
     from ..run_setup import write_json
     write_json(trial.directory / 'coverage.json', dict(
         scope='Endpoint candidates only; actual motion and contact remain unproven',
         goals=coverage))
-    goals = sorted(trial.task['goals'],
+    goals = sorted(remaining,
                    key=lambda g: (np.linalg.norm(g['position_m'][:2]), g['goal_id']))
     try:
-        jobs=assign_supply(trial,goals,coverage,pickups,neighbors)
+        jobs=assign_supply(trial,goals,coverage,pickups,neighbors,**({'available_objects':available} if available is not None else {}))
         edges=helpers.graph(trial.env)[1]
     except ValueError as direct_error:
         trial.event('direct_supply_incomplete',reason=str(direct_error))
         neighbors,edges=buffer_graph(trial,neighbors,helpers.graph(trial.env)[1])
-        jobs=assign_supply(trial,goals,coverage,pickups,neighbors)
+        try:jobs=assign_supply(trial,goals,coverage,pickups,neighbors,**({'available_objects':available} if available is not None else {}))
+        except ValueError as error:
+            trial.event('mosaic_supply_plan_exhausted',reason=str(error),empty_pickup_candidates=[name for name,robots in pickups.items() if not robots])
+            raise RuntimeError('Finite Mosaic supply plan needs owner review: '+str(error)) from error
     trial.mosaic_edges=edges
+    # A later remaining-supply matching can use only original normal edges,
+    # even when an earlier solve needed additional angled buffers.
+    trial.mosaic_angled_edges={key:value for key,value in getattr(trial,'mosaic_angled_edges',{}).items() if key in edges}
     jobs.sort(key=lambda job:(-len(job[2]),np.linalg.norm(job[0]['position_m'][:2]),job[0]['goal_id']))
     write_json(trial.directory/'supply-plan.json',dict(
         scope='All unique supplies matched; buffers have endpoint screens only, not physical proof',
@@ -947,9 +1075,10 @@ def solve(trial, max_goals=None, goal_ids=None, motion_profile=None):
         if not set(goal_ids)<=known:raise ValueError('Unknown commissioning goal')
         jobs=[job for job in jobs if job[0]['goal_id'] in goal_ids]
     selected=jobs if max_goals is None else jobs[:max_goals]
-    completed=set();pending=list(selected);deferred={};attempts={}
+    completed=set(protected);pending=list(selected);deferred={};attempts={}
     while pending:
         goal,name,path=pending.pop(0)
+        trial.mosaic_current_job=dict(goal_id=goal['goal_id'],object=name,path=list(path))
         position=np.asarray(goal['position_m'])
         first_action=len(getattr(trial,'actions',[]))
         try:deliver_cube(trial, name, path, position)
@@ -991,9 +1120,13 @@ def solve(trial, max_goals=None, goal_ids=None, motion_profile=None):
         if lost:
             raise RuntimeError('Placement disturbed completed goals: ' + ','.join(sorted(lost)))
         completed.add(goal['goal_id'])
+        trial.mosaic_protected_assignments=dict(trial.monitor.result().get('assignments',{}))
+        trial.mosaic_current_job=None
         trial.event('goal_attempt', goal=goal['goal_id'], object=name, path=path,
                     progress=len(assignments), reference_completed=len(completed))
-        print(f"{trial.task['id']} mosaic {len(completed)}/{len(selected)} validated", flush=True)
+        print(f"{trial.task['id']} mosaic {len(completed)}/{len(selected)+len(protected)} validated", flush=True)
+        after_goal=getattr(trial,'mosaic_after_goal',None)
+        if after_goal is not None:after_goal(trial)
     trial.wait(1.2)
-    return dict(reference_placed=len(completed), total_goals=len(goals),
-                commissioning_only=len(selected) < len(goals))
+    return dict(reference_placed=len(completed), total_goals=len(trial.task['goals']),
+                commissioning_only=len(selected) < len(goals),resumed=resume)

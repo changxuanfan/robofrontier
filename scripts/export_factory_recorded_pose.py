@@ -12,18 +12,29 @@ import numpy as np
 
 from robofrontier.factory_workstations import FactoryPlayback
 from robofrontier.motion_recording import MotionReader
+from robofrontier.motion_edit import MotionEdit
 from robofrontier.robot_control import quat_matrix
 from robofrontier.workstation import Workstation
 
 
-def export(recording, factory, output, time_s):
-    if not np.isfinite(time_s) or time_s<0:raise ValueError('Nonnegative finite recorded time required')
+def export(recording, factory, output, time_s=None, edit_timeline=None, output_frame=None):
     reader=MotionReader(recording);source=Workstation(reader.path/'source')
+    edit=None;selected_index=None
+    if output_frame is not None:
+        if edit_timeline is None or time_s is not None:raise ValueError('Edited output frame requires an edit timeline and no source-time override')
+        edit=MotionEdit(edit_timeline,reader)
+        if not isinstance(output_frame,int) or not 0<=output_frame<edit.data['output_frames']:raise ValueError('Edited output frame outside timeline')
+        row=edit.data['render_frames'][output_frame];selected_index=row['source_frame'];time_s=row['source_time_s']
+    elif edit_timeline is not None:
+        raise ValueError('Specify --output-frame to use the shared edit timeline')
+    if time_s is None or not np.isfinite(time_s) or time_s<0:raise ValueError('Nonnegative finite recorded time required')
     selected=None
-    for stamp,qpos in reader.frames():
-        if stamp+1e-9>=time_s:
+    for index,(stamp,qpos) in enumerate(reader.frames()):
+        matches=(index==selected_index) if selected_index is not None else (stamp+1e-9>=time_s)
+        if matches:
             selected=(stamp,qpos);break
     if selected is None:raise ValueError('Requested time exceeds the recording')
+    if edit and abs(selected[0]-time_s)>1e-8:raise ValueError('Motion edit source timestamp differs')
     stamp,qpos=selected;play=FactoryPlayback(factory);case=reader.meta['case_id']
     ids={g['id']:g['source_index'] for g in source.manifest['geometries']}
     rgba={name:reader.meta['initial_rgba'][index] for name,index in ids.items()}
@@ -50,6 +61,7 @@ def export(recording, factory, output, time_s):
         camera=dict(id='recorded_task',position_m=(r@camera_pos+shift).tolist(),
             target_m=(r@(camera_pos-camera_r[:,2])+shift).tolist(),projection='perspective',
             vertical_fov_deg=float(source.model.cam_fovy[cid]),hidden_layers=['roof']))
+    if edit:result.update(edit_timeline_sha256=hashlib.sha256(Path(edit_timeline).read_bytes()).hexdigest(),output_frame=output_frame,output_time_s=output_frame/edit.data['fps'],selected_source_frame=selected_index)
     output=Path(output);output.parent.mkdir(parents=True,exist_ok=True)
     with output.open('x') as file:json.dump(result,file,separators=(',',':'));file.write('\n')
     print(json.dumps(dict(output=str(output),case_id=case,recorded_time_s=stamp,geometry_count=len(geoms),maximum_position_error_m=error)))
@@ -59,5 +71,5 @@ def export(recording, factory, output, time_s):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('recording',type=Path);p.add_argument('--factory',type=Path,default=Path('outputs/robo-factory/v6-workstations/scene.xml'))
-    p.add_argument('--output',type=Path,required=True);p.add_argument('--time-s',type=float,required=True)
-    a=p.parse_args();export(a.recording,a.factory,a.output,a.time_s)
+    p.add_argument('--output',type=Path,required=True);group=p.add_mutually_exclusive_group(required=True);group.add_argument('--time-s',type=float);group.add_argument('--output-frame',type=int);p.add_argument('--edit-timeline',type=Path)
+    a=p.parse_args();export(a.recording,a.factory,a.output,a.time_s,a.edit_timeline,a.output_frame)

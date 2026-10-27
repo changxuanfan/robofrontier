@@ -15,7 +15,7 @@ import numpy as np
 
 # Other task families can evolve in this shared checkout. Load the exact
 # evaluator used by the still-running baseline rather than reverting it.
-FROZEN=Path(__file__).resolve().parents[1]/'runs/engineering/mosaic-r13-physical-pick-place-20261025/batch-v4/source'
+FROZEN=(Path(__file__).resolve().parents[1]/'runs/engineering/mosaic-r13-physical-pick-place-20261025/batch-v4/source').resolve()
 import robofrontier as root_package
 root_package.__path__=[str(FROZEN/'robofrontier'),*list(root_package.__path__)]
 import scripts as scripts_package
