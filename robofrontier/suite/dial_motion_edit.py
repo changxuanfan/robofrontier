@@ -15,8 +15,8 @@ import mujoco
 import numpy as np
 from scipy.ndimage import maximum_filter1d, minimum_filter1d
 
-from ..motion_edit import (IdleSettings, build_edit, checksum, idle_mask,
-    motion_features, ranges, EditedMotion)
+from .dial_pose_timeline import (IdleSettings, build_edit, checksum, idle_mask,
+    motion_features, ranges, EditedMotion, DIAL_VIDEO_FPS, DIAL_SPEEDUP)
 from ..motion_recording import MotionReader
 
 
@@ -324,7 +324,7 @@ class DialReplayTrack:
     source-record playback, never a live physical reset. End holds the last pose;
     the future compositor decides whether to loop or mark a station complete.
     """
-    def __init__(self, recording, edit, fps=30., speed=10.):
+    def __init__(self, recording, edit, fps=DIAL_VIDEO_FPS, speed=DIAL_SPEEDUP):
         self.view = EditedMotion(recording,edit)
         self.reader = self.view.reader
         if not self.reader.meta['case_id'].startswith('dial-best5-'):

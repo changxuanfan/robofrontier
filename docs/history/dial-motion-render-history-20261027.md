@@ -1,3 +1,5 @@
+> 历史记录：本文保留当时过程，不作为当前操作指令。当前规则、默认值和入口见 [旋钮家族说明](../tasks/dial-best5.md)。
+
 # Recorded motion editing and factory replay
 
 Original motion is immutable 60 Hz float32 `qpos`, including robot joints,

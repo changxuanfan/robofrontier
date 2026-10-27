@@ -72,7 +72,6 @@ class BestManipulator(HoldingManipulator):
     # Release requires measured separation and a clear spring sweep, not an
     # expensive return to an unrelated historical arm posture.
     home_after_release=False
-    blue_capture_mode='stem'
     def __init__(self,trial,decoder=None):
         if trial.task['mechanism']['feedback']['symbol_count']!=5:raise ValueError('BEST5 reference requires five symbols')
         super().__init__(trial,decoder=decoder if decoder is not None else MechanicalDecoder())
@@ -133,14 +132,6 @@ class BestManipulator(HoldingManipulator):
             self.requalify_blue_pressure(list(affected.values()))
         elif any(v['status']!='completed' for v in results.values()):raise RuntimeError(label+': '+str(results))
         return results
-    def blue_capture_options(self,a,mr,point):
-        if self.t.task['level']!=3 or self.blue_capture_mode!='shoulder':return super().blue_capture_options(a,mr,point)
-        t=self.t;geoms=[t.model.geom(a['id']+'_handle_shoulder'+str(i)) for i in (0,1)]
-        centers=[t.data.geom(g.id).xpos.copy() for g in geoms];center=sum(centers)/2
-        width=float(np.linalg.norm(centers[1]-centers[0])+sum(g.size[2] for g in geoms))
-        if not .005<width<t.arms[a['nominal_robots'][1]].grip_max-.005:raise RuntimeError('Blue shoulder span outside gripper range')
-        t.event('reference_blue_shoulder_capture',dial=a['id'],width_m=width,scope='Pinch existing blue stop faces using normal gripper commands; geometry and force limits unchanged')
-        return [(np.column_stack((sign*mr[:,1],mr[:,2],sign*mr[:,0])),center,width) for sign in (1,-1)]
     def blue_approach_aperture(self,width):
         return min(.08,width+.012) if self.t.task['level']==3 else None
     def set_symbols(self,symbols,finish_when_solved=False):

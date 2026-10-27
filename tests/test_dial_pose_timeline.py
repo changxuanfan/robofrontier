@@ -7,17 +7,17 @@ from unittest.mock import Mock, patch
 import mujoco
 import numpy as np
 
-from robofrontier.motion_edit import EditedMotion, IdleSettings, build_edit, idle_mask, playback_speed
+from robofrontier.suite.dial_pose_timeline import EditedMotion, IdleSettings, build_edit, idle_mask, playback_speed
 from robofrontier.motion_recording import MotionWriter
 from robofrontier.workstation import Workstation
 
 
 class MotionEditTests(unittest.TestCase):
     def test_ten_x_default_is_limited_to_dial_family(self):
-        self.assertEqual(playback_speed('dial-best5-n04-d1',other_default=4),10.)
-        self.assertEqual(playback_speed('dial-n08-d3',other_default=1),10.)
-        self.assertEqual(playback_speed('transport-a04-d1',other_default=4),4.)
-        self.assertEqual(playback_speed('mosaic-a04-d1',other_default=1),1.)
+        self.assertEqual(playback_speed('dial-best5-n04-d1'),10.)
+        self.assertEqual(playback_speed('dial-n08-d3'),10.)
+        with self.assertRaises(ValueError):playback_speed('transport-a04-d1')
+        with self.assertRaises(ValueError):playback_speed('mosaic-a04-d1')
         self.assertEqual(playback_speed('dial-best5-n04-d1',requested=2),2.)
 
     def setUp(self):

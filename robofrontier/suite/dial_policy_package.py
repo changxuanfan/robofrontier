@@ -13,6 +13,7 @@ from ..task_config import physical_control_fingerprint
 from ..workstation import Workstation
 from .provenance import bundle_manifest, environment_logic_manifest
 from .v2 import public_task
+from .dial_pose_timeline import PRESENTATION,DIAL_RECORD_HZ
 
 
 CATALOG = 'configs/suites/dial-best5-r11.json'
@@ -76,6 +77,8 @@ def registry(root):
         attempt = report_path.parent
         report = read(report_path)
         reader = MotionReader(attempt/'motion')
+        if reader.meta['sample_hz'] != DIAL_RECORD_HZ:
+            raise ValueError('Recording cadence differs from the dial contract')
         source = reader.path/'source'
         task = read(source/'task.json')
         require_best5(task)
@@ -118,7 +121,7 @@ def registry(root):
             runtime_readiness='pending_shared_integration'))
     return dict(schema='robofrontier.dial-family-review.v1', family='dial', revision='best5-r11',
         catalog=CATALOG,catalog_sha256=digest(root/CATALOG),selection=SELECTION,
-        selection_sha256=digest(root/SELECTION),presentation=dict(speedup=10,fps=30),
+        selection_sha256=digest(root/SELECTION),presentation=deepcopy(PRESENTATION),
         policy_guidance=GUIDANCE,formal_policy_ready=False,shared_integration_required=list(BLOCKERS),cases=rows)
 
 

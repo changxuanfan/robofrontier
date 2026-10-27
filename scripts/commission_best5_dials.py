@@ -49,13 +49,12 @@ def turn(m,entries,symbols):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--case',required=True);p.add_argument('--output',required=True,type=Path)
+    p=argparse.ArgumentParser();p.add_argument('--case',required=True,choices=[f'dial-best5-n{n:02d}-d{level}' for n in (4,6,8) for level in (1,2,3)]);p.add_argument('--output',required=True,type=Path)
     p.add_argument('--dial',action='append');p.add_argument('--marks',default='1,2,3,4,5,1');p.add_argument('--wall-s',type=float,default=240)
     p.add_argument('--harness',type=Path);p.add_argument('--release',action='store_true');p.add_argument('--grasp-force',type=float,default=30.)
-    p.add_argument('--blue-capture',choices=('stem','shoulder'),default='stem')
     p.add_argument('--live-repair',action='store_true',help='Retain this engineering world for owner-supplied forward repairs')
     args=p.parse_args();root=Path(__file__).resolve().parents[1]
-    harness=args.harness or root/'runs/oracle/suite-v2-r10-closure-20261025/inputs/harness.json'
+    harness=args.harness or root/'configs/harness-frontier-v2-servo2.json'
     catalog=root/'configs/suites/dial-best5-r11.json'
     from robofrontier.suite.source_snapshot import reexec_entry
     reexec_entry(root,args.output,Path(__file__),sys.argv[1:],harness,catalog)
@@ -79,7 +78,7 @@ def main():
         mechanical_geometry_privileged=True,grasp_force_n=args.grasp_force)
     try:
         if not cfg['allowed_grasp_force_n'][0]<=args.grasp_force<=cfg['allowed_grasp_force_n'][1]:raise ValueError('Force outside existing robot limits')
-        m=BestManipulator(t);m.red_grasp_force_n=args.grasp_force;m.blue_capture_mode=args.blue_capture
+        m=BestManipulator(t);m.red_grasp_force_n=args.grasp_force
         entries=[a for a in m.dials if not args.dial or a['id'] in args.dial]
         if not entries or (args.dial and len(entries)!=len(set(args.dial))):raise ValueError('Unknown commissioning dial')
         repair=LiveRepair(t,m) if args.live_repair else None

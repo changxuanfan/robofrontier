@@ -7,8 +7,12 @@
   "selection": "runs/oracle/dial-best5-recovery-20261026/batch-status.json",
   "selection_sha256": "f98d3437a3a5a7cac54d6394382b3a81e98de65a382c78d3f4c5d36df4f4ee51",
   "presentation": {
-    "speedup": 10,
-    "fps": 30
+    "speedup": 10.0,
+    "fps": 30.0,
+    "record_hz": 60.0,
+    "repeat": false,
+    "finished_station": "hold_final_pose",
+    "stop_after": "all_stations_complete"
   },
   "policy_guidance": "prompts/tasks/dial-best5.md",
   "formal_policy_ready": false,

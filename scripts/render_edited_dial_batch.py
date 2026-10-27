@@ -6,14 +6,14 @@ import shutil
 import subprocess
 import sys
 
-from robofrontier.motion_edit import EditedMotion, checksum
+from robofrontier.suite.dial_pose_timeline import EditedMotion, checksum, DIAL_SPEEDUP, DIAL_VIDEO_FPS
 from robofrontier.run_setup import write_json
 
 
-def run(selection, edits, factory, output, speed=10., fps=30.):
+def run(selection, edits, factory, output, speed=DIAL_SPEEDUP, fps=DIAL_VIDEO_FPS):
     cases = json.loads(Path(selection).read_text())['cases']
-    if any(not c['case_id'].startswith('dial-') for c in cases):
-        raise ValueError('This batch renderer is scoped to dial tasks only')
+    if any(not c['case_id'].startswith('dial-best5-') for c in cases):
+        raise ValueError('This batch renderer is scoped to R11 BEST5 tasks only')
     output = Path(output).resolve()
     output.mkdir(parents=True, exist_ok=True)
     results = []
@@ -27,7 +27,7 @@ def run(selection, edits, factory, output, speed=10., fps=30.):
         if not report_path.exists():
             target.parent.mkdir(parents=True, exist_ok=True)
             with (output/(case_id+'.log')).open('x') as log:
-                subprocess.run([sys.executable,'-u','-m','scripts.replay_motion_in_factory',str(recording),
+                subprocess.run([sys.executable,'-u','-m','scripts.replay_dial_motion',str(recording),
                     '--factory',str(Path(factory).resolve()),'--output',str(target),'--edit',str(edit),
                     '--render','--speed',str(speed),'--fps',str(fps)], stdout=log, stderr=subprocess.STDOUT, check=True)
         report = json.loads(report_path.read_text())
@@ -71,7 +71,7 @@ if __name__ == '__main__':
     parser.add_argument('--edits', type=Path, required=True)
     parser.add_argument('--factory', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--speed', type=float, default=10.)
-    parser.add_argument('--fps', type=float, default=30.)
+    parser.add_argument('--speed', type=float, default=DIAL_SPEEDUP)
+    parser.add_argument('--fps', type=float, default=DIAL_VIDEO_FPS)
     args = parser.parse_args()
     run(args.selection,args.edits,args.factory,args.output,args.speed,args.fps)

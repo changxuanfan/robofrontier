@@ -5,42 +5,60 @@
   "requests": [
     {
       "id": "dial-formal-readiness",
-      "shared_files": ["robofrontier/suite/v2.py", "robofrontier/pipeline.py"],
+      "shared_files": [
+        "robofrontier/suite/v2.py",
+        "robofrontier/pipeline.py"
+      ],
       "request": "Recognize hash-bound family evidence without rewriting frozen historical source files or bypassing preview gates.",
       "family_input": "configs/task_families/dial/best5-r11.json",
       "acceptance": "Nine R11 entries resolve to selected closed evidence; assisted evidence stays distinct. A family review alone cannot start a formal run."
     },
     {
       "id": "dial-public-loading",
-      "shared_files": ["robofrontier/run_setup.py", "robofrontier/suite/v2.py", "prompts/common.md"],
+      "shared_files": [
+        "robofrontier/run_setup.py",
+        "robofrontier/suite/v2.py",
+        "prompts/common.md"
+      ],
       "request": "Load and freeze the dial family guide and its checked public projection; select the R11 catalog explicitly. Keep generic role and tool semantics shared.",
       "family_entrypoint": "robofrontier.suite.dial_policy_package",
       "acceptance": "The actual prepared public inputs equal the reviewed geometry, BEST5 rules and guidance. No Oracle solution, live object truth or engineering history is inherited."
     },
     {
-      "id": "one-motion-edit-interface",
-      "shared_files": ["robofrontier/motion_edit.py", "tests/test_motion_edit.py", "scripts/render_frontier_oracle.py", "scripts/replay_motion_in_factory.py"],
-      "request": "Unify the independent dial, mosaic and relay edit APIs with adapters for existing files; keep classification profiles family-owned.",
+      "id": "one-station-track-interface",
+      "shared_files": [
+        "robofrontier/motion_edit.py",
+        "tests/test_motion_edit.py",
+        "scripts/render_frontier_oracle.py",
+        "scripts/replay_motion_in_factory.py"
+      ],
+      "request": "Integrate one common station-track interface over family-owned edit profiles. Dial implementation lives in suite/dial_pose_timeline.py and suite/dial_motion_edit.py; shared editing/rendering files were restored to main to avoid duplicate APIs.",
       "family_entrypoint": "robofrontier.suite.dial_motion_edit.build_dial_edit",
       "acceptance": "Existing source recordings and edits remain readable without rerunning physics; process/outcome events survive display edits; dial defaults to 10x/30fps."
     },
     {
       "id": "independent-factory-cursors",
-      "shared_files": ["robofrontier/factory_workstations.py", "scripts/replay_motion_in_factory.py"],
+      "shared_files": [
+        "robofrontier/factory_workstations.py",
+        "scripts/replay_motion_in_factory.py"
+      ],
       "request": "Read one source cursor per station, update every station pose and appearance, then render once using a separate global presentation clock.",
       "family_entrypoint": "robofrontier.suite.dial_motion_edit.DialReplayTrack",
-      "acceptance": "Two stations with different removed intervals map the same global frame to different original times. On appearance_reset, restore that station's recorded initial_rgba before applying cumulative appearance_changes. End/loop policy is explicit. No common post-render video cut or physical integration."
+      "acceptance": "Each station follows its own source timeline at global output frames, restores initial_rgba on appearance_reset and applies cumulative appearance changes. Play each source once; completed stations hold their final pose; stop output when all stations finish. No looping, global post-render cuts or physical integration."
     },
     {
       "id": "shared-oracle-history-reconciliation",
-      "shared_files": ["robofrontier/suite/oracle.py", "robofrontier/suite/oracle_recovery.py"],
+      "shared_files": [
+        "robofrontier/suite/oracle.py",
+        "robofrontier/suite/oracle_recovery.py"
+      ],
       "request": "Reconcile already-committed changes with other worktrees by execution ownership, terminal outcome and evidence semantics, rather than replacing whole files.",
       "acceptance": "Unknown executions remain fenced and assisted/failed/violated evidence is retained. Further control/evaluator changes receive impact review before a new experiment."
     }
   ],
   "decisions_before_formal_gpt": [
     "Confirm model, topology and run/cost budgets for the new policy protocol; the old 1200s probe is not inherited silently.",
-    "Launch the initial policy with fresh permitted context; this engineering conversation contains answers.",
-    "Choose once-only completion hold versus explicitly labelled looping for the joint factory presentation."
-  ]
+    "Launch the initial policy with fresh permitted context; this engineering conversation contains answers."
+  ],
+  "presentation_policy_ref": "configs/task_families/dial/best5-r11.json#/presentation"
 }

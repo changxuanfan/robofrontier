@@ -1,4 +1,4 @@
-"""Source-bound idle edits shared by every offline background and camera.
+"""Dial-owned source timeline compatibility for recorded-state presentation.
 
 The original 60 Hz recording stays immutable. An edit is an index of retained
 source frames, not a new physical episode or a restart checkpoint.
@@ -13,16 +13,23 @@ import mujoco
 import numpy as np
 from scipy.ndimage import maximum_filter1d, minimum_filter1d
 
-from .motion_recording import MotionReader
+from ..motion_recording import MotionReader
+
+DIAL_SPEEDUP = 10.
+DIAL_VIDEO_FPS = 30.
+DIAL_RECORD_HZ = 60.
+PRESENTATION = dict(speedup=DIAL_SPEEDUP,fps=DIAL_VIDEO_FPS,record_hz=DIAL_RECORD_HZ,
+    repeat=False,finished_station='hold_final_pose',stop_after='all_stations_complete')
 
 
 def checksum(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def playback_speed(case_id, requested=None, other_default=1.):
-    """Dial presentations default to 10x; other families keep caller defaults."""
-    value = (10. if case_id.startswith('dial-') else other_default) if requested is None else requested
+def playback_speed(case_id, requested=None):
+    """The dial-owned entrypoints share one presentation speed default."""
+    if not case_id.startswith('dial-'):raise ValueError('Dial presentation requires a dial case')
+    value = DIAL_SPEEDUP if requested is None else requested
     if not np.isfinite(value) or value <= 0:
         raise ValueError('Positive finite playback speed required')
     return float(value)

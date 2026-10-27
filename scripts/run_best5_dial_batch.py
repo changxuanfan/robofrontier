@@ -31,8 +31,8 @@ def main():
     commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip():raise RuntimeError('Commit the run source before starting a batch')
     base.mkdir(parents=True,exist_ok=False);(base/'inputs').mkdir()
-    old=ROOT/'runs/oracle/suite-v2-r10-closure-20261025/inputs/harness.json'
-    (base/'inputs/harness.json').write_bytes(old.read_bytes());(base/'inputs/catalog.json').write_bytes(catalog.read_bytes())
+    harness=ROOT/'configs/harness-frontier-v2-servo2.json'
+    (base/'inputs/harness.json').write_bytes(harness.read_bytes());(base/'inputs/catalog.json').write_bytes(catalog.read_bytes())
     write_json(base/'manifest.json',dict(protocol='dial-best5-continuous-grasp-repair-v2',git_commit=commit,worktree=str(ROOT),
         solver_password_input=False,mechanical_geometry_privileged=True,mechanical_warmup_in_episode=False,
         cases=ids,workers=a.workers,wall_budget_per_case_s=a.wall_s or None,sim_budget_per_case_s=None,
@@ -44,7 +44,7 @@ def main():
         out=base/cid/'attempt-001';out.parent.mkdir()
         private=ROOT/f'configs/evaluations/private/dial-best5-r11/{cid}.json'
         if not private.exists():raise FileNotFoundError('Missing evaluator-only puzzle file')
-        cmd=[sys.executable,str(ROOT/'scripts/run_blind_dial_oracle.py'),'--best5','--case',cid,'--output',str(out),
+        cmd=[sys.executable,str(ROOT/'scripts/run_blind_dial_oracle.py'),'--case',cid,'--output',str(out),
             '--codebook',str(private),'--harness',str(base/'inputs/harness.json'),'--wall-s',str(a.wall_s)]
         env=os.environ.copy();env.update(PYTHONPATH=str(ROOT),OPENBLAS_NUM_THREADS='1',OMP_NUM_THREADS='1',MKL_NUM_THREADS='1',PYTHONUNBUFFERED='1')
         began=time.monotonic();record=dict(case_id=cid,phase='running',output=str(out),started_unix_s=time.time())

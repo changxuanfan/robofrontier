@@ -17,7 +17,7 @@ class LiveRepairTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(__file__).resolve().parents[1]
             scene=root/'configs/environments/spring_dial/frontier-v2-r11-dial-best5-n06-d3'
-            cfg=json.loads((root/'runs/oracle/suite-v2-r10-closure-20261025/inputs/harness.json').read_text())
+            cfg=json.loads((root/'configs/harness-frontier-v2-servo2.json').read_text())
             t=Trial(scene,Path(tmp)/'world',frames=False,controller_cfg=cfg)
             m=BestManipulator(t);entry=m.dials[3];m.lift([entry])
             m.grasp([entry],[1]*len(m.dials))
@@ -65,8 +65,6 @@ class LiveRepairTests(unittest.TestCase):
             self.assertEqual(len(saved['recovery']['requests']),1)
             self.assertNotEqual(saved['recovery']['requests']['repair']['status'],'running')
 
-    def test_unverified_shoulder_capture_is_not_the_production_default(self):
-        self.assertEqual(BestManipulator.blue_capture_mode,'stem')
 
     def test_production_close_retains_uncertain_call_after_stop_feedback(self):
         from scripts.run_blind_dial_oracle import close_trial
@@ -105,18 +103,6 @@ class LiveRepairTests(unittest.TestCase):
             self.assertFalse(t.monitor.violations)
             repair.adapter.close(dict(passed=False,scope='unit live repair'))
 
-    def test_shoulders_are_grasped_with_realistic_span_and_rotation(self):
-        m=object.__new__(BestManipulator)
-        geom=lambda name:SimpleNamespace(id=int(name[-1]),size=np.array([.012,.028,.002]))
-        poses=[SimpleNamespace(xpos=np.array([0.,.02,-.078])),SimpleNamespace(xpos=np.array([0.,.02,-.050]))]
-        m.t=SimpleNamespace(task={'level':3},model=SimpleNamespace(geom=geom),data=SimpleNamespace(geom=lambda i:poses[i]),
-            arms={'B':SimpleNamespace(grip_max=.08)},event=lambda *a,**kw:None)
-        m.blue_capture_mode='shoulder'
-        options=m.blue_capture_options({'id':'D01','nominal_robots':['A','B']},np.eye(3),np.zeros(3))
-        self.assertEqual(len(options),2)
-        for rotation,point,width in options:
-            self.assertAlmostEqual(width,.032);self.assertAlmostEqual(np.linalg.det(rotation),1.)
-            np.testing.assert_allclose(point,[0,.02,-.064]);np.testing.assert_allclose(rotation[:,1],[0,0,1])
 
     def test_interrupted_action_is_recorded_before_next_call_id(self):
         t=object.__new__(Trial);starts=[];t.data=SimpleNamespace(time=0.);t._live_data=t.data
