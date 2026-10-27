@@ -3,7 +3,8 @@ import argparse,json
 from pathlib import Path
 import mujoco,numpy as np
 from PIL import Image
-from robofrontier.motion_recording import MotionReader
+from robofrontier.motion_recording import MotionReader,digest
+from robofrontier.motion_edit import MotionEdit
 from robofrontier.workstation import Workstation
 from robofrontier.factory_workstations import FactoryPlayback
 from robofrontier.robot_control import quat_matrix
@@ -15,8 +16,9 @@ def video_sample(stamp,deadline,rate=30):
  while deadline<=stamp+1e-9:deadline+=1/rate
  return True,deadline
 
-def replay(recording,factory,output,render=False):
- reader=MotionReader(recording);source=Workstation(reader.path/'source');output=Path(output);output.mkdir(parents=True,exist_ok=False)
+def replay(recording,factory,output,render=False,edit_timeline=None):
+ reader=MotionReader(recording);edit=MotionEdit(edit_timeline,reader) if edit_timeline else None
+ source=Workstation(reader.path/'source');output=Path(output);output.mkdir(parents=True,exist_ok=False)
  factory_renderer=None;source_renderer=None;videos={};play=None
  if render:
   from robofrontier.factory_view import FactoryRenderer
@@ -26,14 +28,15 @@ def replay(recording,factory,output,render=False):
   camera=source.model.camera('global').id;position=source.model.cam_pos[camera];r=quat_matrix(source.model.cam_quat[camera]);shift=np.asarray(place['translation_m'])
   factory_renderer.set_camera(dict(position_m=(rot@position+shift).tolist(),target_m=(rot@(position-r[:,2])+shift).tolist(),projection='perspective',vertical_fov_deg=float(source.model.cam_fovy[camera]),hidden_layers=['roof']))
   source_renderer=mujoco.Renderer(source.model,width=1280,height=800,max_geom=max(5000,source.model.ngeom+100))
-  videos={name:Video(output/(name+'.mp4'),1280,800,30) for name in ('simple','factory')}
+  videos={name:Video(output/(name+'.mp4'),1280,800,edit.data['fps'] if edit else 30) for name in ('simple','factory')}
  else:play=FactoryPlayback(factory)
  case=reader.meta['case_id'];names=play.manifest['workstation_names'][case]['geom_names'];initial=reader.meta['initial_rgba'];source.model.geom_rgba[:]=initial
  geometry_ids={g['id']:g['source_index'] for g in source.manifest['geometries']}
  play.appearance(case,{name:initial[index] for name,index in geometry_ids.items()})
- events=iter(reader.events());event=next(events,None);frames=0;maximum_error=0.;image_times=[];next_image=0.
+ events=iter(reader.events());event=next(events,None);frames=0;maximum_error=0.;image_times=[];next_image=0.;replayed_times=[]
+ stream=edit.frames(reader) if edit else reader.frames()
  try:
-  for stamp,qpos in reader.frames():
+  for stamp,qpos in stream:
    while event is not None and event['sim_time_s']<=stamp+1e-9:
     if event['event']=='rgba':
      play.appearance(case,event['geoms'])
@@ -42,8 +45,9 @@ def replay(recording,factory,output,render=False):
       except KeyError:raise ValueError('Unknown recorded appearance geometry')
     event=next(events,None)
    expected=play.apply(case,source,qpos,stamp);frames+=1
+   if edit:replayed_times.append(stamp)
    for name,target in names.items():maximum_error=max(maximum_error,float(np.linalg.norm(play.data.geom_xpos[play.model.geom(target).id]-expected['geometries'][name]['position_m'])))
-   selected,next_image=video_sample(stamp,next_image)
+   selected,next_image=(True,next_image) if edit else video_sample(stamp,next_image)
    if render and selected:
     source_renderer.update_scene(source.data,camera='global');simple=source_renderer.render();industrial=factory_renderer.render()
     for name,pixels in [('simple',simple),('factory',industrial)]:
@@ -56,8 +60,11 @@ def replay(recording,factory,output,render=False):
   if source_renderer:source_renderer.close()
   if factory_renderer:factory_renderer.close()
  report=dict(scope='Recorded-state FK + rigid factory placement; no physics, commands, IK or resimulation',case_id=case,states_checked=frames,maximum_geometry_position_error_m=maximum_error,passed=maximum_error<1e-6,record_status=reader.meta['status'],videos=checks,video_source_timestamps_s=image_times)
+ if edit:
+  report.update(edit_timeline=str(Path(edit_timeline).resolve()),edit_timeline_sha256=digest(edit_timeline),replayed_source_timestamps_s=replayed_times,source_frames=reader.meta['frames'],fps=edit.data['fps'],nominal_speedup=edit.data['nominal_speedup'],background_independent_edit=True,initial_and_final_states_preserved=True)
+  if render and image_times!=[f['source_time_s'] for f in edit.data['render_frames']]:raise ValueError('Factory video no longer follows the shared edit timeline')
  write_json(output/'report.json',report)
  if not report['passed'] or any(c['error'] for c in checks.values()):raise RuntimeError('Recorded-state replay verification failed')
  print(json.dumps(report),flush=True);return report
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('recording',type=Path);p.add_argument('--factory',type=Path,default=Path('outputs/robo-factory/v6-workstations/scene.xml'));p.add_argument('--output',type=Path,required=True);p.add_argument('--render',action='store_true');a=p.parse_args();replay(a.recording,a.factory,a.output,a.render)
+ p=argparse.ArgumentParser();p.add_argument('recording',type=Path);p.add_argument('--factory',type=Path,default=Path('outputs/robo-factory/v6-workstations/scene.xml'));p.add_argument('--output',type=Path,required=True);p.add_argument('--render',action='store_true');p.add_argument('--edit-timeline',type=Path);a=p.parse_args();replay(a.recording,a.factory,a.output,a.render,a.edit_timeline)
