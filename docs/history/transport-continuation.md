@@ -1,3 +1,5 @@
+> 历史归档。当前规格与状态见 [Transport任务说明](../tasks/transport.md)；合并操作见 [交接](../plans/suite-v2/transport-merge-handoff.md)。本文保留当时的过程与证据。
+
 # Transport continuation — 2026-10-26
 
 This checkout resumes archived Transport source snapshot `0a219f2` (parent
@@ -378,10 +380,91 @@ Frozenbbb80ce attempt003 completed36/36 with engineering assistance,1512robot
 commands/1known failed command, no process violations or unresolved actions.
 Original timing2554.88sim seconds, total24517.23wall seconds including17490.53
 acknowledged paused seconds is retained. All153310saved states and added-material
-half-opening FK checks passed. Complete4x two-view rendering is underway.
+half-opening FK checks passed. Complete4x two-view rendering finished and both views decoded successfully.
 
 The final two goals used a supported A→L southwest tabletop buffer for K1 and
 native K→L→A→B transfers for C3. At the last A/B handover, an admitted0.00694rad
 empty B joint adjustment raised actual link7 separation5.78→9.23mm, followed by
 measured core contact,50N grasp, native dual-support check and slow A release.
 No task dimensions, physical controls, force bounds or evaluator changed.
+
+
+## Nine full Transport configurations qualified
+
+Frozen `eedae16` twelve-arm L3 attempt007 completed36/36 with engineering
+assistance:1666robot commands,11known failed commands recovered, zero process
+violations/unresolved actions and no live object-state writes. Original timing
+2791.22sim seconds and43308.51wall seconds remains; the timing ledger includes
+32754.93paused and10552.14active seconds. No running source was hotpatched.
+
+All nine separate full witnesses now pass216/216goals. Complete motion audits
+cover2,131,885states, including167,564new60Hz states. Half-opening FK checks
+cover1,998,263states over six cases with holes, with zero added-volume contacts.
+These are sampled pose-compatibility checks, not new-environment physics passes.
+
+Final recoveries used direct contact-free joint approaches when the15cm straight
+preapproach was unavailable, explicit core/interior contact checks, small admitted
+empty-arm separation, actual sole-support lift checks and forward recovery on the
+original tabletop. East/west routes overlapped independent payload work. Current
+efficiency statistics remain measurements, not a global scheduling optimality claim.
+
+The final two-view offline render completed (12x,15fps;60Hz source preserved). Both full videos decoded successfully; the gallery now contains18videos.
+The persistent batch `COMPLETION.md`, `current.json` and per-case `report.json`
+are the qualification index. Video checks and the nine-case gallery are complete; this scope is finished.
+
+## Scene-independent edit timeline and presentation defaults
+
+Offline delivery now defaults to20x at30fps, with an existing central tabletop
+opening halved in both linear dimensions. Four-arm solid tops remain solid.
+Source physics, complete60Hz recordings and qualification timing remain immutable;
+full original videos and previous-speed edited videos are retained separately.
+
+`robofrontier.motion_timeline` stores a small edit sidecar referencing the frozen
+recording: a60Hz source-time vector, a whole-scene keep mask, half-open source
+intervals and the default output-frame/source-index mapping. It conservatively
+lifts the already reviewed video cells to their complete source-sample intervals.
+The state analysis and full-resolution picture check therefore remain identical
+to the approved edit, including boundary context. Isolated bounded repeated
+rattling is removed even when visible; useful robot/gripper/object movement,
+slow directed drift and continuous rotation preserve the whole scene.
+
+Sampling runs over the concatenated retained clock, without resetting at every
+cut. Every output frame is an actual saved state; no pose interpolation or
+physics restart is performed. Source and array hashes prevent accidental mixing
+of recordings. `MotionReader.selected_frames` checksum-verifies used chunks and
+reconstructs only needed chunks, avoiding per-state traversal of removed waits.
+
+Simple and factory renderers consume the same timeline and frame selection.
+An entire workstation can translate and rotate about the vertical axis while
+preserving relative hardware layout and dimensions. The visual mapping applies
+`p_factory = Rz(yaw) p_source + translation` to static tables/bases and dynamic
+FK body poses together. Materials/background do not trigger a new idle analysis.
+Independent changes to relative hardware locations need a new compatible motion.
+
+The existing v6 Transport factory sources differ from these successful frozen
+sources. Factory composition accepts recording-source overrides instead of
+relaxing its identity check. A separate factory composition uses all nine
+successful frozen sources, preserves the factory shell, and defaults to the
+half-size opening.288distributed retained states across nine cases, including
+first/final, passed position/orientation checks after an additional translation
+and rotation; maximum errors were approximately6e-15. Actual factory first/final
+images and an edited-frame100 Blender pose export were checked. This establishes
+visual pose compatibility; full factory videos and new physics are separate work.
+
+`export_factory_recorded_pose.py --timeline ... --video-frame N` exports the exact
+matching source state and presentation geometry sizes. The Blender importer
+applies table box dimensions along with the recorded pose.38regression tests
+cover motion reading, edit cadence/validation, jitter classification, table edits
+and rigid factory placement; the generated-source fixture uses the canonical
+repository assets when those are absent from this worktree.
+
+`scripts/render_transport_delivery.py` prepares all nine timelines and renders
+front/rear views sequentially with one Python process and one single-thread
+encoder. Each completed view has a manifest; delivery checks exact output frame
+counts and30fps before atomically publishing the nine front videos and eighteen
+front/rear files. Original files are never encoded in place through hardlinks.
+
+Each trial has an external `motion-edit.json` reference. Simple/factory replay
+automatically resolves and checksum-validates this edit by default; `--keep-idle`
+explicitly selects the complete original clock. The original motion stream,
+events and qpos chunks remain unchanged.

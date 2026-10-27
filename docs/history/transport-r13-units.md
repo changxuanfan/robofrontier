@@ -1,3 +1,5 @@
+> 历史归档。当前规格与状态见 [Transport任务说明](../tasks/transport.md)；合并操作见 [交接](../plans/suite-v2/transport-merge-handoff.md)。本文保留当时的过程与证据。
+
 # Transport R13：审查、最小单元与并行计划
 
 后续工程修正与统一代码复测见 [Transport R13 抓姿接续与独立推进](transport-r13-planning.md)。本文保留此前一轮的历史数据；下文“8种尚未通过”等状态不代表后续复测的最终结论。

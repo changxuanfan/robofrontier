@@ -136,6 +136,12 @@ def main():
                     or abs(np.linalg.det(rotation)-1)>1e-6 or np.any(rgba<0) or np.any(rgba>1)):
                 raise ValueError('Invalid recorded visual transform/appearance')
             obj.location=position;obj.rotation_quaternion=Matrix(rotation.tolist()).to_quaternion()
+            if 'size' in pose:
+                size=np.asarray(pose['size'],dtype=float)
+                if size.shape!=(3,)or not np.isfinite(size).all()or np.any(size<0):raise ValueError('Invalid recorded geometry dimensions')
+                if original['kind']==6:obj.scale=size
+                elif original['kind']==5:obj.scale=(size[0],size[0],size[1])
+                elif original['kind']==3:obj.scale=(size[0],)*3
             max_position_error=max(max_position_error,float(np.max(abs(np.asarray(obj.location)-position))))
             max_rotation_error=max(max_rotation_error,float(np.max(abs(np.asarray(obj.rotation_quaternion.to_matrix())-rotation))))
             if not np.allclose(rgba,original['rgba'],rtol=0,atol=1e-7):

@@ -1,7 +1,18 @@
 """Compose frozen workstations for display; never run physics or an Oracle."""
-import argparse
+import argparse,json
 from pathlib import Path
 from robofrontier.factory_workstations import compose
+
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--shell',type=Path,default=Path('outputs/robo-factory/v5-shell/scene.xml'));p.add_argument('--catalog',type=Path,default=Path('configs/suites/frontier-v2.json'));p.add_argument('--output',type=Path,default=Path('outputs/robo-factory/v5-workstations'));a=p.parse_args()
-    print(compose(a.shell,a.catalog,a.output))
+    p=argparse.ArgumentParser();p.add_argument('--shell',type=Path,default=Path('outputs/robo-factory/v5-shell/scene.xml'));p.add_argument('--catalog',type=Path,default=Path('configs/suites/frontier-v2.json'));p.add_argument('--output',type=Path,default=Path('outputs/robo-factory/v5-workstations'))
+    p.add_argument('--timeline-dir',type=Path,help='Use each edit timeline recording/source, preserving its exact frozen scene revision')
+    p.add_argument('--source-root',type=Path,help='Root for catalog sources without recording overrides')
+    p.add_argument('--table-opening-scale',type=float,default=.5)
+    a=p.parse_args();overrides={}
+    if a.timeline_dir:
+        for path in sorted(a.timeline_dir.glob('*.json')):
+            meta=json.loads(path.read_text())
+            if meta.get('schema')!='robofrontier.motion-edit.v1':continue
+            overrides[meta['case_id']]=Path(meta['recording'])/'source'
+        if not overrides:raise ValueError('No motion-edit timelines found')
+    print(compose(a.shell,a.catalog,a.output,a.table_opening_scale,overrides,a.source_root))

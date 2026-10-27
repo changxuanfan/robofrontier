@@ -1,3 +1,5 @@
+> 历史归档。当前规格与状态见 [Transport任务说明](../tasks/transport.md)；合并操作见 [交接](../plans/suite-v2/transport-merge-handoff.md)。本文保留当时的过程与证据。
+
 # 九项Transport数学基线
 
 本次只做数学计算，没有新物理试验。

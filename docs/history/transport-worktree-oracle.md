@@ -1,3 +1,7 @@
+> 历史归档。当前规格与状态见 [Transport任务说明](../tasks/transport.md)；合并操作见 [交接](../plans/suite-v2/transport-merge-handoff.md)。本文保留当时的过程与证据。
+
+当前任务版本与完成状态请看[Transport任务说明](../tasks/transport.md)及[合并交接](../plans/suite-v2/transport-merge-handoff.md)。以下为Oracle开始前后的历史记录。
+
 # Transport 专用 worktree 与完整 Oracle
 
 分支：`task/transport-oracle`，起点 `main` 的 `d3e5916`。当前没有合并 main，也不接管 Dial、Relay 或 Mosaic 会话。

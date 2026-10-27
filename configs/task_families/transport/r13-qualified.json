@@ -1,0 +1,92 @@
+{
+  "schema": "robofrontier.transport-r13-witnesses.v1",
+  "family": "transport",
+  "physical_revision": 13,
+  "full_cases": 9,
+  "total_goals": 216,
+  "program_cases": 3,
+  "engineering_assisted_cases": 6,
+  "cases": [
+    {
+      "case_id": "transport-a04-d1",
+      "oracle_trial": "runs/oracle/transport-continuation-20261026/full/transport-a04-d1/attempt-003",
+      "report_sha256": "e4f747e8bc4665c035131c092b818b9c40f72463ca54101a450219c32691efe7",
+      "scene_sha256": "53713645c019e1625f20a4b0355ad9979578bf73bb6fa110571d6b7b90f47201",
+      "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+      "environment_logic_sha256": "cd615e0bd2d31d99266f2bafe37705736ed51bbb04483b2c015f1ae2210c135b",
+      "engineering_assisted": false
+    },
+    {
+      "case_id": "transport-a04-d2",
+      "oracle_trial": "runs/oracle/transport-continuation-20261026/full/transport-a04-d2/attempt-003",
+      "report_sha256": "9d921bb8989a0e1405b6e3c29e743fc5d07eab98b0bd4582ee1ef2a530af7aaf",
+      "scene_sha256": "7bd4dfe4e3620d10e12855473120a31c24f6b2520a83b11c7e7adcc8058597df",
+      "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+      "environment_logic_sha256": "cd615e0bd2d31d99266f2bafe37705736ed51bbb04483b2c015f1ae2210c135b",
+      "engineering_assisted": true
+    },
+    {
+      "case_id": "transport-a04-d3",
+      "oracle_trial": "runs/oracle/transport-continuation-20261026/full/transport-a04-d3/attempt-001",
+      "report_sha256": "38ff6fb16b59a9c019acaada6ebe0540daa2b0fdd13c67908e90350961176c4e",
+      "scene_sha256": "0b5f7ddeb1cacab873419693564f224c4482abc60838e881abe683a8fc34bde8",
+      "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+      "environment_logic_sha256": "cd615e0bd2d31d99266f2bafe37705736ed51bbb04483b2c015f1ae2210c135b",
+      "engineering_assisted": false
+    },
+    {
+      "case_id": "transport-a08-d1",
+      "oracle_trial": "runs/oracle/transport-continuation-20261026/full/transport-a08-d1/attempt-002",
+      "report_sha256": "f777cfe462cc37ccec88295f5c4d1879f8162eb178c2a6fc192f6a3475f1fd99",
+      "scene_sha256": "420fdd5f94773056d9ef146b5c94970c53bd81d8e1f2d9ef36cbadc57542b8f6",
+      "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+      "environment_logic_sha256": "cd615e0bd2d31d99266f2bafe37705736ed51bbb04483b2c015f1ae2210c135b",
+      "engineering_assisted": false
+    },
+    {
+      "case_id": "transport-a08-d2",
+      "oracle_trial": "runs/oracle/transport-continuation-20261026/full/transport-a08-d2/attempt-002",
+      "report_sha256": "2b1b1df09975571998b589744501130d7ea02d89f468f0dbb8acc79b5840db0d",
+      "scene_sha256": "f507a430406f93aa087f2b8d24bd93271ad7949ca5a16ef3102c20995f3ce156",
+      "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+      "environment_logic_sha256": "cd615e0bd2d31d99266f2bafe37705736ed51bbb04483b2c015f1ae2210c135b",
+      "engineering_assisted": true
+    },
+    {
+      "case_id": "transport-a08-d3",
+      "oracle_trial": "runs/oracle/transport-continuation-20261026/full/transport-a08-d3/attempt-002",
+      "report_sha256": "a44d3950bbb8863a6775b042679fd79711e752ac0685b0c5e59ff059baa22eb6",
+      "scene_sha256": "453173efe683dee32d02a78f0c980a89b9c2330833659d839f96b67b0398864f",
+      "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+      "environment_logic_sha256": "cd615e0bd2d31d99266f2bafe37705736ed51bbb04483b2c015f1ae2210c135b",
+      "engineering_assisted": true
+    },
+    {
+      "case_id": "transport-a12-d1",
+      "oracle_trial": "runs/oracle/transport-continuation-20261026/full/transport-a12-d1/attempt-003",
+      "report_sha256": "d133b08b9284c968960223ad4d76e3861781ded9552bb2bbe7ce512d4db65ffa",
+      "scene_sha256": "bdb133bf14c6fb416da9737039c8991f8f3aed2b27fb10f01bc1ffc4b0d1a4c1",
+      "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+      "environment_logic_sha256": "cd615e0bd2d31d99266f2bafe37705736ed51bbb04483b2c015f1ae2210c135b",
+      "engineering_assisted": true
+    },
+    {
+      "case_id": "transport-a12-d2",
+      "oracle_trial": "runs/oracle/transport-continuation-20261026/full/transport-a12-d2/attempt-003",
+      "report_sha256": "13e9f682c5abe791e8efdc14847f681e532c9cca79a0242c8905f327d0141325",
+      "scene_sha256": "33d5d57dd3a6ea8cb1049af2cc34538da0108da3d3edf2df0dc7a445eb491e68",
+      "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+      "environment_logic_sha256": "cd615e0bd2d31d99266f2bafe37705736ed51bbb04483b2c015f1ae2210c135b",
+      "engineering_assisted": true
+    },
+    {
+      "case_id": "transport-a12-d3",
+      "oracle_trial": "runs/oracle/transport-continuation-20261026/full/transport-a12-d3/attempt-007",
+      "report_sha256": "aac5b8954cc2f82ce9fb930313a851feefbd44c32fa2fac0b43f93c54684d5e8",
+      "scene_sha256": "ca9158a2f824f9dd3dcffe46a4bf7e72cb85375d672dbe200dc96cb4cccc2300",
+      "physical_control_sha256": "ac85b4061b6285cfe66163ad9f2945a5497b72295ca5896dcc88b8228dc13479",
+      "environment_logic_sha256": "cd615e0bd2d31d99266f2bafe37705736ed51bbb04483b2c015f1ae2210c135b",
+      "engineering_assisted": true
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+> 历史归档。当前规格与状态见 [Transport任务说明](../tasks/transport.md)；合并操作见 [交接](../plans/suite-v2/transport-merge-handoff.md)。本文保留当时的过程与证据。
+
 # Transport R13：白板缩短20 mm
 
 九个Transport环境的白板从143×416 mm改为143×396 mm，两端各缩短10 mm。

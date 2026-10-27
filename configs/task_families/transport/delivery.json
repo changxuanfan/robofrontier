@@ -1,0 +1,303 @@
+{
+  "schema": "robofrontier.transport-delivery.v1",
+  "family": "transport",
+  "default_physical_config": "configs/task_families/transport/half-opening-r14.json",
+  "default_source_edit": "transport-source-edits-v2",
+  "playback": {
+    "speed": 20,
+    "fps": 30,
+    "per_workstation_clock": true,
+    "table_end": "hold_terminal_state",
+    "factory_end": "stop_when_all_complete",
+    "loop": false
+  },
+  "qualified_physical_revision": 13,
+  "current_physical_revision": 14,
+  "new_physical_execution_verified": false,
+  "formal_gpt_ready": false,
+  "data_root": "Repository root containing persistent runs/ and outputs/; not a worktree-specific absolute path",
+  "final_package": {
+    "path": "outputs/oracle/transport-continuation-20261026/transport-policy-r14-release/engineering/manifest.json",
+    "sha256": "f6b4f753e134f86a0e2152b9786a1e16720c9adb91a759a1a84ea964d01d217d"
+  },
+  "native_summary": {
+    "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/summary.json",
+    "sha256": "1cf2faa22f5d9f4fe58cb1e9516ce8979467773fd28ae9cd1fe3f931e9c28ce7"
+  },
+  "preserved_delivery_summary": {
+    "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/summary.json",
+    "sha256": "d188719d6a1953708f133e34a167471cf73ef73b366b0f9b0fa8be7af856271a"
+  },
+  "retain_directories": [
+    "runs/oracle/transport-continuation-20261026",
+    "outputs/oracle/transport-continuation-20261026"
+  ],
+  "cleanup_audit": "runs/oracle/transport-continuation-20261026/engineering/transport-cleanup-20261027",
+  "protected_inventory": {
+    "path": "runs/oracle/transport-continuation-20261026/engineering/transport-cleanup-20261027/protected-before.json.gz",
+    "sha256": "af0d9af4c0eb0e9e4f5f81b6a156063fc4f9ae267595db41e0fb7af1f42b04e8"
+  },
+  "cases": [
+    {
+      "case_id": "transport-a04-d1",
+      "original_report": {
+        "path": "runs/oracle/transport-continuation-20261026/full/transport-a04-d1/attempt-003/report.json",
+        "sha256": "e4f747e8bc4665c035131c092b818b9c40f72463ca54101a450219c32691efe7"
+      },
+      "original_stream": {
+        "path": "runs/oracle/transport-continuation-20261026/full/transport-a04-d1/attempt-003/motion/stream.json",
+        "sha256": "47b6eac547dd35f0f268ef2d1fa00d7cb74dbe91c3c27559263ded24b0e7e710"
+      },
+      "native_edit": {
+        "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a04-d1/edit.json",
+        "sha256": "3a977152d68dc57b4bd3dcafd4acfa5f1d751ede076fa742cfbe9f15d300da7e"
+      },
+      "native_selection": {
+        "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a04-d1/selection.npz",
+        "sha256": "334adec6eadd209fc00f81bc3c6ba3807577763a795e3e7ab648d25a774b0a05"
+      },
+      "delivered_videos": [
+        {
+          "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/transport-a04-d1/global/global.mp4",
+          "sha256": "0851b5dbe44edb62e35316c58f35ba04ef9acffac4bd14df519f58a7455a1b4a"
+        },
+        {
+          "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/transport-a04-d1/global_rear/global_rear.mp4",
+          "sha256": "a52bc1a55c7eecf5548230b30bc4e8699a5f8f9cb790b953facfecf91f11881f"
+        }
+      ]
+    },
+    {
+      "case_id": "transport-a04-d2",
+      "original_report": {
+        "path": "runs/oracle/transport-continuation-20261026/full/transport-a04-d2/attempt-003/report.json",
+        "sha256": "9d921bb8989a0e1405b6e3c29e743fc5d07eab98b0bd4582ee1ef2a530af7aaf"
+      },
+      "original_stream": {
+        "path": "runs/oracle/transport-continuation-20261026/full/transport-a04-d2/attempt-003/motion/stream.json",
+        "sha256": "5c795a372a14f46c94794f5dcb1e31b0df294f68b20b9b07729e21ecd08081bb"
+      },
+      "native_edit": {
+        "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a04-d2/edit.json",
+        "sha256": "3c48664a2673c32c0fcabc6202e7b888c9540ac040ea0397b7a096c064210c02"
+      },
+      "native_selection": {
+        "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a04-d2/selection.npz",
+        "sha256": "3a1750e9990c2fb18b2d65c475c04bc2af4add595237630fbd49566dc07632ad"
+      },
+      "delivered_videos": [
+        {
+          "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/transport-a04-d2/global/global.mp4",
+          "sha256": "725e0d5380d3cbdbc88d24d6e7f7913bc437f94d1f3f803ab50a1f3ca527413b"
+        },
+        {
+          "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/transport-a04-d2/global_rear/global_rear.mp4",
+          "sha256": "7d2f9383b48e7bf69f0874faf7153b25b13815042f03d95a64e7c987e48ecde2"
+        }
+      ]
+    },
+    {
+      "case_id": "transport-a04-d3",
+      "original_report": {
+        "path": "runs/oracle/transport-continuation-20261026/full/transport-a04-d3/attempt-001/report.json",
+        "sha256": "38ff6fb16b59a9c019acaada6ebe0540daa2b0fdd13c67908e90350961176c4e"
+      },
+      "original_stream": {
+        "path": "runs/oracle/transport-continuation-20261026/full/transport-a04-d3/attempt-001/motion/stream.json",
+        "sha256": "b87ff11164f5a2ea0046b8ffea90dbbc261629295c835aa4df4d31b3bd06ce05"
+      },
+      "native_edit": {
+        "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a04-d3/edit.json",
+        "sha256": "34bc4a2561d6893b846d839bbe094bb5de98f14b182211090cd3cacd68e3eeca"
+      },
+      "native_selection": {
+        "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a04-d3/selection.npz",
+        "sha256": "6831fa647594f3ea6fdeeb815d8a7f204e877c807a5f732ec729274fcf6f2c8a"
+      },
+      "delivered_videos": [
+        {
+          "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/transport-a04-d3/global/global.mp4",
+          "sha256": "c80afa90008a7391fb141e57d8b943d3b60b66a74a91bfdca88289cf9dbfd129"
+        },
+        {
+          "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/transport-a04-d3/global_rear/global_rear.mp4",
+          "sha256": "48612abb7ecff0fe7a53151cb61678fd1bfdb66cfe3ae3e33e994f20137c919a"
+        }
+      ]
+    },
+    {
+      "case_id": "transport-a08-d1",
+      "original_report": {
+        "path": "runs/oracle/transport-continuation-20261026/full/transport-a08-d1/attempt-002/report.json",
+        "sha256": "f777cfe462cc37ccec88295f5c4d1879f8162eb178c2a6fc192f6a3475f1fd99"
+      },
+      "original_stream": {
+        "path": "runs/oracle/transport-continuation-20261026/full/transport-a08-d1/attempt-002/motion/stream.json",
+        "sha256": "91a376e5edabfdf66982b844f51e892caeda5f3bddbe8d4344487fb761f97723"
+      },
+      "native_edit": {
+        "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a08-d1/edit.json",
+        "sha256": "f16066ab430dc992c9c6ddab395065bc4241e03c82fb321a9726e6cf4d9ebf1c"
+      },
+      "native_selection": {
+        "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a08-d1/selection.npz",
+        "sha256": "c6997e058f179a1ab70bfde5dae53ae0dc83df19a4b3141672ede8d9b5db3e7a"
+      },
+      "delivered_videos": [
+        {
+          "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/transport-a08-d1/global/global.mp4",
+          "sha256": "ae417b414de28150caa6d3f5cab02f4a2f601957b2e1738e3cd9db719460168f"
+        },
+        {
+          "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/transport-a08-d1/global_rear/global_rear.mp4",
+          "sha256": "5c0ff04ad33dd693289fb53c52462d0bf8a255d5186264623cedc2f043ecbf99"
+        }
+      ]
+    },
+    {
+      "case_id": "transport-a08-d2",
+      "original_report": {
+        "path": "runs/oracle/transport-continuation-20261026/full/transport-a08-d2/attempt-002/report.json",
+        "sha256": "2b1b1df09975571998b589744501130d7ea02d89f468f0dbb8acc79b5840db0d"
+      },
+      "original_stream": {
+        "path": "runs/oracle/transport-continuation-20261026/full/transport-a08-d2/attempt-002/motion/stream.json",
+        "sha256": "74c1dbe677dd613a02c12e81e77bcf51be7078ad31fdb6694b2eb45b5738b173"
+      },
+      "native_edit": {
+        "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a08-d2/edit.json",
+        "sha256": "cbf7a7b999c7a862988a6f43a2c4d83957d0d5973cdf6ffa4c5b089188d40bc6"
+      },
+      "native_selection": {
+        "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a08-d2/selection.npz",
+        "sha256": "59690c7058e372952b34d0889718f584ff591c45b87f1ca1ef12e195c3add9a6"
+      },
+      "delivered_videos": [
+        {
+          "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/transport-a08-d2/global/global.mp4",
+          "sha256": "cba84a6e3d8a13f53bd87017fb9fa4376f4a0c9c5a542366d42e454180b3e8bf"
+        },
+        {
+          "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/transport-a08-d2/global_rear/global_rear.mp4",
+          "sha256": "580d795fb1fbe451f90840d3770759208c1a657a691a5790fd166d572fd32df1"
+        }
+      ]
+    },
+    {
+      "case_id": "transport-a08-d3",
+      "original_report": {
+        "path": "runs/oracle/transport-continuation-20261026/full/transport-a08-d3/attempt-002/report.json",
+        "sha256": "a44d3950bbb8863a6775b042679fd79711e752ac0685b0c5e59ff059baa22eb6"
+      },
+      "original_stream": {
+        "path": "runs/oracle/transport-continuation-20261026/full/transport-a08-d3/attempt-002/motion/stream.json",
+        "sha256": "def90cec36f3b6d78bec50e7a2b60b1d83ff9344eafec28f763d3f592da0a7fc"
+      },
+      "native_edit": {
+        "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a08-d3/edit.json",
+        "sha256": "b8ef8c5d9e133837625b48ce416b95c9b621c2760cf24d1aab7e141c61a1f485"
+      },
+      "native_selection": {
+        "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a08-d3/selection.npz",
+        "sha256": "7ef9d904abb3546f547a791de87f6a8cc11ff753c8e959b5a2ee290dcdd11930"
+      },
+      "delivered_videos": [
+        {
+          "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/transport-a08-d3/global/global.mp4",
+          "sha256": "ba3610f214badc1bbb06e5696064f8e1fd1f99aaba436d98c483921a222ae03e"
+        },
+        {
+          "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/transport-a08-d3/global_rear/global_rear.mp4",
+          "sha256": "aa9d9daeff874e7c9245a970ac456c54d9d24408bdda7b5d6803d20e76438060"
+        }
+      ]
+    },
+    {
+      "case_id": "transport-a12-d1",
+      "original_report": {
+        "path": "runs/oracle/transport-continuation-20261026/full/transport-a12-d1/attempt-003/report.json",
+        "sha256": "d133b08b9284c968960223ad4d76e3861781ded9552bb2bbe7ce512d4db65ffa"
+      },
+      "original_stream": {
+        "path": "runs/oracle/transport-continuation-20261026/full/transport-a12-d1/attempt-003/motion/stream.json",
+        "sha256": "bb64f0167c4e5a272aad879691f55afb445344450df6eb9b43ed8f69cfd5ba29"
+      },
+      "native_edit": {
+        "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a12-d1/edit.json",
+        "sha256": "05d156008ab9c404b14f5dd9cdc5067a6aa979bde553806072550a40754a03bc"
+      },
+      "native_selection": {
+        "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a12-d1/selection.npz",
+        "sha256": "e2de728d895c2042c0483800ed9e5a271bf30ba31be808f96a68f1edbdc6406c"
+      },
+      "delivered_videos": [
+        {
+          "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/transport-a12-d1/global/global.mp4",
+          "sha256": "fe3592abcd96f2c5b2a93725567bed002611b6e6739a8593d9e2cec7985667a7"
+        },
+        {
+          "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/transport-a12-d1/global_rear/global_rear.mp4",
+          "sha256": "9eae41a9300b6b6048e02bd525bf1e249eeaa162c17b3c529482d91099adb159"
+        }
+      ]
+    },
+    {
+      "case_id": "transport-a12-d2",
+      "original_report": {
+        "path": "runs/oracle/transport-continuation-20261026/full/transport-a12-d2/attempt-003/report.json",
+        "sha256": "13e9f682c5abe791e8efdc14847f681e532c9cca79a0242c8905f327d0141325"
+      },
+      "original_stream": {
+        "path": "runs/oracle/transport-continuation-20261026/full/transport-a12-d2/attempt-003/motion/stream.json",
+        "sha256": "eff7e42a6d4282cf0e92d1e7f9c062f919bdec1cf40f1d44327ffaacaccab53e"
+      },
+      "native_edit": {
+        "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a12-d2/edit.json",
+        "sha256": "2c700709049aadde4575a6d978fc21d8b9d53b52bd26970fdb2633ebb761b376"
+      },
+      "native_selection": {
+        "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a12-d2/selection.npz",
+        "sha256": "d51172ee4ce3a90e6088f3545e153654bb652f1bdd3c0f1c46a5f3f028dcd205"
+      },
+      "delivered_videos": [
+        {
+          "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/transport-a12-d2/global/global.mp4",
+          "sha256": "f6869508d3438471fa1b8ccc91f3ff55a8fe48dd04f7dc80ea709917b8f6f7ba"
+        },
+        {
+          "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/transport-a12-d2/global_rear/global_rear.mp4",
+          "sha256": "0ce12cf4d82af74a3062a0390ad88ab37c5ffb1504237b6aaceb45b6b79b3f07"
+        }
+      ]
+    },
+    {
+      "case_id": "transport-a12-d3",
+      "original_report": {
+        "path": "runs/oracle/transport-continuation-20261026/full/transport-a12-d3/attempt-007/report.json",
+        "sha256": "aac5b8954cc2f82ce9fb930313a851feefbd44c32fa2fac0b43f93c54684d5e8"
+      },
+      "original_stream": {
+        "path": "runs/oracle/transport-continuation-20261026/full/transport-a12-d3/attempt-007/motion/stream.json",
+        "sha256": "38576242f2adbb397fa33df682f2635aaee4216e023a519e3c91ff18315071aa"
+      },
+      "native_edit": {
+        "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a12-d3/edit.json",
+        "sha256": "2b613cef9120e51f3e1dc0281a677ec7408a2af187c8f1054d2fd653e0291a05"
+      },
+      "native_selection": {
+        "path": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a12-d3/selection.npz",
+        "sha256": "0fceeadac00385f76aa56e4afe3aaee1dc29c000fa6f73fa1c23c423514684be"
+      },
+      "delivered_videos": [
+        {
+          "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/transport-a12-d3/global/global.mp4",
+          "sha256": "e6f89d6a67d8ffe0c59caff497b621e75e0bc4338327a439bf3abf88bd72da6c"
+        },
+        {
+          "path": "outputs/oracle/transport-continuation-20261026/motion-only-20x/transport-a12-d3/global_rear/global_rear.mp4",
+          "sha256": "3dd725fa2766c1654d15f029b5bf6cffcdb88ffc760bdbb3261e686e68eb3d0d"
+        }
+      ]
+    }
+  ]
+}

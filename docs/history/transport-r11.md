@@ -1,3 +1,5 @@
+> 历史归档。当前规格与状态见 [Transport任务说明](../tasks/transport.md)；合并操作见 [交接](../plans/suite-v2/transport-merge-handoff.md)。本文保留当时的过程与证据。
+
 # Transport R11 — 环境与任务说明
 
 本次仅处理物品传递的4／8／12臂×L1／L2／L3，共9个环境。

@@ -1,0 +1,11 @@
+{
+  "status": "compiled_tabletop_variant",
+  "oracle_verified": false,
+  "policy_verified": false,
+  "frozen_input": true,
+  "nq": 132,
+  "nv": 120,
+  "ngeom": 894,
+  "physics_sha256": "255eda42319bf025286ea0e1e589b4c270e7f4fd6ac1e8a646257c61b00c18a7",
+  "scope": "Compiled tabletop-only revision and exact parity with the source half-opening FK model; no new physics execution"
+}
