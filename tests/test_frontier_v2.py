@@ -326,7 +326,7 @@ class FrontierV2Tests(unittest.TestCase):
         centers=np.asarray([r['center_m'][:2] for r in task['route']])
         self.assertTrue(np.all(np.diff(centers[:,0])>0))
         self.assertTrue(np.all(centers[1:-1,1]>0))
-        self.assertEqual(task['mechanism']['layout'],'upper_semicircle')
+        self.assertEqual(task['mechanism']['layout'],'upper_arc_90_degrees')
 
     def test_mosaic_collision_probe_is_read_only_and_rejects_self_contact(self):
         from robofrontier.suite.geometry_checks import owner_map,clear_robot_pose

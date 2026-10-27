@@ -1,0 +1,108 @@
+{
+  "tabletop_z_m": 0.8,
+  "table_collision_geometries": [
+    {
+      "id": "table_0",
+      "shape": "box",
+      "position_m": [
+        -0.125,
+        0.0,
+        0.775
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        1.4149999999999998,
+        0.89,
+        0.025
+      ]
+    },
+    {
+      "id": "table_leg_0_0",
+      "shape": "box",
+      "position_m": [
+        -1.4499999999999997,
+        -0.8,
+        0.375
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.035,
+        0.035,
+        0.375
+      ]
+    },
+    {
+      "id": "table_leg_0_1",
+      "shape": "box",
+      "position_m": [
+        1.1999999999999997,
+        -0.8,
+        0.375
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.035,
+        0.035,
+        0.375
+      ]
+    },
+    {
+      "id": "table_leg_0_2",
+      "shape": "box",
+      "position_m": [
+        -1.4499999999999997,
+        0.8,
+        0.375
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.035,
+        0.035,
+        0.375
+      ]
+    },
+    {
+      "id": "table_leg_0_3",
+      "shape": "box",
+      "position_m": [
+        1.1999999999999997,
+        0.8,
+        0.375
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.035,
+        0.035,
+        0.375
+      ]
+    }
+  ],
+  "units": "metres; quaternion wxyz",
+  "size_convention": "MuJoCo primitive half sizes/radii; mesh vertices are in each geom local frame",
+  "scope": "Declared static workstation geometry; no object poses or current contact state"
+}

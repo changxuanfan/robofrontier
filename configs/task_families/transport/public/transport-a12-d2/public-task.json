@@ -1,0 +1,1609 @@
+{
+  "schema": "robofrontier.transport-policy-input.v1",
+  "id": "transport-a12-d2",
+  "family": "transport",
+  "level": 2,
+  "scene_revision": 14,
+  "kind": "frontier_suite",
+  "suite_version": 2,
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -0.714,
+        -1.581,
+        0.8
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "B": {
+      "base_position_m": [
+        0.0,
+        -1.581,
+        0.8
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "C": {
+      "base_position_m": [
+        0.714,
+        -1.581,
+        0.8
+      ],
+      "yaw_rad": 1.5707963267948966
+    },
+    "D": {
+      "base_position_m": [
+        1.581,
+        -0.714,
+        0.8
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    "E": {
+      "base_position_m": [
+        1.581,
+        0.0,
+        0.8
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    "F": {
+      "base_position_m": [
+        1.581,
+        0.714,
+        0.8
+      ],
+      "yaw_rad": 3.141592653589793
+    },
+    "G": {
+      "base_position_m": [
+        0.714,
+        1.581,
+        0.8
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "H": {
+      "base_position_m": [
+        -0.0,
+        1.581,
+        0.8
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "I": {
+      "base_position_m": [
+        -0.714,
+        1.581,
+        0.8
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    "J": {
+      "base_position_m": [
+        -1.581,
+        0.714,
+        0.8
+      ],
+      "yaw_rad": 0
+    },
+    "K": {
+      "base_position_m": [
+        -1.581,
+        -0.0,
+        0.8
+      ],
+      "yaw_rad": 0
+    },
+    "L": {
+      "base_position_m": [
+        -1.581,
+        -0.714,
+        0.8
+      ],
+      "yaw_rad": 0
+    }
+  },
+  "workspace_world_m": {
+    "lower": [
+      -2.431,
+      -2.431,
+      0.42500000000000004
+    ],
+    "upper": [
+      2.431,
+      2.431,
+      2.1
+    ]
+  },
+  "table_geometry": {
+    "tabletop_z_m": 0.8,
+    "outer_bounds_xy_m": [
+      [
+        -1.768,
+        -1.768
+      ],
+      [
+        1.768,
+        1.768
+      ]
+    ],
+    "outer_size_xy_m": [
+      3.536,
+      3.536
+    ],
+    "central_opening_size_m": [
+      0.8329999999999997,
+      0.8329999999999997
+    ],
+    "central_opening_is_insertion_socket": false,
+    "boxes_world": [
+      {
+        "id": "table_0",
+        "center_m": [
+          0.0,
+          -1.09225,
+          0.775
+        ],
+        "half_size_m": [
+          1.768,
+          0.6757500000000001,
+          0.025
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "id": "table_1",
+        "center_m": [
+          0.0,
+          1.09225,
+          0.775
+        ],
+        "half_size_m": [
+          1.768,
+          0.6757500000000001,
+          0.025
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "id": "table_2",
+        "center_m": [
+          -1.09225,
+          0.0,
+          0.775
+        ],
+        "half_size_m": [
+          0.6757500000000001,
+          0.4165,
+          0.025
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "id": "table_3",
+        "center_m": [
+          1.09225,
+          0.0,
+          0.775
+        ],
+        "half_size_m": [
+          0.6757500000000001,
+          0.4165,
+          0.025
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  "table_height_m": 0.8,
+  "mechanism": {
+    "kind": "two_flat_blades",
+    "cube_side_m": 0.06,
+    "cylinder_diameter_m": 0.06,
+    "cylinder_height_m": 0.06,
+    "cube_body_mass_kg": 0.16874999999999996,
+    "cube_material": "Solid wood; inherited nominal density",
+    "cylinder_body_mass_kg": 0.13253594007331937,
+    "blade_size_m": [
+      0.0025,
+      0.012,
+      0.024
+    ],
+    "blade_spacing_m": 0.024,
+    "slot_opening_m": [
+      0.0045,
+      0.015
+    ],
+    "slot_depth_m": 0.026,
+    "board_thickness_m": 0.032,
+    "spring_board": null,
+    "supplies": "Tabletop; no pedestals. Plug blades initially up/sideways. First six stock identities are cubes, subsequent identities are cylinders.",
+    "board_size_m": [
+      0.14300000000000002,
+      0.396
+    ],
+    "board_material_density_kg_m3": 650.0,
+    "board_outward_shift_from_r10_m": 0.05,
+    "target_cue_span_m": 0.08399999999999999,
+    "target_cue_scale": 1.4,
+    "target_center_pitch_m": 0.12,
+    "target_cue_gap_m": 0.036000000000000004,
+    "transfer": {
+      "marked_intermediate_regions": false,
+      "predefined_buffers": false,
+      "choice": "Planner chooses direct airborne handover, safe tabletop staging or waiting; no fixed routes/pairs"
+    }
+  },
+  "initial_supplies": [
+    {
+      "source": "A",
+      "color": "red",
+      "shape": "cube",
+      "count": 3
+    },
+    {
+      "source": "B",
+      "color": "blue",
+      "shape": "cube",
+      "count": 3
+    },
+    {
+      "source": "C",
+      "color": "yellow",
+      "shape": "cube",
+      "count": 3
+    },
+    {
+      "source": "D",
+      "color": "white",
+      "shape": "cube",
+      "count": 3
+    },
+    {
+      "source": "E",
+      "color": "cyan",
+      "shape": "cube",
+      "count": 3
+    },
+    {
+      "source": "F",
+      "color": "purple",
+      "shape": "cube",
+      "count": 3
+    },
+    {
+      "source": "G",
+      "color": "red",
+      "shape": "cylinder",
+      "count": 3
+    },
+    {
+      "source": "H",
+      "color": "blue",
+      "shape": "cylinder",
+      "count": 3
+    },
+    {
+      "source": "I",
+      "color": "yellow",
+      "shape": "cylinder",
+      "count": 3
+    },
+    {
+      "source": "J",
+      "color": "white",
+      "shape": "cylinder",
+      "count": 3
+    },
+    {
+      "source": "K",
+      "color": "cyan",
+      "shape": "cylinder",
+      "count": 3
+    },
+    {
+      "source": "L",
+      "color": "purple",
+      "shape": "cylinder",
+      "count": 3
+    }
+  ],
+  "orders": [
+    {
+      "goal_id": "A_slot1",
+      "robot": "A",
+      "requires": {
+        "identity": "B"
+      },
+      "target_cue": {
+        "color": "blue",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "A_slot2",
+      "robot": "A",
+      "requires": {
+        "identity": "F"
+      },
+      "target_cue": {
+        "color": "purple",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "A_slot3",
+      "robot": "A",
+      "requires": {
+        "identity": "H"
+      },
+      "target_cue": {
+        "color": "blue",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "B_slot1",
+      "robot": "B",
+      "requires": {
+        "identity": "G"
+      },
+      "target_cue": {
+        "color": "red",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "B_slot2",
+      "robot": "B",
+      "requires": {
+        "identity": "H"
+      },
+      "target_cue": {
+        "color": "blue",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "B_slot3",
+      "robot": "B",
+      "requires": {
+        "identity": "L"
+      },
+      "target_cue": {
+        "color": "purple",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "C_slot1",
+      "robot": "C",
+      "requires": {
+        "identity": "B"
+      },
+      "target_cue": {
+        "color": "blue",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "C_slot2",
+      "robot": "C",
+      "requires": {
+        "identity": "I"
+      },
+      "target_cue": {
+        "color": "yellow",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "C_slot3",
+      "robot": "C",
+      "requires": {
+        "identity": "J"
+      },
+      "target_cue": {
+        "color": "white",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "D_slot1",
+      "robot": "D",
+      "requires": {
+        "identity": "B"
+      },
+      "target_cue": {
+        "color": "blue",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "D_slot2",
+      "robot": "D",
+      "requires": {
+        "identity": "C"
+      },
+      "target_cue": {
+        "color": "yellow",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "D_slot3",
+      "robot": "D",
+      "requires": {
+        "identity": "G"
+      },
+      "target_cue": {
+        "color": "red",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "E_slot1",
+      "robot": "E",
+      "requires": {
+        "identity": "A"
+      },
+      "target_cue": {
+        "color": "red",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "E_slot2",
+      "robot": "E",
+      "requires": {
+        "identity": "F"
+      },
+      "target_cue": {
+        "color": "purple",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "E_slot3",
+      "robot": "E",
+      "requires": {
+        "identity": "G"
+      },
+      "target_cue": {
+        "color": "red",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "F_slot1",
+      "robot": "F",
+      "requires": {
+        "identity": "E"
+      },
+      "target_cue": {
+        "color": "cyan",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "F_slot2",
+      "robot": "F",
+      "requires": {
+        "identity": "F"
+      },
+      "target_cue": {
+        "color": "purple",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "F_slot3",
+      "robot": "F",
+      "requires": {
+        "identity": "L"
+      },
+      "target_cue": {
+        "color": "purple",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "G_slot1",
+      "robot": "G",
+      "requires": {
+        "identity": "A"
+      },
+      "target_cue": {
+        "color": "red",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "G_slot2",
+      "robot": "G",
+      "requires": {
+        "identity": "C"
+      },
+      "target_cue": {
+        "color": "yellow",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "G_slot3",
+      "robot": "G",
+      "requires": {
+        "identity": "K"
+      },
+      "target_cue": {
+        "color": "cyan",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "H_slot1",
+      "robot": "H",
+      "requires": {
+        "identity": "E"
+      },
+      "target_cue": {
+        "color": "cyan",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "H_slot2",
+      "robot": "H",
+      "requires": {
+        "identity": "E"
+      },
+      "target_cue": {
+        "color": "cyan",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "H_slot3",
+      "robot": "H",
+      "requires": {
+        "identity": "H"
+      },
+      "target_cue": {
+        "color": "blue",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "I_slot1",
+      "robot": "I",
+      "requires": {
+        "identity": "D"
+      },
+      "target_cue": {
+        "color": "white",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "I_slot2",
+      "robot": "I",
+      "requires": {
+        "identity": "I"
+      },
+      "target_cue": {
+        "color": "yellow",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "I_slot3",
+      "robot": "I",
+      "requires": {
+        "identity": "J"
+      },
+      "target_cue": {
+        "color": "white",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "J_slot1",
+      "robot": "J",
+      "requires": {
+        "identity": "A"
+      },
+      "target_cue": {
+        "color": "red",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "J_slot2",
+      "robot": "J",
+      "requires": {
+        "identity": "D"
+      },
+      "target_cue": {
+        "color": "white",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "J_slot3",
+      "robot": "J",
+      "requires": {
+        "identity": "L"
+      },
+      "target_cue": {
+        "color": "purple",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "K_slot1",
+      "robot": "K",
+      "requires": {
+        "identity": "C"
+      },
+      "target_cue": {
+        "color": "yellow",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "K_slot2",
+      "robot": "K",
+      "requires": {
+        "identity": "K"
+      },
+      "target_cue": {
+        "color": "cyan",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "K_slot3",
+      "robot": "K",
+      "requires": {
+        "identity": "K"
+      },
+      "target_cue": {
+        "color": "cyan",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "L_slot1",
+      "robot": "L",
+      "requires": {
+        "identity": "D"
+      },
+      "target_cue": {
+        "color": "white",
+        "shape": "cube",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "L_slot2",
+      "robot": "L",
+      "requires": {
+        "identity": "I"
+      },
+      "target_cue": {
+        "color": "yellow",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    },
+    {
+      "goal_id": "L_slot3",
+      "robot": "L",
+      "requires": {
+        "identity": "J"
+      },
+      "target_cue": {
+        "color": "white",
+        "shape": "cylinder",
+        "span_m": 0.08399999999999999,
+        "physical_role": "Massless non-colliding surface paint; existing acceptance unchanged"
+      }
+    }
+  ],
+  "rules": [
+    "Deliver the three requested source-identity items to each destination board. Station IDs identify inventory and destination orders, not exclusive robot ownership.",
+    "Transfers may be direct airborne handovers or safe stable tabletop staging. There are no marked or mandatory intermediate regions, predefined buffer positions, prescribed routes or fixed transfer pairs. The planner chooses whether to wait, stage or hand over. Establish receiving support before releasing an airborne item.",
+    "Each final position shows the required color and shape: a square for a cube and a circle for a cylinder, 1.4 times the object width or diameter. These are visual identity cues, not enlarged acceptance tolerances. Slot numbers and source identities disambiguate orders.",
+    "L1: release stably at the final board targets. L2 and L3: both flat blades must enter the real blind slots and the item must be released, seated and stable. L2 has a fixed board; L3 has the same three inline sockets on a passive spring-supported z/roll/pitch board. Preserve prior placements and allow gripper opening and withdrawal clearance.",
+    "Cubes have 60 mm sides; cylinders have 60 mm diameter and height. Blades initially point up or sideways. Grasp, airborne reorientation, receiving grasp and subsequent insertion must form a feasible continuous sequence. Allocation, routes and independent concurrent work are planner choices; minimize unnecessary cycling, staging and regrasping while maintaining real support and collision clearance.",
+    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits."
+  ],
+  "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB",
+      "Robot proprioception and robot geometry",
+      "Action feedback",
+      "Visible dial count"
+    ]
+  },
+  "gripper_profile": "standard-panda",
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "E_front",
+    "E_side",
+    "F_front",
+    "F_side",
+    "G_front",
+    "G_side",
+    "H_front",
+    "H_side",
+    "I_front",
+    "I_side",
+    "J_front",
+    "J_side",
+    "K_front",
+    "K_side",
+    "L_front",
+    "L_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "board_A_close",
+    "board_B_close",
+    "board_C_close",
+    "board_D_close",
+    "board_E_close",
+    "board_F_close",
+    "board_G_close",
+    "board_H_close",
+    "board_I_close",
+    "board_J_close",
+    "board_K_close",
+    "board_L_close",
+    "plug_close",
+    "socket_close"
+  ],
+  "static_camera_mounts": [
+    {
+      "id": "A_front",
+      "frame": "world",
+      "position_m": [
+        -0.714,
+        -0.481,
+        1.65
+      ],
+      "quaternion_wxyz": [
+        0.0,
+        0.0,
+        0.36773821929459205,
+        0.9299293532683235
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "A_side",
+      "frame": "world",
+      "position_m": [
+        0.136,
+        -0.931,
+        1.5499999999999998
+      ],
+      "quaternion_wxyz": [
+        0.5187473906000641,
+        0.25395095171716875,
+        0.35893362350874525,
+        0.7331962307475747
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "B_front",
+      "frame": "world",
+      "position_m": [
+        0.0,
+        -0.481,
+        1.65
+      ],
+      "quaternion_wxyz": [
+        0.0,
+        0.0,
+        0.36773821929459205,
+        0.9299293532683235
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "B_side",
+      "frame": "world",
+      "position_m": [
+        0.85,
+        -0.931,
+        1.5499999999999998
+      ],
+      "quaternion_wxyz": [
+        0.5187473906000641,
+        0.25395095171716875,
+        0.35893362350874525,
+        0.7331962307475747
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "C_front",
+      "frame": "world",
+      "position_m": [
+        0.714,
+        -0.481,
+        1.65
+      ],
+      "quaternion_wxyz": [
+        0.0,
+        0.0,
+        0.36773821929459205,
+        0.9299293532683235
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "C_side",
+      "frame": "world",
+      "position_m": [
+        1.564,
+        -0.931,
+        1.5499999999999998
+      ],
+      "quaternion_wxyz": [
+        0.518747390600064,
+        0.25395095171716875,
+        0.3589336235087454,
+        0.7331962307475749
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "D_front",
+      "frame": "world",
+      "position_m": [
+        0.481,
+        -0.714,
+        1.65
+      ],
+      "quaternion_wxyz": [
+        0.6575593517204521,
+        0.26003018856467175,
+        -0.26003018856467175,
+        -0.6575593517204521
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "D_side",
+      "frame": "world",
+      "position_m": [
+        0.931,
+        0.136,
+        1.5499999999999998
+      ],
+      "quaternion_wxyz": [
+        -0.15163822908589472,
+        -0.07423395913090548,
+        0.4333748392268806,
+        0.8852578243181587
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "E_front",
+      "frame": "world",
+      "position_m": [
+        0.481,
+        0.0,
+        1.65
+      ],
+      "quaternion_wxyz": [
+        0.6575593517204521,
+        0.26003018856467175,
+        -0.26003018856467175,
+        -0.6575593517204521
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "E_side",
+      "frame": "world",
+      "position_m": [
+        0.931,
+        0.85,
+        1.5499999999999998
+      ],
+      "quaternion_wxyz": [
+        -0.15163822908589472,
+        -0.07423395913090548,
+        0.4333748392268806,
+        0.8852578243181587
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "F_front",
+      "frame": "world",
+      "position_m": [
+        0.481,
+        0.714,
+        1.65
+      ],
+      "quaternion_wxyz": [
+        0.6575593517204521,
+        0.26003018856467175,
+        -0.26003018856467175,
+        -0.6575593517204521
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "F_side",
+      "frame": "world",
+      "position_m": [
+        0.931,
+        1.564,
+        1.5499999999999998
+      ],
+      "quaternion_wxyz": [
+        -0.15163822908589478,
+        -0.07423395913090551,
+        0.4333748392268805,
+        0.8852578243181588
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "G_front",
+      "frame": "world",
+      "position_m": [
+        0.714,
+        0.481,
+        1.65
+      ],
+      "quaternion_wxyz": [
+        0.9299293532683235,
+        0.36773821929459205,
+        0.0,
+        0.0
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "G_side",
+      "frame": "world",
+      "position_m": [
+        -0.136,
+        0.931,
+        1.5499999999999998
+      ],
+      "quaternion_wxyz": [
+        0.7331962307475748,
+        0.3589336235087453,
+        -0.2539509517171687,
+        -0.5187473906000641
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "H_front",
+      "frame": "world",
+      "position_m": [
+        0.0,
+        0.481,
+        1.65
+      ],
+      "quaternion_wxyz": [
+        0.9299293532683235,
+        0.36773821929459205,
+        0.0,
+        0.0
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "H_side",
+      "frame": "world",
+      "position_m": [
+        -0.85,
+        0.931,
+        1.5499999999999998
+      ],
+      "quaternion_wxyz": [
+        0.7331962307475748,
+        0.3589336235087453,
+        -0.2539509517171687,
+        -0.5187473906000641
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "I_front",
+      "frame": "world",
+      "position_m": [
+        -0.714,
+        0.481,
+        1.65
+      ],
+      "quaternion_wxyz": [
+        0.9299293532683235,
+        0.36773821929459205,
+        0.0,
+        0.0
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "I_side",
+      "frame": "world",
+      "position_m": [
+        -1.564,
+        0.931,
+        1.5499999999999998
+      ],
+      "quaternion_wxyz": [
+        0.7331962307475748,
+        0.3589336235087453,
+        -0.25395095171716875,
+        -0.5187473906000641
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "J_front",
+      "frame": "world",
+      "position_m": [
+        -0.481,
+        0.714,
+        1.65
+      ],
+      "quaternion_wxyz": [
+        0.6575593517204521,
+        0.26003018856467175,
+        0.26003018856467175,
+        0.6575593517204521
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "J_side",
+      "frame": "world",
+      "position_m": [
+        -0.931,
+        -0.136,
+        1.5499999999999998
+      ],
+      "quaternion_wxyz": [
+        0.8852578243181587,
+        0.4333748392268806,
+        0.07423395913090548,
+        0.15163822908589472
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "K_front",
+      "frame": "world",
+      "position_m": [
+        -0.481,
+        0.0,
+        1.65
+      ],
+      "quaternion_wxyz": [
+        0.6575593517204521,
+        0.26003018856467175,
+        0.26003018856467175,
+        0.6575593517204521
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "K_side",
+      "frame": "world",
+      "position_m": [
+        -0.931,
+        -0.85,
+        1.5499999999999998
+      ],
+      "quaternion_wxyz": [
+        0.8852578243181587,
+        0.4333748392268806,
+        0.07423395913090548,
+        0.15163822908589472
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "L_front",
+      "frame": "world",
+      "position_m": [
+        -0.481,
+        -0.714,
+        1.65
+      ],
+      "quaternion_wxyz": [
+        0.6575593517204521,
+        0.26003018856467175,
+        0.26003018856467175,
+        0.6575593517204521
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "L_side",
+      "frame": "world",
+      "position_m": [
+        -0.931,
+        -1.564,
+        1.5499999999999998
+      ],
+      "quaternion_wxyz": [
+        0.8852578243181588,
+        0.4333748392268805,
+        0.07423395913090551,
+        0.15163822908589478
+      ],
+      "vertical_fov_deg": 50.0,
+      "fixed_world": true
+    },
+    {
+      "id": "global",
+      "frame": "world",
+      "position_m": [
+        0.0,
+        -4.039927853623088,
+        4.410393610092054
+      ],
+      "quaternion_wxyz": [
+        0.9068822799045593,
+        0.4213840651888827,
+        0.0,
+        0.0
+      ],
+      "vertical_fov_deg": 43.0,
+      "fixed_world": true
+    },
+    {
+      "id": "global_rear",
+      "frame": "world",
+      "position_m": [
+        0.0,
+        4.039927853623089,
+        4.410393610092056
+      ],
+      "quaternion_wxyz": [
+        0.0,
+        0.0,
+        0.4213840651888827,
+        0.9068822799045593
+      ],
+      "vertical_fov_deg": 43.0,
+      "fixed_world": true
+    },
+    {
+      "id": "global_side",
+      "frame": "world",
+      "position_m": [
+        -3.2021247568093267,
+        -2.5616998054474616,
+        3.2482248216601732
+      ],
+      "quaternion_wxyz": [
+        0.7797521554885996,
+        0.45203329499948874,
+        -0.21725843346798085,
+        -0.37476826080903225
+      ],
+      "vertical_fov_deg": 48.0,
+      "fixed_world": true
+    },
+    {
+      "id": "top",
+      "frame": "world",
+      "position_m": [
+        0.0,
+        -1.1102230246251565e-16,
+        6.56382456225679
+      ],
+      "quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "vertical_fov_deg": 48.0,
+      "fixed_world": true
+    },
+    {
+      "id": "board_A_close",
+      "frame": "world",
+      "position_m": [
+        -0.314,
+        -0.681,
+        1.42
+      ],
+      "quaternion_wxyz": [
+        0.3730768368491956,
+        0.14592012540388385,
+        0.33375044756066996,
+        0.8533062929345863
+      ],
+      "vertical_fov_deg": 38.0,
+      "fixed_world": true
+    },
+    {
+      "id": "board_B_close",
+      "frame": "world",
+      "position_m": [
+        0.4,
+        -0.681,
+        1.42
+      ],
+      "quaternion_wxyz": [
+        0.3730768368491956,
+        0.14592012540388385,
+        0.33375044756066996,
+        0.8533062929345863
+      ],
+      "vertical_fov_deg": 38.0,
+      "fixed_world": true
+    },
+    {
+      "id": "board_C_close",
+      "frame": "world",
+      "position_m": [
+        1.114,
+        -0.681,
+        1.42
+      ],
+      "quaternion_wxyz": [
+        0.3730768368491956,
+        0.14592012540388388,
+        0.33375044756066996,
+        0.8533062929345863
+      ],
+      "vertical_fov_deg": 38.0,
+      "fixed_world": true
+    },
+    {
+      "id": "board_D_close",
+      "frame": "world",
+      "position_m": [
+        0.681,
+        -0.314,
+        1.42
+      ],
+      "quaternion_wxyz": [
+        -0.3395735049235071,
+        -0.13281609450951729,
+        0.3391783148788726,
+        0.867183827402894
+      ],
+      "vertical_fov_deg": 38.0,
+      "fixed_world": true
+    },
+    {
+      "id": "board_E_close",
+      "frame": "world",
+      "position_m": [
+        0.681,
+        0.4,
+        1.42
+      ],
+      "quaternion_wxyz": [
+        -0.339573504923507,
+        -0.13281609450951726,
+        0.3391783148788726,
+        0.867183827402894
+      ],
+      "vertical_fov_deg": 38.0,
+      "fixed_world": true
+    },
+    {
+      "id": "board_F_close",
+      "frame": "world",
+      "position_m": [
+        0.681,
+        1.114,
+        1.42
+      ],
+      "quaternion_wxyz": [
+        -0.339573504923507,
+        -0.13281609450951726,
+        0.3391783148788726,
+        0.867183827402894
+      ],
+      "vertical_fov_deg": 38.0,
+      "fixed_world": true
+    },
+    {
+      "id": "board_G_close",
+      "frame": "world",
+      "position_m": [
+        0.314,
+        0.681,
+        1.42
+      ],
+      "quaternion_wxyz": [
+        0.8533062929345863,
+        0.33375044756066996,
+        -0.14592012540388385,
+        -0.3730768368491956
+      ],
+      "vertical_fov_deg": 38.0,
+      "fixed_world": true
+    },
+    {
+      "id": "board_H_close",
+      "frame": "world",
+      "position_m": [
+        -0.4,
+        0.681,
+        1.42
+      ],
+      "quaternion_wxyz": [
+        0.8533062929345863,
+        0.33375044756066996,
+        -0.14592012540388385,
+        -0.3730768368491956
+      ],
+      "vertical_fov_deg": 38.0,
+      "fixed_world": true
+    },
+    {
+      "id": "board_I_close",
+      "frame": "world",
+      "position_m": [
+        -1.114,
+        0.681,
+        1.42
+      ],
+      "quaternion_wxyz": [
+        0.8533062929345863,
+        0.33375044756066996,
+        -0.14592012540388388,
+        -0.3730768368491956
+      ],
+      "vertical_fov_deg": 38.0,
+      "fixed_world": true
+    },
+    {
+      "id": "board_J_close",
+      "frame": "world",
+      "position_m": [
+        -0.681,
+        0.314,
+        1.42
+      ],
+      "quaternion_wxyz": [
+        0.867183827402894,
+        0.3391783148788726,
+        0.13281609450951729,
+        0.3395735049235071
+      ],
+      "vertical_fov_deg": 38.0,
+      "fixed_world": true
+    },
+    {
+      "id": "board_K_close",
+      "frame": "world",
+      "position_m": [
+        -0.681,
+        -0.4,
+        1.42
+      ],
+      "quaternion_wxyz": [
+        0.867183827402894,
+        0.3391783148788726,
+        0.13281609450951726,
+        0.339573504923507
+      ],
+      "vertical_fov_deg": 38.0,
+      "fixed_world": true
+    },
+    {
+      "id": "board_L_close",
+      "frame": "world",
+      "position_m": [
+        -0.681,
+        -1.114,
+        1.42
+      ],
+      "quaternion_wxyz": [
+        0.867183827402894,
+        0.3391783148788726,
+        0.13281609450951726,
+        0.339573504923507
+      ],
+      "vertical_fov_deg": 38.0,
+      "fixed_world": true
+    },
+    {
+      "id": "plug_close",
+      "frame": "world",
+      "position_m": [
+        -0.28400000000000003,
+        -1.601,
+        1.0100000000000002
+      ],
+      "quaternion_wxyz": [
+        0.809817993614161,
+        0.48080501954575655,
+        0.17162978401931586,
+        0.2890753667053325
+      ],
+      "vertical_fov_deg": 32.0,
+      "fixed_world": true
+    },
+    {
+      "id": "socket_close",
+      "frame": "world",
+      "position_m": [
+        -0.5539999999999999,
+        -1.2309999999999999,
+        1.0819999999999999
+      ],
+      "quaternion_wxyz": [
+        0.8668728702470545,
+        0.34962277696320526,
+        0.13292634287919916,
+        0.32958447783069483
+      ],
+      "vertical_fov_deg": 38.0,
+      "fixed_world": true
+    }
+  ],
+  "completion": {
+    "stable_duration_sim_s": 1.0,
+    "scope": "Mechanism-specific commissioning required; no inherited v1 evaluator assumed",
+    "acceptance": {
+      "reference_frame": "Current destination board local frame",
+      "stable_duration_sim_s": 1.0,
+      "released_robot_contact_distance_m": 0.0002,
+      "object_linear_speed_below_m_s": 0.01,
+      "object_angular_speed_below_rad_s": 0.1,
+      "board_linear_speed_at_most_m_s": 0.01,
+      "board_angular_speed_at_most_rad_s": 0.1,
+      "seating_height_tolerance_m": 0.0015,
+      "upright_tilt_at_most_deg": 5.0,
+      "L1_target_footprint_width_m": 0.07,
+      "L1_full_shape_envelope_required": true,
+      "geometric_allowance_m": 0.0003,
+      "L23_both_full_blades_inside_slots": true,
+      "L23_blade_top_at_most_m": 0.0005,
+      "L23_bottom_below_slot_depth_allowance_m": 0.0003,
+      "source_identity_required": true,
+      "all_goals_required": true,
+      "process_compliance_required": true
+    }
+  },
+  "family_reference": "transport.md",
+  "execution_readiness": "environment_preview_only"
+}

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "id": "robo-factory-v6",
+  "id": "robo-factory-v7",
   "units": "metres",
   "coordinate_frame": "+X east, +Y north, +Z up",
   "seed": 1729,
@@ -66,7 +66,8 @@
     "include_plants": true,
     "perimeter_detail": true,
     "batch_static_geometry": true,
-    "whole_floor_finish": true
+    "whole_floor_finish": true,
+    "service_equipment": true
   },
   "lighting": {
     "environment_intensity": 1350,
@@ -112,6 +113,6 @@
   },
   "workstation_dressing": {
     "enabled": true,
-    "catalog": "configs/suites/frontier-v2-r10.json"
+    "catalog": "configs/suites/frontier-current-oracle.json"
   }
 }

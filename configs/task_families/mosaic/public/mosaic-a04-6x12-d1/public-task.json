@@ -1,0 +1,557 @@
+{
+  "schema": "robofrontier.mosaic-policy-task.v1",
+  "kind": "frontier_suite",
+  "id": "mosaic-a04-6x12-d1",
+  "family": "mosaic",
+  "suite_version": 2,
+  "scene_revision": 14,
+  "source_scene_sha256": "0794eb592888fac3b9250d55945c2dc8eff16f59c239cca19cc2061769962da6",
+  "level": 1,
+  "arms": {
+    "A": {
+      "base_position_m": [
+        -0.45594999999999997,
+        -0.639698729810778,
+        0.8
+      ],
+      "yaw_rad": 1.0471975511965979
+    },
+    "B": {
+      "base_position_m": [
+        0.45594999999999997,
+        -0.639698729810778,
+        0.8
+      ],
+      "yaw_rad": 2.0943951023931953
+    },
+    "C": {
+      "base_position_m": [
+        -0.45594999999999997,
+        0.639698729810778,
+        0.8
+      ],
+      "yaw_rad": -1.0471975511965979
+    },
+    "D": {
+      "base_position_m": [
+        0.45594999999999997,
+        0.639698729810778,
+        0.8
+      ],
+      "yaw_rad": -2.0943951023931953
+    }
+  },
+  "rules": [
+    "Build the supplied Tulip reference, including background cells, one released cube per pixel. The 9x18 petal mask is mirrored from left to right. The portrait grid rotates clockwise 90 degrees as a whole on the horizontal workstation.",
+    "Cube side is 60 mm and common cell-center pitch is 81 mm. L1 has 80 mm clear square pockets, L2 3 mm red printed lines, L3 no visible grid. The four colors are cream, navy, coral and sage. The target image matches world north-up, centered on the declared assembly origin.",
+    "Stock allocations do not restrict which robot can use an item. Preserve completed placements and account for finger release/withdrawal clearance.",
+    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits.",
+    "The supplied pattern matrix and reference image already have their final world orientation; do not apply the historical rotation or mirror again."
+  ],
+  "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
+  "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
+  "observation_contract": {
+    "initial_geometry_public": true,
+    "live_object_truth_for_policy": false,
+    "policy": [
+      "Selected timestamped RGB",
+      "Robot proprioception and robot geometry",
+      "Action feedback"
+    ]
+  },
+  "gripper_profile": "standard-panda",
+  "cameras": [
+    "A_front",
+    "A_side",
+    "B_front",
+    "B_side",
+    "C_front",
+    "C_side",
+    "D_front",
+    "D_side",
+    "global",
+    "global_rear",
+    "global_side",
+    "top",
+    "assembly_01",
+    "assembly_02"
+  ],
+  "initial_supplies": [
+    {
+      "source": "A",
+      "color": "coral",
+      "count": 5
+    },
+    {
+      "source": "A",
+      "color": "cream",
+      "count": 3
+    },
+    {
+      "source": "A",
+      "color": "navy",
+      "count": 7
+    },
+    {
+      "source": "A",
+      "color": "sage",
+      "count": 3
+    },
+    {
+      "source": "B",
+      "color": "coral",
+      "count": 6
+    },
+    {
+      "source": "B",
+      "color": "cream",
+      "count": 7
+    },
+    {
+      "source": "B",
+      "color": "navy",
+      "count": 1
+    },
+    {
+      "source": "B",
+      "color": "sage",
+      "count": 4
+    },
+    {
+      "source": "C",
+      "color": "coral",
+      "count": 5
+    },
+    {
+      "source": "C",
+      "color": "cream",
+      "count": 4
+    },
+    {
+      "source": "C",
+      "color": "navy",
+      "count": 5
+    },
+    {
+      "source": "C",
+      "color": "sage",
+      "count": 4
+    },
+    {
+      "source": "D",
+      "color": "coral",
+      "count": 6
+    },
+    {
+      "source": "D",
+      "color": "cream",
+      "count": 7
+    },
+    {
+      "source": "D",
+      "color": "navy",
+      "count": 1
+    },
+    {
+      "source": "D",
+      "color": "sage",
+      "count": 4
+    }
+  ],
+  "target": {
+    "rows": 6,
+    "columns": 12,
+    "colors": 4,
+    "pitch_m": 0.081,
+    "cube_side_m": 0.06,
+    "pattern": [
+      [
+        "navy",
+        "sage",
+        "sage",
+        "navy",
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "cream",
+        "navy"
+      ],
+      [
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "cream",
+        "sage",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream"
+      ],
+      [
+        "navy",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream"
+      ],
+      [
+        "navy",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "sage",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream",
+        "cream"
+      ],
+      [
+        "navy",
+        "cream",
+        "cream",
+        "cream",
+        "sage",
+        "cream",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "coral",
+        "cream"
+      ],
+      [
+        "navy",
+        "navy",
+        "sage",
+        "navy",
+        "navy",
+        "navy",
+        "cream",
+        "cream",
+        "coral",
+        "coral",
+        "cream",
+        "navy"
+      ]
+    ],
+    "pocket_opening_m": 0.08,
+    "depth_m": 0.02,
+    "palette": {
+      "cream": "#FFF4DA",
+      "navy": "#173F73",
+      "coral": "#F03F5B",
+      "sage": "#16A16E"
+    },
+    "center_world_m": [
+      0,
+      0,
+      0.8
+    ],
+    "row1": "north",
+    "column1": "west",
+    "reference_image": "target-pattern.png",
+    "supplied_reference_orientation": "Already world north-up; use as supplied",
+    "floor_z_m": 0.78,
+    "goal_cube_center_z_m": 0.81
+  },
+  "mechanism": {
+    "kind": "recessed_grid",
+    "stock_packing": "Single layer; non-exclusive station allocation",
+    "stock_count": 72
+  },
+  "static_geometry": {
+    "table_height_m": 0.8,
+    "tables": [
+      {
+        "center_m": [
+          0,
+          0,
+          0.775
+        ],
+        "half_size_m": [
+          1.2325,
+          1.3308749999999998,
+          0.025
+        ]
+      }
+    ],
+    "cube_side_m": 0.06,
+    "cube_mass_kg": 0.16874999999999996,
+    "contact_friction": [
+      1.0,
+      0.005,
+      0.0001
+    ],
+    "workspace_world_m": {
+      "lower": [
+        -1.30595,
+        -1.489698729810778,
+        0.42500000000000004
+      ],
+      "upper": [
+        1.30595,
+        1.489698729810778,
+        2.1
+      ]
+    },
+    "camera_calibration": [
+      {
+        "id": "A_front",
+        "position_m": [
+          0.09404999999999983,
+          0.31292921435210463,
+          1.65
+        ],
+        "quaternion_wxyz": [
+          0.24068342722571212,
+          0.09517765476552764,
+          0.3552078433301994,
+          0.8982427789461643
+        ],
+        "vertical_fov_deg": 50.0
+      },
+      {
+        "id": "A_side",
+        "position_m": [
+          0.6051715932167726,
+          -0.5017822173508928,
+          1.5499999999999998
+        ],
+        "quaternion_wxyz": [
+          0.6908366502155198,
+          0.33819664056602255,
+          0.2809759140443002,
+          0.5739514707323486
+        ],
+        "vertical_fov_deg": 50.0
+      },
+      {
+        "id": "B_front",
+        "position_m": [
+          -0.09404999999999983,
+          0.31292921435210463,
+          1.65
+        ],
+        "quaternion_wxyz": [
+          -0.24068342722571212,
+          -0.09517765476552764,
+          0.3552078433301994,
+          0.8982427789461643
+        ],
+        "vertical_fov_deg": 50.0
+      },
+      {
+        "id": "B_side",
+        "position_m": [
+          0.8670715932167731,
+          0.34821778264910697,
+          1.5499999999999998
+        ],
+        "quaternion_wxyz": [
+          0.3113063535858102,
+          0.15239892518258033,
+          0.4124305996969281,
+          0.8424748793014145
+        ],
+        "vertical_fov_deg": 50.0
+      },
+      {
+        "id": "C_front",
+        "position_m": [
+          0.09404999999999983,
+          -0.31292921435210463,
+          1.65
+        ],
+        "quaternion_wxyz": [
+          0.8982427789461643,
+          0.3552078433301994,
+          0.09517765476552764,
+          0.24068342722571212
+        ],
+        "vertical_fov_deg": 50.0
+      },
+      {
+        "id": "C_side",
+        "position_m": [
+          -0.8670715932167731,
+          -0.34821778264910697,
+          1.5499999999999998
+        ],
+        "quaternion_wxyz": [
+          0.8424748793014145,
+          0.4124305996969281,
+          -0.15239892518258033,
+          -0.3113063535858102
+        ],
+        "vertical_fov_deg": 50.0
+      },
+      {
+        "id": "D_front",
+        "position_m": [
+          -0.09404999999999983,
+          -0.31292921435210463,
+          1.65
+        ],
+        "quaternion_wxyz": [
+          0.8982427789461643,
+          0.3552078433301994,
+          -0.09517765476552764,
+          -0.24068342722571212
+        ],
+        "vertical_fov_deg": 50.0
+      },
+      {
+        "id": "D_side",
+        "position_m": [
+          -0.6051715932167726,
+          0.5017822173508928,
+          1.5499999999999998
+        ],
+        "quaternion_wxyz": [
+          0.5739514707323488,
+          0.2809759140443002,
+          -0.33819664056602255,
+          -0.6908366502155197
+        ],
+        "vertical_fov_deg": 50.0
+      },
+      {
+        "id": "global",
+        "position_m": [
+          0.0,
+          -3.203186547186474,
+          3.295477950128945
+        ],
+        "quaternion_wxyz": [
+          0.9068822799045593,
+          0.4213840651888828,
+          0.0,
+          0.0
+        ],
+        "vertical_fov_deg": 43.0
+      },
+      {
+        "id": "global_rear",
+        "position_m": [
+          0.0,
+          3.203186547186474,
+          3.295477950128945
+        ],
+        "quaternion_wxyz": [
+          0.0,
+          0.0,
+          0.4213840651888828,
+          0.9068822799045593
+        ],
+        "vertical_fov_deg": 43.0
+      },
+      {
+        "id": "global_side",
+        "position_m": [
+          -1.6446419389556404,
+          -1.3157135511645122,
+          2.1060707552341364
+        ],
+        "quaternion_wxyz": [
+          0.7797521554885997,
+          0.45203329499948874,
+          -0.21725843346798088,
+          -0.37476826080903225
+        ],
+        "vertical_fov_deg": 48.0
+      },
+      {
+        "id": "top",
+        "position_m": [
+          0.0,
+          0.0,
+          4.084828781834916
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "vertical_fov_deg": 48.0
+      },
+      {
+        "id": "assembly_01",
+        "position_m": [
+          -0.38094999999999996,
+          0.0,
+          2.4499999999999997
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "vertical_fov_deg": 40.0
+      },
+      {
+        "id": "assembly_02",
+        "position_m": [
+          0.38094999999999996,
+          0.0,
+          2.4499999999999997
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "vertical_fov_deg": 40.0
+      }
+    ],
+    "gripper": {
+      "profile": "standard-panda",
+      "travel_per_finger_m": 0.04,
+      "opening_range_m": [
+        0,
+        0.08
+      ],
+      "wide_finger": null
+    }
+  },
+  "completion": {
+    "stable_duration_sim_s": 1.0,
+    "stable_linear_speed_m_s_exclusive": 0.01,
+    "stable_angular_speed_rad_s_exclusive": 0.1,
+    "axis_alignment_tolerance_deg_inclusive": 8.0,
+    "robot_contact_release_distance_m_inclusive": 0.0002,
+    "placement": {
+      "footprint_containment_margin_m_inclusive": 0.0003,
+      "bottom_height_tolerance_m_inclusive": 0.0008,
+      "floor_contact_distance_m_inclusive": 0.0002,
+      "mode": "complete_footprint_and_floor_contact"
+    },
+    "distinct_cube_per_cell": true,
+    "process_violations_clear_required": true,
+    "orientation": "Cube axes aligned to workstation axes, including cube symmetries"
+  },
+  "execution_readiness": "environment_preview_only",
+  "package_status": "colour_design_review_only_no_r14_oracle_qualification",
+  "guidance": {
+    "task_prompt": "../../guidance/mosaic-r14.md",
+    "skill": "../../guidance/mosaic-r13/SKILL.md"
+  }
+}

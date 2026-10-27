@@ -285,6 +285,9 @@ class World:
     def start_trial(self):
         if self.task.get('execution_readiness')=='environment_preview_only':
             raise ValueError('This v2 scene is an environment preview. Mechanism-specific evaluation and recording commissioning are required before starting a policy trial.')
+        if self.task.get('execution_readiness')=='prepared_policy_trial':
+            from .task_families import validate_frozen_policy
+            validate_frozen_policy(self.task,self.directory)
         if self.task.get('kind')=='frontier_suite':
             from .suite.evaluate import Monitor
             secret=json.loads((self.directory/'private/inputs/suite-code.json').read_text())['code_symbols'] if self.task['family']=='dial' else None

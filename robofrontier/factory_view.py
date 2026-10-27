@@ -166,9 +166,14 @@ def render_views(scene, output, renderer='filament', width=1600, height=1000, vi
     return reports
 
 
-def serve(scene, renderer='filament', width=1280, height=720, port=0):
+def serve(scene, renderer='filament', width=1280, height=720, port=0, play=False):
     """GPU calls stay on the main thread; HTTP handlers only enqueue camera edits."""
     r=FactoryRenderer(scene,renderer,width,height);commands=queue.Queue(maxsize=128);lock=threading.Lock()
+    timeline=None;playback_started=time.perf_counter();playback_state=None
+    if play:
+        from .factory_playback import FactoryTimeline
+        from .task_families import RELEASE,read
+        timeline=FactoryTimeline(scene,read(ROOT/RELEASE),model=r.model,data=r.data)
     shared={'jpeg':None,'status':{},'error':None};captures=ROOT/'outputs/robo-factory/captures';captures.mkdir(parents=True,exist_ok=True)
     page=(ROOT/'assets/robo_factory/viewer.html').read_bytes();stop=threading.Event()
     class Handler(BaseHTTPRequestHandler):
@@ -221,13 +226,18 @@ def serve(scene, renderer='filament', width=1280, height=720, port=0):
                 except (ValueError,TypeError,KeyError,StopIteration) as error:
                     with lock:
                         shared['error']=str(error);shared['status']['error']=str(error)
-            if dirty and time.perf_counter()>=next_render:
-                for _ in range(3):pixels=r.render()
+            if (dirty or timeline is not None) and time.perf_counter()>=next_render:
+                if timeline is not None:
+                    playback_state=timeline.at(int((time.perf_counter()-playback_started)*timeline.fps))
+                    pixels=r.render()
+                else:
+                    for _ in range(3):pixels=r.render()
                 buffer=io.BytesIO();Image.fromarray(pixels).save(buffer,format='JPEG',quality=89)
-                with lock:shared['jpeg']=buffer.getvalue();shared['status']={**r.report(),'error':shared['error']}
+                with lock:shared['jpeg']=buffer.getvalue();shared['status']={**r.report(),'error':shared['error'],'playback':playback_state}
                 dirty=False;next_render=time.perf_counter()+interval
             time.sleep(.015)
     except KeyboardInterrupt:pass
     finally:
+        if timeline is not None:timeline.close()
         server.shutdown();r.close()
 

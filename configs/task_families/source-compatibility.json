@@ -1,0 +1,29 @@
+{
+  "schema": "robofrontier.source-compatibility.v1",
+  "baseline_commit": "d3e59165ee0b0bacbb47e2507fac703e62652086",
+  "scope": "Historical Mosaic and Dial validation only. Relay scoring is changed; no equivalence claimed. New policy run hashes use actual integrated bytes.",
+  "files": [
+    {
+      "path": "robofrontier/pipeline.py",
+      "rule": "exclude_prepared_policy_guard",
+      "families": [
+        "mosaic",
+        "dial"
+      ],
+      "historical_sha256": "dfa71f38759d5b7232e725a04f729d31d3d999d5876791a8a2db670906103bdd",
+      "integrated_sha256": "45392723101c1b935e4ec48c9344758f66e12763340ad46422722ed4916b7708",
+      "unaffected_ast_sha256": "3451cda324f0ce6e368d20cf5c2f59bcfafc32085e5df9d72ab7293fb6c3ccf5"
+    },
+    {
+      "path": "robofrontier/suite/evaluate_v2.py",
+      "rule": "exclude_relay_class",
+      "families": [
+        "mosaic",
+        "dial"
+      ],
+      "historical_sha256": "ee2efac94d55253a63197adf4ddf364ec43a373a6959eba1bd5ef0886af7c035",
+      "integrated_sha256": "80d7eddce46a35714f31b254771534be7c8755a11fe589b435e62696c4d40754",
+      "unaffected_ast_sha256": "0dcf394977e2c64e80fa46626905fc58ee85a52b50e0ede276d62aaec01b5dfe"
+    }
+  ]
+}

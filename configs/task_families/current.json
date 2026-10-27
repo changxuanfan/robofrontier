@@ -1,0 +1,1620 @@
+{
+  "schema": "robofrontier.family-release.v1",
+  "families": {
+    "transport": {
+      "catalog": {
+        "path": "configs/suites/frontier-transport-r14.json",
+        "sha256": "a61237fa73564a30eb10a187e3ed6f0a160040e5af548f7447867d317d62e992"
+      },
+      "speedup": 20,
+      "fps": 30,
+      "gpt": [
+        {
+          "id": "transport-a04-d1",
+          "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a04-d1",
+          "source_files": {
+            "scene.xml": "53713645c019e1625f20a4b0355ad9979578bf73bb6fa110571d6b7b90f47201",
+            "task.json": "89cde5db95bd7f596dd3089b2c5d2dc2a260674c62f53e2349d32372d84b342c",
+            "environment.json": "7b25bf2a6169e729ed0b03062484b45293544e48ef87436c4dbe1f6f3c6eb1c7",
+            "workstation.json": "60a834f93ec7b905c75790a47a31def2803388239a0d2e8d3fc974fbe2d2c2c1"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/transport/public/transport-a04-d1/family-guidance.md",
+              "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
+            }
+          },
+          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "public_projection": {
+            "path": "configs/task_families/transport/public/transport-a04-d1/public-task.json",
+            "sha256": "a459c3a4f8454cc482e4af3af567435f2aef7947ec9a314a412bd14773058c48"
+          }
+        },
+        {
+          "id": "transport-a04-d2",
+          "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a04-d2",
+          "source_files": {
+            "scene.xml": "7bd4dfe4e3620d10e12855473120a31c24f6b2520a83b11c7e7adcc8058597df",
+            "task.json": "82e770c5590cf14b3266c712f31d9aa1417a00a18257cb36e912f5033c2dc121",
+            "environment.json": "76d2379b35b43f9f8781992c6b189e0b8ebb68f7fda96f3a22e443b0c125cb52",
+            "workstation.json": "ae7f6df8d9a6d3489ed3aca5c7222e8fed72746579c0decb43c7b760b54bfe5e"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/transport/public/transport-a04-d2/family-guidance.md",
+              "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
+            }
+          },
+          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "public_projection": {
+            "path": "configs/task_families/transport/public/transport-a04-d2/public-task.json",
+            "sha256": "b6efa19bf7cdf6644739f9c45ca34f6fd9a76071a6229c14aca67f4e93214b0e"
+          }
+        },
+        {
+          "id": "transport-a04-d3",
+          "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a04-d3",
+          "source_files": {
+            "scene.xml": "0b5f7ddeb1cacab873419693564f224c4482abc60838e881abe683a8fc34bde8",
+            "task.json": "27551f15451f249dcd56bc2c445c1b4307a651c357f41bd4769e999c65ec4412",
+            "environment.json": "ad68a9fc60753a8c004a32aba47830b4b2dcae5f00d4e67ad56f9ca7657d96ef",
+            "workstation.json": "1d1783dd65da9f4dc221781bb81a32598948a02c6ea73faae0a875047e67cd98"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/transport/public/transport-a04-d3/family-guidance.md",
+              "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
+            }
+          },
+          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "public_projection": {
+            "path": "configs/task_families/transport/public/transport-a04-d3/public-task.json",
+            "sha256": "06b73d0061b99d2506adb4ced94e9280c3a2ee4d411884567cdc9a9703fe75a1"
+          }
+        },
+        {
+          "id": "transport-a08-d1",
+          "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a08-d1",
+          "source_files": {
+            "scene.xml": "44b107f2b7e3065d33020d581f022e56dc99ba1a4f45769295df06fd2415e9e5",
+            "task.json": "0b34bf3ac59870c6176952c2dff7437ec4da8092eb64611914cfe474d21813ee",
+            "environment.json": "b05adfb5c5b1f8f8eb9485f3e8364b493371401811cb4b7692be5f356343cdf2",
+            "workstation.json": "9cdbb6fe88061870fff93648fef8b85f8b8396e001d39c0f7a2fd2b2eec46d4b"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/transport/public/transport-a08-d1/family-guidance.md",
+              "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
+            }
+          },
+          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "public_projection": {
+            "path": "configs/task_families/transport/public/transport-a08-d1/public-task.json",
+            "sha256": "03be230e9579284d4b4b386ef21d3d596dc1a9572d7103e58b112ac6bb9ca484"
+          }
+        },
+        {
+          "id": "transport-a08-d2",
+          "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a08-d2",
+          "source_files": {
+            "scene.xml": "556fc939b70b3e5eeca8be4fae77c5cd8f249a35b56e2f9e0edee34bdce6044c",
+            "task.json": "8b2bf013849d985db5a7418b48c866837fbdd7c1e4f90578665bfaebdcf6235b",
+            "environment.json": "c3ff6db43913e735b4062f5b7cf85f06ea8ca4989ecc0b01762d1c5e160d997a",
+            "workstation.json": "34cc18549947adbf1b032243caf450ccb0db6fc1b9192abc839582610a7a435d"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/transport/public/transport-a08-d2/family-guidance.md",
+              "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
+            }
+          },
+          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "public_projection": {
+            "path": "configs/task_families/transport/public/transport-a08-d2/public-task.json",
+            "sha256": "18e0e481a54097647a950865d05974b71615cc66e3783e45bd37c7e9229dd254"
+          }
+        },
+        {
+          "id": "transport-a08-d3",
+          "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a08-d3",
+          "source_files": {
+            "scene.xml": "75261ec9e4cc26863c71c66efbf732b7af5cf357e610bea20469334b462f16a8",
+            "task.json": "a4fd58a0ae349c8d98f6dcdb15c07376b88692850dba3500895bd801f48badec",
+            "environment.json": "e5718d5d2c2ef5188201e2581f4d94fde3bb56ba4e7865b4e45969ff527f2f0b",
+            "workstation.json": "a4b9d8d054acb050fc57c063995a2025ed3e7afee5784b17042dab9247259705"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/transport/public/transport-a08-d3/family-guidance.md",
+              "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
+            }
+          },
+          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "public_projection": {
+            "path": "configs/task_families/transport/public/transport-a08-d3/public-task.json",
+            "sha256": "6200e5f52d190577819506b5ffa012617ddb5cb38d7f06a76a48e425cbe7fe58"
+          }
+        },
+        {
+          "id": "transport-a12-d1",
+          "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a12-d1",
+          "source_files": {
+            "scene.xml": "41856c8940c9801c9e3d0fcf0353dd0468a96c3b5fc6eef1d01d8aa9863e843e",
+            "task.json": "2d0c41231526ecb76eb6c448d67ede805259b681c5a713d123ff6f56dd4c43f8",
+            "environment.json": "2931674daccc0a212aeeabf886dbe409e539bdfcbb0dc9f41d4f295078a6e0f1",
+            "workstation.json": "2d54c8b7c1bf624c4e7111dac6c6a077118ae78f0d02e8fa1cecb1e2a235ff86"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/transport/public/transport-a12-d1/family-guidance.md",
+              "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
+            }
+          },
+          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "public_projection": {
+            "path": "configs/task_families/transport/public/transport-a12-d1/public-task.json",
+            "sha256": "0cc8325d6b0b033246708b5bf4985cb7bd9e8cc8c4d3897cb8e640e9a30fe6eb"
+          }
+        },
+        {
+          "id": "transport-a12-d2",
+          "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a12-d2",
+          "source_files": {
+            "scene.xml": "9d930aba9da6607207be67f0ff8d16871955f22b2453991d86a3d9879d40107f",
+            "task.json": "ed6c1a2e21135718f8f44d35d074de732d8f4600c2ce8aa3beae4cbb54d707fb",
+            "environment.json": "11886c6aac85ed17a81baa6796bc177a931c392860c67ab38ce2dbc9f258905b",
+            "workstation.json": "702b664c0e28ef85481d9d42a1d20ed982799470d2424231e07980d619741ce5"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/transport/public/transport-a12-d2/family-guidance.md",
+              "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
+            }
+          },
+          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "public_projection": {
+            "path": "configs/task_families/transport/public/transport-a12-d2/public-task.json",
+            "sha256": "36b6670621df028dd2f037f9455222dd51464e7ea5d0f0263d10079113cf6d0c"
+          }
+        },
+        {
+          "id": "transport-a12-d3",
+          "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a12-d3",
+          "source_files": {
+            "scene.xml": "be4474d54fae3f9817a6bf5ae0edc70f408deba684a3df3ee996f7e7f1d84b9d",
+            "task.json": "87ee872ace0e271e625abbe403e146cc0606a0f00cc14aaea05fc31b1cad382a",
+            "environment.json": "1df9187023072aef2511dcc742e2c71341b23307dc6abacba612902d26e76d5f",
+            "workstation.json": "d1a07a6188a479e627bef61be45f7dce5782ba8758f87a9b8cf6fe4cf0175e14"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/transport/public/transport-a12-d3/family-guidance.md",
+              "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
+            }
+          },
+          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "public_projection": {
+            "path": "configs/task_families/transport/public/transport-a12-d3/public-task.json",
+            "sha256": "709ebcfdb38a7884fd9c92884b5c3c41e0ac235f7b263d433cdb3d023d5b1729"
+          }
+        }
+      ],
+      "oracle": [
+        {
+          "id": "transport-a04-d1",
+          "directory": "runs/oracle/transport-continuation-20261026/full/transport-a04-d1/attempt-003/motion/source",
+          "source_files": {
+            "scene.xml": "53713645c019e1625f20a4b0355ad9979578bf73bb6fa110571d6b7b90f47201",
+            "task.json": "264abb208fd55dfc716f5bd7093c048e1130cec9b4d198d71238b1bfd4219068",
+            "environment.json": "3391dad4a91e87bd0d4eb50292a4908d827d5e3eb668d650be70318b2c656ecb",
+            "workstation.json": "627f34aeab12c99e0962bebbdfb2f82094edfb9053bf34125513b5fe62074dd3"
+          },
+          "qualification": "r13_frozen_oracle",
+          "recording": "runs/oracle/transport-continuation-20261026/full/transport-a04-d1/attempt-003/motion",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/transport-a04-d1/edit.json",
+          "edit_sha256": "79a61825f30f2b053e39523ca9b8fe3a866175e734656e76ff794dbd0cced61f",
+          "table_opening_scale": 0.5,
+          "historical_edit": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a04-d1/edit.json",
+          "historical_edit_sha256": "3a977152d68dc57b4bd3dcafd4acfa5f1d751ede076fa742cfbe9f15d300da7e"
+        },
+        {
+          "id": "transport-a04-d2",
+          "directory": "runs/oracle/transport-continuation-20261026/full/transport-a04-d2/attempt-003/motion/source",
+          "source_files": {
+            "scene.xml": "7bd4dfe4e3620d10e12855473120a31c24f6b2520a83b11c7e7adcc8058597df",
+            "task.json": "368719a6a3af9aa6ff52fd646d44148e1e26813e0130a3206290e5703e88836b",
+            "environment.json": "918b312b04ae51f0fd1aa2504a60b366e72e41322cbe15591e7d1bf6b6327c6b",
+            "workstation.json": "a1e75596fa18c64663a6a0cc15a477669606667f55d50ec4ae7e26eb8ea349b9"
+          },
+          "qualification": "r13_frozen_oracle",
+          "recording": "runs/oracle/transport-continuation-20261026/full/transport-a04-d2/attempt-003/motion",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/transport-a04-d2/edit.json",
+          "edit_sha256": "1056857bb1687ae7d473cdfca560184a99e053b7128ef140d912c73cf9420506",
+          "table_opening_scale": 0.5,
+          "historical_edit": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a04-d2/edit.json",
+          "historical_edit_sha256": "3c48664a2673c32c0fcabc6202e7b888c9540ac040ea0397b7a096c064210c02"
+        },
+        {
+          "id": "transport-a04-d3",
+          "directory": "runs/oracle/transport-continuation-20261026/full/transport-a04-d3/attempt-001/motion/source",
+          "source_files": {
+            "scene.xml": "0b5f7ddeb1cacab873419693564f224c4482abc60838e881abe683a8fc34bde8",
+            "task.json": "d5f788db475eeef246acb6bb5c8c79eb48c2e0eb772e1c54b30f5ba07e3c76d9",
+            "environment.json": "1bb8977ae0e02649e74a68f264bf33ef97f3c90b4379c929a5e3ec3de3a868a2",
+            "workstation.json": "61a123ed58f3de4e9e04e854863ef6c70e6fe2c3e2fdc1cce0370708b7c1c028"
+          },
+          "qualification": "r13_frozen_oracle",
+          "recording": "runs/oracle/transport-continuation-20261026/full/transport-a04-d3/attempt-001/motion",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/transport-a04-d3/edit.json",
+          "edit_sha256": "a355e7d446d112a2234266a5738bb92d4eeefdf85d97a2beb675a1d757e3b944",
+          "table_opening_scale": 0.5,
+          "historical_edit": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a04-d3/edit.json",
+          "historical_edit_sha256": "34bc4a2561d6893b846d839bbe094bb5de98f14b182211090cd3cacd68e3eeca"
+        },
+        {
+          "id": "transport-a08-d1",
+          "directory": "runs/oracle/transport-continuation-20261026/full/transport-a08-d1/attempt-002/motion/source",
+          "source_files": {
+            "scene.xml": "420fdd5f94773056d9ef146b5c94970c53bd81d8e1f2d9ef36cbadc57542b8f6",
+            "task.json": "f2aefa440ba7f01955c8d2bf2d6ed5732731bc85c54e50d005ce1af08e5ae256",
+            "environment.json": "bba44e1fa4d6bfba6f7ba76ca897fdaeee810123f44ecec2f802921b48754447",
+            "workstation.json": "c8a7b009bc422c8a07511cf5351e8b51b672a41e0e92402410614228ca135eb5"
+          },
+          "qualification": "r13_frozen_oracle",
+          "recording": "runs/oracle/transport-continuation-20261026/full/transport-a08-d1/attempt-002/motion",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/transport-a08-d1/edit.json",
+          "edit_sha256": "03bbe0768daa6f21372e875ca19199ff7286a1e34a55b772d08edc7c58c417ed",
+          "table_opening_scale": 0.5,
+          "historical_edit": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a08-d1/edit.json",
+          "historical_edit_sha256": "f16066ab430dc992c9c6ddab395065bc4241e03c82fb321a9726e6cf4d9ebf1c"
+        },
+        {
+          "id": "transport-a08-d2",
+          "directory": "runs/oracle/transport-continuation-20261026/full/transport-a08-d2/attempt-002/motion/source",
+          "source_files": {
+            "scene.xml": "f507a430406f93aa087f2b8d24bd93271ad7949ca5a16ef3102c20995f3ce156",
+            "task.json": "beffe912ac562463e9acded4dbc0acc086c2eb85b1ddc455175caa14019a6a32",
+            "environment.json": "488a965d5f7bf70bdac76977edab72117222bddbb77ffbdecf9d55da10eca174",
+            "workstation.json": "5e3298be3791d3285695f0bd11c2b2e5a522a1991a537d2c5fe4e19187695d24"
+          },
+          "qualification": "r13_frozen_oracle",
+          "recording": "runs/oracle/transport-continuation-20261026/full/transport-a08-d2/attempt-002/motion",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/transport-a08-d2/edit.json",
+          "edit_sha256": "bc723d5fd641fb70dc72a0edf3875b951b2082ae57c8f2b8ae408aa7775cd5e8",
+          "table_opening_scale": 0.5,
+          "historical_edit": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a08-d2/edit.json",
+          "historical_edit_sha256": "cbf7a7b999c7a862988a6f43a2c4d83957d0d5973cdf6ffa4c5b089188d40bc6"
+        },
+        {
+          "id": "transport-a08-d3",
+          "directory": "runs/oracle/transport-continuation-20261026/full/transport-a08-d3/attempt-002/motion/source",
+          "source_files": {
+            "scene.xml": "453173efe683dee32d02a78f0c980a89b9c2330833659d839f96b67b0398864f",
+            "task.json": "e23c4f2e69fcd66ef5a5ac2a9eef3ce56012ffaafd11107f5f86e82ea8193a8e",
+            "environment.json": "d1f5037850f9a0b7d098464712e3215b2a2e264a2acc85a918a202d201e8b1ca",
+            "workstation.json": "030d2b09b0bf8479abb7d0b37fd789caca483d83fbde3428d354afb58c749998"
+          },
+          "qualification": "r13_frozen_oracle",
+          "recording": "runs/oracle/transport-continuation-20261026/full/transport-a08-d3/attempt-002/motion",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/transport-a08-d3/edit.json",
+          "edit_sha256": "d4ab7347e935fa80832fb51a15f6c5d9136758506935d98aa8125d16080f4b2a",
+          "table_opening_scale": 0.5,
+          "historical_edit": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a08-d3/edit.json",
+          "historical_edit_sha256": "b8ef8c5d9e133837625b48ce416b95c9b621c2760cf24d1aab7e141c61a1f485"
+        },
+        {
+          "id": "transport-a12-d1",
+          "directory": "runs/oracle/transport-continuation-20261026/full/transport-a12-d1/attempt-003/motion/source",
+          "source_files": {
+            "scene.xml": "bdb133bf14c6fb416da9737039c8991f8f3aed2b27fb10f01bc1ffc4b0d1a4c1",
+            "task.json": "eacb060cb54a27906c8e0887124bf0d6b77bb95da3728d6fc5119cbf3f61c50d",
+            "environment.json": "4ac2db795968c06c1073915babc07e8c3509ebeb4c586da853d68e1452bd0aa3",
+            "workstation.json": "cf4f4321b7ff70d1fc941dce3188d03c855c0b1c41140e613f49fb80b1a129fc"
+          },
+          "qualification": "r13_frozen_oracle",
+          "recording": "runs/oracle/transport-continuation-20261026/full/transport-a12-d1/attempt-003/motion",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/transport-a12-d1/edit.json",
+          "edit_sha256": "50d0f192b00e33f9b03ff9bf4ecda49f8fa5fbe8362e9251ab9dce0feb417ba8",
+          "table_opening_scale": 0.5,
+          "historical_edit": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a12-d1/edit.json",
+          "historical_edit_sha256": "05d156008ab9c404b14f5dd9cdc5067a6aa979bde553806072550a40754a03bc"
+        },
+        {
+          "id": "transport-a12-d2",
+          "directory": "runs/oracle/transport-continuation-20261026/full/transport-a12-d2/attempt-003/motion/source",
+          "source_files": {
+            "scene.xml": "33d5d57dd3a6ea8cb1049af2cc34538da0108da3d3edf2df0dc7a445eb491e68",
+            "task.json": "5bba39bf39ef5218086915b7f7897edabb88b63edea1933bae0efe51440c591f",
+            "environment.json": "11bb0e44076f1739f116767d20a2ed295d8327511acf9c423095ab634228e5d1",
+            "workstation.json": "d22e199d2caf6d0c18fd1f678c8caf1d06aeb2cd4ff4756026b20a436f19a041"
+          },
+          "qualification": "r13_frozen_oracle",
+          "recording": "runs/oracle/transport-continuation-20261026/full/transport-a12-d2/attempt-003/motion",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/transport-a12-d2/edit.json",
+          "edit_sha256": "5a8a8563a8cb391e8333e7b7ba2f7c1abcf9c2dc2b30a8f55c0fc0aafdcd51c3",
+          "table_opening_scale": 0.5,
+          "historical_edit": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a12-d2/edit.json",
+          "historical_edit_sha256": "2c700709049aadde4575a6d978fc21d8b9d53b52bd26970fdb2633ebb761b376"
+        },
+        {
+          "id": "transport-a12-d3",
+          "directory": "runs/oracle/transport-continuation-20261026/full/transport-a12-d3/attempt-007/motion/source",
+          "source_files": {
+            "scene.xml": "ca9158a2f824f9dd3dcffe46a4bf7e72cb85375d672dbe200dc96cb4cccc2300",
+            "task.json": "731f1453a40971d96aac9616272c08e6818a8d859db3954a6957a993fd09dab8",
+            "environment.json": "6bd465ba7863a0606269d732a7855f8d1b534e5b209bd26b97b11294e0a5b590",
+            "workstation.json": "90f99a0a092b733fb3fcd61f6d0c2480fd811ebe74d83c0a2282af758e44fd0e"
+          },
+          "qualification": "r13_frozen_oracle",
+          "recording": "runs/oracle/transport-continuation-20261026/full/transport-a12-d3/attempt-007/motion",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/transport-a12-d3/edit.json",
+          "edit_sha256": "7e96ed4184bd362da0aaafc99f5cdf9e403970b6ac9b3847ac53d15666257067",
+          "table_opening_scale": 0.5,
+          "historical_edit": "outputs/oracle/transport-continuation-20261026/transport-source-edits-v2/transport-a12-d3/edit.json",
+          "historical_edit_sha256": "2b613cef9120e51f3e1dc0281a677ec7408a2af187c8f1054d2fd653e0291a05"
+        }
+      ]
+    },
+    "mosaic": {
+      "catalog": {
+        "path": "configs/suites/frontier-mosaic-r14.json",
+        "sha256": "52d751a1699612efe2636d4b69987983980d96beeed5f4eeda100bbc0d433b2f"
+      },
+      "speedup": 30,
+      "fps": 30,
+      "gpt": [
+        {
+          "id": "mosaic-a04-6x12-d1",
+          "directory": "configs/environments/mosaic/frontier-v2-r14-mosaic-a04-6x12-d1",
+          "source_files": {
+            "scene.xml": "0794eb592888fac3b9250d55945c2dc8eff16f59c239cca19cc2061769962da6",
+            "task.json": "9eca0856c3183d1187f77db1b758eb4d6e0fcd5b1107fbd1de352e756c606174",
+            "environment.json": "1a925c1bc743f848c2996348c739dc9c67cdbcd6212c34b01e8bb1fb6e954749",
+            "workstation.json": "8180c834b2e55c0f78fbb8d0b6110227acc6480484b53f7c2e9d45a7017334d6"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/mosaic/public/mosaic-a04-6x12-d1/family-guidance.md",
+              "sha256": "1414f553b2851e723eea82e48308b3d7acbd15166a4371fb8585fae38caa6e4d"
+            },
+            "skill.md": {
+              "path": "configs/task_families/mosaic/public/mosaic-a04-6x12-d1/skill.md",
+              "sha256": "d10615cc407a613bf7a9f11fbfed8e04588c518267752274fa0f58012feabe67"
+            }
+          },
+          "qualification": "r14_colour_variant_with_r13_reference_and_design_evidence",
+          "public_projection": {
+            "path": "configs/task_families/mosaic/public/mosaic-a04-6x12-d1/public-task.json",
+            "sha256": "e15f241e437c478b3b9d2eab1b0e24a5cd0788ec1d4e43aa2f964d3c0a391244"
+          }
+        },
+        {
+          "id": "mosaic-a04-6x12-d2",
+          "directory": "configs/environments/mosaic/frontier-v2-r14-mosaic-a04-6x12-d2",
+          "source_files": {
+            "scene.xml": "605e6119b3a7f5b4e2cb5f148d74292ec79974e384740a5efaa6f261e46af4df",
+            "task.json": "b8c268fe004fac3b9c91e6a1d409ca91b9a82b60246bd1049b7fa4dcddbec2be",
+            "environment.json": "b03083ec382e2ee773b5f312e04b0b631ad001398b000bfa8795fb08da26732f",
+            "workstation.json": "bd5a9b27900e9179f24c3eb9b08d645a49bd58e0943c10641a81bb575805651d"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/mosaic/public/mosaic-a04-6x12-d2/family-guidance.md",
+              "sha256": "1414f553b2851e723eea82e48308b3d7acbd15166a4371fb8585fae38caa6e4d"
+            },
+            "skill.md": {
+              "path": "configs/task_families/mosaic/public/mosaic-a04-6x12-d2/skill.md",
+              "sha256": "d10615cc407a613bf7a9f11fbfed8e04588c518267752274fa0f58012feabe67"
+            }
+          },
+          "qualification": "r14_colour_variant_with_r13_reference_and_design_evidence",
+          "public_projection": {
+            "path": "configs/task_families/mosaic/public/mosaic-a04-6x12-d2/public-task.json",
+            "sha256": "d03d316ae340ad547aab62e8b822500d661d1db69217ad0df44d3feeeb5031f5"
+          }
+        },
+        {
+          "id": "mosaic-a04-6x12-d3",
+          "directory": "configs/environments/mosaic/frontier-v2-r14-mosaic-a04-6x12-d3",
+          "source_files": {
+            "scene.xml": "c1ad7eeaa2e576a296f402db0235818c5e4cc0980561b692a1f04d9470dc9c95",
+            "task.json": "f635e9239c0c12281b11047bc5699891e160f6e3dd91e630ee1c69ef0ced1d52",
+            "environment.json": "c3eb88163baf12734d8da392bd1b61a711089bf758d77d5172bd0ec1c723d2b7",
+            "workstation.json": "7494dd74295704daa01b744f0b41f24731fa239edfbea2fec5e990292ee6f41e"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/mosaic/public/mosaic-a04-6x12-d3/family-guidance.md",
+              "sha256": "1414f553b2851e723eea82e48308b3d7acbd15166a4371fb8585fae38caa6e4d"
+            },
+            "skill.md": {
+              "path": "configs/task_families/mosaic/public/mosaic-a04-6x12-d3/skill.md",
+              "sha256": "d10615cc407a613bf7a9f11fbfed8e04588c518267752274fa0f58012feabe67"
+            }
+          },
+          "qualification": "r14_colour_variant_with_r13_reference_and_design_evidence",
+          "public_projection": {
+            "path": "configs/task_families/mosaic/public/mosaic-a04-6x12-d3/public-task.json",
+            "sha256": "5b0deb6f5d2d4dcfc3cd142b8beddb483e27496b8023a18ec639f3cbb32bea1b"
+          }
+        },
+        {
+          "id": "mosaic-a06-9x18-d1",
+          "directory": "configs/environments/mosaic/frontier-v2-r14-mosaic-a06-9x18-d1",
+          "source_files": {
+            "scene.xml": "abfe3afdacb721c5714c9b1a1ecf5bca0f72a5bf77f094827a616195554e0c13",
+            "task.json": "c700690bbfb8dce1355c6668e9ed7d67d1ff01868f3273a07484a74fd934c352",
+            "environment.json": "e66bc894cd4c91cbb71d07b7c8ae87d5e466b242351c218fb9924b7c58cde310",
+            "workstation.json": "5ef220984150fb7efb12ba9260a1e2379dd34fd6b254e627f737fb24bb4fc52d"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/mosaic/public/mosaic-a06-9x18-d1/family-guidance.md",
+              "sha256": "1414f553b2851e723eea82e48308b3d7acbd15166a4371fb8585fae38caa6e4d"
+            },
+            "skill.md": {
+              "path": "configs/task_families/mosaic/public/mosaic-a06-9x18-d1/skill.md",
+              "sha256": "d10615cc407a613bf7a9f11fbfed8e04588c518267752274fa0f58012feabe67"
+            }
+          },
+          "qualification": "r14_colour_variant_with_r13_reference_and_design_evidence",
+          "public_projection": {
+            "path": "configs/task_families/mosaic/public/mosaic-a06-9x18-d1/public-task.json",
+            "sha256": "74430765ad5e68ed29d80fcaae5ac12ee8c0da21778b7d14b455dcf36a7f7551"
+          }
+        },
+        {
+          "id": "mosaic-a06-9x18-d2",
+          "directory": "configs/environments/mosaic/frontier-v2-r14-mosaic-a06-9x18-d2",
+          "source_files": {
+            "scene.xml": "13d23b31df7c961208b09b31b02562b9aa39b31e51b002161c0dbe1dea597d95",
+            "task.json": "4811bd44712227c6b4e9bbde4314cea06fc1a8a34d0a10c2fb45e6ff1b12919b",
+            "environment.json": "56c0de48776e49aac0b3d2007bb91b690996bc1f4d68107bae903fdb54ea2060",
+            "workstation.json": "468db925e8aed51facb028c10f0fd62ae245b4a86e7ae40f661883b525ea897e"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/mosaic/public/mosaic-a06-9x18-d2/family-guidance.md",
+              "sha256": "1414f553b2851e723eea82e48308b3d7acbd15166a4371fb8585fae38caa6e4d"
+            },
+            "skill.md": {
+              "path": "configs/task_families/mosaic/public/mosaic-a06-9x18-d2/skill.md",
+              "sha256": "d10615cc407a613bf7a9f11fbfed8e04588c518267752274fa0f58012feabe67"
+            }
+          },
+          "qualification": "r14_colour_variant_with_r13_reference_and_design_evidence",
+          "public_projection": {
+            "path": "configs/task_families/mosaic/public/mosaic-a06-9x18-d2/public-task.json",
+            "sha256": "e7a2f4149613803bd7a5590c4dfdcf52726aa7f5b7182863a41c7682fedde0bf"
+          }
+        },
+        {
+          "id": "mosaic-a06-9x18-d3",
+          "directory": "configs/environments/mosaic/frontier-v2-r14-mosaic-a06-9x18-d3",
+          "source_files": {
+            "scene.xml": "9a21a32dd14477a449f9a1a0f93bf4bfd6d8fcd304ca380538c8141d54cdf0f0",
+            "task.json": "0ce2d95330442801077653a8900bade8e7ad3369c2ea8f7b105485fd22d1a040",
+            "environment.json": "d358a75b2d0eb2921d36c34ed35f56ada641e7c0c348d77460fe5e5259e54270",
+            "workstation.json": "50f08ff006c52055b6408480d7d92d13ba930e4df85b73ed3e0783a626e2b5af"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/mosaic/public/mosaic-a06-9x18-d3/family-guidance.md",
+              "sha256": "1414f553b2851e723eea82e48308b3d7acbd15166a4371fb8585fae38caa6e4d"
+            },
+            "skill.md": {
+              "path": "configs/task_families/mosaic/public/mosaic-a06-9x18-d3/skill.md",
+              "sha256": "d10615cc407a613bf7a9f11fbfed8e04588c518267752274fa0f58012feabe67"
+            }
+          },
+          "qualification": "r14_colour_variant_with_r13_reference_and_design_evidence",
+          "public_projection": {
+            "path": "configs/task_families/mosaic/public/mosaic-a06-9x18-d3/public-task.json",
+            "sha256": "240cbaaf17c471a7ccdefeca11d44d71df8604305cdb1cdef4134c196097734a"
+          }
+        },
+        {
+          "id": "mosaic-a08-12x24-d1",
+          "directory": "configs/environments/mosaic/frontier-v2-r14-mosaic-a08-12x24-d1",
+          "source_files": {
+            "scene.xml": "7036c3ce49c07c9e0b6b31cc13324da7d3040f3826f77b05ead5498df2f8ac8b",
+            "task.json": "e000c744538ee6bfd28229b1ed05d9e4a34d7c7f3a01328f8a323c71cea630ae",
+            "environment.json": "9c2d63a71d97e5c2eba429e8e4ce4c6b4fe7f20bdfe9e4430a6586c3fc25e6d7",
+            "workstation.json": "4829ce929474d1af64519a61450de9f284c734c43acc23c9db9c4c78d38a23be"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/mosaic/public/mosaic-a08-12x24-d1/family-guidance.md",
+              "sha256": "1414f553b2851e723eea82e48308b3d7acbd15166a4371fb8585fae38caa6e4d"
+            },
+            "skill.md": {
+              "path": "configs/task_families/mosaic/public/mosaic-a08-12x24-d1/skill.md",
+              "sha256": "d10615cc407a613bf7a9f11fbfed8e04588c518267752274fa0f58012feabe67"
+            }
+          },
+          "qualification": "r14_colour_variant_with_r13_reference_and_design_evidence",
+          "public_projection": {
+            "path": "configs/task_families/mosaic/public/mosaic-a08-12x24-d1/public-task.json",
+            "sha256": "ab6ae947522378838f5beb4864dc86b8a88eb338f39aeadd7bad10e438d4e542"
+          }
+        },
+        {
+          "id": "mosaic-a08-12x24-d2",
+          "directory": "configs/environments/mosaic/frontier-v2-r14-mosaic-a08-12x24-d2",
+          "source_files": {
+            "scene.xml": "e83d7bb17ee2a0849f00bb2c4c17ea817bffd908a76c33cb9e8e993a89284bd8",
+            "task.json": "077bee04bc0f509528952afbd4b2308cc858596b33d78d7fbd1d8ca807234da7",
+            "environment.json": "66669c712e07c55e8e116581ad419343ec7b23e43ba6255552cb5715f8bc8d2a",
+            "workstation.json": "c51ac9f775c4bb557020ca2b7e3aa5492ddbf950f60c3f821fe599f1c30520ac"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/mosaic/public/mosaic-a08-12x24-d2/family-guidance.md",
+              "sha256": "1414f553b2851e723eea82e48308b3d7acbd15166a4371fb8585fae38caa6e4d"
+            },
+            "skill.md": {
+              "path": "configs/task_families/mosaic/public/mosaic-a08-12x24-d2/skill.md",
+              "sha256": "d10615cc407a613bf7a9f11fbfed8e04588c518267752274fa0f58012feabe67"
+            }
+          },
+          "qualification": "r14_colour_variant_with_r13_reference_and_design_evidence",
+          "public_projection": {
+            "path": "configs/task_families/mosaic/public/mosaic-a08-12x24-d2/public-task.json",
+            "sha256": "d042fe957434ceac325b69614ea354cbb0c41a7554bc5bfb72eeaa1d7d3d194d"
+          }
+        },
+        {
+          "id": "mosaic-a08-12x24-d3",
+          "directory": "configs/environments/mosaic/frontier-v2-r14-mosaic-a08-12x24-d3",
+          "source_files": {
+            "scene.xml": "3ef29947b51fe420b3e1bc516a8e3b512cc2e0f3568b3ec1f21c8169ed5c9547",
+            "task.json": "54973da9aafbfca8db6a8c97d087d010d642521d9f69f5c316a78205f1108215",
+            "environment.json": "57c7af4166b776843fd78381c906080235685ac3f8a6334e9633fd709dbb6794",
+            "workstation.json": "58cf9bbdb960754e0433f88a7998f950534cb808b16edd429634d2a9c13ea8ee"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/mosaic/public/mosaic-a08-12x24-d3/family-guidance.md",
+              "sha256": "1414f553b2851e723eea82e48308b3d7acbd15166a4371fb8585fae38caa6e4d"
+            },
+            "skill.md": {
+              "path": "configs/task_families/mosaic/public/mosaic-a08-12x24-d3/skill.md",
+              "sha256": "d10615cc407a613bf7a9f11fbfed8e04588c518267752274fa0f58012feabe67"
+            }
+          },
+          "qualification": "r14_colour_variant_with_r13_reference_and_design_evidence",
+          "public_projection": {
+            "path": "configs/task_families/mosaic/public/mosaic-a08-12x24-d3/public-task.json",
+            "sha256": "f334f62d5db5ccd6c352f3dab47ca04d5eb8a5bc24822c10edf4a813dfacb86b"
+          }
+        }
+      ],
+      "oracle": [
+        {
+          "id": "mosaic-a04-6x12-d1",
+          "directory": "runs/oracle/mosaic-continuation-20261026/mosaic-a04-6x12-d1/seed-0/attempt-001/motion/source",
+          "recording": "runs/oracle/mosaic-continuation-20261026/mosaic-a04-6x12-d1/seed-0/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "08e15714ce39dae36b7cfa215edb1867414f23f4bb3ea57e4e7a6e2cbb081652",
+            "task.json": "1df3155524377102e90658c9863f8be63c3cc9763a5fda34a54334fbc8d3ac31",
+            "environment.json": "5c3d3d7f2234ad75a83fd9bdc9c4ffb639595289e3a505d435915241b96f5fdb",
+            "workstation.json": "3af506787e623bdcf1f8d0bca9479f53ae402c455a75019e791ac1488bd0238f"
+          },
+          "qualification": "r13_pure_program",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/mosaic-a04-6x12-d1/edit.json",
+          "edit_sha256": "2f13f1620184f58f31bd9a5985d04b72f3ee768c89fb22712a000dfb7ce9252a",
+          "historical_edit": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表/mosaic-a04-6x12-d1.json",
+          "historical_edit_sha256": "41d37473da270298771bebb7fe8c96b44528d5405bf0585c3553d84f83ef3c55"
+        },
+        {
+          "id": "mosaic-a04-6x12-d2",
+          "directory": "runs/oracle/mosaic-continuation-20261026/mosaic-a04-6x12-d2/seed-0/attempt-001/motion/source",
+          "recording": "runs/oracle/mosaic-continuation-20261026/mosaic-a04-6x12-d2/seed-0/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "ba65b6cf96ab4697f426001ae57ffe8f6f4f336a0a0469a36bf028c4684acaf3",
+            "task.json": "60912a12790b5bdb191875014cdb62eda9a927455afd77ac2221cc799fb7fdae",
+            "environment.json": "5d48e0b80bd88045ff760b5cf0778b939f93664ff539965cceed71359b293559",
+            "workstation.json": "9919e7bf22d9ebab35f0e0e8da106801a613254d449a3d1a8aefc45031a3c39e"
+          },
+          "qualification": "r13_pure_program",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/mosaic-a04-6x12-d2/edit.json",
+          "edit_sha256": "39c30230a53a1443e7815cc022e876155ae21e0143927a717eefde4e6508ce9c",
+          "historical_edit": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表/mosaic-a04-6x12-d2.json",
+          "historical_edit_sha256": "3d3e6a3c4f9dd5e9d7a8cea5d9fa20f02e9abc00c04e7e651a404dbf35ec5e02"
+        },
+        {
+          "id": "mosaic-a04-6x12-d3",
+          "directory": "runs/oracle/mosaic-async-20261026/mosaic-a04-6x12-d3/seed-0/attempt-002/motion/source",
+          "recording": "runs/oracle/mosaic-async-20261026/mosaic-a04-6x12-d3/seed-0/attempt-002/motion",
+          "source_files": {
+            "scene.xml": "da6fa55d17b49558ab296e1ffad2e1016d3047abb5603e9da538f02731441089",
+            "task.json": "e53ddbba4390b6bb4d6af0d1bc700ca0768478524167901521a971737eb1a04d",
+            "environment.json": "33a23743c41e00f6298246b2c7b8650c90d1f14c60f25ee62516a7a73a5232e8",
+            "workstation.json": "3ec7c5bc0d3c9282405fba120f8e1009b9efc09968a963a9d4be3f7c3718c3de"
+          },
+          "qualification": "r13_pure_program",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/mosaic-a04-6x12-d3/edit.json",
+          "edit_sha256": "bb92f732ebd33f787836b761e41c2b1dd6771003db70717411d13074eb5cb9f4",
+          "historical_edit": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表/mosaic-a04-6x12-d3.json",
+          "historical_edit_sha256": "e8850d9823c509a071622a7d7b765b9f70c09a222e7d390ce0407f3fd28c8879"
+        },
+        {
+          "id": "mosaic-a06-9x18-d1",
+          "directory": "runs/oracle/mosaic-six-r13-20261026/mosaic-a06-9x18-d1/seed-0/attempt-001/motion/source",
+          "recording": "runs/oracle/mosaic-six-r13-20261026/mosaic-a06-9x18-d1/seed-0/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "aa280f70d14d49fc2fc7a91e9d7ffb092b279b5a8741dcd6aad9670f5d55b177",
+            "task.json": "42d3e723ca5985af8cba373b5f5f8d37149e40bd3d6020261222413a5403f5e0",
+            "environment.json": "b11d38f0572cdcc152aacb03d85b65e5c9229f070265a29352ed9336f5b8f1c9",
+            "workstation.json": "34036fc49e7e0a42261e6697c3915a2cf801f3a851ac7bb1b49185c6eb25bd46"
+          },
+          "qualification": "r13_privileged_assisted",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/mosaic-a06-9x18-d1/edit.json",
+          "edit_sha256": "1ce183a0cbdc34f187fecb309e991bff51369f0bd0d084ff044321bdfd3a627d",
+          "historical_edit": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表/mosaic-a06-9x18-d1.json",
+          "historical_edit_sha256": "45f09932f820fe04ac8c4bac231953a4ad559ca8282e47b84705be76dd869b31"
+        },
+        {
+          "id": "mosaic-a06-9x18-d2",
+          "directory": "runs/oracle/mosaic-six-r13-20261026/mosaic-a06-9x18-d2/seed-0/attempt-003/motion/source",
+          "recording": "runs/oracle/mosaic-six-r13-20261026/mosaic-a06-9x18-d2/seed-0/attempt-003/motion",
+          "source_files": {
+            "scene.xml": "5f68cd53cfae33eaa1df1f51677eaaa93777f6afeb167045bd6f83df96b59b91",
+            "task.json": "26a40c1ea1f24f588aa9a1be2cbc30964158ebf0e69ca12ef0c3306a6f81bf0e",
+            "environment.json": "7ba025e67e22604b0bccd2b9d440d74eac45a71f641885bf9bfbb6b89099601e",
+            "workstation.json": "7ffbe6838fb6e8a2e8e9db01416fc4148dd9b9a60872e48cc9a84004acfc90d7"
+          },
+          "qualification": "r13_privileged_assisted",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/mosaic-a06-9x18-d2/edit.json",
+          "edit_sha256": "fa1ad1f8b3940085a13616ae20588574e24dfa62c4fa3cf847b6ff0763006823",
+          "historical_edit": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表/mosaic-a06-9x18-d2.json",
+          "historical_edit_sha256": "64bcb24be3be1bc4430c1c1eede818ae271d12ec8cc8ab71b7ae2c150101e53f"
+        },
+        {
+          "id": "mosaic-a06-9x18-d3",
+          "directory": "runs/oracle/mosaic-stream-20261026/mosaic-a06-9x18-d3/seed-0/attempt-001/motion/source",
+          "recording": "runs/oracle/mosaic-stream-20261026/mosaic-a06-9x18-d3/seed-0/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "b10a0fe2b333a454b18644ee919663dc5310c30cdea9acb0a36c1f044cdbd4bc",
+            "task.json": "e7d139adb16990734716fc16a3cedd7f56d391ade542fbb16828255033f80ff5",
+            "environment.json": "e800845fcb22ea4d3632371a3f2701c7e0407578cb9cf3c908b17969de2ead13",
+            "workstation.json": "a5d51097f22654e857d82c21456fb47abcbd80e7b1cf3348280df803cf6d0f7e"
+          },
+          "qualification": "r13_privileged_assisted",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/mosaic-a06-9x18-d3/edit.json",
+          "edit_sha256": "8cdea53d348c0814cc8575cded5902cc6ed797cb57e0f064fd16442eb0e4374e",
+          "historical_edit": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表/mosaic-a06-9x18-d3.json",
+          "historical_edit_sha256": "96d8fd82132ba06588e6ba30565f5e1c9505e079d2aa4bd3f30680cf1e6c80cc"
+        },
+        {
+          "id": "mosaic-a08-12x24-d1",
+          "directory": "runs/oracle/mosaic-eight-r13-20261026/mosaic-a08-12x24-d1/seed-0/attempt-001/motion/source",
+          "recording": "runs/oracle/mosaic-eight-r13-20261026/mosaic-a08-12x24-d1/seed-0/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "60725536b5eea206d40fb86ce1aee852e8e417110d9b8634c27201558c8e5688",
+            "task.json": "456b514235f2d40779e36eda8cfc1536ba532371db4ccb6d51d2d8dca341c439",
+            "environment.json": "0263ba44b2c8dbe4cab38e0679aeb85e50c69ebe68d8877581f15bae01384dbb",
+            "workstation.json": "0d1866499565e3852fc6cfe9450eb2fb94d35ec62e80268fa7650e376abb8979"
+          },
+          "qualification": "r13_privileged_assisted",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/mosaic-a08-12x24-d1/edit.json",
+          "edit_sha256": "4e6fa6d7b5c1092d203bd860bae0510c8054276c61c996e641a121bee9a3c0a7",
+          "historical_edit": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表/mosaic-a08-12x24-d1.json",
+          "historical_edit_sha256": "0fecd23e2ed5c0dbd84ccce29f1c091c76fb70bdb06c6a972026fb6ab2767c14"
+        },
+        {
+          "id": "mosaic-a08-12x24-d2",
+          "directory": "runs/oracle/mosaic-eight-r13-20261026/mosaic-a08-12x24-d2/seed-0/attempt-001/motion/source",
+          "recording": "runs/oracle/mosaic-eight-r13-20261026/mosaic-a08-12x24-d2/seed-0/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "56f221e638a80cb1756bb471d0fb66fa595aa76515d3ed92d2cfc6ed1a7a2c32",
+            "task.json": "e3c30f755b807c19b048e249c4d6fbec08b3191dd6b9edb46bcd11bf6cff7e0e",
+            "environment.json": "3243bde15cbe57c576750116080f38cb20016b60d5493849e5f1d2d3918ee46c",
+            "workstation.json": "afda48493605f724c6f29055fe66b61a971432207aa1e42da9d567e17ea3fd73"
+          },
+          "qualification": "r13_privileged_assisted",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/mosaic-a08-12x24-d2/edit.json",
+          "edit_sha256": "9c32528c52123f429b294d4a4e5de16b01224b229b75c39d439dddde13de4c7d",
+          "historical_edit": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表/mosaic-a08-12x24-d2.json",
+          "historical_edit_sha256": "e2a4609e218fad5b58a48a11d5523645efa4fb6f2cf498305599b6cb74593840"
+        },
+        {
+          "id": "mosaic-a08-12x24-d3",
+          "directory": "runs/oracle/mosaic-stream-20261026/mosaic-a08-12x24-d3/seed-0/attempt-001/motion/source",
+          "recording": "runs/oracle/mosaic-stream-20261026/mosaic-a08-12x24-d3/seed-0/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "16e8f60824abcc78c778d13eb2f27259b1dfe4bf4b05794faf4fd2a8c1183a19",
+            "task.json": "b0d09712f912cdaa5fa5817232686556e063403a106f7ebeb8a0c409396cbfc8",
+            "environment.json": "697a39892779d526f01ce75f2333a0cf0a696cbe5ade0d8c966726c81af9dcce",
+            "workstation.json": "cff6da1e87a1c98df43873647248a08dcfd7ae57fc410f3b08959490dd668627"
+          },
+          "qualification": "r13_privileged_assisted",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/mosaic-a08-12x24-d3/edit.json",
+          "edit_sha256": "15ecd01d4efa46186c69c7b0aedebb56b2ef877b467b829b67bb221f55c438e8",
+          "historical_edit": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表/mosaic-a08-12x24-d3.json",
+          "historical_edit_sha256": "eaf2f8684565434b95ff8bc74724a18c3af55857ba3e8833158f986a66553449"
+        }
+      ]
+    },
+    "relay": {
+      "catalog": {
+        "path": "configs/suites/frontier-relay.json",
+        "sha256": "9f90895c6ae7a78ec9a18d5087b4c3e0e29c98aceb44d2435fcf35bfcf56ade1"
+      },
+      "speedup": 20,
+      "fps": 30,
+      "gpt": [
+        {
+          "id": "relay-a08-d1",
+          "directory": "configs/environments/beam_handoff/frontier-v2-r13-relay-a08-d1",
+          "source_files": {
+            "scene.xml": "ce01162529bcaaedda48bd2f5ced66fdfa42df7ca044ecd25372a0c610da6cef",
+            "task.json": "f05cbd9e5ff6e4053eb62a1835502a0c73ff2fe877b39577da7c64cff148c999",
+            "environment.json": "7ba5693a35000ca9bbe766267ab2d30a188f00819ab0825c3559c4b411dc4c6e",
+            "workstation.json": "b783aab2b8febc1b78ad0b263f546e3a2ac40ae620e7ffe11f5e46d38a2e4387"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/relay/public/relay-a08-d1/family-guidance.md",
+              "sha256": "1e1526b6c85f3217b0fcfeef210ec629e87aeee26f0b9d556612ab6845c19d59"
+            }
+          },
+          "qualification": "final_goal_contract_with_historical_user_goal_evidence"
+        },
+        {
+          "id": "relay-a08-d2",
+          "directory": "configs/environments/beam_handoff/frontier-v2-r17-relay-a08-d2",
+          "source_files": {
+            "scene.xml": "7412a55da139aa0c57278f1f1d6b68d0a9594ce407ad4c0b624aa0a9b766fdfa",
+            "task.json": "6f9ee581010cb6c42f5c4af650abf657c77705d62e4de2b9761de2cc8d4481d5",
+            "environment.json": "bfddc99fdc85f999b494c8668f37c5f80e1756bb9996f18528a80ed3f729a1ba",
+            "workstation.json": "b308ac0ad991b26b0d753a5c8763fb3a6d6003854d06b4a70c5caf4c5b797501"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/relay/public/relay-a08-d2/family-guidance.md",
+              "sha256": "1e1526b6c85f3217b0fcfeef210ec629e87aeee26f0b9d556612ab6845c19d59"
+            }
+          },
+          "qualification": "final_goal_contract_with_historical_user_goal_evidence"
+        },
+        {
+          "id": "relay-a08-d3",
+          "directory": "configs/environments/beam_handoff/frontier-v2-r17-relay-a08-d3",
+          "source_files": {
+            "scene.xml": "0bf3386449482496d13ea597262c470fa5cbb5748840ecda7fb039bbef860a0e",
+            "task.json": "e60603bd86842ff8e79c5996cf32363d2cd12dd92ceeb51f2305ba6a522d2537",
+            "environment.json": "dbc6f1d598aa3ff93713ecbeab6241ba1acbf74e2ea388e7070758fa8d24f42f",
+            "workstation.json": "e631185b361eb0d1285f115a8dac0adfe3eadcca8dbc326a31a453f52e96e0bc"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/relay/public/relay-a08-d3/family-guidance.md",
+              "sha256": "1e1526b6c85f3217b0fcfeef210ec629e87aeee26f0b9d556612ab6845c19d59"
+            }
+          },
+          "qualification": "final_goal_contract_with_historical_user_goal_evidence"
+        },
+        {
+          "id": "relay-a12-d1",
+          "directory": "configs/environments/beam_handoff/frontier-v2-r15-relay-a12-d1",
+          "source_files": {
+            "scene.xml": "09bec4bc56fae92f0e636965f88b4408c67c017f5fb95fd4df5a0182bba7f775",
+            "task.json": "6064888ed0a9f900a7a286a752715ec41cb658665f8eb79c4cf7715ebb7e6812",
+            "environment.json": "d6efbe487ba3683ced8e92a6eb6354c88d7277d95bccdabd1fc79c1f86cd78db",
+            "workstation.json": "b60ba27866c50d63fcc059e73ede6d6106d7fcfaf1e1231b5d7ad3472ba049c7"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/relay/public/relay-a12-d1/family-guidance.md",
+              "sha256": "1e1526b6c85f3217b0fcfeef210ec629e87aeee26f0b9d556612ab6845c19d59"
+            }
+          },
+          "qualification": "final_goal_contract_with_historical_user_goal_evidence"
+        },
+        {
+          "id": "relay-a12-d2",
+          "directory": "configs/environments/beam_handoff/frontier-v2-r17-relay-a12-d2",
+          "source_files": {
+            "scene.xml": "22a8116ca86b205a2fb2d9e12e96d32764d96db0e3894d792497c00bdfce013f",
+            "task.json": "c736310d183c20e679c63ddab58a1b36b5bb6fefd7a614998dbf73c9edc31e17",
+            "environment.json": "d724dec8fbfc5d06b876a894316b9b1834ac6e4dc15b9e0d9ac737580c914e20",
+            "workstation.json": "d86dbd5a4aac466b6495833686010340bfd06b1e2643fc0ee0f296c9138215e8"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/relay/public/relay-a12-d2/family-guidance.md",
+              "sha256": "1e1526b6c85f3217b0fcfeef210ec629e87aeee26f0b9d556612ab6845c19d59"
+            }
+          },
+          "qualification": "final_goal_contract_with_historical_user_goal_evidence"
+        },
+        {
+          "id": "relay-a12-d3",
+          "directory": "configs/environments/beam_handoff/frontier-v2-r17-relay-a12-d3",
+          "source_files": {
+            "scene.xml": "30122d18736ad61e97c61a9cbea359b873e6a226aa0aacba7c60338d912153ae",
+            "task.json": "4f3ba825535c1cb7947543f7aa48c96e0b80634bfd6b5e7e55c1e3fddd9b6c5f",
+            "environment.json": "ed519768c3731a8f6f13c781e8b0fbb6cb66bd52a8f4b349af87140eae210025",
+            "workstation.json": "bc1c6780fa728954e5c9e9a5f2ab3af6e740b40bf1e5656f69b3a52b05aa215e"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/relay/public/relay-a12-d3/family-guidance.md",
+              "sha256": "1e1526b6c85f3217b0fcfeef210ec629e87aeee26f0b9d556612ab6845c19d59"
+            }
+          },
+          "qualification": "final_goal_contract_with_historical_user_goal_evidence"
+        },
+        {
+          "id": "relay-a16-d1",
+          "directory": "configs/environments/beam_handoff/frontier-v2-r13-relay-a16-d1",
+          "source_files": {
+            "scene.xml": "8ac11391873bc813df94eb6a3718ed04c1701f6de15224fb68a45226fd158b61",
+            "task.json": "c0335e3308f83ccdaa72428c695273fb641425f36255317a4856c991e1024882",
+            "environment.json": "5156af016c74ec56fd3ffab4068021c3214de9f11331c5519ad677263e8aa308",
+            "workstation.json": "bbcf6c82f964d0e2f98dc29f11e64387066d413affa65800df1037b34d4c9203"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/relay/public/relay-a16-d1/family-guidance.md",
+              "sha256": "1e1526b6c85f3217b0fcfeef210ec629e87aeee26f0b9d556612ab6845c19d59"
+            }
+          },
+          "qualification": "final_goal_contract_with_historical_user_goal_evidence"
+        },
+        {
+          "id": "relay-a16-d2",
+          "directory": "configs/environments/beam_handoff/frontier-v2-r17-relay-a16-d2",
+          "source_files": {
+            "scene.xml": "7ded10c6627dd13632332223dff2ec0c5e800d730a36dbdb0f2d3e0971ff3f13",
+            "task.json": "76ec950d7284196e4dc42e2671946284e1ac485aa69c9e9f2daff3ba98e0a419",
+            "environment.json": "a95101d6038589fdf3a33a4efeae1f1875018c364067a77c0bed2730d35e1df6",
+            "workstation.json": "0b61e68d613aeaf17757f9deb5c81bfd4921d5618071463b12e337215edf57c6"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/relay/public/relay-a16-d2/family-guidance.md",
+              "sha256": "1e1526b6c85f3217b0fcfeef210ec629e87aeee26f0b9d556612ab6845c19d59"
+            }
+          },
+          "qualification": "final_goal_contract_with_historical_user_goal_evidence"
+        },
+        {
+          "id": "relay-a16-d3",
+          "directory": "configs/environments/beam_handoff/frontier-v2-r17-relay-a16-d3",
+          "source_files": {
+            "scene.xml": "54466c5c021d9def271ac4a78e82a30ff3084921118028db6da6d297ad8c10b2",
+            "task.json": "ea5b78eb19407aeb90060489273876938b0de9b494eecc20bf2b8f0c1134a96e",
+            "environment.json": "72a5ae5a4c213432d6cf05f78360ec96a92152e9eba2fce3bba6579a45fb9253",
+            "workstation.json": "5d5d39fe339abf8643699dc02ab6ed71a00e54477ff9adf961a1ccbeddd5486b"
+          },
+          "public_files": {
+            "family-guidance.md": {
+              "path": "configs/task_families/relay/public/relay-a16-d3/family-guidance.md",
+              "sha256": "1e1526b6c85f3217b0fcfeef210ec629e87aeee26f0b9d556612ab6845c19d59"
+            }
+          },
+          "qualification": "final_goal_contract_with_historical_user_goal_evidence"
+        }
+      ],
+      "oracle": [
+        {
+          "id": "relay-a08-d1",
+          "directory": "outputs/oracle/relay-edited-tracks-20261027/relay-a08-d1/source",
+          "recording": "/Users/fanchangxuan/Repos/roomscript2/runs/oracle/relay-nine-ab1abec-20261026-032833/relay-a08-d1/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "ce01162529bcaaedda48bd2f5ced66fdfa42df7ca044ecd25372a0c610da6cef",
+            "task.json": "c4e1030f7f104374c8e878833a1083daca664faec37299d6aa3815334e804c74",
+            "environment.json": "7ba5693a35000ca9bbe766267ab2d30a188f00819ab0825c3559c4b411dc4c6e",
+            "workstation.json": "b783aab2b8febc1b78ad0b263f546e3a2ac40ae620e7ffe11f5e46d38a2e4387"
+          },
+          "qualification": "historical_user_goal_completion_not_relabelled_native",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/relay-a08-d1/edit.json",
+          "edit_sha256": "a6330446fde8d32ce4ce8ec4cb7377a55fe929934a92128962d95537c5ecf870",
+          "historical_edit": "outputs/oracle/relay-edited-tracks-20261027/relay-a08-d1/edit.json",
+          "historical_edit_sha256": "b34f4b1878a94436d4c140c19dba5d708f7bf3da4c31c5e9f7cd0ad98233deb0"
+        },
+        {
+          "id": "relay-a08-d2",
+          "directory": "outputs/oracle/relay-edited-tracks-20261027/relay-a08-d2/source",
+          "recording": "/Users/fanchangxuan/Repos/roomscript2/runs/oracle/relay-r16-38b5423-20261026-171651/relay-a08-d2/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "7412a55da139aa0c57278f1f1d6b68d0a9594ce407ad4c0b624aa0a9b766fdfa",
+            "task.json": "35adaef63a6d3ee997f4580f73c6a83dddd7f1ded4e5662ffead193abe3e8f4d",
+            "environment.json": "d5495af3b865571950e5edcda9af6139d62d20042dcd63a0bcba72770e007d04",
+            "workstation.json": "daf68324370094065116b4842e662bc692411d0c4fd81f36c7138ee6bc1ebf41"
+          },
+          "qualification": "historical_user_goal_completion_not_relabelled_native",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/relay-a08-d2/edit.json",
+          "edit_sha256": "ef2abf4be22839d0ec206217b06061764ad148e6c8fc15d5d6d09a1ad496c3e0",
+          "historical_edit": "outputs/oracle/relay-edited-tracks-20261027/relay-a08-d2/edit.json",
+          "historical_edit_sha256": "e7f962384eff04fa02974b8fbaad7b3f07ba88cd626a1a10f373aff62c292ce8"
+        },
+        {
+          "id": "relay-a08-d3",
+          "directory": "outputs/oracle/relay-edited-tracks-20261027/relay-a08-d3/source",
+          "recording": "/Users/fanchangxuan/Repos/roomscript2/runs/oracle/relay-r16-38b5423-20261026-171651/relay-a08-d3/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "0bf3386449482496d13ea597262c470fa5cbb5748840ecda7fb039bbef860a0e",
+            "task.json": "9065f354fb9ab38ef21751357b9263d7e7e3f304c58ebc171786cf259678aa19",
+            "environment.json": "3ad51bd74a1f4c3184c033c8539ba04c1480ed91d5fedffdb15b47f9b038d3db",
+            "workstation.json": "1db042840949d81dfd5544db4aaa801ec94035fdce1c30e9e9a129adb1c98411"
+          },
+          "qualification": "historical_user_goal_completion_not_relabelled_native",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/relay-a08-d3/edit.json",
+          "edit_sha256": "06e2a2f9227c90b2a4b3e4e9e927d10acb27b8d5b2fcd27097ed7fddcde9db27",
+          "historical_edit": "outputs/oracle/relay-edited-tracks-20261027/relay-a08-d3/edit.json",
+          "historical_edit_sha256": "bd625269626d43dc750d61d71bf0469db5b0ec3bce7ab6b36423dd83c1f8a861"
+        },
+        {
+          "id": "relay-a12-d1",
+          "directory": "outputs/oracle/relay-edited-tracks-20261027/relay-a12-d1/source",
+          "recording": "/Users/fanchangxuan/Repos/roomscript2/runs/oracle/relay-nine-ab1abec-20261026-032833/relay-a12-d1/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "09bec4bc56fae92f0e636965f88b4408c67c017f5fb95fd4df5a0182bba7f775",
+            "task.json": "30b8f38d01382844caca37a4c817f4abe1284f3968570d193c131a806d60b389",
+            "environment.json": "d6efbe487ba3683ced8e92a6eb6354c88d7277d95bccdabd1fc79c1f86cd78db",
+            "workstation.json": "b60ba27866c50d63fcc059e73ede6d6106d7fcfaf1e1231b5d7ad3472ba049c7"
+          },
+          "qualification": "historical_user_goal_completion_not_relabelled_native",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/relay-a12-d1/edit.json",
+          "edit_sha256": "1b861f0403933032b0a3f2be271012a4549afd21d49b599b6d33dbe1b634cb52",
+          "historical_edit": "outputs/oracle/relay-edited-tracks-20261027/relay-a12-d1/edit.json",
+          "historical_edit_sha256": "3acb3db12ab44e064a0470ef76076abeaeb0f8f46731345d8068a8bb55b081e5"
+        },
+        {
+          "id": "relay-a12-d2",
+          "directory": "outputs/oracle/relay-edited-tracks-20261027/relay-a12-d2/source",
+          "recording": "/Users/fanchangxuan/Repos/roomscript2/runs/oracle/relay-r16-38b5423-20261026-171651/relay-a12-d2/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "22a8116ca86b205a2fb2d9e12e96d32764d96db0e3894d792497c00bdfce013f",
+            "task.json": "2ec8c46d4cf02e4800948a079a9edb77c2b083cdc3c8fdae53c376971a79510c",
+            "environment.json": "e58ec1668d5436e6f6d5061137c1484f9f80031d692bd46a8b61620d2bae4481",
+            "workstation.json": "b3e84d6ec4fa1db791d517100b7abe0cbe0db4e79bced3203b1ffbda5d45204c"
+          },
+          "qualification": "historical_user_goal_completion_not_relabelled_native",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/relay-a12-d2/edit.json",
+          "edit_sha256": "9deb1e177948805ed51019c337198356d108a0bcf7d704da9f9501780094976d",
+          "historical_edit": "outputs/oracle/relay-edited-tracks-20261027/relay-a12-d2/edit.json",
+          "historical_edit_sha256": "10934997db1805f091be51f2ab7a7f38b4ddaaaaf5f4d85330043b19f7fe924a"
+        },
+        {
+          "id": "relay-a12-d3",
+          "directory": "outputs/oracle/relay-edited-tracks-20261027/relay-a12-d3/source",
+          "recording": "/Users/fanchangxuan/Repos/roomscript2/runs/oracle/relay-r16-38b5423-20261026-171651/relay-a12-d3/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "30122d18736ad61e97c61a9cbea359b873e6a226aa0aacba7c60338d912153ae",
+            "task.json": "d35ccb90dda37715b2d63a655990cfcfb72014dfb0e0aef3101c78c4bbbcfdbf",
+            "environment.json": "c5a0ca9f4e7feaa7d4c506f4972a02ae62a0b181f1775d9edf1fdc6f28fcf740",
+            "workstation.json": "b18c7a61fef7a304a88c4a2383ae292c0ca3173369e5abac68207e3cf5e39954"
+          },
+          "qualification": "historical_user_goal_completion_not_relabelled_native",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/relay-a12-d3/edit.json",
+          "edit_sha256": "73a8ad37143c88b610d26e8d0f54d7e8c116534891b96835a7bbe83d3fda9d35",
+          "historical_edit": "outputs/oracle/relay-edited-tracks-20261027/relay-a12-d3/edit.json",
+          "historical_edit_sha256": "6cd9274ba05988fdee9cec2995748dd050ff0c1c9c8787a6075d790306cb5355"
+        },
+        {
+          "id": "relay-a16-d1",
+          "directory": "outputs/oracle/relay-edited-tracks-20261027/relay-a16-d1/source",
+          "recording": "/Users/fanchangxuan/Repos/roomscript2/runs/oracle/relay-nine-ab1abec-20261026-032833/relay-a16-d1/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "8ac11391873bc813df94eb6a3718ed04c1701f6de15224fb68a45226fd158b61",
+            "task.json": "fc756127571a5acc47c7126798fd64633767a1d4a16e1dd0e59f422cdbaabb42",
+            "environment.json": "5156af016c74ec56fd3ffab4068021c3214de9f11331c5519ad677263e8aa308",
+            "workstation.json": "bbcf6c82f964d0e2f98dc29f11e64387066d413affa65800df1037b34d4c9203"
+          },
+          "qualification": "historical_user_goal_completion_not_relabelled_native",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/relay-a16-d1/edit.json",
+          "edit_sha256": "8c238d28ae5ff687f1d7987e79fad8e8554dfc943188f2851668d729d6635c45",
+          "historical_edit": "outputs/oracle/relay-edited-tracks-20261027/relay-a16-d1/edit.json",
+          "historical_edit_sha256": "65e2efd22dcec3758c8605fe966a467a42a7b83cba52723b6486b43b81f20ad9"
+        },
+        {
+          "id": "relay-a16-d2",
+          "directory": "outputs/oracle/relay-edited-tracks-20261027/relay-a16-d2/source",
+          "recording": "/Users/fanchangxuan/Repos/roomscript2/runs/oracle/relay-r16-38b5423-20261026-171651/relay-a16-d2/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "7ded10c6627dd13632332223dff2ec0c5e800d730a36dbdb0f2d3e0971ff3f13",
+            "task.json": "662510c14eeae130e5d3345023dbaf987f12ec8a991529f46833228eeaf05953",
+            "environment.json": "4f5471674a14dce6be2ebae52a0d9cd94484fdbc1d94f9cac8c1897d99d088b3",
+            "workstation.json": "a1e8eb7e010df2ab608e28f688c910e54eebbf8ec9c0a74166bb33e52429e09d"
+          },
+          "qualification": "historical_user_goal_completion_not_relabelled_native",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/relay-a16-d2/edit.json",
+          "edit_sha256": "7a48f1ab15c58cbddc85bccbcf6476c67922932560a66483482b674092115062",
+          "historical_edit": "outputs/oracle/relay-edited-tracks-20261027/relay-a16-d2/edit.json",
+          "historical_edit_sha256": "d7a6fe9ea7f8f64a564e7960fba7b766957a627a6733dfc3ad395586cbe5e9b2"
+        },
+        {
+          "id": "relay-a16-d3",
+          "directory": "outputs/oracle/relay-edited-tracks-20261027/relay-a16-d3/source",
+          "recording": "/Users/fanchangxuan/Repos/roomscript2/runs/oracle/relay-r16-38b5423-20261026-171651/relay-a16-d3/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "54466c5c021d9def271ac4a78e82a30ff3084921118028db6da6d297ad8c10b2",
+            "task.json": "f074d924e1118718ebe6c8b6edea2fdadde9c8cad9c50e429fe6b556551bf225",
+            "environment.json": "d978800ea6a6ad1cd1153910ff8c1273476350919fc523317c4fe3daae66eac8",
+            "workstation.json": "b857bb8686c4d3d0607b64a683de67474394988b6fb24ff7fdcfecc98b61b2e0"
+          },
+          "qualification": "historical_user_goal_completion_not_relabelled_native",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/relay-a16-d3/edit.json",
+          "edit_sha256": "7ebd212ebc6452824610b115e9616bc1d11400ace483cdca0d6ce30a3a1e6467",
+          "historical_edit": "outputs/oracle/relay-edited-tracks-20261027/relay-a16-d3/edit.json",
+          "historical_edit_sha256": "96f4efe639e561340df0182f3090e2bf6a4953ff22e0883a2814fab978a59a4e"
+        }
+      ]
+    },
+    "dial": {
+      "catalog": {
+        "path": "configs/suites/dial-best5-r11.json",
+        "sha256": "02bcaec516267393aa127c801b9b44aa3ec7eb9769c27e110860280544090adf"
+      },
+      "speedup": 10,
+      "fps": 30,
+      "gpt": [
+        {
+          "id": "dial-best5-n04-d1",
+          "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n04-d1",
+          "source_files": {
+            "scene.xml": "f201cbea9e207b22cf727b5e4209a6e73cdfb674eafedbb23d22beda07efc0da",
+            "task.json": "a5565175299bab19d5e3319837260ca67f04dbc00a7c8b71bca7c338f59a4173",
+            "environment.json": "2980da08f45d1d7e614d1907d39a1caf7bb4bc2a1128358d3e2bba37e9080f09",
+            "workstation.json": "542ba44715dc1a4ae679e616b751b86bb78dc3079c821d7041aebd7b96cd7aa6"
+          },
+          "public_files": {
+            "preview-top.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d1/preview-top.png",
+              "sha256": "33de2c49ec8dc8f7fb06ace6ad7d36878e0c8614990a17ff9d831d4a06ca80f8"
+            },
+            "task-guide.md": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d1/task-guide.md",
+              "sha256": "09188517b7a925ea74080d3e9e209d045570ce39dd6f8a301bdc240c63b39485"
+            },
+            "family-guidance.md": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d1/family-guidance.md",
+              "sha256": "24186659382163ee93e95f57d9e125122148d815a307f6d22d16a80cfc5e5d83"
+            },
+            "preview-global_rear.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d1/preview-global_rear.png",
+              "sha256": "96db690d747ef4a35906386290c4c9d4a7376e61d617fbc1f0c720f276b8da3b"
+            },
+            "table-geometry.json": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d1/table-geometry.json",
+              "sha256": "e78a7e2834149996dc48f0d4d71398c8432b49d5b57e5445d177caf9d300214e"
+            },
+            "camera-calibration.json": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d1/camera-calibration.json",
+              "sha256": "341f9dc98e84a92a319e89cf4ec0dcba2fb7b67958d0c33a6bf7cbe9995fefc6"
+            },
+            "preview-global.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d1/preview-global.png",
+              "sha256": "7ae8bdb7fa64f21454be5966e8b594881b03a46aa299db4bd8b6c5be230ce801"
+            }
+          },
+          "qualification": "reviewed_reference_scene",
+          "public_projection": {
+            "path": "configs/task_families/dial/public/dial-best5-n04-d1/public-task.json",
+            "sha256": "051f4cb11984fa6f68723f70211221a648c8c9d5b897a3a51c0b313c781f854f"
+          }
+        },
+        {
+          "id": "dial-best5-n04-d2",
+          "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n04-d2",
+          "source_files": {
+            "scene.xml": "d633603910e5bba92a2c07643c98cc4ca331f7191e0127ab693ad065d3cca1fc",
+            "task.json": "7119d93d17eba21217b91688089220dfb9f06674d8ed01c6cfb63ab6306c36be",
+            "environment.json": "8bc7239c72792c4a6e00ef688f58f63a9f1e022e1be522e9489202c754e6a70a",
+            "workstation.json": "654033dfdd7209d3b5ea1a8d8830eed60ba3ac15c8f1a2abe50eda28ca1b8220"
+          },
+          "public_files": {
+            "preview-top.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d2/preview-top.png",
+              "sha256": "88d0a20a87e9d4f3eef0b3705eaee5d9f5ad50ab623cca24dc9db06641d02bda"
+            },
+            "task-guide.md": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d2/task-guide.md",
+              "sha256": "bf43712dbb61015c0537f0598c8c640d04ae6263df334167a4990181c6754c2e"
+            },
+            "family-guidance.md": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d2/family-guidance.md",
+              "sha256": "24186659382163ee93e95f57d9e125122148d815a307f6d22d16a80cfc5e5d83"
+            },
+            "preview-global_rear.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d2/preview-global_rear.png",
+              "sha256": "c1b8d8e072a15f9a0857de52b9b96b0266084431a59e75c57910f1d008295606"
+            },
+            "table-geometry.json": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d2/table-geometry.json",
+              "sha256": "479b3bdda0521304f0fadd46967b7511055ae77c481e9239cc60144aef68753e"
+            },
+            "camera-calibration.json": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d2/camera-calibration.json",
+              "sha256": "cf32795778d6cea994da3a8e72df06c75e51a61963f98e0f18534d4b7966f73c"
+            },
+            "preview-global.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d2/preview-global.png",
+              "sha256": "4e6bac757c8d80ca7bbf118a9dfbb7b8a536a70b09f5eb4ede322442aa5db075"
+            }
+          },
+          "qualification": "reviewed_reference_scene",
+          "public_projection": {
+            "path": "configs/task_families/dial/public/dial-best5-n04-d2/public-task.json",
+            "sha256": "bd385255f914a010551a5fbc5a66ee5cdc26154448a923fada0f205a32bc1d9d"
+          }
+        },
+        {
+          "id": "dial-best5-n04-d3",
+          "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n04-d3",
+          "source_files": {
+            "scene.xml": "8a8ec1bacc42c66e37aa61b43c00ee4de712364ffc108afa36f4a649609304fb",
+            "task.json": "ba523015174ed1e2b1d0a1d06adb42c910a0c12fc4b372c05fcd6d7b57d3e745",
+            "environment.json": "3f5ebc2fb705aa4fa06ff4ddf6aad91d9168a28710bc86930b932625668914ab",
+            "workstation.json": "4f57ea5618619a96bdfa0ffdfe22678a9fca510b498faf8cd13fc7a78b1a1eca"
+          },
+          "public_files": {
+            "preview-top.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d3/preview-top.png",
+              "sha256": "bf1552a66f4c865a87857756aaa9b9814c0ed8930c9c005543be8c55f654e5cf"
+            },
+            "task-guide.md": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d3/task-guide.md",
+              "sha256": "1e21b85d4695de6bf65d8cf8501fc5f859c62c661f1157c47d7a8e71a584ca10"
+            },
+            "family-guidance.md": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d3/family-guidance.md",
+              "sha256": "24186659382163ee93e95f57d9e125122148d815a307f6d22d16a80cfc5e5d83"
+            },
+            "preview-global_rear.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d3/preview-global_rear.png",
+              "sha256": "5452a9eff47678885a476e7c47c5c1cec5616e7e6d85d84c1b2119115f667b46"
+            },
+            "table-geometry.json": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d3/table-geometry.json",
+              "sha256": "479b3bdda0521304f0fadd46967b7511055ae77c481e9239cc60144aef68753e"
+            },
+            "camera-calibration.json": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d3/camera-calibration.json",
+              "sha256": "cf32795778d6cea994da3a8e72df06c75e51a61963f98e0f18534d4b7966f73c"
+            },
+            "preview-global.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n04-d3/preview-global.png",
+              "sha256": "d14ecfdb383758233cb99aff9d64f4e473601c60241a8105b7b77a1f1cbcb67e"
+            }
+          },
+          "qualification": "reviewed_reference_scene",
+          "public_projection": {
+            "path": "configs/task_families/dial/public/dial-best5-n04-d3/public-task.json",
+            "sha256": "7e3f9d282c82b528d924d9d1504230b694427135b750504b3adb86f7e817fd2f"
+          }
+        },
+        {
+          "id": "dial-best5-n06-d1",
+          "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n06-d1",
+          "source_files": {
+            "scene.xml": "cd08f46913c0daeff291eb714d525b201b35f7a4d866d6bd180dd05718b485f2",
+            "task.json": "0cb5d69885d269918c7bd10b4e08253cd8b364c86e18b9ee8c15b6a20ddd375d",
+            "environment.json": "c6b018b45bff8a4a82ffd09c881939f0cf46d52a1e2ff9dd909bc028189fedcf",
+            "workstation.json": "91d961866d70b2bda9e84746f3b6a67decd8c0c573e59338eaf083188fb52311"
+          },
+          "public_files": {
+            "preview-top.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d1/preview-top.png",
+              "sha256": "33b8bd52b6f240aa3ed5c179bcfc79188f6eb53e50474b9ffdf5dea3ea03d8e0"
+            },
+            "task-guide.md": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d1/task-guide.md",
+              "sha256": "b5173454362d8c14ea86f06a1579352525f0f7f97e1d281e07b6c54d19d67b8c"
+            },
+            "family-guidance.md": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d1/family-guidance.md",
+              "sha256": "24186659382163ee93e95f57d9e125122148d815a307f6d22d16a80cfc5e5d83"
+            },
+            "preview-global_rear.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d1/preview-global_rear.png",
+              "sha256": "c44b4ca4f97b13db6c04088c3c827baf90370f0d0d81d8fb339f3237293a0f3f"
+            },
+            "table-geometry.json": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d1/table-geometry.json",
+              "sha256": "1a5bdc007226dd9b6364e7c1d68dc97a963fcafc2d1b7416e79bb06ede88310c"
+            },
+            "camera-calibration.json": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d1/camera-calibration.json",
+              "sha256": "3c49835c3c00036f8ebd8d8b665718bc45ad45e606d4c3b8df2a02c2495792f0"
+            },
+            "preview-global.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d1/preview-global.png",
+              "sha256": "30e8021ac81f356fa3f12943d0bf8a9b08389a65e999580b665136faa5b00e70"
+            }
+          },
+          "qualification": "reviewed_reference_scene",
+          "public_projection": {
+            "path": "configs/task_families/dial/public/dial-best5-n06-d1/public-task.json",
+            "sha256": "1b4b388eb8ff942fc5f949648286b3cf8d8dfb7b1ca2b186b3daa1c1cee23b97"
+          }
+        },
+        {
+          "id": "dial-best5-n06-d2",
+          "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n06-d2",
+          "source_files": {
+            "scene.xml": "9080640b0f841605d62fa7ec808e8f4b9ee0fb13c0a8d6a9cf3c24c15c4f4e37",
+            "task.json": "f9785453241139baaddfdc965490f6e22bb0e2fdbf5db58fd0f91f881d30324f",
+            "environment.json": "dbfe3192cfd16cace648d6271c441f627f0a09a632a5c96590e15246a92dc5e7",
+            "workstation.json": "0b081beb141c06ede11fa9736b6507a52d03e9c3b8bd3f22250d93d0ae22a417"
+          },
+          "public_files": {
+            "preview-top.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d2/preview-top.png",
+              "sha256": "1675024b321ac11d66f0e0809348f3d06562d23f0120ab230451519c16f9e62d"
+            },
+            "task-guide.md": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d2/task-guide.md",
+              "sha256": "9b010d6bc3b9e07fd894173917e9679248dcd24b1da72c76de0cd765abbaf772"
+            },
+            "family-guidance.md": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d2/family-guidance.md",
+              "sha256": "24186659382163ee93e95f57d9e125122148d815a307f6d22d16a80cfc5e5d83"
+            },
+            "preview-global_rear.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d2/preview-global_rear.png",
+              "sha256": "24acfd763ff4d91fb38c48e5455cc6b6ad1238e4aeadacc3dad3f91923d7d277"
+            },
+            "table-geometry.json": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d2/table-geometry.json",
+              "sha256": "c226c8983fa145e4e759346eeb13a03d798565afdf6b14f2b9643e595f3834b1"
+            },
+            "camera-calibration.json": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d2/camera-calibration.json",
+              "sha256": "ced428cda07aaefd52c691c58e264505176e5e99920310c8885f7dd37e5ebfcb"
+            },
+            "preview-global.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d2/preview-global.png",
+              "sha256": "adb80baa0a184263745233f5b88825e57f3822dbbb57efbf9114ea9609525f0b"
+            }
+          },
+          "qualification": "reviewed_reference_scene",
+          "public_projection": {
+            "path": "configs/task_families/dial/public/dial-best5-n06-d2/public-task.json",
+            "sha256": "cfbb4c71f9b073e148dc15a49f674516666831a4f439bc27dc11cbf8e43bc07b"
+          }
+        },
+        {
+          "id": "dial-best5-n06-d3",
+          "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n06-d3",
+          "source_files": {
+            "scene.xml": "ef02a7f7441625cf29b3cda9799701bdc229916a46d3e8a1509133f084091eba",
+            "task.json": "20d9b16a32c01c3ca3ab5dcf72517b9ebec33c49e39684caa0dd15b22b1444ba",
+            "environment.json": "c8f7ab7aed53e7bc3da9f2e696f3091adf67d54de69850793cea92dc09afddcc",
+            "workstation.json": "48989546d01fb3dfc09bc6e47e888691b6832e03888a107ed7a769b461a4ec7d"
+          },
+          "public_files": {
+            "preview-top.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d3/preview-top.png",
+              "sha256": "37147fb2fa2d148bebd4c3850a76208c7028f5473988ab635f3218977bb2899c"
+            },
+            "task-guide.md": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d3/task-guide.md",
+              "sha256": "92b442a00d2650419c387b0dde39a7183187121d28cba40379abc55ec81a7bf0"
+            },
+            "family-guidance.md": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d3/family-guidance.md",
+              "sha256": "24186659382163ee93e95f57d9e125122148d815a307f6d22d16a80cfc5e5d83"
+            },
+            "preview-global_rear.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d3/preview-global_rear.png",
+              "sha256": "47db0ee54cba5298e1bd8333a40f5e400c3fb02474eba5a341a49911bffed204"
+            },
+            "table-geometry.json": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d3/table-geometry.json",
+              "sha256": "c226c8983fa145e4e759346eeb13a03d798565afdf6b14f2b9643e595f3834b1"
+            },
+            "camera-calibration.json": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d3/camera-calibration.json",
+              "sha256": "ced428cda07aaefd52c691c58e264505176e5e99920310c8885f7dd37e5ebfcb"
+            },
+            "preview-global.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n06-d3/preview-global.png",
+              "sha256": "8ed6bcd66d5af119d5fcee75d0c9dfb9130949f64c8fd009220a10c2a0cbc621"
+            }
+          },
+          "qualification": "reviewed_reference_scene",
+          "public_projection": {
+            "path": "configs/task_families/dial/public/dial-best5-n06-d3/public-task.json",
+            "sha256": "e4fd89e95bf854a88c41d87766aa44d22dd6ed22fc6cb49dd7908a26792a0258"
+          }
+        },
+        {
+          "id": "dial-best5-n08-d1",
+          "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n08-d1",
+          "source_files": {
+            "scene.xml": "2f2de801229fa18bde2ef659cdf99dbaa1d121cd0eb483c60f6c88647dc03e72",
+            "task.json": "4740997db55123b5ecce8be724d61c21a7377d23eed70583e953f0c292466666",
+            "environment.json": "0eea13f357289fdbc87812f1eafe8b6587084d71fdb2fbc7bf4a97f4d1ae9e0b",
+            "workstation.json": "87aecc9d4b22983615c401d060806290bf774faf2707b76f6d6fcc718eb4cb8e"
+          },
+          "public_files": {
+            "preview-top.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d1/preview-top.png",
+              "sha256": "7bcd219c7fbf4ea796925b1516e65f04a17865ea8c3f4484876de2ed6e12046d"
+            },
+            "task-guide.md": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d1/task-guide.md",
+              "sha256": "85f79111fde9dcab562f583aca54197c7c6ab3f93f379d1def8a7d5753de4f84"
+            },
+            "family-guidance.md": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d1/family-guidance.md",
+              "sha256": "24186659382163ee93e95f57d9e125122148d815a307f6d22d16a80cfc5e5d83"
+            },
+            "preview-global_rear.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d1/preview-global_rear.png",
+              "sha256": "77b309104ba3388f600f98191d2015df8fe2f9e1f4794f1adc1912f31ee1fa77"
+            },
+            "table-geometry.json": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d1/table-geometry.json",
+              "sha256": "2d0153ddb30853c830c6a6cf2e5d552ec85e75de2755a6957f10b800cfbbc020"
+            },
+            "camera-calibration.json": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d1/camera-calibration.json",
+              "sha256": "94bad44ecade72271a1a96c2d171611426cc2c52775ba5fe2b92ce76c2dd8f80"
+            },
+            "preview-global.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d1/preview-global.png",
+              "sha256": "d9844aad94cc90bc566243e622260f30308f5965e1ff9e6f095526e1bf5c687d"
+            }
+          },
+          "qualification": "reviewed_reference_scene",
+          "public_projection": {
+            "path": "configs/task_families/dial/public/dial-best5-n08-d1/public-task.json",
+            "sha256": "2cc95ab472edf1a90045a27017a64edca92b7df9dac4fa4cf68c1455be1c8435"
+          }
+        },
+        {
+          "id": "dial-best5-n08-d2",
+          "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n08-d2",
+          "source_files": {
+            "scene.xml": "b8e4149dcc226d1cf9ba824d17687024154e89eba97286df5bb0fb39fdec2966",
+            "task.json": "e4442c007ae48752670b548a2c7b3e4dbb7fb0133118354c118bf6f8e3c5af7e",
+            "environment.json": "2e2af1100435d181259f82772dd3778e5eb05402875d509d35a9e11b0c43e702",
+            "workstation.json": "629098290cf7b6b93bf7173737026a75a37c5ba4366f21c1657390502f447d01"
+          },
+          "public_files": {
+            "preview-top.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d2/preview-top.png",
+              "sha256": "5855f2aabbae5a828280cdd929d45621fe5d9baddadebe84c111610c76aa1eff"
+            },
+            "task-guide.md": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d2/task-guide.md",
+              "sha256": "e830d80bba733a3ce1343ed6cb44fda8bc59e993e93fa7af9ca28fb244094eac"
+            },
+            "family-guidance.md": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d2/family-guidance.md",
+              "sha256": "24186659382163ee93e95f57d9e125122148d815a307f6d22d16a80cfc5e5d83"
+            },
+            "preview-global_rear.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d2/preview-global_rear.png",
+              "sha256": "6c6ca647ece84ce45eb8edea1d13b42c7906d2ed22efea3302adf1bc943f9476"
+            },
+            "table-geometry.json": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d2/table-geometry.json",
+              "sha256": "9a8f8229967dae3fa0095470bdb61430fa753e3ace7a6e240d0f6c534de9690c"
+            },
+            "camera-calibration.json": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d2/camera-calibration.json",
+              "sha256": "c545674b0ccc921e5bb6e4a9353f6341aac9df79c88c03cf57121eb264b6a9d2"
+            },
+            "preview-global.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d2/preview-global.png",
+              "sha256": "a3161122eb20fd8fd657ba55d272772825ce5089cac764edad79ddadfb82458c"
+            }
+          },
+          "qualification": "reviewed_reference_scene",
+          "public_projection": {
+            "path": "configs/task_families/dial/public/dial-best5-n08-d2/public-task.json",
+            "sha256": "770f0971cccbaccaa4ee881095cb53df6218527ee16d5258f7f0bb21ba3c60c2"
+          }
+        },
+        {
+          "id": "dial-best5-n08-d3",
+          "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n08-d3",
+          "source_files": {
+            "scene.xml": "ffe0032e1ee31f32e18fe1538d116fa7babd6469840917756c88ceb925cb4c4b",
+            "task.json": "5bbc0bafe7b1e80f57a21e039a5d2b90113b7a87d5d2b0bd0cde31b2762b0334",
+            "environment.json": "5e8794c941abc4ae3ffcd2972df71a3342f949971b6f4a25f9eaf0f4f8f5e2a8",
+            "workstation.json": "24f6cfd5e83dea9150139816ace338b27b4210e46bf29e210e5279500a1af39d"
+          },
+          "public_files": {
+            "preview-top.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d3/preview-top.png",
+              "sha256": "064887bcb17f8d13af897ea84d87fb28423457126ee089d628383a1c269de81f"
+            },
+            "task-guide.md": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d3/task-guide.md",
+              "sha256": "04d6b84c0010130169198be92ab710707a6db327f48312dff4fae6e466a2985c"
+            },
+            "family-guidance.md": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d3/family-guidance.md",
+              "sha256": "24186659382163ee93e95f57d9e125122148d815a307f6d22d16a80cfc5e5d83"
+            },
+            "preview-global_rear.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d3/preview-global_rear.png",
+              "sha256": "9dbea361b1ebdadd334f0e459692a5fd7f6284a30b832173dec0697d32b64bc3"
+            },
+            "table-geometry.json": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d3/table-geometry.json",
+              "sha256": "9a8f8229967dae3fa0095470bdb61430fa753e3ace7a6e240d0f6c534de9690c"
+            },
+            "camera-calibration.json": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d3/camera-calibration.json",
+              "sha256": "c545674b0ccc921e5bb6e4a9353f6341aac9df79c88c03cf57121eb264b6a9d2"
+            },
+            "preview-global.png": {
+              "path": "configs/task_families/dial/public/dial-best5-n08-d3/preview-global.png",
+              "sha256": "f9905219c7296f2d3235535e4cdb162ae1b5a0ba7b188eb21ea777bd0d12847c"
+            }
+          },
+          "qualification": "reviewed_reference_scene",
+          "public_projection": {
+            "path": "configs/task_families/dial/public/dial-best5-n08-d3/public-task.json",
+            "sha256": "62fa8c7fd40e81eea603f7697e400cf65c929017c8195a2420ca84e435ff3fa4"
+          }
+        }
+      ],
+      "oracle": [
+        {
+          "id": "dial-best5-n04-d1",
+          "directory": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n04-d1/attempt-001/motion/source",
+          "recording": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n04-d1/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "f201cbea9e207b22cf727b5e4209a6e73cdfb674eafedbb23d22beda07efc0da",
+            "task.json": "a5565175299bab19d5e3319837260ca67f04dbc00a7c8b71bca7c338f59a4173",
+            "environment.json": "2980da08f45d1d7e614d1907d39a1caf7bb4bc2a1128358d3e2bba37e9080f09",
+            "workstation.json": "542ba44715dc1a4ae679e616b751b86bb78dc3079c821d7041aebd7b96cd7aa6"
+          },
+          "qualification": "pure_program",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/dial-best5-n04-d1/edit.json",
+          "edit_sha256": "0005ef80c95ff411807e0948999d827da839f58e19f61c1e3276f924d49b2a9a",
+          "historical_edit": "outputs/engineering/dial-family-current/motion-edits/dial-best5-n04-d1.json",
+          "historical_edit_sha256": "ca11cd47e53be8ba782f8736ee8a30a87c78fdfb346192a7ad7dd5b6134094e6"
+        },
+        {
+          "id": "dial-best5-n04-d2",
+          "directory": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n04-d2/attempt-001/motion/source",
+          "recording": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n04-d2/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "d633603910e5bba92a2c07643c98cc4ca331f7191e0127ab693ad065d3cca1fc",
+            "task.json": "7119d93d17eba21217b91688089220dfb9f06674d8ed01c6cfb63ab6306c36be",
+            "environment.json": "8bc7239c72792c4a6e00ef688f58f63a9f1e022e1be522e9489202c754e6a70a",
+            "workstation.json": "654033dfdd7209d3b5ea1a8d8830eed60ba3ac15c8f1a2abe50eda28ca1b8220"
+          },
+          "qualification": "pure_program",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/dial-best5-n04-d2/edit.json",
+          "edit_sha256": "ad9e1391cb7ee88ecf11a3432ed272250564cd1f89ee6035cd711c0cc8feb833",
+          "historical_edit": "outputs/engineering/dial-family-current/motion-edits/dial-best5-n04-d2.json",
+          "historical_edit_sha256": "8f8fdbd561a413ded0ac6f4d2751d8eb2502e614ba15898df9c00b3378046de0"
+        },
+        {
+          "id": "dial-best5-n04-d3",
+          "directory": "runs/oracle/dial-best5-recovery-20261026/dial-best5-n04-d3/attempt-001/motion/source",
+          "recording": "runs/oracle/dial-best5-recovery-20261026/dial-best5-n04-d3/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "8a8ec1bacc42c66e37aa61b43c00ee4de712364ffc108afa36f4a649609304fb",
+            "task.json": "ba523015174ed1e2b1d0a1d06adb42c910a0c12fc4b372c05fcd6d7b57d3e745",
+            "environment.json": "3f5ebc2fb705aa4fa06ff4ddf6aad91d9168a28710bc86930b932625668914ab",
+            "workstation.json": "4f57ea5618619a96bdfa0ffdfe22678a9fca510b498faf8cd13fc7a78b1a1eca"
+          },
+          "qualification": "pure_program",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/dial-best5-n04-d3/edit.json",
+          "edit_sha256": "1b22245b246001a89da2928f664b517f707b3f6e5020c880b38d37e59e6ee4bb",
+          "historical_edit": "outputs/engineering/dial-family-current/motion-edits/dial-best5-n04-d3.json",
+          "historical_edit_sha256": "8548cac3e0d97ad6093a1b0e5b1c0b9a55ae6f74a2aefd64b1fd17ea37162eb8"
+        },
+        {
+          "id": "dial-best5-n06-d1",
+          "directory": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n06-d1/attempt-001/motion/source",
+          "recording": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n06-d1/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "cd08f46913c0daeff291eb714d525b201b35f7a4d866d6bd180dd05718b485f2",
+            "task.json": "0cb5d69885d269918c7bd10b4e08253cd8b364c86e18b9ee8c15b6a20ddd375d",
+            "environment.json": "c6b018b45bff8a4a82ffd09c881939f0cf46d52a1e2ff9dd909bc028189fedcf",
+            "workstation.json": "91d961866d70b2bda9e84746f3b6a67decd8c0c573e59338eaf083188fb52311"
+          },
+          "qualification": "pure_program",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/dial-best5-n06-d1/edit.json",
+          "edit_sha256": "ad46ac52c67579507b7fb8fc88c9b9491d20f3af061caaba6a2e1679b7b14849",
+          "historical_edit": "outputs/engineering/dial-family-current/motion-edits/dial-best5-n06-d1.json",
+          "historical_edit_sha256": "eb751f624a89be701cb8d5de8d05083b6bc737f09c2f0507637b17fc8b393752"
+        },
+        {
+          "id": "dial-best5-n06-d2",
+          "directory": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n06-d2/attempt-001/motion/source",
+          "recording": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n06-d2/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "9080640b0f841605d62fa7ec808e8f4b9ee0fb13c0a8d6a9cf3c24c15c4f4e37",
+            "task.json": "f9785453241139baaddfdc965490f6e22bb0e2fdbf5db58fd0f91f881d30324f",
+            "environment.json": "dbfe3192cfd16cace648d6271c441f627f0a09a632a5c96590e15246a92dc5e7",
+            "workstation.json": "0b081beb141c06ede11fa9736b6507a52d03e9c3b8bd3f22250d93d0ae22a417"
+          },
+          "qualification": "pure_program",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/dial-best5-n06-d2/edit.json",
+          "edit_sha256": "185971d99edbd542a3bd8a1edff41f2846b6ffb95537127495ac0c4f37aa1df1",
+          "historical_edit": "outputs/engineering/dial-family-current/motion-edits/dial-best5-n06-d2.json",
+          "historical_edit_sha256": "cae977be83e98f4c0a4e2964bdac3e01bb125aa6f7ec2fb64a63fc04342a9c47"
+        },
+        {
+          "id": "dial-best5-n06-d3",
+          "directory": "runs/oracle/dial-best5-recovery-20261026/dial-best5-n06-d3/attempt-001/motion/source",
+          "recording": "runs/oracle/dial-best5-recovery-20261026/dial-best5-n06-d3/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "ef02a7f7441625cf29b3cda9799701bdc229916a46d3e8a1509133f084091eba",
+            "task.json": "20d9b16a32c01c3ca3ab5dcf72517b9ebec33c49e39684caa0dd15b22b1444ba",
+            "environment.json": "c8f7ab7aed53e7bc3da9f2e696f3091adf67d54de69850793cea92dc09afddcc",
+            "workstation.json": "48989546d01fb3dfc09bc6e47e888691b6832e03888a107ed7a769b461a4ec7d"
+          },
+          "qualification": "pure_program",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/dial-best5-n06-d3/edit.json",
+          "edit_sha256": "3b62fcbe7b88ad0a51b73fe3f9d694d017ea338462e4c81f23ba4b4162415bf8",
+          "historical_edit": "outputs/engineering/dial-family-current/motion-edits/dial-best5-n06-d3.json",
+          "historical_edit_sha256": "cccd9d909b62a77e9db050b2db6606704588eae0e433230b81287baa3a9bc5fd"
+        },
+        {
+          "id": "dial-best5-n08-d1",
+          "directory": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n08-d1/attempt-001/motion/source",
+          "recording": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n08-d1/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "2f2de801229fa18bde2ef659cdf99dbaa1d121cd0eb483c60f6c88647dc03e72",
+            "task.json": "4740997db55123b5ecce8be724d61c21a7377d23eed70583e953f0c292466666",
+            "environment.json": "0eea13f357289fdbc87812f1eafe8b6587084d71fdb2fbc7bf4a97f4d1ae9e0b",
+            "workstation.json": "87aecc9d4b22983615c401d060806290bf774faf2707b76f6d6fcc718eb4cb8e"
+          },
+          "qualification": "pure_program",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/dial-best5-n08-d1/edit.json",
+          "edit_sha256": "8178127914ed5718fc10bd0a9d72e49e2ae91220977d9c44ecbb2dbdc4b070a1",
+          "historical_edit": "outputs/engineering/dial-family-current/motion-edits/dial-best5-n08-d1.json",
+          "historical_edit_sha256": "8b641ff6094484d24056ecb31b9667011b325ea28748b78ca73ba66fe4859473"
+        },
+        {
+          "id": "dial-best5-n08-d2",
+          "directory": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n08-d2/attempt-001/motion/source",
+          "recording": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n08-d2/attempt-001/motion",
+          "source_files": {
+            "scene.xml": "b8e4149dcc226d1cf9ba824d17687024154e89eba97286df5bb0fb39fdec2966",
+            "task.json": "e4442c007ae48752670b548a2c7b3e4dbb7fb0133118354c118bf6f8e3c5af7e",
+            "environment.json": "2e2af1100435d181259f82772dd3778e5eb05402875d509d35a9e11b0c43e702",
+            "workstation.json": "629098290cf7b6b93bf7173737026a75a37c5ba4366f21c1657390502f447d01"
+          },
+          "qualification": "pure_program",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/dial-best5-n08-d2/edit.json",
+          "edit_sha256": "d461dcece19318c855a7b18d1825abc02f1d77e7a2fb71d277652d073d11a657",
+          "historical_edit": "outputs/engineering/dial-family-current/motion-edits/dial-best5-n08-d2.json",
+          "historical_edit_sha256": "7ecbf2692ca869ac1d3a1ce09a446c7b4f11197926002e9ce33257cbcd6d983f"
+        },
+        {
+          "id": "dial-best5-n08-d3",
+          "directory": "runs/oracle/dial-best5-recovery-20261026/dial-best5-n08-d3/attempt-003/motion/source",
+          "recording": "runs/oracle/dial-best5-recovery-20261026/dial-best5-n08-d3/attempt-003/motion",
+          "source_files": {
+            "scene.xml": "ffe0032e1ee31f32e18fe1538d116fa7babd6469840917756c88ceb925cb4c4b",
+            "task.json": "5bbc0bafe7b1e80f57a21e039a5d2b90113b7a87d5d2b0bd0cde31b2762b0334",
+            "environment.json": "5e8794c941abc4ae3ffcd2972df71a3342f949971b6f4a25f9eaf0f4f8f5e2a8",
+            "workstation.json": "24f6cfd5e83dea9150139816ace338b27b4210e46bf29e210e5279500a1af39d"
+          },
+          "qualification": "privileged_assisted",
+          "edit": "outputs/robo-factory/source-edits-v2-20261027/dial-best5-n08-d3/edit.json",
+          "edit_sha256": "80d95c067806797e66ea191a975114b88d03211a0e614b63e1bfc9ce30aea0b6",
+          "historical_edit": "outputs/engineering/dial-family-current/motion-edits/dial-best5-n08-d3.json",
+          "historical_edit_sha256": "e6c89b5e26d932a031ab9cdb7503b0aa324e30836603da098d0e840c1b9b81f1"
+        }
+      ]
+    }
+  },
+  "presentation": {
+    "loop": true,
+    "loop_scope": "independent_station",
+    "fps": 30,
+    "export_requires_duration": true
+  },
+  "harness": {
+    "path": "configs/harnesses/policy.json",
+    "sha256": "c8e204946e347757150208ae7953537fa69a1a67972ad5785ab06528d44d58df"
+  }
+}

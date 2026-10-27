@@ -3,10 +3,11 @@ import argparse
 from pathlib import Path
 from robofrontier.factory_scene import ROOT
 from robofrontier.factory_view import render_views,serve
+from robofrontier.factory_playback import current_scene
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    current=ROOT/'outputs/robo-factory/v6-workstations/scene.xml'
+    current=current_scene()
     p.add_argument('--scene',type=Path,default=current if current.exists() else ROOT/'outputs/robo-factory/scene/scene.xml')
     p.add_argument('--renderer',choices=['filament','classic'],default='filament')
     p.add_argument('--render',action='store_true',help='Export fixed-camera PNGs and measurements')

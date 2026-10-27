@@ -57,6 +57,8 @@ def prepare_run(directory, task_path=None, harness_path=None, private_puzzle_pat
     if puzzle is not None:
         write_json(directory/puzzle_relative,puzzle)
     public = public_task(task)
+    from .task_families import freeze_public
+    family_release = freeze_public(task, directory, public)
     from .scene_task import camera_names
     public['cameras'] = camera_names(task)
     for key,name in (('robot_layout_image','robot-layout.png'),('camera_calibration','camera-guide.json')):
@@ -126,6 +128,9 @@ def prepare_run(directory, task_path=None, harness_path=None, private_puzzle_pat
         inputs[str(puzzle_relative)]=hashlib.sha256(p.read_bytes()).hexdigest()
     p=directory/'private/inputs/meta-runbook.md'
     inputs[str(p.relative_to(directory))]=hashlib.sha256(p.read_bytes()).hexdigest()
+    if family_release is not None:
+        p=directory/'private/inputs/family-release.json'
+        inputs[str(p.relative_to(directory))]=hashlib.sha256(p.read_bytes()).hexdigest()
     logic=environment_logic_manifest(source_hashes,task) if task.get('kind')=='frontier_suite' else None
     write_json(directory/'private/inputs/manifest.json', {'schema_version':3,'run_id':directory.name,
         'task_sha256':hashlib.sha256(packed(task).encode()).hexdigest(),
@@ -135,6 +140,7 @@ def prepare_run(directory, task_path=None, harness_path=None, private_puzzle_pat
         'environment_logic_sha256':logic['sha256'] if logic else None,
         'environment_logic_provenance':logic,
         'model_requested':cfg['model'],'effort_requested':cfg['effort'],
+        'family_release':family_release,
         'observation_contract':task['observation_contract'],
         'manager':'Meta session executes deterministic dispatcher; no independent desktop takeover',
         'isolation':'Role authentication and protocol/integrity checks; not an OS filesystem sandbox',

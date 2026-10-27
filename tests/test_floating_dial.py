@@ -124,8 +124,8 @@ class FloatingFeedbackTests(unittest.TestCase):
         from robofrontier.pipeline import World
         for dt,expected in ((.001,20),(.002,10)):
             calls=[];arm=SimpleNamespace(control=lambda actual:calls.append(actual),grasp_force=None)
-            world=SimpleNamespace(arms={'A':arm},model=SimpleNamespace(opt=SimpleNamespace(timestep=dt)),data=object(),task={})
-            with patch('robofrontier.pipeline.mujoco.mj_step') as step,patch('robofrontier.pipeline.mujoco.mj_forward'):
+            world=SimpleNamespace(arms={'A':arm},model=SimpleNamespace(opt=SimpleNamespace(timestep=dt)),data=SimpleNamespace(time=0.),task={})
+            with patch('robofrontier.pipeline.mujoco.mj_step') as step,patch('robofrontier.pipeline.mujoco.mj_forward'),patch('robofrontier.physics_health.require_valid_step'):
                 World.step(world)
             self.assertEqual(step.call_count,expected);self.assertAlmostEqual(calls[0],.02)
 

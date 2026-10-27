@@ -4,10 +4,12 @@ Offline presentation only. Source FK geometry is carried exactly; lighting is
 render-specific. No controller, IK, contacts, or task physics run in Blender.
 """
 import argparse
+import hashlib
 import json
 import math
 from pathlib import Path
 import sys
+import subprocess
 import time
 
 import bpy
@@ -24,11 +26,13 @@ def main():
     parser.add_argument('--exposure',type=float,default=-1.5);parser.add_argument('--samples',type=int,default=64);parser.add_argument('--device',choices=['METAL','CPU'],default='METAL')
     parser.add_argument('--save-blend',action='store_true');parser.add_argument('--usd',action='store_true')
     parser.add_argument('--recorded-pose',type=Path,help='Derived recorded-state pose, matching this exact factory; no physics')
+    parser.add_argument('--animation',type=Path,help='Common source-bound animation.json; 30fps independent station loops')
     args=parser.parse_args(sys.argv[sys.argv.index('--')+1:]);started=time.monotonic()
     args.asset=args.asset.resolve();args.output=args.output.resolve();args.output.mkdir(parents=True,exist_ok=True)
     metadata=json.loads((args.asset/'scene.json').read_text());arrays=np.load(args.asset/'meshes.npz')
     bpy.ops.wm.read_factory_settings(use_empty=True);scene=bpy.context.scene
     scene.render.engine='CYCLES';scene.cycles.samples=args.samples;scene.cycles.use_denoising=True
+    scene.render.use_persistent_data=True
     scene.render.resolution_x=args.width;scene.render.resolution_y=args.height;scene.render.resolution_percentage=100
     scene.render.image_settings.file_format='PNG';scene.render.film_transparent=False
     scene.unit_settings.system='METRIC';scene.unit_settings.scale_length=1.
@@ -80,6 +84,17 @@ def main():
         color=tuple(g['rgba'])
         if color not in fallback:fallback[color]=make_material(dict(name='rgba_'+str(len(fallback)),rgba=color,roughness=.45,metallic=0.,texrepeat=[1,1]))
         return fallback[color]
+    appearance_materials={}
+    material_specs={m['id']:m for m in metadata['materials']}
+    def appearance_material(original,rgba):
+        if np.array_equal(rgba,np.asarray(original['rgba'],dtype=np.float32)):
+            return geom_material(original)
+        if original['material']<0:return geom_material(dict(original,rgba=list(rgba)))
+        key=(original['material'],tuple(rgba))
+        if key not in appearance_materials:
+            spec=dict(material_specs[original['material']],rgba=list(rgba))
+            appearance_materials[key]=make_material(spec)
+        return appearance_materials[key]
     meshes={}
     for spec in metadata['meshes']:
         i=spec['id'];mesh=bpy.data.meshes.new(spec['name']);mesh.from_pydata(arrays[f'v{i}'].tolist(),[],arrays[f'f{i}'].tolist());mesh.update()
@@ -171,8 +186,7 @@ def main():
     if recorded:
         report['recorded_pose']=dict(case_id=recorded['case_id'],time_s=recorded['selected_recorded_time_s'],geometries=len(recorded['geoms']),
             source_scene_sha256=recorded['source_scene_sha256'],motion_index_sha256=recorded['motion_index_sha256'])
-    for name in args.views:
-        source=next(c for c in metadata['cameras'] if c['id']==name)
+    def render_camera(source,file):
         position=Vector(source['position_m']);target=Vector(source['target_m']);camera.location=position
         camera.rotation_euler=(target-position).to_track_quat('-Z','Y').to_euler()
         if source.get('projection')=='orthographic':
@@ -182,8 +196,47 @@ def main():
         hidden=set(source.get('hidden_layers',[]));layers={'structure':0,'roof':1,'north':2,'south':3,'west':4,'east':5}
         for g in metadata['geoms']:
             obj=objects[g['id']];obj.hide_render=g['group'] in {layers[x] for x in hidden if x in layers}
-        scene.render.filepath=str(args.output/(name+'.png'));before=time.monotonic();bpy.ops.render.render(write_still=True)
-        report['views'].append(dict(camera=name,file=scene.render.filepath,wall_s=time.monotonic()-before,samples=args.samples,resolution=[args.width,args.height]))
+        scene.render.filepath=str(file);before=time.monotonic();bpy.ops.render.render(write_still=True)
+        return dict(camera=source.get('id','tour'),file=scene.render.filepath,wall_s=time.monotonic()-before,samples=args.samples,resolution=[args.width,args.height])
+    if args.animation:
+        if args.recorded_pose:raise ValueError('Select one animation or one recorded pose')
+        animation=json.loads(args.animation.read_text())
+        if (animation['schema']!='robofrontier.factory-animation.v1' or animation['fps']!=30
+                or animation['source_scene_sha256']!=metadata['source_scene_sha256']):
+            raise ValueError('Animation source or cadence differs')
+        trace=args.animation.parent/'frames.jsonl'
+        if hashlib.sha256(trace.read_bytes()).hexdigest()!=animation['source_trace_sha256']:
+            raise ValueError('Animation source trace differs')
+        specs={g['id']:g for g in metadata['geoms']};last_rgba={}
+        for index,frame in enumerate(animation['frames']):
+            path=args.animation.parent/frame['file']
+            if path.resolve().parent!=args.animation.parent.resolve() or hashlib.sha256(path.read_bytes()).hexdigest()!=frame['sha256']:
+                raise ValueError('Animation pose differs')
+            with np.load(path,allow_pickle=False) as pose:
+                ids=pose['geom_ids'];positions=pose['position'];rotations=pose['rotation'];colors=pose['rgba']
+                if (positions.shape!=(len(ids),3) or rotations.shape!=(len(ids),3,3) or colors.shape!=(len(ids),4)
+                        or len(set(ids.tolist()))!=len(ids) or not all(np.isfinite(a).all() for a in (positions,rotations,colors))):
+                    raise ValueError('Invalid animation pose arrays')
+                for gid,position,rotation,rgba in zip(ids,positions,rotations,colors):
+                    gid=int(gid);obj=objects[gid]
+                    obj.location=position;obj.rotation_quaternion=Matrix(rotation).to_quaternion()
+                    color=tuple(rgba)
+                    if color!=last_rgba.get(gid,tuple(specs[gid]['rgba'])):
+                        obj.material_slots[0].material=appearance_material(specs[gid],rgba)
+                    last_rgba[gid]=color
+            report['views'].append(render_camera(frame['camera'],args.output/f'frame-{index:06d}.png'))
+            (args.output/'report.json').write_text(json.dumps(report,indent=2)+'\n')
+        count=len(animation['frames'])
+        if not count:raise ValueError('Empty animation')
+        subprocess.run(['ffmpeg','-v','error','-threads','1','-framerate','30','-i',str(args.output/'frame-%06d.png'),
+            '-frames:v',str(count),'-c:v','libx264','-threads','1','-pix_fmt','yuv420p','-crf','18','-movflags','+faststart',str(args.output/'factory.mp4')],check=True)
+        subprocess.run(['ffmpeg','-v','error','-threads','1','-i',str(args.output/'factory.mp4'),'-f','null','-'],check=True)
+        report['animation']=dict(frames=count,fps=30,stations=animation['stations'],loop=animation['loop'],
+            source_trace=str(trace.resolve()),full_decode_passed=True)
+    else:
+      for name in args.views:
+        source=next(c for c in metadata['cameras'] if c['id']==name)
+        report['views'].append(render_camera(source,args.output/(name+'.png')))
         (args.output/'report.json').write_text(json.dumps(report,indent=2)+'\n')
     if args.save_blend:bpy.ops.wm.save_as_mainfile(filepath=str(args.output/'factory.blend'))
     if args.usd:

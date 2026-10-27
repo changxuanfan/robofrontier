@@ -100,11 +100,12 @@ def registry(root):
         if read(frozen_cfg) != read(root/'configs/harness-frontier-v2-servo2.json'):
             raise ValueError('Candidate policy control configuration differs from Oracle')
         paths = ('robot_control.py','sim.py','motion_check.py','task_config.py','pipeline.py')
-        hashes = {'robofrontier/'+p:digest(root/'robofrontier'/p) for p in paths}
+        from ..source_compatibility import historical_digest
+        hashes = {'robofrontier/'+p:historical_digest(root, 'robofrontier/'+p, 'dial') for p in paths}
         if physical_control_fingerprint(hashes, read(frozen_cfg)) != report['physical_control_sha256']:
             raise ValueError('Shared physical control code differs from the selected evidence')
         logic_paths = ('evaluate.py','evaluate_v2.py','dial_feedback.py')
-        logic = {'robofrontier/suite/'+p:digest(root/'robofrontier/suite'/p) for p in logic_paths}
+        logic = {'robofrontier/suite/'+p:historical_digest(root, 'robofrontier/suite/'+p, 'dial') for p in logic_paths}
         if environment_logic_manifest(logic,task)['sha256'] != report['environment_logic_sha256']:
             raise ValueError('Current evaluator code differs from the selected evidence')
         assisted = bool(report.get('assisted', report.get('llm_used', False)))

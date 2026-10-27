@@ -17,6 +17,11 @@
 | `vendor/` | 上游机器人模型与来源 |
 | `runs/` | 实验和工程检查产物，名称与报告区分其用途 |
 
+当前任务统一由`configs/task_families/current.json`按GPT/Oracle用途选择，
+`scripts.tasks`负责冻结公开材料和源绑定协议；`scripts.factory`负责无物理的
+多桌剪辑回放。历史生成入口保留版本兼容。参见[GPT准备](gpt-policy.md)、
+[工厂说明](robo-factory.md)和[合并验收](oracle-integration.md)。
+
 ## 新运行目录：格式 v3
 
 ```text

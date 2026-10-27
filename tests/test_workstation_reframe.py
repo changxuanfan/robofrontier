@@ -6,13 +6,15 @@ import unittest
 import mujoco
 import numpy as np
 
-from robofrontier.suite.v2 import cases,directory,public_task
+from robofrontier.suite.v2 import ROOT,directory,public_task
 from robofrontier.workstation import Workstation
 
 
 class WorkstationReframeTests(unittest.TestCase):
     def test_all_sources_translate_without_scaling_or_changing_dynamics(self):
-        for case in cases():
+        # R10 is the height-only revision. Later family revisions deliberately
+        # change table/cargo topology and are checked by their own contracts.
+        for case in json.loads((ROOT/'configs/suites/frontier-v2-r10.json').read_text())['cases']:
             with self.subTest(case=case['id']):
                 previous=deepcopy(case);previous['scene_revision']=case['source_scene_revision']
                 old=Workstation(directory(previous));new=Workstation(directory(case))

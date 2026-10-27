@@ -849,6 +849,9 @@ def validate_task(task):
         from ..policy_probe import validate_protocol
         validate_protocol(task.get('run_protocol'))
         if task.get('oracle_verified') is not False:raise ValueError('Bounded probes do not confer Oracle readiness')
+    elif task.get('execution_readiness')=='prepared_policy_trial':
+        from ..task_families import validate_policy_task
+        validate_policy_task(task)
     elif task.get('execution_readiness')!='environment_preview_only':
         raise ValueError('Unknown V2 execution readiness')
     for key in ('objects','mechanism','goals','grid','route','dials'):

@@ -257,4 +257,4 @@ Transport专属层，公共消费协议留C3。必要时从原60Hz重新生成�
 - [最新20x／源时间轴交接](/Users/fanchangxuan/Repos/roomscript2/runs/oracle/transport-continuation-20261026/20X_VIDEO_HANDOFF.md)
 - [源时间轴说明](/Users/fanchangxuan/Repos/roomscript2/runs/oracle/transport-continuation-20261026/motion-timelines/README.md)
 - [Transport初始worktree边界](transport-worktree-oracle.md)与[执行历史](transport-continuation.md)；其中历史“未完成”文字不能代替最新完成索引。
-- 其他owner只读参考：[Dial规划](/Users/fanchangxuan/.codex/worktrees/dial-continuation/roomscript2/docs/plans/suite-v2/dial-gpt-readiness-and-replay-plan-20261027.md)、[Relay规划](/Users/fanchangxuan/.codex/worktrees/relay-continuation/roomscript2/docs/history/relay-gpt-readiness-and-factory-parallel-plan-20261027.md)。这些文档及其未提交代码可能继续变化，合并前重新采集。
+- 其他owner只读参考：[Dial规划](dial-gpt-preparation-plan-20261027.md)、[Relay规划](relay-gpt-readiness-and-factory-parallel-plan-20261027.md)。这些文档及其未提交代码可能继续变化，合并前重新采集。

@@ -132,10 +132,13 @@ def verify_registry(root=ROOT, registry_path=None, verify_recorded_chunks=False)
         raise ValueError('Registry must bind the nine unique Mosaic R13 cases')
     _pinned(local(root,registry['catalog']),registry['catalog_sha256'])
     _pinned(local(root,registry['harness']),registry['harness_sha256'])
-    for name,sha in registry['evaluator_sources'].items():_pinned(local(root,name),sha)
+    from ..source_compatibility import historical_digest
+    for name,sha in registry['evaluator_sources'].items():
+        if historical_digest(root, name, 'mosaic') != sha:
+            raise ValueError('Pinned evaluator differs: '+name)
     from ..task_config import physical_control_fingerprint
     harness=read(local(root,registry['harness']))
-    physical=physical_control_fingerprint({f'robofrontier/{n}':checksum(root/'robofrontier'/n) for n in CONTROL_FILES},harness)
+    physical=physical_control_fingerprint({f'robofrontier/{n}':historical_digest(root, f'robofrontier/{n}', 'mosaic') for n in CONTROL_FILES},harness)
     catalog={c['id']:c for c in read(local(root,registry['catalog']))['cases']}
     verified=[]
     for entry in registry['cases']:

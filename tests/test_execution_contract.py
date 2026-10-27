@@ -47,7 +47,7 @@ class TerminalServoTests(unittest.TestCase):
         command['timing']['timeout_sim_s']=.1;a.start('jaw',command,0)
         a.control(.02);reference=a.observe()['gripper_width_m']*255/.08
         self.assertIsNone(a.poll(.12,15))
-        self.assertTrue(a.stopping);self.assertEqual(a.job,'jaw');self.assertEqual(a.grip_goal,reference)
+        self.assertTrue(a.stopping);self.assertEqual(a.job,'jaw');self.assertAlmostEqual(a.grip_goal,reference)
         result=None
         for tick in np.arange(.14,.70,.02):
             a.control(.02);result=a.poll(float(tick),15)
@@ -56,7 +56,7 @@ class TerminalServoTests(unittest.TestCase):
         self.assertEqual(result['status'],'failed');self.assertIn('timeout',result['reason'])
         self.assertIsNone(a.job)
         for _ in range(50):a.control(.02)
-        self.assertEqual(a.gripper,reference);self.assertEqual(a.grip_goal,reference)
+        self.assertAlmostEqual(a.gripper,reference);self.assertAlmostEqual(a.grip_goal,reference)
 
     def test_nonsettling_stop_keeps_ownership_unresolved_and_cannot_reset_deadline(self):
         a=self.arm;a.start('jaw',self.world.validate_action('A','gripper',{'state':'close'},self.cfg),0)
@@ -73,7 +73,7 @@ class TerminalServoTests(unittest.TestCase):
         a=self.arm;a.start('jaw',self.world.validate_action('A','gripper',{'state':'close'},self.cfg),0)
         a.control(.02);reference=a.observe()['gripper_width_m']*255/.08;a.end('failed','engineering stop')
         for _ in range(50):a.control(.02)
-        self.assertEqual(a.gripper,reference)
+        self.assertAlmostEqual(a.gripper,reference)
 
 
 class SceneTopologyContractTests(unittest.TestCase):

@@ -414,7 +414,7 @@ class _Builder:
             self.cylinder(door,[3.5,-.23,1.35],.035,.02,'green',layer,rotation=_rx(math.pi/2))
             self.sign(body,side+'_left','TRANSPORT' if side=='north' else 'DIAL LAB',[-W*.27,-.12,4.6],[5.3,.72],group=layer,painted=True)
             self.sign(body,side+'_right','MOSAIC' if side=='north' else 'AIR RELAY',[W*.27,-.12,4.6],[5.3,.72],group=layer,painted=True)
-            if side=='north':self.sign(body,'brand','ROBO FACTORY',[0,-.12,6.0],[8.0,1.0],group=layer,painted=True)
+            # Region and operational signs remain; the former brand wall is clear.
         # Side walls are assembled around glazed openings instead of textured solid boxes.
         for side,x,yaw,layer in [('east',W/2,-math.pi/2,'east'),('west',-W/2,math.pi/2,'west')]:
             body=self.body(side+'_wall',[x,0,0],yaw,layer)
@@ -687,6 +687,7 @@ class _Builder:
         catalog_path=ROOT/settings['catalog'];catalog=json.loads(catalog_path.read_text())
         self.dressing_catalog_sha256=_hash(catalog_path)
         plan=placements(catalog,self.cfg['regions'],ROOT)
+        self.dressing_plan=plan
         for place in plan:
             source=Workstation(ROOT/place['source_directory']);source.frame();m,d=source.model,source.data
             task=json.loads((source.path/'task.json').read_text());height=task['table_height_m']
@@ -745,6 +746,62 @@ class _Builder:
                     self.box(b,[xx,yy,zz+hh/2+.001],[.025,.14,.001],'tape')
                 self.workstation_props.append(dict(id=name,position_m=[x,y,0],footprint_half_m=[.45,.38],top_m=.57,physical=False,placement='Region corner outside initial planning envelopes'))
 
+    def service_equipment(self):
+        """Functional service connections and varied equipment in reserved space."""
+        if not self.cfg['appearance'].get('service_equipment',False):return
+        for index, prop in enumerate(getattr(self,'workstation_props',[])):
+            if not prop['id'].startswith('underbench_'):continue
+            b=self.body('service_'+prop['id'],prop['position_m'],category='workstation_services')
+            # All fittings remain below the verified solid tabletop footprint.
+            self.box(b,[0,.22,.69],[.40,.035,.025],'steel_light',bevel=.004)
+            self.box(b,[.30,-.269,.49],[.075,.012,.09],'cabinet_dark',bevel=.005)
+            for x in (.265,.305,.345):
+                self.cylinder(b,[x,-.289,.51],.009,.008,'yellow' if x==.305 else 'black',rotation=_rx(math.pi/2))
+            for k in range(3):
+                x=-.32+k*.065
+                points=[[x,.24,.68],[x,.24,.47],[x+.035,.24,.22],[x+.10,.22,.12]]
+                for a,z in zip(points,points[1:]):self.line(b,a,z,.007,'black')
+            if index%2==0:
+                self.box(b,[-.28,.02,.075],[.09,.15,.035],'blue',bevel=.01)
+                self.line(b,[-.28,.16,.11],[-.28,.22,.60],.012,'black')
+        # Plant equipment occupies the existing perimeter service strip.
+        for side in (-1,1):
+            candidates=np.arange(-self.depth/2+2.5,self.depth/2-2.,2.8)
+            chosen=[]
+            for y in candidates:
+                x=side*(self.width/2-.65)
+                if any(x+.42>a and x-.42<c and y+1.2>b and y-1.2<d for a,b,c,d in [p['bounds_xy_m'] for p in self.props]):continue
+                if any(abs(y-old)<2.8 for old in chosen):continue
+                chosen.append(float(y))
+                if len(chosen)==4:break
+            for i,y in enumerate(chosen):
+                x=side*(self.width/2-.65)
+                b=self.body('plant_'+str(side)+'_'+str(i),[x,y,0],yaw=-side*math.pi/2,category='wall_services')
+                if i%2==0:
+                    self.cylinder(b,[0,0,.48],.25,.46,'blue',rotation=_rx(math.pi/2))
+                    for xx in (-.18,.18):self.box(b,[xx,0,.13],[.035,.28,.13],'steel')
+                    self.box(b,[0,0,.83],[.15,.20,.11],'steel',bevel=.025)
+                    for xx in (-.10,0,.10):self.line(b,[xx,-.20,.84],[xx,.20,.84],.015,'steel_light')
+                    self.line(b,[.22,0,.50],[.34,0,1.05],.018,'steel_light')
+                else:
+                    self.box(b,[0,0,.62],[.31,.27,.58],'cabinet',bevel=.015)
+                    self.box(b,[0,-.28,.76],[.25,.012,.35],'cabinet_dark',bevel=.007)
+                    for zz in (.46,.53,.60,.67):self.box(b,[0,-.296,zz],[.20,.004,.009],'black')
+                    self.box(b,[0,-.30,1.02],[.15,.006,.07],'label',bevel=.004)
+                    for xx in (-.13,.13):self.line(b,[xx,.25,1.18],[xx,.25,2.35],.022,'steel_light')
+                # Adjacent reusable tote stacks and grounded protective posts.
+                for j in range(3):self.bin(b,[.75,0.,.10+j*.20],w=.48,d=.40,h=.18)
+                for xx in (-.55,1.05):
+                    self.cylinder(b,[xx,.30,.30],.055,.30,'yellow')
+                    self.box(b,[xx,.30,.025],[.11,.11,.025],'steel',bevel=.006)
+
+        for region in self.cfg['regions']:
+            x0,y0,x1,y1=region['bounds_xy_m']
+            occupied=[p['planning_bounds_xy_m'] for p in getattr(self,'dressing_plan',[]) if p['family']==region['id']]
+            for i,(x,y) in enumerate(((x0+.8,(y0+y1)/2),(x1-.8,(y0+y1)/2),((x0+x1)/2,y0+.8),((x0+x1)/2,y1-.8))):
+                if any(x+.7>a and x-.7<c and y+.5>b and y-.5<d for a,b,c,d in occupied):continue
+                self.cart('supply_'+region['id']+'_'+str(i),[x,y,0],yaw=(i%2)*math.pi/2)
+
     def lights(self):
         cfg=self.cfg['lighting']
         ET.SubElement(self.world,'light',name='factory_environment',type='image',texture='factory_sky',intensity=str(cfg['environment_intensity']))
@@ -780,6 +837,7 @@ class _Builder:
         self.shell();self.infrastructure();self.paint();self.equipment()
         if self.cfg['appearance'].get('perimeter_detail',False):self.detail_equipment()
         self.workstation_dressing()
+        self.service_equipment()
         self.lights();self.views()
         if self.cfg['appearance'].get('batch_static_geometry',False):self.static_batches()
         path=self.output/'scene.xml';ET.indent(self.root);ET.ElementTree(self.root).write(path,encoding='unicode')
@@ -808,13 +866,14 @@ def build_factory(config_path=DEFAULT_CONFIG, output=None):
     for r in config['regions']:
         x0,y0,x1,y1=r['bounds_xy_m']
         if not (-W/2<x0<x1<W/2 and -D/2<y0<y1<D/2):raise ValueError('Region outside building: '+r['id'])
-    assets=ROOT/'assets/robo_factory';(assets/'meshes').mkdir(parents=True,exist_ok=True);(assets/'textures').mkdir(exist_ok=True)
+    assets=output/'assets'
+    shutil.copytree(ROOT/'assets/robo_factory',assets,dirs_exist_ok=True)
+    (assets/'meshes').mkdir(parents=True,exist_ok=True);(assets/'textures').mkdir(exist_ok=True)
     _texture_assets(assets/'textures',config['seed'])
     if config['appearance'].get('whole_floor_finish',False):_floor_finish(assets/'textures',config)
     scene,manifest=_Builder(config,assets,output).finish()
     # Local, relative assets make the resulting scene directory portable.
     (assets/'asset-manifest.json').write_text(json.dumps({'generated_by':'robofrontier.factory_scene','seed':config['seed'],'third_party':[{'id':'Barlow Condensed','source':'https://github.com/google/fonts/tree/main/ofl/barlowcondensed','license':'SIL Open Font License 1.1','license_file':'fonts/OFL.txt'},{'id':'concrete_floor_02','source':'https://polyhaven.com/a/concrete_floor_02','license':'CC0 1.0','metadata':'source/polyhaven/source.json'}],'assets':manifest['assets']},indent=2)+'\n')
-    shutil.copytree(assets,output/'assets',dirs_exist_ok=True)
     # Output folders may be reused; do not retain obsolete generated mesh copies.
     active_meshes={file.name for file in (assets/'meshes').glob('factory_*.obj')}
     for file in (output/'assets/meshes').glob('factory_*.obj'):

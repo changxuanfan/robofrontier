@@ -87,7 +87,7 @@ class Assets:
         return mapping
 
 
-def compose(shell,catalog_path,output,table_opening_scale=.5,source_overrides=None,source_root=None,placement_overrides=None):
+def compose(shell,catalog_path,output,table_opening_scale=None,source_overrides=None,source_root=None,placement_overrides=None):
     shell=Path(shell).resolve();output=Path(output).resolve();output.mkdir(parents=True,exist_ok=False)
     root_dir=Path(source_root).resolve() if source_root else Path(__file__).resolve().parents[1];catalog=json.loads(Path(catalog_path).read_text())
     shell_manifest=json.loads((shell.parent/'manifest.json').read_text());plan=placements(catalog,shell_manifest['regions'],root_dir,source_overrides=source_overrides)
@@ -108,6 +108,7 @@ def compose(shell,catalog_path,output,table_opening_scale=.5,source_overrides=No
         place.update(translation_m=shift.tolist(),yaw_rad=yaw,
             planning_bounds_xy_m=[*moved[:,:2].min(axis=0),*moved[:,:2].max(axis=0)])
     root=ET.parse(shell).getroot();shutil.copytree(shell.parent/'assets',output/'assets')
+    if (shell.parent/'build-config.json').exists():shutil.copyfile(shell.parent/'build-config.json',output/'build-config.json')
     option=root.find('option')
     if option is None:option=ET.SubElement(root,'option')
     flag=option.find('flag')
@@ -129,7 +130,9 @@ def compose(shell,catalog_path,output,table_opening_scale=.5,source_overrides=No
     for place in plan:
         source=Workstation((source_overrides or {}).get(place['case_id'],root_dir/place['source_directory']));source.frame();m,d=source.model,source.data;amap=assets.import_source(source)
         from .suite.table_presentation import scale_rectangular_opening_for_render
-        if place['family']=='transport':scale_rectangular_opening_for_render(m,table_opening_scale)
+        if place['family']=='transport':
+            item=next(c for c in catalog['cases'] if c['id']==place['case_id'])
+            scale_rectangular_opening_for_render(m,item.get('table_opening_scale',1.) if table_opening_scale is None else table_opening_scale)
         t=np.asarray(place['translation_m']);yaw=place['yaw_rad'];c,s=math.cos(yaw),math.sin(yaw);rotation=np.array([[c,-s,0],[s,c,0],[0,0,1.]])
         prefix=place['case_id']+'__';bodymap={};geommap={};animated=set(source.manifest['motion_recording_contract']['dynamic_bodies'])
         for bid in range(m.nbody):
@@ -204,7 +207,7 @@ class FactoryPlayback:
                     getattr(self.model,field)[dst]=getattr(source.model,field)[src]
         self.presentations[case_id]=dict(table=table,translation_m=shift.tolist(),yaw_rad=yaw)
         return self.presentations[case_id]
-    def apply_arrays(self,case_id,source,qpos,time_s,verify=False):
+    def apply_arrays(self,case_id,source,qpos,time_s,verify=False,commit=True):
         """Vectorized offline FK/placement, without building per-geom JSON.
 
         Compiled maps are private to this frozen source/target pair. Joint angles
@@ -237,14 +240,23 @@ class FactoryPlayback:
         yaw=np.arctan2(rotation[1,0],rotation[0,0]);c,s=np.cos(yaw/2),np.sin(yaw/2)
         q=source.data.xquat[pairs[:,0]];w,x,y,z=q.T
         self.data.mocap_quat[pairs[:,1]]=np.column_stack([c*w-s*z,c*x-s*y,c*y+s*x,c*z+s*w])
-        self.data.time=time_s;mujoco.mj_kinematics(self.model,self.data);mujoco.mj_camlight(self.model,self.data)
+        if verify and not commit:raise ValueError('Deferred verification requires a committed factory frame')
+        if commit:self.commit_frame(time_s)
         if verify:
-            expected=source.data.geom_xpos[geoms[:,0]]@rotation.T+shift
-            pe=float(np.max(np.linalg.norm(self.data.geom_xpos[geoms[:,1]]-expected,axis=1)))
-            expected_r=np.einsum('ij,njk->nik',rotation,source.data.geom_xmat[geoms[:,0]].reshape(-1,3,3))
-            re=float(np.max(abs(self.data.geom_xmat[geoms[:,1]].reshape(-1,3,3)-expected_r)))
-            if pe>1e-6 or re>1e-6:raise ValueError(('Factory rigid pose mismatch',pe,re))
-            return dict(position_error_m=pe,rotation_matrix_error=re)
+            return self.verify_station(case_id,source)
+    def verify_station(self,case_id,source):
+        """Verify committed geometry without changing any station or clock."""
+        rotation,shift,pairs,geoms=self._recorded_maps[(case_id,id(source.model))]
+        expected=source.data.geom_xpos[geoms[:,0]]@rotation.T+shift
+        pe=float(np.max(np.linalg.norm(self.data.geom_xpos[geoms[:,1]]-expected,axis=1)))
+        expected_r=np.einsum('ij,njk->nik',rotation,source.data.geom_xmat[geoms[:,0]].reshape(-1,3,3))
+        re=float(np.max(abs(self.data.geom_xmat[geoms[:,1]].reshape(-1,3,3)-expected_r)))
+        if pe>1e-6 or re>1e-6:raise ValueError(('Factory rigid pose mismatch',pe,re))
+        return dict(position_error_m=pe,rotation_matrix_error=re)
+    def commit_frame(self,presentation_time_s):
+        if not np.isfinite(presentation_time_s) or presentation_time_s<0:raise ValueError('Invalid presentation time')
+        self.data.time=presentation_time_s
+        mujoco.mj_kinematics(self.model,self.data);mujoco.mj_camlight(self.model,self.data)
     def apply(self,case_id,source,qpos,time_s):
         entry=self.manifest['workstation_names'][case_id]
         if source.manifest['scene_sha256']!=entry['source_scene_sha256']:raise ValueError('Replay source revision differs from factory workstation')

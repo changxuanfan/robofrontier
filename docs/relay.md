@@ -47,7 +47,9 @@ OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 PYTHONPATH=. \
 
 Oracle已经结束；整理过程没有重跑。新入口的静态／局部回归不等于
 从初态重新证明九项全程自主成功，也不能消除历史工程辅助标签。
-任务仍保留预览就绪标记，正式GPT入口及公共加载／就绪接线由主session集成；本轮没有启动GPT。
+原任务保留预览就绪标记；公共加载与源绑定运行协议已合入，本轮没有启动GPT。
+当前入口见[GPT准备](gpt-policy.md)和`configs/task_families/current.json`；
+全厂采用每桌独立循环、20x/30fps，原Goal与native证据区别不变。
 
 ## 代码职责
 

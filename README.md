@@ -4,21 +4,23 @@ RoboFrontier 用 MuJoCo 多机械臂任务研究 GPT 的分工、规划与协作
 包含 Transport、Mosaic、Relay、Dial 四类，每类三个规模、三个等级，共36项。
 在线任务使用真实接触物理；离线展示读取已保存状态。
 
-## 当前任务与工程入口
+## 当前入口
 
 - [各类任务与版本入口](docs/frontier-v2-environments.md)
-- [Transport 最终规格、Oracle 证据与视频](docs/tasks/transport.md)
-- [Transport 合并交接与共享待办](docs/plans/suite-v2/transport-merge-handoff.md)
+- [GPT准备、并行运行与公开材料](docs/gpt-policy.md)
+- [本次合并、数据保全与验收](docs/oracle-integration.md)
 - [架构、目录与运行数据](docs/architecture.md)
 - [Meta 操作说明](docs/meta-runbook.md)
 - [Coordinator／Worker／Controller Skill](.agents/skills/robot-collaboration/SKILL.md)
 - [Harness 验收范围](docs/harness-v2-verification.md)
 - [工厂展示与渲染](docs/robo-factory.md)
 
-Transport 的当前物理规格是 R14 半孔，九项原 R13 Oracle 已完成216/216。
-R14 的公开任务包与源剪辑已准备；正式 GPT 的公共加载、就绪资格和多桌工厂播放器
-待合并接入。其他三类由各类 worktree 的最终交付确定版本。
-`configs/suites/frontier-v2.json` 尚待统一合并，不能用它推断各类最终默认版本。
+四个Oracle分支已合并。当前用途与版本统一由`configs/task_families/current.json`
+选择：GPT使用Transport R14、Mosaic R14、Relay最终Goal规则和Dial R11 BEST5；
+Oracle工厂展示使用各录制自己的冻结来源。旧`frontier-v2.json`保留历史生成兼容。
+
+36桌工厂采用独立源剪辑、独立循环、各自倍速与30fps。新GPT使用全新公开上下文，
+不继承Oracle答案；本轮没有启动正式GPT，也没有删除worktree。
 
 ## 安装与工程检查
 
@@ -26,13 +28,21 @@ Python 与依赖由 `.python-version`、`pyproject.toml`、`uv.lock` 管理。
 机器人上游资产与许可证由 `scripts/fetch_robot.py` 物化，来源记录在 `vendor/`。
 
 ```sh
-uv sync --locked
+uv sync --locked --extra oracle
 uv run python scripts/fetch_robot.py
-uv run python scripts/check_harness.py
+uv run --extra oracle python -m scripts.check_harness
 ```
 
-准备运行文件使用 `scripts/create_pipeline_run.py`；实际启动与模型配置遵循 Meta
-操作说明和所选任务的 readiness。Transport 的包构建／资产恢复入口见任务说明。
+```sh
+.venv/bin/python -m scripts.tasks list
+.venv/bin/python -m scripts.tasks check --purpose gpt
+.venv/bin/python -m scripts.tasks prepare transport-a04-d1 --output runs/policy/my-new-run
+.venv/bin/python -m scripts.factory view
+```
+
+准备命令仅冻结输入。并行准备与真实启动见GPT说明；更多入口见
+[scripts目录](scripts/README.md)。历史场景资产可按记录哈希恢复：
+`python -m scripts.restore_scene_assets --report runs/engineering/asset-restore.json`。
 
 ## 目录
 
@@ -46,8 +56,8 @@ uv run python scripts/check_harness.py
 | `docs/` | 当前说明；`docs/history/` 保存历史过程 |
 | `runs/`、`outputs/` | 持久实验记录与媒体交付，Git 忽略，需独立保管 |
 
-当前 worktree 的 `runs/`、`outputs/` 链接到主仓库数据；模型资产和依赖也有忽略项。
-合并代码与移交数据是两项工作，具体清单见本类合并交接。
+当前有效的历史worktree依赖已转到主仓库持久归档。`runs/`、`outputs/`、
+`vendor/`和大型场景资产需要随数据根独立备份；仅复制Git仓库不能恢复实验。
 
 ## 历史练习与实验
 

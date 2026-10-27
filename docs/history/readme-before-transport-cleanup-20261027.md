@@ -4,7 +4,7 @@
 
 当前主线是四类、36 个环境的 Frontier V2：物品传递、拼图、空中接力和旋钮密码锁。当前环境草稿为9项Transport R13＋其余27项R10（80 cm桌高、2 ms步长）；旧版保留。R13已做局部操作验证与双臂串／并行对照，尚未运行完整Oracle。R10现有同配置证据为**18/36完整通过**，不代表效率合格，也不能继承给新版。不能把静态构建或局部成功当成整项通过。
 
-另按用户授权完成了最小规模的 **12项限时GPT试验**：Adaptive、gpt-6.1-sol/high，每项START后最多20分钟，2项完整通过。所有物理进程与模型轮次均已结束，12段原速录像已完整解码检查。该探测试验不等于36项Oracle认证，也未把Oracle抓点/经验输入策略。见[结果与录像目录](../../../../../../Repos/roomscript2/outputs/gpt/frontier-v2-minimum-20m-20261025/README.md)。
+另按用户授权完成了最小规模的 **12项限时GPT试验**：Adaptive、gpt-6.1-sol/high，每项START后最多20分钟，2项完整通过。所有物理进程与模型轮次均已结束，12段原速录像已完整解码检查。该探测试验不等于36项Oracle认证，也未把Oracle抓点/经验输入策略。见[结果与录像目录](../../outputs/gpt/frontier-v2-minimum-20m-20261025/README.md)。
 
 - [当前 36 环境目录与说明](../frontier-v2-environments.md)
 - [Transport R11修改范围与静态检查](transport-r11.md)
@@ -13,16 +13,16 @@
 - [Transport R13最小单元、真实并行对照及后续计划](transport-r13-units.md)
 - [R10／工厂 V6／离线回放与运行目录](../plans/suite-v2/implementation-r10.md)
 - [冻结的 36 项输入清单](../../configs/suites/frontier-v2-r10.json)
-- [当前 R10 pd1000-v1 Oracle 结果索引](../../../../../../Repos/roomscript2/runs/oracle/suite-v2-r10-closure-20261025/coverage-current.json)
-- [成功与未通过Oracle录像](../../../../../../Repos/roomscript2/outputs/oracle/review-20261025/index.html)
-- [本轮并行 Oracle 复盘与剩余缺口](../../../../../../Repos/roomscript2/runs/oracle/suite-v2-r10-servo2-20261025/review.md)
-- [原 legacy 驱动工程结果](../../../../../../Repos/roomscript2/runs/oracle/suite-v2-r10-20261025/summary.json)
-- [工厂当前预览](../../../../../../Repos/roomscript2/outputs/robo-factory/v6-cycles-final/interior_diagonal.png)
+- [当前 R10 pd1000-v1 Oracle 结果索引](../../runs/oracle/suite-v2-r10-closure-20261025/coverage-current.json)
+- [成功与未通过Oracle录像](../../outputs/oracle/review-20261025/index.html)
+- [本轮并行 Oracle 复盘与剩余缺口](../../runs/oracle/suite-v2-r10-servo2-20261025/review.md)
+- [原 legacy 驱动工程结果](../../runs/oracle/suite-v2-r10-20261025/summary.json)
+- [工厂当前预览](../../outputs/robo-factory/v6-cycles-final/interior_diagonal.png)
 
 下列链接包含早期多臂试点与原单臂键盘练习；其通过记录不自动适用于当前 36 环境。
 
 - [下一阶段计划与验收顺序](../next-iteration-plan.md)
-- [trial04 效率诊断](../../../../../../Repos/roomscript2/runs/trial04-efficiency-audit-20261020/report.md) 与 [针对性修复](../../../../../../Repos/roomscript2/runs/efficiency-fixes-20261020/report.md)
+- [trial04 效率诊断](../../runs/trial04-efficiency-audit-20261020/report.md) 与 [针对性修复](../../runs/efficiency-fixes-20261020/report.md)
 - [目录、状态与上下文](../architecture.md)
 - [Meta 启动与管理](../meta-runbook.md)
 - [当前验收范围](../harness-v2-verification.md)

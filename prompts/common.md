@@ -1,5 +1,10 @@
 # Task execution
 
+When task.json declares family_guidance, read it and the task's family_materials
+before READY. Resolve those paths relative to `{{RUN_DIR}}/public/inputs/`.
+They supply this run's rules, static geometry and completion details within the
+common role and robot tool contract.
+
 Read your role file, this run's `{{RUN_DIR}}/public/inputs/task.json`, `{{RUN_DIR}}/public/inputs/roles.json`, and `{{RUN_DIR}}/public/inputs/skill/SKILL.md`; read its tool reference before READY. The task defines goals, objective, execution context and allowed observations; roles describe the initial team; a current adaptive assignment defines a fork’s identity, scope and connection. Weigh completion time and acceptable uncertainty according to that task input. Choose execution order, communication, views and check timing within your role.
 
 Use your assigned connection. Policy inputs are the public task, permitted RGB/robot feedback, your work note and self-authored run-local experience referenced by it, allowed messages and result artifacts referenced to you by those tools/messages. Meta handles engineering; scene source, evaluator data, engineering oracle probes/recipes, other connections and native chat management belong to that side. Public robot specifications and declared calibration remain usable; engineering measurements are not extra observations of objects. Shared-user files are not an OS security sandbox.

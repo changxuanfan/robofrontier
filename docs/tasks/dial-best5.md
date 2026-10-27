@@ -1,7 +1,8 @@
 # BEST5 旋钮：当前规格与合并交接
 
 旋钮家族为 R11 BEST5 九项。Oracle 证据已完成：八项程序 Oracle，八盘 L3 为辅助 Oracle。
-正式 GPT readiness、家族说明的公共载入和全厂多桌合成仍待主 session 整合；本分支未启动 GPT。
+家族公开材料、源绑定运行协议和全厂多桌合成已合入；尚未启动正式GPT。
+当前用途统一见`configs/task_families/current.json`与[GPT准备](../gpt-policy.md)。
 
 ## 唯一当前入口
 
@@ -31,9 +32,9 @@ BEST 是历史完整有效输入的最大命中数，READY 表示当前输入资
 也会自动结算；BEST 不变的新有效输入仍是尝试。成功锁存不会擦除过程违规。
 公开输入只提供允许的静态规格、RGB 和机器人反馈，不加入 Oracle 答案或实时物体真值。
 
-展示默认由 `robofrontier/suite/dial_pose_timeline.py::PRESENTATION` 唯一维护：
-原始记录 60Hz，展示 10 倍速、30fps。每桌按自己的编辑时间线只播一遍，完成后
-保持最终姿态并标记完成；全部工位完成后结束输出，不循环。
+家族原展示配置保留于`dial_pose_timeline.py::PRESENTATION`；当前全厂release规定
+原始记录60Hz、展示10倍速/30fps，每桌独立循环并复位外观。
+最新循环要求覆盖旧家族交接中的播完停止，原终态保留模式仍兼容。
 
 ## 审查与回放工具
 
@@ -77,8 +78,8 @@ BEST 是历史完整有效输入的最大命中数，READY 表示当前输入资
 
 `DialReplayTrack.at(global_frame)` 返回本工位的源帧/源时间、原 float32 qpos 和
 累计外观变化。首次/回退的 `appearance_reset` 要求先恢复本工位 initial_rgba；
-不同工位游标互不影响。主 session 应在更新全部工位后渲染一次，使用独立全局
-展示时钟，并在全部时间线结束时停止。此公共合成器尚未实现于本分支。
+不同工位游标互不影响。公共FactoryTimeline已实现全部工位更新后一次渲染，
+使用独立全局展示时钟与每桌循环。几何、事件和原始记录不改写。
 
 ## 合并与证据保护
 

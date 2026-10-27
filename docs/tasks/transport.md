@@ -3,7 +3,8 @@
 当前默认物理规格为 **R14 半孔**，九项清单为
 `configs/suites/frontier-transport-r14.json`。规格与验收索引是
 `configs/task_families/transport/half-opening-r14.json`，GPT任务参考是
-`prompts/tasks/transport.md`。公共加载与正式就绪资格待合并接入；GPT尚未启动。
+`prompts/tasks/transport.md`。公共加载与源绑定运行协议已合入，GPT尚未启动；
+新入口见[GPT准备](../gpt-policy.md)，统一选择见`configs/task_families/current.json`。
 
 ## 最终规格
 
@@ -38,8 +39,8 @@
 
 R14是新的真实碰撞场景，已编译并核对仅桌面开孔变化。六项有孔源轨迹的1,998,263个
 状态没有接触新增桌面材料；该几何兼容检查没有推进物理时间。
-**R14没有新的完整物理执行结果**，保持preview门禁、`formal_gpt_ready=false`。
-公共harness接线与正式资格见 [合并交接](../plans/suite-v2/transport-merge-handoff.md)。
+**R14没有新的完整物理执行结果**，原场景保持preview和原资格标记。
+新run使用单独的`prepared_policy_trial`协议，不修改原Oracle结论；见[GPT准备](../gpt-policy.md)。
 
 ## 构建与资产恢复
 
@@ -68,11 +69,12 @@ PYTHONPATH=. .venv/bin/python scripts/build_transport_policy_package.py \
 
 播放规格：**20倍速、30fps**。每桌有独立有效时间，通过
 `TransportEdit.at_video_time(T,speed=20)` 查询原帧和原时间。各桌更新后绘制同一工厂帧。
-**单桌完成后保持精确终态；全部桌子完成后结束，不循环。** 公共多桌绘制仍待接入。
+**当前工厂每桌独立循环。** 源级剪辑、各自倍速与外观复位已接入公共多桌绘制。
+此规则覆盖旧交接的播完停止；原单桌播放器仍可选择保留终态。
 整工位允许刚体平移和绕竖直轴旋转；相对布局与尺寸保持源兼容。
 
 R14已经是最终半孔，渲染比例相对R14来源为1。原Oracle录制绑定R13，显示同样最终孔
-尺寸时相对其来源为0.5。公共渲染器尚需消费此区别，避免对R14重复减半。
+尺寸时相对其来源为0.5。公共渲染器已区分两种来源，避免对R14重复减半。
 
 ## 持久交付
 

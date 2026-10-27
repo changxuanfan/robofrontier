@@ -98,6 +98,7 @@ def freeze_scene(task,directory):
            else ('preview-global.png','preview-global_rear.png','preview-top.png') if task['kind']=='frontier_suite'
            else ('preview-top.png',))
     for name in names:
+        if task['kind']=='frontier_suite' and not (source/name).is_file():continue
         shutil.copy2(source/name,directory/'public/inputs'/name)
     if task['kind']=='frontier_suite' and task['family']=='mosaic':shutil.copy2(source/'target-pattern.png',directory/'public/inputs/target-pattern.png')
     for name in ('robot-layout.png','camera-guide.json'):
