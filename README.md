@@ -37,7 +37,7 @@ uv run --extra oracle python -m scripts.check_harness
 .venv/bin/python -m scripts.tasks list
 .venv/bin/python -m scripts.tasks check --purpose gpt
 .venv/bin/python -m scripts.tasks prepare transport-a04-d1 --output runs/policy/my-new-run
-.venv/bin/python -m scripts.factory view
+.venv/bin/python -m scripts.factory video --renderer cycles --camera orbit --duration 8 --output outputs/robo-factory/my-gpu-demo
 ```
 
 准备命令仅冻结输入。并行准备与真实启动见GPT说明；更多入口见

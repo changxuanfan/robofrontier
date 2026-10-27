@@ -30,7 +30,7 @@ def _font(size):
     return ImageFont.truetype(str(path), size) if path.exists() else ImageFont.load_default(size=size)
 
 
-def _texture_assets(folder, seed):
+def _texture_assets(folder, seed, painted_roof=False):
     """Deterministic, tileable authored finishes; no image API or external service."""
     folder.mkdir(parents=True, exist_ok=True)
     rng = np.random.default_rng(seed)
@@ -61,7 +61,7 @@ def _texture_assets(folder, seed):
     paint = np.clip(184 + field*1.7, 176, 194).astype(np.uint8)
     Image.fromarray(np.stack([paint, paint, np.clip(paint.astype(int)-3, 0, 255)], -1).astype(np.uint8)).save(folder/'wall-paint.png')
     # Ribs are texture detail; roof thickness and framing remain real geometry.
-    rib = np.clip(96 + 9*np.cos(x/size*2*np.pi*24) + noise*.5, 75, 110).astype(np.uint8)
+    rib = np.clip((208 if painted_roof else 96) + (5 if painted_roof else 9)*np.cos(x/size*2*np.pi*24) + noise*.5, 75, 225 if painted_roof else 110).astype(np.uint8)
     Image.fromarray(np.stack([rib, rib, np.clip(rib.astype(int)+2, 0, 255)], -1).astype(np.uint8)).save(folder/'roof-ribs.png')
     stripe = Image.new('RGB', (256, 512), (236, 169, 37))
     draw = ImageDraw.Draw(stripe)
@@ -225,6 +225,12 @@ class _Builder:
             'bench_wood': ((.55,.37,.22,1), .0, .48),
             'exit': ((.02, .42, .16, 1), .0, .65)
         }
+        for name,rgba in self.cfg['appearance'].get('material_colors',{}).items():
+            old=colors[name];colors[name]=(tuple(rgba),old[1],old[2])
+        for name,roughness in self.cfg['appearance'].get('material_roughness',{}).items():
+            old=colors[name];colors[name]=(old[0],old[1],roughness)
+        for name,metallic in self.cfg['appearance'].get('material_metallic',{}).items():
+            old=colors[name];colors[name]=(old[0],metallic,old[2])
         for name, (rgba, metal, rough) in colors.items():
             spec = {'name': 'factory_'+name, 'rgba': _vec(rgba), 'metallic': str(metal), 'roughness': str(rough), 'specular': '.25', 'shininess': '.25'}
             if name == 'lamp': spec['emission'] = '1'
@@ -247,6 +253,13 @@ class _Builder:
                 texture = 'factory_'+name+'_surface'
                 ET.SubElement(self.asset, 'texture', name=texture, type='2d', file='assets/textures/'+filename)
                 material.set('texture', texture);material.set('texuniform', 'true');material.set('texrepeat', '.3 .3' if name == 'wall' else '1 1')
+        for region in self.cfg['regions']:
+            if 'floor_rgba' not in region:continue
+            import copy
+            floor=copy.deepcopy(self.asset.find("material[@name='factory_floor']"))
+            floor.set('name','factory_zone_floor_'+region['id']);floor.set('rgba',_vec(region['floor_rgba']));self.asset.append(floor)
+            for kind,rgba in [('accent',region['accent_rgba']),('cabinet',region['accent_rgba'])]:
+                ET.SubElement(self.asset,'material',name='factory_zone_'+kind+'_'+region['id'],rgba=_vec(rgba),roughness='.65',metallic='.05',specular='.25')
         ET.SubElement(self.asset, 'texture', name='factory_sky', type='skybox', builtin='gradient', rgb1='.65 .70 .75', rgb2='.8 .82 .83', width='512', height='3072')
         ET.SubElement(self.asset, 'texture', name='factory_hazard', type='2d', file='assets/textures/hazard-stripe.png')
         ET.SubElement(self.asset, 'material', name='factory_hazard_material', texture='factory_hazard', texuniform='false', roughness='.65')
@@ -287,6 +300,10 @@ class _Builder:
         return name
 
     def box(self, parent, pos, half, material, group='structure', bevel=0, rotation=None):
+        if material=='cabinet':
+            for region in self.cfg['regions']:
+                if region.get('accent_rgba') and region['id']+'-' in parent.get('name',''):
+                    material='zone_cabinet_'+region['id'];break
         attrs=dict(name=self._name(),pos=_vec(pos),material='factory_'+material,group=str(LAYERS[group]))
         if rotation is not None:attrs['xyaxes']=_vec([*rotation[:,0],*rotation[:,1]])
         if bevel>0:attrs.update(type='mesh',mesh=self._bevel_mesh(half,bevel))
@@ -433,7 +450,17 @@ class _Builder:
     def shell(self):
         W,D,H=self.width,self.depth,self.height
         floor=self.body('floor')
-        self.box(floor,[0,0,-.07],[W/2,D/2,.07],'floor')
+        if any('floor_rgba' in r for r in self.cfg['regions']):
+            # Flush, non-overlapping epoxy bays: no coplanar coloured overlays.
+            xs=sorted({-W/2,W/2,*[r['bounds_xy_m'][i] for r in self.cfg['regions'] for i in (0,2)]})
+            ys=sorted({-D/2,D/2,*[r['bounds_xy_m'][i] for r in self.cfg['regions'] for i in (1,3)]})
+            for a,c in zip(xs,xs[1:]):
+                for b,d in zip(ys,ys[1:]):
+                    x,y=(a+c)/2,(b+d)/2
+                    region=next((r for r in self.cfg['regions'] if r['bounds_xy_m'][0]<x<r['bounds_xy_m'][2] and r['bounds_xy_m'][1]<y<r['bounds_xy_m'][3]),None)
+                    material='zone_floor_'+region['id'] if region and 'floor_rgba' in region else 'floor'
+                    self.box(floor,[x,y,-.07],[(c-a)/2,(d-b)/2,.07],material)
+        else:self.box(floor,[0,0,-.07],[W/2,D/2,.07],'floor')
         # Thin inset seams and sparse patches; no workstation-sized grid.
         spacing=self.cfg['appearance']['floor_joint_spacing_m']
         for x in np.arange(-W/2+spacing,W/2,spacing):self.box(floor,[x,0,.0008],[.004,D/2,.0008],'band')
@@ -489,8 +516,9 @@ class _Builder:
         b=self.body('area_markings',category='markings');half=self.cfg['appearance']['region_line_width_m']/2
         for region in self.cfg['regions']:
             x0,y0,x1,y1=region['bounds_xy_m']
-            for y in [y0,y1]:self.box(b,[(x0+x1)/2,y,.002],[abs(x1-x0)/2,half,.001],'yellow')
-            for x in [x0,x1]:self.box(b,[x,(y0+y1)/2,.002],[half,abs(y1-y0)/2,.001],'yellow')
+            material='zone_accent_'+region['id'] if region.get('accent_rgba') else 'yellow'
+            for y in [y0,y1]:self.box(b,[(x0+x1)/2,y,.002],[abs(x1-x0)/2,half,.001],material)
+            for x in [x0,x1]:self.box(b,[x,(y0+y1)/2,.002],[half,abs(y1-y0)/2,.001],material)
         # Main circulation marks only: no task-table rectangles.
         for x in [-.85,.85]:
             for y in np.arange(-self.depth/2+2,self.depth/2-2,3.5):self.box(b,[x,y,.002],[half,.55,.001],'yellow')
@@ -730,6 +758,13 @@ class _Builder:
                     for x in (-.22,.22):self.bin(b,[x,-.01,.11],w=.34,d=.43,h=.20)
                     self.box(b,[.04,.03,.51],[.31,.20,.10],'cardboard',bevel=.008)
                     self.box(b,[.04,.03,.612],[.025,.20,.001],'tape')
+                if self.cfg['appearance'].get('fine_service_detail',False):
+                    self.box(b,[-.28,-.265,.59],[.10,.003,.024],'label')
+                    for k in range(5):self.box(b,[-.35+k*.035,-.269,.59],[.009,.001,.010],'cabinet_dark')
+                    self.cylinder(b,[.34,-.267,.61],.009,.004,'green',rotation=_rx(math.pi/2))
+                    # A service loop lies within the verified solid tabletop.
+                    points=[[.28+.09*math.cos(t),-.274,.34+.09*math.sin(t)]for t in np.linspace(0,2*math.pi,17)]
+                    for a,z in zip(points,points[1:]):self.line(b,a,z,.006,'black')
                 self.workstation_props.append(dict(id=name,case_id=place['case_id'],position_m=position,
                     footprint_half_m=[.46,.28],top_m=.67,physical=False,placement='Below verified solid tabletop; not a swept-motion certificate'))
         # Region-corner staging islands stay outside all planned robot/load bays.
@@ -745,6 +780,11 @@ class _Builder:
                     self.box(b,[xx,yy,zz],[.17,.14,hh/2],'cardboard',bevel=.006)
                     self.box(b,[xx,yy,zz+hh/2+.001],[.025,.14,.001],'tape')
                 self.workstation_props.append(dict(id=name,position_m=[x,y,0],footprint_half_m=[.45,.38],top_m=.57,physical=False,placement='Region corner outside initial planning envelopes'))
+                if self.cfg['appearance'].get('fine_service_detail',False):
+                    overhead=self.body('pendant_'+region['id']+'_'+str(index),[x,y,0],group='roof',category='infrastructure')
+                    self.line(overhead,[0,0,self.height-.7],[0,0,3.55],.009,'black','roof')
+                    self.cylinder(overhead,[0,0,3.43],.09,.12,'yellow','roof')
+                    self.line(overhead,[0,0,3.31],[0,0,3.13],.018,'black','roof')
 
     def service_equipment(self):
         """Functional service connections and varied equipment in reserved space."""
@@ -802,6 +842,38 @@ class _Builder:
                 if any(x+.7>a and x-.7<c and y+.5>b and y-.5<d for a,b,c,d in occupied):continue
                 self.cart('supply_'+region['id']+'_'+str(i),[x,y,0],yaw=(i%2)*math.pi/2)
 
+        if self.cfg['appearance'].get('fine_service_detail',False):
+            self.service_islands()
+
+    def service_islands(self):
+        """Small rolling inspection/rack stations in checked gaps between cells."""
+        for region in self.cfg['regions']:
+            planned=[p['planning_bounds_xy_m']for p in self.dressing_plan if p['family']==region['id']]
+            xs=sorted({round((a+c)/2,4)for a,b,c,d in planned});ys=sorted({round((b+d)/2,4)for a,b,c,d in planned})
+            candidates=[((a+c)/2,(b+d)/2)for a,c in zip(xs,xs[1:])for b,d in zip(ys,ys[1:])]
+            added=0
+            for x,y in candidates:
+                if added>=3:break
+                if any(x+.95>a and x-.95<c and y+.85>b and y-.85<d for a,b,c,d in planned):continue
+                if any(np.linalg.norm(np.array(o['translation_m'][:2])-[x,y])<2.0 for o in self.objects if o['category']in ('floor_storage','perimeter_equipment')):continue
+                name='inspection_'+region['id']+'_'+str(added)
+                b=self.body(name,[x,y,0],category='floor_storage');added+=1
+                for z in (.17,.80):self.box(b,[0,0,z],[.50,.30,.025],'steel_light',bevel=.008)
+                for xx in (-.46,.46):
+                    for yy in (-.26,.26):
+                        self.box(b,[xx,yy,.47],[.018,.018,.30],'steel')
+                        self.cylinder(b,[xx,yy,.08],.065,.025,'black',rotation=_rx(math.pi/2))
+                self.box(b,[-.18,0,.46],[.23,.24,.25],'cabinet',bevel=.012)
+                for z in np.arange(.30,.60,.05):self.box(b,[-.18,-.244,z],[.17,.003,.007],'black')
+                self.bin(b,[.28,0,.20],w=.30,d=.43,h=.22)
+                for xx in (-.25,.20):self.bin(b,[xx,0,.83],w=.34,d=.43,h=.14)
+                self.box(b,[.12,.18,1.08],[.018,.018,.26],'steel')
+                self.box(b,[.12,.17,1.32],[.23,.032,.15],'black',bevel=.012)
+                self.box(b,[.12,.134,1.32],[.205,.004,.123],'blue')
+                for xx in (-.02,.06,.14):self.box(b,[xx,.128,1.30],[.022,.002,.007],'label')
+                self.workstation_props.append(dict(id=name,position_m=[x,y,0],footprint_half_m=[.53,.33],top_m=1.48,
+                    physical=False,placement='Planning bounds plus .4m clearance; separated from other floor equipment'))
+
     def lights(self):
         cfg=self.cfg['lighting']
         ET.SubElement(self.world,'light',name='factory_environment',type='image',texture='factory_sky',intensity=str(cfg['environment_intensity']))
@@ -823,7 +895,10 @@ class _Builder:
         W,D,H=self.width,self.depth,self.height
         self.camera('interior_south',[0,-D/2+1.5,2.2],[0,D/4,2.7],68)
         self.camera('interior_north',[0,D/2-1.5,2.2],[0,-D/4,2.7],68)
-        self.camera('interior_diagonal',[-W/2+2,-D/2+2,3.6],[W/5,D/5,2.4],62)
+        if self.cfg['appearance'].get('daylight_study',False):
+            self.camera('interior_diagonal',[-W/2+3.5,-D/2+3,4.8],[3,3,-.3],52)
+            self.camera('workstation_detail',[-19.,-19.,2.6],[-15.,-14.,.8],48)
+        else:self.camera('interior_diagonal',[-W/2+2,-D/2+2,3.6],[W/5,D/5,2.4],62)
         self.camera('interior_east',[W/2-1.5,-4,2.0],[-W/3,4,2.6],65)
         self.camera('detail_storage',[-W/2+5,-D/2+7.5,1.65],[-W/2+.6,-D/2+10.5,1.2],52)
         self.camera('detail_brand',[0,D/2-7,5.4],[0,D/2,5.9],65)
@@ -869,7 +944,7 @@ def build_factory(config_path=DEFAULT_CONFIG, output=None):
     assets=output/'assets'
     shutil.copytree(ROOT/'assets/robo_factory',assets,dirs_exist_ok=True)
     (assets/'meshes').mkdir(parents=True,exist_ok=True);(assets/'textures').mkdir(exist_ok=True)
-    _texture_assets(assets/'textures',config['seed'])
+    _texture_assets(assets/'textures',config['seed'],config['appearance'].get('painted_roof',False))
     if config['appearance'].get('whole_floor_finish',False):_floor_finish(assets/'textures',config)
     scene,manifest=_Builder(config,assets,output).finish()
     # Local, relative assets make the resulting scene directory portable.

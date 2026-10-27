@@ -6,6 +6,7 @@ PBR textures. The output is a presentation asset, not an Isaac physics model.
 import argparse
 import hashlib
 import json
+import shutil
 from pathlib import Path
 
 import mujoco
@@ -39,6 +40,7 @@ def export(scene,output):
     materials=[]
     for mid in range(model.nmat):
         materials.append(dict(id=mid,name=model.mat(mid).name,rgba=model.mat_rgba[mid].tolist(),
+            specular=float(model.mat_specular[mid]),
             roughness=float(model.mat_roughness[mid]),metallic=float(model.mat_metallic[mid]),
             emission=float(model.mat_emission[mid]),texrepeat=model.mat_texrepeat[mid].tolist(),
             texuniform=bool(model.mat_texuniform[mid]),textures={role.name:int(model.mat_texid[mid,int(role)]) for role in
@@ -47,13 +49,24 @@ def export(scene,output):
     for gid in range(model.ngeom):
         kind=int(model.geom_type[gid])
         if kind not in (3,5,6,7):raise ValueError(('Unsupported visual primitive',gid,kind))
+        local_rotation=np.empty(9);mujoco.mju_quat2Mat(local_rotation,model.geom_quat[gid])
         geoms.append(dict(id=gid,name=model.geom(gid).name,kind=kind,mesh=int(model.geom_dataid[gid]) if kind==7 else None,
+            body_id=int(model.geom_bodyid[gid]),local_position=model.geom_pos[gid].tolist(),
+            local_rotation=local_rotation.reshape(3,3).tolist(),
             size=model.geom_size[gid].tolist(),position=data.geom_xpos[gid].tolist(),rotation=data.geom_xmat[gid].reshape(3,3).tolist(),
             material=int(model.geom_matid[gid]),rgba=model.geom_rgba[gid].tolist(),group=int(model.geom_group[gid])))
     result=dict(schema='robofrontier.blender-visual.v1',source_scene=str(scene),source_scene_sha256=digest,
         units='metres',coordinate_frame='+X east,+Y north,+Z up',physics_stepped=False,
         scope='Exact visual FK export, not dynamics conversion',meshes=meshes,textures=textures,materials=materials,
         geoms=geoms,cameras=manifest['cameras'])
+    result['bodies']=[dict(id=i,name=model.body(i).name,position=data.xpos[i].tolist(),rotation=data.xmat[i].reshape(3,3).tolist())for i in range(model.nbody)]
+    config=json.loads((scene.parent/'build-config.json').read_text())if (scene.parent/'build-config.json').exists()else {}
+    result['offline_lighting']=config.get('offline_lighting',{})
+    result['building']=config.get('building',dict(width_m=55.,depth_m=50.,eave_height_m=7.2))
+    exterior=scene.parent/'assets/textures/exterior-daylight-v1.png'
+    if exterior.exists():
+        shutil.copy2(exterior,output/'textures/exterior-daylight-v1.png')
+        result['exterior_texture']='textures/exterior-daylight-v1.png'
     (output/'scene.json').write_text(json.dumps(result,separators=(',',':'))+'\n')
     print(json.dumps(dict(output=str(output),geoms=len(geoms),unique_meshes=len(meshes),physics_stepped=False)))
 
