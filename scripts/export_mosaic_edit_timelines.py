@@ -20,14 +20,21 @@ def export(folder, output):
     rows = []
     for row in index['videos']:
         reader = MotionReader(Path(row['source_trial']) / 'motion')
-        mask_file = Path(row['work_directory']) / 'motion-mask.npz'
-        with np.load(mask_file, allow_pickle=False) as mask:
-            edit = build_timeline(reader, mask['source_time_s'],
-                                  mask['video_source_indices'], mask['video_keep'])
-        if edit['output_frames'] != row['kept_frames']:
-            raise ValueError('Exported edit differs from reviewed video')
+        if row.get('motion_edit_timeline'):
+            previous = MotionEdit(row['motion_edit_timeline'], reader)
+            edit = dict(previous.data)
+            edit['derived_from_timeline_sha256'] = digest(row['motion_edit_timeline'])
+        else:
+            mask_file = Path(row['work_directory']) / 'motion-mask.npz'
+            with np.load(mask_file, allow_pickle=False) as mask:
+                edit = build_timeline(reader, mask['source_time_s'],
+                                      mask['video_source_indices'], mask['video_keep'],
+                                      fps=row.get('fps',30),speedup=row['speedup'])
+            edit['derived_from_mask_sha256'] = digest(mask_file)
+        if (edit['output_frames'] != row['kept_frames']
+                or edit['nominal_speedup'] != row['speedup']):
+            raise ValueError('Exported edit differs from reviewed video/cadence')
         edit.update(derived_from_reviewed_video_sha256=row['sha256'],
-                    derived_from_mask_sha256=digest(mask_file),
                     source_recording_hint=os.path.relpath(reader.path.resolve(), output))
         target = output / (row['case_id'] + '.json')
         target.write_text(json.dumps(edit, ensure_ascii=False, indent=2) + '\n')
@@ -40,7 +47,7 @@ def export(folder, output):
                          keep_source_ranges=len(edit['keep_source_ranges'])))
         print('TIMELINE_READY', row['label'], edit['output_frames'], flush=True)
     report = dict(schema='robofrontier.motion-edit-batch.v1', ready=len(rows), total=9,
-                  fps=30, nominal_speedup=60, original_recordings_unchanged=True,
+                  fps=edit['fps'], nominal_speedup=edit['nominal_speedup'], original_recordings_unchanged=True,
                   background_independent=True, timelines=rows)
     (output / 'index.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
     return report

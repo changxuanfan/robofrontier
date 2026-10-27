@@ -146,3 +146,30 @@ class MotionEdit:
                 emitted += 1
         if last_index != self.data['source_frames'] - 1:
             raise ValueError('Source ended before the retained final frame')
+
+
+def resample_timeline(timeline, source_times, speedup=30, fps=30):
+    """Sample the same retained source windows at a new presentation cadence."""
+    from copy import deepcopy
+    data = deepcopy(timeline)
+    times = np.asarray(source_times, dtype=float)
+    if (times.shape != (data['source_frames'],) or not np.isfinite(times).all()
+            or np.any(np.diff(times) <= 0)):
+        raise ValueError('Invalid source times for edit resampling')
+    if not np.isfinite(speedup) or speedup <= 0 or not np.isfinite(fps) or fps <= 0:
+        raise ValueError('Invalid resampled cadence')
+    stride = data['source_sample_hz'] * speedup / fps
+    if stride < 1 or abs(stride - round(stride)) > 1e-9:
+        raise ValueError('This exact-state sampler requires an integer source stride')
+    stride = int(round(stride))
+    selections = [np.arange(r['first_source_frame'], r['last_source_frame'] + 1,
+                            stride, dtype=np.int64) for r in data['keep_source_ranges']]
+    indices = np.unique(np.r_[np.concatenate(selections), 0, data['source_frames'] - 1])
+    data.update(fps=float(fps), nominal_speedup=float(speedup),
+                output_frames=len(indices), output_duration_s=len(indices) / fps,
+                render_frames=[dict(output_frame=i, output_time_s=i/fps,
+                                    source_frame=int(frame), source_time_s=float(times[frame]))
+                               for i, frame in enumerate(indices)],
+                nominal_source_stride=stride,
+                resampling='Exact original states within unchanged retained source windows; no duplication, interpolation or physics')
+    return data

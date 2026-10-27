@@ -6,16 +6,17 @@ scene SHA-256, and motion-index SHA-256. It contains two related selections:
 
 - `render_frames`: exact reviewed output frame → original source frame/time.
   The output clock is `output_frame / fps`. The original clock retains jumps
-  across removed waits. This selection reproduces the reviewed 30fps, nominal
-  60× video in any background without running motion detection again.
+  across removed waits. This selection reproduces the reviewed output cadence (currently 30fps, nominal
+  30× for this task) in any background without running motion detection again.
 - `keep_source_ranges`: inclusive original-frame windows. These retain the
   full recorded cadence within each window. `MotionEdit.kept_source_frames`
   yields `(edited_time_s, original_time_s, qpos)` without copying the dataset.
   This is the input for future alternate-rate resampling; existing factory
   video replay uses the exact `render_frames`, not a new resampling policy.
 
-Range boundaries follow the original video's sampling grid (normally 120
-source samples at 60Hz for a 30fps/60× presentation), including the forced final
+Range boundaries follow the original video's sampling grid (120
+source samples in the original 60× edit, resampled at 60 source samples for the
+current 30fps/30× presentation), including the forced final
 sample. They are not precise subframe estimates of the start/end of an action.
 The logical full-rate view uses its own nominal-rate edited clock; original
 sample times remain available, including physics-step quantization and a
@@ -77,3 +78,18 @@ middle, and final selected states, plus both sides of the previously reported
 8-arm L1 static wait. Optional `--render-case mosaic-a08-12x24-d1` produces four
 simple/factory comparison images around that cut. These checks do not claim
 that nine full factory videos have been exported.
+
+## Task default and 30× replacement
+
+This task defaults to 30× playback and 30fps output, retaining the original 60Hz
+recording. `resample_timeline` samples exact original states at nominal stride60
+inside the previously reviewed windows. It never fills a removed wait. The
+simple replay renderer accepts `--edit-timeline` as well as the factory renderer.
+`replace_mosaic_videos_30x` stages all nine new source-rendered clips and timelines,
+checks residual visible waits, and publishes them together. Reviewed 60× clips
+are backed up, with their original timelines retained separately. Intermediate
+poses come from the original data; frames are not duplicated or interpolated.
+
+A final presentation-only visual selection may remove invisible micro-jitter
+inside the retained windows. Its new source ranges are intersected with the
+old ranges, so resampling cannot bridge or reintroduce a previously deleted gap.

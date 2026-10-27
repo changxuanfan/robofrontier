@@ -5,7 +5,7 @@ import unittest
 
 import numpy as np
 
-from robofrontier.motion_edit import build_timeline, MotionEdit
+from robofrontier.motion_edit import build_timeline, MotionEdit, resample_timeline
 
 
 class SampleRecording:
@@ -59,6 +59,35 @@ class MotionEditTests(unittest.TestCase):
         self.reader.frames = lambda: islice(original(), 240)
         with self.assertRaisesRegex(ValueError, 'retained final frame'):
             list(MotionEdit(self.path, self.reader).kept_source_frames(self.reader))
+
+    def test_resampling_inserts_real_intermediate_states_without_filling_cuts(self):
+        self.reader.meta['frames'] = 481
+        (self.root / 'stream.json').write_text(json.dumps(self.reader.meta))
+        times = np.arange(481) / 60
+        old = build_timeline(self.reader, times, [0,120,240,360,480],
+                             [True,True,False,False,True])
+        new = resample_timeline(old, times, speedup=30, fps=30)
+        self.assertEqual([f['source_frame'] for f in new['render_frames']], [0,60,120,180,480])
+        self.assertEqual(new['keep_source_ranges'], old['keep_source_ranges'])
+        self.assertEqual(new['nominal_source_stride'], 60)
+        self.assertEqual(new['nominal_speedup'], 30)
+        self.assertEqual(old['nominal_speedup'], 60)
+        self.path.write_text(json.dumps(new))
+        self.assertEqual([int(q[0]) for _,q in MotionEdit(self.path,self.reader).frames(self.reader)],
+                         [0,60,120,180,480])
+
+    def test_visual_refinement_never_bridges_previously_removed_source_gap(self):
+        from scripts.replace_mosaic_videos_30x import refine_timeline
+        self.reader.meta['frames'] = 481
+        times = np.arange(481) / 60
+        old = build_timeline(self.reader,times,[0,120,240,360,480],
+                             [True,True,False,False,True])
+        sampled = resample_timeline(old,times,30,30)
+        result = refine_timeline(sampled,[True,False,True,False,True],times)
+        self.assertEqual([(r['first_source_frame'],r['last_source_frame'])
+                          for r in result['keep_source_ranges']],
+                         [(0,59),(120,179),(480,480)])
+        self.assertEqual([f['source_frame'] for f in result['render_frames']],[0,120,480])
 
     def test_timeline_and_recording_are_portable(self):
         destination = self.root / 'moved'
