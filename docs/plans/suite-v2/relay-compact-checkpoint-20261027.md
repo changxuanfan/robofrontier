@@ -5,7 +5,49 @@
 **用户刚要求 compact 后仍保留细节，并明确“程序不要停”。不要停止、重启、
 另开原仿真，也不要把 compact 当作取消任务。继续直到9项完成。**
 
-## 九个视频也已全部去静止：L1三段已补齐（最新）
+## 2026-10-27最新：可迁移剪辑轨迹、简单/工厂18段20倍速全部完成
+
+用户要求去静止必须绑定动态轨迹，以便原背景与工厂背景同步剪切；所有视频改20倍速。
+现已完成，不需恢复任何控制任务或媒体进程。没有重跑Oracle，没有向原世界发送命令。
+原物理任务仍使用历史9/9、27/27的验收记录，native分数/原始轨迹/旧MP4均未改。
+
+最新总览：`outputs/oracle/relay-20x-20261027/report.md`，summary.json complete=true、
+completed_tasks=9/completed_videos=18。新片均30fps、按剪辑后的有效仿真时间20倍速；
+首尾各仅增加一帧证据姿态。旧16fps名义4x片保留，下面旧章节中的4x仍属历史版本。
+
+集中交付目录（每个目录直接9个MP4，按臂数/Level命名）：
+- `outputs/oracle/relay-nine-videos-20x-20261027/`：简单背景九段。
+- `outputs/robo-factory/relay-nine-videos-20x-20261027/`：工厂背景九段。
+
+九段对应时长（两个背景一致）：8臂L1/L2/L3为17.667/24.467/23.033秒；
+12臂50.300/45.733/58.033秒；16臂87.500/79.500/88.867秒。
+所有18段完整解码、30fps与帧数检查、交付文件SHA256复制核验通过。
+三张qa-08/12/16-paired-first-last.jpg已实际查看；8L1中间帧和12L3/16L2工厂末帧也已查看。
+
+独立可复用数据包：`outputs/oracle/relay-edited-tracks-20261027/`。
+每case含精确冻结source模型与资源、edit.json保留源时间区间/阈值/既有960段图像复核来源、
+track.npz保留区间内的原60Hz qpos，共570746行；每行原始帧号/源时间/剪辑时间/
+时长/segment均保存；另有首末证据状态、外观事件、初始RGBA及源chunk清单hash。
+原始记录60Hz，仿真2ms=500Hz，去静止判定沿用已审查20Hz mask（0.25/2秒窗口），
+不在新背景重复识别像素，不跨剪切插值或积分物理。track-validation.json九包全部通过。
+
+工厂重建：`outputs/robo-factory/relay-recorded-20261027/scene.xml`，9个relay视觉工作站，
+每个源都从上述精确冻结记录组成，拒绝旧版本同ID混用。FactoryPlayback.apply_arrays
+向量化FK/共同平移和绕竖直轴旋转；不缩放、不改变相对布局。材料背景可不同。
+所有输出帧验证全部可见几何的源/目标位置与旋转，最大位置差5.03e-15米。
+两种背景共用每case的frame-map.csv。是原记录展示，不是工厂重新跑物理成功。
+
+实现：robofrontier/motion_edit.py、scripts/export_relay_edited.py、
+FactoryPlayback.apply_arrays；格式/命令详见docs/relay-recorded-video.md。
+19项剪辑/运动/刚体迁移测试通过；额外7项旧综合测试由于已有非relay生成环境的
+身份贴图缺失/外链，未进入测试主体；没有修改那些环境或降低资源校验。
+原因见新输出test-results.json，不要声称全库测试通过。
+
+进程提醒：本轮只新开离线抽取与渲染辅助进程，现均完成，没有给原仿真发STOP或重启。
+本轮只读ps检查时旧52509/52510未找到，不能根据下面历史章节继续声称它们当前仍活着；
+不要因此重启、重复执行旧控制ID。物理任务在原记录中的9/9完成结论不变。
+
+## 九个视频也已全部去静止：L1三段已补齐（历史4倍速版）
 
 用户追问“9个视频都去掉静止了嘛”，如实说明原先只有6段L2/L3，然后补齐三段L1。
 现在同一 `outputs/oracle/relay-active-only-20261027/report.md` 已为**九段新版总览**。
