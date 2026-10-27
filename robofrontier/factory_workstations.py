@@ -156,13 +156,8 @@ def compose(shell,catalog_path,output,table_opening_scale=.5,source_overrides=No
         lowx,lowy,highx,highy=place['planning_bounds_xy_m']
         floor_label('ws_caption_'+place['case_id'],place['case_id'].upper(),[(lowx+highx)/2,lowy+.18,.0007],[min(1.4,(highx-lowx)/2-.10),.13])
     ET.indent(root);scene=output/'scene.xml';ET.ElementTree(root).write(scene,encoding='unicode')
-<<<<<<< HEAD
-    manifest=deepcopy(shell_manifest);manifest.update(id=shell_manifest['id']+'-workstations',scope='36 visual workstations; recorded-state playback only; zero task dynamics',
-        scene_sha256=hashlib.sha256(scene.read_bytes()).hexdigest(),placements=plan,workstation_names=mapping,task_workstations=len(plan),source_catalog=str(Path(catalog_path).resolve()),table_opening_linear_scale=table_opening_scale,source_overrides={k:str(Path(v).resolve())for k,v in (source_overrides or {}).items()})
-=======
     manifest=deepcopy(shell_manifest);manifest.update(id=shell_manifest['id']+'-workstations',scope=f'{len(plan)} visual workstations; recorded-state playback only; zero task dynamics',
-        scene_sha256=hashlib.sha256(scene.read_bytes()).hexdigest(),placements=plan,workstation_names=mapping,task_workstations=len(plan),source_catalog=str(Path(catalog_path).resolve()))
->>>>>>> codex/dial-continuation
+        scene_sha256=hashlib.sha256(scene.read_bytes()).hexdigest(),placements=plan,workstation_names=mapping,task_workstations=len(plan),source_catalog=str(Path(catalog_path).resolve()),table_opening_linear_scale=table_opening_scale,source_overrides={k:str(Path(v).resolve())for k,v in (source_overrides or {}).items()})
     manifest['workstation_assets']=[dict(path=str(p.relative_to(output)),sha256=hashlib.sha256(p.read_bytes()).hexdigest(),bytes=p.stat().st_size) for p in sorted((output/'workstation-assets').iterdir())]
     write_json(output/'manifest.json',manifest)
     return scene
