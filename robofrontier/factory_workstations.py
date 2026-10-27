@@ -41,6 +41,7 @@ def placements(catalog,regions,root,aisle=1.2):
             low=np.minimum(np.min(corners,axis=0),bases.min(axis=0)-1.)
             high=np.maximum(np.max(corners,axis=0),bases.max(axis=0)+1.)
             entries.append(dict(case=case,low=low,high=high,size=high-low))
+        if not entries:continue
         scales=sorted({e['case'].get('dials',e['case']['arms']) for e in entries})
         def cell(row,col):
             level,scale=(col+1,scales[row]) if family=='transport' else (row+1,scales[col])
@@ -86,10 +87,26 @@ class Assets:
         return mapping
 
 
-def compose(shell,catalog_path,output):
+def compose(shell,catalog_path,output,placement_overrides=None):
     shell=Path(shell).resolve();output=Path(output).resolve();output.mkdir(parents=True,exist_ok=False)
     root_dir=Path(__file__).resolve().parents[1];catalog=json.loads(Path(catalog_path).read_text())
     shell_manifest=json.loads((shell.parent/'manifest.json').read_text());plan=placements(catalog,shell_manifest['regions'],root_dir)
+    overrides=placement_overrides or {}
+    if set(overrides)-{p['case_id'] for p in plan}:raise ValueError('Unknown workstation placement override')
+    for place in plan:
+        if place['case_id'] not in overrides:continue
+        values=overrides[place['case_id']]
+        if set(values)-{'translation_m','yaw_rad'}:raise ValueError('Only rigid translation/yaw may change')
+        shift=np.asarray(values.get('translation_m',place['translation_m']),float)
+        yaw=float(values.get('yaw_rad',place['yaw_rad']))
+        if shift.shape!=(3,) or not np.isfinite(shift).all() or not np.isfinite(yaw):raise ValueError('Invalid rigid placement')
+        # Placement bounds describe source XY footprints, never a scale change.
+        a,b,c,d=place['planning_bounds_xy_m'];old=np.asarray(place['translation_m'])
+        corners=np.array([[x,y,0.] for x in (a,c) for y in (b,d)])-old
+        angle=yaw-place['yaw_rad'];co,si=math.cos(angle),math.sin(angle)
+        moved=corners@np.array([[co,-si,0],[si,co,0],[0,0,1.]]).T+shift
+        place.update(translation_m=shift.tolist(),yaw_rad=yaw,
+            planning_bounds_xy_m=[*moved[:,:2].min(axis=0),*moved[:,:2].max(axis=0)])
     root=ET.parse(shell).getroot();shutil.copytree(shell.parent/'assets',output/'assets')
     option=root.find('option')
     if option is None:option=ET.SubElement(root,'option')
@@ -137,7 +154,7 @@ def compose(shell,catalog_path,output):
         lowx,lowy,highx,highy=place['planning_bounds_xy_m']
         floor_label('ws_caption_'+place['case_id'],place['case_id'].upper(),[(lowx+highx)/2,lowy+.18,.0007],[min(1.4,(highx-lowx)/2-.10),.13])
     ET.indent(root);scene=output/'scene.xml';ET.ElementTree(root).write(scene,encoding='unicode')
-    manifest=deepcopy(shell_manifest);manifest.update(id=shell_manifest['id']+'-workstations',scope='36 visual workstations; recorded-state playback only; zero task dynamics',
+    manifest=deepcopy(shell_manifest);manifest.update(id=shell_manifest['id']+'-workstations',scope=f'{len(plan)} visual workstations; recorded-state playback only; zero task dynamics',
         scene_sha256=hashlib.sha256(scene.read_bytes()).hexdigest(),placements=plan,workstation_names=mapping,task_workstations=len(plan),source_catalog=str(Path(catalog_path).resolve()))
     manifest['workstation_assets']=[dict(path=str(p.relative_to(output)),sha256=hashlib.sha256(p.read_bytes()).hexdigest(),bytes=p.stat().st_size) for p in sorted((output/'workstation-assets').iterdir())]
     write_json(output/'manifest.json',manifest)

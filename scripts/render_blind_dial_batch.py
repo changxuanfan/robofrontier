@@ -6,7 +6,7 @@ from pathlib import Path
 import subprocess
 import sys
 
-ROOT=Path(__file__).resolve().parents[1];B=ROOT/'runs/oracle/dial-hold-blind-20261025';OUT=ROOT/'outputs/oracle/dial-hold-blind-20261025'
+ROOT=Path(__file__).resolve().parents[1];B=ROOT/'runs/oracle/dial-hold-blind-20261025';OUT=ROOT/'outputs/oracle/dial-hold-blind-20261025-10x'
 
 
 def render(report):
@@ -15,7 +15,7 @@ def render(report):
     env=os.environ.copy();env.update(PYTHONPATH=str(ROOT),OPENBLAS_NUM_THREADS='1',OMP_NUM_THREADS='1')
     out.parent.mkdir(parents=True,exist_ok=True)
     with (OUT/(r['case_id']+'-render.log')).open('w') as log:
-        result=subprocess.run([sys.executable,str(ROOT/'scripts/render_frontier_oracle.py'),str(report.parent),'--speed','12','--output',str(out)],env=env,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT)
+        result=subprocess.run([sys.executable,str(ROOT/'scripts/render_frontier_oracle.py'),str(report.parent),'--speed','10','--output',str(out)],env=env,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT)
     return dict(case_id=r['case_id'],ready=result.returncode==0,error=None if result.returncode==0 else str(OUT/(r['case_id']+'-render.log')))
 
 

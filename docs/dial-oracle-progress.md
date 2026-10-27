@@ -14,6 +14,35 @@ Gallery: http://127.0.0.1:56719/best5-completed-20261026/index.html
 All18 selected front/rear videos linked; new L3 six views encoded and fully
 decoded. Frozen-solver replay and all new pass motion streams verified.
 
+## Presentation follow-up — 2026-10-27
+
+User requested sustained micro-jitter removal at source-motion level, reusable
+across simple/factory backgrounds, then specified **10x as the default for this
+dial family only**. Completed without rerunning any Oracle or changing raw
+recordings/results. Other families retain their rendering speed defaults.
+
+`docs/recorded-motion-edit.md` describes the shared source-bound edit API,
+adjustable excursion/duration thresholds, preserved feedback and source-frame
+mapping. Nine edit recipes remove18.083 source seconds in total. A source-matched
+nine-station factory was composed from each selected recording's own frozen
+model; fixed translation/yaw and visual materials do not change the edit.
+
+All nine paired simple/factory videos are complete at10x/30fps. Every output
+frame uses an identical source index/time in its two backgrounds. Full decoding,
+actual decoded frame counts and source-to-factory geometry positions verified;
+maximum position discrepancy5.03e-15m.17 relevant tests passed, including slow
+drift vs micro-jitter, feedback preservation, quaternion signs, arbitrary rigid
+station placement, GPU pose synchronization and family-specific speed defaults.
+
+Outputs: `outputs/robo-factory/dial-best5-edited-10x-20261027/`, with flat
+`simple-videos/`, `factory-videos/`, copied `motion-edits/`, per-case mapping
+reports and `verification.json`. Original shared nine-video folder
+`outputs/oracle/dial-nine-videos-20261027/` now holds the10x simple clips; its
+previous12x edit was retained as `dial-nine-videos-12x-previous-20261027/`.
+The earlier12x paired batch was superseded after8/9 and its last render stopped;
+do not present it as the final nine-case delivery. Eight L3 remains ASSISTED.
+All rendering processes ended. No main merge, new physical task or GPT policy run.
+
 ## Historical continuation log
 
 User resumed work and authorized the recovery-first plan. Current checkout is
