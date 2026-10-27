@@ -17,7 +17,7 @@ def main():
     p.add_argument('--wall-s',type=float,default=900)
     a=p.parse_args();root=Path(__file__).resolve().parents[1]
     from robofrontier.suite.source_snapshot import reexec_entry
-    harness=root/'runs/oracle/suite-v2-r10-closure-20261025/inputs/harness.json'
+    harness=root/'configs/harness-frontier-v2-servo2.json'
     catalog=root/'configs/suites/dial-best5-r11.json'
     reexec_entry(root,a.output,Path(__file__),sys.argv[1:],harness,catalog)
     from robofrontier.suite.oracle import Trial

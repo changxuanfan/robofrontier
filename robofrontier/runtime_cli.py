@@ -18,9 +18,24 @@ def fork_provenance(parent, child):
     if any(not re.fullmatch(r'[0-9a-f-]{36}',v) for v in (parent,child)):
         raise ValueError('Expected native session UUIDs')
     def records(tid):
-        paths=list((Path.home()/'.codex/sessions').glob('**/*'+tid+'*.jsonl'))
-        if len(paths)!=1:raise ValueError('Native session provenance missing/ambiguous')
-        return [json.loads(line) for line in paths[0].read_text().splitlines()]
+        import os
+        home=Path(os.environ.get('CODEX_HOME',Path.home()/'.codex'))
+        paths=[p for directory in ('sessions','archived_sessions')
+               for p in (home/directory).glob('**/*'+tid+'*.jsonl')]
+        indexed={}
+        for path in paths:
+            rows=[json.loads(line) for line in path.read_text().splitlines()]
+            meta=next((r['payload'] for r in rows if r['type']=='session_meta'),{})
+            if meta.get('id')!=tid:continue  # parent IDs can appear in fork filenames
+            for row in rows:
+                ordinal=row.get('ordinal')
+                if type(ordinal) is not int:raise ValueError('Native ordinal missing')
+                previous=indexed.get(ordinal)
+                if previous is not None and previous!=row:
+                    raise ValueError('Conflicting native history segments')
+                indexed[ordinal]=row
+        if not indexed:raise ValueError('Native session provenance missing')
+        return [indexed[k] for k in sorted(indexed)]
     rows=records(child)
     meta=next(r['payload'] for r in rows if r['type']=='session_meta')
     cutoff=meta.get('forked_from_ordinal_exclusive')

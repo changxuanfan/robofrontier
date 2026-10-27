@@ -9,7 +9,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     current=current_scene()
     p.add_argument('--scene',type=Path,default=current if current.exists() else ROOT/'outputs/robo-factory/scene/scene.xml')
-    p.add_argument('--renderer',choices=['filament','classic'],default='filament')
+    p.add_argument('--renderer',choices=['classic'],default='classic')
     p.add_argument('--render',action='store_true',help='Export fixed-camera PNGs and measurements')
     p.add_argument('--output',type=Path,default=ROOT/'outputs/robo-factory/previews')
     p.add_argument('--views',nargs='+');p.add_argument('--width',type=int,default=1280);p.add_argument('--height',type=int,default=720)

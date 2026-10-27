@@ -5,14 +5,15 @@
   "files": [
     {
       "path": "robofrontier/pipeline.py",
-      "rule": "exclude_prepared_policy_guard",
+      "rule": "exclude_policy_service",
       "families": [
         "mosaic",
         "dial"
       ],
       "historical_sha256": "dfa71f38759d5b7232e725a04f729d31d3d999d5876791a8a2db670906103bdd",
-      "integrated_sha256": "45392723101c1b935e4ec48c9344758f66e12763340ad46422722ed4916b7708",
-      "unaffected_ast_sha256": "3451cda324f0ce6e368d20cf5c2f59bcfafc32085e5df9d72ab7293fb6c3ccf5"
+      "integrated_sha256": "f803a096d57e0b9ec41ba30f8a48bbb9dbf93356bb8c02a298aa1abbd73371aa",
+      "unaffected_ast_sha256": "9a255b00474e794646ac7eccea64a26a1b697fa9db7ff45cbaa293850b54689b",
+      "review": "CLI service wrapper adds optional preview/video suppression and stops its GUI loop after closure. Unchanged World/step/control/recording AST verified against the original source; new policy runs use current actual source hashes."
     },
     {
       "path": "robofrontier/suite/evaluate_v2.py",

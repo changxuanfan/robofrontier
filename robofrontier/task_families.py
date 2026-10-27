@@ -43,7 +43,7 @@ def protocol_for(case, release_sha256):
         release_sha256=release_sha256, case_id=case['id'],
         source_task_sha256=case['source_files']['task.json'],
         source_scene_sha256=case['source_files']['scene.xml'],
-        reference_evidence=case['qualification'], total_wall_limit_s=None,
+        reference_evidence=case['qualification'], total_wall_limit_s=86400,
         experience='fresh_run_only', presentation_loop=False)
 
 
@@ -61,7 +61,7 @@ def validate_policy_task(task, root=ROOT):
             or protocol.get('launch') != 'explicit_manager_start'
             or protocol.get('experience') != 'fresh_run_only'
             or protocol.get('presentation_loop') is not False
-            or protocol.get('total_wall_limit_s') is not None):
+            or protocol.get('total_wall_limit_s') != 86400):
         raise ValueError('Invalid released policy protocol')
     _, _, case = resolve_case(task['id'], root=root)
     if (protocol != protocol_for(case, sha(Path(root)/RELEASE))
@@ -134,7 +134,7 @@ def freeze_public(task, directory, public, root=ROOT):
                 public_projection=projection)
 
 
-def prepare(case_id, directory, harness=None):
+def prepare(case_id, directory, harness=None, private_puzzle_path=None):
     """Prepare only; simulator, role sessions and model inference stay stopped."""
     import tempfile
     from .run_setup import prepare_run
@@ -142,7 +142,7 @@ def prepare(case_id, directory, harness=None):
     with tempfile.TemporaryDirectory(prefix='robofrontier-policy-') as temporary:
         path = Path(temporary)/'task.json'
         path.write_text(json.dumps(task, ensure_ascii=False)+'\n')
-        return prepare_run(directory, path, harness or ROOT/'configs/harnesses/policy.json')
+        return prepare_run(directory, path, harness or ROOT/'configs/harnesses/policy.json', private_puzzle_path)
 
 
 def validate_frozen_policy(task, directory):

@@ -51,7 +51,7 @@ class Instances:
             links.new(node.outputs['Instances'],end.inputs['Geometry'])
             modifier=obj.modifiers.new('Rigid GPU instances','NODES');modifier.node_group=graph
             cloud=dict(mesh=mesh,rotation=rotation,index=index,indices=indices,rows=rows,
-                static=static,obj=obj,bodies=np.array([r['body']for r in rows]),local_position=np.array([r['local_position']for r in rows]),
+                static=static,obj=obj,appearance_dirty=False,bodies=np.array([r['body']for r in rows]),local_position=np.array([r['local_position']for r in rows]),
                 local_rotation=np.array([r['local_rotation']for r in rows]))
             self.clouds.append(cloud);self.visibility.append((obj,layer))
             for i,row in enumerate(rows):
@@ -113,11 +113,15 @@ class Instances:
 
     def appearance(self,gid,material):
         cloud,index,signature,detail=self.geometry[gid]
-        cloud['indices'][index]=self.choice(signature,material,detail)
+        choice=self.choice(signature,material,detail)
+        if cloud['indices'][index]!=choice:
+            cloud['indices'][index]=choice;cloud['appearance_dirty']=True
 
     def flush(self):
         for cloud in self.clouds:
-            cloud['index'].data.foreach_set('value',cloud['indices']);cloud['mesh'].update()
+            if cloud['appearance_dirty']:
+                cloud['index'].data.foreach_set('value',cloud['indices']);cloud['mesh'].update()
+                cloud['appearance_dirty']=False
 
     def audit(self,metadata):
         """Read back the actual point attributes and reconstruct source FK frames."""
@@ -144,7 +148,7 @@ class Instances:
         return dict(position_error=position_error,rotation_error=rotation_error,render_triangles=triangles)
 
 
-def build(metadata,meshes,primitive,geom_material,scene,mutable_ids,use_instances=True,camera_positions=None,robot_lod=False):
+def build(metadata,meshes,primitive,geom_material,scene,mutable_ids,use_instances=True,camera_positions=None,robot_lod=False,lod_config=None):
     groups=defaultdict(list)
     for geom in metadata['geoms']:
         groups[(geom['body_id'],geom['group'],geom['id'] if geom['id']in mutable_ids else -1)].append(geom)
@@ -193,7 +197,10 @@ def build(metadata,meshes,primitive,geom_material,scene,mutable_ids,use_instance
             detail=1.
             if robot_lod and re.search(r'__[A-Z]_(?:link\d|hand|leftfinger|rightfinger|left_finger|right_finger)',body['name']):
                 distance=max(0.,float(np.min(np.linalg.norm(np.asarray(camera_positions)-body['position'],axis=1)))-1.)
-                detail=.08 if distance<10 else .035 if distance<22 else .015
+                settings=lod_config or {}
+                detail=(settings.get('hero',.35) if distance<4 else settings.get('near',.12) if distance<10
+                        else settings.get('middle',.03) if distance<22 else settings.get('far',.01))
+                if not 0<detail<=1:raise ValueError('Robot visual LOD must be in (0,1]')
             records.append(dict(signature=signature,body=bid,layer=layer,static='__'not in body['name'],gids=[g['id']for g in original_geoms],local_position=local_position,local_rotation=local_rotation,detail=detail))
             continue
         obj=bpy.data.objects.new('rigid_'+str(bid)+'_'+str(layer)+'_'+str(mutable),mesh);scene.collection.objects.link(obj)

@@ -1,6 +1,6 @@
 # 当前 Harness 验收范围（格式 v3）
 
-下列 check_harness 命令只做离线工程验收：假会话/服务、机器人运动学与几何检查，以及真实无窗口 MuJoCo 单臂接触回归。后者会积分物理并执行仿真抓放，但不新建模型会话、打开窗口或录像。三臂九方块的独立物理参考、资源搜索与交互改造记录见 [工程验收](../runs/autonomous-loop-engineering-20261020/report.md)；物理参考不是模型表现证据。历史运行保留原样。
+下列 check_harness 命令只做离线工程验收：假会话/服务、机器人运动学与几何检查，以及真实无窗口 MuJoCo 单臂接触回归。后者会积分物理并执行仿真抓放，但不新建模型会话、打开窗口或录像。三臂九方块的独立物理参考、资源搜索与交互改造记录见 工程验收（历史产物已退役：`../runs/autonomous-loop-engineering-20261020/report.md`）；物理参考不是模型表现证据。保留的历史证据与清理范围见[目录说明](repository-layout.md)。
 
 ```sh
 uv run python scripts/check_harness.py --report runs/engineering-check.json

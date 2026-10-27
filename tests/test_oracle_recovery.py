@@ -11,7 +11,7 @@ from robofrontier.suite.oracle_recovery import OracleRecovery, RecoverablePlanEr
 
 ROOT = Path(__file__).resolve().parents[1]
 SCENE = ROOT / 'configs/environments/cube_transport/frontier-v2-r10-transport-a04-d1'
-HARNESS = ROOT / 'runs/oracle/suite-v2-r10-closure-20261025/inputs/harness.json'
+HARNESS = ROOT / 'configs/harness-frontier-v2.json'
 
 
 class OracleRecoveryTests(unittest.TestCase):

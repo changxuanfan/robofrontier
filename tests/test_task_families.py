@@ -27,7 +27,7 @@ class FamilyReleaseTests(unittest.TestCase):
         task = policy_task('transport-a04-d1')
         validate_policy_task(task)
         self.assertFalse(task['oracle_verified'])
-        self.assertIsNone(task['run_protocol']['total_wall_limit_s'])
+        self.assertEqual(task['run_protocol']['total_wall_limit_s'], 86400)
         task['completion']['stable_duration_sim_s'] = 0
         with self.assertRaisesRegex(ValueError, 'changed outside'):
             validate_policy_task(task)

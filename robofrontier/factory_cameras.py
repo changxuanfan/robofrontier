@@ -3,6 +3,17 @@ import math
 import numpy as np
 
 
+def place_station_camera(manifest, case_id, camera):
+    """Rigidly place a frozen task camera in its factory station, without scaling."""
+    place=next(p for p in manifest['placements'] if p['case_id']==case_id)
+    yaw=place['yaw_rad'];c,s=math.cos(yaw),math.sin(yaw)
+    rotation=np.array([[c,-s,0],[s,c,0],[0,0,1.]])
+    shift=np.asarray(place['translation_m'])
+    return dict(camera,id=case_id+'/front',case_id=case_id,
+        source_camera=camera['id'],position_m=(rotation@np.asarray(camera['position_m'])+shift).tolist(),
+        target_m=(rotation@np.asarray(camera['target_m'])+shift).tolist())
+
+
 def shots(manifest, seconds=6.):
     result = [dict(id='overview', duration_s=seconds, position_m=[0,-32,31],
                    end_position_m=[4,-29,29], target_m=[0,0,.8], vertical_fov_deg=55,

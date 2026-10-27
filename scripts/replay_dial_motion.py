@@ -26,7 +26,7 @@ def video_sample(stamp, deadline, rate=30):
     return True, deadline
 
 
-def replay(recording, factory, output, render=False, edit=None, speed=None, fps=DIAL_VIDEO_FPS, renderer='filament'):
+def replay(recording, factory, output, render=False, edit=None, speed=None, fps=DIAL_VIDEO_FPS, renderer='classic'):
     reader = MotionReader(recording)
     if not reader.meta['case_id'].startswith('dial-best5-'):
         raise ValueError('Dial replay requires an R11 BEST5 recording')
@@ -151,6 +151,6 @@ if __name__ == '__main__':
     parser.add_argument('--edit', type=Path, required=True)
     parser.add_argument('--speed', type=float, help='Default: 10x')
     parser.add_argument('--fps', type=float, default=DIAL_VIDEO_FPS)
-    parser.add_argument('--renderer', choices=['filament','classic'], default='filament')
+    parser.add_argument('--renderer', choices=['classic'], default='classic')
     args = parser.parse_args()
     replay(args.recording,args.factory,args.output,args.render,args.edit,args.speed,args.fps,args.renderer)

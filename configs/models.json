@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "checked_on": "2026-10-27",
+  "context_window": 400000,
+  "auto_compact_token_limit": 350000,
+  "profiles": {
+    "gpt": {"model": "gpt-6.1-sol", "provider": "openai", "effort": "high", "vision": true, "context_capacity": 500000},
+    "deepseek": {"model": "deepseek-flash", "provider": "deepseek", "effort": "high", "vision": true, "context_capacity": 1048576, "base_url": "https://api.deepseek.com", "env_key": "DEEPSEEK_API_KEY", "documentation": "https://api-docs.deepseek.com/quick_start/agent_integrations/codex/"},
+    "deepseek-pro-text": {"model": "deepseek-v4-pro", "provider": "deepseek", "effort": "high", "vision": false, "context_capacity": 1048576, "base_url": "https://api.deepseek.com", "env_key": "DEEPSEEK_API_KEY", "documentation": "https://api-docs.deepseek.com/quick_start/pricing/"},
+    "qwen": {"model": "qwen3.8-max-0902", "provider": "qwen", "effort": "xhigh", "vision": true, "context_capacity": 1000000, "base_url_env": "DASHSCOPE_BASE_URL", "env_key": "DASHSCOPE_API_KEY", "documentation": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-responses"},
+    "glm": {"model": "glm-5.3-flash", "provider": "zhipu", "effort": "max", "vision": true, "context_capacity": 1000000, "base_url": "https://open.bigmodel.cn/api/v1", "env_key": "ZAI_API_KEY", "compatibility": "Responses/image/tool support for this model and this account requires live preflight", "documentation": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash"},
+    "glm-pro-text": {"model": "glm-5.3", "provider": "zhipu", "effort": "max", "vision": false, "context_capacity": 1000000, "base_url": "https://open.bigmodel.cn/api/v1", "env_key": "ZAI_API_KEY", "documentation": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3"},
+    "kimi": {"model": "kimi-k3.1-pro", "provider": "kimi", "effort": "high", "vision": true, "context_capacity": 1048576, "base_url": "https://api.moonshot.cn/v1", "env_key": "KIMI_API_KEY", "documentation": "https://platform.kimi.com/docs/guide/codex-kimi"}
+  }
+}

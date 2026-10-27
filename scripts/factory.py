@@ -11,15 +11,17 @@ import numpy as np
 
 from robofrontier.task_families import ROOT, RELEASE, read
 from robofrontier.factory_playback import FactoryTimeline,current_scene
-from robofrontier.factory_cameras import shots, camera_at
+from robofrontier.factory_cameras import shots, camera_at, place_station_camera
 from robofrontier.run_setup import write_json
 from robofrontier.motion_recording import digest
 
 SCENE = current_scene()
 
 
-def orbit_camera(seconds,duration):
-    angle=-2.35+2*np.pi*seconds/duration
+def orbit_camera(seconds,duration,degrees=60.):
+    """A slow partial orbit; source playback has an independent clock."""
+    if not math.isfinite(degrees) or not 0<degrees<=360:raise ValueError('Orbit degrees must be in (0,360]')
+    angle=-2.35+math.radians(degrees)*seconds/duration
     return dict(id='factory-orbit',position_m=[23*np.cos(angle),22*np.sin(angle),4.8+.2*np.sin(angle)],
         target_m=[0,0,.7],vertical_fov_deg=62,projection='perspective',hidden_layers=[])
 
@@ -41,7 +43,20 @@ def export_animation(args):
             for target in names[track.spec['id']]['geom_names'].values()}),dtype=np.int32)
         plan=shots(play.manifest)
         preset=next((c for c in play.manifest['cameras'] if c['id']==args.camera),None)
-        if args.camera not in ('tour','orbit') and preset is None:raise ValueError('Unknown camera')
+        if args.camera=='desk-front':
+            if not getattr(args,'station',None):raise ValueError('desk-front requires --station CASE_ID')
+            track=next((t for t in timeline.tracks if t.spec['id']==args.station),None)
+            if track is None:raise ValueError('Station is outside selected task families')
+            source=track.source;cid=source.model.camera('global').id
+            mujoco.mj_kinematics(source.model,source.data)
+            mujoco.mj_comPos(source.model,source.data)
+            mujoco.mj_camlight(source.model,source.data)
+            if source.model.cam_projection[cid]!=0:raise ValueError('Desk front requires a perspective source camera')
+            position=source.data.cam_xpos[cid];rotation=source.data.cam_xmat[cid].reshape(3,3)
+            preset=place_station_camera(play.manifest,args.station,dict(id='global',
+                position_m=position.tolist(),target_m=(position-rotation[:,2]).tolist(),
+                vertical_fov_deg=float(source.model.cam_fovy[cid]),projection='perspective',hidden_layers=[]))
+        if args.camera not in ('tour','orbit','desk-front') and preset is None:raise ValueError('Unknown camera')
         frames=[];count=math.ceil(args.duration*timeline.fps)
         with (output/'frames.jsonl').open('x') as trace:
             for index in range(count):
@@ -52,13 +67,14 @@ def export_animation(args):
                     body_ids=np.unique(model.geom_bodyid[gids]),
                     body_position=data.xpos[np.unique(model.geom_bodyid[gids])].astype(np.float32),
                     body_rotation=data.xmat[np.unique(model.geom_bodyid[gids])].reshape(-1,3,3).astype(np.float32))
-                camera=orbit_camera(index/timeline.fps,args.duration)if args.camera=='orbit' else preset or camera_at(plan,index/timeline.fps)
+                camera=orbit_camera(index/timeline.fps,args.duration,getattr(args,'orbit_degrees',60.))if args.camera=='orbit' else preset or camera_at(plan,index/timeline.fps)
                 frames.append(dict(file=file.name,sha256=digest(file),camera=camera))
                 if index%300==0:print('pose',index,'/',count,flush=True)
         result=dict(schema='robofrontier.factory-animation.v1',source_scene_sha256=digest(args.scene),
             fps=timeline.fps,frames=frames,loop=True,stations=len(timeline.tracks),
             release_sha256=digest(ROOT/RELEASE),source_trace_sha256=digest(output/'frames.jsonl'),
             appearance_geom_ids=appearance_ids,
+            camera_motion=dict(mode=args.camera,orbit_degrees=getattr(args,'orbit_degrees',60.) if args.camera=='orbit' else None,duration_s=args.duration),
             physics_steps=0,scope='Source FK and appearance; no task dynamics or commands')
         write_json(output/'animation.json',result);write_json(output/'camera-shots.json',plan)
         return dict(frames=count,stations=len(timeline.tracks),output=str(output))
@@ -90,9 +106,12 @@ def render_offline(args):
     blender=args.blender or shutil.which('blender') or '/Applications/Blender.app/Contents/MacOS/Blender'
     command=[blender,'--background','--python-exit-code','1','--python',str(ROOT/'scripts/render_factory_blender.py'),'--',
         '--asset',str(output/'asset'),'--animation',str(output/'poses/animation.json'),'--output',str(output),
-        '--engine',args.renderer,'--profile',args.profile,'--device',args.device,'--samples',str(args.samples if args.samples is not None else (24 if args.renderer=='cycles'else 4)),
+        '--engine',args.renderer,'--profile',args.profile,'--device',args.device,'--samples',str(args.samples if args.samples is not None else (64 if args.renderer=='cycles'else 6)),
         '--width',str(args.width),'--height',str(args.height)]
     command.append('--denoise'if args.denoise else '--no-denoise')
+    if args.noise_threshold is not None:command+=['--noise-threshold',str(args.noise_threshold)]
+    if args.min_samples is not None:command+=['--min-samples',str(args.min_samples)]
+    if args.keep_frames:command.append('--keep-frames')
     if args.save_blend:command.append('--save-blend')
     with (output/'blender.log').open('x')as log:subprocess.run(command,stdout=log,stderr=subprocess.STDOUT,check=True)
     result=read(output/'report.json');result.update(preparation_wall_s=preparation_s,end_to_end_wall_s=time.monotonic()-started)
@@ -106,10 +125,15 @@ def main():
     video=commands.add_parser('video')
     video.add_argument('--scene',type=Path,default=SCENE);video.add_argument('--output',type=Path,required=True)
     video.add_argument('--duration',type=float,required=True);video.add_argument('--camera',default='tour')
+    video.add_argument('--station',help='Task case ID for the fixed desk-front camera')
+    video.add_argument('--orbit-degrees',type=float,default=60.,help='Partial orbit angle; independent of Oracle replay speed')
     video.add_argument('--renderer',choices=['eevee','cycles'],default='cycles')
     video.add_argument('--profile',choices=['fast','reference'],default='fast')
     video.add_argument('--samples',type=int);video.add_argument('--device',choices=['METAL','CPU'],default='METAL')
     video.add_argument('--denoise',action=argparse.BooleanOptionalAction,default=True)
+    video.add_argument('--noise-threshold',type=float,default=.1,help='Cycles adaptive stopping threshold')
+    video.add_argument('--min-samples',type=int,default=4,help='Cycles minimum adaptive samples')
+    video.add_argument('--keep-frames',action='store_true',help='Retain all PNGs after video validation; default retains three stills')
     video.add_argument('--save-blend',action='store_true')
     video.add_argument('--blender',help='Blender executable; auto-detected on macOS')
     video.add_argument('--width',type=int,default=1280);video.add_argument('--height',type=int,default=720)
@@ -117,6 +141,8 @@ def main():
     poses=commands.add_parser('poses',help='Export common playback for offline Cycles animation')
     poses.add_argument('--scene',type=Path,default=SCENE);poses.add_argument('--output',type=Path,required=True)
     poses.add_argument('--duration',type=float,required=True);poses.add_argument('--camera',default='tour')
+    poses.add_argument('--station',help='Task case ID for the fixed desk-front camera')
+    poses.add_argument('--orbit-degrees',type=float,default=60.)
     poses.add_argument('--families',nargs='+',choices=['transport','mosaic','relay','dial'])
     viewer=commands.add_parser('view');viewer.add_argument('--scene',type=Path,default=SCENE)
     args=parser.parse_args()

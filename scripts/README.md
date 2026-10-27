@@ -4,6 +4,9 @@
 
 | 入口 | 用途 |
 | --- | --- |
+| `benchmark models/preflight/prepare/run/status/stop` | Codex CLI 多模型、API预检、9/36独立任务与24小时截止 |
+| `check_codex_cli` | 使用本地Responses stub验证真实CLI工具、图片与fork；无外部模型调用 |
+| `curate_repository` | 生成并校验数据清理计划，按冻结来源保护原始流 |
 | `tasks list/check/prepare/prepare-batch` | 当前36项的版本、输入审计与独立GPT准备 |
 | `factory build/video/poses` | 当前工厂、独立循环、Cycles/Eevee GPU 30fps视频与公共姿态导出 |
 | `restore_scene_assets` | 按原SHA恢复忽略的场景资产，拒绝覆盖漂移资产 |

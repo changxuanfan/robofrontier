@@ -129,19 +129,6 @@ class MotionEditTests(unittest.TestCase):
                 np.testing.assert_allclose(play.data.geom_xmat[geometry].reshape(3,3),quat_matrix(pose['quaternion_wxyz']),atol=1e-6)
             self.assertEqual(play.model.nv,0)
 
-    def test_filament_synchronizes_moving_geometry_before_drawing(self):
-        from robofrontier.factory_view import FactoryRenderer
-        view = object.__new__(FactoryRenderer)
-        view.renderer_name='filament'
-        view.renderables=Mock()
-        view.lights=Mock()
-        view.renderer=Mock()
-        view.data=object()
-        view.pixels=np.zeros((2,2,3),np.uint8)
-        view.render_times=[]
-        view.render()
-        view.renderables.update.assert_called_once_with(view.data)
-        view.lights.update.assert_called_once_with(view.data)
 
 
 if __name__ == '__main__':

@@ -10,7 +10,7 @@ from robofrontier.task_families import ROOT,RELEASE,read
 from robofrontier.run_setup import write_json
 
 
-def check():
+def check_historical():
     cache={};reports=[]
     def digest(path):
         stat=path.stat();key=(stat.st_dev,stat.st_ino,stat.st_size,stat.st_mtime_ns)
@@ -72,7 +72,34 @@ def check():
                 source_bindings=bindings,unique_inodes_hashed=len(cache),physics_steps=0)
 
 
+def check():
+    """Current retained dataset; retired historical trials are no longer pins."""
+    snapshot=ROOT/'outputs/final/preservation.json'
+    if not snapshot.exists():return check_historical()
+    inventory=read(snapshot)['files'];failed=[];cache={}
+    for name,row in inventory.items():
+        p=ROOT/name
+        if not p.is_file():failed.append(dict(path=name,error='missing'));continue
+        st=p.stat();key=(st.st_dev,st.st_ino,st.st_size,st.st_mtime_ns)
+        if key not in cache:
+            h=hashlib.sha256()
+            with p.open('rb')as source:
+                for block in iter(lambda:source.read(1024*1024),b''):h.update(block)
+            cache[key]=h.hexdigest()
+        if cache[key]!=row['sha256']:failed.append(dict(path=name,error='changed'))
+    bindings=[]
+    from robofrontier.task_families import resolve_case
+    for f in read(ROOT/RELEASE)['families'].values():
+        for c in f['oracle']:
+            resolve_case(c['id'],'oracle')
+            bindings.append(c['id'])
+    return dict(passed=not failed,verified_files=len(inventory)-len(failed),failed=failed,
+                source_bindings=bindings,physics_steps=0,
+                scope='Current selected sources/final delivery after authorized retirement; use --historical only for the former full archive')
+
+
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--output',type=Path,required=True)
-    args=parser.parse_args();result=check();write_json(args.output,result)
+    parser.add_argument('--historical',action='store_true',help='Audit the former full archive, including now-retired experiments')
+    args=parser.parse_args();result=check_historical() if args.historical else check();write_json(args.output,result)
     raise SystemExit(0 if result['passed']else 1)

@@ -1,5 +1,9 @@
 # Factory realism and Oracle launch plan — 2026-10-25
 
+Historical planning snapshot, superseded by `docs/robo-factory.md` and
+`docs/gpt-policy.md`. Its Filament path has been retired: current simple-task
+observations use MuJoCo OpenGL Classic; factory output uses Cycles/Eevee.
+
 Status: planning/audit only. No scene changes, Oracle execution, agent spawn,
 asset deletion or historical path migration in this phase. Evidence:
 `outputs/robo-factory/reports/planning-audit-20261025.json`.

@@ -376,9 +376,11 @@ class World:
 class Service(RuntimeService):
     def __init__(self,directory,hidden=False):
         self.hidden=hidden;self.obs=0
-        super().__init__(directory,World,self.capture,
-            lambda:Video(Path(directory).resolve()/'private/outputs'/
-                         (self.task.get('recording_camera','global')+'-realtime.mp4'),1280,800,self.config['video_fps']))
+        cfg = json.loads((Path(directory)/'private/inputs/harness.json').read_text())
+        video_factory = (lambda:Video(Path(directory).resolve()/'private/outputs'/
+                         (self.task.get('recording_camera','global')+'-realtime.mp4'),1280,800,self.config['video_fps'])) \
+                         if cfg.get('record_realtime_video', True) else None
+        super().__init__(directory,World,self.capture,video_factory)
 
     def capture(self,cameras):
         self.obs+=1;paths={}
@@ -454,9 +456,9 @@ class Service(RuntimeService):
                 now=time.monotonic();acc+=min(now-previous,.1);previous=now;glfw.poll_events()
                 with self.lock:
                     self.pump()
-                    while acc>=.02:self.world.step();acc-=.02
+                    while acc>=.02 and not self.ended:self.world.step();acc-=.02
                     if now>=next_state:self.periodic();next_state=now+1
-                    if now>=next_frame:
+                    if not self.hidden and now>=next_frame:
                         mujoco.mjr_setBuffer(mujoco.mjtFramebuffer.mjFB_WINDOW,self.context)
                         w,h=glfw.get_framebuffer_size(self.window);viewport=mujoco.MjrRect(0,0,w,h)
                         mujoco.mjv_updateScene(self.world.model,self.world.data,self.options,None,self.cam,mujoco.mjtCatBit.mjCAT_ALL,self.scene)

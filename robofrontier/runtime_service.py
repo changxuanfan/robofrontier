@@ -52,6 +52,10 @@ class RuntimeService:
         self.last_integrity_check = time.monotonic()
         self.config = self.store.get('config')
         self.task = json.loads((self.directory/'private/inputs/task.json').read_text())
+        self.policy_budget = None
+        if self.task.get('execution_readiness') == 'prepared_policy_trial':
+            from .policy_probe import BudgetGuard, protocol
+            self.policy_budget = BudgetGuard(protocol(self.task['run_protocol']['total_wall_limit_s']))
         self.roles = tuple(self.store.agents())
         self.policy_roles = tuple(a for a in self.roles if self.store.agent(a)['kind'] != 'manager')
         self.tokens = {}
@@ -450,6 +454,8 @@ class RuntimeService:
             job['done'].set()
 
     def pump(self):
+        if self.policy_budget is not None:
+            self.policy_budget.tick(self)
         while True:
             try:
                 job = self.queue.get_nowait()
@@ -478,6 +484,10 @@ class RuntimeService:
         poll(self)
         self.poll_waiters()
         self.poll_motion_check()
+        if self.policy_budget is not None:
+            self.policy_budget.tick(self)
+            if self.ended:
+                self.shutdown = True
 
     def poll_motion_check(self):
         if self.motion_check is None:

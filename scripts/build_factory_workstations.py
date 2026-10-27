@@ -4,7 +4,7 @@ from pathlib import Path
 from robofrontier.factory_workstations import compose
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--shell',type=Path,default=Path('outputs/robo-factory/v7-shell/scene.xml'));p.add_argument('--catalog',type=Path,default=Path('configs/suites/frontier-current-oracle.json'));p.add_argument('--output',type=Path,default=Path('outputs/robo-factory/v7-workstations'))
+    p=argparse.ArgumentParser();p.add_argument('--shell',type=Path,required=True);p.add_argument('--catalog',type=Path,default=Path('configs/suites/frontier-current-oracle.json'));p.add_argument('--output',type=Path,required=True)
     p.add_argument('--timeline-dir',type=Path,help='Use each edit timeline recording/source, preserving its exact frozen scene revision')
     p.add_argument('--source-root',type=Path,help='Root for catalog sources without recording overrides')
     p.add_argument('--table-opening-scale',type=float,help='Explicit override; default uses each source catalog entry')
