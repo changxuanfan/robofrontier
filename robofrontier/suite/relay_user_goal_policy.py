@@ -1,13 +1,12 @@
-"""User-authorized Goal manipulation policy, separate from native scoring.
+"""Goal contact and release planning from the current Relay contract.
 
-Only the final contact/release decisions change. No task geometry, physics,
-monitor state, historical result, or native completion predicate is edited.
+These functions inspect geometry and actual support. They do not change physics,
+monitor state or historical scores; completion remains the evaluator's job.
 """
 import numpy as np
 from robofrontier.suite.scenes import rz
 
-BOUNDARY_TOLERANCE_M=.050
-LOW_RELEASE_GAP_M=.030
+from .relay_contract import BOUNDARY_TOLERANCE_M,LOW_RELEASE_GAP_M
 
 
 def eligible_goal_cargo(t,data=None):
@@ -40,7 +39,7 @@ def opening_supported(t,ident):
     gap=t.monitor.bottom(state['all_geoms'])-t.task['table_height_m']
     # A low final release need not wait for exact tabletop contact. Its actual
     # final landing/release is still checked independently after opening.
-    near_surface=-.002<=gap<=LOW_RELEASE_GAP_M
+    near_surface=-.002<=gap<=t.task.get('completion',{}).get('max_release_gap_m',LOW_RELEASE_GAP_M)
     return bool(supported or near_surface)
 
 
@@ -48,14 +47,3 @@ def final_support(t,ident,team):
     state=t.monitor.relay_v2.states[ident]
     return bool(set(team)<=t.monitor.bilateral(state['rod_geoms'],positive_force=True)
         and opening_supported(t,ident))
-
-
-def install(reference):
-    if getattr(reference,'_user_goal_policy_revision',0)>=2:return
-    if not hasattr(reference,'_before_user_goal_contact_names'):
-        reference._before_user_goal_contact_names=reference.terminal_contact_names
-        reference._before_user_goal_final_support=reference.final_support
-    reference.terminal_contact_names=terminal_contact_names
-    reference.final_support=final_support
-    reference.user_goal_open_supported=opening_supported
-    reference._user_goal_policy_revision=2

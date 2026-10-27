@@ -18,8 +18,15 @@ class EmptyRecoveryTests(unittest.TestCase):
   for contact,force in [(True,None),(False,70.)]:
    t,q=self.trial();t.arms['G'].grasp_force=force
    with patch.object(ref,'arm_payload_contact',return_value=contact):
-    with self.assertRaises(ValueError):ref.move_empty_robot(t,'payload_02','G',q)
+    with self.assertRaisesRegex((ValueError,RuntimeError),'force-free|not separated|still contacts cargo'):
+     ref.move_empty_robot(t,'payload_02','G',q)
    t.execute.assert_not_called();self.assertIn('G',t.held)
+ def test_current_contact_uses_bounded_withdrawal_instead_of_the_empty_path(self):
+  t,q=self.trial()
+  with patch.object(ref,'arm_payload_contact',return_value=True),patch('robofrontier.suite.relay_contact_escape.execute_open_contact_withdrawal') as escape:
+   ref.move_empty_robot(t,'payload_02','G',q)
+  escape.assert_called_once_with(t,'payload_02','G',q,goal_names=ref.terminal_contact_names)
+  t.execute.assert_not_called()
  def test_motion_failure_retains_original_cache_and_is_not_reported_as_release(self):
   t,q=self.trial();t.execute.side_effect=RuntimeError('motor original failed')
   with patch.object(ref,'arm_payload_contact',return_value=False),patch('robofrontier.suite.oracle.Trial.pose_clear',return_value=True):

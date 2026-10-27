@@ -1,8 +1,7 @@
-"""Optional engineering controller for a measured open hand resting on cargo.
+"""Bounded recovery for a measured open hand resting on supported cargo.
 
-Importing this module does not change a running controller. ``install`` is an
-explicit runtime operation. All robot motion still uses Trial.execute; no live
-qpos, physics, monitor, or force state is written by this extension.
+The Relay dispatcher calls this controller directly. Motion uses Trial.execute;
+planning writes scratch FK data, never live cargo poses, physics or monitor state.
 """
 from pathlib import Path
 import hashlib
@@ -110,17 +109,3 @@ def execute_open_contact_withdrawal(t, ident, robot, joint_rad, goal_names=None)
         raise RuntimeError('Open withdrawal moved but cargo contact remains; inspect original feedback')
     # The existing empty-hand controller uses the same post-feedback cache rule.
     t.held.pop(robot,None)
-
-
-def install(reference_module):
-    """Explicitly add this bounded state to an existing recovery dispatcher."""
-    if getattr(reference_module,'_open_contact_withdrawal_revision',0)>=5:return
-    original=getattr(reference_module,'_before_open_contact_withdrawal',reference_module.move_empty_robot)
-    reference_module._before_open_contact_withdrawal=original
-    def move_empty_robot(t,ident,robot,joint_rad):
-        if robot_cargo_contact(t,ident,robot):
-            return execute_open_contact_withdrawal(t,ident,robot,joint_rad,
-                goal_names=reference_module.terminal_contact_names)
-        return original(t,ident,robot,joint_rad)
-    reference_module.move_empty_robot=move_empty_robot
-    reference_module._open_contact_withdrawal_revision=5

@@ -108,19 +108,27 @@ class RelaySceneTests(unittest.TestCase):
 
     def test_old_sources_are_unchanged_except_declared_goal_contract_delta(self):
         saved=json.loads((ROOT/'docs/generated/frontier-v2/relay-r15/source-preserved-hashes.json').read_text())
+        contract=json.loads((ROOT/'tests/fixtures/relay_contract_source_hashes.json').read_text())
         self.assertGreater(len(saved),100)
         for name,checksum in saved.items():
             payload=(ROOT/name).read_bytes()
+            if name in contract['fields_sha256']:
+                task=json.loads(payload)
+                if name.endswith('/task.json'):
+                    from robofrontier.suite.relay_contract import final_task
+                    self.assertEqual(task,final_task(task))
+                for key in ('rules','completion'):task.pop(key,None)
+                self.assertEqual(hashlib.sha256(json.dumps(task,sort_keys=True).encode()).hexdigest(),contract['fields_sha256'][name])
+                continue
             if hashlib.sha256(payload).hexdigest()!=checksum and name.endswith('/task.json'):
                 # The user later permitted contacts/stacking and required real
                 # airborne handover. Reverse exactly that recorded metadata
                 # delta; geometry and every other task field still hash-match.
-                from scripts.declare_relay_goal_contacts import RULE,TRANSFER_RULE,STACK_RULE
                 task=json.loads(payload)
                 for key in ('allow_goal_payload_contact','arbitrary_goal_placement','required_airborne_handover','support_via_goal_payload'):
                     self.assertIs(task['completion'].pop(key),True)
                 self.assertEqual(task['completion'].pop('rule_revision'),'relay-goal-contact-stack-20261026')
-                for rule in (RULE,TRANSFER_RULE,STACK_RULE):task['rules'].remove(rule)
+                for rule in contract['legacy_added_rules']:task['rules'].remove(rule)
                 payload=(json.dumps(task,ensure_ascii=False,indent=2)+'\n').encode()
             self.assertEqual(hashlib.sha256(payload).hexdigest(),checksum,name)
 

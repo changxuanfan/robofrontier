@@ -13,7 +13,7 @@ import mujoco
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-from robofrontier.motion_edit import (
+from robofrontier.relay_motion_edit import (
     keep_intervals, select_source_rows, retained_timeline, video_rows,
 )
 from robofrontier.motion_recording import MotionReader, digest, freeze_source
@@ -87,7 +87,7 @@ def prepare_case(case, analysis, output):
     write_json(folder / 'source-chunks.json', dict(chunks=prefix, selected_verified_chunks=used))
     write_json(folder / 'initial-rgba.json', reader.meta['initial_rgba'])
     old = json.loads((analysis / case['case_id'] / 'manifest.json').read_text())
-    result = dict(schema='robofrontier.motion-edit.v1', case_id=case['case_id'],
+    result = dict(schema='robofrontier.relay-motion-edit.v1', case_id=case['case_id'],
         original_recording=str(reader.path.resolve()), source_scene_sha256=info['scene_sha256'],
         source_sample_hz=reader.meta['sample_hz'], motion_decision_hz=info['analysis_hz'],
         original_completion_cutoff_s=info['end_sim_s'],
@@ -146,6 +146,8 @@ def validate_movie(path, frames, fps):
 
 def render_case(folder, output, factory_renderer=None, play=None, fps=30, speed=20):
     edit = json.loads((folder / 'edit.json').read_text())
+    if edit.get('schema') not in ('robofrontier.relay-motion-edit.v1','robofrontier.motion-edit.v1') or not {'track_sha256','kept_intervals_source_s'} <= edit.keys():
+        raise ValueError('Expected a Relay recorded-track edit; a frame-reference timeline needs its own adapter')
     assert digest(folder / 'track.npz') == edit['track_sha256']
     for name, key in [('events.jsonl','events_sha256'),('initial-rgba.json','initial_rgba_sha256')]:
         assert digest(folder / name) == edit[key]

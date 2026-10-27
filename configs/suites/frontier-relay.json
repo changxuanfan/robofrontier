@@ -1,0 +1,114 @@
+{
+  "family": "relay",
+  "rule_revision": "relay-final-goal-50mm-v1",
+  "cases": [
+    {
+      "family": "relay",
+      "level": 1,
+      "suite_version": 2,
+      "scene_revision": 13,
+      "scale_index": 0,
+      "arms": 8,
+      "id": "relay-a08-d1",
+      "source_scene_revision": 10,
+      "table_height_m": 0.8,
+      "directory": "configs/environments/beam_handoff/frontier-v2-r13-relay-a08-d1"
+    },
+    {
+      "family": "relay",
+      "level": 2,
+      "suite_version": 2,
+      "scene_revision": 17,
+      "scale_index": 0,
+      "arms": 8,
+      "id": "relay-a08-d2",
+      "source_scene_revision": 16,
+      "table_height_m": 0.8,
+      "directory": "configs/environments/beam_handoff/frontier-v2-r17-relay-a08-d2"
+    },
+    {
+      "family": "relay",
+      "level": 3,
+      "suite_version": 2,
+      "scene_revision": 17,
+      "scale_index": 0,
+      "arms": 8,
+      "id": "relay-a08-d3",
+      "source_scene_revision": 16,
+      "table_height_m": 0.8,
+      "directory": "configs/environments/beam_handoff/frontier-v2-r17-relay-a08-d3"
+    },
+    {
+      "family": "relay",
+      "level": 1,
+      "suite_version": 2,
+      "scene_revision": 15,
+      "scale_index": 1,
+      "arms": 12,
+      "id": "relay-a12-d1",
+      "source_scene_revision": 10,
+      "table_height_m": 0.8,
+      "directory": "configs/environments/beam_handoff/frontier-v2-r15-relay-a12-d1"
+    },
+    {
+      "family": "relay",
+      "level": 2,
+      "suite_version": 2,
+      "scene_revision": 17,
+      "scale_index": 1,
+      "arms": 12,
+      "id": "relay-a12-d2",
+      "source_scene_revision": 16,
+      "table_height_m": 0.8,
+      "directory": "configs/environments/beam_handoff/frontier-v2-r17-relay-a12-d2"
+    },
+    {
+      "family": "relay",
+      "level": 3,
+      "suite_version": 2,
+      "scene_revision": 17,
+      "scale_index": 1,
+      "arms": 12,
+      "id": "relay-a12-d3",
+      "source_scene_revision": 16,
+      "table_height_m": 0.8,
+      "directory": "configs/environments/beam_handoff/frontier-v2-r17-relay-a12-d3"
+    },
+    {
+      "family": "relay",
+      "level": 1,
+      "suite_version": 2,
+      "scene_revision": 13,
+      "scale_index": 2,
+      "arms": 16,
+      "id": "relay-a16-d1",
+      "source_scene_revision": 10,
+      "table_height_m": 0.8,
+      "directory": "configs/environments/beam_handoff/frontier-v2-r13-relay-a16-d1"
+    },
+    {
+      "family": "relay",
+      "level": 2,
+      "suite_version": 2,
+      "scene_revision": 17,
+      "scale_index": 2,
+      "arms": 16,
+      "id": "relay-a16-d2",
+      "source_scene_revision": 16,
+      "table_height_m": 0.8,
+      "directory": "configs/environments/beam_handoff/frontier-v2-r17-relay-a16-d2"
+    },
+    {
+      "family": "relay",
+      "level": 3,
+      "suite_version": 2,
+      "scene_revision": 17,
+      "scale_index": 2,
+      "arms": 16,
+      "id": "relay-a16-d3",
+      "source_scene_revision": 16,
+      "table_height_m": 0.8,
+      "directory": "configs/environments/beam_handoff/frontier-v2-r17-relay-a16-d3"
+    }
+  ]
+}

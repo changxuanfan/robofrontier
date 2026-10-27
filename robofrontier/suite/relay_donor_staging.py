@@ -43,14 +43,3 @@ def parked_donor_routes(t, ident, selected, donors, opening_width=.075):
         if not probe.pose_clear(robot,q,(),.001):return None
         routes[robot]=[q]
     return routes
-
-
-def install(reference):
-    if hasattr(reference,'_before_parked_donor_routes'):return
-    original=reference.donor_exit_routes
-    reference._before_parked_donor_routes=original
-    def donor_exit_routes(t,ident,selected,donors,opening_width=.075):
-        parked=parked_donor_routes(t,ident,selected,donors,opening_width)
-        if parked is not None:return parked
-        return original(t,ident,selected,donors,opening_width)
-    reference.donor_exit_routes=donor_exit_routes

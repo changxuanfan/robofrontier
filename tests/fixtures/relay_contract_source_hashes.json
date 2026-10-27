@@ -1,0 +1,28 @@
+{
+  "scope": "Pre-cleanup metadata hashes excluding only rules/completion; original sources remain archived unchanged",
+  "fields_sha256": {
+    "configs/environments/beam_handoff/frontier-v2-r13-relay-a08-d1/task.json": "3526d445ffcd863715e48354b324881d2b66455519fe4fe3247849b5d1d6f72e",
+    "configs/environments/beam_handoff/frontier-v2-r13-relay-a08-d1/public-task.json": "245938d3cce9572169169005347f4378ccbbb9ac28b281355dde121d23a54155",
+    "configs/environments/beam_handoff/frontier-v2-r17-relay-a08-d2/task.json": "3d410709dfb63fe7d0de2e1c1319f30eef35f875231d8d217b42e17f24002ad2",
+    "configs/environments/beam_handoff/frontier-v2-r17-relay-a08-d2/public-task.json": "2831744c9eb7fa87a13402b9a20c203790e7029cfad86f588868837f7dc44bcf",
+    "configs/environments/beam_handoff/frontier-v2-r17-relay-a08-d3/task.json": "feaf7693330a92c999da70d3b758b525f0c4f8c9d45f1c69cd08b93a16db1758",
+    "configs/environments/beam_handoff/frontier-v2-r17-relay-a08-d3/public-task.json": "f6c13ba83924348a0f7acd25a067a844c633ff3e1394b115bca3ec6b33417d6b",
+    "configs/environments/beam_handoff/frontier-v2-r15-relay-a12-d1/task.json": "e25b1cb12ce0f7187762ad30da0b388fb8238eff939f9331dcd9b4a4e711c58d",
+    "configs/environments/beam_handoff/frontier-v2-r15-relay-a12-d1/public-task.json": "2baaebe5c0a2feb0f245f28124f396da6f28c8809fcb233ebde6aad62e288a52",
+    "configs/environments/beam_handoff/frontier-v2-r17-relay-a12-d2/task.json": "aee1f87a65a5a18eea9ac32b53bc26445f3c068c087153ebfd4db032a121f82f",
+    "configs/environments/beam_handoff/frontier-v2-r17-relay-a12-d2/public-task.json": "9eb85f6bb01fcfacef46a8bb98f7e35619eb0a96b2d0035dbab1d19ccbd07356",
+    "configs/environments/beam_handoff/frontier-v2-r17-relay-a12-d3/task.json": "f3abea566394406615ddd57004cee2498b5429dd455bad4910b292fb53909d6f",
+    "configs/environments/beam_handoff/frontier-v2-r17-relay-a12-d3/public-task.json": "14047a11b19e1f823c38e66d5445e691ed29785bc5884f4fa0ab2520b56bbc66",
+    "configs/environments/beam_handoff/frontier-v2-r13-relay-a16-d1/task.json": "6dbe804ff64d3dca9605e8bae58f4e63a8be2500216d5cf1ba5267e865ad97c5",
+    "configs/environments/beam_handoff/frontier-v2-r13-relay-a16-d1/public-task.json": "33354d34ef64588ef4ee4aa0446a85a55f545c8ea81eafbcf326a306db2d7445",
+    "configs/environments/beam_handoff/frontier-v2-r17-relay-a16-d2/task.json": "80b39c97f8d02f9443d2bea6dccc6705e541c0830ce6f9d9b27b6e53e1de079c",
+    "configs/environments/beam_handoff/frontier-v2-r17-relay-a16-d2/public-task.json": "dadd06bf32ecea65b99695e4bd2b8efc440dfecf345ca9780df12285f4db1e5d",
+    "configs/environments/beam_handoff/frontier-v2-r17-relay-a16-d3/task.json": "fdd1e9e318708968887690420d1a5affd4f6f3aded7edf303df031f829061452",
+    "configs/environments/beam_handoff/frontier-v2-r17-relay-a16-d3/public-task.json": "f35f8cabe0562d6523cca101bcf0e8fc3c06dfe4eea39a89a9bea95a13273d73"
+  },
+  "legacy_added_rules": [
+    "Within GOAL, payload-to-payload contact is allowed. Any final placement inside the declared region is valid; nominal Oracle packing centers and contact-free cargo separation are not additional task requirements. Verify actual release, stability and all payloads remaining inside GOAL.",
+    "Each payload must undergo a real qualified airborne handover before the final team places and releases it inside GOAL.",
+    "Stable stacking inside GOAL is allowed. Real tabletop support may pass through other payloads entirely inside GOAL. Every complete assembly must remain inside GOAL, released by all robots and stable; floating or robot-held loads are not complete."
+  ]
+}

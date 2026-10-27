@@ -1,17 +1,9 @@
-"""R17 task clarification only: byte-identical r16 physics and canonical pose."""
+"""Copy R16 geometry with the current L2/L3 task contract; physics is identical."""
 import hashlib,json,os,shutil
 from pathlib import Path
 from . import v2
 from ..run_setup import write_json
-
-RULE_REVISION='relay-goal-low-release-20261026'
-RULE=('Within GOAL, original qualified hands may lower an assembly while its '
-      'components contact the table separately. The final team may open with '
-      'the lowest timber at most20mm above the table, without prior table '
-      'contact. Every complete assembly must finally be released, actually '
-      'supported, stable and entirely inside GOAL. Real airborne handover '
-      'remains required; unsupported loss outside GOAL or from a high pose '
-      'does not receive this low-release permission.')
+from .relay_contract import RULE_REVISION,final_task
 
 
 def build(case,replace_draft=False,render=False):
@@ -28,9 +20,7 @@ def build(case,replace_draft=False,render=False):
     newcase['directory']=str(dest.relative_to(v2.ROOT))
     task=json.loads((dest/'task.json').read_text());before=hashlib.sha256((source/'task.json').read_bytes()).hexdigest()
     task.update(scale=newcase,scene_asset=newcase['directory'],oracle_verified=False,execution_readiness='environment_preview_only')
-    task['completion'].update(allow_goal_partial_support=True,allow_near_goal_release=True,
-                              max_timber_release_gap_m=.020,rule_revision=RULE_REVISION)
-    task['rules'].append(RULE)
+    task=final_task(task)
     write_json(dest/'task.json',task);write_json(dest/'public-task.json',v2.public_task(task))
     env=json.loads((dest/'environment.json').read_text());env['suite_case']=newcase;write_json(dest/'environment.json',env)
     manifest=json.loads((dest/'workstation.json').read_text());manifest['case']=newcase;write_json(dest/'workstation.json',manifest)

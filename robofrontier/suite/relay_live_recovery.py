@@ -56,7 +56,9 @@ class RelayLiveRecovery:
             payloads[ident]=dict(position_m=body.xpos.tolist(),rotation=body.xmat.reshape(3,3).tolist(),
                 actual_support=sorted(t.monitor.bilateral(t.monitor.relay_v2.states[ident]['rod_geoms'],positive_force=True)),
                 state=result['payloads'][ident])
+        from .relay_observation_state import native_kinematic_state
         write_json(self.directory/'observation.json',dict(world_id=self.world_id,sim_time_s=t.time,
+            native_kinematic_state=native_kinematic_state(t),
             wall_elapsed_s=time.monotonic()-t.started,error=error,held=dict(t.held),
             active_jobs={a:r.job for a,r in t.arms.items() if r.job is not None},
             robots={a:r.observe() for a,r in t.arms.items()},payloads=payloads,goal=t.task['route'][-1],
@@ -141,8 +143,8 @@ class RelayLiveRecovery:
             elif op=='open':
                 state=t.monitor.relay_v2.states[payload]
                 supported=t.monitor.relay_v2.environment_contact(state['all_geoms'])
-                policy=getattr(ref,'user_goal_open_supported',None)
-                if not supported and policy is not None:supported=policy(t,payload)
+                from .relay_user_goal_policy import opening_supported
+                if not supported:supported=opening_supported(t,payload)
                 if not supported:raise ValueError('Opening recovery requires actual table or approved Goal support')
                 if any(t.held.get(a) not in (None,payload) for a in team):raise ValueError('Cannot open a hand labelled with different cargo')
                 t.execute('recovery-open-supported',{a:('gripper',dict(mode='move',width_m=.08,speed_m_s=.06)) for a in team})

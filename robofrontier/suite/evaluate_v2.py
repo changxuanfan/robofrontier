@@ -106,7 +106,7 @@ class Relay:
         center=np.asarray(region['center_m']);half=np.asarray(region.get('half_size_m',[.24,.65]))
         for gid in state['all_geoms']:
             rotation=mon.d.geom_xmat[gid].reshape(3,3);aabb=mon.m.geom_aabb[gid];p=mon.d.geom_xpos[gid]+rotation@aabb[:3];extent=abs(r.T@rotation)@aabb[3:];delta=r.T@(p-center)
-            if np.any(abs(delta[:2])+extent[:2]>half+.002):return False
+            if np.any(abs(delta[:2])+extent[:2]>half+mon.task.get('completion',{}).get('boundary_tolerance_m',.002)):return False
         return True
     def supported_payloads(self,goal_only=True,require_all=True,inside_ids=None):
         """Actual cargo contacts/structural components connected to tabletop.
@@ -136,7 +136,9 @@ class Relay:
         inside_flags={name:self.inside(state) for name,state in self.states.items()}
         stacking=bool(mon.task['completion'].get('support_via_goal_payload'))
         global_ground=self.supported_payloads(False,False) if stacking else set()
-        goal_ground=self.supported_payloads(True,True,{name for name,inside in inside_flags.items() if inside}) if stacking else set()
+        from .relay_contract import is_current
+        current_contract=is_current(mon.task)
+        goal_ground=self.supported_payloads(True,not current_contract,{name for name,inside in inside_flags.items() if inside}) if stacking else set()
         for ident,state in self.states.items():
             a=state['assembly'];support=mon.bilateral(state['rod_geoms'],positive_force=True);all_g=state['all_geoms'];external=self.environment_contact(all_g) or ident in global_ground;on_table=ident in goal_ground if stacking else external;inside=inside_flags[ident]
             clear=mon.bottom(all_g)>self.table+.002 and ident not in global_ground
@@ -152,7 +154,9 @@ class Relay:
                     elif original_support:
                         # Permission comes from the measured prior two-hand
                         # low pose, never from a commanded target or RPC flag.
-                        state['goal_release_ready']=mon.bottom(state['rod_geoms'])<=self.table+completion['max_timber_release_gap_m']
+                        geoms=all_g if current_contract else state['rod_geoms']
+                        limit=completion['max_release_gap_m'] if current_contract else completion['max_timber_release_gap_m']
+                        state['goal_release_ready']=mon.bottom(geoms)<=self.table+limit
                         state['goal_release_active']=False
                     elif state['goal_release_ready']:
                         state['goal_release_active']=True;state['goal_release_ready']=False
@@ -194,7 +198,7 @@ class Relay:
                     state['spill']=True;mon.violation('tray_weight_spilled',key=ident)
             moving_names=list(dict.fromkeys(a.get('beam_bodies',[ident])+[name for name in (a.get('weight_body'),a.get('tray_body')) if name]))
             velocities=[mon.velocity(mon.m.body(name).id) for name in moving_names]
-            stable=all(np.linalg.norm(v[3:])<.01 and np.linalg.norm(v[:3])<.1 for v in velocities)
+            stable=current_contract or all(np.linalg.norm(v[3:])<.01 and np.linalg.norm(v[:3])<.1 for v in velocities)
             handover_ok=not mon.task['completion'].get('required_airborne_handover',False) or any(set(item['receivers'])-set(item['senders']) for item in state['transitions'])
             done=state['landed'] and inside and on_table and mon.released(all_g) and stable and not state['dropped'] and not state['spill'] and handover_ok
             state['goal_since']=(t if state['goal_since'] is None else state['goal_since']) if done else None

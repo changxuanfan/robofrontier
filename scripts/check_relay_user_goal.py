@@ -13,7 +13,7 @@ from robofrontier.run_setup import write_json
 from robofrontier.suite.scenes import rz
 
 RULE='relay-user-final-in-goal-50mm-20261026'
-BOUNDARY_TOLERANCE_M=.050
+from robofrontier.suite.relay_contract import BOUNDARY_TOLERANCE_M
 
 def check_case(run):
     run=Path(run);t,o=diagnostic_world(run);relay=t.monitor.relay_v2

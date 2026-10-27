@@ -370,19 +370,15 @@
   "gripper_profile": "standard-panda",
   "coordinate_frame": "Workstation metres, +X east, +Y north, +Z up; radians; wxyz quaternions",
   "rules": [
-    "Move every numbered payload from its own initial route region rightward to the common destination. The 8/12/16-arm cases contain 2/3/4 independent payload assemblies. Regions indicate progress, not prescribed grasp points or fixed robot pairs.",
-    "Airborne transport needs at least two real beam grasps. Establish receiving support before sender release. Teams may change dynamically; the 16-arm half-ring contains 10 outer and 6 inner robots.",
-    "After pickup keep the whole transported assembly clear of table/floor until final landing. For L3 the free weight must remain in the tray. Rope and tray are passive; no stabilizing attachments or direct weight grasp.",
-    "Drops are recorded. The last established sending team may recover; a receiver cannot retrieve a dropped object to bypass a handover. No reset or respawn.",
-    "Only robot actuators and real contacts may affect the live task. No hand welds, object state writes, resets, hidden state tools or runtime physics edits.",
-    "Only START and GOAL are outlined; each is 0.80 m by 1.36 m. The GOAL outline is the actual final acceptance boundary, not decoration.",
-    "Numbered apparatuses still start at separate positions along the route. START marks the route origin; it does not require all apparatuses to start there or return there. Follow the sparse arrows toward GOAL.",
-    "Unpainted route reference anchors do not prescribe handover locations, grasp points, robot pairs or an execution order. Scheduling and independent concurrent work remain planner choices.",
-    "Curved and elbow apparatuses initially open forward along the local route (right on the straight table). The weight, closed eyes and any passive hinge move with the complete apparatus and retain their physical connections.",
-    "START lies entirely left of all robot mounts; GOAL lies entirely right of them. Existing scattered initial apparatus positions are retained; these markers do not relocate every apparatus to START.",
-    "Within GOAL, payload-to-payload contact is allowed. Any final placement inside the declared region is valid; nominal Oracle packing centers and contact-free cargo separation are not additional task requirements. Verify actual release, stability and all payloads remaining inside GOAL.",
-    "Each payload must undergo a real qualified airborne handover before the final team places and releases it inside GOAL.",
-    "Stable stacking inside GOAL is allowed. Real tabletop support may pass through other payloads entirely inside GOAL. Every complete assembly must remain inside GOAL, released by all robots and stable; floating or robot-held loads are not complete."
+    "Move all 2 numbered payload assemblies from their individual initial positions toward the common GOAL. START marks the route origin; returning scattered payloads to START is not required.",
+    "Route regions and arrows indicate progress. Grasp points, handover locations, robot teams, allocation and execution order are planner choices. Independent work may run concurrently.",
+    "Airborne transport requires at least two actual beam grasps. Establish receiving support before releasing a sender. Every assembly must undergo a real qualified airborne handover; the receiving team may retain an existing holder.",
+    "Grasp the red timber, not a pendant, ring or shaft. Keep the whole assembly clear of table and floor during airborne transport, except for the allowed final GOAL landing.",
+    "Any final placement in GOAL is allowed, including cargo contact and stacking. Oracle packing centers and contact-free separation are not task requirements.",
+    "The complete assembly must be within the GOAL outline with at most 50mm outward geometric tolerance on each boundary. Final completion requires actual release from every robot and actual table support, directly or through other accepted cargo. There is no additional velocity threshold or stationary-duration requirement.",
+    "Inside GOAL, original qualified holders may lower different parts onto the table separately. They may open before contact when the lowest assembly part is at most 30mm above the table. Opening alone is not completion: verify actual final landing, release and containment.",
+    "Drops and violations remain recorded. Only the last established sending team may recover a dropped assembly; a receiver cannot pick it up to bypass an airborne handover. No reset, respawn or history erasure.",
+    "Only ordinary robot actuators and real contacts may change the live task. No hand welds, object-state writes, hidden-state tools, runtime physics changes or stabilizing attachments."
   ],
   "objective": "Complete the declared assembly/transport task correctly and efficiently; allocation, local motion and collaboration are Agent choices.",
   "observation_contract": {
@@ -396,13 +392,19 @@
     ]
   },
   "completion": {
-    "stable_duration_sim_s": 1.0,
-    "scope": "Mechanism-specific commissioning required; no inherited v1 evaluator assumed",
+    "rule_revision": "relay-final-goal-50mm-v1",
+    "boundary_tolerance_m": 0.05,
+    "stable_duration_sim_s": 0.0,
+    "require_stationary": false,
     "allow_goal_payload_contact": true,
     "arbitrary_goal_placement": true,
-    "rule_revision": "relay-goal-contact-stack-20261026",
     "required_airborne_handover": true,
-    "support_via_goal_payload": true
+    "support_via_goal_payload": true,
+    "allow_goal_partial_support": true,
+    "allow_near_goal_release": true,
+    "max_release_gap_m": 0.03,
+    "release_height_reference": "lowest_assembly_part",
+    "scope": "All assemblies released, actually grounded and inside Goal tolerance; qualified airborne handover and process history retained"
   },
   "execution_readiness": "environment_preview_only",
   "oracle_verified": false,

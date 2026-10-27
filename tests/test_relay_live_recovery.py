@@ -76,7 +76,7 @@ class RelayLiveRecoveryTests(unittest.TestCase):
         self.t.execute=Mock();self.t.held={'G':'p','H':'p'}
         self.t.monitor.relay_v2.states['p']['all_geoms']={1}
         self.t.monitor.relay_v2.environment_contact=lambda _:False
-        with patch('robofrontier.suite.relay_live_recovery.ref.user_goal_open_supported',return_value=True,create=True),patch('robofrontier.suite.relay_live_recovery.ref.arm_payload_contact',return_value=True):
+        with patch('robofrontier.suite.relay_user_goal_policy.opening_supported',return_value=True),patch('robofrontier.suite.relay_live_recovery.ref.arm_payload_contact',return_value=True):
             result=self.recovery.process(dict(self.request,op='open'))
         self.assertEqual(result['status'],'completed')
         self.assertEqual(self.t.execute.call_args.args[1]['G'][1]['width_m'],.08)

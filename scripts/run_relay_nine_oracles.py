@@ -8,6 +8,7 @@ import argparse,hashlib,json,os,subprocess,sys,time
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
+from robofrontier.suite.relay_contract import CATALOG_RELATIVE,HARNESS_RELATIVE,check_inputs
 
 
 def full_task_passed(report,returncode):
@@ -37,23 +38,30 @@ def reusable_l1_records(base,cases,root=ROOT):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--output-root',type=Path,required=True)
+    p=argparse.ArgumentParser();p.add_argument('--output-root',type=Path)
+    p.add_argument('--catalog',type=Path,default=ROOT/CATALOG_RELATIVE)
+    p.add_argument('--harness',type=Path,default=ROOT/HARNESS_RELATIVE)
+    p.add_argument('--check-inputs',action='store_true',help='Validate the nine frozen inputs without starting an episode')
     p.add_argument('--workers',type=int,choices=range(1,10),default=2);p.add_argument('--cases',nargs='*')
     p.add_argument('--reuse-l1-from',type=Path,help='Retain verified L1 results only if current contracts are byte-identical')
     p.add_argument('--owner-start',action='store_true',help='Full canonical reviewed-control episodes; retain complete recordings')
     a=p.parse_args()
+    if a.check_inputs:
+        print(json.dumps(check_inputs(ROOT,a.catalog),indent=2));return 0
+    if a.output_root is None:p.error('--output-root is required to execute new Oracle tasks')
     from robofrontier.run_setup import write_json
     from robofrontier.motion_recording import freeze_source,MotionReader
     from robofrontier.suite.source_snapshot import freeze_executor
     if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip():raise RuntimeError('Commit the executor first')
     commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
-    cases=[c for c in json.loads((ROOT/'configs/suites/frontier-v2.json').read_text())['cases'] if c['family']=='relay' and (not a.cases or c['id'] in a.cases)]
+    check_inputs(ROOT,a.catalog)
+    cases=[c for c in json.loads(a.catalog.read_text())['cases'] if not a.cases or c['id'] in a.cases]
     if not cases or set(a.cases or [])-{c['id'] for c in cases}:raise ValueError('Unknown Relay case selection')
     order=['relay-a08-d1','relay-a08-d2','relay-a12-d1','relay-a16-d1','relay-a08-d3','relay-a12-d2','relay-a12-d3','relay-a16-d2','relay-a16-d3']
     cases.sort(key=lambda c:order.index(c['id']))
     retained=reusable_l1_records(a.reuse_l1_from,cases) if a.reuse_l1_from else []
     base=a.output_root.resolve();base.mkdir(parents=True,exist_ok=False);(base/'inputs').mkdir()
-    harness=ROOT/'runs/oracle/relay-key-units-20261025-213449/inputs/harness.json'
+    harness=a.harness.resolve()
     (base/'inputs/harness.json').write_bytes(harness.read_bytes())
     for case in cases:
         destination=base/'scenes'/case['id'];destination.parent.mkdir(exist_ok=True)

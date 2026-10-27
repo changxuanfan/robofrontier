@@ -4,6 +4,7 @@ from pathlib import Path
 import signal,subprocess,sys,time
 
 ROOT=Path(__file__).resolve().parents[1]
+from robofrontier.suite.relay_contract import HARNESS_RELATIVE,CATALOG_RELATIVE
 
 class CommissionComplete(Exception):pass
 
@@ -13,7 +14,9 @@ def total_stop_requested(elapsed,limit,explicit_stop=False):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--case',required=True);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--scene',type=Path);p.add_argument('--harness',type=Path);p.add_argument('--wall-s',type=float,default=0.,help='Optional explicit total limit;0(default) means no total deadline');p.add_argument('--frozen',action='store_true')
-    p.add_argument('--flexible',action='store_true');p.add_argument('--pipeline',action='store_true');p.add_argument('--commission-transfers',type=int,default=0)
+    p.add_argument('--flexible',action=argparse.BooleanOptionalAction,default=True)
+    p.add_argument('--pipeline',action=argparse.BooleanOptionalAction,default=True)
+    p.add_argument('--commission-transfers',type=int,default=0)
     p.add_argument('--owner-start',action='store_true',help='Full canonical episode with reviewed typed Oracle control from the initial state; no saved-state restart')
     a=p.parse_args();out=a.output.resolve()
     if not math.isfinite(a.wall_s) or a.wall_s<0:raise ValueError('Total wall limit is nonnegative;0 disables it')
@@ -26,9 +29,9 @@ def main():
         from robofrontier.suite.source_snapshot import freeze_executor
         if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip():raise RuntimeError('Commit the run source first')
         commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
-        case=next(c for c in cases() if c['family']=='relay' and c['id']==a.case)
+        case=next(c for c in json.loads((ROOT/CATALOG_RELATIVE).read_text())['cases'] if c['id']==a.case)
         scene=a.scene.resolve() if a.scene else directory(case)
-        harness=a.harness.resolve() if a.harness else ROOT/'runs/oracle/relay-key-units-20261025-213449/inputs/harness.json'
+        harness=a.harness.resolve() if a.harness else ROOT/HARNESS_RELATIVE
         parent=out.parent;parent.mkdir(parents=True,exist_ok=True);setup=parent/(out.name+'-source');setup.mkdir(exist_ok=False)
         (setup/'harness.json').write_bytes(harness.read_bytes());write_json(setup/'catalog.json',dict(cases=[case]))
         frozen=freeze_executor(ROOT,setup/'executor',setup/'harness.json',setup/'catalog.json')
@@ -36,8 +39,8 @@ def main():
         write_json(setup/'run.json',manifest)
         env=os.environ.copy();env.update(PYTHONPATH=str(frozen),ROBOFRONTIER_ORACLE_FROZEN_ROOT=str(frozen),OPENBLAS_NUM_THREADS='1',OMP_NUM_THREADS='1',MKL_NUM_THREADS='1')
         command=[sys.executable,str(frozen/'scripts/run_relay_live_oracle.py'),'--case',a.case,'--output',str(out),'--scene',str(scene),'--harness',str(frozen/'inputs/harness.json'),'--wall-s',str(a.wall_s),'--frozen','--commission-transfers',str(a.commission_transfers)]
-        if a.flexible:command.append('--flexible')
-        if a.pipeline:command.append('--pipeline')
+        command.append('--flexible' if a.flexible else '--no-flexible')
+        command.append('--pipeline' if a.pipeline else '--no-pipeline')
         if a.owner_start:command.append('--owner-start')
         os.execve(sys.executable,command,env)
     from robofrontier.suite.oracle import Trial,ReferenceStopped

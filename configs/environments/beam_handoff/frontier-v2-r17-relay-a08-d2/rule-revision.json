@@ -1,6 +1,6 @@
 {
   "user_authorized": true,
-  "rule_revision": "relay-goal-low-release-20261026",
+  "rule_revision": "relay-final-goal-50mm-v1",
   "source_directory": "configs/environments/beam_handoff/frontier-v2-r16-relay-a08-d2",
   "source_task_sha256": "35adaef63a6d3ee997f4580f73c6a83dddd7f1ded4e5662ffead193abe3e8f4d",
   "scene_sha256": "7412a55da139aa0c57278f1f1d6b68d0a9594ce407ad4c0b624aa0a9b766fdfa",
@@ -92,5 +92,5 @@
     "assets/robot/443bf6d178-link4_0.obj"
   ],
   "geometry_revision": 16,
-  "scope": "New canonical task contract only; original frozen scenes/episodes retained; L1 unchanged"
+  "scope": "Current Relay task contract; physical geometry unchanged; original episode inputs and historical rule definitions retained in their frozen sources."
 }

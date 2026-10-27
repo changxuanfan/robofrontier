@@ -1,5 +1,5 @@
-"""Scene-wide, two-window active-only replay; recorded FK, no physics stepping."""
-import argparse,json,math,subprocess,time
+"""Analyze recorded scene motion once; all backgrounds reuse the same cut mask."""
+import argparse,json,time
 from collections import OrderedDict
 from pathlib import Path
 import mujoco,numpy as np
@@ -98,27 +98,6 @@ def visual_audit(model,task,times,q,masks,groups,out):
     np.save(mask_path,keep);audit_path.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n');return keep,result
 
 
-def render(model,reader,task,times,q,indices,out,fps=16):
-    data=mujoco.MjData(model);font=ImageFont.truetype('/System/Library/Fonts/STHeiti Medium.ttc',22);dest=out/'global.mp4';encoder=subprocess.Popen(['ffmpeg','-hide_banner','-loglevel','error','-filter_threads','1','-filter_complex_threads','1','-f','rawvideo','-pix_fmt','rgb24','-s','1280x800','-r',str(fps),'-i','-','-an','-c:v','h264_videotoolbox','-threads','1','-b:v','5M','-allow_sw','0','-pix_fmt','yuv420p','-movflags','+faststart',str(dest)],stdin=subprocess.PIPE);events=iter(reader.events());event=next(events,None);registry=json.loads((reader.path/'source/workstation.json').read_text());geomids={g['id']:g['source_index'] for g in registry['geometries']};last=None
-    try:
-        with mujoco.Renderer(model,width=1280,height=800,max_geom=max(5000,model.ngeom+1000)) as renderer:
-            for number,index in enumerate(indices):
-                stamp=float(times[index])
-                while event is not None and event['sim_time_s']<=stamp+1e-9:
-                    if event['event']=='rgba':
-                        for name,color in event['geoms'].items():model.geom_rgba[geomids[name]]=color
-                    event=next(events,None)
-                data.qpos[:]=q[index];data.time=stamp;mujoco.mj_kinematics(model,data);mujoco.mj_comPos(model,data);mujoco.mj_camlight(model,data);renderer.update_scene(data,camera='global');configure_scene(renderer);im=Image.fromarray(renderer.render());d=ImageDraw.Draw(im);d.rectangle((10,10,1268,106),fill='#f3f5f7');d.text((22,16),f'{task["id"]} · 任务全程 · 去除静止等待版',font=font,fill='#1d3449');d.text((22,46),f'原记录 sim {stamp:.2f}s / {times[-1]:.2f}s | 动作名义4× | 0.25秒/2秒运动判定 + 画面复核',font=font,fill='#35516a');note='只保留实际动作；砝码单独摆动且机械臂无有效动作的等待删除'
-                if last is not None and stamp-last>.4:note=f'删除无有效动作等待：sim {last:.2f} → {stamp:.2f}s'
-                if number==len(indices)-1:note='最终原记录验收姿态；原物理进程与完整轨迹保持不动'
-                d.text((22,76),note,font=font,fill='#607284');encoder.stdin.write(im.tobytes());last=stamp
-                if number==0:im.save(out/'first.png')
-                if number==len(indices)-1:im.save(out/'last.png')
-                if (number+1)%1000==0:print(task['id'],'active-only render',number+1,'/',len(indices),'source',round(stamp,2),flush=True)
-    finally:encoder.stdin.close();code=encoder.wait()
-    assert code==0,'Encoding failed';decoded=subprocess.run(['ffmpeg','-v','error','-threads','1','-filter_threads','1','-i',str(dest),'-f','null','-'],capture_output=True,text=True);assert decoded.returncode==0,decoded.stderr;return dest
-
-
 def main():
     p=argparse.ArgumentParser();p.add_argument('run',type=Path);p.add_argument('--output',required=True,type=Path);p.add_argument('--analyse-only',action='store_true');a=p.parse_args();run=a.run.resolve();out=a.output.resolve();out.mkdir(parents=True,exist_ok=True);started=time.monotonic();reader,task,times,q,info=load_samples(run,out);model=mujoco.MjModel.from_xml_path(str(run/'scene.xml'));model.geom_rgba[:]=reader.meta['initial_rgba'];model.vis.quality.offsamples=0;layout,groups=layout_for(model,task);cfg=MotionThresholds();mask_file=out/'state-motion.npz'
     if mask_file.exists():
@@ -126,18 +105,13 @@ def main():
     else:masks=classify_motion(q,info['analysis_hz'],layout,cfg);np.savez_compressed(mask_file,**masks)
     state_summary=dict(case_id=task['id'],samples=len(times),source_duration_s=float(times[-1]-times[0]),state_motion_s=float(np.count_nonzero(masks['keep'])/info['analysis_hz']),weight_only_wait_s=float(np.count_nonzero(masks['weight_only'])/info['analysis_hz']),robot_motion_s=float(np.count_nonzero(masks['robot'])/info['analysis_hz']),primary_motion_s=float(np.count_nonzero(masks['primary'])/info['analysis_hz']),candidate_visual_regions=len(ranges(masks['visual_candidates'])),thresholds=cfg.manifest(),layout=layout);(out/'state-summary.json').write_text(json.dumps(state_summary,indent=2)+'\n');print(json.dumps({k:v for k,v in state_summary.items() if k not in ['thresholds','layout']}),flush=True)
     if a.analyse_only:return
-    keep,audit=visual_audit(model,task,times,q,masks,groups,out);segments=ranges(keep);indices={0,len(times)-1}
-    for lo,hi in segments:indices.update(range(lo,hi+1,5));indices.add(hi)
-    indices=np.array(sorted(indices),dtype=np.int64);assert np.all(keep[masks['robot']]) and np.all(keep[masks['primary']]) and np.all(keep[masks['pendant_relocation']]);index_path=out/'kept-sample-indices.npy';same_prior_plan=index_path.exists() and np.array_equal(np.load(index_path),indices);np.save(index_path,indices)
-    with (out/'frame-map.csv').open('w') as f:
-        f.write('video_frame,video_time_s,source_time_s,analysis_sample\n')
-        for n,i in enumerate(indices):f.write(f'{n},{n/16:.8f},{times[i]:.9f},{i}\n')
-    print(task['id'],'active-only frames',len(indices),'expected video seconds',len(indices)/16,flush=True);dest=out/'global.mp4'
-    if dest.exists():
-        assert same_prior_plan,'Existing video belongs to a different edit; use a new output folder'
-        probe=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_entries','stream=nb_frames','-of','json',str(dest)],text=True));assert int(probe['streams'][0]['nb_frames'])==len(indices)
-        decoded=subprocess.run(['ffmpeg','-v','error','-threads','1','-filter_threads','1','-i',str(dest),'-f','null','-'],capture_output=True,text=True);assert decoded.returncode==0,decoded.stderr
-    else:dest=render(model,reader,task,times,q,indices,out)
-    manifest=dict(**{k:v for k,v in info.items() if k!='scope'},input_recording_scope=info['scope'],video=str(dest),rule='scene-motion-two-windows-visual-weight-exception-v1',thresholds=cfg.manifest(),motion_analysis=state_summary,visual_audit={k:v for k,v in audit.items() if k!='records'},fps=16,nominal_action_speed=4,rendered_frames=len(indices),video_duration_s=len(indices)/16,retained_robot_motion_samples=int(np.count_nonzero(masks['robot'])),lost_robot_motion_samples=0,lost_primary_motion_samples=0,first_and_last_single_context_frames=True,raw_trajectories_and_physical_processes_unchanged=True,frame_map='frame-map.csv',decode_passed=True,wall_s=time.monotonic()-started,scope='Whole original task chronology with actual scene-wide motion retained. Remove all-scene waiting and pendant-only oscillation without effective arm/primary motion; retain primary slips/falls and large independent pendant relocation.0.25s/2s net changes/coherence plus actual RGB/segmentation audit; first/final single context frames retained. No simulation/integration or original video overwrite.')
-    (out/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n');print(json.dumps({k:manifest[k] for k in ['case_id','video','video_duration_s','rendered_frames','wall_s']},ensure_ascii=False),flush=True)
+    keep,audit=visual_audit(model,task,times,q,masks,groups,out)
+    assert np.all(keep[masks['robot']]) and np.all(keep[masks['primary']])
+    manifest=dict(**{k:v for k,v in info.items() if k!='scope'},input_recording_scope=info['scope'],rule='scene-motion-two-windows-visual-weight-exception-v1',
+        thresholds=cfg.manifest(),motion_analysis=state_summary,
+        visual_audit={k:v for k,v in audit.items() if k!='records'},
+        scope='Background-independent motion analysis only. Export edited tracks and 20x/30fps videos with scripts.export_relay_edited.',
+        physics_stepped=False,raw_trajectories_unchanged=True,wall_s=time.monotonic()-started)
+    (out/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+    print(task['id'],'motion analysis ready; no video encoded',flush=True)
 if __name__=='__main__':main()

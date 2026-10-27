@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from robofrontier.motion_edit import (
+from robofrontier.relay_motion_edit import (
     keep_intervals, select_source_rows, retained_timeline, video_rows,
 )
 

@@ -255,6 +255,9 @@ def donor_exit_routes(t,ident,selected,donors,opening_width=.075):
  No hand attachment, collision exemption, or live world state is introduced.
  """
  if not donors:return {}
+ from .relay_donor_staging import parked_donor_routes
+ parked=parked_donor_routes(t,ident,selected,donors,opening_width)
+ if parked is not None:return parked
  probe=copy(t);probe.live_preview=False;probe.data=mujoco.MjData(t.model);probe.data.qpos[:]=t.data.qpos
  probe.held={a:body for a,body in t.held.items() if a not in donors}
  finger_bodies={t.model.body(robot+'_'+s).id for robot in donors for s in ('left_finger','right_finger')}
@@ -592,6 +595,10 @@ def grounded_timber(t,ident):
 
 
 def final_support(t,ident,team):
+ from .relay_contract import is_current
+ if is_current(getattr(t,'task',{})):
+  from .relay_user_goal_policy import final_support as current_support
+  return current_support(t,ident,team)
  state=t.monitor.relay_v2.states[ident];relay=t.monitor.relay_v2
  # A pendant weight touching the table cannot certify that the timber no
  # longer depends on the open lower fingers. The user also accepts a short
@@ -614,6 +621,10 @@ def final_support(t,ident,team):
 
 def terminal_contact_names(t,ident,data=None):
  """Declared final cargo contact is a task permission, not a physics edit."""
+ from .relay_contract import is_current
+ if is_current(getattr(t,'task',{})):
+  from .relay_user_goal_policy import terminal_contact_names as current_contacts
+  return current_contacts(t,ident,data)
  if not goal_contact_allowed(t):return []
  monitor=copy(t.monitor);monitor.d=t.data if data is None else data
  relay=copy(t.monitor.relay_v2);relay.mon=monitor
@@ -865,6 +876,10 @@ def move_empty_robot(t,ident,robot,joint_rad):
  if arm.job is not None or arm.grasp_force is not None:raise ValueError('Empty movement requires resolved force-free execution')
  if not math.isfinite(width) or width<t.task['mechanism']['cross_section_m'][0]+.012:raise ValueError('Empty movement requires measured open jaws')
  if t.held.get(robot) not in (None,ident):raise ValueError('Different cargo label requires its own owner review')
+ from .relay_contract import is_current
+ if is_current(t.task) and arm_payload_contact(t,ident,robot):
+  from .relay_contact_escape import execute_open_contact_withdrawal
+  return execute_open_contact_withdrawal(t,ident,robot,joint_rad,goal_names=terminal_contact_names)
  if any(arm_payload_contact(t,name,robot) for name in t.monitor.relay_v2.states):raise ValueError('Robot still contacts cargo; review separation first')
  state=t.monitor.relay_v2.states[ident]
  def supported():
