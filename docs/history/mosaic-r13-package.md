@@ -1,8 +1,8 @@
-# Mosaic R13：最终任务规格与 GPT 审查包
+# 历史：Mosaic R13 审查包
 
-2026-10-27后续变更：用户已指定未来GPT使用只改初始供料颜色的R14；见
-`mosaic-r14-local-colours.md`与`configs/task_families/mosaic/selection.json`。
-本页和R13审查包保留为原Oracle/工厂回放的历史依据，不再作为未来GPT的版本选择。
+本页保存R13审查包形成时的说明。当前规格见[任务说明](../tasks/mosaic.md)，
+当前命令和共享待办见[合并交接](../plans/suite-v2/mosaic-merge-handoff.md)。
+下文旧命令属于历史流程，复查已交付包使用 `python -m scripts.mosaic check --purpose oracle`。
 
 Mosaic 九个完整 Oracle 已通过，合计1566格；原始场景、执行记录和成功证据保持
 不变。本任务包把公开静态规格、完成规则与操作说明整理出来，供合并后的 GPT
@@ -121,4 +121,4 @@ python -m scripts.audit_mosaic_motion_intervals \
 振荡样例验证。没有修改任何现有edit或视频，也没有宣称实测机械力为零。具体
 源区间、动作/进展保护、hash和标签位于独立工程报告，不进入公开任务包。
 
-公共整合接口及验收见同目录 `mosaic-shared-integration.md`。
+公共整合接口及验收见[合并交接](../plans/suite-v2/mosaic-merge-handoff.md)。

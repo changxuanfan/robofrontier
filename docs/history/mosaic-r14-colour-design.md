@@ -1,4 +1,7 @@
-# Mosaic R14：附近混色供料，原位置不变
+# 历史：Mosaic R14 供料颜色设计
+
+本页保存颜色设计与检查方法。当前规格见[任务说明](../tasks/mosaic.md)，
+当前命令和共享待办见[合并交接](../plans/suite-v2/mosaic-merge-handoff.md)。
 
 R14用于接下来的GPT任务；历史Oracle视频及未来工厂Oracle回放仍使用原R13。
 本次只改变初始方块的颜色和对应RGB，九个任务的方块位置、尺寸、机器人基座、
@@ -45,7 +48,7 @@ R14用于接下来的GPT任务；历史Oracle视频及未来工厂Oracle回放�
   套到R14颜色上冒充新版Oracle成功。
 
 selection是家族声明，当前共享运行器不会自动读取它。公共门禁、加载与封存仍按
-`mosaic-shared-integration.md`在合并阶段实施；不得退回通用默认R10，也不得因
+合并交接中列明的公共接线在合并阶段实施；不得退回通用默认R10，也不得因
 几何等价就写入R14 oracle_verified=true。新版本未启动Oracle或GPT。
 
 ## 生成和验证

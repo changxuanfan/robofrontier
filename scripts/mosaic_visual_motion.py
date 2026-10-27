@@ -79,3 +79,25 @@ def longest_still_seconds(active, fps=30):
     starts = np.flatnonzero(edges == -1)
     ends = np.flatnonzero(edges == 1)
     return float(max(ends - starts, default=0) / fps)
+
+
+def refine_timeline(data, keep, times):
+    """Compose visual selection with retained source windows without gaps."""
+    selected=[frame for frame,chosen in zip(data['render_frames'],keep) if chosen]
+    windows=data['keep_source_ranges'];pieces=[];j=0;stride=data['nominal_source_stride']
+    for frame in selected:
+        start=frame['source_frame']
+        while start>windows[j]['last_source_frame']:j+=1
+        if start<windows[j]['first_source_frame']:
+            raise ValueError('Selected state lies in a removed source gap')
+        end=min(start+stride-1,windows[j]['last_source_frame'])
+        if pieces and start<=pieces[-1][1]+1:pieces[-1][1]=max(pieces[-1][1],end)
+        else:pieces.append([start,end])
+    result=dict(data)
+    result.update(render_frames=[dict(frame,output_frame=i,output_time_s=i/data['fps']) for i,frame in enumerate(selected)],
+        output_frames=len(selected),output_duration_s=len(selected)/data['fps'],
+        keep_source_ranges=[dict(first_source_frame=a,last_source_frame=b,
+            source_start_s=float(times[a]),source_end_s=float(times[b])) for a,b in pieces],
+        visual_refinement=dict(overlay_excluded_px=80,analysis_width=640,analysis_height=360,channel_delta=20,changed_pixels=4),
+        range_semantics='Inclusive source windows at the new stride60 grid, intersected with the previous reviewed windows. Original deleted gaps are never bridged.')
+    return result

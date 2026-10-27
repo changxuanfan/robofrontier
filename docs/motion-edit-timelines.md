@@ -79,17 +79,22 @@ middle, and final selected states, plus both sides of the previously reported
 simple/factory comparison images around that cut. These checks do not claim
 that nine full factory videos have been exported.
 
-## Task default and 30× replacement
+## Current Mosaic delivery
 
 This task defaults to 30× playback and 30fps output, retaining the original 60Hz
 recording. `resample_timeline` samples exact original states at nominal stride60
 inside the previously reviewed windows. It never fills a removed wait. The
 simple replay renderer accepts `--edit-timeline` as well as the factory renderer.
-`replace_mosaic_videos_30x` stages all nine new source-rendered clips and timelines,
-checks residual visible waits, and publishes them together. Reviewed 60× clips
-are backed up, with their original timelines retained separately. Intermediate
+The nine current clips and exact timelines are already published and verified.
+Use `python -m scripts.mosaic check --purpose oracle` for their source package;
+the family entry defaults to the R14 GPT review package when no purpose is given.
+Reviewed 60× clips and their original timelines remain available. Intermediate
 poses come from the original data; frames are not duplicated or interpolated.
 
 A final presentation-only visual selection may remove invisible micro-jitter
 inside the retained windows. Its new source ranges are intersected with the
 old ranges, so resampling cannot bridge or reintroduce a previously deleted gap.
+
+Current task rules and purpose selection are in [Mosaic](tasks/mosaic.md).
+The [merge handoff](plans/suite-v2/mosaic-merge-handoff.md) specifies multi-table
+clocks, per-table speed, hold-final behavior and stopping after all tables finish.

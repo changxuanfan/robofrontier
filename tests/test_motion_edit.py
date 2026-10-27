@@ -77,7 +77,7 @@ class MotionEditTests(unittest.TestCase):
                          [0,60,120,180,480])
 
     def test_visual_refinement_never_bridges_previously_removed_source_gap(self):
-        from scripts.replace_mosaic_videos_30x import refine_timeline
+        from scripts.mosaic_visual_motion import refine_timeline
         self.reader.meta['frames'] = 481
         times = np.arange(481) / 60
         old = build_timeline(self.reader,times,[0,120,240,360,480],

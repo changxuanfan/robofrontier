@@ -1,4 +1,7 @@
-# Mosaic：GPT 就绪整理与多工位去等待回放计划
+# 历史：Mosaic GPT 就绪与多工位回放规划
+
+本页保留规划与实施过程。当前任务和用途选择见[任务说明](../tasks/mosaic.md)，
+当前命令、合并顺序及共享待办见[合并交接](../plans/suite-v2/mosaic-merge-handoff.md)。
 
 日期：2026-10-27（Asia/Hong_Kong）。本文件记录原始规划。
 

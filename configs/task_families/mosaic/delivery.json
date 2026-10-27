@@ -1,0 +1,33 @@
+{
+  "schema": "robofrontier.mosaic-delivery.v1",
+  "default_purpose": "gpt",
+  "purposes": {
+    "gpt": {
+      "scene_revision": 14,
+      "registry": "configs/task_families/mosaic/r14.json",
+      "package": "outputs/policy-packages/mosaic-r14-local-colours-20261027",
+      "design_evidence": "runs/engineering/mosaic-local-colours-r14-20261027"
+    },
+    "oracle": {
+      "scene_revision": 13,
+      "registry": "configs/task_families/mosaic/r13.json",
+      "package": "outputs/policy-packages/mosaic-r13-20261027",
+      "videos": "outputs/oracle/mosaic-continuation-20261026/videos",
+      "timelines": "outputs/oracle/mosaic-continuation-20261026/videos/轨迹剪辑时间表"
+    }
+  },
+  "protected_snapshot": {
+    "path": "runs/engineering/mosaic-merge-cleanup-20261027/protected-files.json",
+    "sha256": "2222b7812a029e680314e77e154b860a2b480e3b743e247cb99be4817c41b525"
+  },
+  "factory_playback": {
+    "integration_status": "contract_only_shared_player_pending",
+    "per_workstation_clock": true,
+    "end_policy": "hold_final",
+    "stop_when_all_finished": true,
+    "loop": false,
+    "fps": 30,
+    "mosaic_speedup": 30
+  },
+  "policy_launch_ready": false
+}

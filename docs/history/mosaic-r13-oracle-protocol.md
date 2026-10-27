@@ -1,10 +1,10 @@
-# Mosaic R13 Oracle worktree
+# Historical Mosaic R13 Oracle commissioning protocol
 
 Status (2026-10-27): the nine selected full Oracle cases and independent motion
 audits are complete. The pilot/budget instructions below describe the historical
 commissioning phase, not defaults for new GPT experiments. Use the Mosaic family
-review package in `docs/tasks/mosaic-r13.md`; shared launch/readiness integration
-is tracked separately and no policy run is activated by this document.
+delivery commands in `docs/tasks/mosaic.md`; shared integration is tracked in
+`docs/plans/suite-v2/mosaic-merge-handoff.md`. No policy run is activated here.
 
 This branch owns mosaic adapters, mosaic tests and mosaic run protocols. Shared
 controller/evaluator/recording changes require explicit review before merging;
