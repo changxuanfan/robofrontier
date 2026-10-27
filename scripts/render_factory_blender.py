@@ -21,6 +21,9 @@ import bmesh
 import numpy as np
 from mathutils import Matrix,Vector
 
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from factory_blender_materials import resolve as resolve_material, robot_role, task_role, ROBOT_BODY
+
 SCRIPT_SHA256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 
@@ -42,8 +45,20 @@ def main():
     parser.add_argument('--save-blend',action='store_true');parser.add_argument('--usd',action='store_true')
     parser.add_argument('--recorded-pose',type=Path,help='Derived recorded-state pose, matching this exact factory; no physics')
     parser.add_argument('--animation',type=Path,help='Common source-bound animation.json; 30fps independent station loops')
+    parser.add_argument('--frame-indices',nargs='+',type=int,help='Render selected source frames for matched-state quality benchmarks')
+    parser.add_argument('--encode',action=argparse.BooleanOptionalAction,default=True)
+    parser.add_argument('--keep-frames',action=argparse.BooleanOptionalAction,default=False,
+        help='Keep all animation PNGs; otherwise retain three stills after video verification')
+    parser.add_argument('--metalrt',choices=['AUTO','ON','OFF'],default='AUTO')
+    parser.add_argument('--noise-threshold',type=float,default=.1,help='Cycles adaptive threshold override; geometry and lighting stay fixed')
+    parser.add_argument('--min-samples',type=int,default=4,help='Minimum samples before adaptive stopping; zero uses the Cycles automatic value')
+    parser.add_argument('--png-compression',type=int,default=15)
     args=parser.parse_args(sys.argv[sys.argv.index('--')+1:]);started=time.monotonic()
     if min(args.samples,args.width,args.height,args.benchmark_frames)<=0:raise ValueError('Positive samples, resolution and repeats required')
+    if not 0<=args.png_compression<=100:raise ValueError('PNG compression must be in [0,100]')
+    if args.frame_indices is not None and not args.animation:raise ValueError('Frame selection requires an animation')
+    if args.noise_threshold is not None and not 0<args.noise_threshold<=1:raise ValueError('Noise threshold must be in (0,1]')
+    if args.min_samples is not None and not 0<=args.min_samples<=args.samples:raise ValueError('Minimum samples must be between zero and maximum samples')
     if (args.output/'report.json').exists():raise FileExistsError('Choose a new render output; existing reports and frames are preserved')
     gpu_samples=[];gpu_stop=threading.Event();gpu_hardware={}
     def monitor_gpu():
@@ -72,17 +87,21 @@ def main():
     scene.render.use_persistent_data=True
     scene.render.resolution_x=args.width;scene.render.resolution_y=args.height;scene.render.resolution_percentage=100
     scene.render.image_settings.file_format='PNG';scene.render.film_transparent=False
+    scene.render.image_settings.compression=args.png_compression
     scene.unit_settings.system='METRIC';scene.unit_settings.scale_length=1.
-    scene.view_settings.view_transform='AgX';scene.view_settings.look='AgX - Medium High Contrast';scene.view_settings.exposure=args.exposure
+    scene.view_settings.view_transform='AgX';scene.view_settings.look=lighting.get('look','AgX - Medium High Contrast');scene.view_settings.exposure=args.exposure
     scene.cycles.max_bounces=8;scene.cycles.diffuse_bounces=4;scene.cycles.glossy_bounces=4
     if args.profile=='fast':
         scene.cycles.max_bounces=3;scene.cycles.diffuse_bounces=2;scene.cycles.glossy_bounces=2
         scene.cycles.transmission_bounces=2;scene.cycles.volume_bounces=0
-        scene.cycles.adaptive_threshold=.15;scene.cycles.adaptive_min_samples=min(4,args.samples)
+        scene.cycles.adaptive_threshold=.1;scene.cycles.adaptive_min_samples=min(4,args.samples)
+    if args.noise_threshold is not None:scene.cycles.adaptive_threshold=args.noise_threshold
+    scene.cycles.use_adaptive_sampling=True
+    if args.min_samples is not None:scene.cycles.adaptive_min_samples=args.min_samples
     scene.eevee.taa_render_samples=args.samples
     scene.eevee.use_raytracing=args.raytracing;scene.eevee.use_fast_gi=True
-    scene.eevee.ray_tracing_options.resolution_scale='2'
-    scene.eevee.fast_gi_ray_count=2;scene.eevee.fast_gi_step_count=8
+    scene.eevee.ray_tracing_options.resolution_scale=str(lighting.get('eevee_ray_resolution',4))
+    scene.eevee.fast_gi_ray_count=lighting.get('eevee_gi_rays',2);scene.eevee.fast_gi_step_count=8
     scene.eevee.shadow_ray_count=1 if args.profile=='fast' else 2
     scene.eevee.shadow_step_count=4 if args.profile=='fast' else 8
     if args.denoise and args.engine=='eevee':
@@ -99,7 +118,7 @@ def main():
     prefs=bpy.context.preferences.addons['cycles'].preferences
     scene.cycles.denoising_use_gpu=True
     if args.device=='METAL':
-        prefs.compute_device_type='METAL';prefs.get_devices()
+        prefs.compute_device_type='METAL';prefs.metalrt=args.metalrt;prefs.get_devices()
         for device in prefs.devices:device.use=device.type=='METAL'
         if not any(d.use for d in prefs.devices):raise RuntimeError('Requested Metal GPU is unavailable')
         scene.cycles.device='GPU'
@@ -112,19 +131,23 @@ def main():
             if noncolor:im.colorspace_settings.name='Non-Color'
             images[key]=im
         return images[key]
-    materials={}
-    def make_material(spec):
+    materials={};material_audit=[]
+    def make_material(spec,role=None):
         spec=dict(spec,**lighting.get('material_overrides',{}).get(spec['name'],{}))
+        spec=resolve_material(spec,role,lighting.get('robot_materials',True))
+        if role:spec['name']+='__'+role
+        material_audit.append(dict(name=spec['name'],role=role,rgba=spec['rgba'],roughness=spec['roughness'],metallic=spec['metallic']))
         mat=bpy.data.materials.new(spec['name']);mat.use_nodes=True;nodes=mat.node_tree.nodes;links=mat.node_tree.links
         bsdf=nodes.get('Principled BSDF');bsdf.inputs['Base Color'].default_value=spec['rgba']
-        bsdf.inputs['Metallic'].default_value=spec['metallic'];bsdf.inputs['Roughness'].default_value=max(.22,spec['roughness'])
+        bsdf.inputs['Metallic'].default_value=spec['metallic'];bsdf.inputs['Roughness'].default_value=spec['roughness']
         bsdf.inputs['Specular IOR Level'].default_value=spec.get('specular',.25)
         bsdf.inputs['Alpha'].default_value=spec['rgba'][3]
         if spec.get('emission',0):
             bsdf.inputs['Emission Color'].default_value=spec['rgba']
             bsdf.inputs['Emission Strength'].default_value=spec['emission']*lighting.get('emission_scale',4.)
         if 'glass' in spec['name']:
-            bsdf.inputs['Transmission Weight'].default_value=.85;bsdf.inputs['Roughness'].default_value=.12
+            bsdf.inputs['Base Color'].default_value=(.92,.96,1.,1.)
+            bsdf.inputs['Transmission Weight'].default_value=1.;bsdf.inputs['Roughness'].default_value=.025
             bsdf.inputs['Alpha'].default_value=1.
             mat.use_raytrace_refraction=True
             if args.engine=='cycles':
@@ -139,24 +162,60 @@ def main():
                 mat.use_raytrace_refraction=False;mat.surface_render_method='BLENDED'
                 bsdf.inputs['Transmission Weight'].default_value=0.;bsdf.inputs['Alpha'].default_value=.10
         roles=spec.get('textures',{})
-        for role in ('mjTEXROLE_RGB','mjTEXROLE_RGBA','mjTEXROLE_ROUGHNESS','mjTEXROLE_NORMAL'):
-            tid=roles.get(role)
+        for texture_role in ('mjTEXROLE_RGB','mjTEXROLE_RGBA','mjTEXROLE_ROUGHNESS','mjTEXROLE_NORMAL'):
+            tid=roles.get(texture_role)
             if tid not in textures:continue
-            tex=nodes.new('ShaderNodeTexImage');tex.image=image(tid,role in ('mjTEXROLE_ROUGHNESS','mjTEXROLE_NORMAL'))
+            tex=nodes.new('ShaderNodeTexImage');tex.image=image(tid,texture_role in ('mjTEXROLE_ROUGHNESS','mjTEXROLE_NORMAL'))
             tex.extension='REPEAT';uv=nodes.new('ShaderNodeUVMap');mapping=nodes.new('ShaderNodeVectorMath');mapping.operation='MULTIPLY'
             mapping.inputs[1].default_value=(*spec['texrepeat'],1.)
             links.new(uv.outputs['UV'],mapping.inputs[0]);links.new(mapping.outputs['Vector'],tex.inputs['Vector'])
-            if role=='mjTEXROLE_NORMAL':
+            if texture_role=='mjTEXROLE_NORMAL':
                 normal=nodes.new('ShaderNodeNormalMap');normal.inputs['Strength'].default_value=.3
                 links.new(tex.outputs['Color'],normal.inputs['Color']);links.new(normal.outputs['Normal'],bsdf.inputs['Normal'])
-            elif role=='mjTEXROLE_ROUGHNESS':links.new(tex.outputs['Color'],bsdf.inputs['Roughness'])
+            elif texture_role=='mjTEXROLE_ROUGHNESS':
+                if spec['name']=='factory_floor' or spec['name'].startswith('factory_zone_floor_'):
+                    finish=nodes.new('ShaderNodeMapRange')
+                    finish.inputs['To Min'].default_value=.27;finish.inputs['To Max'].default_value=.47
+                    links.new(tex.outputs['Color'],finish.inputs['Value']);links.new(finish.outputs['Result'],bsdf.inputs['Roughness'])
+                else:links.new(tex.outputs['Color'],bsdf.inputs['Roughness'])
             else:
                 mix=nodes.new('ShaderNodeMixRGB');mix.blend_type='MULTIPLY';mix.inputs[0].default_value=1.;mix.inputs[2].default_value=spec['rgba']
-                links.new(tex.outputs['Color'],mix.inputs[1]);links.new(mix.outputs[0],bsdf.inputs['Base Color'])
+                color=tex.outputs['Color']
+                if lighting.get('normalize_paint_textures',False) and spec['name'] in ('factory_wall','factory_roof'):
+                    # These grayscale images describe paint/rib variation, not
+                    # a second dark paint layer over the chosen base albedo.
+                    normalization=nodes.new('ShaderNodeVectorMath');normalization.operation='SCALE'
+                    normalization.inputs['Scale'].default_value=1.8 if spec['name']=='factory_wall' else 1.45
+                    links.new(color,normalization.inputs[0]);color=normalization.outputs['Vector']
+                links.new(color,mix.inputs[1]);links.new(mix.outputs[0],bsdf.inputs['Base Color'])
+        if role=='painted_wood' or spec['name']=='factory_bench_wood':
+            # Fine sealed grain, in stable local UVs; no displacement or color
+            # changes to task loads and their printed markings.
+            uv=nodes.new('ShaderNodeUVMap');stretch=nodes.new('ShaderNodeVectorMath');stretch.operation='MULTIPLY'
+            stretch.inputs[1].default_value=(3.,65.,1.)
+            noise=nodes.new('ShaderNodeTexNoise');noise.inputs['Scale'].default_value=2.;noise.inputs['Detail'].default_value=2.
+            bump=nodes.new('ShaderNodeBump');bump.inputs['Strength'].default_value=.10;bump.inputs['Distance'].default_value=.00015
+            links.new(uv.outputs['UV'],stretch.inputs[0]);links.new(stretch.outputs[0],noise.inputs['Vector'])
+            links.new(noise.outputs['Fac'],bump.inputs['Height']);links.new(bump.outputs['Normal'],bsdf.inputs['Normal'])
         return mat
     for spec in metadata['materials']:materials[spec['id']]=make_material(spec)
-    fallback={}
+    fallback={};robot_materials={};task_materials={}
+    body_names={b['id']:b['name'] for b in metadata.get('bodies',[])}
+    robot_geoms={g['id'] for g in metadata['geoms'] if ROBOT_BODY.search(body_names.get(g.get('body_id'),''))}
+    source_materials={m['id']:m for m in metadata['materials']}
     def geom_material(g):
+        if g['id'] in robot_geoms and g['material']>=0:
+            mid=g['material']
+            if mid not in robot_materials:
+                spec=source_materials[mid];robot_materials[mid]=make_material(spec,robot_role(spec))
+            return robot_materials[mid]
+        role=task_role(g)
+        if role:
+            key=(g['material'],tuple(g['rgba']),role)
+            if key not in task_materials:
+                spec=source_materials[g['material']]if g['material']>=0 else dict(name='task_'+str(len(task_materials)),rgba=g['rgba'],roughness=-1.,metallic=-1.,texrepeat=[1,1])
+                task_materials[key]=make_material(spec,role)
+            return task_materials[key]
         if g['material']>=0:return materials[g['material']]
         color=tuple(g['rgba'])
         if color not in fallback:fallback[color]=make_material(dict(name='rgba_'+str(len(fallback)),rgba=color,roughness=.45,metallic=0.,texrepeat=[1,1]))
@@ -170,7 +229,7 @@ def main():
         key=(original['material'],tuple(rgba))
         if key not in appearance_materials:
             spec=dict(material_specs[original['material']],rgba=list(rgba))
-            appearance_materials[key]=make_material(spec)
+            appearance_materials[key]=make_material(spec,task_role(original))
         return appearance_materials[key]
     meshes={}
     flat_meshes={g['mesh']for g in metadata['geoms']if g['kind']==7 and
@@ -206,7 +265,7 @@ def main():
         sys.path.insert(0,str(Path(__file__).resolve().parent))
         from factory_blender_objects import build
         camera_positions=[f['camera']['position_m']for f in animation['frames']]if animation else [c['position_m']for c in metadata['cameras']if c['id']in args.views]
-        grouped=build(metadata,meshes,primitive,geom_material,scene,set(animation['appearance_geom_ids'])if animation else set(),args.instances,camera_positions,args.profile=='fast')
+        grouped=build(metadata,meshes,primitive,geom_material,scene,set(animation['appearance_geom_ids'])if animation else set(),args.instances,camera_positions,args.profile=='fast',lighting.get('robot_lod',{}))
         objects=grouped['objects'];max_position_error=grouped['position_error'];max_rotation_error=grouped['rotation_error']
     for g in ([] if grouped else metadata['geoms']):
         mesh=meshes[('mesh',g['mesh'])] if g['kind']==7 else primitive(g['kind'])
@@ -246,7 +305,7 @@ def main():
                 elif original['kind']==3:obj.scale=(size[0],)*3
             max_position_error=max(max_position_error,float(np.max(abs(np.asarray(obj.location)-position))))
             max_rotation_error=max(max_rotation_error,float(np.max(abs(np.asarray(obj.rotation_quaternion.to_matrix())-rotation))))
-            if not np.allclose(rgba,original['rgba'],rtol=0,atol=1e-7):
+        if not np.allclose(rgba,original['rgba'],rtol=0,atol=1e-7):
                 # Appearance events are per geometry, never a shared-material
                 # mutation that could change other workstations or digits.
                 spec=dict(original,material=-1,rgba=rgba.tolist())
@@ -258,17 +317,36 @@ def main():
     world=bpy.data.worlds.new('Factory ambient');scene.world=world;world.use_nodes=True
     world.node_tree.nodes['Background'].inputs[0].default_value=(*lighting.get('world_color',[.65,.72,.85]),1.)
     world.node_tree.nodes['Background'].inputs[1].default_value=lighting.get('world_strength',.25)
+    # Visible sky is independently exposed; changing its camera appearance must
+    # not silently flood the factory with additional indirect light.
+    nodes=world.node_tree.nodes;links=world.node_tree.links
+    sky=nodes.new('ShaderNodeBackground');sky.inputs[0].default_value=(.76,.86,1.,1.)
+    sky.inputs[1].default_value=lighting.get('visible_sky_strength',1.6)
+    rays=nodes.new('ShaderNodeLightPath');mix=nodes.new('ShaderNodeMixShader')
+    links.new(rays.outputs['Is Camera Ray'],mix.inputs[0]);links.new(nodes.get('Background').outputs[0],mix.inputs[1])
+    links.new(sky.outputs[0],mix.inputs[2]);links.new(mix.outputs[0],nodes.get('World Output').inputs['Surface'])
     building=metadata.get('building',dict(width_m=55.,depth_m=50.,eave_height_m=7.2))
-    for ix,x in enumerate(np.linspace(-building['width_m']/2+5,building['width_m']/2-5,7)):
+    bounced=lighting.get('ceiling_mode')=='bounced'
+    for ix,x in enumerate([] if bounced else np.linspace(-building['width_m']/2+5,building['width_m']/2-5,7)):
         for iy,y in enumerate(np.linspace(-building['depth_m']/2+4,building['depth_m']/2-4,6)):
             key=ix in (1,5) and iy in (1,4)
             lamp=bpy.data.lights.new('Ceiling softbox','AREA');lamp.energy=lighting.get('ceiling_key_w'if key else 'ceiling_fill_w',lighting.get('ceiling_energy_w',1800.));lamp.shape='RECTANGLE';lamp.size=lighting.get('fixture_size_m',4.);lamp.size_y=lighting.get('fixture_width_m',2.)
             if args.engine=='eevee' and args.profile=='fast':
-                lamp.use_shadow=key
+                lamp.use_shadow=lighting.get('eevee_all_shadows',False) or (ix+2*iy)%5==0
             # Emit below the lamp's lower face, not inside its opaque mesh.
             obj=bpy.data.objects.new(lamp.name,lamp);scene.collection.objects.link(obj);obj.location=(x,y,building['eave_height_m']-1.04)
+    if bounced:
+        # Approximate the overlapping, diffuse ceiling bounce as one broad
+        # source. Keep the authored fixture meshes; avoid 42 isolated pools and
+        # their repeated rough specular highlights on the epoxy floor.
+        lamp=bpy.data.lights.new('Diffuse ceiling bounce','AREA');lamp.shape='RECTANGLE'
+        lamp.size=building['width_m']-6;lamp.size_y=building['depth_m']-6
+        lamp.energy=lighting.get('ceiling_bounce_w',14000.);lamp.specular_factor=0.
+        lamp.color=(.94,.97,1.);obj=bpy.data.objects.new(lamp.name,lamp);scene.collection.objects.link(obj)
+        obj.location=(0,0,building['eave_height_m']-1.05)
     sun=bpy.data.lights.new('Daylight','SUN');sun.energy=lighting.get('sun_energy',1.5);sun.angle=math.radians(lighting.get('sun_angle_deg',1.4))
     obj=bpy.data.objects.new('Daylight',sun);scene.collection.objects.link(obj)
+    sun.color=lighting.get('sun_color',[1.,.94,.85])
     obj.rotation_euler=tuple(math.radians(x)for x in lighting.get('sun_rotation_deg',[25,-30,-15]))
     # Exterior daylight cards sit beyond the actual glazed side openings. They
     # provide a visible sky/treeline instead of black transmission in Eevee.
@@ -299,7 +377,7 @@ def main():
     for side,energy in [(-1,lighting.get('west_window_w',0)),(1,lighting.get('east_window_w',0))]:
         if not energy:continue
         lamp=bpy.data.lights.new('Window daylight','AREA');lamp.energy=energy;lamp.shape='RECTANGLE';lamp.size=42.;lamp.size_y=3.
-        lamp.color=(1.,.96,.89);lamp.use_shadow=lighting.get('window_shadows',True)
+        lamp.color=lighting.get('window_color',[1.,.96,.89]);lamp.use_shadow=lighting.get('window_shadows',True)
         obj=bpy.data.objects.new(lamp.name,lamp);scene.collection.objects.link(obj)
         obj.location=(side*26.9,0,3.2);obj.rotation_euler=(Vector((0,0,1.))-obj.location).to_track_quat('-Z','Y').to_euler()
     camera_data=bpy.data.cameras.new('Factory camera');camera=bpy.data.objects.new('Factory camera',camera_data);scene.collection.objects.link(camera);scene.camera=camera
@@ -326,7 +404,11 @@ def main():
         static_gi_bake_s=bake_s,
         compositor_gpu_denoise=args.denoise and args.engine=='eevee',
         compositor_denoise_quality=scene.render.compositor_denoise_final_quality,
-        lighting=lighting,raytracing=args.raytracing,
+        lighting=lighting,raytracing=args.raytracing,material_audit=material_audit,
+        acceleration=dict(metalrt=prefs.metalrt,persistent_data=scene.render.use_persistent_data,
+            adaptive_sampling=scene.cycles.use_adaptive_sampling,max_samples=scene.cycles.samples,min_samples=scene.cycles.adaptive_min_samples,
+            light_tree=scene.cycles.use_light_tree,noise_threshold=scene.cycles.adaptive_threshold,
+            png_compression=args.png_compression,enabled_devices=[dict(name=d.name,type=d.type)for d in prefs.devices if d.use]),
         glass_mode='blended-thin-pane'if args.engine=='eevee'else 'physical-transmission-with-thin-shadow',
         cycles_gpu_denoising=bool(args.engine=='cycles'and scene.cycles.use_denoising and scene.cycles.denoising_use_gpu),
         shadow_area_lights=sum(l.use_shadow for l in bpy.data.lights if l.type=='AREA'),
@@ -347,14 +429,26 @@ def main():
             camera_data.ortho_scale=source['orthographic_height_m']*args.width/args.height
         else:
             camera_data.type='PERSP';camera_data.sensor_fit='VERTICAL';camera_data.sensor_height=24.;camera_data.lens=12./math.tan(math.radians(source['vertical_fov_deg'])/2)
-        hidden=set(source.get('hidden_layers',[]));layers={'structure':0,'roof':1,'north':2,'south':3,'west':4,'east':5}
-        if hidden!=hidden_state:
+        hidden=set(source.get('hidden_layers',[]));camera_hidden=set(source.get('camera_hidden_layers',[]))
+        layers={'structure':0,'roof':1,'north':2,'south':3,'west':4,'east':5}
+        state=(frozenset(hidden),frozenset(camera_hidden))
+        if state!=hidden_state:
             visibility=grouped['visibility']if grouped else [(objects[g['id']],g['group'])for g in metadata['geoms']]
-            for obj,group in visibility:obj.hide_render=group in {layers[x] for x in hidden if x in layers}
-            for obj in exterior_objects:obj.hide_render=bool(hidden)
-            hidden_state=hidden
+            for obj,group in visibility:
+                obj.hide_render=group in {layers[x] for x in hidden if x in layers}
+                obj.visible_camera=group not in {layers[x] for x in camera_hidden if x in layers}
+                # Eevee does not implement Cycles camera-ray visibility. Its
+                # cutaway omits the roof; this approximation is reported.
+                if args.engine=='eevee' and group in {layers[x] for x in camera_hidden if x in layers}:obj.hide_render=True
+            for obj in exterior_objects:obj.hide_render=bool(hidden or camera_hidden)
+            hidden_state=state
+        offset=lighting.get('top_exposure_offset_ev',0.) if source.get('projection')=='orthographic' else 0.
+        if args.engine=='eevee' and source.get('projection')=='orthographic':offset=lighting.get('eevee_top_exposure_offset_ev',offset)
+        scene.view_settings.exposure=args.exposure+source.get('exposure_offset_ev',offset)
         scene.render.filepath=str(file);before=time.monotonic();bpy.ops.render.render(write_still=True)
         return dict(camera=source.get('id','tour'),file=scene.render.filepath,wall_s=time.monotonic()-before,
+            exposure_ev=scene.view_settings.exposure,hidden_layers=sorted(hidden),camera_hidden_layers=sorted(camera_hidden),
+            cutaway_mode=('camera-only' if args.engine=='cycles' else 'roof-omitted') if camera_hidden else 'none',
             started_s=before-started,ended_s=time.monotonic()-started,samples=args.samples,resolution=[args.width,args.height])
     if args.animation:
         if args.recorded_pose:raise ValueError('Select one animation or one recorded pose')
@@ -365,8 +459,12 @@ def main():
         trace=args.animation.parent/'frames.jsonl'
         if hashlib.sha256(trace.read_bytes()).hexdigest()!=animation['source_trace_sha256']:
             raise ValueError('Animation source trace differs')
+        selected=args.frame_indices if args.frame_indices is not None else list(range(len(animation['frames'])))
+        if not selected or any(i<0 or i>=len(animation['frames']) for i in selected) or selected!=sorted(set(selected)):
+            raise ValueError('Frame indices must be nonempty, unique, increasing and within the source clip')
         specs={g['id']:g for g in metadata['geoms']};last_rgba={};last_body=None
-        for index,frame in enumerate(animation['frames']):
+        for ordinal,index in enumerate(selected):
+            frame=animation['frames'][index]
             frame_started=time.monotonic()
             path=args.animation.parent/frame['file']
             if path.resolve().parent!=args.animation.parent.resolve() or hashlib.sha256(path.read_bytes()).hexdigest()!=frame['sha256']:
@@ -387,7 +485,7 @@ def main():
                                 obj.location=position;obj.rotation_quaternion=Matrix(rotation).to_quaternion()
                         last_body=(bp.copy(),br.copy())
                 mutable=np.isin(ids,animation.get('appearance_geom_ids',ids))if grouped else np.ones(len(ids),bool)
-                if grouped and index==0:
+                if grouped and ordinal==0:
                     frozen=np.asarray([specs[int(gid)]['rgba']for gid in ids[~mutable]],dtype=np.float32)
                 if grouped and not np.array_equal(colors[~mutable],frozen):raise ValueError('Appearance events missing from mutable geometry set')
                 for gid,position,rotation,rgba in zip(ids[mutable],positions[mutable],rotations[mutable],colors[mutable]):
@@ -401,30 +499,33 @@ def main():
                             obj.material_slots[slot].material=appearance_material(specs[gid],rgba)
                     last_rgba[gid]=color
                 if grouped and grouped.get('instances'):grouped['instances'].flush()
-                if grouped and grouped.get('instances') and index in (0,len(animation['frames'])//2,len(animation['frames'])-1):
+                if grouped and grouped.get('instances') and ordinal in (0,len(selected)//2,len(selected)-1):
                     override={int(gid):(p,r)for gid,p,r in zip(ids,positions,rotations)}
                     audit_metadata=dict(metadata,geoms=[dict(g,position=override[g['id']][0],rotation=override[g['id']][1])if g['id']in override else g for g in metadata['geoms']])
                     audit=grouped['instances'].audit(audit_metadata)
                     if audit['position_error']>1e-5 or audit['rotation_error']>1e-6:raise ValueError(('Animated instance FK differs',index,audit))
                     report.setdefault('animation_transform_audits',[]).append(dict(frame=index,**audit))
             update_s=time.monotonic()-frame_started
-            row=render_camera(frame['camera'],args.output/f'frame-{index:06d}.png')
-            row.update(update_s=update_s,frame_wall_s=time.monotonic()-frame_started)
+            row=render_camera(frame['camera'],args.output/f'frame-{ordinal:06d}.png')
+            row.update(source_frame=index,update_s=update_s,frame_wall_s=time.monotonic()-frame_started)
             report['views'].append(row)
             (args.output/'report.json').write_text(json.dumps(report,indent=2)+'\n')
-        count=len(animation['frames'])
+        count=len(selected)
         if not count:raise ValueError('Empty animation')
         encoding_started=time.monotonic()
-        subprocess.run(['ffmpeg','-v','error','-threads','0','-framerate','30','-i',str(args.output/'frame-%06d.png'),
+        if args.encode:
+          subprocess.run(['ffmpeg','-v','error','-threads','0','-framerate','30','-i',str(args.output/'frame-%06d.png'),
             '-frames:v',str(count),'-c:v','libx264','-threads','0','-pix_fmt','yuv420p','-crf','18','-movflags','+faststart',str(args.output/'factory.mp4')],check=True)
-        report['encoding_wall_s']=time.monotonic()-encoding_started
-        subprocess.run(['ffmpeg','-v','error','-threads','0','-i',str(args.output/'factory.mp4'),'-f','null','-'],check=True)
-        probe=subprocess.run(['ffprobe','-v','error','-count_frames','-select_streams','v:0','-show_entries',
+          report['encoding_wall_s']=time.monotonic()-encoding_started
+          subprocess.run(['ffmpeg','-v','error','-threads','0','-i',str(args.output/'factory.mp4'),'-f','null','-'],check=True)
+          probe=subprocess.run(['ffprobe','-v','error','-count_frames','-select_streams','v:0','-show_entries',
             'stream=nb_read_frames,avg_frame_rate,width,height','-of','json',str(args.output/'factory.mp4')],capture_output=True,text=True,check=True)
-        video=json.loads(probe.stdout)['streams'][0]
-        if int(video['nb_read_frames'])!=count or video['avg_frame_rate']!='30/1':raise ValueError('Encoded video count/cadence differs')
+          video=json.loads(probe.stdout)['streams'][0]
+          if int(video['nb_read_frames'])!=count or video['avg_frame_rate']!='30/1':raise ValueError('Encoded video count/cadence differs')
+        else:video=None;report['encoding_wall_s']=0.
         report['animation']=dict(frames=count,fps=30,stations=animation['stations'],loop=animation['loop'],
-            source_trace=str(trace.resolve()),full_decode_passed=True,video=video)
+            source_frame_indices=selected,source_trace=str(trace.resolve()),full_decode_passed=True if args.encode else None,video=video,
+            camera_motion=animation.get('camera_motion'))
     else:
       for name in args.views:
         source=next(c for c in metadata['cameras'] if c['id']==name)
@@ -451,8 +552,15 @@ def main():
     gpu_stop.set();report['gpu']=dict(hardware=gpu_hardware,samples=gpu_samples,
         scope='System-wide AGX utilization, including desktop and other applications; cores scheduled by Metal driver')
     report['provenance']=dict(renderer_sha256=SCRIPT_SHA256,
+        frame_storage_helper_sha256=hashlib.sha256((Path(__file__).parent/'factory_video_frames.py').read_bytes()).hexdigest(),
+        instance_helper_sha256=hashlib.sha256((Path(__file__).parent/'factory_blender_objects.py').read_bytes()).hexdigest(),
+        material_helper_sha256=hashlib.sha256((Path(__file__).parent/'factory_blender_materials.py').read_bytes()).hexdigest(),
         asset_metadata_sha256=hashlib.sha256((args.asset/'scene.json').read_bytes()).hexdigest(),
         animation_sha256=hashlib.sha256(args.animation.read_bytes()).hexdigest()if args.animation else None)
+    if args.animation and args.encode and not args.keep_frames:
+        from factory_video_frames import prune_frames
+        prune_frames(args.output,report)
+    else:report['frame_storage']=dict(status='all_retained')
     report['total_wall_s']=time.monotonic()-started;(args.output/'report.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps(report),flush=True)
 

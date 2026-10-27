@@ -17,6 +17,7 @@ from PIL import Image,ImageDraw,ImageFont
 from .robot_control import matrix_quat,quat_matrix
 from .workstation import Workstation
 from .run_setup import write_json
+from .factory_labels import place_label, region_title
 
 
 def vec(values):return ' '.join(repr(float(x)) for x in np.asarray(values).ravel())
@@ -114,17 +115,39 @@ def compose(shell,catalog_path,output,table_opening_scale=None,source_overrides=
     flag=option.find('flag')
     if flag is None:flag=ET.SubElement(option,'flag')
     flag.set('contact','disable')
-    assets=Assets(root.find('asset'),output);world=root.find('worldbody');mapping={}
+    assets=Assets(root.find('asset'),output);world=root.find('worldbody');mapping={};labels=[]
+    # Include carts, racks and other above-floor shell geometry, not just tables.
+    # Roof geometry is hidden for the inspection top view and is excluded here.
+    shell_model=mujoco.MjModel.from_xml_path(str(shell));shell_data=mujoco.MjData(shell_model)
+    mujoco.mj_kinematics(shell_model,shell_data)
+    occupied=[]
+    for gid in range(shell_model.ngeom):
+        if shell_model.geom_group[gid]==1:continue
+        box=shell_model.geom_aabb[gid];rot=shell_data.geom_xmat[gid].reshape(3,3)
+        center=shell_data.geom_xpos[gid]+rot@box[:3];half=abs(rot)@box[3:]
+        if shell_model.geom_type[gid]==mujoco.mjtGeom.mjGEOM_MESH and half[0]>3 and half[1]>3:
+            # A batched conduit mesh can surround the whole hall while leaving
+            # its interior empty. Its aggregate AABB is not solid occupancy.
+            mid=int(shell_model.geom_dataid[gid]);va=shell_model.mesh_vertadr[mid];vn=shell_model.mesh_vertnum[mid]
+            fa=shell_model.mesh_faceadr[mid];fn=shell_model.mesh_facenum[mid]
+            vertices=shell_model.mesh_vert[va:va+vn]@rot.T+shell_data.geom_xpos[gid]
+            triangles=vertices[shell_model.mesh_face[fa:fa+fn]]
+            for triangle in triangles:
+                if triangle[:,2].max()>.035:
+                    occupied.append([*triangle[:,:2].min(axis=0),*triangle[:,:2].max(axis=0)])
+            continue
+        if center[2]+half[2]>.035:
+            occupied.append([*(center[:2]-half[:2]),*(center[:2]+half[:2])])
+    occupied.extend(p['planning_bounds_xy_m']for p in plan)
+    del shell_model,shell_data
     def floor_label(name,text,position,half):
         image=Image.new('RGB',(1600,256),(216,220,216));draw=ImageDraw.Draw(image)
         font=ImageFont.truetype(str(root_dir/'assets/robo_factory/fonts/BarlowCondensed-SemiBold.ttf'),150)
         draw.text((800,128),text,font=font,anchor='mm',fill=(35,57,67))
         file=output/'workstation-assets'/(name+'.png');file.parent.mkdir(exist_ok=True);image.save(file)
         ET.SubElement(root.find('asset'),'texture',name=name,type='2d',file=str(file.relative_to(output)))
-        ET.SubElement(root.find('asset'),'material',name=name,texture=name,texuniform='false',specular='0')
+        ET.SubElement(root.find('asset'),'material',name=name,texture=name,texuniform='false',specular='0',roughness='.85')
         ET.SubElement(world,'geom',name=name,type='box',pos=vec(position),size=vec([*half,.0001]),material=name,contype='0',conaffinity='0',mass='0')
-    for region in shell_manifest['regions']:
-        x0,y0,x1,y1=region['bounds_xy_m'];floor_label('ws_region_'+region['id'],region['label'],[(x0+x1)/2,y1-.6,.0007],[3.6,.5])
     types={int(v):str(k)[7:].lower() for k,v in mujoco.mjtGeom.__members__.items()}
     # enum names are mjGEOM_BOX etc; conversion strips mjGEOM_.
     for place in plan:
@@ -156,11 +179,25 @@ def compose(shell,catalog_path,output,table_opening_scale=None,source_overrides=
                     if root.find("asset/material[@name='factory_bench_wood']") is not None:kwargs['material']='factory_bench_wood'
                 ET.SubElement(body,'geom',**kwargs);geommap[entry['id']]=kwargs['name']
         mapping[place['case_id']]=dict(body_names=bodymap,geom_names=geommap,source_scene_sha256=source.manifest['scene_sha256'])
-        lowx,lowy,highx,highy=place['planning_bounds_xy_m']
-        floor_label('ws_caption_'+place['case_id'],place['case_id'].upper(),[(lowx+highx)/2,lowy+.18,.0007],[min(1.4,(highx-lowx)/2-.10),.13])
+    # Area names stay centered on their upper edge. Furniture placement must
+    # reserve this space; never shift a title to work around a supply cart.
+    for region in shell_manifest['regions']:
+        position,half=region_title(region)
+        position,box=place_label([position],half,occupied)
+        floor_label('ws_region_'+region['id'],region['label'],position,half);occupied.append(box)
+        labels.append(dict(id='ws_region_'+region['id'],kind='region',text=region['label'],position_m=position,half_size_m=half,bounds_xy_m=box))
+    for place in plan:
+        lowx,lowy,highx,highy=place['planning_bounds_xy_m'];cx=(lowx+highx)/2
+        half=[min(1.4,(highx-lowx)/2-.10),.13]
+        candidates=[[cx+dx,lowy-dy,.004]for dy in (.45,.60,.80,1.)for dx in (0,-.35,.35)]
+        position,box=place_label(candidates,half,occupied)
+        name='ws_caption_'+place['case_id'];text=place['case_id'].upper()
+        floor_label(name,text,position,half);occupied.append(box)
+        labels.append(dict(id=name,kind='station',text=text,position_m=position,half_size_m=half,bounds_xy_m=box))
     ET.indent(root);scene=output/'scene.xml';ET.ElementTree(root).write(scene,encoding='unicode')
     manifest=deepcopy(shell_manifest);manifest.update(id=shell_manifest['id']+'-workstations',scope=f'{len(plan)} visual workstations; recorded-state playback only; zero task dynamics',
         scene_sha256=hashlib.sha256(scene.read_bytes()).hexdigest(),placements=plan,workstation_names=mapping,task_workstations=len(plan),source_catalog=str(Path(catalog_path).resolve()),table_opening_linear_scale=table_opening_scale,source_overrides={k:str(Path(v).resolve())for k,v in (source_overrides or {}).items()})
+    manifest['factory_labels']=dict(clearance_m=.10,scope='Conservative initial above-floor XY footprints and station planning bounds; roof excluded',labels=labels)
     manifest['workstation_assets']=[dict(path=str(p.relative_to(output)),sha256=hashlib.sha256(p.read_bytes()).hexdigest(),bytes=p.stat().st_size) for p in sorted((output/'workstation-assets').iterdir())]
     write_json(output/'manifest.json',manifest)
     return scene

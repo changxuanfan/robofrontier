@@ -225,6 +225,7 @@ class _Builder:
             'bench_wood': ((.55,.37,.22,1), .0, .48),
             'exit': ((.02, .42, .16, 1), .0, .65)
         }
+        colors['asphalt']=((.19,.21,.22,1),0.,.91)
         for name,rgba in self.cfg['appearance'].get('material_colors',{}).items():
             old=colors[name];colors[name]=(tuple(rgba),old[1],old[2])
         for name,roughness in self.cfg['appearance'].get('material_roughness',{}).items():
@@ -743,21 +744,35 @@ class _Builder:
                 name='underbench_'+place['case_id']+'_'+str(index)
                 b=self.body(name,position,category='workstation_storage')
                 # Furniture has real thickness, feet, pulls, seams and ventilation.
-                if index%3!=2:
+                variant=index%4
+                if variant in (0,1):
                     self.box(b,[0,0,.34],[.43,.25,.29],'cabinet',bevel=.014)
                     for x in (-.37,.37):
                         for y in (-.19,.19):self.cylinder(b,[x,y,.035],.025,.035,'black')
-                    for j,z in enumerate((.18,.36,.54)):
-                        self.box(b,[0,-.257,z],[.41,.009,.078],'cabinet_dark' if j==0 else 'cabinet',bevel=.006)
-                        self.line(b,[-.13,-.279,z+.025],[.13,-.279,z+.025],.009,'steel')
+                    if variant==0:
+                        for j,z in enumerate((.18,.36,.54)):
+                            self.box(b,[0,-.257,z],[.41,.009,.078],'cabinet_dark' if j==0 else 'cabinet',bevel=.006)
+                            self.line(b,[-.13,-.279,z+.025],[.13,-.279,z+.025],.009,'steel')
+                    else:
+                        # Electrical enclosure: one access door, hinges and filter.
+                        self.box(b,[0,-.260,.34],[.405,.014,.265],'cabinet',bevel=.007)
+                        self.line(b,[.29,-.286,.30],[.29,-.286,.42],.011,'steel')
+                        for z in (.17,.51):self.box(b,[-.38,-.28,z],[.018,.012,.035],'steel_light')
+                        for z in np.arange(.17,.36,.035):self.box(b,[-.15,-.279,z],[.13,.003,.004],'black')
                     for z in np.arange(.16,.52,.055):self.box(b,[.433,.03,z],[.0015,.15,.005],'black')
                 else:
                     for z in (.08,.37,.65):self.box(b,[0,0,z],[.45,.27,.018],'steel_light',bevel=.006)
                     for x in (-.43,.43):
                         for y in (-.25,.25):self.box(b,[x,y,.34],[.018,.018,.32],'steel')
                     for x in (-.22,.22):self.bin(b,[x,-.01,.11],w=.34,d=.43,h=.20)
-                    self.box(b,[.04,.03,.51],[.31,.20,.10],'cardboard',bevel=.008)
-                    self.box(b,[.04,.03,.612],[.025,.20,.001],'tape')
+                    if variant==2:
+                        self.box(b,[.04,.03,.51],[.31,.20,.10],'cardboard',bevel=.008)
+                        self.box(b,[.04,.03,.612],[.025,.20,.001],'tape')
+                    else:
+                        for j,z in enumerate((.44,.52,.60)):
+                            self.box(b,[0,0,z],[.37,.22,.032],'steel',bevel=.004)
+                            self.box(b,[.21,-.225,z],[.085,.004,.012],'label')
+                            self.cylinder(b,[-.31,-.228,z],.005,.003,'green',rotation=_rx(math.pi/2))
                 if self.cfg['appearance'].get('fine_service_detail',False):
                     self.box(b,[-.28,-.265,.59],[.10,.003,.024],'label')
                     for k in range(5):self.box(b,[-.35+k*.035,-.269,.59],[.009,.001,.010],'cabinet_dark')
@@ -838,12 +853,58 @@ class _Builder:
         for region in self.cfg['regions']:
             x0,y0,x1,y1=region['bounds_xy_m']
             occupied=[p['planning_bounds_xy_m'] for p in getattr(self,'dressing_plan',[]) if p['family']==region['id']]
+            from .factory_labels import region_title,bounds,overlaps
+            title,half=region_title(region);occupied.append(bounds(title,half))
             for i,(x,y) in enumerate(((x0+.8,(y0+y1)/2),(x1-.8,(y0+y1)/2),((x0+x1)/2,y0+.8),((x0+x1)/2,y1-.8))):
-                if any(x+.7>a and x-.7<c and y+.5>b and y-.5<d for a,b,c,d in occupied):continue
-                self.cart('supply_'+region['id']+'_'+str(i),[x,y,0],yaw=(i%2)*math.pi/2)
+                for dx in (0,-5.2,5.2,-6.5,6.5):
+                    px=x+dx
+                    if not x0+.7<px<x1-.7:continue
+                    box=bounds([px,y],[.7,.5])
+                    if any(overlaps(box,other,.10)for other in occupied):continue
+                    if any(overlaps(box,p['bounds_xy_m'],.10)for p in self.props):continue
+                    self.cart('supply_'+region['id']+'_'+str(i),[px,y,0],yaw=(i%2)*math.pi/2)
+                    occupied.append(box);break
 
         if self.cfg['appearance'].get('fine_service_detail',False):
             self.service_islands()
+            self.facility_connections()
+
+    def facility_connections(self):
+        """Flush aisle access covers and coherent wall utilities, outside cells."""
+        for i,(x,y) in enumerate(((0,-12),(0,12),(-12,0),(12,0))):
+            b=self.body('floor_access_'+str(i),[x,y,0],category='floor_services')
+            self.box(b,[0,0,.003],[.30,.24,.003],'steel')
+            self.box(b,[0,0,.007],[.277,.217,.001],'cabinet_dark')
+            for xx in (-.24,.24):
+                for yy in (-.18,.18):self.cylinder(b,[xx,yy,.009],.009,.001,'steel_light')
+        for side in (-1,1):
+            b=self.body('utility_backbone_'+str(side),[side*(self.width/2-.18),0,0],category='wall_services')
+            for z in (5.22,5.38):self.line(b,[0,-self.depth/2+1,z],[0,self.depth/2-1,z],.025,'steel_light')
+            for i,y in enumerate((-18.,-6.,6.,18.)):
+                self.line(b,[0,y,5.38],[0,y,1.8],.018,'steel_light')
+                self.box(b,[-side*.07,y,1.55],[.07,.22,.25],'cabinet',bevel=.012)
+                self.box(b,[-side*.146,y,1.56],[.006,.16,.18],'cabinet_dark')
+                for yy in (y-.08,y+.08):self.cylinder(b,[-side*.16,yy,1.57],.025,.009,'black',rotation=_rz(math.pi/2)@_rx(math.pi/2))
+
+    def exterior_yard(self):
+        """Small actual 3D service yard for cutaways; no task geometry lives here."""
+        if not self.cfg['appearance'].get('exterior_yard',False):return
+        W,D=self.width,self.depth
+        b=self.body('exterior_yard',category='exterior')
+        # Ring only: no duplicate coplanar surface below the indoor floor.
+        for side in (-1,1):
+            self.box(b,[side*(W/2+5),0,-.10],[5,D/2+10,.05],'asphalt')
+            self.box(b,[0,side*(D/2+5),-.10],[W/2,5,.05],'asphalt')
+            self.box(b,[side*(W/2+.65),0,-.045],[.55,D/2,.025],'concrete')
+            self.box(b,[0,side*(D/2+.65),-.045],[W/2,.55,.025],'concrete')
+            for y in (-18,-6,6,18):
+                self.box(b,[side*(W/2+5),y,-.046],[.055,1.8,.004],'yellow')
+            for x in (-12,12):
+                for dx in (-.55,.55):self.cylinder(b,[x+dx,side*(D/2+1.3),.37],.07,.42,'yellow')
+            for y in (-D/2-6,D/2+6):
+                for x in (-W/2-5,W/2+5):
+                    self.box(b,[x,y,.20],[.70,.70,.25],'concrete',bevel=.05)
+                    for j in range(5):self.cylinder(b,[x-.5+j*.25,y,.48],.20,.04,'green')
 
     def service_islands(self):
         """Small rolling inspection/rack stations in checked gaps between cells."""
@@ -882,14 +943,14 @@ class _Builder:
         for i,pos in enumerate(positions):
             ET.SubElement(self.world,'light',name=f'factory_ceiling_fill_{i}',type='point',pos=_vec(pos),intensity=str(cfg['ceiling_cluster_intensity']),diffuse='.94 .97 1',bulbradius='.8',castshadow='false')
 
-    def camera(self,name,position,target,fovy=55,hidden=(),orthographic=False,height=None):
+    def camera(self,name,position,target,fovy=55,hidden=(),orthographic=False,height=None,camera_hidden=()):
         z=np.asarray(position,float)-target;z/=np.linalg.norm(z);x=np.cross([0,0,1],z)
         if np.linalg.norm(x)<1e-8:x=np.array([1.,0,0])
         x/=np.linalg.norm(x);y=np.cross(z,x)
         attrs=dict(name='factory_camera_'+name,pos=_vec(position),xyaxes=_vec([*x,*y]),fovy=str(height if orthographic else fovy))
         if orthographic:attrs['projection']='orthographic'
         ET.SubElement(self.world,'camera',**attrs)
-        self.cameras.append(dict(id=name,model_camera=attrs['name'],position_m=list(position),target_m=list(target),vertical_fov_deg=None if orthographic else fovy,projection='orthographic' if orthographic else 'perspective',orthographic_height_m=height if orthographic else None,hidden_layers=list(hidden)))
+        self.cameras.append(dict(id=name,model_camera=attrs['name'],position_m=list(position),target_m=list(target),vertical_fov_deg=None if orthographic else fovy,projection='orthographic' if orthographic else 'perspective',orthographic_height_m=height if orthographic else None,hidden_layers=list(hidden),camera_hidden_layers=list(camera_hidden)))
 
     def views(self):
         W,D,H=self.width,self.depth,self.height
@@ -903,7 +964,9 @@ class _Builder:
         self.camera('detail_storage',[-W/2+5,-D/2+7.5,1.65],[-W/2+.6,-D/2+10.5,1.2],52)
         self.camera('detail_brand',[0,D/2-7,5.4],[0,D/2,5.9],65)
         self.camera('detail_ceiling',[0,-5,2.0],[4,7,H-.8],62)
-        self.camera('top',[0,0,H+25],[0,0,0],hidden=['roof','north','south','west','east'],orthographic=True,height=D+3)
+        self.camera('top',[0,0,H+25],[0,0,0],camera_hidden=['roof'],orthographic=True,height=D+2)
+        self.camera('aerial',[0,-50,42],[0,1,0],camera_hidden=['roof','south'],orthographic=True,height=36)
+        self.camera('aerial_exterior',[0,-34,37],[0,0,0],55,hidden=['roof'])
         for name,p,h in [('from_south',[0,-D*1.25,D*.80],['roof','south']),('from_north',[0,D*1.25,D*.80],['roof','north']),('from_east',[W*1.25,0,W*.80],['roof','east']),('from_west',[-W*1.25,0,W*.80],['roof','west'])]:
             self.camera(name,p,[0,0,1.3],43,hidden=h)
         self.camera('interactive',[0,-D/2+1.5,2.2],[0,D/4,2.7],68)
@@ -913,6 +976,7 @@ class _Builder:
         if self.cfg['appearance'].get('perimeter_detail',False):self.detail_equipment()
         self.workstation_dressing()
         self.service_equipment()
+        self.exterior_yard()
         self.lights();self.views()
         if self.cfg['appearance'].get('batch_static_geometry',False):self.static_batches()
         path=self.output/'scene.xml';ET.indent(self.root);ET.ElementTree(self.root).write(path,encoding='unicode')
