@@ -1,0 +1,102 @@
+"""One continuous committed Relay Oracle with a live, typed recovery boundary."""
+import argparse,hashlib,json,os,math
+from pathlib import Path
+import signal,subprocess,sys,time
+
+ROOT=Path(__file__).resolve().parents[1]
+from robofrontier.suite.relay_contract import HARNESS_RELATIVE,CATALOG_RELATIVE
+
+class CommissionComplete(Exception):pass
+
+def total_stop_requested(elapsed,limit,explicit_stop=False):
+    return bool(explicit_stop or (limit>0 and elapsed>limit))
+
+def main():
+    p=argparse.ArgumentParser();p.add_argument('--case',required=True);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--scene',type=Path);p.add_argument('--harness',type=Path);p.add_argument('--wall-s',type=float,default=0.,help='Optional explicit total limit;0(default) means no total deadline');p.add_argument('--frozen',action='store_true')
+    p.add_argument('--flexible',action=argparse.BooleanOptionalAction,default=True)
+    p.add_argument('--pipeline',action=argparse.BooleanOptionalAction,default=True)
+    p.add_argument('--commission-transfers',type=int,default=0)
+    p.add_argument('--owner-start',action='store_true',help='Full canonical episode with reviewed typed Oracle control from the initial state; no saved-state restart')
+    a=p.parse_args();out=a.output.resolve()
+    if not math.isfinite(a.wall_s) or a.wall_s<0:raise ValueError('Total wall limit is nonnegative;0 disables it')
+    if a.commission_transfers<0:raise ValueError('Commission transfer count must be nonnegative')
+    if a.pipeline and a.commission_transfers:raise ValueError('Pipeline and bounded single-payload commissioning are separate runs')
+    if a.owner_start and a.commission_transfers:raise ValueError('Owner-start is a full canonical episode, not commissioning')
+    from robofrontier.run_setup import write_json,load_harness
+    if not a.frozen:
+        from robofrontier.suite.v2 import cases,directory
+        from robofrontier.suite.source_snapshot import freeze_executor
+        if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip():raise RuntimeError('Commit the run source first')
+        commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+        case=next(c for c in json.loads((ROOT/CATALOG_RELATIVE).read_text())['cases'] if c['id']==a.case)
+        scene=a.scene.resolve() if a.scene else directory(case)
+        harness=a.harness.resolve() if a.harness else ROOT/HARNESS_RELATIVE
+        parent=out.parent;parent.mkdir(parents=True,exist_ok=True);setup=parent/(out.name+'-source');setup.mkdir(exist_ok=False)
+        (setup/'harness.json').write_bytes(harness.read_bytes());write_json(setup/'catalog.json',dict(cases=[case]))
+        frozen=freeze_executor(ROOT,setup/'executor',setup/'harness.json',setup/'catalog.json')
+        manifest=dict(git_commit=commit,worktree=str(ROOT),scene=str(scene),case_id=a.case,wall_budget_s=a.wall_s or None,initialization='Fresh canonical initial state; real actuators execute all prefixes again',runtime_recovery='Typed privileged assisted; no physical rollback/state injection',flexible_handover=a.flexible,commission_transfers=a.commission_transfers,pipeline=a.pipeline,owner_start=a.owner_start)
+        write_json(setup/'run.json',manifest)
+        env=os.environ.copy();env.update(PYTHONPATH=str(frozen),ROBOFRONTIER_ORACLE_FROZEN_ROOT=str(frozen),OPENBLAS_NUM_THREADS='1',OMP_NUM_THREADS='1',MKL_NUM_THREADS='1')
+        command=[sys.executable,str(frozen/'scripts/run_relay_live_oracle.py'),'--case',a.case,'--output',str(out),'--scene',str(scene),'--harness',str(frozen/'inputs/harness.json'),'--wall-s',str(a.wall_s),'--frozen','--commission-transfers',str(a.commission_transfers)]
+        command.append('--flexible' if a.flexible else '--no-flexible')
+        command.append('--pipeline' if a.pipeline else '--no-pipeline')
+        if a.owner_start:command.append('--owner-start')
+        os.execve(sys.executable,command,env)
+    from robofrontier.suite.oracle import Trial,ReferenceStopped
+    from robofrontier.suite import relay_oracle_v2 as ref
+    from robofrontier.suite.relay_live_recovery import RelayLiveRecovery
+    from robofrontier.suite import relay_pipeline
+    frozen=Path(os.environ['ROBOFRONTIER_ORACLE_FROZEN_ROOT']);snap=json.loads((frozen/'snapshot.json').read_text());sources={n:(frozen/n).read_bytes() for n in snap['files']}
+    assert all(hashlib.sha256(payload).hexdigest()==snap['files'][n] for n,payload in sources.items())
+    manifest=json.loads((frozen.parent/'run.json').read_text())
+    t=Trial(a.scene,out,controller_cfg=load_harness(a.harness),sources=sources,record_hz=60.)
+    relay_pipeline.install_motion_metrics(t)
+    t.live_preview=True;t.abort_on_process_violation=True
+    t.stop_requested=lambda:total_stop_requested(time.monotonic()-t.started,a.wall_s,(out/'STOP').exists() or (out.parent/'STOP').exists())
+    signal.signal(signal.SIGTERM,lambda *_:(_ for _ in ()).throw(ReferenceStopped('Explicit process stop')))
+    ref.STAGE_SEARCH_WALL_S=120.
+    report=dict(case_id=a.case,passed=False,commissioning_only=bool(a.commission_transfers),git_commit=manifest['git_commit'],source_worktree=manifest['worktree'],scope='Bounded physical handover commissioning; not full task success' if a.commission_transfers else 'One complete canonical episode, including any retained forward recovery history',execution_mode='pure_program',phases=[],handovers=[],handover_protocol='qualified-members-v2' if a.flexible else 'whole-pair-v1')
+    report['task_contract_sha256']=hashlib.sha256((a.scene/'task.json').read_bytes()).hexdigest()
+    report['task_rule_revision']=t.task.get('completion',{}).get('rule_revision')
+    report['total_wall_deadline_s']=a.wall_s or None
+    report['owner_control_from_canonical_start']=a.owner_start
+    recovery=RelayLiveRecovery(t,report)
+    def phase(name,ident,team):
+        row=dict(phase=name,payload=ident,team=list(team),simulation_time_s=t.time);report['phases'].append(row);t.event('relay_live_phase',detail=row)
+        t.snapshot(ident+'-'+name,('global','global_rear'))
+    def handover(ident,old,new,index):
+        row=dict(payload=ident,senders=old,receivers=new,retained=sorted(set(old)&set(new)),stage=index,sim_time_s=t.time)
+        report['handovers'].append(row);t.event('relay_handover_commission',detail=row)
+        if a.commission_transfers and len(report['handovers'])>=a.commission_transfers:raise CommissionComplete()
+    try:
+        t.wait(.6)
+        if a.owner_start:recovery.wait_for_repair()
+        while not t.monitor.result().get('task_success'):
+            t.check_stop()
+            pending=[ident for ident,s in t.monitor.result()['payloads'].items() if not s['completed']]
+            try:
+                if a.pipeline:relay_pipeline.solve(t,flexible=a.flexible,terminal_observer=phase,handover_observer=handover)
+                else:ref.solve(t,payload_ids=pending[:1] if a.commission_transfers else pending,terminal_observer=phase,allow_partial_handover=a.flexible,handover_observer=handover)
+            except CommissionComplete:
+                t.wait(.5);report['evaluation']=t.monitor.result();report['unresolved_robot_actions']=[r for r,v in t.arms.items() if v.job is not None]
+                report['unit_passed']=bool(not t.monitor.violations and not report['unresolved_robot_actions'] and any(row['retained'] for row in report['handovers']))
+                break
+            except Exception as error:
+                if t.monitor.violations:raise
+                outcome=recovery.wait_for_repair(error)
+                if outcome=='complete':break
+        t.wait(.5);report['evaluation']=t.monitor.result();report['unresolved_robot_actions']=[r for r,v in t.arms.items() if v.job is not None]
+        report['passed']=bool(report['evaluation']['task_success'] and not report['unresolved_robot_actions'])
+    except (Exception,KeyboardInterrupt) as error:
+        report.update(error=repr(error),evaluation=t.monitor.result(),unresolved_robot_actions=[r for r,v in t.arms.items() if v.job is not None])
+    finally:
+        report['payload_motion']=t.relay_motion_metrics
+        report['scheduling']='reviewed-owner-from-canonical-start' if a.owner_start else 'rolling-payload-frontier' if a.pipeline else 'sequential-payloads'
+        relay_pipeline.finalize_frontier(t)
+        t.close(report)
+        if recovery.assisted:
+            report.update(llm_used=True,execution_mode='privileged_assisted');write_json(out/'report.json',report)
+    return 0 if report['passed'] or report.get('unit_passed') else 1
+
+if __name__=='__main__':raise SystemExit(main())

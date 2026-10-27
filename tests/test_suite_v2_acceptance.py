@@ -29,7 +29,7 @@ class V2AcceptanceTests(unittest.TestCase):
   world,mon=self.setup_world('relay-a08-d3');mon.physical_step();result=mon.result()
   self.assertEqual(result['total_payloads'],2);self.assertEqual(result['completed_payloads'],0);self.assertFalse(result['task_success'])
  def test_flexible_handover_requires_overlap_and_tracks_drop_recovery(self):
-  world,mon=self.setup_world('relay-a08-d1');relay=mon.relay_v2;ident=next(iter(relay.states));relay.states={ident:relay.states[ident]}
+  world,mon=self.setup_world('relay-a08-d1');world.task['completion']['support_via_goal_payload']=False;relay=mon.relay_v2;ident=next(iter(relay.states));relay.states={ident:relay.states[ident]}
   support={'A','B'}
   with patch.object(mon,'bilateral',side_effect=lambda *a,**k:set(support)),patch.object(mon,'bottom',return_value=world.task['table_height_m']+.2),patch.object(relay,'inside',return_value=False),patch.object(relay,'environment_contact',return_value=False):
    world.data.time=.1;relay.sample();support.update(('C','D'));world.data.time=.2;relay.sample();world.data.time=.5;relay.sample();support={'C','D'};world.data.time=.6;relay.sample()

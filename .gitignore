@@ -18,6 +18,7 @@ vendor/
 # Large environment assets/previews are materialized per worktree.
 /configs/environments/**/assets/
 /configs/environments/**/preview-*.png
+/configs/environments/**/FROZEN
 
 # Also match setup symlinks in worktree checkouts.
 /.venv

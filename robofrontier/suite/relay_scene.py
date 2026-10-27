@@ -521,6 +521,9 @@ def build(case, replace_draft=False, render=True):
     source_model = mujoco.MjModel.from_xml_path(str(source/'scene.xml'))
     folder = clone(case, replace_draft, render=False,
         transform=lambda root, env: revise(root, env, v2.directory(case), source_model))
+    if case['level']==1 and case['scene_revision'] in (13,15):
+        from .relay_contract import write_task
+        write_task(folder)
     result = validate(folder, source)
     saved = json.loads((folder/'validation.json').read_text())
     saved.update(status='static_checks_passed', scope=result['scope'])

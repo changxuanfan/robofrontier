@@ -1,0 +1,34 @@
+{
+  "status": "static_checks_passed",
+  "oracle_verified": false,
+  "policy_verified": false,
+  "frozen_input": false,
+  "scene_revision": 16,
+  "physics_steps": 0,
+  "initial_support": [
+    {
+      "payload": "payload_01",
+      "beam_pitch_deg": 2.5317487271752146,
+      "weight_initial_tilt_deg": 95.46478069989237,
+      "timber_bottom_m": 0.8,
+      "fixed_eye_bottom_m": 0.8000000000000003,
+      "weight_bottom_m": 0.8
+    },
+    {
+      "payload": "payload_02",
+      "beam_pitch_deg": 2.5317487271752146,
+      "weight_initial_tilt_deg": 95.46478069989237,
+      "timber_bottom_m": 0.8,
+      "fixed_eye_bottom_m": 0.8000000000000003,
+      "weight_bottom_m": 0.8
+    }
+  ],
+  "initial_penetrations": [],
+  "ring_linking_numbers": {
+    "payload_01": 1.0006282509353015,
+    "payload_02": 1.000628250935304
+  },
+  "robot_mounts_preserved": true,
+  "independent_free_weights": true,
+  "scope": "New user-declared apparatus; unchanged robots/worktop/contact and acceptance parameters; not Oracle success"
+}

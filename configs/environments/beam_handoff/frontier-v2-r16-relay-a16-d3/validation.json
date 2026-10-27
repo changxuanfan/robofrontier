@@ -1,0 +1,52 @@
+{
+  "status": "static_checks_passed",
+  "oracle_verified": false,
+  "policy_verified": false,
+  "frozen_input": false,
+  "scene_revision": 16,
+  "physics_steps": 0,
+  "initial_support": [
+    {
+      "payload": "payload_01",
+      "beam_pitch_deg": 2.450773900080032,
+      "weight_initial_tilt_deg": 95.4643247809964,
+      "timber_bottom_m": 0.8,
+      "fixed_eye_bottom_m": 0.7999999999999999,
+      "weight_bottom_m": 0.7999999999999999
+    },
+    {
+      "payload": "payload_02",
+      "beam_pitch_deg": 2.450773900080032,
+      "weight_initial_tilt_deg": 95.46432478099644,
+      "timber_bottom_m": 0.8,
+      "fixed_eye_bottom_m": 0.7999999999999999,
+      "weight_bottom_m": 0.8
+    },
+    {
+      "payload": "payload_03",
+      "beam_pitch_deg": 2.450773900080032,
+      "weight_initial_tilt_deg": 95.4643247809964,
+      "timber_bottom_m": 0.8000000000000002,
+      "fixed_eye_bottom_m": 0.7999999999999999,
+      "weight_bottom_m": 0.7999999999999998
+    },
+    {
+      "payload": "payload_04",
+      "beam_pitch_deg": 2.450773900080032,
+      "weight_initial_tilt_deg": 95.46432478099644,
+      "timber_bottom_m": 0.8,
+      "fixed_eye_bottom_m": 0.7999999999999999,
+      "weight_bottom_m": 0.8
+    }
+  ],
+  "initial_penetrations": [],
+  "ring_linking_numbers": {
+    "payload_01": 1.0006282536582554,
+    "payload_02": 1.000628253658256,
+    "payload_03": 1.000628253658265,
+    "payload_04": 1.0006282536582407
+  },
+  "robot_mounts_preserved": true,
+  "independent_free_weights": true,
+  "scope": "New user-declared apparatus; unchanged robots/worktop/contact and acceptance parameters; not Oracle success"
+}

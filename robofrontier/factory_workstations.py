@@ -41,6 +41,7 @@ def placements(catalog,regions,root,aisle=1.2,source_overrides=None):
             low=np.minimum(np.min(corners,axis=0),bases.min(axis=0)-1.)
             high=np.maximum(np.max(corners,axis=0),bases.max(axis=0)+1.)
             entries.append(dict(case=case,low=low,high=high,size=high-low))
+        if not entries:continue
         scales=sorted({e['case'].get('dials',e['case']['arms']) for e in entries})
         def cell(row,col):
             level,scale=(col+1,scales[row]) if family=='transport' else (row+1,scales[col])
@@ -152,7 +153,7 @@ class FactoryPlayback:
         if hashlib.sha256(self.path.read_bytes()).hexdigest()!=self.manifest['scene_sha256']:raise ValueError('Factory scene checksum mismatch')
         self.model=model if model is not None else mujoco.MjModel.from_xml_path(str(self.path));self.data=data if data is not None else mujoco.MjData(self.model)
         if self.model.nv or self.model.nu:raise ValueError('Presentation must contain no task dynamics')
-        self.sources={};self.presentations={}
+        self.sources={};self.presentations={};self._recorded_maps={}
     def configure_workstation(self,case_id,source,table_opening_scale=.5,translation_m=None,yaw_rad=None):
         """Configure a visual-only instance; source recordings stay immutable.
 
@@ -187,6 +188,47 @@ class FactoryPlayback:
                     getattr(self.model,field)[dst]=getattr(source.model,field)[src]
         self.presentations[case_id]=dict(table=table,translation_m=shift.tolist(),yaw_rad=yaw)
         return self.presentations[case_id]
+    def apply_arrays(self,case_id,source,qpos,time_s,verify=False):
+        """Vectorized offline FK/placement, without building per-geom JSON.
+
+        Compiled maps are private to this frozen source/target pair. Joint angles
+        stay local; one common rigid transform moves bodies and the workstation.
+        """
+        entry=self.manifest['workstation_names'][case_id]
+        if source.manifest['scene_sha256']!=entry['source_scene_sha256']:
+            raise ValueError('Replay source revision differs from factory workstation')
+        key=(case_id,id(source.model))
+        if key not in self._recorded_maps:
+            place=next(p for p in self.manifest['placements'] if p['case_id']==case_id)
+            if place.get('scale',1)!=1:raise ValueError('Recorded hardware cannot be scaled')
+            yaw=place['yaw_rad'];c,s=np.cos(yaw),np.sin(yaw)
+            rotation=np.array([[c,-s,0],[s,c,0],[0,0,1.]])
+            pairs=[(source.model.body(name).id,int(self.model.body_mocapid[self.model.body(target).id])) for name,target in entry['body_names'].items()]
+            pairs=np.asarray([(a,b) for a,b in pairs if b>=0],dtype=int)
+            # Workstation IDs also cover unnamed imported robot geoms. They
+            # are registry identities (e.g. A_link0:geom0), not MuJoCo names.
+            registry={g['id']:g['source_index'] for g in source.manifest['geometries']}
+            geoms=np.asarray([(registry[name],self.model.geom(target).id) for name,target in entry['geom_names'].items()],dtype=int)
+            self._recorded_maps[key]=(rotation,np.asarray(place['translation_m']),pairs,geoms)
+        rotation,shift,pairs,geoms=self._recorded_maps[key]
+        qpos=np.asarray(qpos)
+        if qpos.shape!=(source.model.nq,) or not np.isfinite(qpos).all() or not np.isfinite(time_s):
+            raise ValueError('Invalid recorded state')
+        source.data.qpos[:]=qpos;source.data.time=time_s
+        mujoco.mj_kinematics(source.model,source.data);mujoco.mj_comPos(source.model,source.data);mujoco.mj_camlight(source.model,source.data)
+        self.data.mocap_pos[pairs[:,1]]=source.data.xpos[pairs[:,0]]@rotation.T+shift
+        # A shared world yaw is left-multiplied into each body's wxyz rotation.
+        yaw=np.arctan2(rotation[1,0],rotation[0,0]);c,s=np.cos(yaw/2),np.sin(yaw/2)
+        q=source.data.xquat[pairs[:,0]];w,x,y,z=q.T
+        self.data.mocap_quat[pairs[:,1]]=np.column_stack([c*w-s*z,c*x-s*y,c*y+s*x,c*z+s*w])
+        self.data.time=time_s;mujoco.mj_kinematics(self.model,self.data);mujoco.mj_camlight(self.model,self.data)
+        if verify:
+            expected=source.data.geom_xpos[geoms[:,0]]@rotation.T+shift
+            pe=float(np.max(np.linalg.norm(self.data.geom_xpos[geoms[:,1]]-expected,axis=1)))
+            expected_r=np.einsum('ij,njk->nik',rotation,source.data.geom_xmat[geoms[:,0]].reshape(-1,3,3))
+            re=float(np.max(abs(self.data.geom_xmat[geoms[:,1]].reshape(-1,3,3)-expected_r)))
+            if pe>1e-6 or re>1e-6:raise ValueError(('Factory rigid pose mismatch',pe,re))
+            return dict(position_error_m=pe,rotation_matrix_error=re)
     def apply(self,case_id,source,qpos,time_s):
         entry=self.manifest['workstation_names'][case_id]
         if source.manifest['scene_sha256']!=entry['source_scene_sha256']:raise ValueError('Replay source revision differs from factory workstation')

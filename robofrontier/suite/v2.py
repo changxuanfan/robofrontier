@@ -62,6 +62,7 @@ def cases():
                     c.update(source_scene_revision=10,scene_revision=13)
                 if family=='relay':
                     c.update(source_scene_revision=10,scene_revision=15 if n==12 else 13)
+                    if level>1:c.update(source_scene_revision=16,scene_revision=17)
                 c['directory']=str(directory(c).relative_to(ROOT));result.append(c)
     return result
 
@@ -538,8 +539,8 @@ def add_cable(root,parent,parent_p,parent_r,a,b,target_site,name,length=.20):
     return install(root,parent,parent_p,parent_r,slack_points(a,b,length,PROFILE['segments']),target_site,name)
 
 
-def curved_beam(root,body,name):
-    half_angle=math.pi/4;radius=1.2/(2*math.sin(half_angle));angles=np.linspace(-half_angle,half_angle,33);arc_length=radius*2*half_angle
+def curved_beam(root,body,name,chord_m=1.2,circular_angle_deg=90.):
+    half_angle=math.radians(circular_angle_deg)/2;radius=chord_m/(2*math.sin(half_angle));angles=np.linspace(-half_angle,half_angle,33);arc_length=radius*2*half_angle
     total=600*.045**2*arc_length
     vertices=[]
     for angle in angles:
@@ -557,15 +558,15 @@ def curved_beam(root,body,name):
         t=(a+b)/2;p=[radius*math.cos(t)-radius*math.cos(half_angle),radius*math.sin(t),0]
         box(body,name+'_part'+str(i),p,[.0225,(radius+.0225)*math.tan((b-a)/2),.0225],(.84,.10,.08,0),mass=total/32,
             quat=vector(matrix_quat(rz(t))),friction='1 .005 .0001',condim='4',group='3')
-    return dict(chord_m=1.2,circular_angle_deg=90,radius_m=radius,arc_length_m=arc_length,mass_kg=total,cross_section_m=[.045,.045],collision='32 tangent convex segments; smooth visual sweep; analytic arc mass distributed over segments')
+    return dict(chord_m=chord_m,circular_angle_deg=circular_angle_deg,radius_m=radius,arc_length_m=arc_length,mass_kg=total,cross_section_m=[.045,.045],collision='32 tangent convex segments; smooth visual sweep; analytic arc mass distributed over segments')
 
 
-def angled_beam(root,body,name):
+def angled_beam(root,body,name,chord_m=1.2,turn_angle_deg=45.):
     """Two straight, miter-joined segments preserving the former arc envelope."""
-    rise=.6*(math.sqrt(2)-1);half=.0225
-    direction=np.array([rise,.6]);direction/=np.linalg.norm(direction)
+    span=chord_m/2;rise=span*math.tan(math.radians(turn_angle_deg)/2);half=.0225
+    direction=np.array([rise,span]);direction/=np.linalg.norm(direction)
     normal=np.array([direction[1],-direction[0]])
-    end=np.array([0.,-.6]);joint_outer=np.array([rise+half/direction[1],0]);joint_inner=np.array([rise-half/direction[1],0])
+    end=np.array([0.,-span]);joint_outer=np.array([rise+half/direction[1],0]);joint_inner=np.array([rise-half/direction[1],0])
     lower=np.array([end+normal*half,end-normal*half,joint_inner,joint_outer]);mass=0.
     for i,points in enumerate((lower,lower*np.array([1.,-1.]))):
         signed=np.dot(points[:,0],np.roll(points[:,1],-1))-np.dot(points[:,1],np.roll(points[:,0],-1))
@@ -574,8 +575,8 @@ def angled_beam(root,body,name):
         ET.SubElement(body,'geom',name=mesh,type='mesh',mesh=mesh,rgba='.84 .10 .08 1',density='600',friction='1 .005 .0001',condim='4')
         area=abs(np.dot(points[:,0],np.roll(points[:,1],1))-np.dot(points[:,1],np.roll(points[:,0],1)))/2
         mass+=area*.045*600
-    return dict(kind='obtuse_elbow_three_cable_tray',chord_m=1.2,bend_rise_m=rise,interior_angle_deg=135,
-        centerline_length_m=2*math.hypot(rise,.6),mass_kg=mass,cross_section_m=[.045,.045],collision='Two solid miter-joined convex prisms, no arc or hidden joint')
+    return dict(kind='obtuse_elbow_three_cable_tray',chord_m=chord_m,bend_rise_m=rise,interior_angle_deg=180-turn_angle_deg,
+        centerline_length_m=2*math.hypot(rise,span),mass_kg=mass,cross_section_m=[.045,.045],collision='Two solid miter-joined convex prisms, no arc or hidden joint')
 
 
 def distribute_payloads(root,env,folder,centers,yaws,level):
@@ -833,7 +834,9 @@ def public_task(task):
     if task['family']=='transport':
         result['orders']=[{k:deepcopy(g[k]) for k in ('goal_id','robot','requires','target_cue') if k in g} for g in task['goals']]
     if task['family']=='dial':result['dials']=[{k:deepcopy(g[k]) for k in ('id','index','nominal_robots')} for g in task['dials']]
-    if task['family']=='relay':result['route_regions']=deepcopy(task['route'])
+    if task['family']=='relay':
+        result['route_regions']=deepcopy(task['route'])
+        result['completion']=deepcopy(task['completion'])
     return result
 
 
@@ -932,6 +935,12 @@ def manifest(model,data,case,folder,env):
 
 
 def build(case,replace_draft=False,render=True):
+    if case.get('scene_revision')==17 and case['family']=='relay':
+        from .relay_goal_release import build as release_build
+        return release_build(case,replace_draft,render)
+    if case.get('scene_revision')==16 and case['family']=='relay':
+        from .relay_underslung import build as underslung_build
+        return underslung_build(case,replace_draft,render)
     if case.get('scene_revision') in (11,12,13,14,15) and case['family']=='relay':
         from .relay_scene import build as relay_build
         return relay_build(case,replace_draft,render)

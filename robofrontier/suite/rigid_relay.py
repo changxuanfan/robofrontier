@@ -54,30 +54,30 @@ def ring(body, name, center, radius, plane):
     return mass
 
 
-def spring_hinge(root, beam, rise):
+def spring_hinge(root, beam, rise, prefix='payload'):
     # The pin sits above the beam centre so its housing/coil clears the table
     # in the neutral, tabletop-supported pose.
     pivot = np.array([rise, 0., .014])
-    upper = ET.SubElement(beam, 'body', name='payload_distal', pos=vector(pivot))
+    upper = ET.SubElement(beam, 'body', name=prefix+'_distal', pos=vector(pivot))
     limit = PROFILE['beam_hinge_limit_rad']
-    ET.SubElement(upper, 'joint', name='payload_flexion', type='hinge', axis='1 0 0',
+    ET.SubElement(upper, 'joint', name=prefix+'_flexion', type='hinge', axis='1 0 0',
                   stiffness=str(PROFILE['beam_hinge_stiffness_nm_rad']),
                   damping=str(PROFILE['beam_hinge_damping_nms_rad']),
                   springref='0', limited='true', range=vector([-limit, limit]))
-    segment = beam.find("geom[@name='payload_beam_segment1']")
+    segment = beam.find("geom[@name='"+prefix+"_beam_segment1']")
     if segment is None:
         raise ValueError('Expected two-segment elbow before adding the hinge')
     beam.remove(segment)
     segment.set('pos', vector(-pivot))
     upper.append(segment)
     # A visible pin housing and spring coil explain the actual passive joint.
-    cylinder(beam, 'payload_hinge_housing', pivot, [.030, .032], BRASS, mass=.08,
+    cylinder(beam, prefix+'_hinge_housing', pivot, [.030, .032], BRASS, mass=.08,
              quat=vector([math.sqrt(.5), 0, math.sqrt(.5), 0]))
     points = [pivot+np.array([-.026+.052*t/(6*math.pi),
                               .033*math.cos(t), .033*math.sin(t)])
               for t in np.linspace(0, 6*math.pi, 61)]
     for i, (a, b) in enumerate(zip(points, points[1:])):
-        g = capsule(beam, f'payload_hinge_coil_{i}', a, b, .0015, 0., METAL)
+        g = capsule(beam, f'{prefix}_hinge_coil_{i}', a, b, .0015, 0., METAL)
         g.set('contype', '0'); g.set('conaffinity', '0')
     return upper, pivot
 

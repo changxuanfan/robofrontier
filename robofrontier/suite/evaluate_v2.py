@@ -88,7 +88,16 @@ class Relay:
             beam_ids={monitor.m.body(n).id for n in item.get('beam_bodies',[ident])}
             rod=[g for g in all_geoms if monitor.m.geom_bodyid[g] in beam_ids
                  and ('_beam' in (monitor.m.geom(g).name or ''))]
-            self.states[ident]=dict(assembly=item,all_geoms=all_geoms,rod_geoms=rod,airborne=False,custody=set(),candidate=set(),overlap_since=None,qualified=set(),gap_since=None,dropped=False,drops=0,transitions=[],goal_since=None,landed=False,spill=False)
+            self.states[ident]=dict(assembly=item,all_geoms=all_geoms,rod_geoms=rod,airborne=False,custody=set(),candidate=set(),candidate_since={},overlap_since=None,qualified=set(),gap_since=None,dropped=False,drops=0,transitions=[],goal_since=None,landed=False,spill=False,goal_release_ready=False,goal_release_active=False)
+        self.payload_components={};self.geom_component={}
+        for ident,state in self.states.items():
+            names=[ident]+[state['assembly'][key] for key in ('weight_body','tray_body') if state['assembly'].get(key)]
+            self.payload_components[ident]=set()
+            for name in names:
+                geoms=monitor.descendant_geoms(monitor.m.body(name).id)
+                if not geoms:continue
+                self.payload_components[ident].add(name)
+                for gid in geoms:self.geom_component[gid]=name
     def environment_contact(self,geoms):
         mon=self.mon;own=set(geoms)
         return any(c.dist<=0 and any(int(a) in own and (mon.m.geom(int(b)).name or '').startswith(('table_','floor','pocket_')) for a,b in ((c.geom1,c.geom2),(c.geom2,c.geom1))) for c in mon.d.contact)
@@ -97,34 +106,88 @@ class Relay:
         center=np.asarray(region['center_m']);half=np.asarray(region.get('half_size_m',[.24,.65]))
         for gid in state['all_geoms']:
             rotation=mon.d.geom_xmat[gid].reshape(3,3);aabb=mon.m.geom_aabb[gid];p=mon.d.geom_xpos[gid]+rotation@aabb[:3];extent=abs(r.T@rotation)@aabb[3:];delta=r.T@(p-center)
-            if np.any(abs(delta[:2])+extent[:2]>half+.002):return False
+            if np.any(abs(delta[:2])+extent[:2]>half+mon.task.get('completion',{}).get('boundary_tolerance_m',.002)):return False
         return True
+    def supported_payloads(self,goal_only=True,require_all=True,inside_ids=None):
+        """Actual cargo contacts/structural components connected to tabletop.
+
+        Robot contacts never ground a component. Independent free weights
+        require their own contact path; grouping an assembly does not weld it.
+        """
+        eligible=set(self.states)
+        if goal_only:
+            eligible&=set(inside_ids) if inside_ids is not None else {name for name,state in self.states.items() if self.inside(state)}
+        components={part for name in eligible for part in self.payload_components[name]}
+        edges={part:set() for part in components};ground=set();mon=self.mon
+        for contact in mon.d.contact:
+            if contact.dist>0:continue
+            a,b=map(int,contact.geom);left=self.geom_component.get(a);right=self.geom_component.get(b)
+            if left in components and right in components and left!=right:
+                edges[left].add(right);edges[right].add(left)
+            for part,other in ((left,b),(right,a)):
+                if part in components and (mon.m.geom(other).name or '').startswith('table_') and contact.pos[2]>=self.table-.01:ground.add(part)
+        pending=list(ground)
+        while pending:
+            part=pending.pop()
+            for neighbor in edges[part]-ground:ground.add(neighbor);pending.append(neighbor)
+        return {name for name in eligible if (self.payload_components[name]<=ground if require_all else bool(self.payload_components[name]&ground))}
     def sample(self):
         mon=self.mon;t=float(mon.d.time);completed=0;reports={}
+        inside_flags={name:self.inside(state) for name,state in self.states.items()}
+        stacking=bool(mon.task['completion'].get('support_via_goal_payload'))
+        global_ground=self.supported_payloads(False,False) if stacking else set()
+        from .relay_contract import is_current
+        current_contract=is_current(mon.task)
+        goal_ground=self.supported_payloads(True,not current_contract,{name for name,inside in inside_flags.items() if inside}) if stacking else set()
         for ident,state in self.states.items():
-            a=state['assembly'];support=mon.bilateral(state['rod_geoms'],positive_force=True);all_g=state['all_geoms'];on_table=self.environment_contact(all_g);inside=self.inside(state)
-            clear=mon.bottom(all_g)>self.table+.002
+            a=state['assembly'];support=mon.bilateral(state['rod_geoms'],positive_force=True);all_g=state['all_geoms'];external=self.environment_contact(all_g) or ident in global_ground;on_table=ident in goal_ground if stacking else external;inside=inside_flags[ident]
+            clear=mon.bottom(all_g)>self.table+.002 and ident not in global_ground
             if not state['airborne'] and mon.bottom(state['rod_geoms'])>self.table+.025:
                 if len(support)<2:mon.violation('unsupported_initial_lift',key=ident)
                 elif clear:state.update(airborne=True,custody=set(support))
             if state['airborne']:
+                completion=mon.task['completion'];original_support=len(support&state['custody'])>=2
+                near_release=bool(completion.get('allow_near_goal_release'))
+                if near_release:
+                    if not inside:
+                        state['goal_release_ready']=state['goal_release_active']=False
+                    elif original_support:
+                        # Permission comes from the measured prior two-hand
+                        # low pose, never from a commanded target or RPC flag.
+                        geoms=all_g if current_contract else state['rod_geoms']
+                        limit=completion['max_release_gap_m'] if current_contract else completion['max_timber_release_gap_m']
+                        state['goal_release_ready']=mon.bottom(geoms)<=self.table+limit
+                        state['goal_release_active']=False
+                    elif state['goal_release_ready']:
+                        state['goal_release_active']=True;state['goal_release_ready']=False
+                allowed_release=near_release and inside and state['goal_release_active']
                 if len(support)<2 and not state['landed']:
                     if state['gap_since'] is None:state['gap_since']=t
                 else:state['gap_since']=None
                 if not state['dropped']:
                     fresh=support-state['custody']
-                    if len(fresh)>=2 and support&state['custody']:
-                        if fresh!=state['candidate']:state['candidate']=fresh;state['overlap_since']=t
-                        if t-state['overlap_since']>=.20:state['qualified']|=fresh
-                    elif not state['qualified']:state['candidate']=set();state['overlap_since']=None
-                    if not(support&state['custody']) and len(support)>=2:
-                        if len(support&state['qualified'])>=2:
-                            state['transitions'].append(dict(sim_time_s=t,senders=sorted(state['custody']),receivers=sorted(support)))
-                            state['custody']=set(support);state['qualified']=set();state['candidate']=set();state['overlap_since']=None
+                    # Qualify each arriving hand while the established team
+                    # still supplies at least two supports. A contact loss
+                    # invalidates that receiver's earlier overlap evidence.
+                    state['qualified'].intersection_update(fresh)
+                    state['candidate_since']={a:s for a,s in state['candidate_since'].items() if a in fresh}
+                    if len(support&state['custody'])>=2:
+                        for robot in fresh:
+                            since=state['candidate_since'].setdefault(robot,t)
+                            if t-since>=.20-1e-9:state['qualified'].add(robot)
+                    state['candidate']=set(fresh)
+                    state['overlap_since']=min(state['candidate_since'].values(),default=None)
+                    if not state['custody']<=support and len(support)>=2:
+                        if fresh<=state['qualified']:
+                            old=set(state['custody'])
+                            state['transitions'].append(dict(sim_time_s=t,senders=sorted(old),receivers=sorted(support),
+                                retained=sorted(old&support),released=sorted(old-support),joined=sorted(fresh),protocol='qualified-members-v2'))
+                            state['custody']=set(support);state['qualified']=set();state['candidate']=set();state['candidate_since']={};state['overlap_since']=None
                         else:mon.violation('unverified_handover',key=ident)
-                if on_table and inside and len(support&state['custody'])>=2:state['landed']=True
-                bad_contact=on_table and not(state['landed'] and inside)
-                gap=state['gap_since'] is not None and t-state['gap_since']>.20
+                if on_table and inside and (original_support or (allowed_release and mon.released(all_g))):state['landed']=True
+                goal_contact=bool(completion.get('allow_goal_partial_support')) and inside and (original_support or allowed_release)
+                bad_contact=external and not((state['landed'] and inside) or goal_contact)
+                gap=state['gap_since'] is not None and t-state['gap_since']>.20 and not allowed_release
                 if (bad_contact or gap) and not state['dropped']:state['dropped']=True;state['drops']+=1
                 if state['dropped']:
                     if support-state['custody']:mon.violation('receiver_recovered_drop',key=ident)
@@ -133,11 +196,13 @@ class Relay:
                 tray=mon.d.body(a['tray_body']);weight=mon.d.body(a['weight_body']);delta=tray.xmat.reshape(3,3).T@(weight.xpos-tray.xpos);spec=mon.task['mechanism']['tray']
                 if np.linalg.norm(delta[:2])>(spec['outer_diameter_m']-spec['weight_diameter_m'])/2+.002 or delta[2]<spec['weight_height_m']/2-.005 or delta[2]>.075:
                     state['spill']=True;mon.violation('tray_weight_spilled',key=ident)
-            velocities=[mon.velocity(mon.m.body(name).id) for name in (ident,a.get('weight_body'),a.get('tray_body')) if name]
-            stable=all(np.linalg.norm(v[3:])<.01 and np.linalg.norm(v[:3])<.1 for v in velocities)
-            done=state['landed'] and inside and on_table and mon.released(all_g) and stable and not state['dropped'] and not state['spill']
+            moving_names=list(dict.fromkeys(a.get('beam_bodies',[ident])+[name for name in (a.get('weight_body'),a.get('tray_body')) if name]))
+            velocities=[mon.velocity(mon.m.body(name).id) for name in moving_names]
+            stable=current_contract or all(np.linalg.norm(v[3:])<.01 and np.linalg.norm(v[:3])<.1 for v in velocities)
+            handover_ok=not mon.task['completion'].get('required_airborne_handover',False) or any(set(item['receivers'])-set(item['senders']) for item in state['transitions'])
+            done=state['landed'] and inside and on_table and mon.released(all_g) and stable and not state['dropped'] and not state['spill'] and handover_ok
             state['goal_since']=(t if state['goal_since'] is None else state['goal_since']) if done else None
             qualified=state['goal_since'] is not None and t-state['goal_since']>=mon.task['completion']['stable_duration_sim_s']
-            completed+=int(qualified);reports[ident]=dict(completed=qualified,airborne=state['airborne'],drops=state['drops'],custody=sorted(state['custody']),support=sorted(support),handovers=state['transitions'],spill=state['spill'])
+            completed+=int(qualified);reports[ident]=dict(completed=qualified,airborne=state['airborne'],drops=state['drops'],custody=sorted(state['custody']),support=sorted(support),goal_table_support=on_table,handovers=state['transitions'],spill=state['spill'])
         complete=completed==len(self.states)
         mon.result_cache=dict(all_goals_met=complete,task_success=complete and not mon.violations,completed_payloads=completed,total_payloads=len(self.states),payloads=reports,drops=sum(s['drops'] for s in self.states.values()))

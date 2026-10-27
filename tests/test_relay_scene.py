@@ -1,4 +1,4 @@
-"""Static scene acceptance: visible boundaries and intact independent assemblies."""
+"""Historical r13/r15 layout acceptance; r16 mechanics have separate tests."""
 import hashlib
 import json
 from pathlib import Path
@@ -9,9 +9,14 @@ import xml.etree.ElementTree as ET
 import mujoco
 import numpy as np
 
-from robofrontier.suite.v2 import ROOT, cases, directory, rz
+from robofrontier.suite.v2 import ROOT, cases as current_cases, directory, rz
 from robofrontier.suite.relay_scene import validate, subtract_convex, merge_convex_pieces, polygon_area
 from robofrontier.workstation import Workstation
+
+
+def cases():
+    return [dict(c,scene_revision=15 if c['arms']==12 else 13,source_scene_revision=10)
+            if c['family']=='relay' else c for c in current_cases()]
 
 
 class RelaySceneTests(unittest.TestCase):
@@ -101,11 +106,31 @@ class RelaySceneTests(unittest.TestCase):
                     self.assertTrue(result['endpoint_regions_outside_all_robot_mounts'] if case['arms']==8 else result['endpoint_regions_within_integrated_arc_landings'])
                     self.assertEqual(result['initial_robot_payload_or_different_payload_penetrations_over_1mm'],[])
 
-    def test_old_nine_workstations_are_byte_unchanged(self):
+    def test_old_sources_are_unchanged_except_declared_goal_contract_delta(self):
         saved=json.loads((ROOT/'docs/generated/frontier-v2/relay-r15/source-preserved-hashes.json').read_text())
+        contract=json.loads((ROOT/'tests/fixtures/relay_contract_source_hashes.json').read_text())
         self.assertGreater(len(saved),100)
         for name,checksum in saved.items():
-            self.assertEqual(hashlib.sha256((ROOT/name).read_bytes()).hexdigest(),checksum,name)
+            payload=(ROOT/name).read_bytes()
+            if name in contract['fields_sha256']:
+                task=json.loads(payload)
+                if name.endswith('/task.json'):
+                    from robofrontier.suite.relay_contract import final_task
+                    self.assertEqual(task,final_task(task))
+                for key in ('rules','completion'):task.pop(key,None)
+                self.assertEqual(hashlib.sha256(json.dumps(task,sort_keys=True).encode()).hexdigest(),contract['fields_sha256'][name])
+                continue
+            if hashlib.sha256(payload).hexdigest()!=checksum and name.endswith('/task.json'):
+                # The user later permitted contacts/stacking and required real
+                # airborne handover. Reverse exactly that recorded metadata
+                # delta; geometry and every other task field still hash-match.
+                task=json.loads(payload)
+                for key in ('allow_goal_payload_contact','arbitrary_goal_placement','required_airborne_handover','support_via_goal_payload'):
+                    self.assertIs(task['completion'].pop(key),True)
+                self.assertEqual(task['completion'].pop('rule_revision'),'relay-goal-contact-stack-20261026')
+                for rule in contract['legacy_added_rules']:task['rules'].remove(rule)
+                payload=(json.dumps(task,ensure_ascii=False,indent=2)+'\n').encode()
+            self.assertEqual(hashlib.sha256(payload).hexdigest(),checksum,name)
 
 
 if __name__=='__main__':unittest.main()

@@ -157,6 +157,68 @@ class RelayReferenceTests(unittest.TestCase):
         names[1]='table_0'
         self.assertTrue(final_support(t,'payload',('A','B')))
 
+    def test_stack_permission_does_not_release_timber_balanced_on_its_pendant(self):
+        from robofrontier.suite.relay_oracle_v2 import final_support
+        names={0:'payload_beam',1:'payload_weight',2:'table_0'}
+        state={'all_geoms':{0,1},'rod_geoms':{0}}
+        relay=SimpleNamespace(states={'payload':state},inside=lambda _:True,
+                              supported_payloads=lambda:{'payload'})
+        contact=SimpleNamespace(dist=-.0001,geom1=1,geom2=2)
+        t=SimpleNamespace(task={'completion':{'allow_goal_payload_contact':True,
+                                             'support_via_goal_payload':True}},
+                          model=SimpleNamespace(geom=lambda gid:SimpleNamespace(name=names[gid])),
+                          data=SimpleNamespace(contact=[contact]),
+                          monitor=SimpleNamespace(relay_v2=relay,bilateral=lambda *a,**k:{'A','B'}))
+        self.assertFalse(final_support(t,'payload',('A','B')))
+        contact.geom1=0
+        self.assertTrue(final_support(t,'payload',('A','B')))
+
+    def test_terminal_timber_can_rest_on_another_grounded_timber(self):
+        from robofrontier.suite.relay_oracle_v2 import final_support
+        names={0:'upper_beam',1:'lower_beam',2:'table_0',3:'lower_weight'}
+        upper={'all_geoms':{0},'rod_geoms':{0}}
+        lower={'all_geoms':{1,3},'rod_geoms':{1}}
+        relay=SimpleNamespace(states={'upper':upper,'lower':lower},inside=lambda _:True,
+                              supported_payloads=lambda:{'upper','lower'})
+        contacts=[SimpleNamespace(dist=-.0001,geom1=0,geom2=1),
+                  SimpleNamespace(dist=-.0001,geom1=1,geom2=2)]
+        t=SimpleNamespace(task={'completion':{'allow_goal_payload_contact':True,
+                                             'support_via_goal_payload':True}},
+                          model=SimpleNamespace(geom=lambda gid:SimpleNamespace(name=names[gid])),
+                          data=SimpleNamespace(contact=contacts),
+                          monitor=SimpleNamespace(relay_v2=relay,bilateral=lambda *a,**k:{'A','B'}))
+        self.assertTrue(final_support(t,'upper',('A','B')))
+        # A free pendulum pedestal is not a settled wood-on-wood stack.
+        contacts[1].geom1=3
+        self.assertFalse(final_support(t,'upper',('A','B')))
+
+    def test_supported_in_goal_release_may_leave_a_small_timber_gap(self):
+        from robofrontier.suite.relay_oracle_v2 import final_support
+        state={'all_geoms':{0,1},'rod_geoms':{0}}
+        relay=SimpleNamespace(states={'payload':state},inside=lambda _:True,
+                              supported_payloads=lambda:{'payload'})
+        t=SimpleNamespace(task={'table_height_m':.8,'completion':{'support_via_goal_payload':True}},
+                          model=SimpleNamespace(geom=lambda gid:SimpleNamespace(name='weight' if gid==1 else 'table_0')),
+                          data=SimpleNamespace(contact=[SimpleNamespace(dist=-.0001,geom1=1,geom2=2)]),
+                          monitor=SimpleNamespace(relay_v2=relay,bottom=lambda _:.815,
+                                                   bilateral=lambda *a,**k:{'A','B'}))
+        self.assertTrue(final_support(t,'payload',('A','B')))
+        t.monitor.bottom=lambda _:1.1
+        self.assertFalse(final_support(t,'payload',('A','B')))
+
+    def test_declared_low_release_does_not_need_any_prior_table_contact(self):
+        from robofrontier.suite.relay_oracle_v2 import final_support
+        state={'all_geoms':{0},'rod_geoms':{0}}
+        relay=SimpleNamespace(states={'payload':state},inside=lambda _:True,supported_payloads=lambda:set())
+        t=SimpleNamespace(task={'table_height_m':.8,'completion':{'support_via_goal_payload':True,
+                          'allow_near_goal_release':True,'max_timber_release_gap_m':.02}},
+                          data=SimpleNamespace(contact=[]),model=SimpleNamespace(),
+                          monitor=SimpleNamespace(relay_v2=relay,bottom=lambda _:.815,
+                                                   bilateral=lambda *a,**k:{'A','B'}))
+        self.assertTrue(final_support(t,'payload',('A','B')))
+        t.monitor.bottom=lambda _:1.1
+        self.assertFalse(final_support(t,'payload',('A','B')))
+
     def test_terminal_release_rejects_an_unsafe_opening_before_actuation(self):
         from unittest.mock import patch,Mock
         from robofrontier.suite.relay_oracle_v2 import release
@@ -257,6 +319,7 @@ class RelayReferenceTests(unittest.TestCase):
         from robofrontier.suite.evaluate import Monitor
         from robofrontier.suite.relay_oracle_v2 import grasp_horizon_score,grasp_load_moment
         case=next(c for c in cases() if c['id']=='relay-a08-d3')
+        case=dict(case,scene_revision=13)  # Recorded pre-r16 load-moment regression.
         source=Workstation(directory(case));mujoco.mj_forward(source.model,source.data)
         t=SimpleNamespace(model=source.model,data=source.data,task=json.loads((source.path/'task.json').read_text()))
         t.arms={robot:None for robot in t.task['arms']};t.monitor=Monitor(t)
@@ -387,6 +450,7 @@ class RelayReferenceTests(unittest.TestCase):
         from robofrontier.suite.evaluate import Monitor
         from robofrontier.suite.relay_oracle_v2 import grasp_load_moment
         case=next(c for c in cases() if c['id']=='relay-a08-d2')
+        case=dict(case,scene_revision=13)  # Its old end-mounted weight defines this ranking.
         source=Workstation(directory(case));mujoco.mj_forward(source.model,source.data)
         t=SimpleNamespace(model=source.model,data=source.data,task=json.loads((source.path/'task.json').read_text()))
         t.arms={robot:None for robot in t.task['arms']};t.monitor=Monitor(t)
