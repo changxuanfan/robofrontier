@@ -195,9 +195,19 @@ def main():
         else:
             from robofrontier.claude.engineering_batch import run_batch
             load_env(ROOT / '.env')
-            result = run_batch(args.batch, dict(os.environ), parallel=args.parallel,
-                               turn_budget_usd=args.turn_budget_usd, total_budget_usd=args.task_budget_usd,
-                               wall_limit_s=args.wall_limit_s)
+            import signal
+            import threading
+            stop = threading.Event()
+            previous = {sig: signal.getsignal(sig) for sig in (signal.SIGINT, signal.SIGTERM)}
+            def request_stop(signum, frame):
+                stop.set()
+            try:
+                for sig in previous: signal.signal(sig, request_stop)
+                result = run_batch(args.batch, dict(os.environ), parallel=args.parallel,
+                                   turn_budget_usd=args.turn_budget_usd, total_budget_usd=args.task_budget_usd,
+                                   wall_limit_s=args.wall_limit_s, stop_requested=stop.is_set)
+            finally:
+                for sig, handler in previous.items(): signal.signal(sig, handler)
     else:
         load_env(ROOT / '.env')
         if args.command == 'plan':

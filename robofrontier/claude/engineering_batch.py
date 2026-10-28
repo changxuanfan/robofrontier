@@ -97,7 +97,7 @@ def stop_batch(folder):
 
 
 def run_batch(folder, base_env, *, parallel, turn_budget_usd, total_budget_usd, wall_limit_s,
-              runner=run_engineering, verifier=verify_inputs):
+              runner=run_engineering, verifier=verify_inputs, stop_requested=lambda: False):
     """Run drafts once. Caller explicitly authorizes potential paid model calls."""
     folder = Path(folder).resolve()
     if type(parallel) is not int or not 1 <= parallel <= 36: raise ValueError('Parallel must be 1..36')
@@ -109,8 +109,9 @@ def run_batch(folder, base_env, *, parallel, turn_budget_usd, total_budget_usd, 
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         claim = folder / 'engineering-claim.json'
         if claim.exists(): raise ValueError('Batch already claimed; never restart')
-        if (folder / 'STOP').exists(): raise ValueError('Batch was stopped before launch')
+        if (folder / 'STOP').exists() or stop_requested(): raise ValueError('Batch was stopped before launch')
         _preflight(jobs, base_env, verifier)
+        if (folder / 'STOP').exists() or stop_requested(): raise ValueError('Batch was stopped before launch')
         with claim.open('x') as out:
             import os
             os.fchmod(out.fileno(), 0o600)
@@ -126,13 +127,16 @@ def run_batch(folder, base_env, *, parallel, turn_budget_usd, total_budget_usd, 
         pending = {}
         with ThreadPoolExecutor(max_workers=parallel) as pool:
             while next_job < len(jobs) or pending:
-                stopping = (folder / 'STOP').exists()
+                stopping = (folder / 'STOP').exists() or stop_requested()
                 if stopping:
+                    (folder / 'STOP').touch()
                     for job in jobs: (Path(job['run_directory']) / 'STOP').touch()
                 while not stopping and next_job < len(jobs) and len(pending) < parallel:
                     # A stop request can arrive while other jobs are being submitted.
-                    if (folder / 'STOP').exists():
+                    if (folder / 'STOP').exists() or stop_requested():
                         stopping = True
+                        (folder / 'STOP').touch()
+                        for job in jobs: (Path(job['run_directory']) / 'STOP').touch()
                         break
                     index = next_job; next_job += 1
                     state['jobs'][index]['status'] = 'starting'

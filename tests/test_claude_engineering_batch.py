@@ -1,6 +1,9 @@
 import json
 import multiprocessing
+import os
 from pathlib import Path
+import signal
+import sys
 import tempfile
 import threading
 import time
@@ -58,6 +61,43 @@ class BatchTests(unittest.TestCase):
         self.assertEqual(outcome[0]['status'], 'stopped')
         self.assertEqual([j['status'] for j in outcome[0]['jobs']], ['closed'] + ['stopped_before_start']*3)
         self.assertTrue(all((Path(j['run_directory'])/'STOP').exists() for j in self.jobs))
+
+    def test_cli_sigterm_requests_stop_and_waits_for_active_job(self):
+        ctx = multiprocessing.get_context('fork')
+        entered = ctx.Event()
+        def child():
+            from scripts.claude_benchmark import main
+            import robofrontier.claude.engineering_batch as batch_module
+            original = batch_module.run_batch
+            def runner(run, *args, **kwargs):
+                entered.set()
+                deadline=time.monotonic()+10
+                while not (Path(run)/'STOP').exists() and time.monotonic()<deadline:
+                    time.sleep(.02)
+                return {'status':'finished','reason':'stop_requested'}
+            def launch(*args, **kwargs):
+                return original(*args, **kwargs, runner=runner, verifier=lambda _: [])
+            batch_module.run_batch=launch
+            os.environ['FAKE_KEY']='synthetic'
+            sys.argv=['claude_benchmark','run-engineering',str(self.root),'--parallel','1',
+                      '--turn-budget-usd','.2','--task-budget-usd','1','--wall-limit-s','5',
+                      '--confirm-engineering-spend']
+            main()
+        process=ctx.Process(target=child); process.start()
+        try:
+            self.assertTrue(entered.wait(10))
+            os.kill(process.pid, signal.SIGTERM)
+            process.join(10)
+            self.assertFalse(process.is_alive())
+            self.assertEqual(process.exitcode,0)
+            state=status_batch(self.root)
+            self.assertEqual(state['status'],'stopped')
+            self.assertEqual([j['status'] for j in state['jobs']],
+                             ['closed']+['stopped_before_start']*3)
+            self.assertFalse(state['supervisor_live'])
+        finally:
+            if process.is_alive(): process.kill(); process.join(10)
+            process.close()
 
     def test_failed_run_and_incompatible_profile_are_not_hidden(self):
         def fail(*args, **kwargs): raise RuntimeError('not for user output')
