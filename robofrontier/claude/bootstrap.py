@@ -36,7 +36,8 @@ def bootstrap_prompt(run_dir, *, topology='centralized'):
              'history, inbox and authorized messages for status and handback evidence. To read a returned '
              'delegate report, call robot work with data {"delegate_id":"Delegate_..."}; '
              'the authorized report is returned inline as delegate_report.' if topology == 'adaptive' else '')
-    return text + ('\n\nTo view a task initial_reference_images entry or robot_layout_image, '
+    return text + ('\n\nTo view a task initial_reference_images entry, robot_layout_image, '
+                   'or target.reference_image (such as the Mosaic target pattern), '
                    'call robot with op public_image and data {"names": ["the exact listed path"]}. '
                    'For live observations use observe with cameras and views. You have no filesystem tools. '
                    'To get detailed static geometry, call robot_model with data {"robot":"A"} '

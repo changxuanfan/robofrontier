@@ -126,6 +126,9 @@ class RobotBridge:
         allowed = set(task.get('initial_reference_images', []))
         if task.get('robot_layout_image'):
             allowed.add(task['robot_layout_image'])
+        target = task.get('target')
+        if isinstance(target, dict) and isinstance(target.get('reference_image'), str):
+            allowed.add(target['reference_image'])
         content = []
         for name in data['names']:
             if not isinstance(name, str) or name not in allowed:

@@ -249,6 +249,8 @@ Claude 工程草稿现会在 harness 与 manifest 均标记 `engine: claude`，�
 策略会话关闭了文件读取工具，因此 `bootstrap.py` 将公开文本材料打包，并通过
 `robot` 的 `public_image` 操作返回 task.json 显式列出的初始参考图。该操作限制在
 当前 run 的 public 目录，仍需实际任务级验证。
+`public_image` 也允许读取任务明确列出的 `target.reference_image`；Mosaic R14 的
+`target-pattern.png` 通过该字段提供。它仍只接受当前任务列出的路径和公开输入目录内的 PNG。
 
 离线测试还将集中式策略主机接到真实 `RuntimeService` 和调度器，使用合成世界及
 本机回环服务验证绑定、READY、显式 START 和调度；这不等于真实 MuJoCo 或真实模型测试。

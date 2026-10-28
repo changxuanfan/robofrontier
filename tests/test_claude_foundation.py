@@ -112,15 +112,19 @@ class ClaudeFoundationTests(unittest.TestCase):
             connection.write_text(json.dumps({'run_id': 'run', 'actor': 'Controller'}))
             public = run / 'public/inputs'; public.mkdir(parents=True)
             (public / 'task.json').write_text(json.dumps({'initial_reference_images': ['family/view.png'],
-                                                         'robot_layout_image': 'public/inputs/robot-layout.png'}))
+                                                         'robot_layout_image': 'public/inputs/robot-layout.png',
+                                                         'target': {'reference_image': 'target-pattern.png'}}))
             image = public / 'family/view.png'; image.parent.mkdir()
             png = b'\x89PNG\r\n\x1a\nimage'; image.write_bytes(png)
             (public / 'robot-layout.png').write_bytes(png)
+            (public / 'target-pattern.png').write_bytes(png)
             bridge = RobotBridge(run, connection)
             response = bridge.call({'op': 'public_image', 'data': {'names': ['family/view.png']}})
             self.assertEqual(base64.b64decode(response['content'][1]['data']), png)
             layout = bridge.call({'op': 'public_image', 'data': {'names': ['public/inputs/robot-layout.png']}})
             self.assertEqual(base64.b64decode(layout['content'][1]['data']), png)
+            target = bridge.call({'op': 'public_image', 'data': {'names': ['target-pattern.png']}})
+            self.assertEqual(base64.b64decode(target['content'][1]['data']), png)
             with self.assertRaises(ValueError):
                 bridge.call({'op': 'public_image', 'data': {'names': ['../private/secret.png']}})
             image.unlink(); image.symlink_to(Path(tmp) / 'outside.png')
