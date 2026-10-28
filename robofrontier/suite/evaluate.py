@@ -110,6 +110,8 @@ class Monitor:
         return out
     def violation(self,kind,**details):
         if not any(v['kind']==kind and v.get('key')==details.get('key') for v in self.violations):self.violations.append(dict(kind=kind,sim_time_s=float(self.d.time),**details))
+    def terminal_scoring(self):
+        return self.task.get('run_protocol', {}).get('evaluation_semantics') == 'terminal_outcome_v2'
     def contacts(self):
         if not self.d.ncon:return np.empty((0,2),int),np.empty(0)
         return np.asarray(self.d.contact.geom),np.asarray(self.d.contact.dist)
@@ -242,6 +244,10 @@ class Monitor:
         for i in range(len(goals)):assign(i,set())
         complete=len(matched)==len(goals)
         self.result_cache=dict(all_goals_met=complete,task_success=complete and not self.violations,matched_goals=len(matched),total_goals=len(goals),assignments={goals[i]['goal_id']:self.names[j] for j,i in matched.items()})
+        if Monitor.terminal_scoring(self):
+            self.result_cache.update(task_success=complete, terminal_goal_met=complete,
+                                     strict_task_success=complete and not self.violations,
+                                     scoring_version='terminal_outcome_v2')
     def sample_dial(self,dt):
         n=len(self.dials);supporters=[];ready=[];clear=[];red=set();pairs,dist=self.contacts()
         for i,a in enumerate(self.dials):
@@ -289,6 +295,10 @@ class Monitor:
                 for k,segment in enumerate('abcdefg'):
                     gid=self.m.geom(f'score_{digit}_{k}').id;self.m.geom_rgba[gid]=[.68,.13,.07,1 if segment in (DIGITS[int(char)] if char!='-' else 'g') else 0]
         self.result_cache=dict(all_goals_met=self.game.won,task_success=self.game.won and not self.violations,solved=self.game.won,valid_trials=self.game.queries,display=score,private_angles_deg=np.degrees(self.d.qpos[self.qids]).tolist(),private_clearance_m=clear,private_support_ready=ready,private_angle_speeds_rad_s=self.d.qvel[self.dofs].tolist(),private_feedback_dwell_s=None if self.game.since is None else float(self.d.time)-self.game.since)
+        if Monitor.terminal_scoring(self):
+            self.result_cache.update(task_success=self.game.won, terminal_goal_met=self.game.won,
+                                     strict_task_success=self.game.won and not self.violations,
+                                     scoring_version='terminal_outcome_v2')
         if spec:self.result_cache.update(feedback_mode=self.game.mode,input_ready=self.game.ready,private_red_hold_ready=red_ready)
     def sample_relay(self):
         t=float(self.d.time);gs=self.geoms['payload'];support=self.bilateral(self.support_geoms,positive_force=True);position=self.d.body('payload').xpos.copy();contact_env=False;cradle=False

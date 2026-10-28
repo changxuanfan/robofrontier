@@ -132,7 +132,7 @@ class Relay:
             for neighbor in edges[part]-ground:ground.add(neighbor);pending.append(neighbor)
         return {name for name in eligible if (self.payload_components[name]<=ground if require_all else bool(self.payload_components[name]&ground))}
     def sample(self):
-        mon=self.mon;t=float(mon.d.time);completed=0;reports={}
+        mon=self.mon;t=float(mon.d.time);completed=0;terminal_completed=0;reports={}
         inside_flags={name:self.inside(state) for name,state in self.states.items()}
         stacking=bool(mon.task['completion'].get('support_via_goal_payload'))
         global_ground=self.supported_payloads(False,False) if stacking else set()
@@ -203,6 +203,15 @@ class Relay:
             done=state['landed'] and inside and on_table and mon.released(all_g) and stable and not state['dropped'] and not state['spill'] and handover_ok
             state['goal_since']=(t if state['goal_since'] is None else state['goal_since']) if done else None
             qualified=state['goal_since'] is not None and t-state['goal_since']>=mon.task['completion']['stable_duration_sim_s']
-            completed+=int(qualified);reports[ident]=dict(completed=qualified,airborne=state['airborne'],drops=state['drops'],custody=sorted(state['custody']),support=sorted(support),goal_table_support=on_table,handovers=state['transitions'],spill=state['spill'])
+            terminal=inside and on_table and mon.released(all_g)
+            terminal_completed+=int(terminal)
+            completed+=int(qualified);reports[ident]=dict(completed=qualified,terminal_goal_met=terminal,airborne=state['airborne'],drops=state['drops'],custody=sorted(state['custody']),support=sorted(support),goal_table_support=on_table,handovers=state['transitions'],spill=state['spill'])
         complete=completed==len(self.states)
         mon.result_cache=dict(all_goals_met=complete,task_success=complete and not mon.violations,completed_payloads=completed,total_payloads=len(self.states),payloads=reports,drops=sum(s['drops'] for s in self.states.values()))
+        if mon.task.get('run_protocol', {}).get('evaluation_semantics') == 'terminal_outcome_v2':
+            terminal_complete=terminal_completed==len(self.states)
+            mon.result_cache.update(all_goals_met=terminal_complete,task_success=terminal_complete,
+                terminal_goal_met=terminal_complete,terminal_completed_payloads=terminal_completed,
+                completed_payloads=terminal_completed,legacy_completed_payloads=completed,
+                legacy_process_goals_met=complete,strict_task_success=complete and not mon.violations,
+                scoring_version='terminal_outcome_v2')
