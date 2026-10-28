@@ -52,6 +52,14 @@ Linux 可将 `shasum -a 256` 换成 `sha256sum`。没有 `gh` 时可从同仓库
 验证的候选配置。模板的空值不构成登录或可用性证明。环境变量优先于 `.env`。
 如果 `.env` 已存在，检查并编辑原文件，不要覆盖；不要将创建命令的失败当成认证失败。
 
+百炼 [Coding Plan 使用说明](https://help.aliyun.com/zh/model-studio/coding-plan) 明确限制
+非交互式批量 API 调用；本 harness 会由外层进程自动并发启动多个 CLI，会话用途与
+套餐允许范围须向供应商确认。不要因为它支持 Claude Code 就假定可用于此批量任务；
+应使用允许该用途的账号与服务，例如核实后采用按量计费接口。套餐和按量计费的
+密钥、endpoint 不能混用，见[百炼 Claude Code 接入说明](https://help.aliyun.com/zh/model-studio/claude-code)。
+DeepSeek profile 使用的 Anthropic 兼容地址与 [DeepSeek 官方接入说明](https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code/)一致；
+模型映射、视觉和工具往返仍需对实际账号和所选 profile 预检，不能只凭地址判断通过。
+
 以下离线命令不启动世界、不调用模型：
 
 ```sh
