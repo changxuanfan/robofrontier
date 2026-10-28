@@ -202,7 +202,10 @@ branch's changes. Shared engine-neutral and Codex CLI benchmark tests passed
 (8 and 10 tests), as did 24 Node dispatcher scenarios. Recheck the actual
 target branch and rerun relevant tests before merging.
 
-## 接手进度：离线策略主机开发
+## 接手进度：开发记录
+
+以下按开发阶段保留当时的测试范围；其中“本轮”“目前”和“尚未”的表述指对应阶段，
+不覆盖本文开头的当前状态及后面的真实 MuJoCo 烟雾检查结果。
 
 本轮继续仅使用本地假模型与假机器人服务，没有调用真实 API 或启动正式试验。
 `robofrontier/claude/session_host.py` 管理一个角色的原生 CLI 回合：固定角色 MCP、
@@ -231,7 +234,7 @@ Claude 工程草稿现会在 harness 与 manifest 均标记 `engine: claude`，�
 离线测试还将集中式策略主机接到真实 `RuntimeService` 和调度器，使用合成世界及
 本机回环服务验证绑定、READY、显式 START 和调度；这不等于真实 MuJoCo 或真实模型测试。
 `prepare-draft` 可选 `--topology centralized` 来准备集中式工程草稿，默认仍是 adaptive。
-两种草稿都不具备正式运行资格，也不会自动启动任务。四个 Level 1 最少臂集中式草稿
+两种草稿都不具备正式运行资格；准备草稿不会自动启动任务。四个 Level 1 最少臂集中式草稿
 已在临时目录通过冻结输入校验和公开材料加载检查。
 
 `robofrontier/claude/supervisor.py` 新增已有世界上的集中式工程监督循环：等待 READY、
@@ -250,19 +253,20 @@ fork 和项目配置隔离；真实订阅及其成本报告仍未验证。费用
 CLI 报告视为订阅额度或实际账单的硬上限。
 
 `robofrontier/claude/engineering_run.py` 进一步连接了工程草稿校验、一次性启动记录、
-独立物理进程与监督循环；它只接受未认证的 centralized 工程草稿，尚无正式批次 CLI。
+独立物理进程与监督循环；最初只接受未认证的 centralized 工程草稿，尚无正式批次 CLI。
 异常不重启世界，也不强杀可能仍在执行的物理进程；进程仍活着或封存未确认时标记待检查。
 封存证据必须明确列出空的未解决动作列表，否则即使进程已退出也标记待检查。
 `turn_budget_usd` 是 Claude CLI 每个回合的限制。任务还设置一个 CLI 报告费用的
 累计阈值：后续回合按报告的剩余额度启动；费用缺失、零值或无效时停止并要求检查。
 这是估算控制，第三方厂商可能不提供可靠成本，账单可能与 CLI 报告不同，也可能超出
-阈值；它不是服务商的硬性扣费上限或整批共享预算。调用此代码可能产生 API 费用，
-本轮测试仅使用替身，没有实际调用该启动过程或付费 API。
+阈值；它不是服务商的硬性扣费上限或整批共享预算。调用此代码可能产生 API 费用；
+该开发阶段仅使用替身测试，后续物理烟雾测试的范围见下文。
 
 `robofrontier/claude/engineering_batch.py` 增加了实验性集中式工程批次的内部接口：
 全部任务预检后按设置的数量并发，支持只读状态和停止请求，监督者失联及异常任务
 标记待检查，批次和单任务都不自动重启。相关测试用替身验证了这些调度行为。它还没有
-开放正式计分批次 CLI，也没有证明真实模型、MuJoCo、多角色委派或服务商账单控制可用。
+开放正式计分批次 CLI。该开发阶段的测试没有证明真实模型、MuJoCo、多角色委派或
+服务商账单控制可用；后续使用合成模型对 MuJoCo 和委派做了有限的烟雾测试。
 如果批次已有启动占用记录但没有状态文件，查询会显示
 `claim_without_status_needs_review`；它可能在启动过程中中断，不能作为未启动批次重跑。
 停止发生在启动前时，状态为 `stopped_before_start`；停止导致有任务未启动或已启动
