@@ -78,16 +78,20 @@ class ParallelPhysicsSmokeTests(unittest.TestCase):
                 maximum_live = max(maximum_live, len(live))
                 worker.join(.25)
             self.assertFalse(failures, failures)
-            self.assertEqual(outcome[0]['status'], 'closed', outcome[0])
+            self.assertIn(outcome[0]['status'], ('closed', 'needs_review'), outcome[0])
             self.assertEqual(outcome[0]['startup_timeout_s'], 180)
             self.assertFalse(outcome[0]['scored'])
             self.assertEqual(maximum_live, 4, f'Expected four overlapping physical owners, observed {maximum_live}')
             self.assertTrue(any(BatchMotionModel.requests), 'No camera image reached synthetic endpoint')
+            budget_review = False
             for job in jobs:
                 run = Path(job['run_directory'])
                 detail = json.loads((run/'private/outputs/claude-engineering-status.json').read_text())
-                self.assertEqual(detail['status'], 'finished', detail)
+                self.assertEqual(detail['status'], 'needs_review' if detail['budget_review_required'] else 'finished', detail)
+                budget_review |= detail['budget_review_required']
                 self.assertTrue(detail['seal']['sealed'], detail)
+                self.assertFalse(detail['owner_alive'], detail)
+                self.assertEqual(detail['seal']['unresolved_action_ids'], [])
                 state = RuntimeStore(run/'private/state/runtime.sqlite')
                 try:
                     self.assertEqual(state.get('delegations', {})['synthetic-delegate']['status'], 'finished')
@@ -95,6 +99,7 @@ class ParallelPhysicsSmokeTests(unittest.TestCase):
                     self.assertEqual(state.get('robot_owners')['A'], 'Controller')
                 finally:
                     state.close()
+            self.assertEqual(outcome[0]['status'], 'needs_review' if budget_review else 'closed')
         finally:
             # Never remove files backing a failed, uncertain or still-running owner.
             if worker is not None and worker.is_alive():

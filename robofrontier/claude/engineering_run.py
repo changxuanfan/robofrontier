@@ -135,11 +135,29 @@ def run_engineering(run_dir, base_env, *, turn_budget_usd, total_budget_usd, wal
             except Exception as seal_error: result['seal_error_type'] = type(seal_error).__name__
         # A still-live owner is not force-killed: its state must be reviewed.
     finally:
+        budget_status = None
+        budget_review_required = False
         try:
             if policy is not None: policy.close()
             policy_closed = True
         except Exception:
             if result is not None: result['policy_close_error'] = True
+        if ledger is not None:
+            try:
+                budget = ledger.snapshot()
+                budget_status = budget['status']
+                budget_review_required = (budget_status == 'uncertain' or
+                                          any(row['status'] == 'reserved' for row in budget['reservations']))
+            except Exception:
+                budget_status = 'unavailable'
+                budget_review_required = True
+        elif policy is not None and hasattr(policy, 'host'):
+            try:
+                budget_status = policy.host.observe().get('budget_status')
+                budget_review_required = budget_status in ('cost_unknown', 'uncertain')
+            except Exception:
+                budget_status = 'unavailable'
+                budget_review_required = True
         if ledger is not None and policy_closed:
             ledger.close()
         if result is not None:
@@ -155,10 +173,12 @@ def run_engineering(run_dir, base_env, *, turn_budget_usd, total_budget_usd, wal
                       and (result.get('seal') or {}).get('unresolved_action_ids') == []
                       and not result.get('policy_close_error') and not result.get('error_type')
                       and not result.get('seal_error_type')
+                      and not budget_review_required
                       and (not video_required or video_readable)
                       and (not evaluation_required or evaluation_present)
                       and result.get('reason') in ('world_ended', 'stop_requested', 'wall_limit'))
             result.update(status='finished' if closed else 'needs_review', owner_alive=owner_alive, scored=False,
+                          budget_status=budget_status, budget_review_required=budget_review_required,
                           video_required=video_required, evaluation_required=evaluation_required,
                           evaluation_present=evaluation_present)
             write_json(status, result)

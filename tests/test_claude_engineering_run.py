@@ -99,6 +99,28 @@ class EngineeringRunTests(unittest.TestCase):
         self.assertEqual(seen[0][1]['setup_budget_usd'], .5)
         self.assertTrue((self.run/'private/state/claude-budget.sqlite').exists())
 
+    def test_uncertain_shared_budget_requires_review_even_when_world_sealed(self):
+        (self.run/'private/inputs/harness.json').write_text(json.dumps({'engine':'claude','topology':'adaptive'}))
+        (self.run/'private/state/connections/Meta.json').write_text('{"url":"http://127.0.0.1:1234"}')
+        def adaptive(run, profile, env, ledger, **kwargs):
+            ledger.reserve('interrupted-turn','Controller',.5)
+            ledger.settle('interrupted-turn',None,outcome_known=False)
+            policy=Policy(); policy.store.attached=True
+            return policy
+        class ExitingOwner(Owner):
+            def wait(self,timeout): self.status=0
+        class Supervisor:
+            def __init__(self,*a,**k): pass
+            def run(self): return {'reason':'wall_limit','seal':{'sealed':True,'unresolved_action_ids':[]}}
+        with patch('robofrontier.claude.engineering_run.CentralizedSupervisor',Supervisor):
+            result=run_engineering(self.run,self.env,turn_budget_usd=.5,total_budget_usd=2,wall_limit_s=30,
+                                   adaptive_policy_factory=adaptive,owner_factory=lambda *a,**k: ExitingOwner(None))
+        self.assertTrue(result['seal']['sealed'])
+        self.assertFalse(result['owner_alive'])
+        self.assertEqual(result['budget_status'],'uncertain')
+        self.assertTrue(result['budget_review_required'])
+        self.assertEqual(result['status'],'needs_review')
+
     def test_requested_unreadable_recording_requires_review_even_after_seal(self):
         config = self.run/'private/inputs/harness.json'
         config.write_text(json.dumps({'engine':'claude','topology':'centralized','record_realtime_video':True}))

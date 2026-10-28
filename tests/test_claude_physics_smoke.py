@@ -64,9 +64,10 @@ class PhysicsSmokeTests(unittest.TestCase):
                                      wall_limit_s=15, startup_timeout_s=90, poll_s=.1)
             self.assertFalse(result['scored'])
             self.assertEqual(result['reason'], 'wall_limit', result)
-            self.assertEqual(result['status'], 'finished', result)
+            self.assertEqual(result['status'], 'needs_review' if result['budget_review_required'] else 'finished', result)
             self.assertTrue(result['seal']['sealed'], result)
             self.assertFalse(result['owner_alive'], result)
+            self.assertEqual(result['seal']['unresolved_action_ids'], [])
             if record_video:
                 self.assertTrue(result['seal']['video']['readable'], result['seal']['video'])
             state = RuntimeStore(run / 'private/state/runtime.sqlite')
