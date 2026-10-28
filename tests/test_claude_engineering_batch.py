@@ -136,6 +136,23 @@ class BatchTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'run directory'): stop_batch(self.root)
         self.assertFalse((self.root/'STOP').exists())
 
+    def test_missing_third_party_credential_or_endpoint_blocks_entire_batch(self):
+        launch = Path(self.jobs[-1]['run_directory'])/'private/inputs/claude.json'
+        original = json.loads(launch.read_text())
+        for key, endpoint, error in ((None, 'https://example.invalid', 'credential'),
+                                     ('synthetic', None, 'base URL')):
+            with self.subTest(missing=error):
+                data = json.loads(json.dumps(original))
+                data['profile'].update(provider='third-party', env_key='THIRD_PARTY_KEY', base_url=endpoint)
+                launch.write_text(json.dumps(data))
+                if key is None: self.env.pop('THIRD_PARTY_KEY', None)
+                else: self.env['THIRD_PARTY_KEY'] = key
+                with self.assertRaisesRegex(ValueError, error):
+                    self.run_case(lambda *a, **k: self.fail('No task should start'))
+                self.assertFalse((self.root/'engineering-claim.json').exists())
+                self.assertTrue(all(not (Path(j['run_directory'])/'private/state/claude-engineering-claim.json').exists()
+                                    for j in self.jobs))
+
     def test_adaptive_draft_is_admitted_to_unqualified_engineering_batch(self):
         for job in self.jobs:
             harness = Path(job['run_directory'])/'private/inputs/harness.json'
