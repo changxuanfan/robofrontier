@@ -12,6 +12,7 @@ import threading
 import unittest
 
 from robofrontier.claude.runner import run_turn
+from robofrontier.run_setup import verify_inputs
 from robofrontier.task_config import ROOT
 from scripts.claude_benchmark import prepare_draft
 from test_claude_adaptive_integration import StubModel
@@ -68,6 +69,10 @@ class MosaicReferenceIntegrationTests(unittest.TestCase):
                         if source.get('type')=='base64':
                             received.append(hashlib.sha256(base64.b64decode(source['data'])).hexdigest())
                 self.assertIn(expected,received,'Mosaic target image bytes did not reach synthetic endpoint')
+                self.assertEqual(verify_inputs(run),[])
+                target=run/'public/inputs/target-pattern.png'
+                target.write_bytes(target.read_bytes()+b'tamper')
+                self.assertIn('input:public/inputs/target-pattern.png',verify_inputs(run))
         finally:
             server.shutdown();server.server_close()
 
