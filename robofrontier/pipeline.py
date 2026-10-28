@@ -8,6 +8,7 @@ import copy
 import hashlib
 import json
 import math
+import os
 import queue
 import secrets
 import threading
@@ -393,7 +394,8 @@ class Service(RuntimeService):
             rgb=np.empty((800,1280,3),dtype=np.uint8);mujoco.mjr_readPixels(rgb,None,viewport,self.context)
             path=self.directory/'public/observations'/f'obs-{uuid.uuid4().hex[:8]}-{self.obs:05d}-{name}.png'
             Image.fromarray(rgb[::-1]).save(path);paths[name]=str(path)
-        mujoco.mjr_setBuffer(mujoco.mjtFramebuffer.mjFB_WINDOW,self.context)
+        if not getattr(self,'offscreen_context',None):
+            mujoco.mjr_setBuffer(mujoco.mjtFramebuffer.mjFB_WINDOW,self.context)
         return {'sim_time_s':self.world.time,'captured_at':time.time(),'images':paths,
                 'robot':{a:r.observe() for a,r in self.world.arms.items()}}
 
@@ -432,11 +434,16 @@ class Service(RuntimeService):
                 except (ValueError,KeyError,TypeError) as error:self.send_error(400,str(error))
                 except (BrokenPipeError,ConnectionResetError):pass
         try:
-            if not glfw.init():raise RuntimeError('GLFW init failed')
-            glfw.window_hint(glfw.VISIBLE,not self.hidden)
-            self.window=glfw.create_window(1280,800,'RoboFrontier — Shared World',None,None)
-            if not self.window:raise RuntimeError('GLFW window creation failed')
-            glfw.make_context_current(self.window);glfw.swap_interval(1)
+            if self.hidden and os.environ.get('MUJOCO_GL','').lower()=='osmesa':
+                from mujoco.osmesa import GLContext
+                self.offscreen_context=GLContext(1280,800)
+                self.offscreen_context.make_current()
+            else:
+                if not glfw.init():raise RuntimeError('GLFW init failed')
+                glfw.window_hint(glfw.VISIBLE,not self.hidden)
+                self.window=glfw.create_window(1280,800,'RoboFrontier — Shared World',None,None)
+                if not self.window:raise RuntimeError('GLFW window creation failed')
+                glfw.make_context_current(self.window);glfw.swap_interval(1)
             self.context=mujoco.MjrContext(self.world.model,mujoco.mjtFontScale.mjFONTSCALE_150)
             self.scene=mujoco.MjvScene(self.world.model,maxgeom=5000);self.options=mujoco.MjvOption();self.options.geomgroup[3]=0
             self.cam=mujoco.MjvCamera();self.cam.type=mujoco.mjtCamera.mjCAMERA_FIXED
@@ -452,8 +459,9 @@ class Service(RuntimeService):
             atomic_json(self.directory/'private/state/observer.json',{'url':url+'/viewer/'+observer,'read_only':True})
             print(json.dumps({'url':url,'directory':str(self.directory),'ready':True}),flush=True)
             previous=time.monotonic();acc=0.;next_frame=previous;next_state=previous;next_record=previous
-            while not glfw.window_should_close(self.window) and not self.shutdown:
-                now=time.monotonic();acc+=min(now-previous,.1);previous=now;glfw.poll_events()
+            while not self.shutdown and (not hasattr(self,'window') or not glfw.window_should_close(self.window)):
+                now=time.monotonic();acc+=min(now-previous,.1);previous=now
+                if hasattr(self,'window'):glfw.poll_events()
                 with self.lock:
                     self.pump()
                     while acc>=.02 and not self.ended:self.world.step();acc-=.02
@@ -475,8 +483,12 @@ class Service(RuntimeService):
                 time.sleep(.001)
         finally:
             if hasattr(self,'server'):self.server.shutdown()
+            if hasattr(self,'offscreen_context'):
+                if hasattr(self,'context'):self.context.free()
+                self.offscreen_context.free()
             if hasattr(self,'window'):glfw.destroy_window(self.window)
-            glfw.terminate();self.close()
+            if not hasattr(self,'offscreen_context'):glfw.terminate()
+            self.close()
 
 
 def main():

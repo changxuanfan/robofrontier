@@ -13,8 +13,10 @@
     },
     "luna": {
       "model": "gpt-6-luna",
-      "provider": "openai",
-      "effort": "high",
+      "provider": "openai_api",
+      "base_url": "https://api.openai.com/v1",
+      "env_key": "OPENAI_API_KEY",
+      "effort": "max",
       "vision": true,
       "context_capacity": 272000
     },

@@ -16,6 +16,7 @@ vendor/
 /.env
 /.env.*
 !/.env.example
+/.codex-luna/
 # Large environment assets/previews are materialized per worktree.
 /configs/environments/**/assets/
 /configs/environments/**/preview-*.png
