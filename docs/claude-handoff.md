@@ -76,7 +76,8 @@ API Key 模式将所选厂商密钥传给 Claude 的 `ANTHROPIC_API_KEY`；本�
 .venv/bin/python -m scripts.claude_benchmark plan --models opus --level 1 --min-arms --parallel 4
 ```
 
-doctor 只检查凭据是否存在及本机资产等条件；plan 只列出四项任务。先确认这些
+doctor 只检查凭据是否存在、本机资产和 FFmpeg/ffprobe 是否在 PATH 中等条件；
+录像工具检查不验证编码器或实际录像。plan 只列出四项任务。先确认这些
 结果，再根据后文进行已获授权的付费预检。无论预检结果如何，当前版本仍不能生成
 正式计分 benchmark。可把 [Claude 工程批次主 session prompt](../prompts/claude/engineering-manager.md)
 交给外层 agent，明确模型、任务、并发和预算。

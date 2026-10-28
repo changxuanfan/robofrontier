@@ -5,11 +5,35 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from scripts.claude_benchmark import plan, profile
+from scripts.claude_benchmark import doctor, plan, profile
 from robofrontier.claude.robot_mcp import RobotBridge, handle
 
 
 class ClaudeFoundationTests(unittest.TestCase):
+    def test_doctor_loads_env_without_disclosing_credentials_and_environment_wins(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            (root/'.env').write_text('FAKE_KEY=file-secret\nFAKE_BASE=https://file.example/api\n')
+            catalog=root/'catalog.json'
+            catalog.write_text(json.dumps({'schema':'robofrontier.claude-models.v1','profiles':{
+                'fake':{'provider':'fake','model':'model','env_key':'FAKE_KEY',
+                        'base_url_env':'FAKE_BASE','effort':'high'}}}))
+            from robofrontier.task_families import RELEASE
+            release=root/RELEASE; release.parent.mkdir(parents=True)
+            release.write_text(json.dumps({'families':{}}))
+            with patch.dict('os.environ',{'FAKE_KEY':'environment-secret'},clear=True), \
+                 patch('scripts.claude_benchmark.shutil.which',return_value=None):
+                result=doctor(['fake'],root=root,catalog=catalog)
+                self.assertTrue(result['profiles']['fake']['credential_set'])
+                self.assertTrue(result['profiles']['fake']['base_url_configured'])
+                import os
+                self.assertEqual(os.environ['FAKE_KEY'],'environment-secret')
+                self.assertEqual(os.environ['FAKE_BASE'],'https://file.example/api')
+                self.assertNotIn('environment-secret',json.dumps(result))
+                self.assertNotIn('file-secret',json.dumps(result))
+                self.assertFalse(result['profiles']['fake']['live_verified'])
+                self.assertEqual(result['recording_tools'],{'ffmpeg':False,'ffprobe':False})
+
     def test_plan_four_minimum_level_one_tasks_without_execution(self):
         result = plan(['kimi'], level=1, min_arms=True, parallel=4)
         self.assertEqual(result['task_count'], 4)

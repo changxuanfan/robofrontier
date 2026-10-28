@@ -150,6 +150,7 @@ def doctor(names, root=ROOT, catalog=CATALOG):
     assets = [check_case_assets(case, root) for family in read(root / RELEASE)['families'].values() for case in family['gpt']]
     return {'claude': cli, 'profiles': profiles, 'release_sha256': digest(root / RELEASE),
             'assets': {'missing': sum(len(a['missing']) for a in assets), 'changed': sum(len(a['changed']) for a in assets)},
+            'recording_tools': {name: bool(shutil.which(name)) for name in ('ffmpeg', 'ffprobe')},
             'panda_manifest_available': (root / 'vendor/panda/SOURCE.json').is_file(),
             'execution_available': False,
             'note': 'Offline checks only; no credential validation, model calls or physics.'}
