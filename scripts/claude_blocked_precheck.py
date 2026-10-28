@@ -115,6 +115,7 @@ def run_blocked_precheck(name, output, budget, base_env, *, binary='claude', wai
         receipt['checks']['parent_ended']=_ended(parent,session)
         receipt['checks']['parent_used_tool']=parent['summary'].get('tool_calls',0)>=1
         receipt['checks']['parent_requested_view']=parent['summary'].get('observe_top_calls',0)>=1
+        receipt['checks']['parent_image_result_recorded']=parent['summary'].get('observe_top_image_results',0)>=1
         receipt['checks']['parent_identified_image']=(parent['summary'].get('result_text') or '').strip().lower()==server.challenge_color
         receipt['passed']=all(receipt['checks'].values()) and started<=budget
     except Exception as error:

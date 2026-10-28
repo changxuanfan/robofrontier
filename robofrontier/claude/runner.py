@@ -121,13 +121,20 @@ def summarize(lines):
         1 for e in events if e.get('type') == 'assistant'
         for block in (e.get('message') or {}).get('content') or []
         if isinstance(block, dict) and block.get('type') == 'tool_use')
-    observe_top_calls = sum(
-        1 for e in events if e.get('type') == 'assistant'
+    observe_top_ids = {
+        block.get('id') for e in events if e.get('type') == 'assistant'
         for block in (e.get('message') or {}).get('content') or []
         if isinstance(block, dict) and block.get('type') == 'tool_use'
         and block.get('name') == ROBOT_TOOL and isinstance(block.get('input'), dict)
         and block['input'].get('op') == 'observe' and isinstance(block['input'].get('views'), list)
-        and 'top' in block['input']['views'])
+        and 'top' in block['input']['views'] and isinstance(block.get('id'), str) and block['id']}
+    observe_top_image_results = sum(
+        1 for e in events if e.get('type') == 'user'
+        for block in (e.get('message') or {}).get('content') or []
+        if isinstance(block, dict) and block.get('type') == 'tool_result'
+        and block.get('tool_use_id') in observe_top_ids and not block.get('is_error')
+        and isinstance(block.get('content'), list)
+        and any(isinstance(item, dict) and item.get('type') == 'image' for item in block['content']))
     if result is None:
         turn = 'unknown'
     elif result.get('is_error') or result.get('subtype') != 'success':
@@ -141,7 +148,8 @@ def summarize(lines):
         'num_turns': (result or {}).get('num_turns'),
         'result_text': ((result or {}).get('result') or '')[:2000],
         'tool_calls': tool_calls,
-        'observe_top_calls': observe_top_calls,
+        'observe_top_calls': len(observe_top_ids),
+        'observe_top_image_results': observe_top_image_results,
         'usage': (result or {}).get('usage'),
         'total_cost_usd': (result or {}).get('total_cost_usd'),
         'malformed_lines': malformed,

@@ -82,6 +82,19 @@ class ClaudeRunnerTests(unittest.TestCase):
         self.assertEqual(summarize([json.dumps({'type': 'result', 'subtype': 'error_max_turns', 'is_error': True})])['turn_status'], 'failed')
         self.assertEqual(summarize([])['turn_status'], 'unknown')
 
+    def test_image_evidence_must_match_the_observe_tool_call(self):
+        call={'type':'assistant','message':{'content':[{'type':'tool_use','id':'wanted',
+              'name':'mcp__robot__robot','input':{'op':'observe','views':['top']}}]}}
+        result={'type':'user','message':{'content':[{'type':'tool_result','tool_use_id':'other',
+                'content':[{'type':'image'}]}]}}
+        def summary(): return summarize([json.dumps(call),json.dumps(result)])
+        self.assertEqual(summary()['observe_top_calls'],1)
+        self.assertEqual(summary()['observe_top_image_results'],0)
+        result['message']['content'][0]['tool_use_id']='wanted'
+        self.assertEqual(summary()['observe_top_image_results'],1)
+        result['message']['content'][0]['is_error']=True
+        self.assertEqual(summary()['observe_top_image_results'],0)
+
     def test_run_records_events_env_and_tool_use_with_fake_cli(self):
         with tempfile.TemporaryDirectory() as tmp:
             run = Path(tmp) / 'run'; run.mkdir()

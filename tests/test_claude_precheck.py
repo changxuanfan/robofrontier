@@ -29,6 +29,8 @@ elif prompt.startswith("Without calling"):
     answer = "%s"
 print(json.dumps({"type": "assistant", "session_id": session, "message": {"content": [
     {"type": "tool_use", "id": "t", "name": "mcp__robot__robot", "input": {"op":"observe","data":{},"views":["top"]}}] if tool else []}}))
+if tool:
+    print(json.dumps({"type":"user","message":{"content":[{"type":"tool_result","tool_use_id":"t","content":[{"type":"image"}]}]}}))
 print(json.dumps({"type": "result", "subtype": "success", "is_error": False, "session_id": session,
                   "num_turns": 1, "result": answer, "total_cost_usd": 0.01, "usage": {"input_tokens": 1}}))
 '''
