@@ -1,5 +1,6 @@
 """Headless GPT-6 Luna benchmark entrypoint; no LLM supervisor required."""
 import argparse
+import hashlib
 from collections import deque
 from datetime import datetime
 import json
@@ -7,6 +8,8 @@ import math
 import os
 from pathlib import Path
 import platform
+import re
+import shutil
 import sqlite3
 import subprocess
 import sys
@@ -22,6 +25,13 @@ def cpu_environment():
                LIBGL_ALWAYS_SOFTWARE='true', GALLIUM_DRIVER='llvmpipe',
                CUDA_VISIBLE_DEVICES='')
     return env
+
+
+def batch_codex_home(batch):
+    path = Path(batch).absolute()
+    label = ''.join(c if c.isalnum() or c in '-_' else '_' for c in path.name)[:48] or 'batch'
+    identity = hashlib.sha256(str(path).encode()).hexdigest()[:12]
+    return ROOT/'.codex-luna'/f'{label}-{identity}'
 
 
 def sandbox_probe(env):
@@ -120,6 +130,61 @@ def usage_report(batch_path):
             'jobs': result}
 
 
+def collect_batch(batch_path, output):
+    """Copy closed batch evidence and role-linked sessions to a private directory."""
+    batch_path = Path(batch_path).resolve()
+    output = Path(output).resolve()
+    if output == batch_path or output.is_relative_to(batch_path):
+        raise ValueError('Collection output must be outside the batch directory')
+    batch = json.loads((batch_path/'batch.json').read_text())
+    if batch.get('status') not in ('closed', 'needs_review'):
+        raise ValueError('Collect only after the batch supervisor has closed')
+    home_marker = batch_path/'codex-home.json'
+    home = Path(json.loads(home_marker.read_text())['codex_home']) if home_marker.exists() else Path(os.environ.get('CODEX_HOME', Path.home()/'.codex'))
+    sessions = home/'sessions'
+    output.mkdir(parents=True, exist_ok=False, mode=0o700)
+    shutil.copytree(batch_path, output/'batch')
+    rows=[]
+    for job in batch['jobs']:
+        run=Path(job['run_directory']); db=run/'private/state/runtime.sqlite'; roles=[]; issues=[]
+        if not db.is_file():
+            issues.append('missing runtime.sqlite')
+        else:
+            with sqlite3.connect(f'file:{db}?mode=ro', uri=True) as conn:
+                agents=conn.execute('select id,value from agents').fetchall()
+            for actor, value in agents:
+                agent=json.loads(value); tid=agent.get('thread_id')
+                if not tid:
+                    if agent.get('kind') != 'manager': issues.append(f'{actor}: no recorded session id')
+                    continue
+                if not re.fullmatch(r'[A-Za-z0-9_-]+', tid) or not re.fullmatch(r'[A-Za-z0-9_-]+', job['case_id']):
+                    issues.append(f'{actor}: invalid session or case identifier'); continue
+                matches=list(sessions.rglob('*'+tid+'.jsonl')) if sessions.is_dir() else []
+                if len(matches)!=1:
+                    issues.append(f'{actor}: expected one session for {tid}, found {len(matches)}')
+                    roles.append({'actor':actor,'thread_id':tid,'matches':len(matches)})
+                    continue
+                target=output/'sessions'/job['case_id']/(tid+'.jsonl')
+                target.parent.mkdir(parents=True,exist_ok=True)
+                shutil.copy2(matches[0], target)
+                with target.open('rb') as stream:
+                    checksum=hashlib.file_digest(stream,'sha256').hexdigest()
+                roles.append({'actor':actor,'thread_id':tid,'session':str(target.relative_to(output)),
+                              'sha256':checksum})
+        if not roles: issues.append('no recorded role sessions')
+        results=run/'private/outputs'
+        if not any((results/name).is_file() for name in ('evaluation.json','interruption-evaluation.json','budget-cutoff.json')):
+            issues.append('no final or interruption evaluation')
+        if job.get('status') != 'closed': issues.append('job status: '+str(job.get('status')))
+        rows.append({'case_id':job['case_id'],'status':job.get('status'),'roles':roles,'issues':issues})
+    report={'schema':'robofrontier.luna-collection.v1','batch_status':batch['status'],
+            'source_batch':str(batch_path),'job_count':len(rows),'jobs':rows,
+            'complete':bool(rows) and not any(row['issues'] for row in rows),
+            'note':'Private task evidence and sessions; completeness checks do not prove score validity.'}
+    (output/'collection.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+    return report
+
+
 def interval_union(intervals):
     total = 0.; end = None
     for start, stop in sorted(intervals):
@@ -172,20 +237,48 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
     sub.add_parser('doctor')
-    sub.add_parser('preflight')
+    preflight = sub.add_parser('preflight')
+    preflight.add_argument('--output', type=Path, help='Use the isolated Codex home for this future batch')
+    assets = sub.add_parser('setup-assets')
+    assets.add_argument('--archive', type=Path)
+    collect = sub.add_parser('collect')
+    collect.add_argument('batch', type=Path)
+    collect.add_argument('--output', type=Path, required=True)
     for command in ('prepare', 'submit'):
         prepare = sub.add_parser(command)
         prepare.add_argument('--output', type=Path, required=True)
-        prepare.add_argument('--level', type=int, choices=(1, 2, 3), default=1)
+        selection = prepare.add_mutually_exclusive_group()
+        selection.add_argument('--level', type=int, choices=(1, 2, 3), default=None)
+        selection.add_argument('--all-levels', action='store_true', help='Select all three levels (36 cases without other filters)')
         prepare.add_argument('--min-arms', action='store_true')
         prepare.add_argument('--families', nargs='+', choices=('transport', 'mosaic', 'relay', 'dial'))
-        prepare.add_argument('--wall-limit-s', type=float, default=600)
-        if command == 'submit': prepare.add_argument('--parallel', type=int, default=4)
+        prepare.add_argument('--wall-limit-s', type=float, default=86400)
+        if command == 'submit': prepare.add_argument('--parallel', type=int, default=36)
     for command in ('run', 'status', 'stop', 'usage', 'performance'):
         p = sub.add_parser(command); p.add_argument('batch', type=Path)
-        if command == 'run': p.add_argument('--parallel', type=int, default=4)
+        if command == 'run': p.add_argument('--parallel', type=int, default=36)
     args = parser.parse_args()
     load_env(ROOT/'.env')
+    if args.command == 'setup-assets':
+        from scripts.benchmark_handoff import setup_assets
+        print(json.dumps(setup_assets(archive_path=args.archive), ensure_ascii=False, indent=2))
+        return 0
+    if args.command == 'collect':
+        report = collect_batch(args.batch, args.output)
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+        return 0 if report['complete'] else 1
+    batch = args.output if args.command in ('prepare', 'submit', 'preflight') else getattr(args, 'batch', None)
+    # Legacy batches have no marker and retain the caller's existing CODEX_HOME.
+    marker = Path(batch)/'codex-home.json' if batch else None
+    if batch and args.command in ('prepare', 'submit', 'preflight'):
+        home = batch_codex_home(batch)
+    elif marker and marker.is_file():
+        home = Path(json.loads(marker.read_text())['codex_home'])
+    else:
+        home = None
+    if home is not None:
+        home.mkdir(parents=True, exist_ok=True, mode=0o700)
+        os.environ['CODEX_HOME'] = str(home)
     env = cpu_environment()
     if args.command == 'doctor':
         from scripts.benchmark_handoff import doctor
@@ -220,13 +313,16 @@ def main():
     if args.command == 'preflight': cmd += ['--models', 'luna']
     elif args.command in ('prepare', 'submit'):
         if not math.isfinite(args.wall_limit_s) or args.wall_limit_s <= 0: raise SystemExit('Wall limit must be positive and finite.')
-        cmd += ['--models', 'luna', '--level', str(args.level), '--wall-limit-s', str(args.wall_limit_s), '--output', str(args.output)]
+        cmd += ['--models', 'luna', '--wall-limit-s', str(args.wall_limit_s), '--output', str(args.output)]
+        if args.level is not None: cmd += ['--level', str(args.level)]
         if args.min_arms: cmd += ['--min-arms']
         if args.families: cmd += ['--families', *args.families]
     else:
         cmd += [str(args.batch)]
         if args.command == 'run': cmd += ['--parallel', str(args.parallel)]
     result = subprocess.call(cmd, cwd=ROOT, env=env)
+    if result == 0 and args.command in ('prepare', 'submit'):
+        (Path(args.output)/'codex-home.json').write_text(json.dumps({'codex_home': str(home)}, indent=2)+'\n')
     if result == 0 and args.command == 'submit':
         result = subprocess.call([sys.executable, '-m', 'scripts.benchmark', 'run', str(args.output),
                                   '--parallel', str(args.parallel)], cwd=ROOT, env=env)

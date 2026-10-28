@@ -6,11 +6,56 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from scripts.benchmark import profile, launch_config
-from scripts.luna_cpu import cpu_environment, interval_union, usage_report
+from scripts.benchmark import profile, launch_config, select_cases
+from scripts.luna_cpu import cpu_environment, interval_union, usage_report, collect_batch, main
 
 
 class LunaCpuTests(unittest.TestCase):
+    def test_collect_copies_controller_and_delegate_and_detects_missing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp); batch=root/'batch'; run=batch/'luna/demo'; state=run/'private/state'
+            state.mkdir(parents=True); outputs=run/'private/outputs'; outputs.mkdir()
+            (outputs/'evaluation.json').write_text('{}')
+            with sqlite3.connect(state/'runtime.sqlite') as conn:
+                conn.execute('create table agents(id text,value text)')
+                conn.executemany('insert into agents values (?,?)', [('controller',json.dumps({'thread_id':'parent'})),
+                                                                  ('delegate',json.dumps({'thread_id':'child'}))])
+            (batch/'batch.json').write_text(json.dumps({'status':'closed','jobs':[{'case_id':'demo','status':'closed','run_directory':str(run)}]}))
+            home=root/'home'; sessions=home/'sessions/2026'; sessions.mkdir(parents=True)
+            (batch/'codex-home.json').write_text(json.dumps({'codex_home':str(home)}))
+            (sessions/'rollout-parent.jsonl').write_text('{}\n')
+            report=collect_batch(batch, root/'missing')
+            self.assertFalse(report['complete'])
+            (sessions/'rollout-child.jsonl').write_text('{}\n')
+            report=collect_batch(batch, root/'complete')
+            self.assertTrue(report['complete'])
+            self.assertTrue((root/'complete/sessions/demo/child.jsonl').is_file())
+            self.assertTrue((root/'complete/batch/luna/demo/private/outputs/evaluation.json').is_file())
+
+    def test_all_levels_passes_no_level_filter_and_selects_36_cases(self):
+        self.assertEqual(len(select_cases()), 36)
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {}, clear=False):
+            output = Path(tmp)/'batch'; output.mkdir()
+            with patch('sys.argv', ['luna_cpu', 'prepare', '--output', str(output), '--all-levels']), \
+                 patch('scripts.luna_cpu.ROOT', Path(tmp)), patch('scripts.luna_cpu.load_env'), \
+                 patch('scripts.luna_cpu.subprocess.call', return_value=0) as call:
+                self.assertEqual(main(), 0)
+            command = call.call_args.args[0]
+            self.assertNotIn('--level', command)
+            self.assertIn('luna', command)
+
+    def test_default_prepare_selects_all_levels_and_uses_isolated_home(self):
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {}, clear=False):
+            output = Path(tmp)/'batch'; output.mkdir()
+            with patch('sys.argv', ['luna_cpu', 'prepare', '--output', str(output)]), \
+                 patch('scripts.luna_cpu.ROOT', Path(tmp)), patch('scripts.luna_cpu.load_env'), \
+                 patch('scripts.luna_cpu.subprocess.call', return_value=0) as call:
+                self.assertEqual(main(), 0)
+            command = call.call_args.args[0]
+            self.assertNotIn('--level', command)
+            self.assertEqual(command[command.index('--wall-limit-s') + 1], '86400')
+            self.assertIn('.codex-luna', json.loads((output/'codex-home.json').read_text())['codex_home'])
+
     def test_parallel_intervals_are_not_double_counted(self):
         self.assertEqual(interval_union([(0, 4), (2, 6), (7, 9), (8, 10)]), 9)
 
