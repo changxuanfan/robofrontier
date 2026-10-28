@@ -16,6 +16,7 @@ vendor/
 /.env
 /.env.*
 !/.env.example
+!/.env.claude.example
 # Large environment assets/previews are materialized per worktree.
 /configs/environments/**/assets/
 /configs/environments/**/preview-*.png

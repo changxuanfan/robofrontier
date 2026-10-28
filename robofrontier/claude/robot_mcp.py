@@ -1,0 +1,125 @@
+"""Experimental role-bound MCP stdio server; not yet qualified for scored runs."""
+import argparse
+import base64
+from concurrent.futures import ThreadPoolExecutor
+import json
+from pathlib import Path
+import sys
+import threading
+import uuid
+
+from robofrontier.pipeline_client import client_call
+
+TOOL = {
+    'name': 'robot',
+    'description': 'Call the robot API bound to this role. Selected camera views are returned as images. Preserve call_id for uncertain operations.',
+    'inputSchema': {'type': 'object', 'properties': {
+        'op': {'type': 'string'}, 'data': {'type': 'object'},
+        'call_id': {'type': 'string'}, 'views': {'type': 'array', 'items': {'type': 'string'}}},
+        'required': ['op', 'data'], 'additionalProperties': False},
+}
+# Administrative methods are never made available through the policy connection.
+POLICY_OPS = frozenset(('ready', 'robot_model', 'check_motion', 'send', 'inbox', 'wait_events',
+                        'history', 'work', 'delegate', 'return_task', 'team', 'checkpoint', 'yield',
+                        'observe', 'stop', 'move', 'gripper', 'action_batch', 'job', 'finish', 'pending'))
+STABLE_ID_OPS = frozenset(('move', 'gripper', 'action_batch', 'delegate', 'stop'))
+
+
+class RobotBridge:
+    def __init__(self, run, connection, invoke=client_call):
+        self.run = Path(run).resolve()
+        self.connection = Path(connection).resolve()
+        expected_dir = (self.run / 'private/state/connections').resolve()
+        if self.connection.parent != expected_dir or not self.connection.is_file():
+            raise ValueError('Role connection must be in this run')
+        config = json.loads(self.connection.read_text())
+        if config.get('actor') in (None, 'Meta') or self.connection.stem != config['actor']:
+            raise ValueError('Expected a policy role connection')
+        if config.get('run_id') != self.run.name:
+            raise ValueError('Role connection belongs to a different run')
+        self.invoke = invoke
+
+    def call(self, args):
+        if not isinstance(args, dict) or set(args) - {'op', 'data', 'call_id', 'views'}:
+            raise ValueError('Invalid robot arguments')
+        op, data = args.get('op'), args.get('data')
+        views = args.get('views', [])
+        if op not in POLICY_OPS or not isinstance(data, dict):
+            raise ValueError('Unknown or administrative robot operation')
+        if not isinstance(views, list) or not all(isinstance(v, str) and v for v in views):
+            raise ValueError('views must be an array of camera names')
+        call_id = args.get('call_id')
+        if op in STABLE_ID_OPS and (not isinstance(call_id, str) or not call_id):
+            raise ValueError('Provide a stable call_id for this operation')
+        call_id = call_id or uuid.uuid4().hex
+        if op in ('move', 'gripper', 'action_batch') and 'cameras' not in data:
+            data = {**data, 'cameras': views}
+        try:
+            result = self.invoke(self.connection, op, data, call_id, log_call_id=False)
+        except Exception:
+            return {'isError': True, 'content': [{'type': 'text', 'text':
+                'Tool transport failed. Original call_id=' + str(call_id) +
+                '. Inspect pending/job with this ID before retrying; never recreate motion.'}]}
+        content = [{'type': 'text', 'text': json.dumps(result, ensure_ascii=False, allow_nan=False)}]
+        observation = result.get('observation') or (result.get('original_result') or {}).get('observation') or {}
+        for view in views:
+            name = observation.get('images', {}).get(view)
+            if not name:
+                content.append({'type': 'text', 'text': 'Selected view unavailable: ' + view})
+                continue
+            image = Path(name).resolve()
+            public = (self.run / 'public').resolve()
+            if not image.is_relative_to(public) or not image.is_file():
+                raise ValueError('Observation image is outside this run public directory')
+            data_bytes = image.read_bytes()
+            if not data_bytes.startswith(b'\x89PNG\r\n\x1a\n'):
+                raise ValueError('Observation is not a PNG image')
+            content.append({'type': 'image', 'data': base64.b64encode(data_bytes).decode('ascii'), 'mimeType': 'image/png'})
+        return {'content': content}
+
+
+def handle(request, bridge):
+    method = request.get('method')
+    params = request.get('params') or {}
+    if method == 'initialize':
+        return {'protocolVersion': params.get('protocolVersion', '2025-03-26'),
+                'capabilities': {'tools': {}}, 'serverInfo': {'name': 'robofrontier-robot', 'version': '0.1.0-dev'}}
+    if method == 'ping': return {}
+    if method == 'tools/list': return {'tools': [TOOL]}
+    if method == 'tools/call':
+        if params.get('name') != 'robot': raise ValueError('Unknown tool')
+        return bridge.call(params.get('arguments'))
+    raise ValueError('Unknown MCP method')
+
+
+def serve(bridge):
+    lock = threading.Lock()
+    def reply(request):
+        if 'id' not in request: return
+        try:
+            response = {'jsonrpc': '2.0', 'id': request['id'], 'result': handle(request, bridge)}
+        except Exception as error:
+            response = {'jsonrpc': '2.0', 'id': request['id'], 'error': {'code': -32603, 'message': str(error)}}
+        with lock:
+            print(json.dumps(response, ensure_ascii=False), flush=True)
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        for line in sys.stdin:
+            try:
+                request = json.loads(line)
+                if not isinstance(request, dict): continue
+                pool.submit(reply, request)
+            except json.JSONDecodeError:
+                with lock:
+                    print(json.dumps({'jsonrpc': '2.0', 'id': None,
+                                      'error': {'code': -32700, 'message': 'Parse error'}}), flush=True)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--run-dir', type=Path, required=True)
+    parser.add_argument('--connection', type=Path, required=True)
+    args = parser.parse_args()
+    serve(RobotBridge(args.run_dir, args.connection))
+
+
+if __name__ == '__main__': main()
