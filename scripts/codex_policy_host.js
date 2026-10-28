@@ -111,10 +111,10 @@ class PolicyHost {
   }
   bootstrap(actor) {
     return `执行新的独立 RoboFrontier 试验。运行目录：${this.run}。当前身份 ${actor}。
-先读取本 run 的 public/inputs/common.md、task.json、roles/${actor}.md、skill/SKILL.md、skill/references/tools.md、communication.md 与 adaptive.md（仅 adaptive）。只读取本任务公开输入、自己的工作笔记和被允许的图像。
+先读取本 run 的 public/inputs/common.md、policy-rules.md、task.json、roles/${actor}.md、skill/SKILL.md、skill/references/tools.md、communication.md 与 adaptive.md（仅 adaptive）。只读取本任务公开输入、自己的工作笔记和被允许的图像。
 CLI 传输说明：使用本会话的 robot 工具，op/data 与冻结 Skill 的角色 API 完全相同；call_id 为你选择的稳定编号，views 明确选择本次返回的相机图像。robot 工具自动绑定自己的连接，返回完整 JSON 和真实 RGB。它等价于 Desktop 的 robotTool，无需装载 functions.exec 或 role_tools.js。做本地图像分析等非机器人工作后，用 robot inbox 刷新收件，等价于 roleStep。路径不是看过图片。
 实验已经 START，计时已开始。先阅读任务并查看公开初始图或 robot observe，然后自行决定计划和机器人动作。可调用 robot ready 获取能力与限制，调用后继续执行，不需要等待另一条 START。任务内可按 adaptive 规则通过 robot delegate 请求 fork；不要直接管理会话。
-本次评分版本 terminal_outcome_v2：最终目标状态决定任务是否完成；碰撞、掉落和交接等过程事件单独记录。发生问题后可自行观察、恢复并继续。Relay 的最终目标是实际释放并支撑在 GOAL 容差内，空中交接记录不作为最终完成门槛。
+本次评分版本 terminal_outcome_v2：完成由当前任务公布的条件决定；任务支持的过程事件按各自检测规则单独报告，记录不自动否决完成。发生问题后可自行观察、恢复并继续。Relay 的最终目标是实际释放并支撑在 GOAL 容差内，空中交接记录不作为最终完成门槛。
 从 START 起最多 ${this.wallLimit} 秒，包括思考、通信、fork、容量等待与动作。收到 run_ended/预算结束立即停止新工作。结束只由任务规则和真实工具结果判断。
 不读取 Oracle、其他试验、私有场景/XML、私有评估或工程源码；不修改代码、物理或 harness，不重启世界；不从工程主会话继承答案。自己的连接仅用于认证。所有经验仅属于本次 run。`;
   }

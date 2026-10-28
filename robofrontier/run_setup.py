@@ -76,6 +76,7 @@ def prepare_run(directory, task_path=None, harness_path=None, private_puzzle_pat
     templates = ROOT/'prompts'
     common = (templates/'common.md').read_text().replace('{{RUN_DIR}}',str(directory))
     (directory/'public/inputs/common.md').write_text(common)
+    shutil.copyfile(templates/'policy-rules.md', directory/'public/inputs/policy-rules.md')
     shutil.copytree(ROOT/'.agents/skills/robot-collaboration', directory/'public/inputs/skill')
     shutil.copy2(ROOT/'scripts/role_tools.js', directory/'public/inputs/role_tools.js')
     runbook=(ROOT/'docs/meta-runbook.md').read_text()

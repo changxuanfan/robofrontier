@@ -2,7 +2,8 @@
 
 Read this case's task.json and task-guide.md before interpreting the display or
 planning a manipulation. Their rules, geometry and completion criteria describe
-the current case. READY supplies the actual tool capabilities and command bounds.
+the current case. The optional robot `ready` tool supplies tool capabilities and
+command bounds. It is distinct from the dial apparatus READY indicator below.
 Before assessing table-edge or ring-cutout clearance, read the geometry reference
 in task.static_workstation. Use task.camera_calibration when relating views to the
 common frame. These files describe static geometry and cameras; track objects

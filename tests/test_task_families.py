@@ -84,6 +84,9 @@ class FamilyReleaseTests(unittest.TestCase):
                 if 'initial_reference_images' in public:
                     self.assertTrue(all((run/'public/inputs'/name).is_file() for name in public['initial_reference_images']))
                 self.assertTrue((run/'public/inputs'/public['family_guidance']).is_file())
+                rules=(run/'public/inputs/policy-rules.md').read_text()
+                self.assertIn('`ready` tool is optional',rules)
+                self.assertIn('Delegation is optional',rules)
                 self.assertFalse(any(p.name in ('private-code.json', 'actions.json', 'process.jsonl')
                                      for p in (run/'public').rglob('*')))
                 material = run/'public/inputs'/public['family_guidance']
