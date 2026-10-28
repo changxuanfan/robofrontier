@@ -113,6 +113,11 @@ published `handoff-20261028` asset archive, verified its SHA-256 and restored
 all four frozen-input checks returned no changes. The Claude test suite ran
 104 tests successfully with two opt-in physical tests skipped. The clone came
 from the local branch, not GitHub, and no real provider or scored run was tested.
+The same clone subsequently passed the opt-in four-way physical smoke: four
+distinct MuJoCo owners overlapped, camera images reached a synthetic loopback
+model, each delegate completed its synthetic motion and returned control, and
+all four worlds sealed. This is an engineering integration check, not evidence
+of real model capability or scored benchmark qualification.
 
 ## 接手进度：离线策略主机开发
 
