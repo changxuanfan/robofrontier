@@ -1,4 +1,5 @@
 import json
+import multiprocessing
 from pathlib import Path
 import tempfile
 import threading
@@ -95,6 +96,35 @@ class BatchTests(unittest.TestCase):
         (self.root/'engineering-supervisor.lock').touch()
         self.assertEqual(status_batch(self.root)['status'], 'supervisor_lost_needs_review')
         self.assertFalse(status_batch(self.root)['supervisor_live'])
+
+    def test_real_supervisor_process_loss_preserves_claim_and_does_not_replay(self):
+        ctx = multiprocessing.get_context('fork')
+        entered = ctx.Event()
+        def runner(*args, **kwargs):
+            entered.set()
+            time.sleep(30)
+            return {'status':'finished', 'reason':'world_ended'}
+        process = ctx.Process(target=self.run_case, args=(runner, 1))
+        process.start()
+        try:
+            self.assertTrue(entered.wait(10), 'Test supervisor did not start its fake job')
+            self.assertTrue(status_batch(self.root)['supervisor_live'])
+            process.terminate()
+            process.join(10)
+            self.assertFalse(process.is_alive())
+            status = status_batch(self.root)
+            self.assertEqual(status['status'], 'supervisor_lost_needs_review')
+            self.assertFalse(status['supervisor_live'])
+            self.assertTrue((self.root/'engineering-claim.json').exists())
+            self.assertEqual(status['jobs'][0]['status'], 'starting')
+            self.assertTrue(stop_batch(self.root)['stop_requested'])
+            with self.assertRaisesRegex(ValueError, 'never restart'):
+                self.run_case(lambda *a, **k: self.fail('unexpected launch'))
+        finally:
+            if process.is_alive():
+                process.kill()
+                process.join(10)
+            process.close()
 
     def test_claim_without_status_needs_review_and_cannot_restart(self):
         (self.root/'engineering-claim.json').write_text('{}')
