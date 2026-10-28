@@ -1,24 +1,25 @@
 # Codex 到 Claude Code：对照表与迁移状态
 
-状态日期：2026-10-28。本文记录 Codex 路线每个环节在 Claude 路线中的对应物、已实现的
-共享中立接口，以及阶段 2–4 必须遵守的已验证事实。所有验证均离线：本地假模型端点、
-假机器人服务、锁定的 Claude Code CLI 2.1.312，没有调用任何厂商 API。
+状态日期：2026-10-28。本文记录 Codex 路线每个环节在 Claude 路线中的对应物及
+迁移限制。表格反映当前工程实现；后文阶段记录包含当时的历史状态。真实 Haiku
+预检曾单独通过；多角色、并发和物理验证使用本机假模型，并不代表真实服务商通过。
+完整的当前状态和边界以 [Claude 交接文档](claude-handoff.md) 为准。
 
 ## 1. 环节对照
 
 | 环节 | Codex 路线 | Claude 路线 | 状态 |
 | --- | --- | --- | --- |
-| 模型与厂商配置 | `configs/models.json`、`launch_config` 生成 `codex.json` | `configs/claude-models.json`、`scripts/claude_benchmark.py` | profile 与 doctor、plan、prepare-draft 已有；可运行的 prepare 待做 |
+| 模型与厂商配置 | `configs/models.json`、`launch_config` 生成 `codex.json` | `configs/claude-models.json`、`scripts/claude_benchmark.py` | doctor、plan、工程草稿；正式准备与真实模型资格尚未完成 |
 | 任务选择与冻结 | `benchmark.select_cases`、`prepare` | 同一套 `select_cases`、`prepare`；harness 增加 `engine: claude` | 共享层已支持 `engine`（阶段 1） |
 | 单个策略回合 | Codex app-server 的 `turn/start` | `claude -p`，`robofrontier/claude/runner.py` | 已有，离线测试通过 |
-| 机器人工具 | app-server dynamic tool `robot` | 角色绑定 MCP `robofrontier/claude/robot_mcp.py` | 已有，未经多角色验证 |
-| 每任务策略主机 | `scripts/codex_policy_host.js` | 待建 `scripts/claude_policy_host.js` | 阶段 2 |
-| 调度循环 | `scripts/meta_dispatcher.js`（原写死 Codex 工具名） | 同一文件，经中立适配器 | 适配器已完成（阶段 1），含 24 个 Node 场景 |
+| 机器人工具 | app-server dynamic tool `robot` | 角色绑定 MCP `robofrontier/claude/robot_mcp.py` | 多角色工程路径已用本地模拟模型和物理世界验证；真实厂商未验证 |
+| 每任务策略主机 | `scripts/codex_policy_host.js` | `robofrontier/claude/policy_host.py`、`adaptive_policy_host.py` | 实验性 centralized 与 adaptive 主机 |
+| 调度循环 | `scripts/meta_dispatcher.js` | Claude 的 `dispatch.py`、`adaptive_dispatch.py` | 实验性独立调度；共享 Node 适配器也存在，但不是 Claude 工程主机的运行入口 |
 | 会话状态来源 | `codex.wait_threads`、`codex.app-server` | `claude.host` | `SESSION_SOURCES` 按 engine 限定（阶段 1） |
 | fork 历史一致性 | `runtime_cli.fork_provenance`：`CODEX_HOME` 中的 ordinal 与前缀哈希 | `robofrontier/claude/provenance.py`：转录行的 uuid 序列与内容 | 前缀比较已离线验证，不独立证明来源或权限 |
-| 冻结源文件 | `benchmark.py` 与 `codex_*.js` | `claude_benchmark.py` 与 `claude_policy_host.js`，按 engine 选择 | 已完成（阶段 1） |
-| 监督命令 | `benchmark.py` 的 preflight、run、status、stop | `claude_benchmark.py` 与 `claude_precheck.py` | 预检已有；run、status、stop 待做（阶段 3） |
-| 交接 doctor | `benchmark_handoff.doctor` 要求 `codex` | 待按 engine 区分 | 阶段 6 |
+| 冻结源文件 | `benchmark.py` 与 `codex_*.js` | `claude_benchmark.py`、模型配置及 `robofrontier` Python 源码 | 工程草稿冻结和校验，仍非正式运行资格 |
+| 监督命令 | `benchmark.py` 的 preflight、run、status、stop | `claude_benchmark.py`、`claude_precheck.py` | 工程 run/status/stop 与预检已有；正式计分入口未开放 |
+| 交接 doctor | `benchmark_handoff.doctor` 要求 `codex` | `claude_benchmark doctor` | 只做离线检查，不能证明真实模型或账号可用 |
 
 ## 2. 阶段 1 引入的共享约定
 
@@ -56,6 +57,8 @@
 
 ## 4. 基线测试
 
+以下为早期阶段基线记录，不代表当前资产或最新测试结果。
+
 在本工作树运行（沙箱下 Bash 不能写入工作树，因此设置 `PYTHONDONTWRITEBYTECODE=1`）：
 
 ```sh
@@ -70,6 +73,9 @@ node tests/test_meta_dispatcher.cjs
 需要先按 `docs/multimodel-handoff.md` 恢复运行资产，与本次迁移无关。
 
 ## 5. 接手后发现的 fork 限制
+
+以下记录最初发现的问题；随后实现了下文所述的实验性内部委派路径，通用入口及
+正式计分入口仍保持关闭。
 
 Claude 转录的前缀比较证明内容匹配，不能独立证明该子会话由可信宿主在特定时刻
 通过原生 fork 创建，亦不能证明子角色 MCP 权限已正确绑定。`delegate-bind` 对

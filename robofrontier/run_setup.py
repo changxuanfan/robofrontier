@@ -14,7 +14,7 @@ from .task_config import ROOT, load_task, load_harness, public_task,physical_con
 
 ENGINE_SCRIPTS = {
     'codex': ('benchmark.py', 'codex_rpc.js', 'codex_policy_host.js', 'codex_preflight.js'),
-    'claude': ('claude_benchmark.py', 'claude_policy_host.js'),
+    'claude': ('claude_benchmark.py',),
 }
 
 

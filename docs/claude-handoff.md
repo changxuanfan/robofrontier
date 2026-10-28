@@ -182,10 +182,10 @@ of real model capability or scored benchmark qualification.
 启动、批次、停止和封存代码，**尚未完成正式 runner 的实际环境验证**。
 
 Claude CLI 2.1.312 使用本地假服务通过了角色会话启动、工具图片返回和续接测试；
-这些不是模型能力或厂商兼容验证。任务世界丢失、进程崩溃后的监督恢复和真实物理
-集成也尚未通过端到端测试。Claude adaptive 委派在 runtime 中明确禁用：转录前缀
-相同只是历史匹配证据，不能单独证明原生 fork 创建过程或角色授权，必须先完成可信
-绑定验证才可开放。Codex 的现有委派入口不受此限制。
+这些不是模型能力或厂商兼容验证。任务世界丢失和进程崩溃后的监督恢复仍未完成
+端到端验证。Claude 的通用 `delegate-bind` 入口保持禁用；实验性的内部 adaptive
+委派已连接并经过本机模拟模型和 MuJoCo 烟雾测试。转录前缀相同只是历史匹配证据，
+不能单独证明原生 fork 创建过程或角色授权。Codex 的现有委派入口不受此限制。
 
 Claude 工程草稿现会在 harness 与 manifest 均标记 `engine: claude`，但仍是
 `prepared_not_qualified`，不可用于正式运行。上一个会话报告的两组测试因缺失的旧
