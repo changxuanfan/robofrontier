@@ -2,8 +2,8 @@
 
 The host states the startup protocol. Under direct start, the experiment and
 clock have already started when the Controller receives its first task prompt.
-The `ready` tool is optional: use it to query robot capabilities and limits,
-then continue without waiting for another START.
+In direct-start runs the `ready` tool is optional: use it to query robot
+capabilities and limits, then continue without waiting for another START.
 
 The Controller owns overall progress and may directly control its robots or
 request bounded delegates. Delegation is optional. A delegate operates within
@@ -18,5 +18,6 @@ change runtime physics. When an action outcome is uncertain, inspect its
 original call ID before choosing any continuation; do not replay that action.
 
 Completion follows the current task's stated completion conditions. Supported
-process events are reported according to the task's detection rules; a
-recorded process event does not by itself veto terminal outcome scoring.
+process events are reported according to the task's detection rules. Under
+terminal outcome scoring, a recorded process event does not by itself veto
+completion.
