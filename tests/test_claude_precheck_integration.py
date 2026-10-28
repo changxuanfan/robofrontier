@@ -32,6 +32,9 @@ class PrecheckModel(StubModel):
 
 @unittest.skipUnless(shutil.which('claude'), 'Claude CLI is not installed')
 class PrecheckIntegrationTests(unittest.TestCase):
+    def setUp(self):
+        color=patch.object(claude_precheck.secrets,'choice',return_value='green')
+        color.start(); self.addCleanup(color.stop)
     def test_precheck_with_native_idle_fork_and_local_fake_provider(self):
         server=http.server.ThreadingHTTPServer(('127.0.0.1',0),PrecheckModel)
         threading.Thread(target=server.serve_forever,daemon=True).start()

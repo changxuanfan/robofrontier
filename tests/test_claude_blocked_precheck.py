@@ -9,11 +9,15 @@ import unittest
 from unittest.mock import patch
 
 from scripts import claude_blocked_precheck as check
+from scripts import claude_precheck
 from test_claude_precheck_integration import PrecheckModel
 
 
 @unittest.skipUnless(shutil.which('claude'),'Claude CLI is not installed')
 class BlockedPrecheckTests(unittest.TestCase):
+    def setUp(self):
+        color=patch.object(claude_precheck.secrets,'choice',return_value='green')
+        color.start(); self.addCleanup(color.stop)
     def test_real_cli_against_loopback_model_preserves_blocked_fork(self):
         server=http.server.ThreadingHTTPServer(('127.0.0.1',0),PrecheckModel)
         threading.Thread(target=server.serve_forever,daemon=True).start()

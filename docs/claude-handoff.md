@@ -108,6 +108,11 @@ cost and per-check results, never key values. A profile passes only if all
 three checks pass within the cap. Bench runs use `opus`, not the Haiku
 precheck profile.
 
+The image color is chosen randomly from six colors for each new precheck; the
+receipt records the chosen color after the checks. A single correct answer can
+still be a lucky guess and does not establish general visual capability. The
+earlier Haiku receipt listed below used a fixed green image.
+
 `--check-fork` adds a fourth paid call: a tool-free native fork of the idle
 session that must recall the image color and have a matching native transcript
 prefix. The receipt includes a profile fingerprint and whether the fork was

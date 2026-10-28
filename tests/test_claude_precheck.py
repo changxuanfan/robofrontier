@@ -40,6 +40,19 @@ def fake_claude(directory, tool_answer='green', recall_answer='green'):
 
 
 class PrecheckTests(unittest.TestCase):
+    def setUp(self):
+        self.color_patch=patch.object(pc.secrets,'choice',return_value='green')
+        self.color_patch.start()
+        self.addCleanup(self.color_patch.stop)
+
+    def test_random_challenge_rejects_a_fixed_green_guess(self):
+        with tempfile.TemporaryDirectory() as tmp, patch.object(pc.secrets,'choice',return_value='red'):
+            binary=fake_claude(tmp)
+            base={'PATH':'/usr/bin:/bin','ANTHROPIC_API_KEY':'fake-key-not-real'}
+            receipt=pc.run_precheck('haiku',Path(tmp)/'out',.5,base,binary=str(binary))
+            self.assertEqual(receipt['challenge_color'],'red')
+            self.assertFalse(receipt['passed'])
+            self.assertFalse(receipt['checks'][1]['checks']['image_color_named'])
     def test_without_confirm_spend_nothing_runs(self):
         with patch.object(sys, 'argv', ['claude_precheck', '--max-budget-usd', '0.5']), \
              patch.object(pc, 'run_precheck') as run:

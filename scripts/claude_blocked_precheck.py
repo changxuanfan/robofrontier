@@ -113,7 +113,7 @@ def run_blocked_precheck(name, output, budget, base_env, *, binary='claude', wai
         receipt['cost_complete']=True
         receipt['checks']['parent_ended']=_ended(parent,session)
         receipt['checks']['parent_used_tool']=parent['summary'].get('tool_calls',0)>=1
-        receipt['checks']['parent_identified_image']=(parent['summary'].get('result_text') or '').strip().lower()=='green'
+        receipt['checks']['parent_identified_image']=(parent['summary'].get('result_text') or '').strip().lower()==server.challenge_color
         receipt['passed']=all(receipt['checks'].values()) and started<=budget
     except Exception as error:
         receipt['error_type']=type(error).__name__
@@ -123,7 +123,7 @@ def run_blocked_precheck(name, output, budget, base_env, *, binary='claude', wai
             cancel.set();worker.join(10)
             if worker.is_alive(): receipt['error_type']='ParentStillActive';receipt['passed']=False
         server.shutdown();server.server_close()
-    receipt.update(reported_cost_usd=round(started,6),finished_at=time.time())
+    receipt.update(reported_cost_usd=round(started,6),finished_at=time.time(),challenge_color=server.challenge_color)
     (output/'receipt.json').write_text(json.dumps(receipt,indent=2,ensure_ascii=False))
     return receipt
 

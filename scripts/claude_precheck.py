@@ -11,6 +11,7 @@ import http.server
 import json
 import math
 import os
+import secrets
 import subprocess
 import sys
 import threading
@@ -27,8 +28,8 @@ from robofrontier.task_families import ROOT
 from scripts.benchmark import load_env
 from scripts.claude_benchmark import profile
 
-COLOR = (37, 201, 113)
-COLOR_NAME = 'green'
+COLORS = {'red': (220, 35, 35), 'green': (37, 201, 113), 'blue': (35, 60, 220),
+          'yellow': (230, 210, 30), 'black': (10, 10, 10), 'white': (245, 245, 245)}
 MIN_TURN_BUDGET = 0.02
 
 PROMPTS = [
@@ -78,9 +79,11 @@ def setup_run(output, base_env):
     conn.parent.mkdir(parents=True)
     image = run / 'public/observations/top.png'
     image.parent.mkdir(parents=True)
-    Image.new('RGB', (64, 64), COLOR).save(image)
+    color_name = secrets.choice(tuple(COLORS))
+    Image.new('RGB', (64, 64), COLORS[color_name]).save(image)
     World.image = image
     server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), World)
+    server.challenge_color = color_name
     threading.Thread(target=server.serve_forever, daemon=True).start()
     conn.write_text(json.dumps({'run_id': run.name, 'actor': 'Controller', 'schema_version': 3,
                                 'url': f'http://127.0.0.1:{server.server_port}', 'token': 'precheck-local'}))
@@ -92,7 +95,7 @@ def setup_run(output, base_env):
     return run, mcp, server
 
 
-def judge(name, record, requests_before, requests_after, expected_session=None):
+def judge(name, record, requests_before, requests_after, expected_session=None, expected_color='green'):
     summary = record['summary']
     text = (summary.get('result_text') or '').strip().lower()
     checks = {'process_exited': record['process'] == 'exited' and record['exit_code'] == 0,
@@ -105,9 +108,9 @@ def judge(name, record, requests_before, requests_after, expected_session=None):
     elif name == 'tool_image':
         checks['tool_called'] = summary['tool_calls'] >= 1
         checks['robot_request_made'] = requests_after > requests_before
-        checks['image_color_named'] = text == COLOR_NAME
+        checks['image_color_named'] = text == expected_color
     elif name == 'resume':
-        checks['color_recalled'] = text == COLOR_NAME
+        checks['color_recalled'] = text == expected_color
         checks['no_new_robot_call'] = requests_after == requests_before
     return {'name': name, 'passed': all(checks.values()), 'checks': checks,
             'turn_status': summary['turn_status'], 'reported_model': summary['reported_model'],
@@ -139,7 +142,8 @@ def run_precheck(name, output, budget, base_env, binary='claude', check_fork=Fal
                               session_id=session if first else None, timeout=180,
                               max_budget_usd=remaining, binary=binary,
                               resume=None if first else session, events_name=f'{check}.jsonl')
-            result = judge(check, record, before, World.requests, expected_session=session)
+            result = judge(check, record, before, World.requests, expected_session=session,
+                           expected_color=server.challenge_color)
             receipt['checks'].append(result)
             cost = result['cost_usd']
             if isinstance(cost, bool) or not isinstance(cost, (int, float)) or not math.isfinite(cost) or cost <= 0:
@@ -170,7 +174,7 @@ def run_precheck(name, output, budget, base_env, binary='claude', check_fork=Fal
                           'turn_ended':summary.get('turn_status')=='ended',
                           'distinct_expected_session':summary.get('session_id')==child and child!=session,
                           'no_tool_calls':summary.get('tool_calls')==0 and World.requests==before,
-                          'color_recalled':(summary.get('result_text') or '').strip().lower()==COLOR_NAME,
+                          'color_recalled':(summary.get('result_text') or '').strip().lower()==server.challenge_color,
                           'valid_events':summary.get('malformed_lines')==0}
                 try:
                     proof=fork_provenance(session,child,run/'private/claude-config')
@@ -196,7 +200,7 @@ def run_precheck(name, output, budget, base_env, binary='claude', check_fork=Fal
         server.server_close()
     receipt.update(total_cost_usd=round(spent, 6), passed=bool(receipt['checks']) and all(c['passed'] for c in receipt['checks'])
                    and len(receipt['checks']) == len(PROMPTS)+(1 if check_fork else 0), finished_at=time.time(),
-                   fork_checked=check_fork)
+                   fork_checked=check_fork, challenge_color=server.challenge_color)
     (output / 'receipt.json').write_text(json.dumps(receipt, indent=2, ensure_ascii=False))
     return receipt
 
