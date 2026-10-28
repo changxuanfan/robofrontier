@@ -12,9 +12,8 @@ runner and its asset-bundle recovery, not Claude command names or readiness.
 
 ## Claude 分支接手步骤
 
-当前 `codex/claude-code-harness` **尚未发布到 GitHub**，所以现在不能直接从 GitHub
-检出它；下列 clone 命令在该分支发布、接收者获得仓库访问权限后才可用。其他分支
-可能仍使用 Codex 路线，不能把它们当成这个 Claude 分支。
+`codex/claude-code-harness` 已发布在公开 GitHub 仓库，可直接克隆；直接向仓库
+push 仍需要写入权限。其他分支可能仍使用 Codex 路线，不能把它们当成这个 Claude 分支。
 
 ```sh
 git clone --branch codex/claude-code-harness https://github.com/changxuanfan/robofrontier.git robofrontier-claude
@@ -31,13 +30,14 @@ git rev-parse --short HEAD
 claude --version
 uv sync --locked --extra oracle
 mkdir -p ../robofrontier-assets
-gh release download handoff-20261028 --repo changxuanfan/robofrontier --pattern 'policy-assets.tar.gz*' --dir ../robofrontier-assets
+curl -fL -o ../robofrontier-assets/policy-assets.tar.gz https://github.com/changxuanfan/robofrontier/releases/download/handoff-20261028/policy-assets.tar.gz
+curl -fL -o ../robofrontier-assets/policy-assets.tar.gz.sha256 https://github.com/changxuanfan/robofrontier/releases/download/handoff-20261028/policy-assets.tar.gz.sha256
 (cd ../robofrontier-assets && shasum -a 256 -c policy-assets.tar.gz.sha256)
 .venv/bin/python -m scripts.benchmark_handoff restore ../robofrontier-assets/policy-assets.tar.gz
 ```
 
-Linux 可将 `shasum -a 256` 换成 `sha256sum`。没有 `gh` 时可从同仓库的
-`handoff-20261028` Release 下载两个同名资产文件，核对 SHA-256 后执行 restore。
+Linux 可将 `shasum -a 256` 换成 `sha256sum`。上述公开下载不需要 GitHub 登录；
+也可以从同仓库的 `handoff-20261028` Release 页面下载文件，核对 SHA-256 后执行 restore。
 包内资产版本为 R14，Mosaic R15 不在本分支。恢复程序还校验资产清单和文件哈希。
 
 在仓库根目录创建个人 `.env`，以下命令不会覆盖已有文件；只在自己的机器填写

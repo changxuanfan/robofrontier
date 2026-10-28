@@ -7,7 +7,7 @@ Haiku 预检已通过，策略主机、监督命令与委派尚未实现。当�
 
 在 `codex/claude-code-harness` 分支设计可独立运行的 Claude 实验系统。
 基线为 GitHub `codex/multimodel-handoff` 的 `b3259aa817197f9bcb26ed7ccda02229b7c049ca`。
-当前本地 worktree 为 `/Users/fanchangxuan/Repos/roomscript2-worktrees/claude`。
+此计划在独立的 Claude worktree 中实施。
 
 - 实验内部所有策略模型统一通过 Claude Code CLI 运行，包括 Opus 5.5、其他 Claude 模型和国产模型。
 - 最上层工程主 session 可为 Claude Desktop、Claude Code、Codex 或其他有权限执行管理命令的 agent；工程模型不参与策略决策。
