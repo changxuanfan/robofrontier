@@ -1,6 +1,7 @@
 # Claude Code 多模型 Harness 迁移设计
 
-2026-10-28，Asia/Hong_Kong。状态：设计提案，尚未实现或调用模型。
+2026-10-28，Asia/Hong_Kong。状态：设计提案；离线 runner、角色绑定 MCP、预检命令和共享核心中立化已实现，
+Haiku 预检已通过，策略主机、监督命令与委派尚未实现。当前进度见 [Codex 到 Claude 对照表](../claude-codex-parity.md)。
 
 **1. 目标与分支基线**
 

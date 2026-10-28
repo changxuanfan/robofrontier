@@ -49,5 +49,6 @@ fork history against local stub servers. It does not validate real provider imag
 handling, trusted session provenance, dynamic delegation or production physical runs.
 Do not launch it against an actual scored world. The draft prepare command freezes inputs for engineering inspection only; it is
 not a scored or runnable batch. The runner, real-provider preflight, status and
-stop functions for Claude remain to be implemented and qualified.
+stop functions for Claude remain to be implemented and qualified; the Codex-to-Claude
+component map and verified CLI facts are in [claude-codex-parity.md](claude-codex-parity.md).
 Mosaic remains the released R14 scene in this branch.
