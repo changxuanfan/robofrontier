@@ -47,6 +47,9 @@ class CentralizedSupervisor:
                 reason = 'owner_unavailable'
             else:
                 self.policy.bind_and_bootstrap()
+                if self.policy.store.get('lifecycle') == 'running':
+                    # The direct host starts before the first model turn.
+                    started_at = getattr(self.policy, 'started_monotonic', self.clock())
                 while True:
                     if self.stop_requested():
                         reason = 'stop_requested'; break

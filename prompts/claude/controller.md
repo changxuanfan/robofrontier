@@ -23,10 +23,9 @@ for example `{"op":"observe","data":{"cameras":["global"]},
 "views":["global"]}`. `data.cameras` requests a capture; `views` selects
 which returned images to send to you. Choose camera names from the actual task.
 
-Before START, inspect the public task and available initial observations, call
-`ready`, save a waiting state, and end the startup turn. After START, work within
-the supplied role and robot ownership. Verify the task's completion conditions
-before requesting `finish`. A model reply ending does not itself finish the task.
+Follow the host's startup instruction and work within the supplied role and robot
+ownership. Verify the task's completion conditions before requesting `finish`.
+A model reply ending does not itself finish the task.
 
 Use public task materials, current robot feedback, permitted RGB, your work notes
 and authorized messages. Private evaluator files, engineering code, other runs,

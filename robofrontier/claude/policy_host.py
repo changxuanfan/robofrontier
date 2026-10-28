@@ -31,7 +31,7 @@ class CentralizedPolicyHost:
             changed = verifier(self.run)
             if changed:
                 raise ValueError('Frozen inputs changed: ' + ', '.join(changed))
-            self.prompt = bootstrap_prompt(self.run)
+            self.prompt = bootstrap_prompt(self.run, startup_protocol=config.get('startup_protocol', 'ready_barrier_v1'))
             self.host = host_factory(self.run, 'Controller', profile, base_env)
             self.client = client
             self.bound = False
@@ -53,6 +53,10 @@ class CentralizedPolicyHost:
             raise ValueError('Role binding outcome unknown; review instead of retrying')
         self.bound = True
         self.dispatcher = ClaudeDispatcher(self.store, self.host)
+        if self.store.get('config').get('startup_protocol') == 'direct_controller_v2':
+            self.started_monotonic = time.monotonic()
+            reply = self.dispatcher.admin('request-start')
+            if not reply.get('started'): raise ValueError('Direct START was not confirmed')
         return self.host.send(self.prompt)
 
     def start_when_ready(self):

@@ -31,7 +31,7 @@ class AdaptiveHostTests(unittest.TestCase):
         launch=self.run/'private/inputs/claude.json'; launch.parent.mkdir(parents=True)
         launch.write_text(json.dumps({'profile':self.profile}))
         cfg=json.loads((Path(__file__).resolve().parents[1]/'configs/harnesses/policy.json').read_text())
-        cfg.update(engine='claude',topology='adaptive',model='fake',effort='high')
+        cfg.update(startup_protocol='ready_barrier_v1', engine='claude',topology='adaptive',model='fake',effort='high')
         store=RuntimeStore(self.run/'private/state/runtime.sqlite'); store.initialize('run',cfg,['A']); store.close()
         self.ledger=BudgetLedger.create(self.run/'private/state/budget.sqlite',1); self.calls=[]
         def client(conn,op,data,call_id,**kwargs):

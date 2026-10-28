@@ -25,7 +25,7 @@ class ClaudeDispatchTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.store = RuntimeStore(Path(self.tmp.name) / 'runtime.sqlite')
         cfg = json.loads((Path(__file__).resolve().parents[1] / 'configs/harnesses/policy.json').read_text())
-        cfg.update(engine='claude', topology='centralized')
+        cfg.update(engine='claude', topology='centralized', startup_protocol='ready_barrier_v1')
         self.store.initialize('run', cfg, ['A'])
         self.store.update_agent('Controller', ready=True, thread_id='test-session')
         self.store.start()

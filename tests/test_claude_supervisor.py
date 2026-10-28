@@ -54,6 +54,23 @@ class SupervisorTests(unittest.TestCase):
         self.assertFalse(result['started']); self.assertEqual(p.cycles, 0)
         self.assertTrue(p.host.stopped)
 
+    def test_direct_start_counts_time_spent_sending_first_turn(self):
+        p = Policy()
+        supervisor = self.supervisor(p, lambda: None)
+        def bind():
+            p.binds += 1
+            p.dispatcher = Dispatcher()
+            p.store.data['lifecycle'] = 'running'
+            p.started_monotonic = self.now
+            self.now += 3
+            p.host.state = 'active'
+        p.bind_and_bootstrap = bind
+        p.start_when_ready = lambda: self.fail('direct start must not wait for READY')
+        result = supervisor.run()
+        self.assertEqual(result['reason'], 'wall_limit')
+        self.assertEqual(self.now, 4)
+        self.assertEqual(p.cycles, 1)
+
     def test_unknown_turn_stops_without_resending(self):
         p = Policy()
         result = self.supervisor(p, lambda: setattr(p.host, 'state', 'unknown')).run()

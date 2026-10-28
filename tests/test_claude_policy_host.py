@@ -27,7 +27,7 @@ class PolicyHostTests(unittest.TestCase):
                      'skill/references/communication.md', 'skill/references/motion-check.md'):
             path=public/name; path.parent.mkdir(parents=True, exist_ok=True); path.write_text('public input')
         cfg=json.loads((Path(__file__).resolve().parents[1]/'configs/harnesses/policy.json').read_text())
-        cfg.update(engine='claude', topology='centralized', model='fake', effort='high')
+        cfg.update(startup_protocol='ready_barrier_v1', engine='claude', topology='centralized', model='fake', effort='high')
         store=RuntimeStore(self.run/'private/state/runtime.sqlite'); store.initialize('run', cfg, ['A']); store.close()
         self.profile={'model':'fake', 'effort':'high', 'env_key':'FAKE'}
         self.calls=[]

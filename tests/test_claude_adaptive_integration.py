@@ -30,7 +30,7 @@ class StubModel(http.server.BaseHTTPRequestHandler):
         if names and not has_result:
             if 'Your current runtime role is Delegate_' in text:
                 return {'op':'return_task','data':{'outcome':'completed','result':'synthetic evidence'}}, 'toolu_return'
-            if 'wake_id=' in text:
+            if 'wake_id=' in text or 'experiment has STARTED' in text or not text:
                 return {'op':'delegate','data':{'scopes':[{'robots':['A'],'goal':'synthetic','done_when':'synthetic'}]},'call_id':'synthetic-delegate'}, 'toolu_delegate'
             return {'op':'ready','data':{}}, 'toolu_ready'
         return None, None
@@ -123,16 +123,7 @@ class AdaptiveIntegrationTests(unittest.TestCase):
             StubModel.requests.clear()
             try:
                 host.bind_and_bootstrap()
-                self.assertEqual(host.host.wait(30)['status'],'idle',host.host.last_result)
-                admin=host.dispatcher.admin; starts=[]
-                def debug_admin(op,data=None):
-                    result=admin(op,data)
-                    if op=='request-start': starts.append(result)
-                    return result
-                host.dispatcher.admin=debug_admin
-                try: started=host.start_when_ready()
-                except ValueError as error: self.fail(f'{error}: {starts}')
-                self.assertTrue(started['started'])
+                self.assertEqual(service.store.get('lifecycle'), 'running')
                 deadline=time.monotonic()+12
                 while time.monotonic()<deadline:
                     host.cycle()

@@ -75,15 +75,12 @@ class LifecycleTests(unittest.TestCase):
             host = CentralizedPolicyHost(run, {'model': 'fake', 'effort': 'high'}, {}, host_factory=Host)
             try:
                 host.bind_and_bootstrap()
-                with self.assertRaisesRegex(ValueError, 'READY'):
-                    host.start_when_ready()
-                result = client_call(run / 'private/state/connections/Controller.json', 'ready', {}, 'ready-1', log_call_id=False)
-                self.assertTrue(result['ready'])
-                host.host.state = 'idle'
-                self.assertTrue(host.start_when_ready()['started'])
                 self.assertEqual(service.store.get('lifecycle'), 'running')
-                self.assertEqual(len(host.cycle()['dispatched']), 1)
-                self.assertEqual(len(host.host.prompts), 2)
+                self.assertIn('experiment has STARTED', host.host.prompts[0])
+                self.assertEqual(len(host.host.prompts), 1)
+                host.host.state = 'idle'
+                self.assertEqual(len(host.cycle()['dispatched']), 0)
+                self.assertEqual(len(host.host.prompts), 1)
                 host.host.state = 'idle'
             finally:
                 host.close()

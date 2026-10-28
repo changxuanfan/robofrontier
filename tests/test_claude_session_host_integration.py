@@ -42,7 +42,7 @@ class ClaudeSessionHostIntegrationTests(unittest.TestCase):
                 self.assertGreaterEqual(len(probe.REQUESTS), 2)
                 self.assertIn('"type": "image"', json.dumps(probe.REQUESTS[-1]))
                 cfg = json.loads((Path(__file__).resolve().parents[1] / 'configs/harnesses/policy.json').read_text())
-                cfg.update(engine='claude', topology='centralized')
+                cfg.update(engine='claude', topology='centralized', startup_protocol='ready_barrier_v1')
                 store = RuntimeStore(run / 'private/state/runtime.sqlite')
                 try:
                     store.initialize('run', cfg, ['A'])

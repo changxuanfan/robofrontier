@@ -36,7 +36,7 @@ class AdaptivePolicyHost:
                 raise ValueError('A previously bound or started world cannot be restarted')
             changed=verifier(self.run)
             if changed: raise ValueError('Frozen inputs changed: '+', '.join(changed))
-            self.prompt=bootstrap_prompt(self.run,topology='adaptive')
+            self.prompt=bootstrap_prompt(self.run,topology='adaptive',startup_protocol=cfg.get('startup_protocol','ready_barrier_v1'))
             self.host=host_factory(self.run,'Controller',profile,base_env,
                                    max_budget_usd=turn_budget_usd,budget_ledger=ledger)
             self.ledger=ledger; self.setup_factory=setup_factory; self.client=client
@@ -58,6 +58,10 @@ class AdaptivePolicyHost:
         self.setup=self.setup_factory(self.store,self.host,self.ledger,'claude-meta-'+uuid.uuid4().hex,
                                       setup_budget_usd=self.setup_budget_usd,child_budget_usd=self.turn_budget_usd)
         self.dispatcher=AdaptiveDispatcher(self.store,self.setup)
+        if self.store.get('config').get('startup_protocol') == 'direct_controller_v2':
+            self.started_monotonic = time.monotonic()
+            reply=self.dispatcher.admin('request-start')
+            if not reply.get('started'): raise ValueError('Direct START was not confirmed')
         return self.host.send(self.prompt)
 
     def start_when_ready(self):

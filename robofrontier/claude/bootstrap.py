@@ -6,7 +6,7 @@ from pathlib import Path
 MAX_BOOTSTRAP_BYTES = 400_000
 
 
-def bootstrap_prompt(run_dir, *, topology='centralized'):
+def bootstrap_prompt(run_dir, *, topology='centralized', startup_protocol='ready_barrier_v1'):
     run = Path(run_dir).resolve()
     public = (run / 'public/inputs').resolve()
     task = json.loads((public / 'task.json').read_text())
@@ -36,6 +36,18 @@ def bootstrap_prompt(run_dir, *, topology='centralized'):
              'history, inbox and authorized messages for status and handback evidence. To read a returned '
              'delegate report, call robot work with data {"delegate_id":"Delegate_..."}; '
              'the authorized report is returned inline as delegate_report.' if topology == 'adaptive' else '')
+    if startup_protocol == 'direct_controller_v2':
+        extra += ('\n\nThe experiment has STARTED and the task clock is running. Read the task and '
+                  'observe the scene, then decide and act. You may call ready for robot capabilities; '
+                  'continue without waiting for another START.')
+        private_task = run / 'private/inputs/task.json'
+        protocol = json.loads(private_task.read_text()).get('run_protocol', {}) if private_task.exists() else {}
+        if protocol.get('evaluation_semantics') == 'terminal_outcome_v2':
+            extra += (' Terminal goal state determines completion; collisions, drops and handover history '
+                      'are recorded separately. Observe and recover after problems.')
+    else:
+        extra += ('\n\nBefore START, inspect the task and scene, call ready, save waiting and end '
+                  'the startup turn. Await the host START before task actions.')
     return text + ('\n\nTo view a task initial_reference_images entry, robot_layout_image, '
                    'or target.reference_image (such as the Mosaic target pattern), '
                    'call robot with op public_image and data {"names": ["the exact listed path"]}. '
