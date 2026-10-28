@@ -149,6 +149,8 @@ def load_harness(path=None):
         raise ValueError('Use explicit Meta / Coordinator role boundary')
     if c['topology'] not in ('hierarchical','peer','centralized','adaptive'):
         raise ValueError('Unknown topology')
+    if c.get('engine','codex') not in ('codex','claude'):
+        raise ValueError('Unknown policy engine')
     for key in ('poll_interval_s','integrity_check_interval_s','session_observation_ttl_s','manager_lease_s','max_batch_messages','max_batch_bytes','max_message_chars','min_check_interval_s','max_check_interval_s','action_timeout_sim_s','video_fps','max_unacknowledged_wakes'):
         if not math.isfinite(float(c[key])) or c[key] <= 0:
             raise ValueError('Invalid harness limit: ' + key)

@@ -46,6 +46,16 @@ def fork_provenance(parent, child):
             'source_sha256':hashlib.sha256(json.dumps(prefix,sort_keys=True).encode()).hexdigest()}
 
 
+def native_fork_provenance(store, parent, child):
+    """Dispatch lineage verification to the evidence format of this run's engine."""
+    engine=store.get('config').get('engine','codex')
+    if engine=='claude':
+        from .claude.provenance import fork_provenance as claude_provenance
+        # One isolated Claude config directory per run, shared by every role session.
+        return claude_provenance(parent,child,store.path.parents[1]/'claude-config')
+    return fork_provenance(parent,child)
+
+
 def execute(store, op, data, owner, now):
     cfg=store.get('config')
     if op=='seal':
@@ -66,7 +76,7 @@ def execute(store, op, data, owner, now):
         with store.transaction():
             store.lease(owner,now,cfg['manager_lease_s'])
             d.created(key,data['actor'],data['thread_id'],owner)
-        provenance=fork_provenance(d.batch(key)['source_thread_id'],data['thread_id'])
+        provenance=native_fork_provenance(store,d.batch(key)['source_thread_id'],data['thread_id'])
         with store.transaction():
             store.lease(owner,time.time(),cfg['manager_lease_s'])
             d.bind(key,data['actor'],data['thread_id'],provenance,owner)

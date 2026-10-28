@@ -165,7 +165,33 @@ async function platformErrorDetails() {
   assert(failure.includes('Completed host turn cannot query'));
   assert(!failure.includes('secret-value')&&!failure.includes('other-secret')&&!failure.includes('sk-private_key'));
 }
+// The same loop must run on a non-Codex adapter: no Codex tool objects, no Codex envelope.
+async function neutralAdapter() {
+  let forked=0;const sent=[],observed=[];
+  const batch={id:'b',source_thread_id:'parent',status:'creating',claimed_by:null,
+    children:[{actor:'D1',robots:['A'],goal:'agent selected goal',done_when:'own evidence'}]};
+  const tools={exec_command:async({cmd})=>{
+    let value={recorded:true};
+    if(cmd.includes(' snapshot '))value={lifecycle:'running',paused:false,config:{poll_interval_s:0,model:'m',effort:'high'},
+      agents:{Controller:{kind:'controller',thread_id:'parent'}},delegations:batch.status==='creating'?[batch]:[]};
+    else if(cmd.includes(' delegate-claim '))value={delegation:structuredClone(batch)};
+    else if(cmd.includes(' delegate-activate '))batch.status='active';
+    else if(cmd.includes(' delegate-started '))value={recorded:true,status:'active'};
+    else if(cmd.includes(' observe-sessions '))observed.push(cmd);
+    else if(cmd.includes(' plan '))value={commands:[]};
+    return {exit_code:0,output:JSON.stringify(value)};
+  }};
+  const adapter={
+    observe:async p=>({thread:{id:p.threadId,status:{type:'idle'}},latestTurn:{id:'t0',status:'completed'}}),
+    fork:async p=>{forked++;assert.equal(p.threadId,'parent');return {threadId:'child-1',sourceThreadId:'parent',status:'created'};},
+    send:async p=>{sent.push(p);return {threadId:p.threadId};}};
+  await runMetaDispatcher({runDir:'/fake',python:'/fake/python',cwd:'/fake',tools,adapter,maxCycles:1,observationSource:'claude.host'});
+  assert.equal(forked,1);assert.equal(sent.length,1);
+  assert.equal(sent[0].threadId,'child-1');assert.equal(sent[0].model,'m');assert(!('hostId' in sent[0]));
+  assert(observed.length>0&&observed.every(c=>c.includes('"source":"claude.host"')));
+}
 (async()=>{
+ await neutralAdapter();
  await scenario();await scenario({busy:true});await scenario({failSend:true});await scenario({wrongThread:true});
  await interrupted();await startup(false,true);await startup(true,false);await startup(true,true);
  await delegation();await delegation({failFork:true});await delegation({failBind:true});await delegation({abandoned:true});
@@ -173,5 +199,5 @@ async function platformErrorDetails() {
  await statusScenario('transient');await statusScenario('isolate');await statusScenario('persistent');await statusScenario('finished');
  await endedDelegateCallback();await endedDelegateCallback({failed:true});await platformErrorDetails();
  await delegation({label:true});await delegation({label:true,titleFailure:true});
- console.log('PASS: 23 dispatcher scenarios: fork lifecycle, first-result callback, failed-turn evidence, best-effort robot titles, error detail redaction, pinned settings, bounded status retries, visible pause, no finished-role polling');
+ console.log('PASS: 24 dispatcher scenarios: neutral engine adapter, fork lifecycle, first-result callback, failed-turn evidence, best-effort robot titles, error detail redaction, pinned settings, bounded status retries, visible pause, no finished-role polling');
 })().catch(e=>{console.error(e);process.exit(1)});

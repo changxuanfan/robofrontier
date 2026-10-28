@@ -12,6 +12,12 @@ from .suite.provenance import environment_logic_manifest
 from .task_config import ROOT, load_task, load_harness, public_task,physical_control_fingerprint
 
 
+ENGINE_SCRIPTS = {
+    'codex': ('benchmark.py', 'codex_rpc.js', 'codex_policy_host.js', 'codex_preflight.js'),
+    'claude': ('claude_benchmark.py', 'claude_policy_host.js'),
+}
+
+
 def write_json(path, value):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -107,8 +113,10 @@ def prepare_run(directory, task_path=None, harness_path=None, private_puzzle_pat
     paths = list((ROOT/'robofrontier').rglob('*.py'))
     paths += list((ROOT/'prompts').rglob('*.md'))
     paths += list((ROOT/'.agents/skills/robot-collaboration').rglob('*'))
-    paths += [ROOT/'scripts'/name for name in ('create_pipeline_run.py','meta_dispatcher.js','export_run_report.py','role_tools.js',
-                                             'benchmark.py','codex_rpc.js','codex_policy_host.js','codex_preflight.js')]
+    # Freeze only the policy-host scripts of this run's engine, so editing the other
+    # engine's host never invalidates a prepared batch.
+    paths += [ROOT/'scripts'/name for name in ('create_pipeline_run.py','meta_dispatcher.js','export_run_report.py','role_tools.js')
+              + ENGINE_SCRIPTS[cfg.get('engine','codex')]]
     paths += [ROOT/'docs'/name for name in ('meta-runbook.md','architecture.md','harness-v2-verification.md')]
     source_hashes = {}
     for source in paths:
@@ -140,6 +148,7 @@ def prepare_run(directory, task_path=None, harness_path=None, private_puzzle_pat
         'physical_control_sha256':physical_control_fingerprint(source_hashes,cfg),
         'environment_logic_sha256':logic['sha256'] if logic else None,
         'environment_logic_provenance':logic,
+        'engine':cfg.get('engine','codex'),
         'model_requested':cfg['model'],'effort_requested':cfg['effort'],
         'family_release':family_release,
         'observation_contract':task['observation_contract'],

@@ -1,25 +1,22 @@
 // Loaded by Meta into functions.exec; definitions alone perform no I/O.
 // It has no task planner and never selects robot actions or delegation scopes.
-async function runMetaDispatcher({runDir, python, cwd, tools, onEvent = () => {}, stopRequested = () => false, maxCycles = Infinity, startWhenReady = false, observationSource = 'codex.wait_threads'}) {
-  const quote = value => "'" + String(value).replaceAll("'", "'\\''") + "'";
-  const owner = 'meta-' + Date.now() + '-' + Math.random().toString(16).slice(2);
-  const cursors = new Map();
-  const failures = new Map();
-  let statusPaused = false;
-  function errorText(value) {
-    return String(value)
-      .replace(/Bearer\s+[^\s,;"']+/gi,'Bearer <redacted>')
-      .replace(/\bsk-[A-Za-z0-9_-]+/g,'<redacted>')
-      .replace(/((?:token|api[_-]?key|authorization|cookie)\s*[:=]\s*)(?:"[^"]*"|'[^']*'|[^\s,;]+)/gi,'$1<redacted>')
-      .slice(0,2000);
-  }
-  async function runtime(op, data = {}) {
-    const command = `${quote(python)} -m robofrontier.runtime_cli --run-dir ${quote(runDir)} --owner ${quote(owner)} ${op} --data ${quote(JSON.stringify(data))}`;
-    const result = await tools.exec_command({cmd:command,workdir:cwd,max_output_tokens:12000});
-    if (result.exit_code !== 0) throw new Error('Runtime operation failed: ' + op + ': ' + result.output);
-    try { return JSON.parse(result.output); }
-    catch { throw new Error('Incomplete runtime JSON; do not infer or restart sessions from this output'); }
-  }
+//
+// Native session control goes through one adapter, so the same deterministic loop
+// serves every engine:
+//   observe({threadId,hostId,afterCursor}) -> {thread:{id,status:{type}},latestTurn:{id,status},cursor} | undefined
+//   fork({threadId})                       -> {threadId,sourceThreadId,status:'created'}
+//   send({threadId,model,thinking,prompt}) -> {threadId}
+//   title({threadId,title})                -> {threadId}       (optional)
+// An adapter throws on any rejected or unacknowledged operation.
+function errorText(value) {
+  return String(value)
+    .replace(/Bearer\s+[^\s,;"']+/gi,'Bearer <redacted>')
+    .replace(/\bsk-[A-Za-z0-9_-]+/g,'<redacted>')
+    .replace(/((?:token|api[_-]?key|authorization|cookie)\s*[:=]\s*)(?:"[^"]*"|'[^']*'|[^\s,;]+)/gi,'$1<redacted>')
+    .slice(0,2000);
+}
+// Adapter over the Codex app tools; the platform's JSON envelope is decoded here only.
+function codexAdapter(tools) {
   function decode(result) {
     if (result.isError) throw new Error('Codex adapter rejected operation: '+errorText(
       result.content?.filter(c=>c.type==='text').map(c=>c.text).join('\n') || 'No platform error detail'));
@@ -27,27 +24,48 @@ async function runMetaDispatcher({runDir, python, cwd, tools, onEvent = () => {}
     if (!text) throw new Error('Missing Codex adapter response');
     return JSON.parse(text);
   }
+  const adapter = {
+    observe: async params => decode(await tools.mcp__codex_app__wait_threads({targets:[{...params,hostId:'local'}],timeoutMs:0})).polls?.[0],
+    fork: async params => decode(await tools.mcp__codex_app__fork_thread({...params,environment:{type:'same-directory'}})),
+    send: async params => decode(await tools.mcp__codex_app__send_message_to_thread({...params,hostId:'local'})),
+  };
+  if (typeof tools.mcp__codex_app__set_thread_title === 'function')
+    adapter.title = async params => decode(await tools.mcp__codex_app__set_thread_title(params));
+  return adapter;
+}
+async function runMetaDispatcher({runDir, python, cwd, tools, adapter = codexAdapter(tools), onEvent = () => {}, stopRequested = () => false, maxCycles = Infinity, startWhenReady = false, observationSource = 'codex.wait_threads'}) {
+  const quote = value => "'" + String(value).replaceAll("'", "'\\''") + "'";
+  const owner = 'meta-' + Date.now() + '-' + Math.random().toString(16).slice(2);
+  const cursors = new Map();
+  const failures = new Map();
+  let statusPaused = false;
+  async function runtime(op, data = {}) {
+    const command = `${quote(python)} -m robofrontier.runtime_cli --run-dir ${quote(runDir)} --owner ${quote(owner)} ${op} --data ${quote(JSON.stringify(data))}`;
+    const result = await tools.exec_command({cmd:command,workdir:cwd,max_output_tokens:12000});
+    if (result.exit_code !== 0) throw new Error('Runtime operation failed: ' + op + ': ' + result.output);
+    try { return JSON.parse(result.output); }
+    catch { throw new Error('Incomplete runtime JSON; do not infer or restart sessions from this output'); }
+  }
   async function labelFork(child) {
-    if (typeof tools.mcp__codex_app__set_thread_title !== 'function') return;
+    if (typeof adapter.title !== 'function') return;
     const runName=String(runDir).split(/[\\/]/).filter(Boolean).pop();
     const title=`Fork [${child.robots.join('+')}] · ${child.actor.slice(-6)} · ${runName}`;
     let timer;
     try {
       const result=await Promise.race([
-        tools.mcp__codex_app__set_thread_title({threadId:child.thread_id,title}),
+        adapter.title({threadId:child.thread_id,title}),
         new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('Optional UI title deadline')),1500);})
       ]);
-      if(decode(result).threadId!==child.thread_id)throw new Error('Title acknowledgement mismatch');
+      if(result.threadId!==child.thread_id)throw new Error('Title acknowledgement mismatch');
       onEvent({event:'fork_named',actor:child.actor,thread_id:child.thread_id,robots:child.robots,title});
     } catch(error) {
       onEvent({event:'fork_title_unavailable',actor:child.actor,error:errorText(error)});
     } finally {clearTimeout(timer);}
   }
   async function observe(actor, agent) {
-    const params = {threadId:agent.thread_id,hostId:'local'};
+    const params = {threadId:agent.thread_id};
     if (cursors.has(actor)) params.afterCursor = cursors.get(actor);
-    const response = decode(await tools.mcp__codex_app__wait_threads({targets:[params],timeoutMs:0}));
-    const p = response.polls?.[0];
+    const p = await adapter.observe(params);
     if (!p) throw new Error('No authoritative session status for ' + actor);
     if (p.thread?.id && p.thread.id!==agent.thread_id) throw new Error('Status belongs to a different thread');
     const status = p.thread?.status?.type==='systemError'?'error':p.thread?.status?.type;
@@ -89,7 +107,7 @@ async function runMetaDispatcher({runDir, python, cwd, tools, onEvent = () => {}
       let activated = false;
       try {
         for (const child of claimed.children) {
-          const fork = decode(await tools.mcp__codex_app__fork_thread({threadId:claimed.source_thread_id,environment:{type:'same-directory'}}));
+          const fork = await adapter.fork({threadId:claimed.source_thread_id});
           if (!fork.threadId)
             throw new Error('Native fork response incomplete; creation outcome unknown');
           child.thread_id = fork.threadId;
@@ -107,8 +125,8 @@ async function runMetaDispatcher({runDir, python, cwd, tools, onEvent = () => {}
             '\n只使用自己的连接 '+runDir+'/private/state/connections/'+child.actor+'.json；Python '+python+'。未来调用ID使用 '+child.actor+' 前缀，不复用父调用ID。'+
             '\n你是临时分身，非每臂常驻Worker。生命周期与交回规则以冻结Skill的 references/adaptive.md为准；上下文缺失时恢复该参考。团队已经START，按本范围自主执行并处理父消息，必要时报告里程碑或阻塞。正常完成本次委派后return_task并结束；等待、暂停和未完成交回按该参考处理。不创建更多会话、不调用管理接口、不修改Harness、不读取私有评估、不执行团队finish。';
           try {
-            const reply = decode(await tools.mcp__codex_app__send_message_to_thread({threadId:child.thread_id,hostId:'local',
-              model:snapshot.config.model,thinking:snapshot.config.effort,prompt}));
+            const reply = await adapter.send({threadId:child.thread_id,
+              model:snapshot.config.model,thinking:snapshot.config.effort,prompt});
             if (reply.threadId!==child.thread_id) throw new Error('Initial child input acceptance unknown');
             await runtime('delegate-started',{id:batch.id,actor:child.actor,outcome:'sent'});
             await labelFork(child);
@@ -158,11 +176,9 @@ async function runMetaDispatcher({runDir, python, cwd, tools, onEvent = () => {}
         await runtime('observe-sessions',{observations:[fresh]});
         const claimed = (await runtime('claim',{wake_id:command.wake_id})).command;
         if (!claimed) continue;
-        let result;
         try {
-          result = await tools.mcp__codex_app__send_message_to_thread({threadId:claimed.thread_id,hostId:'local',
+          const acknowledgement = await adapter.send({threadId:claimed.thread_id,
             model:snapshot.config.model,thinking:snapshot.config.effort,prompt:claimed.prompt});
-          const acknowledgement = decode(result);
           if (acknowledgement.threadId !== claimed.thread_id) throw new Error('Unexpected send acknowledgement; outcome unknown');
         } catch (error) {
           await runtime('dispatch-result',{wake_id:claimed.wake_id,outcome:'uncertain',result:{error:errorText(error)}});
@@ -181,4 +197,4 @@ async function runMetaDispatcher({runDir, python, cwd, tools, onEvent = () => {}
   }
   return {lifecycle:'stopped_by_manager',cycles:cycle-1};
 }
-if (typeof module !== 'undefined') module.exports = {runMetaDispatcher};
+if (typeof module !== 'undefined') module.exports = {runMetaDispatcher, codexAdapter};
