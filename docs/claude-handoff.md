@@ -112,6 +112,8 @@ The image color is chosen randomly from six colors for each new precheck; the
 receipt records the chosen color after the checks. A single correct answer can
 still be a lucky guess and does not establish general visual capability. The
 earlier Haiku receipt listed below used a fixed green image.
+Each local precheck server keeps its own image and request count, so concurrent
+checks do not share that state; this is not a provider concurrency guarantee.
 
 `--check-fork` adds a fourth paid call: a tool-free native fork of the idle
 session that must recall the image color and have a matching native transcript

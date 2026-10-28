@@ -43,20 +43,19 @@ PROMPTS = [
 
 class World(http.server.BaseHTTPRequestHandler):
     """Local stand-in for the robot service; serves one fixed observation image."""
-    image = None
-    requests = 0
 
     def log_message(self, *args):
         pass
 
     def do_POST(self):
         self.rfile.read(int(self.headers.get('Content-Length', 0)))
-        World.requests += 1
+        with self.server.request_lock:
+            self.server.request_count += 1
         entered = getattr(self.server, 'blocked_entered', None)
         if entered is not None:
             entered.set()
             self.server.blocked_release.wait(180)
-        data = json.dumps({'observation': {'images': {'top': str(World.image)}}}).encode()
+        data = json.dumps({'observation': {'images': {'top': str(self.server.image)}}}).encode()
         self.send_response(200)
         self.send_header('Content-Type', 'application/json')
         self.send_header('Content-Length', str(len(data)))
@@ -81,8 +80,10 @@ def setup_run(output, base_env):
     image.parent.mkdir(parents=True)
     color_name = secrets.choice(tuple(COLORS))
     Image.new('RGB', (64, 64), COLORS[color_name]).save(image)
-    World.image = image
     server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), World)
+    server.image = image
+    server.request_count = 0
+    server.request_lock = threading.Lock()
     server.challenge_color = color_name
     threading.Thread(target=server.serve_forever, daemon=True).start()
     conn.write_text(json.dumps({'run_id': run.name, 'actor': 'Controller', 'schema_version': 3,
@@ -93,6 +94,11 @@ def setup_run(output, base_env):
         'args': ['-m', 'robofrontier.claude.robot_mcp', '--run-dir', str(run), '--connection', str(conn)],
         'env': {'PYTHONPATH': str(ROOT)}}}}))
     return run, mcp, server
+
+
+def request_count(server):
+    with server.request_lock:
+        return server.request_count
 
 
 def judge(name, record, requests_before, requests_after, expected_session=None, expected_color='green'):
@@ -136,13 +142,13 @@ def run_precheck(name, output, budget, base_env, binary='claude', check_fork=Fal
             if remaining < MIN_TURN_BUDGET:
                 receipt['stopped'] = 'budget exhausted before ' + check
                 break
-            before = World.requests
+            before = request_count(server)
             first = index == 0
             record = run_turn(prof, prof['model'], prof['effort'], mcp, prompt, run, base_env,
                               session_id=session if first else None, timeout=180,
                               max_budget_usd=remaining, binary=binary,
                               resume=None if first else session, events_name=f'{check}.jsonl')
-            result = judge(check, record, before, World.requests, expected_session=session,
+            result = judge(check, record, before, request_count(server), expected_session=session,
                            expected_color=server.challenge_color)
             receipt['checks'].append(result)
             cost = result['cost_usd']
@@ -164,7 +170,7 @@ def run_precheck(name, output, budget, base_env, binary='claude', check_fork=Fal
                 receipt['stopped'] = 'budget exhausted before fork'
             else:
                 child = str(uuid.uuid4())
-                before = World.requests
+                before = request_count(server)
                 record = run_turn(prof, prof['model'], prof['effort'], None,
                                   'This is a tool-free fork. Recall the color you identified and reply with only the color name.',
                                   run, base_env, session_id=child, fork_from=session, enable_robot=False,
@@ -173,7 +179,7 @@ def run_precheck(name, output, budget, base_env, binary='claude', check_fork=Fal
                 checks = {'process_exited':record.get('process')=='exited' and record.get('exit_code')==0,
                           'turn_ended':summary.get('turn_status')=='ended',
                           'distinct_expected_session':summary.get('session_id')==child and child!=session,
-                          'no_tool_calls':summary.get('tool_calls')==0 and World.requests==before,
+                          'no_tool_calls':summary.get('tool_calls')==0 and request_count(server)==before,
                           'color_recalled':(summary.get('result_text') or '').strip().lower()==server.challenge_color,
                           'valid_events':summary.get('malformed_lines')==0}
                 try:

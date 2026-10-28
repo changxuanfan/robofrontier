@@ -3,6 +3,7 @@ import stat
 import sys
 import tempfile
 import unittest
+import urllib.request
 from pathlib import Path
 from unittest.mock import patch
 
@@ -53,6 +54,28 @@ class PrecheckTests(unittest.TestCase):
             self.assertEqual(receipt['challenge_color'],'red')
             self.assertFalse(receipt['passed'])
             self.assertFalse(receipt['checks'][1]['checks']['image_color_named'])
+
+    def test_concurrent_precheck_servers_keep_images_and_counts_separate(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            one=Path(tmp)/'one'; two=Path(tmp)/'two'; one.mkdir(); two.mkdir()
+            _,_,server1=pc.setup_run(one,{})
+            _,_,server2=pc.setup_run(two,{})
+            try:
+                url=f'http://127.0.0.1:{server1.server_port}/op'
+                request=urllib.request.Request(url,data=b'{}',method='POST')
+                with urllib.request.urlopen(request,timeout=5) as response:
+                    image=json.load(response)['observation']['images']['top']
+                self.assertEqual(Path(image),one/'run/public/observations/top.png')
+                self.assertEqual(pc.request_count(server1),1)
+                self.assertEqual(pc.request_count(server2),0)
+                url=f'http://127.0.0.1:{server2.server_port}/op'
+                with urllib.request.urlopen(urllib.request.Request(url,data=b'{}',method='POST'),timeout=5) as response:
+                    image=json.load(response)['observation']['images']['top']
+                self.assertEqual(Path(image),two/'run/public/observations/top.png')
+                self.assertEqual(pc.request_count(server1),1)
+                self.assertEqual(pc.request_count(server2),1)
+            finally:
+                for server in (server1,server2): server.shutdown(); server.server_close()
     def test_without_confirm_spend_nothing_runs(self):
         with patch.object(sys, 'argv', ['claude_precheck', '--max-budget-usd', '0.5']), \
              patch.object(pc, 'run_precheck') as run:
