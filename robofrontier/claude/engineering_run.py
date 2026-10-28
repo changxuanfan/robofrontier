@@ -29,6 +29,15 @@ def _positive(value, name, limit):
         raise ValueError('Invalid ' + name)
 
 
+def _evaluation_present(run):
+    """A finished world requires a readable evaluator result, not task success."""
+    try:
+        evaluation=json.loads((run/'private/outputs/evaluation.json').read_text())
+        return isinstance(evaluation, dict) and isinstance(evaluation.get('task_success'), bool)
+    except (OSError, ValueError, TypeError):
+        return False
+
+
 def run_engineering(run_dir, base_env, *, turn_budget_usd, total_budget_usd, wall_limit_s, startup_timeout_s=120,
                     poll_s=0.5, owner_factory=subprocess.Popen, policy_factory=CentralizedPolicyHost,
                     adaptive_policy_factory=AdaptivePolicyHost,
@@ -140,14 +149,18 @@ def run_engineering(run_dir, base_env, *, turn_budget_usd, total_budget_usd, wal
             owner_alive = bool(owner and owner.poll() is None)
             video_required = config.get('record_realtime_video', False) is True
             video_readable = (result.get('seal') or {}).get('video', {}).get('readable') is True
+            evaluation_required = result.get('reason') == 'world_ended'
+            evaluation_present = _evaluation_present(run) if evaluation_required else None
             closed = ((result.get('seal') or {}).get('sealed') and not owner_alive
                       and (result.get('seal') or {}).get('unresolved_action_ids') == []
                       and not result.get('policy_close_error') and not result.get('error_type')
                       and not result.get('seal_error_type')
                       and (not video_required or video_readable)
+                      and (not evaluation_required or evaluation_present)
                       and result.get('reason') in ('world_ended', 'stop_requested', 'wall_limit'))
             result.update(status='finished' if closed else 'needs_review', owner_alive=owner_alive, scored=False,
-                          video_required=video_required)
+                          video_required=video_required, evaluation_required=evaluation_required,
+                          evaluation_present=evaluation_present)
             write_json(status, result)
         fcntl.flock(lock, fcntl.LOCK_UN); lock.close()
     return result

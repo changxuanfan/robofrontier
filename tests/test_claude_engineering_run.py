@@ -123,6 +123,7 @@ class EngineeringRunTests(unittest.TestCase):
                 run = Path(tmp)/'run'
                 import shutil
                 shutil.copytree(self.run, run)
+                (run/'private/outputs/evaluation.json').write_text('{"task_success":false}')
                 (run/'private/state/connections/Meta.json').write_text('{"url":"http://127.0.0.1:1234"}')
                 class Attached(Policy):
                     def __init__(self,*a,**k): super().__init__(*a,**k); self.store.attached = True
@@ -138,6 +139,28 @@ class EngineeringRunTests(unittest.TestCase):
                     result=run_engineering(run,self.env,turn_budget_usd=.5,total_budget_usd=2,wall_limit_s=30,
                                            policy_factory=Attached,owner_factory=lambda *a,**k: ExitingOwner(None))
                 self.assertEqual(result['status'], expected)
+
+    def test_ended_world_requires_readable_boolean_evaluation(self):
+        for content, expected in ((None,False),('{broken',False),('{}',False),
+                                  ('{"task_success":"false"}',False),('{"task_success":false}',True)):
+            with self.subTest(content=content), tempfile.TemporaryDirectory() as tmp:
+                import shutil
+                run=Path(tmp)/'run'; shutil.copytree(self.run,run)
+                (run/'private/state/connections/Meta.json').write_text('{"url":"http://127.0.0.1:1234"}')
+                if content is not None: (run/'private/outputs/evaluation.json').write_text(content)
+                class Attached(Policy):
+                    def __init__(self,*a,**k): super().__init__(*a,**k); self.store.attached=True
+                class ExitingOwner(Owner):
+                    def wait(self,timeout): self.status=0
+                class Supervisor:
+                    def __init__(self,*a,**k): pass
+                    def run(self): return {'reason':'world_ended','seal':{'sealed':True,'unresolved_action_ids':[]}}
+                with patch('robofrontier.claude.engineering_run.CentralizedSupervisor',Supervisor):
+                    result=run_engineering(run,self.env,turn_budget_usd=.5,total_budget_usd=2,wall_limit_s=30,
+                                           policy_factory=Attached,owner_factory=lambda *a,**k: ExitingOwner(None))
+                self.assertTrue(result['evaluation_required'])
+                self.assertEqual(result['evaluation_present'],expected)
+                self.assertEqual(result['status'],'finished' if expected else 'needs_review')
 
 
 if __name__ == '__main__': unittest.main()
