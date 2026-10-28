@@ -5,8 +5,8 @@ clock have already started when the Controller receives its first task prompt.
 In direct-start runs the `ready` tool is optional: use it to query robot
 capabilities and limits, then continue without waiting for another START.
 
-The Controller owns overall progress and may directly control its robots or
-request bounded delegates. Delegation is optional. A delegate operates within
+The Controller owns overall progress and may directly control its robots. In
+adaptive mode, it may request bounded delegates. Delegation is optional. A delegate operates within
 its assigned scope; only the Controller can finish an adaptive team run.
 Returning a scope requires `return_task`; native session idle alone is not a
 return and does not release robot ownership.
