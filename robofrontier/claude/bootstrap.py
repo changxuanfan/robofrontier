@@ -18,6 +18,9 @@ def bootstrap_prompt(run_dir, *, topology='centralized', startup_protocol='ready
     paths = ['claude-controller.md', 'task.json', 'roles.json', 'skill/SKILL.md',
              'skill/references/tools.md', 'skill/references/communication.md',
              'skill/references/motion-check.md']
+    # Earlier frozen drafts do not contain the shared contract; preserve their
+    # existing inputs instead of silently injecting a newer protocol.
+    if (public / 'policy-rules.md').is_file(): paths.insert(1, 'policy-rules.md')
     if topology == 'adaptive': paths.append('skill/references/adaptive.md')
     for name in task.get('family_materials', []):
         if not isinstance(name, str): raise ValueError('Invalid public material reference')
@@ -43,8 +46,9 @@ def bootstrap_prompt(run_dir, *, topology='centralized', startup_protocol='ready
         private_task = run / 'private/inputs/task.json'
         protocol = json.loads(private_task.read_text()).get('run_protocol', {}) if private_task.exists() else {}
         if protocol.get('evaluation_semantics') == 'terminal_outcome_v2':
-            extra += (' Terminal goal state determines completion; collisions, drops and handover history '
-                      'are recorded separately. Observe and recover after problems.')
+            extra += (' Completion follows the task conditions; supported process events are reported '
+                      'according to the task detection rules and do not by themselves veto completion. '
+                      'Observe and recover after problems.')
     else:
         extra += ('\n\nBefore START, inspect the task and scene, call ready, save waiting and end '
                   'the startup turn. Await the host START before task actions.')

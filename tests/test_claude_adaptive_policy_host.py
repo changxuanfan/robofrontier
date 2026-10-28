@@ -24,7 +24,7 @@ class AdaptiveHostTests(unittest.TestCase):
         public.mkdir(parents=True)
         (public/'task.json').write_text(json.dumps({'family_materials':[]}))
         (public/'roles.json').write_text(json.dumps({'topology':'adaptive','roles':{'Controller':{'kind':'controller'}}}))
-        for name in ('claude-controller.md','skill/SKILL.md','skill/references/tools.md','skill/references/communication.md',
+        for name in ('claude-controller.md','policy-rules.md','skill/SKILL.md','skill/references/tools.md','skill/references/communication.md',
                      'skill/references/motion-check.md','skill/references/adaptive.md'):
             p=public/name; p.parent.mkdir(parents=True,exist_ok=True); p.write_text('public '+name)
         self.profile={'model':'fake','effort':'high','env_key':'FAKE'}

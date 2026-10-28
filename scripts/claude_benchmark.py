@@ -177,7 +177,7 @@ def main():
     p.add_argument('--task-budget-usd', type=float, required=True)
     p.add_argument('--wall-limit-s', type=float, required=True)
     p.add_argument('--startup-timeout-s', type=float, default=120,
-                   help='Seconds allowed separately for owner startup and policy READY (default: 120)')
+                   help='Seconds allowed for owner startup and, for legacy READY-barrier runs, policy startup (default: 120)')
     p.add_argument('--confirm-engineering-spend', action='store_true',
                    help='Acknowledge model calls and estimated costs for this engineering batch')
     for command in ('status-engineering', 'stop-engineering'):

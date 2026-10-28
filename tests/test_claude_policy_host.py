@@ -23,7 +23,7 @@ class PolicyHostTests(unittest.TestCase):
         public = self.run / 'public/inputs'; public.mkdir(parents=True)
         (public/'task.json').write_text(json.dumps({'family_materials': []}))
         (public/'roles.json').write_text(json.dumps({'topology': 'centralized', 'roles': {'Controller': {'kind': 'controller'}}}))
-        for name in ('claude-controller.md', 'skill/SKILL.md', 'skill/references/tools.md',
+        for name in ('claude-controller.md', 'policy-rules.md', 'skill/SKILL.md', 'skill/references/tools.md',
                      'skill/references/communication.md', 'skill/references/motion-check.md'):
             path=public/name; path.parent.mkdir(parents=True, exist_ok=True); path.write_text('public input')
         cfg=json.loads((Path(__file__).resolve().parents[1]/'configs/harnesses/policy.json').read_text())
