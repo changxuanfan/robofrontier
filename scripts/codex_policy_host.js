@@ -33,6 +33,8 @@ class PolicyHost {
     if (method!=='item/tool/call' || p.tool!=='robot') throw new Error('Unsupported host tool');
     const actor=this.actors.get(p.threadId); if (!actor) throw new Error('Unbound policy role');
     const a=typeof p.arguments==='string'?JSON.parse(p.arguments):p.arguments;
+    const toolStarted=Date.now();
+    this.event({event:'robot_tool_started',actor,thread_id:p.threadId,op:a.op,call_id:p.callId});
     if (['move','gripper','action_batch'].includes(a.op) && a.data?.cameras===undefined)
       a.data={...(a.data||{}),cameras:a.views||[]};
     // Native call IDs are scoped by actor and stable across transport retries.
@@ -51,8 +53,10 @@ class PolicyHost {
         if (!real.startsWith(publicRoot)) throw new Error('Observation outside this run public directory');
         contentItems.push({type:'inputImage',imageUrl:'data:image/png;base64,'+fs.readFileSync(real).toString('base64')});
       }
+      this.event({event:'robot_tool_completed',actor,thread_id:p.threadId,op:a.op,call_id:p.callId,duration_s:(Date.now()-toolStarted)/1000});
       return {success:true,contentItems};
     } catch(error) {
+      this.event({event:'robot_tool_failed',actor,thread_id:p.threadId,op:a.op,call_id:p.callId,duration_s:(Date.now()-toolStarted)/1000});
       return {success:false,contentItems:[{type:'inputText',text:
         'Transport/tool error. Original call_id='+callId+'. Query pending/job with original ID; never recreate motion. '+error.message}]};
     }

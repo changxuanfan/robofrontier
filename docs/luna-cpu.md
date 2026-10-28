@@ -1,6 +1,6 @@
 # GPT-6 Luna CPU benchmark
 
-This branch starts autonomous adaptive benchmark jobs through the Codex CLI app-server; no supervising LLM session is required. The model is `gpt-6-luna`, effort `max`, via OpenAI Responses and `OPENAI_API_KEY`. `OPENAI_API_KEY` is an API credential; ChatGPT subscription login is not used by this provider. Frozen tasks keep the R14 release of the parent Codex branch. A 600-second run is an engineering test, not the standard full task limit.
+This branch starts autonomous adaptive benchmark jobs through the Codex CLI app-server; no supervising LLM session is required. The model is `gpt-6-luna`, effort `high`, via OpenAI Responses and `OPENAI_API_KEY`. `OPENAI_API_KEY` is an API credential; ChatGPT subscription login is not used by this provider. Frozen tasks keep the R14 release of the parent Codex branch. A 600-second run is an engineering test, not the standard full task limit.
 
 ## Linux native
 
@@ -27,10 +27,13 @@ Restore the matching policy-assets archive with `.venv/bin/python -m scripts.ben
 ```sh
 .venv/bin/python -m scripts.luna_cpu status runs/policy/luna-l1-001
 .venv/bin/python -m scripts.luna_cpu usage runs/policy/luna-l1-001
+.venv/bin/python -m scripts.luna_cpu performance runs/policy/luna-l1-001
 .venv/bin/python -m scripts.luna_cpu stop runs/policy/luna-l1-001
 ```
 
 Usage reads local Codex session traces and deduplicates response IDs, including forked roles. It reports missing trace files and is not a billing statement. `stop` requests graceful termination. For detached work use a job scheduler, tmux, or systemd; command completion or remote connection loss must not be confused with task completion.
+
+Performance records owner-side wall time for physics steps, rendering/capture and dispatch, and unions action and model-turn intervals across roles. These intervals overlap: action time is not additional to model turn time; dispatch includes capture. The model-turn interval includes tool waits and is not a measurement of API network or inference latency. Owner counters begin when the physical owner starts, slightly before START, and are sampled every five seconds. Usage TPM is calculated from completed response timestamps and may differ from the provider's rate-limit accounting.
 
 ## Mac with strict CPU rendering
 

@@ -7,15 +7,18 @@ import unittest
 from unittest.mock import patch
 
 from scripts.benchmark import profile, launch_config
-from scripts.luna_cpu import cpu_environment, usage_report
+from scripts.luna_cpu import cpu_environment, interval_union, usage_report
 
 
 class LunaCpuTests(unittest.TestCase):
-    def test_profile_requires_openai_api_and_max(self):
+    def test_parallel_intervals_are_not_double_counted(self):
+        self.assertEqual(interval_union([(0, 4), (2, 6), (7, 9), (8, 10)]), 9)
+
+    def test_profile_requires_openai_api_and_high(self):
         p = profile('luna')
         with tempfile.TemporaryDirectory() as folder:
             launch = launch_config(p, Path(folder))
-            self.assertEqual((p['model'], p['effort']), ('gpt-6-luna', 'max'))
+            self.assertEqual((p['model'], p['effort']), ('gpt-6-luna', 'high'))
             self.assertIn('model_providers.openai_api.env_key="OPENAI_API_KEY"', launch['args'])
             self.assertIn('model_providers.openai_api.base_url="https://api.openai.com/v1"', launch['args'])
             self.assertIn('model_providers.openai_api.wire_api="responses"', launch['args'])

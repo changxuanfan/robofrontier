@@ -377,6 +377,7 @@ class World:
 class Service(RuntimeService):
     def __init__(self,directory,hidden=False):
         self.hidden=hidden;self.obs=0
+        self.perf={'world_step_wall_s':0.,'world_steps':0,'capture_wall_s':0.,'captures':0,'pump_wall_s':0.}
         cfg = json.loads((Path(directory)/'private/inputs/harness.json').read_text())
         video_factory = (lambda:Video(Path(directory).resolve()/'private/outputs'/
                          (self.task.get('recording_camera','global')+'-realtime.mp4'),1280,800,self.config['video_fps'])) \
@@ -384,6 +385,7 @@ class Service(RuntimeService):
         super().__init__(directory,World,self.capture,video_factory)
 
     def capture(self,cameras):
+        capture_start=time.perf_counter()
         self.obs+=1;paths={}
         mujoco.mjr_setBuffer(mujoco.mjtFramebuffer.mjFB_OFFSCREEN,self.context)
         viewport=mujoco.MjrRect(0,0,1280,800)
@@ -396,8 +398,10 @@ class Service(RuntimeService):
             Image.fromarray(rgb[::-1]).save(path);paths[name]=str(path)
         if not getattr(self,'offscreen_context',None):
             mujoco.mjr_setBuffer(mujoco.mjtFramebuffer.mjFB_WINDOW,self.context)
-        return {'sim_time_s':self.world.time,'captured_at':time.time(),'images':paths,
+        result={'sim_time_s':self.world.time,'captured_at':time.time(),'images':paths,
                 'robot':{a:r.observe() for a,r in self.world.arms.items()}}
+        self.perf['capture_wall_s']+=time.perf_counter()-capture_start;self.perf['captures']+=1
+        return result
 
     def run(self):
         from http.cookies import SimpleCookie
@@ -458,14 +462,20 @@ class Service(RuntimeService):
                 connection=json.loads(p.read_text());connection['url']=url;atomic_json(p,connection);p.chmod(0o600)
             atomic_json(self.directory/'private/state/observer.json',{'url':url+'/viewer/'+observer,'read_only':True})
             print(json.dumps({'url':url,'directory':str(self.directory),'ready':True}),flush=True)
-            previous=time.monotonic();acc=0.;next_frame=previous;next_state=previous;next_record=previous
+            previous=time.monotonic();acc=0.;next_frame=previous;next_state=previous;next_record=previous;next_perf=previous
+            perf_file=self.directory/'private/outputs/cpu-performance.jsonl'
             while not self.shutdown and (not hasattr(self,'window') or not glfw.window_should_close(self.window)):
                 now=time.monotonic();acc+=min(now-previous,.1);previous=now
                 if hasattr(self,'window'):glfw.poll_events()
                 with self.lock:
-                    self.pump()
-                    while acc>=.02 and not self.ended:self.world.step();acc-=.02
+                    tick=time.perf_counter();self.pump();self.perf['pump_wall_s']+=time.perf_counter()-tick
+                    while acc>=.02 and not self.ended:
+                        tick=time.perf_counter();self.world.step();self.perf['world_step_wall_s']+=time.perf_counter()-tick
+                        self.perf['world_steps']+=1;acc-=.02
                     if now>=next_state:self.periodic();next_state=now+1
+                    if now>=next_perf:
+                        with perf_file.open('a') as stream:stream.write(json.dumps({'at':time.time(),**self.perf})+'\n')
+                        next_perf=now+5
                     if not self.hidden and now>=next_frame:
                         mujoco.mjr_setBuffer(mujoco.mjtFramebuffer.mjFB_WINDOW,self.context)
                         w,h=glfw.get_framebuffer_size(self.window);viewport=mujoco.MjrRect(0,0,w,h)
@@ -482,6 +492,9 @@ class Service(RuntimeService):
                     elif not self.video:next_record=now
                 time.sleep(.001)
         finally:
+            if hasattr(self,'context'):
+                with (self.directory/'private/outputs/cpu-performance.jsonl').open('a') as stream:
+                    stream.write(json.dumps({'at':time.time(),**self.perf})+'\n')
             if hasattr(self,'server'):self.server.shutdown()
             if hasattr(self,'offscreen_context'):
                 if hasattr(self,'context'):self.context.free()
