@@ -1,4 +1,4 @@
-"""Claude benchmark planning and offline readiness. Execution is not yet enabled."""
+"""Claude planning, offline readiness, and unscored engineering runs."""
 import argparse
 import hashlib
 import secrets
@@ -67,7 +67,7 @@ def plan(names, families=None, cases=None, level=None, min_arms=False, parallel=
 
 
 def prepare_draft(output, names, families=None, cases=None, level=None, min_arms=False, catalog=CATALOG, topology='adaptive', record_video=False):
-    """Freeze engineering drafts only. No Claude runtime is permitted to start them yet."""
+    """Freeze unqualified drafts for the explicit engineering runner only."""
     from robofrontier.task_families import prepare, policy_task
     from robofrontier.suite.dial_feedback import alphabet
 

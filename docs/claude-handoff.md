@@ -106,8 +106,9 @@ calls on one explicit session: a text reply, a robot tool call whose returned
 image must be identified, and a resumed turn. The receipt is `receipt.json`
 in the output directory; it records CLI version, requested and reported model,
 cost and per-check results, never key values. A profile passes only if all
-three checks pass within the cap. Bench runs use `opus`, not the Haiku
-precheck profile.
+three checks pass within the cap. Choose the intended profile explicitly for
+each engineering draft and obtain the relevant precheck evidence for that
+profile; a Haiku precheck does not establish Opus or other provider readiness.
 
 The image color is chosen randomly from six colors for each new precheck; the
 receipt records the chosen color after the checks. A single correct answer can
