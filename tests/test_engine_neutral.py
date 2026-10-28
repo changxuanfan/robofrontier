@@ -11,6 +11,7 @@ from robofrontier.claude.provenance import fork_provenance, transcript_rows
 from robofrontier.run_setup import prepare_run, verify_inputs
 from robofrontier.runtime_store import RuntimeStore
 from robofrontier.task_config import ROOT, load_harness
+from scripts.export_run_report import model_evidence
 
 PARENT = '11111111-1111-4111-8111-111111111111'
 CHILD = '22222222-2222-4222-8222-222222222222'
@@ -83,6 +84,23 @@ class EngineTests(unittest.TestCase):
         self.assertEqual(json.loads((codex / 'private/inputs/manifest.json').read_text())['engine'], 'codex')
         self.assertEqual(json.loads((claude / 'private/inputs/manifest.json').read_text())['engine'], 'claude')
         self.assertEqual(verify_inputs(claude), [])
+
+    def test_claude_report_never_uses_matching_codex_session_as_model_proof(self):
+        home=self.root/'home'; sessions=home/'.codex/sessions'; sessions.mkdir(parents=True)
+        (sessions/('log-'+PARENT+'.jsonl')).write_text(json.dumps({
+            'type':'turn_context','payload':{'model':'test-model','effort':'high','turn_id':'codex'}})+'\n')
+        run=self.root/'run'; evidence=run/'private/evidence'; evidence.mkdir(parents=True)
+        (evidence/'controller-summary.json').write_text(json.dumps({
+            'actor':'Controller','session_id':PARENT,'turn_id':'claude','status':'idle',
+            'record':{'summary':{'reported_model':'test-model'}}}))
+        config={'model':'test-model','effort':'high'}
+        with patch('pathlib.Path.home',return_value=home):
+            codex=model_evidence(run,'Controller',PARENT,config)
+            claude=model_evidence(run,'Controller',PARENT,{**config,'engine':'claude'})
+        self.assertTrue(codex['verified'])
+        self.assertFalse(claude['verified'])
+        self.assertEqual([t['turn_id'] for t in claude['turns']], ['claude'])
+        self.assertEqual(claude['turns'][0]['reported_model'], 'test-model')
 
 
 class ClaudeProvenanceTests(unittest.TestCase):

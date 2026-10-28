@@ -22,6 +22,37 @@ def occupancy(intervals, start, end):
             'overlap_seconds':sum(value for key,value in durations.items() if key>=2)}
 
 
+def model_evidence(directory, actor, thread, config):
+    if config.get('engine', 'codex') == 'claude':
+        # CLI reports are useful observations but do not establish the effective
+        # provider model or rule out remapping and auxiliary requests.
+        turns=[]
+        evidence=Path(directory)/'private/evidence'
+        for path in evidence.glob('*-summary.json'):
+            try:
+                data=json.loads(path.read_text())
+                if data.get('actor') != actor or data.get('session_id') != thread or not thread:
+                    continue
+                summary=(data.get('record') or {}).get('summary') or {}
+                turns.append({'turn_id':data.get('turn_id'), 'reported_model':summary.get('reported_model'),
+                              'status':data.get('status')})
+            except (OSError, ValueError, AttributeError, TypeError):
+                continue
+        return {'thread_id':thread, 'turns':turns, 'verified':False,
+                'source':'claude_host_reported_model_not_provider_identity'}
+    turns=[]
+    paths=list((Path.home()/'.codex/sessions').rglob('*'+thread+'*.jsonl')) if thread else []
+    for path in paths:
+        with path.open() as stream:
+            for line in stream:
+                if '"turn_context"' not in line:continue
+                record=json.loads(line)
+                if record.get('type')=='turn_context':
+                    value=record['payload'];turns.append({k:value.get(k) for k in ('turn_id','model','effort')})
+    return {'thread_id':thread,'turns':turns,
+            'verified':bool(turns) and all(t['model']==config['model'] and t['effort']==config['effort'] for t in turns)}
+
+
 def export(directory):
     directory=Path(directory).resolve();output=directory/'private/outputs'
     manifest=directory/'private/inputs/manifest.json'
@@ -44,17 +75,7 @@ def export(directory):
     models={}
     for actor,agent in agents.items():
         if agent['kind']=='manager':continue
-        thread=agent['thread_id'];turns=[]
-        paths=list((Path.home()/'.codex/sessions').rglob('*'+thread+'*.jsonl')) if thread else []
-        for path in paths:
-            for line in path.open():
-                # Avoid decoding image payloads and unrelated model content.
-                if '"turn_context"' not in line:continue
-                record=json.loads(line)
-                if record.get('type')=='turn_context':
-                    value=record['payload'];turns.append({k:value.get(k) for k in ('turn_id','model','effort')})
-        models[actor]={'thread_id':thread,'turns':turns,
-                       'verified':bool(turns) and all(t['model']==config['model'] and t['effort']==config['effort'] for t in turns)}
+        models[actor]=model_evidence(directory, actor, agent['thread_id'], config)
     evaluation_path=output/'evaluation.json'
     evaluation=json.loads(evaluation_path.read_text()) if evaluation_path.exists() else None
     metric_evaluation=evaluation
