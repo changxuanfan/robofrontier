@@ -107,14 +107,24 @@ def freeze_public(task, directory, public, root=ROOT):
             public[key] = deepcopy(review[key])
     public.setdefault('completion', deepcopy(task['completion']))
     public.setdefault('workspace_world_m', deepcopy(task['workspace_world_m']))
+    terminal_relay = (family_name == 'relay' and task.get('run_protocol', {}).get('evaluation_semantics') == 'terminal_outcome_v2')
+    if terminal_relay:
+        rules = public.get('rules', [])
+        public['rules'] = [rule for rule in rules if not rule.startswith((
+            'Airborne transport requires', 'Inside GOAL, original qualified holders',
+            'Drops and violations remain recorded.'))]
+        public['rules'].append('Collisions, drops and other process events are recorded separately. Recover using ordinary robot actions; do not reset, respawn or erase history.')
+        public['completion']['required_airborne_handover'] = False
+        public['completion']['scope'] = 'All assemblies released, actually supported and inside GOAL tolerance; process events are reported separately.'
     family_dir = directory/'public/inputs/family'
     family_dir.mkdir()
     hashes = {}
     for name, source in case['public_files'].items():
         if Path(name).name != name or sha(root/source['path']) != source['sha256']:
             raise ValueError('Invalid/changed public family file: '+name)
-        shutil.copyfile(root/source['path'], family_dir/name)
-        hashes['public/inputs/family/'+name] = source['sha256']
+        selected = root/'prompts/tasks/relay-terminal-v2.md' if terminal_relay and name == 'family-guidance.md' else root/source['path']
+        shutil.copyfile(selected, family_dir/name)
+        hashes['public/inputs/family/'+name] = sha(selected)
     public['family_guidance'] = 'family/family-guidance.md'
     public['family_materials'] = sorted('family/'+n for n in case['public_files'])
     for key, name in [('static_workstation', 'table-geometry.json')]:
@@ -135,7 +145,8 @@ def freeze_public(task, directory, public, root=ROOT):
     shutil.copyfile(root/RELEASE, private_release)
     return dict(release_sha256=sha(private_release), family=family_name, case_id=task['id'],
                 qualification=case['qualification'], public_files=hashes,
-                public_projection=projection)
+                public_projection=projection,
+                public_overlay='relay-terminal-v2' if terminal_relay else None)
 
 
 def prepare(case_id, directory, harness=None, private_puzzle_path=None, wall_limit_s=86400):
