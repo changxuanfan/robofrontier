@@ -106,6 +106,14 @@ the real-provider preflight and full runner still require qualification; the Cod
 component map and verified CLI facts are in [claude-codex-parity.md](claude-codex-parity.md).
 Mosaic remains the released R14 scene in this branch.
 
+On 2026-10-28, a fresh local clone at commit `aa0473d` independently created
+its Python environment with `uv sync --locked --extra oracle`, downloaded the
+published `handoff-20261028` asset archive, verified its SHA-256 and restored
+3,467 files. It planned and prepared the four minimum-arm Level 1 Opus drafts;
+all four frozen-input checks returned no changes. The Claude test suite ran
+104 tests successfully with two opt-in physical tests skipped. The clone came
+from the local branch, not GitHub, and no real provider or scored run was tested.
+
 ## 接手进度：离线策略主机开发
 
 本轮继续仅使用本地假模型与假机器人服务，没有调用真实 API 或启动正式试验。
