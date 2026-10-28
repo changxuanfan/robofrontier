@@ -10,6 +10,60 @@ For an agent-independent orchestration prompt, see
 The older [multimodel handoff](multimodel-handoff.md) describes the Codex
 runner and its asset-bundle recovery, not Claude command names or readiness.
 
+## Claude 分支接手步骤
+
+当前 `codex/claude-code-harness` **尚未发布到 GitHub**，所以现在不能直接从 GitHub
+检出它；下列 clone 命令在该分支发布、接收者获得仓库访问权限后才可用。其他分支
+可能仍使用 Codex 路线，不能把它们当成这个 Claude 分支。
+
+```sh
+git clone --branch codex/claude-code-harness https://github.com/changxuanfan/robofrontier.git robofrontier-claude
+cd robofrontier-claude
+git rev-parse --short HEAD
+```
+
+在 macOS 或 Linux 准备 Python 3.12、`uv`、Claude Code CLI 和可用的图形环境；
+录像还需 FFmpeg 和 ffprobe。已验证的本机 CLI 为 2.1.312，版本变化后需要重新
+验证。Claude 路线本身不需要安装 Codex CLI；外层调度 session 可以使用具备终端
+访问的其他 coding agent。下面先安装依赖，并从已发布的 R14 资产包恢复资源：
+
+```sh
+claude --version
+uv sync --locked --extra oracle
+mkdir -p ../robofrontier-assets
+gh release download handoff-20261028 --repo changxuanfan/robofrontier --pattern 'policy-assets.tar.gz*' --dir ../robofrontier-assets
+(cd ../robofrontier-assets && shasum -a 256 -c policy-assets.tar.gz.sha256)
+.venv/bin/python -m scripts.benchmark_handoff restore ../robofrontier-assets/policy-assets.tar.gz
+```
+
+Linux 可将 `shasum -a 256` 换成 `sha256sum`。没有 `gh` 时可从同仓库的
+`handoff-20261028` Release 下载两个同名资产文件，核对 SHA-256 后执行 restore。
+包内资产版本为 R14，Mosaic R15 不在本分支。恢复程序还校验资产清单和文件哈希。
+
+在仓库根目录创建个人 `.env`，以下命令不会覆盖已有文件；只在自己的机器填写
+相应变量，不要在聊天中粘贴密钥或把密钥提交到 Git：
+
+```sh
+.venv/bin/python -c 'import os; from pathlib import Path; fd = os.open(".env", os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600); os.write(fd, Path(".env.claude.example").read_bytes()); os.close(fd)'
+```
+
+`opus` 使用 `ANTHROPIC_API_KEY`；国产模型分别读取模板中的对应变量，千问还需
+按账号和区域填写 Anthropic 兼容 endpoint。`opus_subscription` 是尚未使用真实订阅
+验证的候选配置。模板的空值不构成登录或可用性证明。环境变量优先于 `.env`。
+如果 `.env` 已存在，检查并编辑原文件，不要覆盖；不要将创建命令的失败当成认证失败。
+
+以下离线命令不启动世界、不调用模型：
+
+```sh
+.venv/bin/python -m scripts.claude_benchmark doctor --models opus
+.venv/bin/python -m scripts.claude_benchmark plan --models opus --level 1 --min-arms --parallel 4
+```
+
+doctor 只检查凭据是否存在及本机资产等条件；plan 只列出四项任务。先确认这些
+结果，再根据后文进行已获授权的付费预检。无论预检结果如何，当前版本仍不能生成
+正式计分 benchmark。可把 [Claude 工程批次主 session prompt](../prompts/claude/engineering-manager.md)
+交给外层 agent，明确模型、任务、并发和预算。
+
 After `uv sync --locked --extra oracle`, use:
 
 ```sh
