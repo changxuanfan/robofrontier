@@ -15,6 +15,13 @@ test('robot transport cannot select another role connection',()=>{
   assert.equal(robotTool.name,'robot');
   assert.equal(robotTool.inputSchema.properties.connection,undefined);
 });
+test('direct bootstrap names shared rules and does not promise all drop counters',()=>{
+  const prompt=PolicyHost.prototype.bootstrap.call({run:'/tmp/test-run',wallLimit:300},'Controller');
+  assert.match(prompt,/policy-rules\.md/);
+  assert.match(prompt,/任务支持的过程事件/);
+  assert.doesNotMatch(prompt,/碰撞、掉落和交接等过程事件单独记录/);
+  assert.match(prompt,/不需要等待另一条 START/);
+});
 test('capacity recovery resumes a started task without a READY barrier',async()=>{
   const dir=fs.mkdtempSync(path.join(os.tmpdir(),'capacity-retry-'));
   try {
