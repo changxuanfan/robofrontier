@@ -254,6 +254,8 @@ Claude 工程草稿现会在 harness 与 manifest 均标记 `engine: claude`，�
 2026-10-28 已离线准备全部 12 个 Level 1 工程草稿，并逐项验证 bootstrap、冻结输入、
 task.json 中列出的 PNG 能通过此工具返回；没有启动模拟或模型。三种 Mosaic 规模各有
 一张目标图，三种 Dial 规模各有三张参考图；这不验证真实模型能理解图片或完成任务。
+本机另以真实 Claude CLI 和本地合成模型确认最小 Mosaic R14 目标图的字节经 MCP
+到达模型请求；可用 `ROBOFRONTIER_MOSAIC_IMAGE=1 .venv/bin/python -m unittest discover -s tests -p 'test_claude_mosaic_image_integration.py' -v` 复测。
 
 离线测试还将集中式策略主机接到真实 `RuntimeService` 和调度器，使用合成世界及
 本机回环服务验证绑定、READY、显式 START 和调度；这不等于真实 MuJoCo 或真实模型测试。
