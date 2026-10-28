@@ -61,6 +61,19 @@ neither this check nor the CLI-reported budget proves a provider billing cap,
 physical execution, or scored-run qualification. The full path has passed
 only against a local fake provider; real profiles remain unverified.
 
+After obtaining both real receipts, compare them with the current profile and
+CLI version without making model calls:
+
+```sh
+.venv/bin/python -m scripts.claude_readiness --profile opus --precheck /path/to/receipt.json --blocked-precheck /path/to/blocked/receipt.json
+```
+
+This checks required observations, session relationships, cost completeness,
+model/profile fingerprint and CLI version. `precheck_evidence_matches` is only
+receipt consistency: it cannot authenticate a receipt, distinguish accounts
+sharing the same profile, establish provider model identity, or authorize a
+scored benchmark. `formal_execution_available` remains false.
+
 The doctor checks locally only. It reports whether credentials are present,
 not whether they work. If a sandbox denies the provider host or writes under
 `runs/`, allow it in your own environment rather than bypassing the sandbox.

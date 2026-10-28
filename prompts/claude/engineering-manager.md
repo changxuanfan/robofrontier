@@ -43,6 +43,8 @@
    fork 或完整任务可用。
    若 check_blocked_fork=true，且用户授权额外的指定预算，再对每个 profile 执行
    scripts.claude_blocked_precheck，保存独立回执；这仍不是完整任务或计费硬上限。
+   取得两份回执后可用 scripts.claude_readiness 核对当前 profile 和 CLI 是否匹配；
+   一致仅代表回执检查通过，不代表已完成正式计分资格验证。
 5. mode=engineering：仅在用户明确授权指定模型和工程批次的真实费用，且给出正数
    turn_budget_usd、task_budget_usd、wall_limit_s 时继续。准备新目录：
    scripts.claude_benchmark prepare-draft，传入选择、topology 和 output；若

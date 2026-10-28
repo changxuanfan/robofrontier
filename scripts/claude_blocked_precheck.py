@@ -14,6 +14,7 @@ import time
 import uuid
 
 from robofrontier.claude.provenance import fork_provenance, history, transcript_rows
+from robofrontier.claude.profile_identity import fingerprint
 from robofrontier.claude.runner import run_turn
 from robofrontier.task_families import ROOT
 from scripts.benchmark import load_env
@@ -54,8 +55,9 @@ def run_blocked_precheck(name, output, budget, base_env, *, binary='claude', wai
     run,mcp,server=setup_run(output,base_env)
     session=str(uuid.uuid4()); child=str(uuid.uuid4())
     receipt={'schema':'robofrontier.claude-blocked-precheck.v1','profile':name,'requested_model':prof['model'],
-             'profile_sha256':hashlib.sha256(json.dumps(prof,sort_keys=True,separators=(',',':')).encode()).hexdigest(),
+             'profile_sha256':fingerprint(prof),
              'claude_version':claude_version(binary),'budget_usd':budget,'started_at':time.time(),
+             'parent_session':session,'child_session':child,
              'passed':False,'checks':{},'reported_cost_usd':0,'cost_complete':False,'error_type':None}
     cancel=threading.Event(); parent_records=[]; parent_errors=[]; worker=None
     started=0.0

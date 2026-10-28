@@ -7,7 +7,6 @@ judged from the turn result and robot-stub request count, not from the reply
 alone. A passing receipt covers only this profile, CLI version and cap.
 """
 import argparse
-import hashlib
 import http.server
 import json
 import math
@@ -21,6 +20,7 @@ from pathlib import Path
 
 from PIL import Image
 
+from robofrontier.claude.profile_identity import fingerprint
 from robofrontier.claude.runner import run_turn
 from robofrontier.claude.provenance import fork_provenance
 from robofrontier.task_families import ROOT
@@ -123,7 +123,7 @@ def run_precheck(name, output, budget, base_env, binary='claude', check_fork=Fal
     run, mcp, server = setup_run(output, base_env)
     receipt = {'schema': 'robofrontier.claude-precheck.v1', 'profile': name, 'requested_model': prof['model'],
                'effort': prof['effort'], 'budget_usd': budget, 'claude_version': claude_version(binary),
-               'profile_sha256': hashlib.sha256(json.dumps(prof,sort_keys=True,separators=(',',':')).encode()).hexdigest(),
+               'profile_sha256': fingerprint(prof),
                'started_at': time.time(), 'checks': [], 'stopped': None}
     spent = 0.0
     session = str(uuid.uuid4())
