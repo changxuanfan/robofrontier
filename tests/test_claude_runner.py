@@ -5,6 +5,7 @@ import tempfile
 import threading
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from robofrontier.claude.runner import build_command, build_env, run_turn, summarize, ROBOT_TOOL
 
@@ -129,6 +130,18 @@ class ClaudeRunnerTests(unittest.TestCase):
             self.assertEqual(record['process'], 'cancelled')
             self.assertEqual(record['summary']['turn_status'], 'unknown')
             self.assertIsNone(record['summary']['task_success'])
+
+    def test_cancellation_before_launch_never_starts_cli(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run = Path(tmp) / 'run'; run.mkdir()
+            config = run / 'mcp.json'; config.write_text('{}')
+            cancel = threading.Event(); cancel.set()
+            with patch('robofrontier.claude.runner.subprocess.Popen') as spawn:
+                with self.assertRaisesRegex(InterruptedError, 'cancelled before launch'):
+                    run_turn(PROFILE, 'm', 'high', config, 'go', run,
+                             {'PATH': '/usr/bin:/bin', 'KIMI_API_KEY': SECRET},
+                             cancel_event=cancel)
+                spawn.assert_not_called()
 
     def test_event_and_stderr_redact_credential_before_truncation(self):
         with tempfile.TemporaryDirectory() as tmp:

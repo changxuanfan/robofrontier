@@ -185,6 +185,11 @@ def run_turn(profile, model, effort, mcp_config, prompt, run_dir, base_env,
                         fork_from=fork_from, enable_robot=enable_robot, auth_mode=profile.get('auth_mode','api_key'))
     env = build_env(profile, base_env, config_dir)
     raw = evidence / events_name
+    # A queued worker may reach this point after its supervisor has stopped it.
+    # Do not launch a potentially paid CLI turn when cancellation is already set.
+    # Cancellation racing with Popen is still treated as an unknown outcome.
+    if cancel_event is not None and cancel_event.is_set():
+        raise InterruptedError('Claude turn cancelled before launch')
     process = subprocess.Popen(cmd, cwd=run_dir, env=env, text=True, stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE, stdin=subprocess.DEVNULL, start_new_session=True)
     deadline = time.monotonic() + timeout

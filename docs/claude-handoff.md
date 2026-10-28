@@ -333,6 +333,8 @@ CLI 报告视为订阅额度或实际账单的硬上限。
 运行中的 CLI 收到 Ctrl-C 或 SIGTERM 会请求停止批次、跳过未启动任务并等待活动任务的
 停止与封存；应等待命令退出并检查 `status-engineering`。这不是立即强制停止；SIGKILL、
 机器崩溃或 supervisor 意外失联可能留下进程，必须按状态人工检查，不能自动重跑。
+模型回合启动前会检查取消标记；若标记已设置，不会创建 CLI 进程。取消与进程创建
+同时发生仍可能启动进程，结果按未知处理，不能保证没有发生服务请求或费用。
 本机另用真实 MuJoCo 和 Claude CLI、回环合成模型对单个和四个并发 adaptive 工程任务
 进行了 SIGTERM 烟雾测试，验证了 supervisor 退出及各物理进程封存和退出；未验证所有中断时机。
 可在已恢复资产的图形环境中运行 `ROBOFRONTIER_PHYSICS_SIGNAL=1 .venv/bin/python -m unittest discover -s tests -p 'test_claude_signal_physics_smoke.py' -v`。
