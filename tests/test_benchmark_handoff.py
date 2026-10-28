@@ -6,10 +6,27 @@ import tempfile
 import tarfile
 import unittest
 
-from scripts.benchmark_handoff import export_assets,restore_assets
+from scripts.benchmark_handoff import export_assets,restore_assets,setup_assets,digest
 
 
 class HandoffAssetsTests(unittest.TestCase):
+    def test_pinned_offline_setup_rejects_wrong_hash_and_restores(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);source=root/'source';target=root/'target'
+            self.fixture(source);scene=self.fixture(target)
+            archive=root/'assets.tar.gz';export_assets(source,archive,source)
+            config={'release_sha256':digest(target/'configs/task_families/current.json'),
+                    'panda_source_sha256':digest(target/'vendor/panda/SOURCE.json'),
+                    'archive_sha256':'0'*64, 'url':'https://example.invalid/assets'}
+            (target/'configs/policy-assets.json').write_text(json.dumps(config))
+            scene.unlink()
+            with self.assertRaisesRegex(ValueError,'SHA-256 mismatch'):setup_assets(target,archive)
+            self.assertFalse(scene.exists())
+            config['archive_sha256']=digest(archive)
+            (target/'configs/policy-assets.json').write_text(json.dumps(config))
+            self.assertEqual(setup_assets(target,archive)['status'],'restored')
+            self.assertEqual(setup_assets(target)['status'],'already_complete')
+
     def fixture(self,root):
         def write(name,value):
             p=root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(value);return p
