@@ -33,7 +33,9 @@ def bootstrap_prompt(run_dir, *, topology='centralized'):
         raise ValueError('Public inputs exceed bootstrap size limit')
     extra = ('\n\nThe adaptive role may request bounded delegates through the robot delegate operation. '
              'Native session-management tools and filesystem access are unavailable; use robot work, '
-             'history, inbox and authorized messages for status and handback evidence.' if topology == 'adaptive' else '')
+             'history, inbox and authorized messages for status and handback evidence. To read a returned '
+             'delegate report, call robot work with data {"delegate_id":"Delegate_..."}; '
+             'the authorized report is returned inline as delegate_report.' if topology == 'adaptive' else '')
     return text + ('\n\nTo view a task initial_reference_images entry or robot_layout_image, '
                    'call robot with op public_image and data {"names": ["the exact listed path"]}. '
                    'For live observations use observe with cameras and views. You have no filesystem tools.') + extra

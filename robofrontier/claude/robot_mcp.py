@@ -4,6 +4,7 @@ import base64
 from concurrent.futures import ThreadPoolExecutor
 import json
 from pathlib import Path
+import re
 import sys
 import threading
 import uuid
@@ -62,6 +63,8 @@ class RobotBridge:
             return {'isError': True, 'content': [{'type': 'text', 'text':
                 'Tool transport failed. Original call_id=' + str(call_id) +
                 '. Inspect pending/job with this ID before retrying; never recreate motion.'}]}
+        if op == 'work' and 'delegate_id' in data:
+            result = self.attach_delegate_report(result, data['delegate_id'])
         content = [{'type': 'text', 'text': json.dumps(result, ensure_ascii=False, allow_nan=False)}]
         observation = result.get('observation') or (result.get('original_result') or {}).get('observation') or {}
         for view in views:
@@ -78,6 +81,32 @@ class RobotBridge:
                 raise ValueError('Observation is not a PNG image')
             content.append({'type': 'image', 'data': base64.b64encode(data_bytes).decode('ascii'), 'mimeType': 'image/png'})
         return {'content': content}
+
+    def attach_delegate_report(self, result, actor):
+        """Inline only a finished child report authorized by the runtime work response."""
+        if not isinstance(actor, str) or not re.fullmatch(r'Delegate_[a-f0-9]{12}', actor):
+            return result
+        statuses = result.get('delegate_status')
+        if not isinstance(statuses, dict):
+            return result
+        status = statuses.get(actor, {})
+        if not isinstance(status, dict) or status.get('state') != 'finished' or not status.get('result_ref'):
+            return result
+        if not isinstance(status.get('delegation_id'), str) or not status['delegation_id']:
+            return {**result, 'delegate_report_unavailable': True}
+        root = (self.run / 'public/results').resolve()
+        expected = root / (actor + '.json')
+        try:
+            ref = Path(status['result_ref'])
+            if (not root.is_relative_to((self.run/'public').resolve()) or ref.resolve() != expected
+                    or not expected.is_file() or expected.stat().st_size > 128_000):
+                raise ValueError('Invalid or oversized report')
+            report = json.loads(expected.read_text())
+            if not isinstance(report, dict) or report.get('actor') != actor or report.get('delegation_id') != status.get('delegation_id'):
+                raise ValueError('Report identity mismatch')
+        except (OSError, ValueError, TypeError):
+            return {**result, 'delegate_report_unavailable': True}
+        return {**result, 'delegate_report': report}
 
 
     def public_images(self, data):

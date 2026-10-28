@@ -15,6 +15,7 @@ from robofrontier.claude.adaptive_policy_host import AdaptivePolicyHost
 from robofrontier.claude.adaptive_setup import AdaptiveForkSetup
 from robofrontier.claude.fork_setup import create_fork
 from robofrontier.claude.budget import BudgetLedger
+from robofrontier.claude.robot_mcp import RobotBridge
 from robofrontier.run_setup import prepare_run
 from robofrontier.runtime_service import RuntimeService
 
@@ -150,6 +151,13 @@ class AdaptiveIntegrationTests(unittest.TestCase):
                 self.assertEqual(service.store.get('robot_owners')['A'],'Controller')
                 self.assertEqual(len(host.setup.hosts),1)
                 self.assertTrue(any(not req.get('tools') for req in StubModel.requests),'fork setup was not tool-free')
+                child=batch['children'][0]['actor']
+                bridge=RobotBridge(run,run/'private/state/connections/Controller.json')
+                response=bridge.call({'op':'work','data':{'delegate_id':child}})
+                report=json.loads(response['content'][0]['text'])['delegate_report']
+                self.assertEqual(report['actor'],child)
+                self.assertEqual(report['delegation_id'],batch['id'])
+                self.assertEqual(report['result'],'synthetic evidence')
             finally:
                 host.stop(); host.close(); done.set(); pump_thread.join(3)
                 for server in (world,model): server.shutdown(); server.server_close()

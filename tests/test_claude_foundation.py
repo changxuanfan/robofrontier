@@ -90,5 +90,34 @@ class ClaudeFoundationTests(unittest.TestCase):
             conn.write_text(json.dumps({'run_id': 'r', 'actor': 'Meta'}))
             with self.assertRaises(ValueError): RobotBridge(run, conn)
 
+    def test_controller_can_read_only_runtime_authorized_delegate_report(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run=Path(tmp)/'run'; conn=run/'private/state/connections/Controller.json'
+            conn.parent.mkdir(parents=True)
+            conn.write_text(json.dumps({'run_id':'run','actor':'Controller'}))
+            actor='Delegate_123456abcdef'; reports=run/'public/results'; reports.mkdir(parents=True)
+            report=reports/(actor+'.json')
+            report.write_text(json.dumps({'actor':actor,'delegation_id':'batch1','result':'handback evidence'}))
+            state={'state':'finished','delegation_id':'batch1','result_ref':str(report)}
+            def invoke(*args, **kwargs): return {'delegate_status':{actor:state}}
+            bridge=RobotBridge(run,conn,invoke)
+            def read(selected=actor):
+                return json.loads(bridge.call({'op':'work','data':{'delegate_id':selected}})['content'][0]['text'])
+            self.assertEqual(read()['delegate_report']['result'],'handback evidence')
+            self.assertNotIn('delegate_report',read('Delegate_000000000000'))
+            state['state']='active'
+            self.assertNotIn('delegate_report',read())
+            state['state']='finished'; state['delegation_id']='other'
+            self.assertTrue(read()['delegate_report_unavailable'])
+            state['delegation_id']='batch1'
+            report.write_text('x' * 128_001)
+            self.assertTrue(read()['delegate_report_unavailable'])
+            state['delegation_id']=None
+            self.assertTrue(read()['delegate_report_unavailable'])
+            state['delegation_id']='batch1'
+            outside=Path(tmp)/'private.json'; outside.write_text('{"secret":"private"}')
+            report.unlink(); report.symlink_to(outside)
+            self.assertTrue(read()['delegate_report_unavailable'])
+
 
 if __name__ == '__main__': unittest.main()
