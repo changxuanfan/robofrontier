@@ -287,8 +287,8 @@ CLI 报告视为订阅额度或实际账单的硬上限。
 运行中的 CLI 收到 Ctrl-C 或 SIGTERM 会请求停止批次、跳过未启动任务并等待活动任务的
 停止与封存；应等待命令退出并检查 `status-engineering`。这不是立即强制停止；SIGKILL、
 机器崩溃或 supervisor 意外失联可能留下进程，必须按状态人工检查，不能自动重跑。
-本机另用真实 MuJoCo 和 Claude CLI、回环合成模型对单个 adaptive 工程任务进行了
-SIGTERM 烟雾测试，验证了 supervisor 退出、封存和物理进程退出；未验证所有中断时机。
+本机另用真实 MuJoCo 和 Claude CLI、回环合成模型对单个和四个并发 adaptive 工程任务
+进行了 SIGTERM 烟雾测试，验证了 supervisor 退出及各物理进程封存和退出；未验证所有中断时机。
 可在已恢复资产的图形环境中运行 `ROBOFRONTIER_PHYSICS_SIGNAL=1 .venv/bin/python -m unittest discover -s tests -p 'test_claude_signal_physics_smoke.py' -v`。
 
 自适应工程路径现已连接启动器和批次接口；父角色、fork 设置和子角色共用单任务
@@ -330,4 +330,4 @@ ROBOFRONTIER_PHYSICS_BATCH=1 .venv/bin/python -m unittest discover -s tests -p t
 该检查在同一批中使用四个相互独立的物理进程，检查它们确实同时存活，并分别核对
 委派、短位移和封存。模型仍是本机合成服务；测试不证明厂商并发、速率限制或成本。
 2026-10-28 在本机以代码提交 `9f8709d` 复测通过；四个场景同时存在独立物理进程，
-且各自完成委派、合成短位移与封存。这不覆盖同时中断四个任务的信号处理。
+且各自完成委派、合成短位移与封存。另有上述四任务同时 SIGTERM 停止检查。
