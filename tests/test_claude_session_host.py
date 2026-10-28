@@ -162,5 +162,30 @@ class SessionHostTests(unittest.TestCase):
             finally:
                 ledger.close()
 
+    def test_prelaunch_cancellation_releases_only_its_shared_reservation(self):
+        from robofrontier.claude.budget import BudgetLedger
+        from robofrontier.claude.runner import PreLaunchCancelled
+        with tempfile.TemporaryDirectory() as tmp:
+            run=make_run(tmp); ledger=BudgetLedger.create(run/'private/state/budget.sqlite',1)
+            entered=threading.Event(); release=threading.Event()
+            def runner(*args, **kwargs):
+                entered.set(); release.wait(3)
+                raise PreLaunchCancelled('no process created')
+            try:
+                host=ClaudeSessionHost(run,'Controller',PROFILE,{},max_budget_usd=.6,
+                                       budget_ledger=ledger,runner=runner)
+                host.send('start'); self.assertTrue(entered.wait(2))
+                self.assertEqual(ledger.snapshot()['reserved_usd'],'0.6')
+                host.stop(); release.set()
+                self.assertEqual(host.wait(3)['status'],'unknown')
+                snapshot=ledger.snapshot()
+                self.assertEqual(snapshot['status'],'tracking')
+                self.assertEqual(snapshot['available_usd'],'1')
+                self.assertEqual(snapshot['reservations'][0]['status'],'not_launched')
+                self.assertEqual(host.last_result['process'],'not_launched')
+                with self.assertRaises(ValueError): host.send('do not restart')
+            finally:
+                release.set(); ledger.close()
+
 
 if __name__ == '__main__': unittest.main()

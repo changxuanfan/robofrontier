@@ -167,6 +167,10 @@ def _redact(text, secret):
     return text
 
 
+class PreLaunchCancelled(InterruptedError):
+    """Cancellation was observed before a CLI subprocess was created."""
+
+
 def run_turn(profile, model, effort, mcp_config, prompt, run_dir, base_env,
              session_id=None, timeout=600, max_budget_usd=None, binary='claude', resume=None, events_name='events.jsonl',
              cancel_event=None, fork_from=None, enable_robot=True):
@@ -189,7 +193,7 @@ def run_turn(profile, model, effort, mcp_config, prompt, run_dir, base_env,
     # Do not launch a potentially paid CLI turn when cancellation is already set.
     # Cancellation racing with Popen is still treated as an unknown outcome.
     if cancel_event is not None and cancel_event.is_set():
-        raise InterruptedError('Claude turn cancelled before launch')
+        raise PreLaunchCancelled('Claude turn cancelled before launch')
     process = subprocess.Popen(cmd, cwd=run_dir, env=env, text=True, stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE, stdin=subprocess.DEVNULL, start_new_session=True)
     deadline = time.monotonic() + timeout

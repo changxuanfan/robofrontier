@@ -113,6 +113,25 @@ class ForkSetupTests(unittest.TestCase):
             self.assertEqual(ledger.snapshot()['reserved_usd'],'0.95')
         finally: ledger.close()
 
+    def test_cancelled_before_fork_launch_releases_only_fork_allowance(self):
+        from robofrontier.claude.budget import BudgetLedger
+        from robofrontier.claude.runner import PreLaunchCancelled
+        ledger=BudgetLedger.create(self.run/'private/state/budget.sqlite',1)
+        def cancelled(*args, **kwargs): raise PreLaunchCancelled('no process created')
+        try:
+            ledger.reserve('parent-turn','Controller',.4)
+            with self.assertRaises(PreLaunchCancelled):
+                create_fork(self.store,self.parent,'batch',self.actor,'owner',max_budget_usd=.1,
+                            runner=cancelled,budget_ledger=ledger)
+            snapshot=ledger.snapshot()
+            self.assertEqual(snapshot['status'],'tracking')
+            self.assertEqual(snapshot['reserved_usd'],'0.4')
+            self.assertEqual(sorted(row['status'] for row in snapshot['reservations']),
+                             ['not_launched','reserved'])
+            claim=json.loads((self.run/'private/claude-forks'/(self.actor+'.json')).read_text())
+            self.assertEqual(claim['status'],'uncertain')
+        finally: ledger.close()
+
     def test_adoption_requires_activation_exact_identity_and_single_use(self):
         from robofrontier.claude.budget import BudgetLedger
         from robofrontier.claude.session_host import ClaudeSessionHost

@@ -13,7 +13,7 @@ import sys
 import threading
 import uuid
 
-from robofrontier.claude.runner import run_turn
+from robofrontier.claude.runner import PreLaunchCancelled, run_turn
 from robofrontier.run_setup import verify_inputs, write_json
 
 ACTOR_NAME = re.compile(r'[A-Za-z][A-Za-z0-9_-]{0,63}')
@@ -183,6 +183,7 @@ class ClaudeSessionHost:
             return {'threadId': self.session_id, 'turnId': turn_id}
 
     def _run(self, prompt, previous, turn_id, turn_budget):
+        before_launch = False
         try:
             record = self.runner(
                 self.profile, self.profile['model'], self.profile['effort'], self.mcp,
@@ -203,6 +204,10 @@ class ClaudeSessionHost:
                 state = 'error'
             else:
                 state = 'unknown'
+        except PreLaunchCancelled:
+            before_launch = True
+            record = {'process': 'not_launched', 'error_type': 'PreLaunchCancelled'}
+            state = 'unknown'
         except Exception as error:
             # Do not record exception text: provider errors can contain credentials.
             record = {'process': 'unknown', 'error_type': type(error).__name__}
@@ -218,7 +223,11 @@ class ClaudeSessionHost:
                          and summary.get('turn_status') in ('ended', 'failed')
                          and not summary.get('malformed_lines'))
                 try:
-                    shared = self.budget_ledger.settle(turn_id, summary.get('total_cost_usd'), outcome_known=known)
+                    if before_launch:
+                        self.budget_ledger.abandon_before_launch(turn_id)
+                        shared = self.budget_ledger.snapshot()
+                    else:
+                        shared = self.budget_ledger.settle(turn_id, summary.get('total_cost_usd'), outcome_known=known)
                     self.budget_status = shared['status']
                     self.reported_spend = Decimal(shared['reported_spend_usd'])
                     if shared['status'] == 'uncertain': state = 'unknown'
@@ -227,7 +236,7 @@ class ClaudeSessionHost:
                 except Exception:
                     self.budget_status = 'cost_unknown'
                     state = 'unknown'
-            if self.total_budget is not None:
+            if self.total_budget is not None and not before_launch:
                 cost = (record.get('summary') or {}).get('total_cost_usd')
                 try:
                     amount = Decimal(str(cost)) if not isinstance(cost, bool) else Decimal('NaN')

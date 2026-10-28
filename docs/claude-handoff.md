@@ -335,6 +335,8 @@ CLI 报告视为订阅额度或实际账单的硬上限。
 机器崩溃或 supervisor 意外失联可能留下进程，必须按状态人工检查，不能自动重跑。
 模型回合启动前会检查取消标记；若标记已设置，不会创建 CLI 进程。取消与进程创建
 同时发生仍可能启动进程，结果按未知处理，不能保证没有发生服务请求或费用。
+明确在创建进程之前取消的回合会释放其共享预算预留；角色及委派的状态仍需检查，
+不会因此自动重试。启动后取消或启动结果不明仍将预算标为不确定。
 本机另用真实 MuJoCo 和 Claude CLI、回环合成模型对单个和四个并发 adaptive 工程任务
 进行了 SIGTERM 烟雾测试，验证了 supervisor 退出及各物理进程封存和退出；未验证所有中断时机。
 可在已恢复资产的图形环境中运行 `ROBOFRONTIER_PHYSICS_SIGNAL=1 .venv/bin/python -m unittest discover -s tests -p 'test_claude_signal_physics_smoke.py' -v`。

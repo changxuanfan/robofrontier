@@ -13,7 +13,7 @@ import time
 import uuid
 
 from robofrontier.claude.provenance import fork_provenance, history, transcript_rows
-from robofrontier.claude.runner import run_turn
+from robofrontier.claude.runner import PreLaunchCancelled, run_turn
 from robofrontier.delegation import Delegations
 from robofrontier.run_setup import write_json
 
@@ -108,7 +108,7 @@ def create_fork(store, parent_host, batch_id, actor, owner, *, max_budget_usd,
             reservation = 'fork-' + child
             max_budget_usd = budget_ledger.reserve(reservation, actor, max_budget_usd)
         if cancel_event is not None and cancel_event.is_set():
-            raise ValueError('Fork setup was cancelled')
+            raise PreLaunchCancelled('Fork setup cancelled before launch')
         record = runner(profile, profile['model'], profile['effort'], None, SETUP_PROMPT, run,
                         parent_host.base_env, session_id=child, fork_from=parent_host.session_id,
                         enable_robot=False, max_budget_usd=max_budget_usd, timeout=timeout,
@@ -140,7 +140,11 @@ def create_fork(store, parent_host, batch_id, actor, owner, *, max_budget_usd,
         return entry
     except Exception as error:
         if reservation is not None and not settled:
-            try: budget_ledger.settle(reservation, None, outcome_known=False)
+            try:
+                if isinstance(error, PreLaunchCancelled):
+                    budget_ledger.abandon_before_launch(reservation)
+                else:
+                    budget_ledger.settle(reservation, None, outcome_known=False)
             except Exception: pass  # A remaining reservation still conservatively consumes its allowance.
         entry.update(status='uncertain', error_type=type(error).__name__, completed_at=time.time())
         try: write_json(claim, entry)
