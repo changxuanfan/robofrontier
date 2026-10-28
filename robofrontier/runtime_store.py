@@ -128,13 +128,14 @@ class RuntimeStore:
             if self.get('lifecycle') != 'prepared':
                 raise ValueError('Run is not prepared')
             policy = {a: v for a, v in self.agents().items() if v['kind'] != 'manager'}
-            if not policy or not all(v['ready'] for v in policy.values()):
+            direct = self.get('config').get('startup_protocol') == 'direct_controller_v2'
+            if not policy or (direct and (set(policy) != {'Controller'} or not policy['Controller']['thread_id'])) or (not direct and not all(v['ready'] for v in policy.values())):
                 raise ValueError('All policy roles must be READY')
             self.put('lifecycle', 'running')
             self.put('physics_state', 'running')
             self.put('start_at', time.time())
             for a, v in policy.items():
-                self.update_agent(a, work_state='continue', note='START; form your own plan within role authority',
+                self.update_agent(a, work_state='waiting' if direct else 'continue', note='' if direct else 'START; form your own plan within role authority',
                                   work_saved_at=time.time(), work_revision=v['work_revision'] + 1)
             self.event('START', self.get('config')['manager'])
 

@@ -122,7 +122,7 @@ def select_cases(families=None, cases=None, level=None, min_arms=False):
     return selected
 
 
-def prepare_batch(output, names, families=None, cases=None, config=None, level=None, min_arms=False):
+def prepare_batch(output, names, families=None, cases=None, config=None, level=None, min_arms=False, wall_limit_s=86400):
     if not names or len(set(names))!=len(names):raise ValueError('Choose distinct model profiles')
     profiles={n:profile(n,config) for n in names}
     selected=[row['case_id'] for row in select_cases(families,cases,level,min_arms)]
@@ -130,7 +130,7 @@ def prepare_batch(output, names, families=None, cases=None, config=None, level=N
     batch=dict(schema='robofrontier.cli-benchmark.v1',status='preparing',created_at=time.time(),
         cwd=str(ROOT),python=sys.executable,context_window=next(iter(profiles.values()))['context_window'],
         auto_compact_token_limit=next(iter(profiles.values()))['auto_compact_token_limit'],
-        task_wall_limit_s=86400,model_calls=0,jobs=[])
+        task_wall_limit_s=wall_limit_s,model_calls=0,jobs=[])
     write_json(output/'batch.json',batch)
     # Match private Dial instances across model arms of this batch. These are
     # new secrets, never copied from an Oracle or exposed in public inputs.
@@ -151,7 +151,7 @@ def prepare_batch(output, names, families=None, cases=None, config=None, level=N
         harness_path=config_dir/'harness.json';write_json(harness_path,harness)
         for case in selected:
             run=output/name/case
-            prepare(case,run,harness_path,puzzles.get(case))
+            prepare(case,run,harness_path,puzzles.get(case),wall_limit_s=wall_limit_s)
             launch=launch_config(p,run/'private/inputs')
             write_json(run/'private/inputs/codex.json',launch)
             # Host config/model catalog belong to immutable prepared inputs too.
@@ -229,7 +229,9 @@ def main():
     a.add_argument('--smoke-only',action='store_true',help='Small image/tool round trip; does not qualify scored runs')
     for command in ('plan','prepare'):
         a=sub.add_parser(command)
-        if command=='prepare':a.add_argument('--output',type=Path,required=True)
+        if command=='prepare':
+            a.add_argument('--output',type=Path,required=True)
+            a.add_argument('--wall-limit-s',type=float,default=86400,help='Per-task seconds after START, including initial model work')
         else:a.add_argument('--parallel',type=int,default=4)
         a.add_argument('--models',nargs='+',default=['astra']);a.add_argument('--families',nargs='+')
         a.add_argument('--cases',nargs='+');a.add_argument('--model-config',type=Path)
@@ -272,7 +274,7 @@ def main():
                 receipt['codex_version']=subprocess.check_output(['codex','--version'],text=True).strip()
             write_json(target/'report.json',receipt)
             if result.returncode:raise SystemExit(result.returncode)
-    elif args.command=='prepare':print(prepare_batch(args.output,args.models,args.families,args.cases,args.model_config,args.level,args.min_arms))
+    elif args.command=='prepare':print(prepare_batch(args.output,args.models,args.families,args.cases,args.model_config,args.level,args.min_arms,args.wall_limit_s))
     elif args.command=='run':run_batch(args.batch,args.parallel)
     elif args.command=='status':
         batch=read(args.batch/'batch.json')

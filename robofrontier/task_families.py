@@ -38,20 +38,24 @@ def resolve_case(case_id, purpose='gpt', root=ROOT):
     return name, family, case
 
 
-def protocol_for(case, release_sha256):
+def protocol_for(case, release_sha256, wall_limit_s=86400):
+    import math
+    if isinstance(wall_limit_s, bool) or not isinstance(wall_limit_s, (int,float)) or not math.isfinite(wall_limit_s) or not 0 < wall_limit_s <= 86400:
+        raise ValueError('Invalid policy wall limit')
     return dict(kind='policy_trial', launch='explicit_manager_start',
         release_sha256=release_sha256, case_id=case['id'],
         source_task_sha256=case['source_files']['task.json'],
         source_scene_sha256=case['source_files']['scene.xml'],
-        reference_evidence=case['qualification'], total_wall_limit_s=86400,
+        reference_evidence=case['qualification'], total_wall_limit_s=wall_limit_s,
+        evaluation_semantics='terminal_outcome_v2',
         experience='fresh_run_only', presentation_loop=False)
 
 
-def policy_task(case_id, root=ROOT):
+def policy_task(case_id, root=ROOT, wall_limit_s=86400):
     name, family, case = resolve_case(case_id, root=root)
     task = read(Path(root)/case['directory']/'task.json')
     task['execution_readiness'] = READINESS
-    task['run_protocol'] = protocol_for(case, sha(Path(root)/RELEASE))
+    task['run_protocol'] = protocol_for(case, sha(Path(root)/RELEASE), wall_limit_s)
     return task
 
 
@@ -61,10 +65,10 @@ def validate_policy_task(task, root=ROOT):
             or protocol.get('launch') != 'explicit_manager_start'
             or protocol.get('experience') != 'fresh_run_only'
             or protocol.get('presentation_loop') is not False
-            or protocol.get('total_wall_limit_s') != 86400):
+            or not isinstance(protocol.get('total_wall_limit_s'), (int, float))):
         raise ValueError('Invalid released policy protocol')
     _, _, case = resolve_case(task['id'], root=root)
-    if (protocol != protocol_for(case, sha(Path(root)/RELEASE))
+    if (protocol != protocol_for(case, sha(Path(root)/RELEASE), protocol['total_wall_limit_s'])
             or protocol.get('case_id') != task['id']
             or protocol.get('source_task_sha256') != case['source_files']['task.json']
             or protocol.get('source_scene_sha256') != task['scene_sha256']
@@ -134,11 +138,11 @@ def freeze_public(task, directory, public, root=ROOT):
                 public_projection=projection)
 
 
-def prepare(case_id, directory, harness=None, private_puzzle_path=None):
+def prepare(case_id, directory, harness=None, private_puzzle_path=None, wall_limit_s=86400):
     """Prepare only; simulator, role sessions and model inference stay stopped."""
     import tempfile
     from .run_setup import prepare_run
-    task = policy_task(case_id)
+    task = policy_task(case_id, wall_limit_s=wall_limit_s)
     with tempfile.TemporaryDirectory(prefix='robofrontier-policy-') as temporary:
         path = Path(temporary)/'task.json'
         path.write_text(json.dumps(task, ensure_ascii=False)+'\n')
@@ -157,7 +161,7 @@ def validate_frozen_policy(task, directory):
     if len(cases) != 1:
         raise ValueError('Policy case is not in the frozen release')
     case = cases[0]
-    if protocol != protocol_for(case, sha(release)):
+    if protocol != protocol_for(case, sha(release), protocol['total_wall_limit_s']):
         raise ValueError('Frozen policy protocol differs')
     source = directory/Path(task['scene_asset']).parent
     for name, expected in case['source_files'].items():

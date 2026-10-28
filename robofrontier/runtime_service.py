@@ -267,7 +267,11 @@ class RuntimeService:
                     raise ValueError('Prepared inputs changed: '+str(changed))
                 policy = [v for v in self.store.agents().values() if v['kind'] != 'manager']
                 now = time.time()
-                if not all(v['ready'] and v['thread_id'] and v['session_status']=='idle' and v['session_observed_at'] is not None and 0 <= now-v['session_observed_at'] <= self.config['session_observation_ttl_s'] for v in policy):
+                direct = self.config.get('startup_protocol') == 'direct_controller_v2'
+                if direct:
+                    if len(policy) != 1 or policy[0]['kind'] != 'controller' or not policy[0]['thread_id']:
+                        raise ValueError('Direct START requires one bound Controller')
+                elif not all(v['ready'] and v['thread_id'] and v['session_status']=='idle' and v['session_observed_at'] is not None and 0 <= now-v['session_observed_at'] <= self.config['session_observation_ttl_s'] for v in policy):
                     raise ValueError('Import fresh actual idle session observations before START')
                 if self.video_factory:
                     self.video = self.video_factory()
