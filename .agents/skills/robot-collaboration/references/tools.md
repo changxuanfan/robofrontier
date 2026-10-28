@@ -100,7 +100,7 @@ The optional messageBoundary is "step" by default: mail stops the chunk after th
 
 ## Infrastructure boundary
 
-Meta binds sessions, starts the run under its selected startup protocol, imports real Codex status observations and drives plan/claim/dispatch-result operations. Policy agents do not use these administrative operations. Meta's notifications contain a wake ID and trigger reason, never task instructions.
+Meta binds sessions, starts the run under its selected startup protocol, imports native session status observations and drives plan/claim/dispatch-result operations. Policy agents do not use these administrative operations. Meta's notifications contain a wake ID and trigger reason, never task instructions.
 
 Session running state, saved work state and robot action state are separate. Automatic work continuation is based only on explicit saved work and recorded execution facts. Unknown actions or repeated receipt/continuation failures stop automatic continuation for review. Physical-owner loss ends this run; there is no physical restart or implicit reset.
 
