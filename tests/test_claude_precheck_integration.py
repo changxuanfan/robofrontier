@@ -14,6 +14,12 @@ from test_claude_adaptive_integration import StubModel
 
 class PrecheckModel(StubModel):
     requests = []
+    auth_headers = []
+    def do_POST(self):
+        # Record presence only, never the synthetic credential itself.
+        self.auth_headers.append({'x_api_key': bool(self.headers.get('x-api-key')),
+                                  'bearer': self.headers.get('Authorization', '').startswith('Bearer ')})
+        super().do_POST()
     def reply_text(self, body, text, blocks):
         return 'READY' if not any('Without calling' in str(m.get('content','')) or
                                   'Call the robot tool once' in str(m.get('content',''))
@@ -30,6 +36,7 @@ class PrecheckIntegrationTests(unittest.TestCase):
         server=http.server.ThreadingHTTPServer(('127.0.0.1',0),PrecheckModel)
         threading.Thread(target=server.serve_forever,daemon=True).start()
         PrecheckModel.requests.clear()
+        PrecheckModel.auth_headers.clear()
         try:
             with tempfile.TemporaryDirectory() as tmp:
                 profile={'model':'claude-opus-5-5','effort':'high','env_key':'FAKE_KEY',
@@ -41,6 +48,8 @@ class PrecheckIntegrationTests(unittest.TestCase):
                 self.assertEqual([x['name'] for x in result['checks']],['text','tool_image','resume','fork'])
                 self.assertTrue(result['checks'][-1]['checks']['native_history_prefix'])
                 self.assertTrue(any(not req.get('tools') for req in PrecheckModel.requests))
+                self.assertTrue(PrecheckModel.auth_headers)
+                self.assertTrue(all(h['x_api_key'] and not h['bearer'] for h in PrecheckModel.auth_headers))
         finally:
             server.shutdown();server.server_close()
 

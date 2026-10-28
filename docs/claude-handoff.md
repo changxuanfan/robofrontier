@@ -59,6 +59,10 @@ Linux 可将 `shasum -a 256` 换成 `sha256sum`。没有 `gh` 时可从同仓库
 密钥、endpoint 不能混用，见[百炼 Claude Code 接入说明](https://help.aliyun.com/zh/model-studio/claude-code)。
 DeepSeek profile 使用的 Anthropic 兼容地址与 [DeepSeek 官方接入说明](https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code/)一致；
 模型映射、视觉和工具往返仍需对实际账号和所选 profile 预检，不能只凭地址判断通过。
+API Key 模式将所选厂商密钥传给 Claude 的 `ANTHROPIC_API_KEY`；本机 CLI 2.1.312
+的回环测试确认请求使用 `x-api-key`。百炼的[兼容接口文档](https://help.aliyun.com/zh/model-studio/anthropic-api-messages)
+和 [DeepSeek 兼容接口文档](https://api-docs.deepseek.com/zh-cn/guides/anthropic_api/)
+均列出对该请求头的支持；这不构成真实账号认证、其他厂商兼容性或完整任务通过的证明。
 
 以下离线命令不启动世界、不调用模型：
 
