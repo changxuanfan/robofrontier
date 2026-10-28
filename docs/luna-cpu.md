@@ -41,10 +41,12 @@ Stock MuJoCo does not support its OSMesa backend on macOS. Run a Linux container
 
 ```sh
 docker build -f docker/luna-cpu.Dockerfile -t robofrontier-luna-cpu .
-docker run --rm -v "$PWD:/workspace" -w /workspace robofrontier-luna-cpu doctor
-docker run --rm -v "$PWD:/workspace" -w /workspace -v "$PWD/.codex-luna:/root/.codex" robofrontier-luna-cpu preflight
-docker run --rm -v "$PWD:/workspace" -w /workspace -v "$PWD/.codex-luna:/root/.codex" robofrontier-luna-cpu submit --output runs/policy/luna-l1-001 --level 1 --min-arms --wall-limit-s 600 --parallel 4
-docker run --rm -v "$PWD:/workspace" -w /workspace -v "$PWD/.codex-luna:/root/.codex" robofrontier-luna-cpu usage runs/policy/luna-l1-001
+docker run --rm --security-opt seccomp=unconfined -v "$PWD:/workspace" -w /workspace robofrontier-luna-cpu doctor
+docker run --rm --security-opt seccomp=unconfined -v "$PWD:/workspace" -w /workspace -v "$PWD/.codex-luna:/root/.codex" robofrontier-luna-cpu preflight
+docker run --rm --security-opt seccomp=unconfined -v "$PWD:/workspace" -w /workspace -v "$PWD/.codex-luna:/root/.codex" robofrontier-luna-cpu submit --output runs/policy/luna-l1-001 --level 1 --min-arms --wall-limit-s 600 --parallel 4
+docker run --rm --security-opt seccomp=unconfined -v "$PWD:/workspace" -w /workspace -v "$PWD/.codex-luna:/root/.codex" robofrontier-luna-cpu usage runs/policy/luna-l1-001
 ```
 
 The `.codex-luna` mount preserves Codex session traces between commands; keep it private and out of Git. The working directory bind mount supplies `.env`, assets and results. Container performance, Codex version, API access and CPU rendering still need validation on the actual machine. Rendering on software can be substantially slower; parallelism should be sized to the host.
+
+Docker on macOS may block the user namespaces needed by the Codex Linux sandbox. The commands above disable Docker’s default seccomp filter for this container so Codex bubblewrap can operate; this reduces container isolation. Use only on a trusted host, and do not mount sensitive directories. The Codex sandbox remains enabled. `doctor`, `preflight`, and task startup test sandbox operation before paid work. On Linux native, user namespaces must be available to Codex.

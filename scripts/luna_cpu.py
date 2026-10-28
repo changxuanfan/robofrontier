@@ -24,6 +24,13 @@ def cpu_environment():
     return env
 
 
+def sandbox_probe(env):
+    result = subprocess.run(['codex', 'sandbox', '--', 'sh', '-c', 'test -r configs/models.json'],
+                            cwd=ROOT, env=env, text=True, capture_output=True, timeout=30)
+    if result.returncode:
+        raise RuntimeError('Codex sandbox cannot read files: '+result.stderr[-1200:])
+
+
 def render_probe(env):
     # Separate process: MuJoCo chooses its GL backend at import time.
     if platform.system() != 'Linux':
@@ -187,8 +194,12 @@ def main():
             report['cpu_render'] = {'passed': True, **render_probe(env)}
         except (RuntimeError, subprocess.TimeoutExpired) as error:
             report['cpu_render'] = {'passed': False, 'error': str(error)}
+        try:
+            sandbox_probe(env); report['codex_sandbox'] = {'passed': True}
+        except (RuntimeError, subprocess.TimeoutExpired) as error:
+            report['codex_sandbox'] = {'passed': False, 'error': str(error)}
         print(json.dumps(report, ensure_ascii=False, indent=2))
-        return 0 if report['cpu_render']['passed'] and report['profiles']['luna']['credential_set'] and report['assets']['missing'] == 0 and report['assets']['changed'] == 0 else 1
+        return 0 if report['cpu_render']['passed'] and report['codex_sandbox']['passed'] and report['profiles']['luna']['credential_set'] and report['assets']['missing'] == 0 and report['assets']['changed'] == 0 else 1
     if args.command == 'usage':
         print(json.dumps(usage_report(args.batch), ensure_ascii=False, indent=2))
         return 0
@@ -197,6 +208,8 @@ def main():
         return 0
     if args.command in ('preflight', 'run', 'submit') and not env.get('OPENAI_API_KEY'):
         raise SystemExit('Set OPENAI_API_KEY in .env or the process environment.')
+    if args.command in ('preflight', 'run', 'submit'):
+        sandbox_probe(env)
     if args.command in ('run', 'submit'):
         if args.command == 'run':
             batch = json.loads((args.batch/'batch.json').read_text())
