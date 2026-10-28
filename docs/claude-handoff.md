@@ -340,6 +340,9 @@ CLI 报告视为订阅额度或实际账单的硬上限。
 本机另用真实 MuJoCo 和 Claude CLI、回环合成模型对单个和四个并发 adaptive 工程任务
 进行了 SIGTERM 烟雾测试，验证了 supervisor 退出及各物理进程封存和退出；未验证所有中断时机。
 可在已恢复资产的图形环境中运行 `ROBOFRONTIER_PHYSICS_SIGNAL=1 .venv/bin/python -m unittest discover -s tests -p 'test_claude_signal_physics_smoke.py' -v`。
+预算取消处理更新后，以提交 `9d58b2a` 复测了单任务和四任务 SIGTERM 物理检查，
+两项通过；同一代码的 Claude 测试集运行 127 项，跳过 7 项可选检查。仍使用本地
+合成模型，未验证真实模型或所有崩溃、取消时机。
 
 自适应工程路径现已连接启动器和批次接口；父角色、fork 设置和子角色共用单任务
 SQLite 费用估算账本。真实 Claude CLI 通过本机合成模型与合成世界测试了 READY、
