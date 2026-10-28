@@ -168,6 +168,9 @@ CLI 报告视为订阅额度或实际账单的硬上限。
 开放正式计分批次 CLI，也没有证明真实模型、MuJoCo、多角色委派或服务商账单控制可用。
 如果批次已有启动占用记录但没有状态文件，查询会显示
 `claim_without_status_needs_review`；它可能在启动过程中中断，不能作为未启动批次重跑。
+停止发生在启动前时，状态为 `stopped_before_start`；停止导致有任务未启动或已启动
+任务按停止请求封存时，批次为 `stopped`。若任何任务需要检查，批次优先显示
+`needs_review`。`closed` 只描述工程批次结束，不代表任务成功或正式计分通过。
 
 工程命令（支持 centralized 和 adaptive 草稿；需要相应 profile 的凭据；可能产生费用）：
 

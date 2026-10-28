@@ -54,6 +54,7 @@ class BatchTests(unittest.TestCase):
         thread.start(); self.assertTrue(entered.wait(3))
         self.assertTrue(stop_batch(self.root)['stop_requested'])
         finish.set(); thread.join(3); self.assertFalse(thread.is_alive())
+        self.assertEqual(outcome[0]['status'], 'stopped')
         self.assertEqual([j['status'] for j in outcome[0]['jobs']], ['closed'] + ['stopped_before_start']*3)
         self.assertTrue(all((Path(j['run_directory'])/'STOP').exists() for j in self.jobs))
 
@@ -100,6 +101,25 @@ class BatchTests(unittest.TestCase):
         self.assertEqual(status_batch(self.root)['status'], 'claim_without_status_needs_review')
         with self.assertRaisesRegex(ValueError, 'never restart'):
             self.run_case(lambda *a, **k: self.fail('unexpected launch'))
+
+    def test_stop_before_launch_is_visible_and_blocks_launch(self):
+        stop_batch(self.root)
+        self.assertEqual(status_batch(self.root)['status'], 'stopped_before_start')
+        with self.assertRaisesRegex(ValueError, 'stopped before launch'):
+            self.run_case(lambda *a, **k: self.fail('unexpected launch'))
+        self.assertFalse((self.root/'engineering-claim.json').exists())
+
+    def test_review_takes_precedence_over_stop(self):
+        entered = threading.Event(); finish = threading.Event(); outcome = []
+        def runner(*args, **kwargs):
+            entered.set(); finish.wait(3)
+            return {'status':'needs_review', 'reason':'owner_unavailable'}
+        thread = threading.Thread(target=lambda: outcome.append(self.run_case(runner, parallel=1)))
+        thread.start(); self.assertTrue(entered.wait(3))
+        stop_batch(self.root); finish.set(); thread.join(3)
+        self.assertFalse(thread.is_alive())
+        self.assertEqual(outcome[0]['status'], 'needs_review')
+        self.assertEqual(outcome[0]['jobs'][1]['status'], 'stopped_before_start')
 
     def test_invalid_oauth_endpoint_rejects_entire_batch_before_claim(self):
         launch = Path(self.jobs[-1]['run_directory'])/'private/inputs/claude.json'

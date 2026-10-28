@@ -74,6 +74,8 @@ def status_batch(folder):
     state['supervisor_live'] = live
     if not state_file.exists() and (folder / 'engineering-claim.json').exists():
         state['status'] = 'starting' if live else 'claim_without_status_needs_review'
+    elif not state_file.exists() and (folder / 'STOP').exists():
+        state['status'] = 'stopped_before_start'
     if state.get('status') == 'running' and not live:
         state['status'] = 'supervisor_lost_needs_review'
     state['runs'] = []
@@ -126,6 +128,10 @@ def run_batch(folder, base_env, *, parallel, turn_budget_usd, total_budget_usd, 
                 if stopping:
                     for job in jobs: (Path(job['run_directory']) / 'STOP').touch()
                 while not stopping and next_job < len(jobs) and len(pending) < parallel:
+                    # A stop request can arrive while other jobs are being submitted.
+                    if (folder / 'STOP').exists():
+                        stopping = True
+                        break
                     index = next_job; next_job += 1
                     state['jobs'][index]['status'] = 'starting'
                     write_json(state_path, state)
@@ -147,7 +153,13 @@ def run_batch(folder, base_env, *, parallel, turn_budget_usd, total_budget_usd, 
                     except Exception as error:
                         state['jobs'][index].update(status='needs_review', error_type=type(error).__name__)
                     write_json(state_path, state)
-        state['status'] = 'needs_review' if any(j['status'] == 'needs_review' for j in state['jobs']) else 'closed'
+        if any(j['status'] == 'needs_review' for j in state['jobs']):
+            state['status'] = 'needs_review'
+        elif any(j['status'] == 'stopped_before_start' or j.get('reason') == 'stop_requested'
+                 for j in state['jobs']):
+            state['status'] = 'stopped'
+        else:
+            state['status'] = 'closed'
         state['finished_at'] = time.time()
         write_json(state_path, state)
         return state
