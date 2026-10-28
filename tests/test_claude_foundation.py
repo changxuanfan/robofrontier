@@ -23,6 +23,14 @@ class ClaudeFoundationTests(unittest.TestCase):
         self.assertEqual(profile('opus')['model'], 'claude-opus-5-5')
         self.assertEqual(profile('haiku')['env_key'], 'ANTHROPIC_API_KEY')
 
+    def test_kimi_code_is_separate_from_moonshot_profile(self):
+        code = profile('kimi_code')
+        self.assertEqual(code['model'], 'k3.1-pro')
+        self.assertEqual(code['base_url'], 'https://api.kimi.com/coding/')
+        self.assertEqual(code['env_key'], 'KIMI_CODE_API_KEY')
+        self.assertNotEqual(code['env_key'], profile('kimi')['env_key'])
+        self.assertEqual(plan(['kimi_code'], level=1, min_arms=True)['task_count'], 4)
+
     def test_invalid_provider_address_and_parallel_are_rejected(self):
         with patch.dict('os.environ', {'DASHSCOPE_ANTHROPIC_BASE_URL': 'https://secret:pass@example.com'}):
             with self.assertRaises(ValueError): profile('qwen')

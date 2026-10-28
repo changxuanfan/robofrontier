@@ -159,7 +159,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
     sub.add_parser('models')
-    p = sub.add_parser('doctor'); p.add_argument('--models', nargs='+', default=['haiku', 'opus', 'opus_subscription', 'kimi', 'qwen', 'glm', 'deepseek'])
+    p = sub.add_parser('doctor'); p.add_argument('--models', nargs='+', default=['haiku', 'opus', 'opus_subscription', 'kimi', 'kimi_code', 'qwen', 'glm', 'deepseek'])
     for command in ('plan', 'prepare-draft'):
         p = sub.add_parser(command); p.add_argument('--models', nargs='+', required=True)
         p.add_argument('--families', nargs='+'); p.add_argument('--cases', nargs='+')

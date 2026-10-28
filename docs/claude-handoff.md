@@ -59,6 +59,11 @@ Linux 可将 `shasum -a 256` 换成 `sha256sum`。没有 `gh` 时可从同仓库
 密钥、endpoint 不能混用，见[百炼 Claude Code 接入说明](https://help.aliyun.com/zh/model-studio/claude-code)。
 DeepSeek profile 使用的 Anthropic 兼容地址与 [DeepSeek 官方接入说明](https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code/)一致；
 模型映射、视觉和工具往返仍需对实际账号和所选 profile 预检，不能只凭地址判断通过。
+`kimi` 保留原 Moonshot API 候选设置；新增 `kimi_code` 单独使用
+`KIMI_CODE_API_KEY`、国内 Kimi Code 端点和 `k3.1-pro`。根据 [Kimi Code 官方说明](https://www.kimi.com/code/docs/en/third-party-tools/claude-code.html)，
+该模型与可用上下文取决于会员等级，并且仅支持思考模式；海外账号应核实官方区域端点。
+这两个候选 profile 均未在本工程做真实预检，也不能假定 Kimi Code 套餐允许此类批量
+benchmark；请先确认账号权限、用途和额度，再选择 profile 进行授权预检。
 API Key 模式将所选厂商密钥传给 Claude 的 `ANTHROPIC_API_KEY`；本机 CLI 2.1.312
 的回环测试确认请求使用 `x-api-key`。百炼的[兼容接口文档](https://help.aliyun.com/zh/model-studio/anthropic-api-messages)
 和 [DeepSeek 兼容接口文档](https://api-docs.deepseek.com/zh-cn/guides/anthropic_api/)
