@@ -1,4 +1,4 @@
-"""Opt-in Mosaic reference transfer through real Claude CLI, no provider calls."""
+"""Opt-in reference transfer through real Claude CLI, no provider calls."""
 import http.server
 import base64
 import hashlib
@@ -20,11 +20,12 @@ from test_claude_adaptive_integration import StubModel
 
 class ReferenceModel(StubModel):
     requests=[]
+    image_names=[]
     def choose_tool(self,names,text,blocks,has_result):
         messages=self.request_body.get('messages',[])
         if names and not any('tool_result' in str(m.get('content','')) for m in messages) and any(
                 'MOSAIC_IMAGE_CHECK' in str(m.get('content','')) for m in messages):
-            return {'op':'public_image','data':{'names':['target-pattern.png']}},'toolu_reference'
+            return {'op':'public_image','data':{'names':self.image_names}},'toolu_reference'
         return None,None
 
 
@@ -46,6 +47,7 @@ class MosaicReferenceIntegrationTests(unittest.TestCase):
         try:
             with tempfile.TemporaryDirectory() as tmp:
                 batch=Path(tmp)/'batch'; case='mosaic-a04-6x12-d1'
+                ReferenceModel.image_names=['target-pattern.png']
                 prepare_draft(batch,['opus'],cases=[case])
                 run=batch/'opus'/case
                 mcp=run/'private/mosaic-check-mcp.json'
@@ -73,6 +75,39 @@ class MosaicReferenceIntegrationTests(unittest.TestCase):
                 target=run/'public/inputs/target-pattern.png'
                 target.write_bytes(target.read_bytes()+b'tamper')
                 self.assertIn('input:public/inputs/target-pattern.png',verify_inputs(run))
+        finally:
+            server.shutdown();server.server_close()
+
+    def test_real_cli_sends_all_dial_references_to_synthetic_endpoint(self):
+        server=http.server.ThreadingHTTPServer(('127.0.0.1',0),ReferenceModel)
+        threading.Thread(target=server.serve_forever,daemon=True).start()
+        ReferenceModel.requests.clear()
+        try:
+            with tempfile.TemporaryDirectory() as tmp:
+                case='dial-best5-n04-d1'; batch=Path(tmp)/'batch'
+                prepare_draft(batch,['opus'],cases=[case])
+                run=batch/'opus'/case
+                task=json.loads((run/'public/inputs/task.json').read_text())
+                names=task['initial_reference_images']
+                self.assertEqual(len(names),3)
+                ReferenceModel.image_names=names
+                mcp=run/'private/reference-check-mcp.json'
+                mcp.write_text(json.dumps({'mcpServers':{'robot':{'command':sys.executable,
+                    'args':['-m','robofrontier.claude.robot_mcp','--run-dir',str(run),
+                            '--connection',str(run/'private/state/connections/Controller.json')],
+                    'env':{'PYTHONPATH':str(ROOT)}}}}))
+                profile={'model':'claude-opus-5-5','effort':'high','env_key':'FAKE_KEY',
+                         'base_url':f'http://127.0.0.1:{server.server_port}'}
+                result=run_turn(profile,profile['model'],profile['effort'],mcp,'MOSAIC_IMAGE_CHECK',
+                                run,{'PATH':os.environ['PATH'],'FAKE_KEY':'synthetic'},timeout=45,max_budget_usd=.5)
+                self.assertEqual(result['summary']['turn_status'],'ended',result)
+                self.assertGreaterEqual(result['summary']['tool_calls'],1)
+                expected={hashlib.sha256((run/'public/inputs'/name).read_bytes()).hexdigest() for name in names}
+                received={hashlib.sha256(base64.b64decode(block['source']['data'])).hexdigest()
+                          for request in ReferenceModel.requests for block in images(request.get('messages',[]))
+                          if block.get('source',{}).get('type')=='base64'}
+                self.assertTrue(expected.issubset(received),'Dial reference image bytes did not reach synthetic endpoint')
+                self.assertEqual(verify_inputs(run),[])
         finally:
             server.shutdown();server.server_close()
 
