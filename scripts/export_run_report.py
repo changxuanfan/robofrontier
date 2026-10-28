@@ -99,6 +99,11 @@ def export(directory):
                                 if e['kind']=='TOOL_RETURN' and e['details'].get('op')=='wait_events')),
             'async_actions':async_actions,
             'interpretation':'Action overlap covers active tool executions, excluding idle pose/grasp holding. It does not establish independent useful work or an architecture advantage.'}
+    if config.get('engine', 'codex') == 'claude':
+        # The current Claude launcher only admits unqualified engineering
+        # drafts. An evaluation is meaningful evidence, not qualification.
+        report.update(engine='claude', benchmark_qualified=False,
+                      qualification_reason='Claude engineering execution is not qualified for formal benchmark results')
     if isinstance(metric_evaluation,dict) and 'metrics' in metric_evaluation:
         report['task_metrics']={**metric_evaluation['metrics'],
             'robot_action_count':sum('started_sim_s' in a for a in actions.values()),
@@ -113,6 +118,8 @@ def export(directory):
            f"墙钟：{report['wall_seconds']} 秒；动作：{sum(report['actions_by_arm'].values())}；消息：{len(messages)}。",'',
            f"实际模型设置核验：{report['all_requested_models_verified']}；固定输入变更：{report['changed_inputs']}。",'',
            '动作重叠不包含空闲保持；需结合任务进展与视频解释，一次试点不支持架构优劣结论。']
+    if config.get('engine', 'codex') == 'claude':
+        lines[2:2]=['Claude 工程运行：未取得正式 benchmark 资格，不能作为正式跑分结果。','']
     if 'task_metrics' in report:
         lines+=['',f"任务指标：{report['task_metrics']}。"]
     (output/'report.md').write_text('\n'.join(lines)+'\n')

@@ -206,6 +206,8 @@ of real model capability or scored benchmark qualification.
 共享 `scripts.export_run_report` 对 Claude run 只读取本 run 的角色回合摘要，不查询
 Codex 会话目录；CLI 报告的模型只作为观察，`all_requested_models_verified` 仍为
 false，不能据此断定服务商没有映射模型或辅助请求。报告本身也不授予正式计分资格。
+Claude 工程运行的 JSON 审计报告明确包含 `benchmark_qualified: false`，Markdown
+报告也标记未取得正式资格；任务评估结果与正式资格是两件不同的事。
 
 At Claude commit `85f9b91`, a Git merge preview against GitHub `main` at
 `c8b4137` reported no textual conflicts; this is not a completed merge and does
