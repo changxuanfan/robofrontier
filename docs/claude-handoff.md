@@ -154,6 +154,15 @@ They do not qualify a physical task or a scored run, and the Chinese profiles
 remain unverified. Receipts and transcripts are local run artifacts, not part
 of the Git handoff.
 
+A subsequent separately authorized, unscored Opus adaptive transport engineering
+trial reached READY and received two observation images, but the startup turn
+did not end before the 120-second startup timeout. The owner sealed and exited
+with no unresolved actions; no physical action had started. The interrupted CLI
+turn did not produce a complete cost report, so actual charges require checking
+the provider invoice. Its event stream showed continued thinking progress after
+the observation; this alone does not establish the cause or a remedy. Do not
+replay the claimed run or treat this as a qualified benchmark result.
+
 After obtaining both real receipts, compare them with the current profile and
 CLI version without making model calls:
 
