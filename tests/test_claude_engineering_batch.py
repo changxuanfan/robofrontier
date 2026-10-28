@@ -1,0 +1,99 @@
+import json
+from pathlib import Path
+import tempfile
+import threading
+import time
+import unittest
+
+from robofrontier.claude.engineering_batch import run_batch, status_batch, stop_batch
+
+
+class BatchTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(); self.root = Path(self.tmp.name) / 'batch'; self.root.mkdir()
+        self.jobs = []
+        for i in range(4):
+            case = f'case{i}'; run = self.root / 'fake' / case
+            (run/'private/inputs').mkdir(parents=True); (run/'private/state').mkdir(parents=True)
+            profile = {'provider': 'anthropic', 'model': 'fake', 'effort': 'high', 'env_key': 'FAKE_KEY'}
+            (run/'private/inputs/claude.json').write_text(json.dumps({'schema':'robofrontier.claude-launch-draft.v1',
+                'qualified':False,'execution_available':False,'profile':profile}))
+            (run/'private/inputs/harness.json').write_text(json.dumps({'engine':'claude', 'topology':'centralized',
+                                                                       'model':'fake','effort':'high'}))
+            self.jobs.append({'profile':'fake', 'case_id':case, 'run_directory':str(run), 'status':'draft'})
+        (self.root/'batch.json').write_text(json.dumps({'schema':'robofrontier.claude-draft.v1',
+            'status':'prepared_not_qualified', 'execution_available':False, 'jobs':self.jobs}))
+        self.env = {'FAKE_KEY':'secret'}
+
+    def tearDown(self): self.tmp.cleanup()
+
+    def run_case(self, runner, parallel=2):
+        return run_batch(self.root, self.env, parallel=parallel, turn_budget_usd=.2, total_budget_usd=1, wall_limit_s=5,
+                         runner=runner, verifier=lambda _: [])
+
+    def test_parallel_limit_all_jobs_and_single_use(self):
+        guard = threading.Lock(); counts = {'active':0, 'maximum':0, 'total':0}
+        def runner(*args, **kwargs):
+            with guard:
+                counts['active'] += 1; counts['total'] += 1
+                counts['maximum'] = max(counts['active'], counts['maximum'])
+            time.sleep(.08)
+            with guard: counts['active'] -= 1
+            return {'status':'finished', 'reason':'world_ended'}
+        state = self.run_case(runner)
+        self.assertEqual(counts, {'active':0, 'maximum':2, 'total':4})
+        self.assertEqual(state['status'], 'closed')
+        self.assertEqual([x['status'] for x in state['jobs']], ['closed']*4)
+        self.assertEqual(len(status_batch(self.root)['runs']), 4)
+        with self.assertRaisesRegex(ValueError, 'never restart'): self.run_case(runner)
+
+    def test_stop_marks_active_and_skips_queued(self):
+        entered = threading.Event(); finish = threading.Event(); outcome = []
+        def runner(*args, **kwargs): entered.set(); finish.wait(3); return {'status':'finished', 'reason':'stop_requested'}
+        thread = threading.Thread(target=lambda: outcome.append(self.run_case(runner, parallel=1)))
+        thread.start(); self.assertTrue(entered.wait(3))
+        self.assertTrue(stop_batch(self.root)['stop_requested'])
+        finish.set(); thread.join(3); self.assertFalse(thread.is_alive())
+        self.assertEqual([j['status'] for j in outcome[0]['jobs']], ['closed'] + ['stopped_before_start']*3)
+        self.assertTrue(all((Path(j['run_directory'])/'STOP').exists() for j in self.jobs))
+
+    def test_failed_run_and_incompatible_profile_are_not_hidden(self):
+        def fail(*args, **kwargs): raise RuntimeError('not for user output')
+        result = self.run_case(fail)
+        self.assertEqual(result['status'], 'needs_review')
+        self.assertEqual(result['jobs'][0]['error_type'], 'RuntimeError')
+        self.assertNotIn('not for user output', json.dumps(result))
+
+    def test_preflight_checks_all_before_start_and_rejects_path_escape(self):
+        harness = Path(self.jobs[-1]['run_directory'])/'private/inputs/harness.json'
+        data = json.loads(harness.read_text()); data['topology'] = 'unsupported'; harness.write_text(json.dumps(data))
+        with self.assertRaisesRegex(ValueError, 'engineering launch profile'):
+            self.run_case(lambda *a, **k: self.fail('model call'))
+        self.assertFalse((self.root/'engineering-claim.json').exists())
+        batch = json.loads((self.root/'batch.json').read_text()); batch['jobs'][0]['run_directory'] = '/tmp/outside'
+        (self.root/'batch.json').write_text(json.dumps(batch))
+        with self.assertRaisesRegex(ValueError, 'run directory'): stop_batch(self.root)
+        self.assertFalse((self.root/'STOP').exists())
+
+    def test_adaptive_draft_is_admitted_to_unqualified_engineering_batch(self):
+        for job in self.jobs:
+            harness = Path(job['run_directory'])/'private/inputs/harness.json'
+            data = json.loads(harness.read_text()); data['topology'] = 'adaptive'
+            harness.write_text(json.dumps(data))
+        calls=[]
+        def runner(run, *args, **kwargs):
+            calls.append(run)
+            return {'status':'finished', 'reason':'world_ended'}
+        result=self.run_case(runner)
+        self.assertEqual(result['status'], 'closed')
+        self.assertFalse(result['scored'])
+        self.assertEqual(len(calls), len(self.jobs))
+
+    def test_stale_running_status_is_not_claimed_to_be_live(self):
+        (self.root/'engineering-status.json').write_text(json.dumps({'status': 'running'}))
+        (self.root/'engineering-supervisor.lock').touch()
+        self.assertEqual(status_batch(self.root)['status'], 'supervisor_lost_needs_review')
+        self.assertFalse(status_batch(self.root)['supervisor_live'])
+
+
+if __name__ == '__main__': unittest.main()

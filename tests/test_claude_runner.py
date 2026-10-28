@@ -2,6 +2,7 @@ import json
 import stat
 import sys
 import tempfile
+import threading
 import unittest
 from pathlib import Path
 
@@ -40,6 +41,7 @@ class ClaudeRunnerTests(unittest.TestCase):
         self.assertEqual(cmd[cmd.index('--session-id') + 1], '11111111-1111-1111-1111-111111111111')
         self.assertNotIn('--resume', cmd)
         self.assertNotIn('--fork-session', cmd)
+        self.assertEqual(cmd[-2:], ['--', 'go'])
         with self.assertRaises(ValueError): build_command('m', 'extreme', 'x', 'p')
         with self.assertRaises(ValueError): build_command('m', 'high', 'x', 'p', max_budget_usd=0)
 
@@ -48,6 +50,18 @@ class ClaudeRunnerTests(unittest.TestCase):
         self.assertEqual(cmd[cmd.index('--resume') + 1], '22222222-2222-2222-2222-222222222222')
         self.assertNotIn('--session-id', cmd)
         with self.assertRaises(ValueError): build_command('m', 'high', 'x', 'p', session_id='a', resume='b')
+
+    def test_fork_creation_pins_ids_and_has_no_mcp_or_builtin_tools(self):
+        cmd = build_command('m', 'high', '/run/role-mcp.json', 'p', session_id='child',
+                            fork_from='parent', enable_robot=False)
+        self.assertEqual(cmd[cmd.index('--resume') + 1], 'parent')
+        self.assertEqual(cmd[cmd.index('--session-id') + 1], 'child')
+        self.assertIn('--fork-session', cmd)
+        self.assertEqual(json.loads(cmd[cmd.index('--mcp-config') + 1]), {'mcpServers': {}})
+        self.assertEqual(cmd[cmd.index('--tools') + 1], '')
+        self.assertNotIn('--allowedTools', cmd)
+        with self.assertRaises(ValueError): build_command('m', 'high', 'x', 'p', session_id='child', fork_from='parent')
+        with self.assertRaises(ValueError): build_command('m', 'high', 'x', 'p', fork_from='parent', enable_robot=False)
 
     def test_environment_carries_only_own_profile_credential(self):
         base = {'PATH': '/bin', 'KIMI_API_KEY': SECRET, 'OPENAI_API_KEY': 'other', 'ANTHROPIC_API_KEY': 'wrong'}
@@ -85,6 +99,23 @@ class ClaudeRunnerTests(unittest.TestCase):
             self.assertIn('"other_key_seen": false', events)
             self.assertNotIn(SECRET, json.dumps(record))
             self.assertNotIn(SECRET, events.replace('"key_seen": true', ''))
+
+    def test_cancellation_interrupts_cli_and_keeps_outcome_unknown(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run = Path(tmp) / 'run'; run.mkdir()
+            config = run / 'mcp.json'; config.write_text('{}')
+            binary = fake_claude(tmp, 'time.sleep(30)\n')
+            cancel = threading.Event()
+            timer = threading.Timer(0.3, cancel.set); timer.start()
+            try:
+                record = run_turn(PROFILE, 'm', 'high', config, 'go', run,
+                                  {'PATH': '/usr/bin:/bin', 'KIMI_API_KEY': SECRET},
+                                  binary=str(binary), timeout=10, cancel_event=cancel)
+            finally:
+                timer.cancel()
+            self.assertEqual(record['process'], 'cancelled')
+            self.assertEqual(record['summary']['turn_status'], 'unknown')
+            self.assertIsNone(record['summary']['task_success'])
 
     def test_failed_turn_and_deadline_are_not_success(self):
         with tempfile.TemporaryDirectory() as tmp:

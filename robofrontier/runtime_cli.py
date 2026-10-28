@@ -70,6 +70,11 @@ def execute(store, op, data, owner, now):
                 'delegations':Delegations(store).active() if cfg['topology']=='adaptive' else [],
                 'pending':{a:store.pending(a) for a,v in store.agents().items() if v['kind']!='manager'}}
     if op=='delegate-bind':
+        # Matching transcript prefixes alone do not authenticate a native fork.
+        # Claude adaptive delegation stays closed until creation and role binding
+        # can be verified together by the trusted host.
+        if cfg.get('engine') == 'claude':
+            raise ValueError('Claude adaptive delegation is not yet qualified')
         # Commit identity before reading platform files: a failed check must
         # not erase a native fork that already exists.
         d=Delegations(store);key=data['id']

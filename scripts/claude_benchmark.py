@@ -58,11 +58,13 @@ def plan(names, families=None, cases=None, level=None, min_arms=False, parallel=
 
 
 
-def prepare_draft(output, names, families=None, cases=None, level=None, min_arms=False, catalog=CATALOG):
+def prepare_draft(output, names, families=None, cases=None, level=None, min_arms=False, catalog=CATALOG, topology='adaptive'):
     """Freeze engineering drafts only. No Claude runtime is permitted to start them yet."""
     from robofrontier.task_families import prepare, policy_task
     from robofrontier.suite.dial_feedback import alphabet
 
+    if topology not in ('adaptive', 'centralized'):
+        raise ValueError('Draft topology must be adaptive or centralized')
     selection = plan(names, families, cases, level, min_arms, 1, catalog)
     profiles = {name: profile(name, catalog) for name in names}
     selected = list(dict.fromkeys(job['case_id'] for job in selection['jobs']))
@@ -88,7 +90,7 @@ def prepare_draft(output, names, families=None, cases=None, level=None, min_arms
             puzzles[case] = target
     for name, p in profiles.items():
         cfg = read(ROOT / 'configs/harnesses/policy.json')
-        cfg.update(model=p['model'], effort=p['effort'], observation_renderer='classic', record_realtime_video=False)
+        cfg.update(engine='claude', topology=topology, model=p['model'], effort=p['effort'], observation_renderer='classic', record_realtime_video=False)
         cfg_path = output / 'profiles' / name / 'harness.json'
         write_json(cfg_path, cfg)
         for case in selected:
@@ -110,7 +112,7 @@ def prepare_draft(output, names, families=None, cases=None, level=None, min_arms
                 frozen.parent.mkdir(parents=True, exist_ok=True)
                 frozen.write_bytes(file.read_bytes())
                 manifest['source_sha256'][str(relative)] = digest(file)
-            manifest.update(engine='claude-draft', status='engineering draft; not qualified or runnable')
+            manifest.update(engine='claude', status='engineering draft; not qualified or runnable')
             write_json(manifest_path, manifest)
             batch['jobs'].append({'profile': name, 'case_id': case, 'run_directory': str(run), 'status': 'draft'})
             write_json(output / 'batch.json', batch)
@@ -153,16 +155,45 @@ def main():
         p.add_argument('--families', nargs='+'); p.add_argument('--cases', nargs='+')
         p.add_argument('--level', type=int, choices=(1, 2, 3)); p.add_argument('--min-arms', action='store_true')
         if command == 'plan': p.add_argument('--parallel', type=int, default=4)
-        else: p.add_argument('--output', type=Path, required=True)
+        else:
+            p.add_argument('--output', type=Path, required=True)
+            p.add_argument('--topology', choices=('adaptive', 'centralized'), default='adaptive',
+                           help='Engineering draft topology; neither option qualifies a scored run')
+    p = sub.add_parser('run-engineering', help='Unqualified centralized or adaptive experiments; may spend API funds')
+    p.add_argument('batch', type=Path); p.add_argument('--parallel', type=int, required=True)
+    p.add_argument('--turn-budget-usd', type=float, required=True)
+    p.add_argument('--task-budget-usd', type=float, required=True)
+    p.add_argument('--wall-limit-s', type=float, required=True)
+    p.add_argument('--confirm-engineering-spend', action='store_true',
+                   help='Acknowledge model calls and estimated costs for this engineering batch')
+    for command in ('status-engineering', 'stop-engineering'):
+        p = sub.add_parser(command); p.add_argument('batch', type=Path)
     args = parser.parse_args()
     if args.command == 'models': result = read(CATALOG)
     elif args.command == 'doctor': result = doctor(args.models)
+    elif args.command == 'status-engineering':
+        from robofrontier.claude.engineering_batch import status_batch
+        result = status_batch(args.batch)
+    elif args.command == 'stop-engineering':
+        from robofrontier.claude.engineering_batch import stop_batch
+        result = stop_batch(args.batch)
+    elif args.command == 'run-engineering':
+        if not args.confirm_engineering_spend:
+            result = {'status': 'not_started', 'reason': 'Missing --confirm-engineering-spend',
+                      'model_calls': 0, 'simulator_started': False}
+        else:
+            from robofrontier.claude.engineering_batch import run_batch
+            load_env(ROOT / '.env')
+            result = run_batch(args.batch, dict(os.environ), parallel=args.parallel,
+                               turn_budget_usd=args.turn_budget_usd, total_budget_usd=args.task_budget_usd,
+                               wall_limit_s=args.wall_limit_s)
     else:
         load_env(ROOT / '.env')
         if args.command == 'plan':
             result = plan(args.models, args.families, args.cases, args.level, args.min_arms, args.parallel)
         else:
-            result = {'batch': str(prepare_draft(args.output, args.models, args.families, args.cases, args.level, args.min_arms)),
+            result = {'batch': str(prepare_draft(args.output, args.models, args.families, args.cases, args.level, args.min_arms,
+                                                  topology=args.topology)),
                       'execution_available': False}
     print(json.dumps(result, ensure_ascii=False, indent=2))
 

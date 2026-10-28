@@ -9,6 +9,7 @@ alone. A passing receipt covers only this profile, CLI version and cap.
 import argparse
 import http.server
 import json
+import math
 import os
 import subprocess
 import sys
@@ -128,12 +129,22 @@ def run_precheck(name, output, budget, base_env, binary='claude'):
                               resume=None if first else session, events_name=f'{check}.jsonl')
             result = judge(check, record, before, World.requests, expected_session=session)
             receipt['checks'].append(result)
-            spent += result['cost_usd'] or 0.0
+            cost = result['cost_usd']
+            if isinstance(cost, bool) or not isinstance(cost, (int, float)) or not math.isfinite(cost) or cost <= 0:
+                receipt['stopped'] = 'cost unknown at ' + check
+                result['passed'] = False
+                break
+            spent += cost
+            if spent > budget:
+                receipt['stopped'] = 'reported cost exceeded budget at ' + check
+                result['passed'] = False
+                break
             if not result['passed']:
                 receipt['stopped'] = 'failed at ' + check
                 break
     finally:
         server.shutdown()
+        server.server_close()
     receipt.update(total_cost_usd=round(spent, 6), passed=bool(receipt['checks']) and all(c['passed'] for c in receipt['checks'])
                    and len(receipt['checks']) == len(PROMPTS), finished_at=time.time())
     (output / 'receipt.json').write_text(json.dumps(receipt, indent=2, ensure_ascii=False))

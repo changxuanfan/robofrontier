@@ -10,6 +10,8 @@ RoboFrontier 用 MuJoCo 多机械臂任务研究 GPT 的分工、规划与协作
 - [各类任务与版本入口](docs/frontier-v2-environments.md)
 - [Codex CLI 多模型、并行运行与公开材料](docs/gpt-policy.md)
 - [多模型 worktree 交接、本机小测与调度 prompt](docs/multimodel-handoff.md)
+- [Claude Code 工程版交接与当前验证范围](docs/claude-handoff.md)；
+  [Claude 工程批次主 session prompt](prompts/claude/engineering-manager.md)
 - [Linux 服务器策略基准准备](docs/server-benchmark.md)
 - [最终视频、数据保留与目录](docs/repository-layout.md)
 - [本次合并、数据保全与验收](docs/oracle-integration.md)

@@ -19,7 +19,7 @@ TOOL = {
         'required': ['op', 'data'], 'additionalProperties': False},
 }
 # Administrative methods are never made available through the policy connection.
-POLICY_OPS = frozenset(('ready', 'robot_model', 'check_motion', 'send', 'inbox', 'wait_events',
+POLICY_OPS = frozenset(('public_image', 'ready', 'robot_model', 'check_motion', 'send', 'inbox', 'wait_events',
                         'history', 'work', 'delegate', 'return_task', 'team', 'checkpoint', 'yield',
                         'observe', 'stop', 'move', 'gripper', 'action_batch', 'job', 'finish', 'pending'))
 STABLE_ID_OPS = frozenset(('move', 'gripper', 'action_batch', 'delegate', 'stop'))
@@ -48,6 +48,8 @@ class RobotBridge:
             raise ValueError('Unknown or administrative robot operation')
         if not isinstance(views, list) or not all(isinstance(v, str) and v for v in views):
             raise ValueError('views must be an array of camera names')
+        if op == 'public_image':
+            return self.public_images(data)
         call_id = args.get('call_id')
         if op in STABLE_ID_OPS and (not isinstance(call_id, str) or not call_id):
             raise ValueError('Provide a stable call_id for this operation')
@@ -74,6 +76,34 @@ class RobotBridge:
             data_bytes = image.read_bytes()
             if not data_bytes.startswith(b'\x89PNG\r\n\x1a\n'):
                 raise ValueError('Observation is not a PNG image')
+            content.append({'type': 'image', 'data': base64.b64encode(data_bytes).decode('ascii'), 'mimeType': 'image/png'})
+        return {'content': content}
+
+
+    def public_images(self, data):
+        """Return only reference images explicitly listed in the frozen public task."""
+        if set(data) != {'names'} or not isinstance(data['names'], list) or not data['names']:
+            raise ValueError('Provide names from the public task initial_reference_images')
+        if len(data['names']) > 8 or len(set(data['names'])) != len(data['names']):
+            raise ValueError('Select at most eight distinct public reference images')
+        root = (self.run / 'public/inputs').resolve()
+        task = json.loads((root / 'task.json').read_text())
+        allowed = set(task.get('initial_reference_images', []))
+        if task.get('robot_layout_image'):
+            allowed.add(task['robot_layout_image'])
+        content = []
+        for name in data['names']:
+            if not isinstance(name, str) or name not in allowed:
+                raise ValueError('Image is not in the frozen public task')
+            # Family references are relative to inputs; the generated robot
+            # layout uses the run-relative public/inputs/ prefix.
+            path = ((self.run / name) if name.startswith('public/inputs/') else (root / name)).resolve()
+            if not path.is_relative_to(root) or not path.is_file():
+                raise ValueError('Public reference image is unavailable')
+            data_bytes = path.read_bytes()
+            if not data_bytes.startswith(b'\x89PNG\r\n\x1a\n'):
+                raise ValueError('Public reference is not a PNG image')
+            content.append({'type': 'text', 'text': 'Public reference: ' + name})
             content.append({'type': 'image', 'data': base64.b64encode(data_bytes).decode('ascii'), 'mimeType': 'image/png'})
         return {'content': content}
 

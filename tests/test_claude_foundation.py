@@ -54,6 +54,28 @@ class ClaudeFoundationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'outside'):
                 bridge.call({'op': 'observe', 'data': {}, 'views': ['top']})
 
+    def test_public_images_are_limited_to_frozen_task_allowlist(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run = Path(tmp) / 'run'; connection = run / 'private/state/connections/Controller.json'
+            connection.parent.mkdir(parents=True)
+            connection.write_text(json.dumps({'run_id': 'run', 'actor': 'Controller'}))
+            public = run / 'public/inputs'; public.mkdir(parents=True)
+            (public / 'task.json').write_text(json.dumps({'initial_reference_images': ['family/view.png'],
+                                                         'robot_layout_image': 'public/inputs/robot-layout.png'}))
+            image = public / 'family/view.png'; image.parent.mkdir()
+            png = b'\x89PNG\r\n\x1a\nimage'; image.write_bytes(png)
+            (public / 'robot-layout.png').write_bytes(png)
+            bridge = RobotBridge(run, connection)
+            response = bridge.call({'op': 'public_image', 'data': {'names': ['family/view.png']}})
+            self.assertEqual(base64.b64decode(response['content'][1]['data']), png)
+            layout = bridge.call({'op': 'public_image', 'data': {'names': ['public/inputs/robot-layout.png']}})
+            self.assertEqual(base64.b64decode(layout['content'][1]['data']), png)
+            with self.assertRaises(ValueError):
+                bridge.call({'op': 'public_image', 'data': {'names': ['../private/secret.png']}})
+            image.unlink(); image.symlink_to(Path(tmp) / 'outside.png')
+            with self.assertRaises(ValueError):
+                bridge.call({'op': 'public_image', 'data': {'names': ['family/view.png']}})
+
     def test_connection_cannot_be_manager(self):
         with tempfile.TemporaryDirectory() as tmp:
             run = Path(tmp) / 'r'; conn = run / 'private/state/connections/Meta.json'; conn.parent.mkdir(parents=True)

@@ -13,7 +13,7 @@ import urllib.request
 argv = sys.argv[1:]
 if "--version" in argv:
     print("fake-claude 0.0"); sys.exit(0)
-prompt = argv[argv.index("-p") + 1]
+prompt = argv[argv.index("--") + 1]
 session = argv[argv.index("--resume") + 1] if "--resume" in argv else argv[argv.index("--session-id") + 1]
 print(json.dumps({"type": "system", "subtype": "init", "session_id": session, "model": "claude-haiku-5-5"}))
 answer, tool = "READY", False
@@ -73,6 +73,16 @@ class PrecheckTests(unittest.TestCase):
             receipt = pc.run_precheck('haiku', Path(tmp) / 'out', 0.01, base, binary=str(binary))
             self.assertFalse(receipt['passed'])
             self.assertIn('budget exhausted', receipt['stopped'])
+
+    def test_missing_cost_stops_before_additional_calls(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            binary = fake_claude(tmp)
+            binary.write_text(binary.read_text().replace('"total_cost_usd": 0.01', '"total_cost_usd": None'))
+            base = {'PATH': '/usr/bin:/bin', 'ANTHROPIC_API_KEY': 'fake-key-not-real'}
+            receipt = pc.run_precheck('haiku', Path(tmp) / 'out', 0.5, base, binary=str(binary))
+            self.assertFalse(receipt['passed'])
+            self.assertEqual(receipt['stopped'], 'cost unknown at text')
+            self.assertEqual(len(receipt['checks']), 1)
 
 
 if __name__ == '__main__': unittest.main()

@@ -9,6 +9,7 @@ import json
 import os
 import signal
 import subprocess
+import time
 import uuid
 from pathlib import Path
 
@@ -17,7 +18,8 @@ ROBOT_TOOL = 'mcp__robot__robot'
 EFFORTS = ('low', 'medium', 'high', 'xhigh', 'max')
 
 
-def build_command(model, effort, mcp_config, prompt, session_id=None, max_budget_usd=None, binary='claude', resume=None):
+def build_command(model, effort, mcp_config, prompt, session_id=None, max_budget_usd=None, binary='claude', resume=None,
+                  fork_from=None, enable_robot=True):
     """Return argv for one headless turn with only the bound robot MCP tool exposed.
 
     `resume` continues an existing session by its explicit ID; it never picks the most recent one.
@@ -26,18 +28,27 @@ def build_command(model, effort, mcp_config, prompt, session_id=None, max_budget
         raise ValueError('Unsupported effort: ' + str(effort))
     if not model or not isinstance(model, str):
         raise ValueError('Model ID is required')
-    if resume and session_id:
+    if resume and (session_id or fork_from):
         raise ValueError('Give either session_id or resume, not both')
-    session_flags = ['--resume', resume] if resume else ['--session-id', session_id or str(uuid.uuid4())]
-    cmd = [binary, '-p', prompt, '--bare', '--model', model, '--effort', effort] + session_flags + [
-           '--mcp-config', str(mcp_config), '--strict-mcp-config',
-           '--allowedTools', ROBOT_TOOL, '--tools', '',
+    if fork_from and (not session_id or enable_robot):
+        raise ValueError('Fork creation requires an explicit child ID and no robot tools')
+    session_flags = (['--resume', fork_from, '--fork-session', '--session-id', session_id] if fork_from else
+                     ['--resume', resume] if resume else ['--session-id', session_id or str(uuid.uuid4())])
+    mcp_arg = str(mcp_config) if enable_robot else '{"mcpServers":{}}'
+    cmd = [binary, '-p', '--bare', '--model', model, '--effort', effort] + session_flags + [
+           '--mcp-config', mcp_arg, '--strict-mcp-config',
+           '--tools', '',
            '--permission-mode', 'dontAsk',
            '--output-format', 'stream-json', '--verbose']
+    if enable_robot:
+        cmd += ['--allowedTools', ROBOT_TOOL]
     if max_budget_usd is not None:
         if not isinstance(max_budget_usd, (int, float)) or max_budget_usd <= 0:
             raise ValueError('max_budget_usd must be a positive number')
         cmd += ['--max-budget-usd', str(max_budget_usd)]
+    # Claude -p is a boolean flag. A prompt beginning with '-' must follow the
+    # options terminator rather than being parsed as a CLI option.
+    cmd += ['--', prompt]
     return cmd
 
 
@@ -53,6 +64,8 @@ def build_env(profile, base_env, config_dir):
         'DISABLE_TELEMETRY': '1',
         'DISABLE_ERROR_REPORTING': '1',
         'CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC': '1',
+        # wait_events can run for 600 seconds; reserve time for transport.
+        'MCP_TOOL_TIMEOUT': '660000',
     })
     if profile.get('base_url'):
         env['ANTHROPIC_BASE_URL'] = profile['base_url']
@@ -102,7 +115,8 @@ def summarize(lines):
 
 
 def run_turn(profile, model, effort, mcp_config, prompt, run_dir, base_env,
-             session_id=None, timeout=600, max_budget_usd=None, binary='claude', resume=None, events_name='events.jsonl'):
+             session_id=None, timeout=600, max_budget_usd=None, binary='claude', resume=None, events_name='events.jsonl',
+             cancel_event=None, fork_from=None, enable_robot=True):
     """Run one turn, persist its raw events under run_dir, and return a status record.
 
     Status is `timeout` when the process is killed at the deadline, otherwise
@@ -114,21 +128,34 @@ def run_turn(profile, model, effort, mcp_config, prompt, run_dir, base_env,
     evidence.mkdir(parents=True, exist_ok=True)
     config_dir = run_dir / 'private/claude-config'
     config_dir.mkdir(parents=True, exist_ok=True)
-    cmd = build_command(model, effort, mcp_config, prompt, session_id, max_budget_usd, binary, resume)
+    cmd = build_command(model, effort, mcp_config, prompt, session_id, max_budget_usd, binary, resume,
+                        fork_from=fork_from, enable_robot=enable_robot)
     env = build_env(profile, base_env, config_dir)
     raw = evidence / events_name
     process = subprocess.Popen(cmd, cwd=run_dir, env=env, text=True, stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE, start_new_session=True)
-    try:
-        stdout, stderr = process.communicate(timeout=timeout)
-        status = 'exited'
-    except subprocess.TimeoutExpired:
-        os.killpg(process.pid, signal.SIGKILL)
-        stdout, stderr = process.communicate()
-        status = 'timeout'
+                               stderr=subprocess.PIPE, stdin=subprocess.DEVNULL, start_new_session=True)
+    deadline = time.monotonic() + timeout
+    while True:
+        remaining = deadline - time.monotonic()
+        cancelled = cancel_event is not None and cancel_event.is_set()
+        if cancelled or remaining <= 0:
+            # The owner must reconcile outstanding physical operations separately.
+            try:
+                os.killpg(process.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+            stdout, stderr = process.communicate()
+            status = 'cancelled' if cancelled else 'timeout'
+            break
+        try:
+            stdout, stderr = process.communicate(timeout=min(0.25, remaining) if cancel_event is not None else remaining)
+            status = 'exited'
+            break
+        except subprocess.TimeoutExpired:
+            continue
     raw.write_text(stdout)
     summary = summarize(stdout.splitlines())
-    if status == 'timeout':
+    if status in ('timeout', 'cancelled'):
         summary['turn_status'] = 'unknown'
     secret = env['ANTHROPIC_API_KEY']
     return {

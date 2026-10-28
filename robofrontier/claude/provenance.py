@@ -52,7 +52,7 @@ def history(rows, session_id):
 
 
 def fork_provenance(parent, child, config_dir):
-    """Prove `child` was forked from the whole of `parent`'s current history."""
+    """Compare the native history prefix; this alone does not prove fork creation."""
     if parent == child:
         raise ValueError('A fork cannot be its own source')
     source = history(transcript_rows(config_dir, parent), parent)

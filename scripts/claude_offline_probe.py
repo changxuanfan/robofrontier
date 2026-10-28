@@ -70,7 +70,8 @@ def main():
             assert '"type": "image"' in json.dumps(REQUESTS[-1]['messages']), 'Fork did not include prior tool image'
             print(json.dumps({'passed': True, 'claude_exit': p.returncode, 'mcp_tool': 'robot', 'tool_image_forwarded': True, 'fork_has_prior_tool_and_image_history': True, 'real_model_calls': 0, 'note': 'Local simulated model and world; no provider compatibility or trusted provenance claim'}))
         finally:
-            server.shutdown(); world.shutdown()
+            server.shutdown(); server.server_close()
+            world.shutdown(); world.server_close()
 
 
 if __name__ == "__main__":
