@@ -7,6 +7,7 @@ judged from the turn result and robot-stub request count, not from the reply
 alone. A passing receipt covers only this profile, CLI version and cap.
 """
 import argparse
+import hashlib
 import http.server
 import json
 import math
@@ -21,6 +22,7 @@ from pathlib import Path
 from PIL import Image
 
 from robofrontier.claude.runner import run_turn
+from robofrontier.claude.provenance import fork_provenance
 from robofrontier.task_families import ROOT
 from scripts.benchmark import load_env
 from scripts.claude_benchmark import profile
@@ -87,18 +89,20 @@ def setup_run(output, base_env):
 
 def judge(name, record, requests_before, requests_after, expected_session=None):
     summary = record['summary']
-    text = (summary.get('result_text') or '').lower()
+    text = (summary.get('result_text') or '').strip().lower()
     checks = {'process_exited': record['process'] == 'exited' and record['exit_code'] == 0,
-              'turn_ended': summary['turn_status'] == 'ended'}
+              'turn_ended': summary['turn_status'] == 'ended',
+              'same_session': summary['session_id'] == expected_session,
+              'valid_events': summary.get('malformed_lines') == 0}
     if name == 'text':
-        checks['reply_ready'] = 'ready' in text
+        checks['reply_ready'] = text == 'ready'
+        checks['no_new_robot_call'] = requests_after == requests_before
     elif name == 'tool_image':
         checks['tool_called'] = summary['tool_calls'] >= 1
         checks['robot_request_made'] = requests_after > requests_before
-        checks['image_color_named'] = COLOR_NAME in text
+        checks['image_color_named'] = text == COLOR_NAME
     elif name == 'resume':
-        checks['same_session'] = summary['session_id'] == expected_session
-        checks['color_recalled'] = COLOR_NAME in text
+        checks['color_recalled'] = text == COLOR_NAME
         checks['no_new_robot_call'] = requests_after == requests_before
     return {'name': name, 'passed': all(checks.values()), 'checks': checks,
             'turn_status': summary['turn_status'], 'reported_model': summary['reported_model'],
@@ -106,12 +110,15 @@ def judge(name, record, requests_before, requests_after, expected_session=None):
             'cost_usd': summary.get('total_cost_usd'), 'usage': summary.get('usage')}
 
 
-def run_precheck(name, output, budget, base_env, binary='claude'):
+def run_precheck(name, output, budget, base_env, binary='claude', check_fork=False):
+    if isinstance(budget,bool) or not isinstance(budget,(int,float)) or not math.isfinite(budget) or budget<=0:
+        raise ValueError('Budget must be positive and finite')
     prof = profile(name)
     output.mkdir(parents=True, exist_ok=False)
     run, mcp, server = setup_run(output, base_env)
     receipt = {'schema': 'robofrontier.claude-precheck.v1', 'profile': name, 'requested_model': prof['model'],
                'effort': prof['effort'], 'budget_usd': budget, 'claude_version': claude_version(binary),
+               'profile_sha256': hashlib.sha256(json.dumps(prof,sort_keys=True,separators=(',',':')).encode()).hexdigest(),
                'started_at': time.time(), 'checks': [], 'stopped': None}
     spent = 0.0
     session = str(uuid.uuid4())
@@ -142,11 +149,49 @@ def run_precheck(name, output, budget, base_env, binary='claude'):
             if not result['passed']:
                 receipt['stopped'] = 'failed at ' + check
                 break
+        if check_fork and receipt['stopped'] is None and len(receipt['checks']) == len(PROMPTS):
+            remaining = round(budget-spent, 6)
+            if remaining < MIN_TURN_BUDGET:
+                receipt['stopped'] = 'budget exhausted before fork'
+            else:
+                child = str(uuid.uuid4())
+                before = World.requests
+                record = run_turn(prof, prof['model'], prof['effort'], None,
+                                  'This is a tool-free fork. Recall the color you identified and reply with only the color name.',
+                                  run, base_env, session_id=child, fork_from=session, enable_robot=False,
+                                  timeout=180, max_budget_usd=remaining, binary=binary, events_name='fork.jsonl')
+                summary = record.get('summary') or {}
+                checks = {'process_exited':record.get('process')=='exited' and record.get('exit_code')==0,
+                          'turn_ended':summary.get('turn_status')=='ended',
+                          'distinct_expected_session':summary.get('session_id')==child and child!=session,
+                          'no_tool_calls':summary.get('tool_calls')==0 and World.requests==before,
+                          'color_recalled':(summary.get('result_text') or '').strip().lower()==COLOR_NAME,
+                          'valid_events':summary.get('malformed_lines')==0}
+                try:
+                    proof=fork_provenance(session,child,run/'private/claude-config')
+                    checks['native_history_prefix']=proof.get('source_thread_id')==session
+                except (ValueError,OSError):
+                    checks['native_history_prefix']=False
+                result={'name':'fork','passed':all(checks.values()),'checks':checks,
+                        'turn_status':summary.get('turn_status'),'reported_model':summary.get('reported_model'),
+                        'tool_calls':summary.get('tool_calls'),'session_id':summary.get('session_id'),
+                        'cost_usd':summary.get('total_cost_usd'),'usage':summary.get('usage')}
+                receipt['checks'].append(result)
+                cost=result['cost_usd']
+                if isinstance(cost,bool) or not isinstance(cost,(int,float)) or not math.isfinite(cost) or cost<=0:
+                    result['passed']=False; receipt['stopped']='cost unknown at fork'
+                else:
+                    spent+=cost
+                    if spent>budget:
+                        result['passed']=False; receipt['stopped']='reported cost exceeded budget at fork'
+                    elif not result['passed']:
+                        receipt['stopped']='failed at fork'
     finally:
         server.shutdown()
         server.server_close()
     receipt.update(total_cost_usd=round(spent, 6), passed=bool(receipt['checks']) and all(c['passed'] for c in receipt['checks'])
-                   and len(receipt['checks']) == len(PROMPTS), finished_at=time.time())
+                   and len(receipt['checks']) == len(PROMPTS)+(1 if check_fork else 0), finished_at=time.time(),
+                   fork_checked=check_fork)
     (output / 'receipt.json').write_text(json.dumps(receipt, indent=2, ensure_ascii=False))
     return receipt
 
@@ -156,22 +201,24 @@ def main():
     parser.add_argument('--profile', default='haiku')
     parser.add_argument('--max-budget-usd', type=float, required=True)
     parser.add_argument('--output', type=Path)
+    parser.add_argument('--check-fork', action='store_true', help='Also run a tool-free native fork and verify transcript history')
     parser.add_argument('--confirm-spend', action='store_true', help='Required: allow real model calls and spend')
     args = parser.parse_args()
     load_env(ROOT / '.env')
     prof = profile(args.profile)
     plan = {'profile': args.profile, 'model': prof['model'], 'budget_usd': args.max_budget_usd,
-            'checks': [name for name, _ in PROMPTS], 'real_model_calls_if_confirmed': len(PROMPTS)}
+            'checks': [name for name, _ in PROMPTS]+(['fork'] if args.check_fork else []),
+            'real_model_calls_if_confirmed': len(PROMPTS)+(1 if args.check_fork else 0)}
     if not args.confirm_spend:
         print(json.dumps({'status': 'not_run', 'reason': 'Missing --confirm-spend', 'plan': plan}, indent=2))
         return 2
-    if args.max_budget_usd <= 0:
-        raise SystemExit('Budget must be positive')
+    if not math.isfinite(args.max_budget_usd) or args.max_budget_usd <= 0:
+        raise SystemExit('Budget must be positive and finite')
     if not os.environ.get(prof['env_key']):
         raise SystemExit('Missing credential variable: ' + prof['env_key'])
     stamp = time.strftime('%Y%m%d-%H%M%S')
     output = args.output or ROOT / 'runs/engineering/claude-precheck' / (args.profile + '-' + stamp)
-    receipt = run_precheck(args.profile, Path(output).absolute(), args.max_budget_usd, dict(os.environ))
+    receipt = run_precheck(args.profile, Path(output).absolute(), args.max_budget_usd, dict(os.environ), check_fork=args.check_fork)
     print(json.dumps({k: receipt[k] for k in ('profile', 'requested_model', 'passed', 'total_cost_usd', 'stopped')}
                      | {'receipt': str(Path(output).absolute() / 'receipt.json')}, indent=2, ensure_ascii=False))
     return 0 if receipt['passed'] else 1

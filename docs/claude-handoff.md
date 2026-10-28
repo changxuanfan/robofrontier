@@ -26,6 +26,7 @@ Real precheck (spends money; needs a credential and an explicit cap):
 ```sh
 .venv/bin/python -m scripts.claude_precheck --profile haiku --max-budget-usd 0.5
 .venv/bin/python -m scripts.claude_precheck --profile haiku --max-budget-usd 0.5 --confirm-spend
+.venv/bin/python -m scripts.claude_precheck --profile haiku --max-budget-usd 0.5 --check-fork --confirm-spend
 ```
 
 Without `--confirm-spend` it only prints the plan. With it, it makes three
@@ -35,6 +36,13 @@ in the output directory; it records CLI version, requested and reported model,
 cost and per-check results, never key values. A profile passes only if all
 three checks pass within the cap. Bench runs use `opus`, not the Haiku
 precheck profile.
+
+`--check-fork` adds a fourth paid call: a tool-free native fork of the idle
+session that must recall the image color and have a matching native transcript
+prefix. The receipt includes a profile fingerprint and whether the fork was
+checked. This idle-session check does not establish compatibility with a parent
+blocked in a tool call, concurrent delegate execution, or a real robot task.
+The cap is based on CLI-reported cost and is not a provider billing limit.
 
 The doctor checks locally only. It reports whether credentials are present,
 not whether they work. If a sandbox denies the provider host or writes under

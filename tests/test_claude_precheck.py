@@ -66,6 +66,14 @@ class PrecheckTests(unittest.TestCase):
             self.assertEqual(receipt['stopped'], 'failed at tool_image')
             self.assertEqual(len(receipt['checks']), 2)
 
+    def test_colour_substring_does_not_count_as_correct(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            binary=fake_claude(tmp,tool_answer='not green')
+            base={'PATH':'/usr/bin:/bin','ANTHROPIC_API_KEY':'fake-key-not-real'}
+            receipt=pc.run_precheck('haiku',Path(tmp)/'out',.5,base,binary=str(binary))
+            self.assertFalse(receipt['passed'])
+            self.assertFalse(receipt['checks'][1]['checks']['image_color_named'])
+
     def test_budget_is_split_and_exhaustion_stops(self):
         with tempfile.TemporaryDirectory() as tmp:
             binary = fake_claude(tmp)
@@ -83,6 +91,31 @@ class PrecheckTests(unittest.TestCase):
             self.assertFalse(receipt['passed'])
             self.assertEqual(receipt['stopped'], 'cost unknown at text')
             self.assertEqual(len(receipt['checks']), 1)
+
+    def test_optional_fork_requires_distinct_session_and_verified_native_history(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            binary=fake_claude(tmp)
+            base={'PATH':'/usr/bin:/bin','ANTHROPIC_API_KEY':'fake-key-not-real'}
+            original=pc.run_turn; forks=[]
+            def runner(*args,**kwargs):
+                if not kwargs.get('fork_from'): return original(*args,**kwargs)
+                forks.append(kwargs)
+                return {'process':'exited','exit_code':0,'summary':{'session_id':kwargs['session_id'],
+                        'turn_status':'ended','tool_calls':0,'result_text':'green','malformed_lines':0,
+                        'total_cost_usd':.01,'reported_model':'fake','usage':{}}}
+            def proof(parent,child,config): return {'source_thread_id':parent}
+            with patch.object(pc,'run_turn',runner), patch.object(pc,'fork_provenance',proof):
+                receipt=pc.run_precheck('haiku',Path(tmp)/'pass',.5,base,binary=str(binary),check_fork=True)
+            self.assertTrue(receipt['passed'],receipt)
+            self.assertEqual(len(receipt['checks']),4)
+            self.assertTrue(receipt['fork_checked'])
+            self.assertFalse(forks[0]['enable_robot'])
+            self.assertNotEqual(forks[0]['session_id'],forks[0]['fork_from'])
+            with patch.object(pc,'run_turn',runner), patch.object(pc,'fork_provenance',side_effect=ValueError('bad prefix')):
+                receipt=pc.run_precheck('haiku',Path(tmp)/'fail',.5,base,binary=str(binary),check_fork=True)
+            self.assertFalse(receipt['passed'])
+            self.assertEqual(receipt['stopped'],'failed at fork')
+            self.assertFalse(receipt['checks'][-1]['checks']['native_history_prefix'])
 
 
 if __name__ == '__main__': unittest.main()

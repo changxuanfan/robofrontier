@@ -24,6 +24,7 @@ ROOT=Path(__file__).resolve().parents[1]
 class StubModel(http.server.BaseHTTPRequestHandler):
     requests=[]
     def log_message(self,*args): pass
+    def reply_text(self, body, text, blocks): return 'done'
     def choose_tool(self, names, text, blocks, has_result):
         if names and not has_result:
             if 'Your current runtime role is Delegate_' in text:
@@ -45,7 +46,7 @@ class StubModel(http.server.BaseHTTPRequestHandler):
         # message. Only a final tool-result block means the tool just returned.
         has_result=bool(blocks and isinstance(blocks[-1],dict) and blocks[-1].get('type')=='tool_result')
         tool, ident=self.choose_tool(names,text,blocks,has_result)
-        content=[{'type':'tool_use','id':ident,'name':names[0],'input':tool}] if tool else [{'type':'text','text':'done'}]
+        content=[{'type':'tool_use','id':ident,'name':names[0],'input':tool}] if tool else [{'type':'text','text':self.reply_text(body,text,blocks)}]
         reason='tool_use' if tool else 'end_turn'
         message={'id':'msg_stub','type':'message','role':'assistant','model':'claude-opus-5-5',
                  'content':content,'stop_reason':reason,'stop_sequence':None,'usage':{'input_tokens':10,'output_tokens':4}}

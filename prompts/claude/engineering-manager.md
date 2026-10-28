@@ -19,6 +19,7 @@
 - mode: plan
 - output: runs/engineering/opus-l1-small-001
 - precheck_budget_usd: 未指定
+- check_fork: true
 - turn_budget_usd: 未指定
 - task_budget_usd: 未指定
 - wall_limit_s: 未指定
@@ -34,9 +35,11 @@
    mode=plan 到此结束。
 4. mode=precheck：用户已明确授权真实 API 费用且给出正数 precheck_budget_usd 时，
    对每个所选 profile 单独执行 scripts.claude_precheck --profile PROFILE
-   --max-budget-usd BUDGET --confirm-spend；保存并报告各回执。没有费用授权、额度、
+   --max-budget-usd BUDGET --confirm-spend；check_fork=true 时加 --check-fork，
+   保存并报告各回执。没有费用授权、额度、
    密钥或兼容 endpoint 时先完成离线步骤，再报告缺项，不发真实请求。precheck 仅
-   检查文本、图片工具往返和续接，不证明 fork 或完整任务可用。
+   检查文本、图片工具往返和续接；可选检查空闲会话 fork，不证明阻塞父会话的
+   fork 或完整任务可用。
 5. mode=engineering：仅在用户明确授权指定模型和工程批次的真实费用，且给出正数
    turn_budget_usd、task_budget_usd、wall_limit_s 时继续。准备新目录：
    scripts.claude_benchmark prepare-draft，传入选择、topology 和 output；若
