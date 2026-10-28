@@ -348,3 +348,13 @@ ROBOFRONTIER_PHYSICS_BATCH=1 .venv/bin/python -m unittest discover -s tests -p t
 委派、短位移和封存。模型仍是本机合成服务；测试不证明厂商并发、速率限制或成本。
 2026-10-28 在本机以代码提交 `9f8709d` 复测通过；四个场景同时存在独立物理进程，
 且各自完成委派、合成短位移与封存。另有上述四任务同时 SIGTERM 停止检查。
+
+单任务提前结束与评估链路的可选烟雾检查：
+
+```sh
+ROBOFRONTIER_PHYSICS_FINISH=1 .venv/bin/python -m unittest discover -s tests -p test_claude_finish_physics_smoke.py -v
+```
+
+本机使用真实 MuJoCo 和 CLI、合成模型，对 transport centralized 草稿提前调用 `finish`，
+确认私有评估报告任务未成功、导出的审计报告保留该结果，并未把声明的模型视作已核验。
+这验证失败任务的结束路径，不验证任务成功、真实模型或正式评分资格。
