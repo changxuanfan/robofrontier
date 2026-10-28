@@ -30,6 +30,10 @@ Oracle工厂展示使用各录制自己的冻结来源。旧`frontier-v2.json`�
 
 ## 安装与工程检查
 
+新 clone 后，安装 Python 环境并运行 `.venv/bin/python -m scripts.benchmark_handoff setup-assets`，
+可自动下载、校验并恢复当前 R14 任务资产；离线可使用 `setup-assets --archive /path/to/policy-assets.tar.gz`。
+资产包和校验说明见[多模型交接](docs/multimodel-handoff.md)。不要将密钥或运行数据提交到 Git。
+
 Python 与依赖由 `.python-version`、`pyproject.toml`、`uv.lock` 管理。
 机器人上游资产与许可证由 `scripts/fetch_robot.py` 物化，来源记录在 `vendor/`。
 
