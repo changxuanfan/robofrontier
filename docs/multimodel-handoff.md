@@ -51,6 +51,16 @@ cd roomscript2
 
 bundle 是仓库历史快照，不是持续同步服务。日常协作用上述 GitHub 仓库即可；
 bundle 供离线交接或备份使用，后续更新可通过 GitHub 或新 bundle 传递。
+运行资产可从同仓库的私有 [handoff-20261028 Release](https://github.com/changxuanfan/robofrontier/releases/tag/handoff-20261028)
+下载 `policy-assets.tar.gz` 和 `policy-assets.tar.gz.sha256`。也可在已登录自己 GitHub
+账号的 `gh` CLI 中下载（需要本私有仓库访问权限）：
+
+```sh
+gh release download handoff-20261028 --repo changxuanfan/robofrontier --pattern 'policy-assets.tar.gz*' --dir ../robofrontier-assets
+```
+
+在下载目录执行 `shasum -a 256 -c policy-assets.tar.gz.sha256`（Linux 可用
+`sha256sum -c policy-assets.tar.gz.sha256`），然后按下文恢复。
 资产包只包含当前36项任务需要的场景资产和 Panda 来源文件；不包含 `.env`、Codex
 认证、实验结果、已准备世界或 Dial 私有答案。机器人上游许可证随 Panda 资产保存。
 接收者核对随包提供的 SHA-256 后执行恢复命令；恢复也会检查发布清单和每个文件哈希，
