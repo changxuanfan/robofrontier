@@ -44,6 +44,23 @@ checked. This idle-session check does not establish compatibility with a parent
 blocked in a tool call, concurrent delegate execution, or a real robot task.
 The cap is based on CLI-reported cost and is not a provider billing limit.
 
+For an additional paid check of the adaptive fork boundary:
+
+```sh
+.venv/bin/python -m scripts.claude_blocked_precheck --profile opus --max-budget-usd 1
+.venv/bin/python -m scripts.claude_blocked_precheck --profile opus --max-budget-usd 1 --confirm-spend
+```
+
+It uses a synthetic local robot service and three CLI turns: initialize the
+parent, block the parent at an image tool call, and create a tool-free fork
+while that call is blocked. It verifies the native history prefix, releases the
+parent, and checks its image response. One turn can generate multiple provider
+requests. The two concurrent turn allowances share the remaining estimated
+budget. A receipt with `cost_complete: false` does not account for every turn;
+neither this check nor the CLI-reported budget proves a provider billing cap,
+physical execution, or scored-run qualification. The full path has passed
+only against a local fake provider; real profiles remain unverified.
+
 The doctor checks locally only. It reports whether credentials are present,
 not whether they work. If a sandbox denies the provider host or writes under
 `runs/`, allow it in your own environment rather than bypassing the sandbox.

@@ -51,12 +51,17 @@ class World(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
         self.rfile.read(int(self.headers.get('Content-Length', 0)))
         World.requests += 1
+        entered = getattr(self.server, 'blocked_entered', None)
+        if entered is not None:
+            entered.set()
+            self.server.blocked_release.wait(180)
         data = json.dumps({'observation': {'images': {'top': str(World.image)}}}).encode()
         self.send_response(200)
         self.send_header('Content-Type', 'application/json')
         self.send_header('Content-Length', str(len(data)))
         self.end_headers()
-        self.wfile.write(data)
+        try: self.wfile.write(data)
+        except (BrokenPipeError, ConnectionResetError): pass
 
 
 def claude_version(binary='claude'):

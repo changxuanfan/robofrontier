@@ -20,6 +20,7 @@
 - output: runs/engineering/opus-l1-small-001
 - precheck_budget_usd: 未指定
 - check_fork: true
+- check_blocked_fork: false
 - turn_budget_usd: 未指定
 - task_budget_usd: 未指定
 - wall_limit_s: 未指定
@@ -40,6 +41,8 @@
    密钥或兼容 endpoint 时先完成离线步骤，再报告缺项，不发真实请求。precheck 仅
    检查文本、图片工具往返和续接；可选检查空闲会话 fork，不证明阻塞父会话的
    fork 或完整任务可用。
+   若 check_blocked_fork=true，且用户授权额外的指定预算，再对每个 profile 执行
+   scripts.claude_blocked_precheck，保存独立回执；这仍不是完整任务或计费硬上限。
 5. mode=engineering：仅在用户明确授权指定模型和工程批次的真实费用，且给出正数
    turn_budget_usd、task_budget_usd、wall_limit_s 时继续。准备新目录：
    scripts.claude_benchmark prepare-draft，传入选择、topology 和 output；若
