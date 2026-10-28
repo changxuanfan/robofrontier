@@ -143,8 +143,16 @@ parent, and checks its image response. One turn can generate multiple provider
 requests. The two concurrent turn allowances share the remaining estimated
 budget. A receipt with `cost_complete: false` does not account for every turn;
 neither this check nor the CLI-reported budget proves a provider billing cap,
-physical execution, or scored-run qualification. The full path has passed
-only against a local fake provider; real profiles remain unverified.
+physical execution, or scored-run qualification.
+
+On 2026-10-28, the `opus` profile also passed both real-provider prechecks
+using CLI 2.1.312: text, image/tool round trip, resume, idle fork, and fork
+while the parent was blocked on an image call. The CLI reported $0.030570
+and $0.021293 respectively; these are estimates, not the provider invoice.
+The local receipts matched the profile and CLI in `claude_readiness`.
+They do not qualify a physical task or a scored run, and the Chinese profiles
+remain unverified. Receipts and transcripts are local run artifacts, not part
+of the Git handoff.
 
 After obtaining both real receipts, compare them with the current profile and
 CLI version without making model calls:
