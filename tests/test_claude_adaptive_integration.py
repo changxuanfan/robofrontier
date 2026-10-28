@@ -62,7 +62,9 @@ class StubModel(http.server.BaseHTTPRequestHandler):
             raw=''.join('event: '+name+'\ndata: '+json.dumps(data)+'\n\n' for name,data in events).encode(); kind='text/event-stream'
         else: raw=json.dumps(message).encode(); kind='application/json'
         self.send_response(200); self.send_header('Content-Type',kind); self.send_header('Content-Length',str(len(raw)))
-        self.end_headers(); self.wfile.write(raw)
+        self.end_headers()
+        try: self.wfile.write(raw)
+        except (BrokenPipeError, ConnectionResetError): pass  # The supervisor may stop an in-flight turn.
 
 
 @unittest.skipUnless(shutil.which('claude'),'Claude CLI is not installed')

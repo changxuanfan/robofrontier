@@ -143,3 +143,12 @@ ROBOFRONTIER_PHYSICS_SMOKE=1 .venv/bin/python -m unittest discover -s tests -p t
 仿真位移；不验证复杂操作、模型能力、正式计分或视频。2026-10-28 本机分别对四类
 最少臂 Level 1（transport、mosaic R14、relay、dial）通过了该测试。此草稿关闭实时
 录像，封存报告中的缺失视频不代表录像功能已验证。
+
+四项并发工程物理烟雾检查（需要更多 CPU、内存和图形资源）：
+
+```sh
+ROBOFRONTIER_PHYSICS_BATCH=1 .venv/bin/python -m unittest discover -s tests -p test_claude_parallel_physics_smoke.py -v
+```
+
+该检查在同一批中使用四个相互独立的物理进程，检查它们确实同时存活，并分别核对
+委派、短位移和封存。模型仍是本机合成服务；测试不证明厂商并发、速率限制或成本。

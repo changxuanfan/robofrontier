@@ -128,11 +128,14 @@ def execute(store, op, data, owner, now):
                 store.put('dispatcher_health',health)
         return {'observed':len(data['observations'])}
     if op=='request-start':
-        from contextlib import redirect_stderr
         from .pipeline_client import client_call
         connection=store.path.parent/'connections'/f"{cfg['manager']}.json"
-        with (store.path.parent/'admin-client.log').open('a') as log, redirect_stderr(log):
-            return client_call(connection,'start',{},'start-'+__import__('hashlib').sha256(store.get('run_id').encode()).hexdigest()[:24])
+        call_id='start-'+__import__('hashlib').sha256(store.get('run_id').encode()).hexdigest()[:24]
+        # Multiple benchmark runs share this Python process. Redirecting global
+        # sys.stderr here would cross-wire logs and restore closed streams.
+        with (store.path.parent/'admin-client.log').open('a') as log:
+            print('call_id='+call_id,file=log,flush=True)
+        return client_call(connection,'start',{},call_id,log_call_id=False)
     if op=='plan':return {'commands':Scheduler(store).plan(owner,now)}
     if op=='claim':return {'command':Scheduler(store).claim(data['wake_id'],owner,now)}
     if op=='dispatch-result':
