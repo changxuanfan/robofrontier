@@ -83,6 +83,19 @@ class ClaudeRunnerTests(unittest.TestCase):
         self.assertEqual(summarize([json.dumps({'type': 'result', 'subtype': 'error_max_turns', 'is_error': True})])['turn_status'], 'failed')
         self.assertEqual(summarize([])['turn_status'], 'unknown')
 
+    def test_summary_keeps_aggregate_model_usage_and_failure_subtype(self):
+        event={'type':'result','subtype':'error_max_budget_usd','is_error':True,
+               'usage':{'output_tokens':302},'modelUsage':{'model':{
+                   'outputTokens':13707,'thinkingTokens':13299,'cacheReadInputTokens':28889}},
+               'total_cost_usd':.4755318}
+        result=summarize([json.dumps(event)])
+        self.assertEqual(result['turn_status'],'failed')
+        self.assertEqual(result['result_subtype'],'error_max_budget_usd')
+        self.assertEqual(result['usage']['output_tokens'],302)
+        self.assertEqual(result['model_usage']['model']['outputTokens'],13707)
+        self.assertEqual(result['model_usage']['model']['thinkingTokens'],13299)
+        self.assertEqual(result['total_cost_usd'],.4755318)
+
     def test_image_evidence_must_match_the_observe_tool_call(self):
         call={'type':'assistant','message':{'content':[{'type':'tool_use','id':'wanted',
               'name':'mcp__robot__robot','input':{'op':'observe','views':['top']}}]}}

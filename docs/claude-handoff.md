@@ -171,6 +171,11 @@ retained the cost as uncertain. The physical owner sealed and exited with no
 unresolved actions and no robot actions. This observation demonstrates that
 the CLI allowance is not a hard spending cap, and the trial does not qualify a
 scored benchmark or explain the earlier interrupted turn's actual cost.
+The final CLI event reported per-model aggregate `modelUsage`: 13,707 output
+tokens including 13,299 thinking tokens, 39,118 cache-creation input tokens,
+and 28,889 cache-read input tokens. Its separate `usage` field contained lower
+counts; it should not be mistaken for the aggregate. New summaries retain both
+fields and the result subtype as reported, without converting them to a bill.
 
 After obtaining both real receipts, compare them with the current profile and
 CLI version without making model calls:
