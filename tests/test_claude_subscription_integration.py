@@ -92,7 +92,8 @@ class SubscriptionTests(unittest.TestCase):
                          'env_key':'CLAUDE_CODE_OAUTH_TOKEN','auth_mode':'oauth_token',
                          'base_url':f'http://127.0.0.1:{server.server_port}'}
                 env={'PATH':os.environ['PATH'],'CLAUDE_CODE_OAUTH_TOKEN':'synthetic-token'}
-                with patch.object(claude_precheck,'profile',return_value=profile), \
+                with patch.object(claude_precheck.secrets,'choice',return_value='green'), \
+                     patch.object(claude_precheck,'profile',return_value=profile), \
                      patch.object(claude_blocked_precheck,'profile',return_value=profile), \
                      patch('robofrontier.claude.runner._oauth_endpoint_allowed',return_value=True):
                     basic=claude_precheck.run_precheck('synthetic',Path(tmp)/'basic',2,env,check_fork=True)
