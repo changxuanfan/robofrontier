@@ -10,6 +10,19 @@ Use the bound `robot` MCP tool with `op`, `data`, optional `views`, and a stable
 Preserve the original `call_id` when checking an uncertain operation. Choose
 views and robot actions from the task and current evidence.
 
+The outer `call_id` identifies the current tool request; `data.call_id` in
+`job` or `stop` identifies an earlier action. For example, a request to stop
+action `move-1` can use `{"op":"stop","call_id":"stop-1",
+"data":{"robot":"A","call_id":"move-1"}}`; a status query uses
+`{"op":"job","data":{"call_id":"move-1"}}`. If the stop request itself
+has an uncertain transport outcome, check or retry the same `stop-1` request,
+not a newly identified stop. Check the original action for its settled result.
+
+For an observation, choose an available camera and include it in both fields,
+for example `{"op":"observe","data":{"cameras":["global"]},
+"views":["global"]}`. `data.cameras` requests a capture; `views` selects
+which returned images to send to you. Choose camera names from the actual task.
+
 Before START, inspect the public task and available initial observations, call
 `ready`, save a waiting state, and end the startup turn. After START, work within
 the supplied role and robot ownership. Verify the task's completion conditions

@@ -79,6 +79,13 @@ class ClaudeFoundationTests(unittest.TestCase):
             self.assertEqual(calls[0][1:], ('move', {'cameras': ['top']}, 'move-1'))
             self.assertEqual(base64.b64decode(response['content'][1]['data']), png)
             self.assertNotIn('secret', json.dumps(response))
+            bridge.call({'op':'stop','call_id':'stop-1',
+                         'data':{'robot':'A','call_id':'move-1'}})
+            self.assertEqual(calls[-1][1:], ('stop', {'robot':'A','call_id':'move-1'}, 'stop-1'))
+            bridge.call({'op':'job','data':{'call_id':'move-1'}})
+            self.assertEqual(calls[-1][1:3], ('job', {'call_id':'move-1'}))
+            bridge.call({'op':'observe','data':{'cameras':['top']},'views':['top']})
+            self.assertEqual(calls[-1][1:3], ('observe', {'cameras':['top']}))
             with self.assertRaises(ValueError): bridge.call({'op': 'start', 'data': {}})
             self.assertEqual(handle({'method': 'tools/list'}, bridge)['tools'][0]['name'], 'robot')
             outside = Path(tmp) / 'outside.png'; outside.write_bytes(png)
