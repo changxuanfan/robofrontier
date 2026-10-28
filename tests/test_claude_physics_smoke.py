@@ -42,13 +42,14 @@ class PhysicsSmokeTests(unittest.TestCase):
     def test_adaptive_unscored_lifecycle_with_synthetic_model(self):
         directory = Path(tempfile.mkdtemp(prefix='claude-physics-synthetic-'))
         case = os.environ.get('ROBOFRONTIER_PHYSICS_CASE', 'transport-a04-d1')
+        record_video = os.environ.get('ROBOFRONTIER_PHYSICS_VIDEO') == '1'
         MotionModel.requests.clear()
         server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), MotionModel)
         threading.Thread(target=server.serve_forever, daemon=True).start()
         result = None
         try:
             base = directory / 'batch'
-            prepare_draft(base, ['opus'], cases=[case], topology='adaptive')
+            prepare_draft(base, ['opus'], cases=[case], topology='adaptive', record_video=record_video)
             run = base / 'opus' / case
             launch = run / 'private/inputs/claude.json'
             data = json.loads(launch.read_text())
@@ -66,6 +67,8 @@ class PhysicsSmokeTests(unittest.TestCase):
             self.assertEqual(result['status'], 'finished', result)
             self.assertTrue(result['seal']['sealed'], result)
             self.assertFalse(result['owner_alive'], result)
+            if record_video:
+                self.assertTrue(result['seal']['video']['readable'], result['seal']['video'])
             state = RuntimeStore(run / 'private/state/runtime.sqlite')
             try:
                 batch = state.get('delegations', {}).get('synthetic-delegate')

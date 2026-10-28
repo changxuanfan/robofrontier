@@ -99,5 +99,23 @@ class EngineeringRunTests(unittest.TestCase):
         self.assertEqual(seen[0][1]['setup_budget_usd'], .5)
         self.assertTrue((self.run/'private/state/claude-budget.sqlite').exists())
 
+    def test_requested_unreadable_recording_requires_review_even_after_seal(self):
+        config = self.run/'private/inputs/harness.json'
+        config.write_text(json.dumps({'engine':'claude','topology':'centralized','record_realtime_video':True}))
+        (self.run/'private/state/connections/Meta.json').write_text('{"url":"http://127.0.0.1:1234"}')
+        class Attached(Policy):
+            def __init__(self,*a,**k): super().__init__(*a,**k); self.store.attached = True
+        class ExitingOwner(Owner):
+            def wait(self,timeout): self.status=0
+        class Supervisor:
+            def __init__(self,*a,**k): pass
+            def run(self): return {'reason':'world_ended','seal':{'sealed':True,'video':{'readable':False}}}
+        with patch('robofrontier.claude.engineering_run.CentralizedSupervisor', Supervisor):
+            result=run_engineering(self.run,self.env,turn_budget_usd=.5,total_budget_usd=2,wall_limit_s=30,
+                                   policy_factory=Attached,owner_factory=lambda *a,**k: ExitingOwner(None))
+        self.assertTrue(result['video_required'])
+        self.assertFalse(result['owner_alive'])
+        self.assertEqual(result['status'],'needs_review')
+
 
 if __name__ == '__main__': unittest.main()

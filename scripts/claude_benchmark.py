@@ -58,13 +58,15 @@ def plan(names, families=None, cases=None, level=None, min_arms=False, parallel=
 
 
 
-def prepare_draft(output, names, families=None, cases=None, level=None, min_arms=False, catalog=CATALOG, topology='adaptive'):
+def prepare_draft(output, names, families=None, cases=None, level=None, min_arms=False, catalog=CATALOG, topology='adaptive', record_video=False):
     """Freeze engineering drafts only. No Claude runtime is permitted to start them yet."""
     from robofrontier.task_families import prepare, policy_task
     from robofrontier.suite.dial_feedback import alphabet
 
     if topology not in ('adaptive', 'centralized'):
         raise ValueError('Draft topology must be adaptive or centralized')
+    if type(record_video) is not bool:
+        raise ValueError('record_video must be a boolean')
     selection = plan(names, families, cases, level, min_arms, 1, catalog)
     profiles = {name: profile(name, catalog) for name in names}
     selected = list(dict.fromkeys(job['case_id'] for job in selection['jobs']))
@@ -90,7 +92,7 @@ def prepare_draft(output, names, families=None, cases=None, level=None, min_arms
             puzzles[case] = target
     for name, p in profiles.items():
         cfg = read(ROOT / 'configs/harnesses/policy.json')
-        cfg.update(engine='claude', topology=topology, model=p['model'], effort=p['effort'], observation_renderer='classic', record_realtime_video=False)
+        cfg.update(engine='claude', topology=topology, model=p['model'], effort=p['effort'], observation_renderer='classic', record_realtime_video=record_video)
         cfg_path = output / 'profiles' / name / 'harness.json'
         write_json(cfg_path, cfg)
         for case in selected:
@@ -159,6 +161,7 @@ def main():
             p.add_argument('--output', type=Path, required=True)
             p.add_argument('--topology', choices=('adaptive', 'centralized'), default='adaptive',
                            help='Engineering draft topology; neither option qualifies a scored run')
+            p.add_argument('--record-video', action='store_true', help='Record a real-time MP4 during the engineering run')
     p = sub.add_parser('run-engineering', help='Unqualified centralized or adaptive experiments; may spend API funds')
     p.add_argument('batch', type=Path); p.add_argument('--parallel', type=int, required=True)
     p.add_argument('--turn-budget-usd', type=float, required=True)
@@ -193,7 +196,7 @@ def main():
             result = plan(args.models, args.families, args.cases, args.level, args.min_arms, args.parallel)
         else:
             result = {'batch': str(prepare_draft(args.output, args.models, args.families, args.cases, args.level, args.min_arms,
-                                                  topology=args.topology)),
+                                                  topology=args.topology, record_video=args.record_video)),
                       'execution_available': False}
     print(json.dumps(result, ensure_ascii=False, indent=2))
 

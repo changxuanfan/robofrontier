@@ -17,6 +17,7 @@ After `uv sync --locked --extra oracle`, use:
 .venv/bin/python -m scripts.claude_benchmark doctor --models haiku opus kimi qwen glm deepseek
 .venv/bin/python -m scripts.claude_benchmark plan --models kimi --level 1 --min-arms --parallel 4
 .venv/bin/python -m scripts.claude_benchmark prepare-draft --models kimi --level 1 --min-arms --output runs/engineering/claude-draft
+.venv/bin/python -m scripts.claude_benchmark prepare-draft --models opus --level 1 --min-arms --record-video --output runs/engineering/claude-video-draft
 .venv/bin/python -m scripts.claude_offline_probe
 ```
 
@@ -140,9 +141,14 @@ ROBOFRONTIER_PHYSICS_SMOKE=1 .venv/bin/python -m unittest discover -s tests -p t
 不访问真实 API。默认检查 transport Level 1 工程草稿；可用环境变量
 `ROBOFRONTIER_PHYSICS_CASE` 选择其他已发布 case。它验证自适应委派与返回、墙钟停止、
 封存和进程退出。它还检查相机图片到达模拟模型端，并通过子角色对 A 臂执行 5 mm 的
-仿真位移；不验证复杂操作、模型能力、正式计分或视频。2026-10-28 本机分别对四类
-最少臂 Level 1（transport、mosaic R14、relay、dial）通过了该测试。此草稿关闭实时
-录像，封存报告中的缺失视频不代表录像功能已验证。
+仿真位移；不验证复杂操作、模型能力或正式计分。2026-10-28 本机分别对四类
+最少臂 Level 1（transport、mosaic R14、relay、dial）通过了该测试，默认关闭录像。
+要额外在 transport 草稿检查录制与封存时的首帧解码，设置 `ROBOFRONTIER_PHYSICS_VIDEO=1`
+并运行相同命令；本机已通过。这只检查首帧，并不证明视频全程完整。
+
+`prepare-draft --record-video` 在新草稿中开启录像，需要 FFmpeg 和 ffprobe。工程封存
+会尝试验证视频流并解码首帧；录像被要求而无法验证时，任务标为 `needs_review`。
+默认草稿不录像，封存报告提示视频缺失是预期结果。
 
 四项并发工程物理烟雾检查（需要更多 CPU、内存和图形资源）：
 

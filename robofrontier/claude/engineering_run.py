@@ -138,10 +138,14 @@ def run_engineering(run_dir, base_env, *, turn_budget_usd, total_budget_usd, wal
                 try: owner.wait(timeout=5)
                 except (subprocess.TimeoutExpired, AttributeError): pass
             owner_alive = bool(owner and owner.poll() is None)
+            video_required = config.get('record_realtime_video', False) is True
+            video_readable = (result.get('seal') or {}).get('video', {}).get('readable') is True
             closed = ((result.get('seal') or {}).get('sealed') and not owner_alive
                       and not result.get('policy_close_error') and not result.get('error_type')
+                      and (not video_required or video_readable)
                       and result.get('reason') in ('world_ended', 'stop_requested', 'wall_limit'))
-            result.update(status='finished' if closed else 'needs_review', owner_alive=owner_alive, scored=False)
+            result.update(status='finished' if closed else 'needs_review', owner_alive=owner_alive, scored=False,
+                          video_required=video_required)
             write_json(status, result)
         fcntl.flock(lock, fcntl.LOCK_UN); lock.close()
     return result

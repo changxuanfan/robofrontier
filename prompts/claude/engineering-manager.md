@@ -14,6 +14,7 @@
 - level: 1
 - scale: min-arms
 - topology: adaptive
+- record_video: false
 - parallel: 4
 - mode: plan
 - output: runs/engineering/opus-l1-small-001
@@ -38,7 +39,8 @@
    检查文本、图片工具往返和续接，不证明 fork 或完整任务可用。
 5. mode=engineering：仅在用户明确授权指定模型和工程批次的真实费用，且给出正数
    turn_budget_usd、task_budget_usd、wall_limit_s 时继续。准备新目录：
-   scripts.claude_benchmark prepare-draft，传入选择、topology 和 output；执行前核对
+   scripts.claude_benchmark prepare-draft，传入选择、topology 和 output；若
+   record_video=true 则加 --record-video 并检查 FFmpeg、ffprobe。执行前核对
    batch.json 的 case 和 profile 与第 3 步一致。目录已存在则停下，不覆盖或重用。
    此模式是未计分工程测试，不能代替正式 preflight 或计分 benchmark。
 6. 使用持久终端运行 scripts.claude_benchmark run-engineering OUTPUT --parallel N
