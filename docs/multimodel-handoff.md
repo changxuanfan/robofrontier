@@ -23,20 +23,23 @@ agent，只要具备本机命令行和文件访问能力并遵守[调度 prompt]
 
 Git 提交记录当前分支的已暂存改动。worktree 是该分支的工作目录，`main` 是另一个
 分支；在这里 commit 不会自动提交到 `main`。交接这个分支无需先合并 main。
-本次检查仓库没有配置 remote，尚未上传 GitHub。
-
-需要 GitHub 时，在确认目标仓库后发布分支：
+GitHub 交接仓库为私有的 [changxuanfan/robofrontier](https://github.com/changxuanfan/robofrontier)。
+仓库保留原 main 与本交接分支；后续在自己的分支开发、push，再通过 PR 合并。
+原机器已配置 origin；更新交接分支时：
 
 ```sh
-git remote add origin <GitHub仓库地址>
 git push -u origin codex/multimodel-handoff
 ```
 
-同事获得仓库权限后：
+仓库所有者先在 GitHub Settings → Collaborators 邀请同事。同事接受邀请、获得写权限后，
+可以 clone、建立自己的分支并 push：
 
 ```sh
-git clone --branch codex/multimodel-handoff <GitHub仓库地址> roomscript2
+git clone --branch codex/multimodel-handoff https://github.com/changxuanfan/robofrontier.git roomscript2
 cd roomscript2
+git switch -c experiments/my-model
+# 修改完成后 git add、git commit，再发布自己的分支
+git push -u origin experiments/my-model
 ```
 
 无需 GitHub 也可交接 `roomscript2.bundle` 和 `policy-assets.tar.gz`：
@@ -46,7 +49,8 @@ git clone --branch codex/multimodel-handoff /path/to/roomscript2.bundle roomscri
 cd roomscript2
 ```
 
-bundle 是仓库历史快照，不是持续同步服务。后续更新可通过 GitHub 或新 bundle 传递。
+bundle 是仓库历史快照，不是持续同步服务。日常协作用上述 GitHub 仓库即可；
+bundle 供离线交接或备份使用，后续更新可通过 GitHub 或新 bundle 传递。
 资产包只包含当前36项任务需要的场景资产和 Panda 来源文件；不包含 `.env`、Codex
 认证、实验结果、已准备世界或 Dial 私有答案。机器人上游许可证随 Panda 资产保存。
 接收者核对随包提供的 SHA-256 后执行恢复命令；恢复也会检查发布清单和每个文件哈希，
