@@ -117,5 +117,27 @@ class EngineeringRunTests(unittest.TestCase):
         self.assertFalse(result['owner_alive'])
         self.assertEqual(result['status'],'needs_review')
 
+    def test_seal_needs_explicit_empty_unresolved_actions(self):
+        for unresolved, expected in (([], 'finished'), (['action-1'], 'needs_review'), (None, 'needs_review')):
+            with self.subTest(unresolved=unresolved), tempfile.TemporaryDirectory() as tmp:
+                run = Path(tmp)/'run'
+                import shutil
+                shutil.copytree(self.run, run)
+                (run/'private/state/connections/Meta.json').write_text('{"url":"http://127.0.0.1:1234"}')
+                class Attached(Policy):
+                    def __init__(self,*a,**k): super().__init__(*a,**k); self.store.attached = True
+                class ExitingOwner(Owner):
+                    def wait(self,timeout): self.status=0
+                class Supervisor:
+                    def __init__(self,*a,**k): pass
+                    def run(self):
+                        seal={'sealed':True}
+                        if unresolved is not None: seal['unresolved_action_ids']=unresolved
+                        return {'reason':'world_ended','seal':seal}
+                with patch('robofrontier.claude.engineering_run.CentralizedSupervisor', Supervisor):
+                    result=run_engineering(run,self.env,turn_budget_usd=.5,total_budget_usd=2,wall_limit_s=30,
+                                           policy_factory=Attached,owner_factory=lambda *a,**k: ExitingOwner(None))
+                self.assertEqual(result['status'], expected)
+
 
 if __name__ == '__main__': unittest.main()
