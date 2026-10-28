@@ -28,7 +28,7 @@ if prompt.startswith("Call the robot tool"):
 elif prompt.startswith("Without calling"):
     answer = "%s"
 print(json.dumps({"type": "assistant", "session_id": session, "message": {"content": [
-    {"type": "tool_use", "id": "t", "name": "mcp__robot__robot", "input": {}}] if tool else []}}))
+    {"type": "tool_use", "id": "t", "name": "mcp__robot__robot", "input": {"op":"observe","data":{},"views":["top"]}}] if tool else []}}))
 print(json.dumps({"type": "result", "subtype": "success", "is_error": False, "session_id": session,
                   "num_turns": 1, "result": answer, "total_cost_usd": 0.01, "usage": {"input_tokens": 1}}))
 '''
@@ -86,10 +86,19 @@ class PrecheckTests(unittest.TestCase):
     def test_non_observe_request_does_not_satisfy_visual_check(self):
         record={'process':'exited','exit_code':0,'summary':{'result_text':'green',
             'turn_status':'ended','session_id':'session','malformed_lines':0,'tool_calls':1,
-            'reported_model':'fake'}}
+            'reported_model':'fake','observe_top_calls':1}}
         result=pc.judge('tool_image',record,0,1,expected_session='session',
                         expected_color='green',observes_before=0,observes_after=0)
         self.assertFalse(result['checks']['robot_request_made'])
+        self.assertFalse(result['passed'])
+
+    def test_observe_without_selected_view_does_not_satisfy_visual_check(self):
+        record={'process':'exited','exit_code':0,'summary':{'result_text':'green',
+            'turn_status':'ended','session_id':'session','malformed_lines':0,'tool_calls':1,
+            'reported_model':'fake','observe_top_calls':0}}
+        result=pc.judge('tool_image',record,0,1,expected_session='session',
+                        expected_color='green',observes_before=0,observes_after=1)
+        self.assertFalse(result['checks']['image_view_requested'])
         self.assertFalse(result['passed'])
     def test_without_confirm_spend_nothing_runs(self):
         with patch.object(sys, 'argv', ['claude_precheck', '--max-budget-usd', '0.5']), \

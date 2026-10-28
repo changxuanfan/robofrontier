@@ -17,12 +17,12 @@ from scripts.claude_precheck import claude_version
 
 BASIC = {
     'text': {'process_exited','turn_ended','same_session','valid_events','reply_ready','no_new_robot_call'},
-    'tool_image': {'process_exited','turn_ended','same_session','valid_events','tool_called','robot_request_made','image_color_named'},
+    'tool_image': {'process_exited','turn_ended','same_session','valid_events','tool_called','robot_request_made','image_view_requested','image_color_named'},
     'resume': {'process_exited','turn_ended','same_session','valid_events','color_recalled','no_new_robot_call'},
     'fork': {'process_exited','turn_ended','distinct_expected_session','no_tool_calls','color_recalled','valid_events','native_history_prefix'},
 }
 BLOCKED = {'parent_blocked','fork_ended','fork_has_no_tools','source_unchanged','native_history_prefix',
-           'parent_ended','parent_used_tool','parent_identified_image'}
+           'parent_ended','parent_used_tool','parent_requested_view','parent_identified_image'}
 
 
 def _positive_number(value):

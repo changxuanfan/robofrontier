@@ -41,7 +41,8 @@ def _pending_observe(rows):
         message = row.get('message') or {}
         for block in message.get('content', []) if isinstance(message.get('content'), list) else []:
             if (isinstance(block,dict) and block.get('type')=='tool_use' and block.get('name')=='mcp__robot__robot'
-                    and isinstance(block.get('input'),dict) and block['input'].get('op')=='observe'):
+                    and isinstance(block.get('input'),dict) and block['input'].get('op')=='observe'
+                    and isinstance(block['input'].get('views'),list) and 'top' in block['input']['views']):
                 return True
     return False
 
@@ -113,6 +114,7 @@ def run_blocked_precheck(name, output, budget, base_env, *, binary='claude', wai
         receipt['cost_complete']=True
         receipt['checks']['parent_ended']=_ended(parent,session)
         receipt['checks']['parent_used_tool']=parent['summary'].get('tool_calls',0)>=1
+        receipt['checks']['parent_requested_view']=parent['summary'].get('observe_top_calls',0)>=1
         receipt['checks']['parent_identified_image']=(parent['summary'].get('result_text') or '').strip().lower()==server.challenge_color
         receipt['passed']=all(receipt['checks'].values()) and started<=budget
     except Exception as error:

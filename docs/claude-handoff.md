@@ -114,6 +114,11 @@ still be a lucky guess and does not establish general visual capability. The
 earlier Haiku receipt listed below used a fixed green image.
 Each local precheck server keeps its own image and request count, so concurrent
 checks do not share that state; this is not a provider concurrency guarantee.
+The check also requires the CLI transcript to show an `observe` call selecting
+the `top` view, and the local service to receive an `observe` request. This is
+still not independent proof that a real provider processed the image. Older
+receipts lacking the new view-request evidence will not pass `claude_readiness`;
+the historical Haiku receipt has not been rerun under these checks.
 
 `--check-fork` adds a fourth paid call: a tool-free native fork of the idle
 session that must recall the image color and have a matching native transcript

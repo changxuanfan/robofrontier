@@ -51,6 +51,13 @@ class ReadinessTests(unittest.TestCase):
         result=check_receipts('test',self.root/'missing',self.root/'also-missing',selected=self.profile,version=self.version)
         self.assertFalse(result['precheck_evidence_matches'])
 
+    def test_legacy_receipts_without_view_evidence_do_not_match(self):
+        del self.basic['checks'][1]['checks']['image_view_requested']
+        self.assertFalse(self.check()['precheck_evidence_matches'])
+        self.basic['checks'][1]['checks']['image_view_requested']=True
+        del self.blocked['checks']['parent_requested_view']
+        self.assertFalse(self.check()['precheck_evidence_matches'])
+
     @unittest.skipUnless(shutil.which('claude'),'Claude CLI is not installed')
     def test_real_cli_synthetic_provider_receipts_match_current_profile(self):
         server=http.server.ThreadingHTTPServer(('127.0.0.1',0),PrecheckModel)
@@ -59,7 +66,8 @@ class ReadinessTests(unittest.TestCase):
             selected={'model':'claude-opus-5-5','effort':'high','env_key':'FAKE_KEY',
                       'base_url':f'http://127.0.0.1:{server.server_port}'}
             env={'PATH':os.environ['PATH'],'FAKE_KEY':'synthetic'}
-            with patch.object(claude_precheck,'profile',return_value=selected), \
+            with patch.object(claude_precheck.secrets,'choice',return_value='green'), \
+                 patch.object(claude_precheck,'profile',return_value=selected), \
                  patch.object(claude_blocked_precheck,'profile',return_value=selected):
                 basic=claude_precheck.run_precheck('synthetic',self.root/'basic',2,env,check_fork=True)
                 blocked=claude_blocked_precheck.run_blocked_precheck('synthetic',self.root/'blocked',2,env)

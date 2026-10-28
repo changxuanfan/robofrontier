@@ -124,6 +124,7 @@ def judge(name, record, requests_before, requests_after, expected_session=None, 
     elif name == 'tool_image':
         checks['tool_called'] = summary['tool_calls'] >= 1
         checks['robot_request_made'] = observes_after > observes_before
+        checks['image_view_requested'] = summary.get('observe_top_calls', 0) >= 1
         checks['image_color_named'] = text == expected_color
     elif name == 'resume':
         checks['color_recalled'] = text == expected_color

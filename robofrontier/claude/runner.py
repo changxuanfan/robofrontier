@@ -121,6 +121,13 @@ def summarize(lines):
         1 for e in events if e.get('type') == 'assistant'
         for block in (e.get('message') or {}).get('content') or []
         if isinstance(block, dict) and block.get('type') == 'tool_use')
+    observe_top_calls = sum(
+        1 for e in events if e.get('type') == 'assistant'
+        for block in (e.get('message') or {}).get('content') or []
+        if isinstance(block, dict) and block.get('type') == 'tool_use'
+        and block.get('name') == ROBOT_TOOL and isinstance(block.get('input'), dict)
+        and block['input'].get('op') == 'observe' and isinstance(block['input'].get('views'), list)
+        and 'top' in block['input']['views'])
     if result is None:
         turn = 'unknown'
     elif result.get('is_error') or result.get('subtype') != 'success':
@@ -134,6 +141,7 @@ def summarize(lines):
         'num_turns': (result or {}).get('num_turns'),
         'result_text': ((result or {}).get('result') or '')[:2000],
         'tool_calls': tool_calls,
+        'observe_top_calls': observe_top_calls,
         'usage': (result or {}).get('usage'),
         'total_cost_usd': (result or {}).get('total_cost_usd'),
         'malformed_lines': malformed,
