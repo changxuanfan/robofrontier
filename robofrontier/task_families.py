@@ -107,7 +107,16 @@ def freeze_public(task, directory, public, root=ROOT):
             public[key] = deepcopy(review[key])
     public.setdefault('completion', deepcopy(task['completion']))
     public.setdefault('workspace_world_m', deepcopy(task['workspace_world_m']))
-    terminal_relay = (family_name == 'relay' and task.get('run_protocol', {}).get('evaluation_semantics') == 'terminal_outcome_v2')
+    terminal = task.get('run_protocol', {}).get('evaluation_semantics') == 'terminal_outcome_v2'
+    terminal_relay = family_name == 'relay' and terminal
+    if terminal and family_name == 'transport':
+        acceptance = public['completion'].get('acceptance', {})
+        if 'process_compliance_required' in acceptance: acceptance['process_compliance_required'] = False
+    if terminal and family_name == 'mosaic':
+        if 'process_violations_clear_required' in public['completion']:
+            public['completion']['process_violations_clear_required'] = False
+    if terminal and family_name == 'dial':
+        public['completion']['success_semantics'] = 'Unlock once with a simultaneous valid correct input; success remains latched after later dial changes.'
     if terminal_relay:
         rules = public.get('rules', [])
         public['rules'] = [rule for rule in rules if not rule.startswith((
@@ -122,7 +131,8 @@ def freeze_public(task, directory, public, root=ROOT):
     for name, source in case['public_files'].items():
         if Path(name).name != name or sha(root/source['path']) != source['sha256']:
             raise ValueError('Invalid/changed public family file: '+name)
-        selected = root/'prompts/tasks/relay-terminal-v2.md' if terminal_relay and name == 'family-guidance.md' else root/source['path']
+        overlays = {'relay':'relay-terminal-v2.md', 'transport':'transport-terminal-v2.md', 'dial':'dial-terminal-v2.md'}
+        selected = root/'prompts/tasks'/overlays[family_name] if terminal and name == 'family-guidance.md' and family_name in overlays else root/source['path']
         shutil.copyfile(selected, family_dir/name)
         hashes['public/inputs/family/'+name] = sha(selected)
     public['family_guidance'] = 'family/family-guidance.md'
@@ -146,7 +156,7 @@ def freeze_public(task, directory, public, root=ROOT):
     return dict(release_sha256=sha(private_release), family=family_name, case_id=task['id'],
                 qualification=case['qualification'], public_files=hashes,
                 public_projection=projection,
-                public_overlay='relay-terminal-v2' if terminal_relay else None)
+                public_overlay=(family_name+'-terminal-v2') if terminal and family_name in ('relay','transport','dial','mosaic') else None)
 
 
 def prepare(case_id, directory, harness=None, private_puzzle_path=None, wall_limit_s=86400):

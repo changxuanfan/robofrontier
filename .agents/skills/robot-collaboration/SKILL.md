@@ -5,11 +5,11 @@ description: Execute a RoboFrontier run as Coordinator, Worker, peer, Controller
 
 # Robot collaboration
 
-Use the frozen task and current role assignment. Read [tools](references/tools.md) before READY and [communication](references/communication.md) before coordinating commitments. At startup combine task goals with READY's static robot capabilities; distinguish configuration, timestamped evidence and assumptions. Load selected RGB images when needed; a path alone is not viewing.
+Use the frozen task and current role assignment. Read [tools](references/tools.md) before robot operations and [communication](references/communication.md) before coordinating commitments. Call ready when capability and limit information is needed; in a direct-start run continue immediately afterwards. Combine task goals with the returned static robot capabilities; distinguish configuration, timestamped evidence and assumptions. Load selected RGB images when needed; a path alone is not viewing.
 
 Follow the startup protocol in your role prompt. If the host says the run has started, begin the task; if it requests a READY barrier, register READY, save waiting and end the startup turn. Runtime forks follow their current assignment rather than repeating team startup. After START choose to keep working, wait or save/end; one decision need not end a native turn. Meta runs infrastructure, not the task plan.
 
-In adaptive mode read [bounded forks](references/adaptive.md) before READY; current runtime assignments identify delegated scope and connection.
+In adaptive mode read [bounded forks](references/adaptive.md) before delegating; current runtime assignments identify delegated scope and connection.
 
 ## Rolling-horizon planning
 

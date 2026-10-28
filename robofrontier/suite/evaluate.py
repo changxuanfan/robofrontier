@@ -74,6 +74,8 @@ class Monitor:
         self.geom_object=np.full(self.m.ngeom,-1,int)
         for i,n in enumerate(self.names):self.geom_object[self.geoms[n]]=i
         self.contact_pairs=[];self.self_contact_pairs=[];self.first_collisions={};self.violations=[];self.next_sample=-1;self.next_log=-1;self.last_time=None;self.max_sample_gap=0.;self.samples=0;self.max_active=0;self.overlap_s=0.;self.holding_s=0.;self.previous_sample=None
+        from .contact_episodes import ContactEpisodes
+        self.contact_episodes = ContactEpisodes()
         self.motion_overlap_s=0.;self.any_motion_s=0.;self.robot_motion_s=0.;self.max_moving=0
         self.log=Path(log_path).open('w') if log_path else None;self.active=True
         self.result_cache={};self.goal_since=None;self.since=np.full((len(self.task['goals']),len(self.names)),np.nan)
@@ -156,18 +158,22 @@ class Monitor:
     def physical_step(self):
         if not self.active:return
         pairs,dist=self.contacts()
+        episode_contacts=set()
         if len(pairs):
             owners=self.geom_owner[pairs];bad=(owners[:,0]>=0)&(owners[:,1]>=0)&(owners[:,0]!=owners[:,1])&(dist<-.0002)
             for a,b in pairs[bad]:
                 names=tuple(sorted((self.m.body(self.m.geom_bodyid[a]).name,self.m.body(self.m.geom_bodyid[b]).name)));key=' / '.join(names)
+                episode_contacts.add(('inter_robot_contact',key))
                 if key not in self.first_collisions:self.first_collisions[key]=float(self.d.time);self.violation('inter_robot_contact',key=key)
             same=(owners[:,0]>=0)&(owners[:,0]==owners[:,1])&(dist<-.001)
             for a,b in pairs[same]:
                 bodies=[self.m.body(self.m.geom_bodyid[g]).name or '' for g in (a,b)]
                 if not all('finger' in x for x in bodies):
                     key=' / '.join(sorted(bodies))
+                    episode_contacts.add(('self_robot_contact',key))
                     if key not in self.self_contact_pairs:self.self_contact_pairs.append(key);self.violation('self_robot_contact',key=key)
         t=float(self.d.time)
+        self.contact_episodes.sample(t,episode_contacts)
         if t+1e-9<self.next_sample:return
         self.next_sample=t+.02;self.samples+=1
         if self.last_time is not None:self.max_sample_gap=max(self.max_sample_gap,t-self.last_time)
@@ -351,7 +357,9 @@ class Monitor:
         complete=self.goal_since is not None and t-self.goal_since>=1.
         self.result_cache=dict(all_goals_met=complete,task_success=complete and not self.violations,completed_handovers=self.route_index,required_handovers=len(self.route)-1,drops=self.drop_count,custody=sorted(self.custody),transitions=self.transitions)
     def result(self):
-        return dict(self.result_cache,process_compliant=not self.violations,violations=list(self.violations),sim_time_s=float(self.d.time),samples=self.samples,max_sample_gap_s=self.max_sample_gap,inter_robot_contacts=len(self.first_collisions),self_contacts=list(self.self_contact_pairs),peak_concurrent_actions=self.max_active,execution_overlap_sim_s=self.overlap_s,motion_overlap_sim_s=self.motion_overlap_s,any_motion_sim_s=self.any_motion_s,robot_motion_s=self.robot_motion_s,peak_moving_robots=self.max_moving,motion_definition='max joint displacement / 20 ms window > 0.02 rad/s; distinct from active jobs and useful holding',useful_blue_support_robot_s=self.holding_s)
+        result = dict(self.result_cache,process_compliant=not self.violations,violations=list(self.violations),sim_time_s=float(self.d.time),samples=self.samples,max_sample_gap_s=self.max_sample_gap,inter_robot_contacts=len(self.first_collisions),self_contacts=list(self.self_contact_pairs),peak_concurrent_actions=self.max_active,execution_overlap_sim_s=self.overlap_s,motion_overlap_sim_s=self.motion_overlap_s,any_motion_sim_s=self.any_motion_s,robot_motion_s=self.robot_motion_s,peak_moving_robots=self.max_moving,motion_definition='max joint displacement / 20 ms window > 0.02 rad/s; distinct from active jobs and useful holding',useful_blue_support_robot_s=self.holding_s)
+        if self.terminal_scoring(): result['robot_contact_episodes'] = self.contact_episodes.report()
+        return result
     def close(self):
         if self.log:self.log.close()
     def finish(self):self.active=False

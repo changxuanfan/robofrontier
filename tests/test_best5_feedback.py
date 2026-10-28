@@ -19,6 +19,16 @@ def hold(game,symbols,start=0.,eligible=True):
 
 
 class BestFiveFeedbackTests(unittest.TestCase):
+    def test_unlock_remains_latched_after_later_invalid_or_wrong_input(self):
+        game = DialFeedback([1, 2, 3, 4])
+        hold(game, [1, 2, 3, 4])
+        self.assertTrue(game.won)
+        hold(game, [0, 0, 0, 0], .30)
+        self.assertFalse(game.ready)
+        self.assertTrue(game.won)
+        hold(game, [1, 1, 1, 1], .60)
+        self.assertTrue(game.ready)
+        self.assertTrue(game.won)
     def test_all_digits_zero_to_eight_render_dim_and_ready_without_losing_segments(self):
         folder=ROOT/'configs/environments/spring_dial/frontier-v2-r11-dial-best5-n08-d1'
         if not folder.exists():self.skipTest('Generate the new scene first')

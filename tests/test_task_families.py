@@ -68,12 +68,19 @@ class FamilyReleaseTests(unittest.TestCase):
                 if 'public_projection' in spec:
                     review = read(ROOT/spec['public_projection']['path'])
                     for key in ('rules', 'target', 'mechanism', 'completion', 'initial_supplies'):
-                        if key in review and not (case.startswith('relay-') and key in ('rules', 'completion')):
+                        if key in review and not (key == 'completion' or case.startswith('relay-') and key == 'rules'):
                             self.assertEqual(public[key], review[key])
                     if case.startswith('relay-'):
                         self.assertFalse(public['completion']['required_airborne_handover'])
                         self.assertFalse(any('Airborne transport requires' in r or 'Only the last established' in r for r in public['rules']))
                         self.assertIn('terminal outcome v2', (run/'public/inputs'/public['family_guidance']).read_text())
+                if case.startswith('transport-'):
+                    self.assertFalse(public['completion']['acceptance']['process_compliance_required'])
+                if case.startswith('mosaic-'):
+                    self.assertFalse(public['completion']['process_violations_clear_required'])
+                if case.startswith('dial-'):
+                    self.assertIn('latched', public['completion']['success_semantics'])
+                    self.assertNotIn('clean process', (run/'public/inputs'/public['family_guidance']).read_text())
                 if 'initial_reference_images' in public:
                     self.assertTrue(all((run/'public/inputs'/name).is_file() for name in public['initial_reference_images']))
                 self.assertTrue((run/'public/inputs'/public['family_guidance']).is_file())
