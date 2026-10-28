@@ -1,8 +1,9 @@
 # Codex 到 Claude Code：对照表与迁移状态
 
 状态日期：2026-10-28。本文记录 Codex 路线每个环节在 Claude 路线中的对应物及
-迁移限制。表格反映当前工程实现；后文阶段记录包含当时的历史状态。真实 Haiku
-预检曾单独通过；多角色、并发和物理验证使用本机假模型，并不代表真实服务商通过。
+迁移限制。表格反映当前工程实现；后文阶段记录包含当时的历史状态。真实 Opus
+已通过基础及阻塞 fork 预检，但一次真实模型物理工程测试在启动阶段超时。完整
+多角色、并发与物理路径仍只经过本机合成模型的烟雾验证。
 完整的当前状态和边界以 [Claude 交接文档](claude-handoff.md) 为准。
 
 ## 1. 环节对照
@@ -12,7 +13,7 @@
 | 模型与厂商配置 | `configs/models.json`、`launch_config` 生成 `codex.json` | `configs/claude-models.json`、`scripts/claude_benchmark.py` | doctor、plan、工程草稿；正式准备与真实模型资格尚未完成 |
 | 任务选择与冻结 | `benchmark.select_cases`、`prepare` | 同一套 `select_cases`、`prepare`；harness 增加 `engine: claude` | 共享层已支持 `engine`（阶段 1） |
 | 单个策略回合 | Codex app-server 的 `turn/start` | `claude -p`，`robofrontier/claude/runner.py` | 已有，离线测试通过 |
-| 机器人工具 | app-server dynamic tool `robot` | 角色绑定 MCP `robofrontier/claude/robot_mcp.py` | 多角色工程路径已用本地模拟模型和物理世界验证；真实厂商未验证 |
+| 机器人工具 | app-server dynamic tool `robot` | 角色绑定 MCP `robofrontier/claude/robot_mcp.py` | 真实 Opus 通过图像工具预检；物理任务的完整多角色路径仍未验证 |
 | 每任务策略主机 | `scripts/codex_policy_host.js` | `robofrontier/claude/policy_host.py`、`adaptive_policy_host.py` | 实验性 centralized 与 adaptive 主机 |
 | 调度循环 | `scripts/meta_dispatcher.js` | Claude 的 `dispatch.py`、`adaptive_dispatch.py` | 实验性独立调度；共享 Node 适配器也存在，但不是 Claude 工程主机的运行入口 |
 | 会话状态来源 | `codex.wait_threads`、`codex.app-server` | `claude.host` | `SESSION_SOURCES` 按 engine 限定（阶段 1） |
@@ -40,6 +41,10 @@
 
 真实 API 验证及任何真实实验的费用和范围须先由操作者明确授权；测试不需要把密钥
 放进仓库。当前分支使用发布的 Mosaic R14，不包含 R15。
+
+以提交 `188fff6` 的共享代码运行了现有 run setup、runtime store、report、delegation、
+execution contract 和 robot actions 测试，合计 55 项通过。report 测试需设置
+`PYTHONPATH=scripts`；这些回归检查不能证明完整 Codex 或 Claude 正式任务行为。
 
 ## 2. 阶段 1 引入的共享约定
 
