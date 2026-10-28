@@ -263,7 +263,7 @@ def main():
             # A failed/interrupted new check must not leave an older pass usable
             # under the new provider/model fingerprint.
             write_json(target/'report.json',{'passed':False,'error':'Preflight did not complete'})
-            image=Image.new('RGB',(256,128),'red');ImageDraw.Draw(image).rectangle((128,0,255,127),fill='blue');image.save(target/'colors.png')
+            image=Image.new('RGB',(512,512),'red');ImageDraw.Draw(image).rectangle((256,0,511,511),fill='blue');image.save(target/'colors.png')
             command=['node',str(ROOT/'scripts/codex_preflight.js'),str(target)]
             if args.smoke_only:command.append('--smoke-only')
             result=subprocess.run(command)
