@@ -204,6 +204,13 @@ model, each delegate completed its synthetic motion and returned control, and
 all four worlds sealed. This is an engineering integration check, not evidence
 of real model capability or scored benchmark qualification.
 
+At commit `0b81cb5`, a new local clone again installed its own dependencies,
+downloaded and SHA-256-verified the GitHub Release archive, and restored 3,467
+files. It prepared the four minimum-arm Level 1 Opus drafts and verified all
+four frozen inputs. Claude-focused discovery completed 123 tests with six
+skipped. This was a clone of the local branch, because the Claude branch was
+not yet published; it did not call a real provider or run a scored task.
+
 共享 `scripts.export_run_report` 对 Claude run 只读取本 run 的角色回合摘要，不查询
 Codex 会话目录；CLI 报告的模型只作为观察，`all_requested_models_verified` 仍为
 false，不能据此断定服务商没有映射模型或辅助请求。报告本身也不授予正式计分资格。
