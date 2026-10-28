@@ -117,6 +117,25 @@ class ClaudeRunnerTests(unittest.TestCase):
             self.assertEqual(record['summary']['turn_status'], 'unknown')
             self.assertIsNone(record['summary']['task_success'])
 
+    def test_event_and_stderr_redact_credential_before_truncation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run = Path(tmp) / 'run'; run.mkdir()
+            secret = 'fake-"unicode-密钥'
+            binary = fake_claude(tmp, '''
+secret = os.environ['ANTHROPIC_API_KEY']
+print(json.dumps({'type':'result', 'subtype':'success', 'is_error':False, 'result':secret}))
+sys.stderr.write(secret + 'x' * 990)
+''')
+            record = run_turn(PROFILE, 'm', 'high', None, 'go', run,
+                              {'PATH': '/usr/bin:/bin', 'KIMI_API_KEY': secret},
+                              binary=str(binary), timeout=10, enable_robot=False)
+            events = run / record['events_path']
+            self.assertEqual(json.loads(events.read_text())['result'], '[redacted]')
+            self.assertEqual(record['summary']['result_text'], '[redacted]')
+            self.assertNotIn(secret, json.dumps(record, ensure_ascii=False))
+            self.assertNotIn(secret[-5:], record['stderr_tail'])
+            self.assertEqual(stat.S_IMODE(events.stat().st_mode), 0o600)
+
     def test_failed_turn_and_deadline_are_not_success(self):
         with tempfile.TemporaryDirectory() as tmp:
             run = Path(tmp) / 'run'; run.mkdir()

@@ -141,6 +141,16 @@ def summarize(lines):
     }
 
 
+def _redact(text, secret):
+    # JSON escaping can change how a credential appears in the event stream.
+    variants = {secret, json.dumps(secret, ensure_ascii=True)[1:-1],
+                json.dumps(secret, ensure_ascii=False)[1:-1]}
+    for variant in sorted(variants, key=len, reverse=True):
+        if variant:
+            text = text.replace(variant, '[redacted]')
+    return text
+
+
 def run_turn(profile, model, effort, mcp_config, prompt, run_dir, base_env,
              session_id=None, timeout=600, max_budget_usd=None, binary='claude', resume=None, events_name='events.jsonl',
              cancel_event=None, fork_from=None, enable_robot=True):
@@ -180,16 +190,21 @@ def run_turn(profile, model, effort, mcp_config, prompt, run_dir, base_env,
             break
         except subprocess.TimeoutExpired:
             continue
-    raw.write_text(stdout)
+    secret = base_env[profile['env_key']]
+    stdout = _redact(stdout, secret)
+    # Evidence can contain model output and private task observations.
+    fd = os.open(raw, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, 'w') as output:
+        os.fchmod(output.fileno(), 0o600)
+        output.write(stdout)
     summary = summarize(stdout.splitlines())
     if status in ('timeout', 'cancelled'):
         summary['turn_status'] = 'unknown'
-    secret = base_env[profile['env_key']]
     return {
         'process': status,
         'exit_code': process.returncode,
         'requested_session_id': session_id or resume,
         'summary': summary,
-        'stderr_tail': stderr[-1000:].replace(secret, '[redacted]'),
+        'stderr_tail': _redact(stderr, secret)[-1000:],
         'events_path': str(raw.relative_to(run_dir)),
     }

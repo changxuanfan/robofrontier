@@ -80,7 +80,15 @@ not whether they work. If a sandbox denies the provider host or writes under
 For local credentials copy `.env.claude.example` to
 `.env` with permissions 600; existing environment variables take priority.
 Do not commit credentials. The Anthropic-compatible Qwen endpoint must match
-your actual account and region. Live preflight status:
+your actual account and region.
+
+The runner redacts exact occurrences of the selected credential (including
+JSON-escaped forms) from its event file, summary and stderr tail, and writes
+event files with owner-only permissions. This does not sanitize Claude's native
+session files or detect transformed/partial secrets; treat the entire run
+directory as private and inspect it before sharing.
+
+Live preflight status:
 
 - `haiku` (`claude-haiku-5-5`, CLI 2.1.312) passed on 2026-10-28 with a total
   cost of $0.000541 under a $0.5 cap. Its receipt is local at
