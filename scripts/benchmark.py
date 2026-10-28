@@ -99,13 +99,34 @@ def launch_config(p, folder):
                 profile=p,context_window=p['context_window'],auto_compact_token_limit=p['auto_compact_token_limit'])
 
 
-def prepare_batch(output, names, families=None, cases=None, config=None):
-    profiles={n:profile(n,config) for n in names}
-    output=Path(output).absolute();output.mkdir(parents=True,exist_ok=False)
+def select_cases(families=None, cases=None, level=None, min_arms=False):
+    """Resolve selection from released task metadata, without creating a world."""
     release=read(ROOT/RELEASE)
-    selected=[c['id'] for n,f in release['families'].items() if not families or n in families for c in f['gpt']
-              if not cases or c['id'] in cases]
-    if not selected or cases and set(cases)-set(selected):raise ValueError('Unknown/empty released cases')
+    if families and set(families)-set(release['families']):
+        raise ValueError('Unknown task families')
+    selected=[]
+    for name,family in release['families'].items():
+        if families and name not in families:continue
+        rows=[]
+        for case in family['gpt']:
+            task=read(ROOT/case['directory']/'task.json')
+            if cases and case['id'] not in cases or level is not None and task['level']!=level:continue
+            rows.append(dict(case_id=case['id'],family=name,level=task['level'],arms=len(task['arms']),
+                             directory=case['directory'],qualification=case['qualification']))
+        if min_arms and rows:
+            minimum=min(row['arms'] for row in rows)
+            rows=[row for row in rows if row['arms']==minimum]
+        selected.extend(rows)
+    if not selected or cases and set(cases)-{row['case_id'] for row in selected}:
+        raise ValueError('Unknown/empty released cases or conflicting selection filters')
+    return selected
+
+
+def prepare_batch(output, names, families=None, cases=None, config=None, level=None, min_arms=False):
+    if not names or len(set(names))!=len(names):raise ValueError('Choose distinct model profiles')
+    profiles={n:profile(n,config) for n in names}
+    selected=[row['case_id'] for row in select_cases(families,cases,level,min_arms)]
+    output=Path(output).absolute();output.mkdir(parents=True,exist_ok=False)
     batch=dict(schema='robofrontier.cli-benchmark.v1',status='preparing',created_at=time.time(),
         cwd=str(ROOT),python=sys.executable,context_window=next(iter(profiles.values()))['context_window'],
         auto_compact_token_limit=next(iter(profiles.values()))['auto_compact_token_limit'],
@@ -205,14 +226,28 @@ def main():
     p=argparse.ArgumentParser(description=__doc__);sub=p.add_subparsers(dest='command',required=True)
     sub.add_parser('models')
     a=sub.add_parser('preflight');a.add_argument('--models',nargs='+',default=['astra']);a.add_argument('--model-config',type=Path)
-    a=sub.add_parser('prepare');a.add_argument('--output',type=Path,required=True)
-    a.add_argument('--models',nargs='+',default=['astra']);a.add_argument('--families',nargs='+')
-    a.add_argument('--cases',nargs='+');a.add_argument('--model-config',type=Path)
+    a.add_argument('--smoke-only',action='store_true',help='Small image/tool round trip; does not qualify scored runs')
+    for command in ('plan','prepare'):
+        a=sub.add_parser(command)
+        if command=='prepare':a.add_argument('--output',type=Path,required=True)
+        else:a.add_argument('--parallel',type=int,default=4)
+        a.add_argument('--models',nargs='+',default=['astra']);a.add_argument('--families',nargs='+')
+        a.add_argument('--cases',nargs='+');a.add_argument('--model-config',type=Path)
+        a.add_argument('--level',type=int,choices=(1,2,3))
+        a.add_argument('--min-arms',action='store_true',help='Smallest released arm count within each selected family')
     a=sub.add_parser('run');a.add_argument('batch',type=Path);a.add_argument('--parallel',type=int,default=9)
     a=sub.add_parser('status');a.add_argument('batch',type=Path)
     a=sub.add_parser('stop');a.add_argument('batch',type=Path)
     args=p.parse_args()
     if args.command=='models':print(json.dumps(read(ROOT/'configs/models.json'),ensure_ascii=False,indent=2))
+    elif args.command=='plan':
+        catalog=read(args.model_config or ROOT/'configs/models.json')
+        if not 1<=args.parallel<=36:raise ValueError('Parallel tasks must be 1..36')
+        if not args.models or len(set(args.models))!=len(args.models):raise ValueError('Choose distinct model profiles')
+        rows=select_cases(args.families,args.cases,args.level,args.min_arms)
+        jobs=[dict(profile=name,model=catalog['profiles'][name]['model'],**row) for name in args.models for row in rows]
+        print(json.dumps(dict(model_calls=0,simulator_started=False,parallel=args.parallel,
+                              task_count=len(jobs),jobs=jobs),ensure_ascii=False,indent=2))
     elif args.command=='preflight':
         from PIL import Image, ImageDraw
         import hashlib
@@ -220,13 +255,16 @@ def main():
             selected=profile(name,args.model_config)
             key=selected.get('env_key')
             if key and not os.environ.get(key):raise ValueError('Set '+key+' before live preflight')
-            target=ROOT/'runs/engineering/model-compatibility'/name;target.mkdir(parents=True,exist_ok=True)
+            scope='model-smoke' if args.smoke_only else 'model-compatibility'
+            target=ROOT/'runs/engineering'/scope/name;target.mkdir(parents=True,exist_ok=True)
             write_json(target/'launch.json',launch_config(selected,target))
             # A failed/interrupted new check must not leave an older pass usable
             # under the new provider/model fingerprint.
             write_json(target/'report.json',{'passed':False,'error':'Preflight did not complete'})
             image=Image.new('RGB',(256,128),'red');ImageDraw.Draw(image).rectangle((128,0,255,127),fill='blue');image.save(target/'colors.png')
-            result=subprocess.run(['node',str(ROOT/'scripts/codex_preflight.js'),str(target)])
+            command=['node',str(ROOT/'scripts/codex_preflight.js'),str(target)]
+            if args.smoke_only:command.append('--smoke-only')
+            result=subprocess.run(command)
             receipt=read(target/'report.json');receipt['profile_sha256']=hashlib.sha256(json.dumps(selected,sort_keys=True).encode()).hexdigest()
             if result.returncode:receipt['passed']=False
             if receipt.get('passed'):
@@ -234,7 +272,7 @@ def main():
                 receipt['codex_version']=subprocess.check_output(['codex','--version'],text=True).strip()
             write_json(target/'report.json',receipt)
             if result.returncode:raise SystemExit(result.returncode)
-    elif args.command=='prepare':print(prepare_batch(args.output,args.models,args.families,args.cases,args.model_config))
+    elif args.command=='prepare':print(prepare_batch(args.output,args.models,args.families,args.cases,args.model_config,args.level,args.min_arms))
     elif args.command=='run':run_batch(args.batch,args.parallel)
     elif args.command=='status':
         batch=read(args.batch/'batch.json')

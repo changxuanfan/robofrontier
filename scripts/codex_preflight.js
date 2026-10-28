@@ -1,7 +1,7 @@
 // Explicitly invoked paid connectivity test, separate from scored robot trials.
 const fs=require('node:fs'),path=require('node:path');
 const {CodexRpc}=require('./codex_rpc');
-async function preflight(folder, Rpc=CodexRpc) {
+async function preflight(folder, Rpc=CodexRpc, {smokeOnly=false}={}) {
   const launch=JSON.parse(fs.readFileSync(path.join(folder,'launch.json')));
   const waits=new Map();
   let resolveCompact;
@@ -23,7 +23,9 @@ async function preflight(folder, Rpc=CodexRpc) {
   let report={passed:false,model:launch.model,provider:launch.provider,effort:launch.effort,
     actual_provider_model_verified:false,context_window:launch.context_window,
     auto_compact_token_limit:launch.auto_compact_token_limit,context_stress_tested:false,
-    automatic_compaction_tested:false,scope:'Small real API image/function/manual-compaction/fork test; no robot trial'};
+    automatic_compaction_tested:false,smoke_only:smokeOnly,
+    scope:smokeOnly?'Small real API image/function round trip; no robot trial or run qualification':
+      'Small real API image/function/manual-compaction/fork test; no robot trial'};
   const deadline=(promise,ms)=>new Promise((resolve,reject)=>{
     const t=setTimeout(()=>reject(new Error('Preflight deadline exceeded')),ms);
     promise.then(v=>{clearTimeout(t);resolve(v);},e=>{clearTimeout(t);reject(e);});
@@ -42,6 +44,10 @@ async function preflight(folder, Rpc=CodexRpc) {
       {type:'localImage',path:path.join(folder,'colors.png')} ]});
     const turn=await deadline(finished,180000);
     if(turn.status!=='completed' || !tools.get(id))throw new Error('Parent image/tool turn failed: '+JSON.stringify(turn.error));
+    if(smokeOnly) {
+      report={...report,passed:true,vision_and_function:true,thread_id:id};
+      return report;
+    }
     await rpc.call('thread/compact/start',{threadId:id});
     if(!await deadline(compacted,180000))throw new Error('Compaction failed');
     const fork=await rpc.call('thread/fork',{threadId:id,cwd:folder,model:launch.model,
@@ -63,5 +69,6 @@ async function preflight(folder, Rpc=CodexRpc) {
   }
   return report;
 }
-if(require.main===module)preflight(path.resolve(process.argv[2])).then(r=>{console.log(JSON.stringify(r));process.exitCode=r.passed?0:1;});
+if(require.main===module)preflight(path.resolve(process.argv[2]),CodexRpc,{smokeOnly:process.argv.includes('--smoke-only')})
+  .then(r=>{console.log(JSON.stringify(r));process.exitCode=r.passed?0:1;});
 module.exports={preflight};

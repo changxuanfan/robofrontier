@@ -2,6 +2,8 @@
 
 入口是 `python -m scripts.benchmark`。Linux 配置与数据准备见[服务器指南](server-benchmark.md)。一个 Desktop 主会话可以执行这个命令并查询状态；实际策略团队由独立的 Codex CLI `app-server` 进程运行，不依赖 Desktop 主聊天一直占用工具轮次。现有 Desktop 固定调度器仍可使用。
 
+跨机器交接、当前价格、Level/最少臂筛选及可复制的调度 prompt 见[多模型交接指南](multimodel-handoff.md)。
+
 每个模型／任务组合拥有独立 run、MuJoCo 世界、SQLite、连接、策略会话和工作笔记。默认 adaptive；只由 Controller 自行选择任务内 fork 范围，宿主不规划抓放路线。9／36 指并行任务数，同一批次同一Dial题目在各模型间共享新生成的私有密码，仍使用独立世界与工作笔记。任务内分身可能增加模型请求并发，不能把任务数当作厂商配额保证。
 
 ## 模型与 API
@@ -17,7 +19,7 @@
 | 智谱 | GLM-5.3 仅文本；GLM-5.3-Flash 为原生多模态 | `glm-5.3-flash` 候选，须验证该模型／账号的 Responses 图像与工具支持 | [旗舰](https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3)、[视觉版](https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash)、[Responses](https://docs.bigmodel.cn/cn/guide/develop/responses/introduction) |
 | Kimi | Kimi K3.1 Pro | `kimi-k3.1-pro` | [型号](https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart)、[Codex 接入](https://platform.kimi.com/docs/guide/codex-kimi) |
 
-旗舰是厂商定位，不是我们的实测排名。纯文本型号不会被偷偷加上另一个视觉模型后混入同一成绩。智谱官方说明：订阅过 GLM Coding Plan 的部分账号当前仅可使用 Chat Completions，可能无法直连 Codex 所需的 Responses，需以账号实际预检为准。
+旗舰是厂商定位，不是我们的实测排名。纯文本型号不会被偷偷加上另一个视觉模型后混入同一成绩。订阅或 Coding Plan 不代表具有本基准所需的按量 API 权限；具体模型、Responses、图片和工具支持以账号实际预检为准。
 
 复制仓库的 `.env.example` 为 `.env`，填入需要的凭证；benchmark 读取该文件，已有进程环境变量优先。文件只解析字面赋值，不执行 shell。`.env` 不纳入 Git。密钥只通过对应环境变量进入 CLI：`DEEPSEEK_API_KEY`、`DASHSCOPE_API_KEY`、`ZAI_API_KEY`、`KIMI_API_KEY`。不要写入仓库或聊天。千问另设 `DASHSCOPE_BASE_URL`，填写你在官方控制台得到的工作空间／地域地址，例如 `https://你的WorkspaceId.cn-beijing.maas.aliyuncs.com/compatible-mode/v1`。
 
@@ -84,7 +86,7 @@ Codex 当前只支持 `wire_api="responses"`。支持 OpenAI Chat Completions �
 
 run 会检查预检结果与实际模型、provider 地址、上下文、effort、生成的模型 catalog 和 Codex CLI 版本一致。修改执行源码／冻结输入后必须重新 prepare。preflight 是小样本接口兼容性检查，包含手动 compact 和 fork 后继续调用工具；它不验证自动 compact 阈值、完整 272K 窗口或机器人任务成绩。
 
-任务版本继续由 `configs/task_families/current.json` 选择：GPT 的 Mosaic 是最新 R14，Oracle 展示仍使用自己的 R13 冻结录制。`scripts.tasks` 的纯准备／来源检查入口仍保留；正式 CLI 启动使用 benchmark 入口生成的包。
+任务版本继续由 `configs/task_families/current.json` 选择：本发布清单的 GPT Mosaic 是 R14，Oracle 展示仍使用自己的 R13 冻结录制。其他 worktree 的新草案不会自动进入此清单。`scripts.tasks` 的纯准备／来源检查入口仍保留；正式 CLI 启动使用 benchmark 入口生成的包。
 
 ## 时间、容量错误与上下文
 

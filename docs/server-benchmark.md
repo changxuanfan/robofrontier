@@ -19,6 +19,8 @@ uv run python -m scripts.tasks check --purpose gpt --assets
 
 Git 不包含实验数据、vendor 和被忽略的场景资产。将保留数据按清单和哈希复制到服务器，特别是 `runs/state-assets/` 及所需 source recording；随后运行 `uv run python -m scripts.restore_scene_assets --report runs/engineering/assets-restore.json`。此恢复命令报告全部历史场景的缺失；随后运行 `uv run python -m scripts.tasks check --purpose gpt --assets` 对当前36项逐个核对工作站资产哈希。所需场景的任何缺失或哈希不符都必须修复后才启动。不要把 Mac 的 `.venv` 拷到 Linux。准备及运行使用同一个服务器目录和源码，冻结包里的绝对路径不可直接从另一台机器迁移。
 
+仅运行当前策略任务时，也可使用[交接指南](multimodel-handoff.md)中的 `benchmark_handoff assets/restore`；该资产包不需要携带历史录制与旧实验数据。
+
 ## 预检与启动
 
 ```sh

@@ -7,7 +7,7 @@ import unittest
 from unittest.mock import patch
 from types import SimpleNamespace
 
-from scripts.benchmark import profile, launch_config, prepare_batch, load_env
+from scripts.benchmark import profile, launch_config, prepare_batch, load_env, select_cases
 from robofrontier.runtime_cli import fork_provenance
 from robofrontier.task_families import prepare
 from robofrontier.runtime_service import RuntimeService
@@ -17,6 +17,18 @@ from scripts import benchmark
 
 
 class CliBenchmarkTests(unittest.TestCase):
+    def test_level_and_minimum_arms_select_four_tasks_without_launch(self):
+        expected=['transport-a04-d2','mosaic-a04-6x12-d2','relay-a08-d2','dial-best5-n04-d2']
+        with patch.object(benchmark.subprocess,'run') as launch:
+            rows=select_cases(level=2,min_arms=True)
+            self.assertEqual([row['case_id'] for row in rows],expected)
+            self.assertEqual([row['arms'] for row in rows],[4,4,8,8])
+            self.assertEqual(len(select_cases(level=1)),12)
+            self.assertEqual(len(select_cases()),36)
+            launch.assert_not_called()
+        with self.assertRaisesRegex(ValueError,'Unknown task families'):select_cases(families=['typo'])
+        with self.assertRaisesRegex(ValueError,'conflicting'):select_cases(cases=[expected[0]],level=1)
+
     def test_context_and_native_vision_are_required(self):
         for name in ('astra', 'luna', 'deepseek', 'kimi', 'glm'):
             p=profile(name)
