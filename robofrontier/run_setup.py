@@ -14,7 +14,9 @@ from .task_config import ROOT, load_task, load_harness, public_task,physical_con
 
 ENGINE_SCRIPTS = {
     'codex': ('benchmark.py', 'codex_rpc.js', 'codex_policy_host.js', 'codex_preflight.js'),
-    'claude': ('claude_benchmark.py',),
+    # Claude's CLI imports shared selection, dotenv, digest and asset helpers
+    # from these modules even though benchmark.py also exposes Codex commands.
+    'claude': ('claude_benchmark.py', 'benchmark.py', 'benchmark_handoff.py', 'tasks.py'),
 }
 
 

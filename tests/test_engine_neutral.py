@@ -78,12 +78,15 @@ class EngineTests(unittest.TestCase):
         self.assertIn('codex_policy_host.js', frozen(codex))
         self.assertNotIn('claude_benchmark.py', frozen(codex))
         self.assertIn('claude_benchmark.py', frozen(claude))
-        self.assertFalse({'codex_policy_host.js', 'codex_rpc.js', 'benchmark.py'} & frozen(claude))
+        self.assertFalse({'codex_policy_host.js', 'codex_rpc.js'} & frozen(claude))
+        self.assertTrue({'benchmark.py','benchmark_handoff.py','tasks.py'} <= frozen(claude))
         self.assertIn('meta_dispatcher.js', frozen(claude))
         self.assertTrue((claude / 'private/inputs/frozen-source/robofrontier/claude/provenance.py').is_file())
         self.assertEqual(json.loads((codex / 'private/inputs/manifest.json').read_text())['engine'], 'codex')
         self.assertEqual(json.loads((claude / 'private/inputs/manifest.json').read_text())['engine'], 'claude')
         self.assertEqual(verify_inputs(claude), [])
+        (claude/'private/inputs/frozen-source/scripts/benchmark.py').write_text('# changed shared helper')
+        self.assertIn('frozen:scripts/benchmark.py',verify_inputs(claude))
 
     def test_claude_report_never_uses_matching_codex_session_as_model_proof(self):
         home=self.root/'home'; sessions=home/'.codex/sessions'; sessions.mkdir(parents=True)

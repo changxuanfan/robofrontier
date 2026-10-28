@@ -209,6 +209,9 @@ Codex 会话目录；CLI 报告的模型只作为观察，`all_requested_models_
 false，不能据此断定服务商没有映射模型或辅助请求。报告本身也不授予正式计分资格。
 Claude 工程运行的 JSON 审计报告明确包含 `benchmark_qualified: false`，Markdown
 报告也标记未取得正式资格；任务评估结果与正式资格是两件不同的事。
+新准备的 Claude 草稿还冻结其命令实际导入的 `benchmark.py`、
+`benchmark_handoff.py` 和 `tasks.py`；这些共享脚本变动后需重新准备草稿。
+已准备的旧草稿不具备这一新增检查，不能通过后续代码更新获得追溯保护。
 
 At Claude commit `85f9b91`, a Git merge preview against GitHub `main` at
 `c8b4137` reported no textual conflicts; this is not a completed merge and does
