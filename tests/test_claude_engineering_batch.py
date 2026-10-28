@@ -118,6 +118,10 @@ class BatchTests(unittest.TestCase):
             self.assertTrue((self.root/'engineering-claim.json').exists())
             self.assertEqual(status['jobs'][0]['status'], 'starting')
             self.assertTrue(stop_batch(self.root)['stop_requested'])
+            stopped = status_batch(self.root)
+            self.assertEqual(stopped['status'], 'supervisor_lost_needs_review')
+            self.assertTrue(stopped['stop_requested'])
+            self.assertTrue(all(item['stop_requested'] for item in stopped['runs']))
             with self.assertRaisesRegex(ValueError, 'never restart'):
                 self.run_case(lambda *a, **k: self.fail('unexpected launch'))
         finally:
@@ -133,8 +137,10 @@ class BatchTests(unittest.TestCase):
             self.run_case(lambda *a, **k: self.fail('unexpected launch'))
 
     def test_stop_before_launch_is_visible_and_blocks_launch(self):
+        self.assertFalse(status_batch(self.root)['stop_requested'])
         stop_batch(self.root)
         self.assertEqual(status_batch(self.root)['status'], 'stopped_before_start')
+        self.assertTrue(status_batch(self.root)['stop_requested'])
         with self.assertRaisesRegex(ValueError, 'stopped before launch'):
             self.run_case(lambda *a, **k: self.fail('unexpected launch'))
         self.assertFalse((self.root/'engineering-claim.json').exists())

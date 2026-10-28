@@ -72,6 +72,7 @@ def status_batch(folder):
             else:
                 fcntl.flock(lock, fcntl.LOCK_UN)
     state['supervisor_live'] = live
+    state['stop_requested'] = (folder / 'STOP').exists()
     if not state_file.exists() and (folder / 'engineering-claim.json').exists():
         state['status'] = 'starting' if live else 'claim_without_status_needs_review'
     elif not state_file.exists() and (folder / 'STOP').exists():
@@ -82,7 +83,8 @@ def status_batch(folder):
     for job in jobs:
         path = Path(job['run_directory']) / 'private/outputs/claude-engineering-status.json'
         state['runs'].append({'profile': job['profile'], 'case_id': job['case_id'],
-                              'detail': json.loads(path.read_text()) if path.exists() else None})
+                              'detail': json.loads(path.read_text()) if path.exists() else None,
+                              'stop_requested': (Path(job['run_directory']) / 'STOP').exists()})
     return state
 
 
