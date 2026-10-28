@@ -173,6 +173,14 @@ model, each delegate completed its synthetic motion and returned control, and
 all four worlds sealed. This is an engineering integration check, not evidence
 of real model capability or scored benchmark qualification.
 
+At Claude commit `85f9b91`, a Git merge preview against GitHub `main` at
+`c8b4137` reported no textual conflicts; this is not a completed merge and does
+not prove behavioral compatibility. The branch descends from the existing
+`codex/multimodel-handoff` branch, so its eventual merge also includes that
+branch's changes. Shared engine-neutral and Codex CLI benchmark tests passed
+(8 and 10 tests), as did 24 Node dispatcher scenarios. Recheck the actual
+target branch and rerun relevant tests before merging.
+
 ## 接手进度：离线策略主机开发
 
 本轮继续仅使用本地假模型与假机器人服务，没有调用真实 API 或启动正式试验。
