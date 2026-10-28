@@ -59,7 +59,7 @@ class ParallelPhysicsSmokeTests(unittest.TestCase):
             def launch_batch():
                 try:
                     outcome.append(run_batch(batch, env, parallel=4, turn_budget_usd=.5,
-                                             total_budget_usd=2, wall_limit_s=20))
+                                             total_budget_usd=2, wall_limit_s=20, startup_timeout_s=180))
                 except Exception as error:
                     failures.append(repr(error))
             worker = threading.Thread(target=launch_batch)
@@ -79,6 +79,7 @@ class ParallelPhysicsSmokeTests(unittest.TestCase):
                 worker.join(.25)
             self.assertFalse(failures, failures)
             self.assertEqual(outcome[0]['status'], 'closed', outcome[0])
+            self.assertEqual(outcome[0]['startup_timeout_s'], 180)
             self.assertFalse(outcome[0]['scored'])
             self.assertEqual(maximum_live, 4, f'Expected four overlapping physical owners, observed {maximum_live}')
             self.assertTrue(any(BatchMotionModel.requests), 'No camera image reached synthetic endpoint')
