@@ -213,6 +213,7 @@ class ClaudeSessionHost:
             if self.budget_ledger is not None:
                 summary = record.get('summary') or {}
                 known = (not self.cancel_event.is_set() and record.get('process') == 'exited'
+                         and record.get('exit_code') == 0
                          and summary.get('session_id') == self.session_id
                          and summary.get('turn_status') in ('ended', 'failed')
                          and not summary.get('malformed_lines'))

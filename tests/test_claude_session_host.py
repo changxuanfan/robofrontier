@@ -142,5 +142,25 @@ class SessionHostTests(unittest.TestCase):
             finally:
                 release.set(); ledger.close()
 
+    def test_nonzero_exit_keeps_shared_budget_uncertain(self):
+        from robofrontier.claude.budget import BudgetLedger
+        with tempfile.TemporaryDirectory() as tmp:
+            run = make_run(tmp)
+            ledger = BudgetLedger.create(run/'private/state/budget.sqlite', 1)
+            def runner(*args, **kwargs):
+                response = result(kwargs['session_id'], code=1)
+                response['summary']['total_cost_usd'] = .1
+                return response
+            try:
+                host = ClaudeSessionHost(run, 'Controller', PROFILE, {}, max_budget_usd=.6,
+                                         budget_ledger=ledger, runner=runner)
+                host.send('start')
+                self.assertEqual(host.wait(3)['status'], 'unknown')
+                self.assertEqual(ledger.snapshot()['status'], 'uncertain')
+                with self.assertRaisesRegex(ValueError, 'uncertain'):
+                    ledger.reserve('another', 'other-role', .1)
+            finally:
+                ledger.close()
+
 
 if __name__ == '__main__': unittest.main()
