@@ -38,4 +38,6 @@ def bootstrap_prompt(run_dir, *, topology='centralized'):
              'the authorized report is returned inline as delegate_report.' if topology == 'adaptive' else '')
     return text + ('\n\nTo view a task initial_reference_images entry or robot_layout_image, '
                    'call robot with op public_image and data {"names": ["the exact listed path"]}. '
-                   'For live observations use observe with cameras and views. You have no filesystem tools.') + extra
+                   'For live observations use observe with cameras and views. You have no filesystem tools. '
+                   'To get detailed static geometry, call robot_model with data {"robot":"A"} '
+                   '(substitute a robot ID from the task); details are returned inline.') + extra

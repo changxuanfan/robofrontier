@@ -59,8 +59,27 @@ class ClaudeFoundationTests(unittest.TestCase):
             self.assertEqual(handle({'method': 'tools/list'}, bridge)['tools'][0]['name'], 'robot')
             outside = Path(tmp) / 'outside.png'; outside.write_bytes(png)
             image.unlink(); image.symlink_to(outside)
-            with self.assertRaisesRegex(ValueError, 'outside'):
-                bridge.call({'op': 'observe', 'data': {}, 'views': ['top']})
+            response = bridge.call({'op': 'observe', 'data': {}, 'views': ['top']})
+            self.assertEqual(json.loads(response['content'][0]['text'])['observation']['images']['top'], str(image))
+            self.assertIn('could not be loaded', response['content'][1]['text'])
+            self.assertEqual(len(response['content']), 2)
+
+    def test_failed_action_image_keeps_execution_result_and_call_id(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run=Path(tmp)/'run'; conn=run/'private/state/connections/Controller.json'
+            conn.parent.mkdir(parents=True)
+            conn.write_text(json.dumps({'run_id':'run','actor':'Controller'}))
+            image=run/'public/observations/bad.png'; image.parent.mkdir(parents=True)
+            image.write_bytes(b'not a png')
+            def invoke(conn, op, data, call_id, **kwargs):
+                return {'call_id':call_id,'execution':{'status':'finished'},
+                        'observation':{'images':{'top':str(image)}}}
+            bridge=RobotBridge(run,conn,invoke)
+            response=bridge.call({'op':'move','data':{},'call_id':'motion-1','views':['top']})
+            result=json.loads(response['content'][0]['text'])
+            self.assertEqual(result['call_id'],'motion-1')
+            self.assertEqual(result['execution']['status'],'finished')
+            self.assertIn('could not be loaded',response['content'][1]['text'])
 
     def test_public_images_are_limited_to_frozen_task_allowlist(self):
         with tempfile.TemporaryDirectory() as tmp:
