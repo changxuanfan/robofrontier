@@ -35,6 +35,7 @@ class StubModel(http.server.BaseHTTPRequestHandler):
         return None, None
     def do_POST(self):
         body=json.loads(self.rfile.read(int(self.headers['Content-Length'])))
+        self.request_body=body
         self.requests.append(body)
         names=[x['name'] for x in body.get('tools',[]) if 'robot' in x.get('name','')]
         messages=body.get('messages',[]); last=messages[-1].get('content',[]) if messages else []

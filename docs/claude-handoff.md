@@ -133,9 +133,17 @@ Claude 工程草稿现会在 harness 与 manifest 均标记 `engine: claude`，�
 `robofrontier/claude/supervisor.py` 新增已有世界上的集中式工程监督循环：等待 READY、
 显式 START、持续调度，遇到启动超时、停止请求、世界丢失、未知会话状态或墙钟上限
 时停止模型并请求现有 seal。seal 不成功时保留错误，不能报告运行已安全关闭。它仍不
-负责创建世界或调度批次，尚不是正式运行入口。当前 runner 使用 `--bare`；本机 Claude
-CLI 的帮助说明该模式不读取 OAuth 或钥匙串，所以目前只能使用 API 密钥路线，不能声称
-可以直接复用 Claude Desktop 登录。订阅登录需另行设计、隔离和验证。
+负责创建世界或调度批次，尚不是正式运行入口。
+
+API Key profile 使用 `--bare`；Claude CLI 不会在该模式读取 OAuth。现有候选 profile
+`opus_subscription` 使用 `CLAUDE_CODE_OAUTH_TOKEN`，非 bare 启动时关闭用户/项目设置
+源、MCP 自动发现和工具搜索；仅允许凭据发送到 Anthropic 官方 endpoint。它使用独立
+会话目录，不会自动接管 Claude Desktop 的登录。按照 [Anthropic 认证文档](https://code.claude.com/docs/en/authentication)，
+用户可自行在安全终端运行 `claude setup-token`，把生成的 token 作为敏感凭据配置到
+`.env` 或环境变量中，不要贴到聊天或提交 Git。托管策略仍可能影响 CLI；不同启动方式
+的系统提示可能不同。候选路径只在真实 CLI 加本地假 token/假模型下验证了图片、续接、
+fork 和项目配置隔离；真实订阅及其成本报告仍未验证。费用不明时账本会暂停，不能将
+CLI 报告视为订阅额度或实际账单的硬上限。
 
 `robofrontier/claude/engineering_run.py` 进一步连接了工程草稿校验、一次性启动记录、
 独立物理进程与监督循环；它只接受未认证的 centralized 工程草稿，尚无正式批次 CLI。
@@ -151,7 +159,7 @@ CLI 的帮助说明该模式不读取 OAuth 或钥匙串，所以目前只能使
 标记待检查，批次和单任务都不自动重启。相关测试用替身验证了这些调度行为。它还没有
 开放正式计分批次 CLI，也没有证明真实模型、MuJoCo、多角色委派或服务商账单控制可用。
 
-工程命令（支持 centralized 和 adaptive 草稿；需要本机 API Key；可能产生费用）：
+工程命令（支持 centralized 和 adaptive 草稿；需要相应 profile 的凭据；可能产生费用）：
 
 ```sh
 .venv/bin/python -m scripts.claude_benchmark run-engineering RUN_DIR --parallel 2 --turn-budget-usd 0.1 --task-budget-usd 1 --wall-limit-s 1200

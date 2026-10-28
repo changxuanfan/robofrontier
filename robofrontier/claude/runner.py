@@ -12,14 +12,25 @@ import subprocess
 import time
 import uuid
 from pathlib import Path
+from urllib.parse import urlsplit
 
 ENV_PASSTHROUGH = ('PATH', 'LANG', 'LC_ALL', 'TMPDIR')
 ROBOT_TOOL = 'mcp__robot__robot'
 EFFORTS = ('low', 'medium', 'high', 'xhigh', 'max')
 
 
+def _oauth_endpoint_allowed(base):
+    if not base: return True  # Claude's default Anthropic endpoint.
+    try:
+        url=urlsplit(base)
+        return (url.scheme=='https' and url.hostname=='api.anthropic.com' and url.port in (None,443)
+                and not url.username and not url.password and url.path in ('','/') and not url.query and not url.fragment)
+    except ValueError:
+        return False
+
+
 def build_command(model, effort, mcp_config, prompt, session_id=None, max_budget_usd=None, binary='claude', resume=None,
-                  fork_from=None, enable_robot=True):
+                  fork_from=None, enable_robot=True, auth_mode='api_key'):
     """Return argv for one headless turn with only the bound robot MCP tool exposed.
 
     `resume` continues an existing session by its explicit ID; it never picks the most recent one.
@@ -35,7 +46,10 @@ def build_command(model, effort, mcp_config, prompt, session_id=None, max_budget
     session_flags = (['--resume', fork_from, '--fork-session', '--session-id', session_id] if fork_from else
                      ['--resume', resume] if resume else ['--session-id', session_id or str(uuid.uuid4())])
     mcp_arg = str(mcp_config) if enable_robot else '{"mcpServers":{}}'
-    cmd = [binary, '-p', '--bare', '--model', model, '--effort', effort] + session_flags + [
+    if auth_mode not in ('api_key','oauth_token'):
+        raise ValueError('Unsupported Claude authentication mode')
+    isolation = ['--bare'] if auth_mode == 'api_key' else ['--setting-sources', '']
+    cmd = [binary, '-p'] + isolation + ['--model', model, '--effort', effort] + session_flags + [
            '--mcp-config', mcp_arg, '--strict-mcp-config',
            '--tools', '',
            '--permission-mode', 'dontAsk',
@@ -58,14 +72,27 @@ def build_env(profile, base_env, config_dir):
     if not key:
         raise ValueError('Missing credential variable: ' + profile['env_key'])
     env = {name: base_env[name] for name in ENV_PASSTHROUGH if name in base_env}
+    auth_mode=profile.get('auth_mode','api_key')
+    if auth_mode == 'oauth_token':
+        if profile.get('provider') != 'anthropic' or profile['env_key'] != 'CLAUDE_CODE_OAUTH_TOKEN':
+            raise ValueError('OAuth token mode is limited to the Anthropic subscription profile')
+        if not _oauth_endpoint_allowed(profile.get('base_url')):
+            raise ValueError('OAuth token may only be sent to the Anthropic endpoint')
+        credential_name='CLAUDE_CODE_OAUTH_TOKEN'
+    elif auth_mode == 'api_key':
+        credential_name='ANTHROPIC_API_KEY'
+    else:
+        raise ValueError('Unsupported Claude authentication mode')
     env.update({
-        'ANTHROPIC_API_KEY': key,
+        credential_name: key,
         'CLAUDE_CONFIG_DIR': str(config_dir),
         'DISABLE_TELEMETRY': '1',
         'DISABLE_ERROR_REPORTING': '1',
         'CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC': '1',
         # wait_events can run for 600 seconds; reserve time for transport.
         'MCP_TOOL_TIMEOUT': '660000',
+        'ENABLE_TOOL_SEARCH': 'false',
+        'ENABLE_CLAUDEAI_MCP_SERVERS': 'false',
     })
     if profile.get('base_url'):
         env['ANTHROPIC_BASE_URL'] = profile['base_url']
@@ -129,7 +156,7 @@ def run_turn(profile, model, effort, mcp_config, prompt, run_dir, base_env,
     config_dir = run_dir / 'private/claude-config'
     config_dir.mkdir(parents=True, exist_ok=True)
     cmd = build_command(model, effort, mcp_config, prompt, session_id, max_budget_usd, binary, resume,
-                        fork_from=fork_from, enable_robot=enable_robot)
+                        fork_from=fork_from, enable_robot=enable_robot, auth_mode=profile.get('auth_mode','api_key'))
     env = build_env(profile, base_env, config_dir)
     raw = evidence / events_name
     process = subprocess.Popen(cmd, cwd=run_dir, env=env, text=True, stdout=subprocess.PIPE,
@@ -157,7 +184,7 @@ def run_turn(profile, model, effort, mcp_config, prompt, run_dir, base_env,
     summary = summarize(stdout.splitlines())
     if status in ('timeout', 'cancelled'):
         summary['turn_status'] = 'unknown'
-    secret = env['ANTHROPIC_API_KEY']
+    secret = base_env[profile['env_key']]
     return {
         'process': status,
         'exit_code': process.returncode,

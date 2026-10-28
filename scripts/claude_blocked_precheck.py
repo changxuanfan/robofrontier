@@ -83,7 +83,9 @@ def run_blocked_precheck(name, output, budget, base_env, *, binary='claude', wai
             except Exception as error: parent_errors.append(type(error).__name__)
         worker=threading.Thread(target=parent_turn,daemon=True);worker.start()
         deadline=time.monotonic()+wait_s
-        if not server.blocked_entered.wait(wait_s): raise TimeoutError('Parent did not call the tool')
+        while not server.blocked_entered.wait(.1):
+            if not worker.is_alive(): raise ValueError('Parent ended before reaching the tool boundary')
+            if time.monotonic() >= deadline: raise TimeoutError('Parent did not call the tool')
         source=None
         while time.monotonic()<deadline and worker.is_alive():
             try:

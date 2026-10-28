@@ -15,6 +15,7 @@ from robofrontier.task_families import ROOT, RELEASE, read
 from scripts.benchmark import load_env, select_cases
 from scripts.benchmark_handoff import digest
 from robofrontier.run_setup import write_json
+from robofrontier.claude.runner import _oauth_endpoint_allowed
 from scripts.tasks import check_case_assets
 
 CATALOG = ROOT / 'configs/claude-models.json'
@@ -32,6 +33,11 @@ def profile(name, catalog=CATALOG):
         raise ValueError('Incomplete model profile')
     if selected['effort'] not in ('low', 'medium', 'high', 'xhigh', 'max'):
         raise ValueError('Unsupported Claude effort')
+    auth_mode=selected.get('auth_mode','api_key')
+    if auth_mode not in ('api_key','oauth_token'):
+        raise ValueError('Unsupported Claude authentication mode')
+    if auth_mode=='oauth_token' and (selected['provider']!='anthropic' or selected['env_key']!='CLAUDE_CODE_OAUTH_TOKEN'):
+        raise ValueError('OAuth token mode is limited to the Anthropic subscription profile')
     base = selected.get('base_url')
     if 'base_url_env' in selected:
         base = os.environ.get(selected['base_url_env'])
@@ -39,6 +45,8 @@ def profile(name, catalog=CATALOG):
         url = urlsplit(base)
         if url.scheme != 'https' or not url.hostname or url.username or url.password or url.query or url.fragment:
             raise ValueError('Base URL must be HTTPS without credentials, query or fragment')
+    if auth_mode == 'oauth_token' and not _oauth_endpoint_allowed(base):
+        raise ValueError('OAuth token may only be sent to the Anthropic endpoint')
     selected['base_url'] = base
     return selected
 
@@ -151,7 +159,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
     sub.add_parser('models')
-    p = sub.add_parser('doctor'); p.add_argument('--models', nargs='+', default=['haiku', 'opus', 'kimi', 'qwen', 'glm', 'deepseek'])
+    p = sub.add_parser('doctor'); p.add_argument('--models', nargs='+', default=['haiku', 'opus', 'opus_subscription', 'kimi', 'qwen', 'glm', 'deepseek'])
     for command in ('plan', 'prepare-draft'):
         p = sub.add_parser(command); p.add_argument('--models', nargs='+', required=True)
         p.add_argument('--families', nargs='+'); p.add_argument('--cases', nargs='+')
