@@ -9,8 +9,13 @@
 取得本分支后，在集群允许存放大文件的 Lustre 目录 clone 并进入仓库根目录。不要将大型数据写入有配额的 home。准备 Python 3.12、Node.js、Codex CLI、Mesa OSMesa（Debian/Ubuntu 的 `libosmesa6`），并确认允许 Codex Linux sandbox 使用所需用户命名空间。依赖和网络环境由集群管理员决定。
 
 ```sh
+cd /path/to/your/lustre/directory
+git clone --branch codex/luna-cpu https://github.com/changxuanfan/robofrontier.git robofrontier-luna
+cd robofrontier-luna
 python3.12 -m venv .venv
 .venv/bin/pip install .
+npm install --prefix "$PWD/.codex-tools" @openai/codex@0.165.0
+export PATH="$PWD/.codex-tools/node_modules/.bin:$PATH"
 cp .env.example .env
 chmod 600 .env
 # 在 .env 中自行填写 OPENAI_API_KEY，不要提交、发消息或打印密钥。

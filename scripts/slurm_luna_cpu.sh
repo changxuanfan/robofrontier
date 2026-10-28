@@ -2,6 +2,7 @@
 # Submit with explicit site-specific --partition, --cpus-per-task, --mem and --time.
 set -euo pipefail
 cd "${SLURM_SUBMIT_DIR:?Submit this script with sbatch from the checkout root}"
+export PATH="$PWD/.codex-tools/node_modules/.bin:$PATH"
 mkdir -p runs/tmp
 export TMPDIR="$PWD/runs/tmp"
 batch="${RF_BATCH_OUTPUT:-runs/policy/luna-slurm-${SLURM_JOB_ID:?}}"
