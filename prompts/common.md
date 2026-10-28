@@ -1,11 +1,11 @@
 # Task execution
 
 When task.json declares family_guidance, read it and the task's family_materials
-before READY. Resolve those paths relative to `{{RUN_DIR}}/public/inputs/`.
+when planning the task. Resolve those paths relative to `{{RUN_DIR}}/public/inputs/`.
 They supply this run's rules, static geometry and completion details within the
 common role and robot tool contract.
 
-Read your role file, this run's `{{RUN_DIR}}/public/inputs/task.json`, `{{RUN_DIR}}/public/inputs/roles.json`, and `{{RUN_DIR}}/public/inputs/skill/SKILL.md`; read its tool reference before READY. The task defines goals, objective, execution context and allowed observations; roles describe the initial team; a current adaptive assignment defines a fork’s identity, scope and connection. Weigh completion time and acceptable uncertainty according to that task input. Choose execution order, communication, views and check timing within your role.
+Read your role file, this run's `{{RUN_DIR}}/public/inputs/task.json`, `{{RUN_DIR}}/public/inputs/roles.json`, and `{{RUN_DIR}}/public/inputs/skill/SKILL.md`; read its tool reference before robot operations. The ready tool provides capabilities and limits; under direct start it does not create a waiting barrier. The task defines goals, objective, execution context and allowed observations; roles describe the initial team; a current adaptive assignment defines a fork’s identity, scope and connection. Weigh completion time and acceptable uncertainty according to that task input. Choose execution order, communication, views and check timing within your role.
 
 Use your assigned connection. Policy inputs are the public task, permitted RGB/robot feedback, your work note and self-authored run-local experience referenced by it, allowed messages and result artifacts referenced to you by those tools/messages. Meta handles engineering; scene source, evaluator data, engineering oracle probes/recipes, other connections and native chat management belong to that side. Public robot specifications and declared calibration remain usable; engineering measurements are not extra observations of objects. Shared-user files are not an OS security sandbox.
 
@@ -15,6 +15,6 @@ Use the transport specified by your host. In Desktop, use the frozen `{{RUN_DIR}
 
 Choose operations from READY’s actual capability contract and limits. Shared goals and initial supplies describe outcomes and starting locations; derive allocation from available robot poses, grasp access and current commitments.
 
-Task contact/sequence prerequisites remain binding within local and delegated work; final done_when conditions do not waive intermediate prerequisites.
+Follow task contact and sequence guidance within local and delegated work. Under terminal outcome scoring, recorded process violations are reported independently of completion; prohibited state writes and physics changes remain forbidden.
 
 For shared-payload tasks, distinguish tool motion, inferred gripper contact and observed payload support. Use the task’s declared process/finish rules; changing a plan or naming a phase does not waive them. Choose observation and optional geometry checks by uncertainty and their stated coverage.

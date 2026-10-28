@@ -105,7 +105,7 @@ class PolicyHost {
       const {stdout}=await execFileAsync(this.python,['-c',code,path.join(this.run,'private/state/runtime.sqlite'),actor],{cwd:this.cwd});
       if (JSON.parse(stdout)) continue;
       this.retries.add(key); // An unknown turn/start acknowledgement is never repeated.
-      await this.send(id,'容量或速率限制导致上一模型轮次失败。继续同一任务与已有工作笔记；先核对 pending/job 原编号及当前收件，不重放已提交动作，不重置世界，不延长期限。启动尚未完成则继续原角色 READY/保存等待协议。');
+      await this.send(id,'容量或速率限制导致上一模型轮次失败。继续同一任务与已有工作笔记；先核对 pending/job 原编号及当前收件，不重放已提交动作，不重置世界，不延长期限。实验已经开始；获取必要的能力信息后继续，不要等待另一条 START。');
       this.event({event:'capacity_retry',thread_id:id,failed_turn_id:t.id});
     }
   }
