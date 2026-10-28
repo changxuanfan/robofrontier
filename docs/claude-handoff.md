@@ -35,7 +35,13 @@ not whether they work. If a sandbox denies the provider host or writes under
 For local credentials copy `.env.claude.example` to
 `.env` with permissions 600; existing environment variables take priority.
 Do not commit credentials. The Anthropic-compatible Qwen endpoint must match
-your actual account and region. No provider has passed Claude live preflight.
+your actual account and region. Live preflight status:
+
+- `haiku` (`claude-haiku-5-5`, CLI 2.1.312) passed on 2026-10-28 with a total
+  cost of $0.000541 under a $0.5 cap. Its receipt is local at
+  `runs/engineering/claude-precheck/haiku-20261028-194259/receipt.json`
+  (`runs/` is gitignored). This covers only that profile, CLI version and cap.
+- `opus` and the other providers have not been preflighted.
 
 `robofrontier.claude.robot_mcp` is an experimental role-bound MCP server. Its
 offline probe checks Claude CLI tool discovery, simulated tool-image forwarding and
