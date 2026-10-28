@@ -24,6 +24,7 @@
 - turn_budget_usd: 未指定
 - task_budget_usd: 未指定
 - wall_limit_s: 未指定
+- startup_timeout_s: 120
 
 按顺序执行，报告每一步的结果：
 1. 核对当前 checkout、提交、Git 工作区状态和 configs/task_families/current.json；
@@ -53,6 +54,7 @@
    此模式是未计分工程测试，不能代替正式 preflight 或计分 benchmark。
 6. 使用持久终端运行 scripts.claude_benchmark run-engineering OUTPUT --parallel N
    --turn-budget-usd T --task-budget-usd B --wall-limit-s W --confirm-engineering-spend。
+   可传 --startup-timeout-s S，控制物理 owner 和策略启动阶段各自的等待上限。
    定期使用 status-engineering 检查本批次，持续观察直到进程结束；需要停止时使用
    stop-engineering，然后检查每项的封存、进程状态与 needs_review。不可重启已领取的
    世界或批次；遇到未知状态保留证据并报告。

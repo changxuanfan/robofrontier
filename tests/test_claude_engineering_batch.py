@@ -51,6 +51,22 @@ class BatchTests(unittest.TestCase):
         self.assertEqual(len(status_batch(self.root)['runs']), 4)
         with self.assertRaisesRegex(ValueError, 'never restart'): self.run_case(runner)
 
+    def test_startup_timeout_is_validated_and_passed_to_every_run(self):
+        for invalid in (0, -1, float('nan'), 86401, True):
+            with self.subTest(invalid=invalid):
+                with self.assertRaisesRegex(ValueError, 'startup timeout'):
+                    run_batch(self.root,self.env,parallel=1,turn_budget_usd=.2,total_budget_usd=1,
+                              wall_limit_s=5,startup_timeout_s=invalid,verifier=lambda _: [])
+                self.assertFalse((self.root/'engineering-claim.json').exists())
+        seen=[]
+        def runner(*args,**kwargs):
+            seen.append(kwargs['startup_timeout_s'])
+            return {'status':'finished','reason':'world_ended'}
+        result=run_batch(self.root,self.env,parallel=2,turn_budget_usd=.2,total_budget_usd=1,
+                         wall_limit_s=5,startup_timeout_s=600,runner=runner,verifier=lambda _: [])
+        self.assertEqual(seen,[600]*4)
+        self.assertEqual(result['startup_timeout_s'],600)
+
     def test_stop_marks_active_and_skips_queued(self):
         entered = threading.Event(); finish = threading.Event(); outcome = []
         def runner(*args, **kwargs): entered.set(); finish.wait(3); return {'status':'finished', 'reason':'stop_requested'}
@@ -70,6 +86,7 @@ class BatchTests(unittest.TestCase):
             import robofrontier.claude.engineering_batch as batch_module
             original = batch_module.run_batch
             def runner(run, *args, **kwargs):
+                assert kwargs['startup_timeout_s'] == 321
                 entered.set()
                 deadline=time.monotonic()+10
                 while not (Path(run)/'STOP').exists() and time.monotonic()<deadline:
@@ -81,6 +98,7 @@ class BatchTests(unittest.TestCase):
             os.environ['FAKE_KEY']='synthetic'
             sys.argv=['claude_benchmark','run-engineering',str(self.root),'--parallel','1',
                       '--turn-budget-usd','.2','--task-budget-usd','1','--wall-limit-s','5',
+                      '--startup-timeout-s','321',
                       '--confirm-engineering-spend']
             main()
         process=ctx.Process(target=child); process.start()
@@ -92,6 +110,7 @@ class BatchTests(unittest.TestCase):
             self.assertEqual(process.exitcode,0)
             state=status_batch(self.root)
             self.assertEqual(state['status'],'stopped')
+            self.assertEqual(state['startup_timeout_s'],321)
             self.assertEqual([j['status'] for j in state['jobs']],
                              ['closed']+['stopped_before_start']*3)
             self.assertFalse(state['supervisor_live'])

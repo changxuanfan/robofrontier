@@ -176,6 +176,8 @@ def main():
     p.add_argument('--turn-budget-usd', type=float, required=True)
     p.add_argument('--task-budget-usd', type=float, required=True)
     p.add_argument('--wall-limit-s', type=float, required=True)
+    p.add_argument('--startup-timeout-s', type=float, default=120,
+                   help='Seconds allowed separately for owner startup and policy READY (default: 120)')
     p.add_argument('--confirm-engineering-spend', action='store_true',
                    help='Acknowledge model calls and estimated costs for this engineering batch')
     for command in ('status-engineering', 'stop-engineering'):
@@ -206,7 +208,8 @@ def main():
                 for sig in previous: signal.signal(sig, request_stop)
                 result = run_batch(args.batch, dict(os.environ), parallel=args.parallel,
                                    turn_budget_usd=args.turn_budget_usd, total_budget_usd=args.task_budget_usd,
-                                   wall_limit_s=args.wall_limit_s, stop_requested=stop.is_set)
+                                   wall_limit_s=args.wall_limit_s, startup_timeout_s=args.startup_timeout_s,
+                                   stop_requested=stop.is_set)
             finally:
                 for sig, handler in previous.items(): signal.signal(sig, handler)
     else:

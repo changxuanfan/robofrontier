@@ -99,13 +99,14 @@ def stop_batch(folder):
 
 
 def run_batch(folder, base_env, *, parallel, turn_budget_usd, total_budget_usd, wall_limit_s,
-              runner=run_engineering, verifier=verify_inputs, stop_requested=lambda: False):
+              startup_timeout_s=120, runner=run_engineering, verifier=verify_inputs, stop_requested=lambda: False):
     """Run drafts once. Caller explicitly authorizes potential paid model calls."""
     folder = Path(folder).resolve()
     if type(parallel) is not int or not 1 <= parallel <= 36: raise ValueError('Parallel must be 1..36')
     _positive(turn_budget_usd, 'per-turn budget', 1000)
     _positive(total_budget_usd, 'per-task budget', 1000)
     _positive(wall_limit_s, 'wall limit', 86400)
+    _positive(startup_timeout_s, 'startup timeout', 86400)
     jobs = _jobs(folder)
     with (folder / 'engineering-supervisor.lock').open('a+') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -122,6 +123,7 @@ def run_batch(folder, base_env, *, parallel, turn_budget_usd, total_budget_usd, 
         state = {'schema': 'robofrontier.claude-engineering-status.v1', 'status': 'running',
                  'started_at': time.time(), 'parallel': parallel, 'scored': False,
                  'turn_budget_usd': turn_budget_usd, 'task_budget_usd': total_budget_usd, 'wall_limit_s': wall_limit_s,
+                 'startup_timeout_s': startup_timeout_s,
                  'jobs': [{'profile': j['profile'], 'case_id': j['case_id'], 'status': 'queued'} for j in jobs]}
         state_path = folder / 'engineering-status.json'
         write_json(state_path, state)
@@ -145,7 +147,7 @@ def run_batch(folder, base_env, *, parallel, turn_budget_usd, total_budget_usd, 
                     write_json(state_path, state)
                     future = pool.submit(runner, jobs[index]['run_directory'], base_env,
                                          turn_budget_usd=turn_budget_usd, total_budget_usd=total_budget_usd,
-                                         wall_limit_s=wall_limit_s)
+                                         wall_limit_s=wall_limit_s, startup_timeout_s=startup_timeout_s)
                     pending[future] = index
                 if stopping and next_job < len(jobs):
                     for index in range(next_job, len(jobs)): state['jobs'][index]['status'] = 'stopped_before_start'
