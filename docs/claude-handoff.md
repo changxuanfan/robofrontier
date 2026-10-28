@@ -177,6 +177,17 @@ and 28,889 cache-read input tokens. Its separate `usage` field contained lower
 counts; it should not be mistaken for the aggregate. New summaries retain both
 fields and the result subtype as reported, without converting them to a bill.
 
+A separately authorized Haiku 5.5 adaptive transport trial reached START and
+made physical tool calls through the real CLI and provider. It reached the
+300-second wall limit without a finish call, then sealed and exited with no
+unresolved actions. The runtime recorded 14 completed physical actions and one
+failed action; two further move requests were rejected before execution. No
+delegate was created and no task-success evaluation was produced. The CLI
+reported $0.011251435 for the completed startup turn; the interrupted active
+turn had unknown cost, requiring provider billing review. This unscored trial
+demonstrates live observations and actions, not task completion or full
+adaptive qualification.
+
 After obtaining both real receipts, compare them with the current profile and
 CLI version without making model calls:
 
