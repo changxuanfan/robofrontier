@@ -7,6 +7,7 @@ import re
 import time
 
 from robofrontier.claude.engineering_run import _positive, run_engineering
+from robofrontier.claude.runner import build_env
 from robofrontier.run_setup import verify_inputs, write_json
 
 ID = re.compile(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,127}\Z')
@@ -50,6 +51,9 @@ def _preflight(jobs, env, verifier):
         if not env.get(profile.get('env_key')): raise ValueError('Missing provider credential variable')
         if profile.get('provider') != 'anthropic' and not profile.get('base_url'):
             raise ValueError('Third-party provider base URL is missing')
+        # Validate authentication for every job before claiming or launching any.
+        # The returned environment is deliberately discarded and never logged.
+        build_env(profile, env, run / 'private/claude-config')
 
 
 def status_batch(folder):
@@ -68,6 +72,8 @@ def status_batch(folder):
             else:
                 fcntl.flock(lock, fcntl.LOCK_UN)
     state['supervisor_live'] = live
+    if not state_file.exists() and (folder / 'engineering-claim.json').exists():
+        state['status'] = 'starting' if live else 'claim_without_status_needs_review'
     if state.get('status') == 'running' and not live:
         state['status'] = 'supervisor_lost_needs_review'
     state['runs'] = []

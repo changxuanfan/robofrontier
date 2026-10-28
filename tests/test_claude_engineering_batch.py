@@ -95,5 +95,22 @@ class BatchTests(unittest.TestCase):
         self.assertEqual(status_batch(self.root)['status'], 'supervisor_lost_needs_review')
         self.assertFalse(status_batch(self.root)['supervisor_live'])
 
+    def test_claim_without_status_needs_review_and_cannot_restart(self):
+        (self.root/'engineering-claim.json').write_text('{}')
+        self.assertEqual(status_batch(self.root)['status'], 'claim_without_status_needs_review')
+        with self.assertRaisesRegex(ValueError, 'never restart'):
+            self.run_case(lambda *a, **k: self.fail('unexpected launch'))
+
+    def test_invalid_oauth_endpoint_rejects_entire_batch_before_claim(self):
+        launch = Path(self.jobs[-1]['run_directory'])/'private/inputs/claude.json'
+        data = json.loads(launch.read_text())
+        data['profile'].update(auth_mode='oauth_token', env_key='CLAUDE_CODE_OAUTH_TOKEN',
+                               base_url='https://other.example')
+        launch.write_text(json.dumps(data))
+        self.env['CLAUDE_CODE_OAUTH_TOKEN'] = 'synthetic'
+        with self.assertRaisesRegex(ValueError, 'Anthropic endpoint'):
+            self.run_case(lambda *a, **k: self.fail('unexpected launch'))
+        self.assertFalse((self.root/'engineering-claim.json').exists())
+
 
 if __name__ == '__main__': unittest.main()
