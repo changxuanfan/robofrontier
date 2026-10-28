@@ -4,6 +4,7 @@ import sys
 import tempfile
 import unittest
 import urllib.request
+import urllib.error
 from pathlib import Path
 from unittest.mock import patch
 
@@ -21,7 +22,7 @@ answer, tool = "READY", False
 if prompt.startswith("Call the robot tool"):
     conn = json.load(open("private/state/connections/Controller.json"))
     body = json.dumps({"op": "observe", "data": {}}).encode()
-    urllib.request.urlopen(urllib.request.Request(conn["url"], data=body, method="POST"), timeout=10).read()
+    urllib.request.urlopen(urllib.request.Request(conn["url"] + "/op", data=body, method="POST"), timeout=10).read()
     tool = True
     answer = "%s"
 elif prompt.startswith("Without calling"):
@@ -62,20 +63,34 @@ class PrecheckTests(unittest.TestCase):
             _,_,server2=pc.setup_run(two,{})
             try:
                 url=f'http://127.0.0.1:{server1.server_port}/op'
-                request=urllib.request.Request(url,data=b'{}',method='POST')
+                payload=b'{"op":"observe","data":{}}'
+                request=urllib.request.Request(url,data=payload,method='POST')
                 with urllib.request.urlopen(request,timeout=5) as response:
                     image=json.load(response)['observation']['images']['top']
                 self.assertEqual(Path(image),one/'run/public/observations/top.png')
                 self.assertEqual(pc.request_count(server1),1)
                 self.assertEqual(pc.request_count(server2),0)
                 url=f'http://127.0.0.1:{server2.server_port}/op'
-                with urllib.request.urlopen(urllib.request.Request(url,data=b'{}',method='POST'),timeout=5) as response:
+                with urllib.request.urlopen(urllib.request.Request(url,data=payload,method='POST'),timeout=5) as response:
                     image=json.load(response)['observation']['images']['top']
                 self.assertEqual(Path(image),two/'run/public/observations/top.png')
                 self.assertEqual(pc.request_count(server1),1)
                 self.assertEqual(pc.request_count(server2),1)
+                with self.assertRaises(urllib.error.HTTPError):
+                    urllib.request.urlopen(urllib.request.Request(url,data=b'{"op":"ready","data":{}}',method='POST'),timeout=5)
+                self.assertEqual(pc.request_count(server2),2)
+                self.assertEqual(pc.request_count(server2,observe_only=True),1)
             finally:
                 for server in (server1,server2): server.shutdown(); server.server_close()
+
+    def test_non_observe_request_does_not_satisfy_visual_check(self):
+        record={'process':'exited','exit_code':0,'summary':{'result_text':'green',
+            'turn_status':'ended','session_id':'session','malformed_lines':0,'tool_calls':1,
+            'reported_model':'fake'}}
+        result=pc.judge('tool_image',record,0,1,expected_session='session',
+                        expected_color='green',observes_before=0,observes_after=0)
+        self.assertFalse(result['checks']['robot_request_made'])
+        self.assertFalse(result['passed'])
     def test_without_confirm_spend_nothing_runs(self):
         with patch.object(sys, 'argv', ['claude_precheck', '--max-budget-usd', '0.5']), \
              patch.object(pc, 'run_precheck') as run:

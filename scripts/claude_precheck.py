@@ -48,9 +48,17 @@ class World(http.server.BaseHTTPRequestHandler):
         pass
 
     def do_POST(self):
-        self.rfile.read(int(self.headers.get('Content-Length', 0)))
+        raw = self.rfile.read(int(self.headers.get('Content-Length', 0)))
+        try: body = json.loads(raw)
+        except (ValueError, UnicodeDecodeError): body = None
+        valid = (self.path == '/op' and isinstance(body, dict) and body.get('op') == 'observe'
+                 and isinstance(body.get('data'), dict))
         with self.server.request_lock:
             self.server.request_count += 1
+            if valid: self.server.observe_count += 1
+        if not valid:
+            self.send_error(400, 'Expected an observe request')
+            return
         entered = getattr(self.server, 'blocked_entered', None)
         if entered is not None:
             entered.set()
@@ -83,6 +91,7 @@ def setup_run(output, base_env):
     server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), World)
     server.image = image
     server.request_count = 0
+    server.observe_count = 0
     server.request_lock = threading.Lock()
     server.challenge_color = color_name
     threading.Thread(target=server.serve_forever, daemon=True).start()
@@ -96,12 +105,13 @@ def setup_run(output, base_env):
     return run, mcp, server
 
 
-def request_count(server):
+def request_count(server, *, observe_only=False):
     with server.request_lock:
-        return server.request_count
+        return server.observe_count if observe_only else server.request_count
 
 
-def judge(name, record, requests_before, requests_after, expected_session=None, expected_color='green'):
+def judge(name, record, requests_before, requests_after, expected_session=None, expected_color='green',
+          observes_before=0, observes_after=0):
     summary = record['summary']
     text = (summary.get('result_text') or '').strip().lower()
     checks = {'process_exited': record['process'] == 'exited' and record['exit_code'] == 0,
@@ -113,7 +123,7 @@ def judge(name, record, requests_before, requests_after, expected_session=None, 
         checks['no_new_robot_call'] = requests_after == requests_before
     elif name == 'tool_image':
         checks['tool_called'] = summary['tool_calls'] >= 1
-        checks['robot_request_made'] = requests_after > requests_before
+        checks['robot_request_made'] = observes_after > observes_before
         checks['image_color_named'] = text == expected_color
     elif name == 'resume':
         checks['color_recalled'] = text == expected_color
@@ -143,13 +153,15 @@ def run_precheck(name, output, budget, base_env, binary='claude', check_fork=Fal
                 receipt['stopped'] = 'budget exhausted before ' + check
                 break
             before = request_count(server)
+            observes_before = request_count(server, observe_only=True)
             first = index == 0
             record = run_turn(prof, prof['model'], prof['effort'], mcp, prompt, run, base_env,
                               session_id=session if first else None, timeout=180,
                               max_budget_usd=remaining, binary=binary,
                               resume=None if first else session, events_name=f'{check}.jsonl')
             result = judge(check, record, before, request_count(server), expected_session=session,
-                           expected_color=server.challenge_color)
+                           expected_color=server.challenge_color, observes_before=observes_before,
+                           observes_after=request_count(server, observe_only=True))
             receipt['checks'].append(result)
             cost = result['cost_usd']
             if isinstance(cost, bool) or not isinstance(cost, (int, float)) or not math.isfinite(cost) or cost <= 0:
