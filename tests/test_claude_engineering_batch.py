@@ -140,7 +140,8 @@ class BatchTests(unittest.TestCase):
     def test_real_supervisor_process_loss_preserves_claim_and_does_not_replay(self):
         ctx = multiprocessing.get_context('fork')
         entered = ctx.Event()
-        def runner(*args, **kwargs):
+        def runner(run, *args, **kwargs):
+            (Path(run)/'private/state/claude-engineering-claim.json').write_text('{}')
             entered.set()
             time.sleep(30)
             return {'status':'finished', 'reason':'world_ended'}
@@ -157,6 +158,8 @@ class BatchTests(unittest.TestCase):
             self.assertFalse(status['supervisor_live'])
             self.assertTrue((self.root/'engineering-claim.json').exists())
             self.assertEqual(status['jobs'][0]['status'], 'starting')
+            self.assertTrue(status['runs'][0]['claim_record_present'])
+            self.assertTrue(all(not run['claim_record_present'] for run in status['runs'][1:]))
             self.assertTrue(stop_batch(self.root)['stop_requested'])
             stopped = status_batch(self.root)
             self.assertEqual(stopped['status'], 'supervisor_lost_needs_review')

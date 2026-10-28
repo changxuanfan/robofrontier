@@ -81,10 +81,12 @@ def status_batch(folder):
         state['status'] = 'supervisor_lost_needs_review'
     state['runs'] = []
     for job in jobs:
-        path = Path(job['run_directory']) / 'private/outputs/claude-engineering-status.json'
+        run = Path(job['run_directory'])
+        path = run / 'private/outputs/claude-engineering-status.json'
         state['runs'].append({'profile': job['profile'], 'case_id': job['case_id'],
                               'detail': json.loads(path.read_text()) if path.exists() else None,
-                              'stop_requested': (Path(job['run_directory']) / 'STOP').exists()})
+                              'claim_record_present': (run / 'private/state/claude-engineering-claim.json').exists(),
+                              'stop_requested': (run / 'STOP').exists()})
     return state
 
 
