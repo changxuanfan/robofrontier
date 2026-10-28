@@ -17,15 +17,19 @@ ROBOT_TOOL = 'mcp__robot__robot'
 EFFORTS = ('low', 'medium', 'high', 'xhigh', 'max')
 
 
-def build_command(model, effort, mcp_config, prompt, session_id=None, max_budget_usd=None, binary='claude'):
-    """Return argv for one headless turn with only the bound robot MCP tool exposed."""
+def build_command(model, effort, mcp_config, prompt, session_id=None, max_budget_usd=None, binary='claude', resume=None):
+    """Return argv for one headless turn with only the bound robot MCP tool exposed.
+
+    `resume` continues an existing session by its explicit ID; it never picks the most recent one.
+    """
     if effort not in EFFORTS:
         raise ValueError('Unsupported effort: ' + str(effort))
     if not model or not isinstance(model, str):
         raise ValueError('Model ID is required')
-    session_id = session_id or str(uuid.uuid4())
-    cmd = [binary, '-p', prompt, '--bare', '--model', model, '--effort', effort,
-           '--session-id', session_id,
+    if resume and session_id:
+        raise ValueError('Give either session_id or resume, not both')
+    session_flags = ['--resume', resume] if resume else ['--session-id', session_id or str(uuid.uuid4())]
+    cmd = [binary, '-p', prompt, '--bare', '--model', model, '--effort', effort] + session_flags + [
            '--mcp-config', str(mcp_config), '--strict-mcp-config',
            '--allowedTools', ROBOT_TOOL, '--tools', '',
            '--permission-mode', 'dontAsk',
@@ -88,6 +92,7 @@ def summarize(lines):
         'reported_model': init.get('model'),
         'turn_status': turn,
         'num_turns': (result or {}).get('num_turns'),
+        'result_text': ((result or {}).get('result') or '')[:2000],
         'tool_calls': tool_calls,
         'usage': (result or {}).get('usage'),
         'total_cost_usd': (result or {}).get('total_cost_usd'),
@@ -97,7 +102,7 @@ def summarize(lines):
 
 
 def run_turn(profile, model, effort, mcp_config, prompt, run_dir, base_env,
-             session_id=None, timeout=600, max_budget_usd=None, binary='claude'):
+             session_id=None, timeout=600, max_budget_usd=None, binary='claude', resume=None, events_name='events.jsonl'):
     """Run one turn, persist its raw events under run_dir, and return a status record.
 
     Status is `timeout` when the process is killed at the deadline, otherwise
@@ -109,9 +114,9 @@ def run_turn(profile, model, effort, mcp_config, prompt, run_dir, base_env,
     evidence.mkdir(parents=True, exist_ok=True)
     config_dir = run_dir / 'private/claude-config'
     config_dir.mkdir(parents=True, exist_ok=True)
-    cmd = build_command(model, effort, mcp_config, prompt, session_id, max_budget_usd, binary)
+    cmd = build_command(model, effort, mcp_config, prompt, session_id, max_budget_usd, binary, resume)
     env = build_env(profile, base_env, config_dir)
-    raw = evidence / 'events.jsonl'
+    raw = evidence / events_name
     process = subprocess.Popen(cmd, cwd=run_dir, env=env, text=True, stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE, start_new_session=True)
     try:
@@ -129,7 +134,7 @@ def run_turn(profile, model, effort, mcp_config, prompt, run_dir, base_env,
     return {
         'process': status,
         'exit_code': process.returncode,
-        'requested_session_id': session_id,
+        'requested_session_id': session_id or resume,
         'summary': summary,
         'stderr_tail': stderr[-1000:].replace(secret, '[redacted]'),
         'events_path': str(raw.relative_to(run_dir)),

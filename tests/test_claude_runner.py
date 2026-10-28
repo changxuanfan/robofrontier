@@ -43,6 +43,12 @@ class ClaudeRunnerTests(unittest.TestCase):
         with self.assertRaises(ValueError): build_command('m', 'extreme', 'x', 'p')
         with self.assertRaises(ValueError): build_command('m', 'high', 'x', 'p', max_budget_usd=0)
 
+    def test_resume_uses_explicit_id_and_never_both_flags(self):
+        cmd = build_command('m', 'high', 'x', 'p', resume='22222222-2222-2222-2222-222222222222')
+        self.assertEqual(cmd[cmd.index('--resume') + 1], '22222222-2222-2222-2222-222222222222')
+        self.assertNotIn('--session-id', cmd)
+        with self.assertRaises(ValueError): build_command('m', 'high', 'x', 'p', session_id='a', resume='b')
+
     def test_environment_carries_only_own_profile_credential(self):
         base = {'PATH': '/bin', 'KIMI_API_KEY': SECRET, 'OPENAI_API_KEY': 'other', 'ANTHROPIC_API_KEY': 'wrong'}
         env = build_env(PROFILE, base, '/run/config')
