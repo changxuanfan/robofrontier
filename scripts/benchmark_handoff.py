@@ -13,6 +13,7 @@ import shutil
 import subprocess
 import tarfile
 import tempfile
+import urllib.request
 
 from robofrontier.task_families import ROOT, RELEASE, read
 from scripts.benchmark import load_env, profile
@@ -120,6 +121,46 @@ def restore_assets(archive_path, root=ROOT):
     return dict(restored=len(pending),reused=reused,release_sha256=digest(root/RELEASE))
 
 
+def setup_assets(root=ROOT, archive_path=None):
+    """Fetch the pinned R14 archive or restore an explicitly supplied local copy."""
+    root = Path(root).resolve()
+    config = read(root/'configs/policy-assets.json')
+    if digest(root/RELEASE) != config['release_sha256']:
+        raise ValueError('Task release does not match pinned R14 asset package')
+    expected = scene_assets(root)
+    try:
+        if digest(root/'vendor/panda/SOURCE.json') != config['panda_source_sha256']:
+            raise ValueError('Existing Panda source manifest does not match the pinned release')
+        expected.update(panda_assets(root))
+        if all((root/name).is_file() and digest(root/name) == checksum for name, checksum in expected.items()):
+            return {'status': 'already_complete', 'files': len(expected)}
+    except (FileNotFoundError, KeyError):
+        pass
+    if archive_path is not None:
+        archive_path = Path(archive_path)
+        if digest(archive_path) != config['archive_sha256']:
+            raise ValueError('Asset archive SHA-256 mismatch')
+        return {'status': 'restored', **restore_assets(archive_path, root)}
+    cache = root/'runs/asset-cache'
+    cache.mkdir(parents=True, exist_ok=True)
+    archive_path = cache/(config['archive_sha256']+'.tar.gz')
+    if not archive_path.exists():
+        with tempfile.NamedTemporaryFile(dir=cache, prefix='.download-', delete=False) as tmp:
+            partial = Path(tmp.name)
+            try:
+                with urllib.request.urlopen(config['url'], timeout=60) as source:
+                    shutil.copyfileobj(source, tmp)
+                tmp.flush()
+                if digest(partial) != config['archive_sha256']:
+                    raise ValueError('Downloaded asset archive SHA-256 mismatch')
+                os.replace(partial, archive_path)
+            finally:
+                partial.unlink(missing_ok=True)
+    if digest(archive_path) != config['archive_sha256']:
+        raise ValueError('Cached asset archive SHA-256 mismatch; remove the corrupt cache file and retry')
+    return {'status': 'restored', 'archive': str(archive_path), **restore_assets(archive_path, root)}
+
+
 def doctor(names, root=ROOT):
     load_env(root/'.env')
     tools={}
@@ -150,11 +191,13 @@ def main():
     p=sub.add_parser('doctor');p.add_argument('--models',nargs='+',default=['kimi','qwen','glm','deepseek'])
     p=sub.add_parser('assets');p.add_argument('--source',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     p=sub.add_parser('restore');p.add_argument('archive',type=Path)
+    p=sub.add_parser('setup-assets');p.add_argument('--archive',type=Path,help='Use the pinned release archive from a local path instead of downloading')
     sub.add_parser('init-env')
     args=parser.parse_args()
     if args.command=='doctor':result=doctor(args.models)
     elif args.command=='assets':result=export_assets(args.source,args.output)
     elif args.command=='restore':result=restore_assets(args.archive)
+    elif args.command=='setup-assets':result=setup_assets(archive_path=args.archive)
     else:
         path=ROOT/'.env'
         fd=os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
