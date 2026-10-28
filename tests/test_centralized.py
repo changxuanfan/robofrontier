@@ -68,6 +68,7 @@ class CentralizedTests(unittest.TestCase):
             self.assertTrue(ready['ready'])
             self.assertTrue(ready['run_started'])
             self.assertEqual(service.store.get('lifecycle'),'running')
+            self.assertEqual(call('Controller','gripper',{'robot':'B','state':'close','wait':False},'after-ready')['execution_status'],'running')
         finally:
             service.close()
 
