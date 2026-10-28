@@ -163,6 +163,15 @@ the provider invoice. Its event stream showed continued thinking progress after
 the observation; this alone does not establish the cause or a remedy. Do not
 replay the claimed run or treat this as a qualified benchmark result.
 
+A separately authorized second Opus engineering trial used a 600-second startup
+timeout and a $0.20 CLI turn allowance. Before START, the CLI exited nonzero
+with `error_max_budget_usd` and reported $0.4755318 for the turn. This exceeds
+the requested per-turn allowance and is not a provider invoice; the ledger
+retained the cost as uncertain. The physical owner sealed and exited with no
+unresolved actions and no robot actions. This observation demonstrates that
+the CLI allowance is not a hard spending cap, and the trial does not qualify a
+scored benchmark or explain the earlier interrupted turn's actual cost.
+
 After obtaining both real receipts, compare them with the current profile and
 CLI version without making model calls:
 
