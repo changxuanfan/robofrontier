@@ -1,5 +1,8 @@
 import unittest
+from types import SimpleNamespace
+import numpy as np
 from robofrontier.suite.contact_episodes import ContactEpisodes
+from robofrontier.suite.evaluate import Monitor
 
 
 class ContactEpisodeTests(unittest.TestCase):
@@ -32,3 +35,25 @@ class ContactEpisodeTests(unittest.TestCase):
         tracker.sample(.2, [pair])
         self.assertEqual(tracker.report()['inter_robot_episodes'], 1)
         self.assertAlmostEqual(tracker.report()['max_sample_gap_sim_s'], .2)
+
+    def test_physical_step_counts_thresholded_body_pairs_without_changing_violations(self):
+        model = SimpleNamespace(geom_bodyid=[0, 1, 2], body=lambda i: SimpleNamespace(name=['A_link', 'B_link', 'A_other'][i]))
+        monitor = SimpleNamespace(active=True, m=model, d=SimpleNamespace(time=0.),
+            geom_owner=np.array([0, 1, 0]), first_collisions={}, self_contact_pairs=[],
+            contact_episodes=ContactEpisodes(), next_sample=float('inf'), violations=[])
+        monitor.contacts=lambda: (np.array([[0, 1], [0, 2]]), np.array([-.0003, -.0011]))
+        monitor.violation=lambda kind, **details: monitor.violations.append((kind,details['key']))
+        Monitor.physical_step(monitor)
+        monitor.d.time=.01
+        Monitor.physical_step(monitor)
+        report=monitor.contact_episodes.report()
+        self.assertEqual((report['inter_robot_episodes'], report['self_robot_episodes']), (1, 1))
+        self.assertEqual(len(monitor.violations), 2)
+        monitor.contacts=lambda: (np.empty((0,2), dtype=int), np.array([]))
+        monitor.d.time=.03
+        Monitor.physical_step(monitor)
+        monitor.contacts=lambda: (np.array([[0, 1]]), np.array([-.0003]))
+        monitor.d.time=.08
+        Monitor.physical_step(monitor)
+        self.assertEqual(monitor.contact_episodes.report()['inter_robot_episodes'], 2)
+        self.assertEqual(len(monitor.violations), 2)
