@@ -60,6 +60,17 @@ class SupervisorTests(unittest.TestCase):
         self.assertEqual(result['reason'], 'session_unknown')
         self.assertEqual(p.binds, 1); self.assertEqual(p.cycles, 0)
 
+    def test_unknown_budget_failure_preserves_bounded_session_evidence(self):
+        p=Policy()
+        p.host.observe=lambda: {'status':p.host.state,'budget_status':'uncertain',
+                               'last_result_subtype':'error_max_budget_usd',
+                               'last_turn_reported_cost_usd':.4755318}
+        result=self.supervisor(p,lambda: setattr(p.host,'state','unknown')).run()
+        self.assertEqual(result['reason'],'session_unknown')
+        self.assertEqual(result['session_evidence'],{'budget_status':'uncertain',
+            'last_result_subtype':'error_max_budget_usd','last_turn_reported_cost_usd':.4755318})
+        self.assertTrue(p.host.stopped)
+
     def test_owner_loss_and_stop_before_binding_still_try_seal(self):
         p = Policy()
         supervisor = CentralizedSupervisor(p, lambda: False)

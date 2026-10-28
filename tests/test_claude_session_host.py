@@ -149,13 +149,17 @@ class SessionHostTests(unittest.TestCase):
             ledger = BudgetLedger.create(run/'private/state/budget.sqlite', 1)
             def runner(*args, **kwargs):
                 response = result(kwargs['session_id'], code=1)
-                response['summary']['total_cost_usd'] = .1
+                response['summary']['total_cost_usd'] = .4755318
+                response['summary']['result_subtype'] = 'error_max_budget_usd'
                 return response
             try:
                 host = ClaudeSessionHost(run, 'Controller', PROFILE, {}, max_budget_usd=.6,
                                          budget_ledger=ledger, runner=runner)
                 host.send('start')
-                self.assertEqual(host.wait(3)['status'], 'unknown')
+                observation=host.wait(3)
+                self.assertEqual(observation['status'], 'unknown')
+                self.assertEqual(observation['last_result_subtype'],'error_max_budget_usd')
+                self.assertEqual(observation['last_turn_reported_cost_usd'],.4755318)
                 self.assertEqual(ledger.snapshot()['status'], 'uncertain')
                 with self.assertRaisesRegex(ValueError, 'uncertain'):
                     ledger.reserve('another', 'other-role', .1)

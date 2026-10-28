@@ -38,6 +38,7 @@ class CentralizedSupervisor:
         sealed = None
         seal_error_type = None
         started_at = None
+        session_evidence = None
         began = self.clock()
         try:
             if self.stop_requested():
@@ -56,8 +57,11 @@ class CentralizedSupervisor:
                         reason = 'world_' + lifecycle; break
                     if self.policy.store.get('dispatch_paused', False):
                         reason = 'dispatch_paused'; break
-                    state = self.policy.host.observe()['status']
+                    observation = self.policy.host.observe()
+                    state = observation['status']
                     if state in ('unknown', 'error'):
+                        session_evidence = {key: observation.get(key) for key in
+                                            ('budget_status', 'last_result_subtype', 'last_turn_reported_cost_usd')}
                         reason = 'session_' + state; break
                     now = self.clock()
                     if started_at is None:
@@ -95,4 +99,5 @@ class CentralizedSupervisor:
                 seal_error_type = type(error).__name__
         return {'reason': reason, 'error_type': error_type, 'seal': sealed,
                 'seal_error_type': seal_error_type, 'started': started_at is not None,
+                'session_evidence': session_evidence,
                 'scope': 'engineering lifecycle; task success requires runtime evaluation'}

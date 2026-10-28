@@ -5,6 +5,7 @@ physical owner and deterministic scheduler can keep progressing. Unknown turn
 outcomes are terminal for this host: never issue another turn automatically.
 """
 import json
+import math
 import os
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
@@ -266,9 +267,18 @@ class ClaudeSessionHost:
     def observe(self):
         """Return bounded process evidence, not an assertion of physical success."""
         with self.lock:
+            summary = (self.last_result or {}).get('summary') or {}
+            subtype = summary.get('result_subtype')
+            if subtype not in ('success', 'error_max_budget_usd', 'error_max_turns',
+                               'error_during_execution', 'error_max_structured_output_retries'):
+                subtype = None
+            cost = summary.get('total_cost_usd')
+            if isinstance(cost, bool) or not isinstance(cost, (int, float)) or not math.isfinite(cost) or cost < 0:
+                cost = None
             return {'actor': self.actor, 'thread_id': self.session_id,
                     'status': self.state, 'turn_id': self.turn_id, 'budget_status': self.budget_status,
-                    'reported_spend_usd': str(self.reported_spend)}
+                    'reported_spend_usd': str(self.reported_spend),
+                    'last_result_subtype': subtype, 'last_turn_reported_cost_usd': cost}
 
     def wait(self, timeout=None):
         with self.lock:
