@@ -1,6 +1,6 @@
 # RoboFrontier
 
-> **Transport known issue:** Some side-lying cylinders can roll without robot contact in the current R14 scenes, notably `transport-a12-d2`. See [the investigation and affected runs](docs/transport-cylinder-stability.md) before collecting results.
+> **Transport physics revision:** This branch uses the rolling-friction candidate. See [validation and limitations](docs/transport-cylinder-stability.md) before collecting results; results differ from the original R14 physics.
 
 RoboFrontier 用 MuJoCo 多机械臂任务研究 GPT 的分工、规划与协作。Frontier V2
 包含 Transport、Mosaic、Relay、Dial 四类，每类三个规模、三个等级，共36项。
