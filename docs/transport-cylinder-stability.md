@@ -4,7 +4,7 @@ This version changes Transport cylinder collision parameters to `condim=6`
 and rolling friction `0.01`. It is a new physics revision, not the original
 R14 physical environment. Identify runs by their frozen task release and scene
 hashes; do not pool or directly compare results across these physics revisions.
-The original release asset remains available under its original name.
+The original GitHub release asset has been removed; old commits require an independently retained matching backup.
 
 In the original `transport-a12-d2` scene, an untouched side-lying cylinder
 moved about 173 mm over 30 simulated seconds. In the updated scenes, a

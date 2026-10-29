@@ -33,6 +33,8 @@ Oracle工厂展示使用各录制自己的冻结来源。旧`frontier-v2.json`�
 
 ## 安装与工程检查
 
+新 clone 后，运行 `.venv/bin/python -m scripts.benchmark_handoff setup-assets` 自动下载、校验并恢复当前资产；离线步骤见 [Luna CPU 指南](docs/luna-cpu.md)。
+
 Python 与依赖由 `.python-version`、`pyproject.toml`、`uv.lock` 管理。
 机器人上游资产与许可证由 `scripts/fetch_robot.py` 物化，来源记录在 `vendor/`。
 
