@@ -1,5 +1,7 @@
 # RoboFrontier
 
+> **运行数据库存储尚未验证：**运行时使用 SQLite WAL。不要将活跃的运行数据库放在 Lustre/NFS 等网络文件系统，或从 macOS 主机直接打开正在由 Docker 写入的数据库；节点本地临时目录与结果回传流程尚需验证。不要根据现有 Slurm 示例启动正式或多人共享批次，直到存储方案通过验证。参见 [SQLite WAL 文档](https://www.sqlite.org/wal.html)。
+
 > **Physics revision:** This branch uses the Transport and Dial rolling-friction 0.03 candidate. See [validation and limitations](docs/transport-cylinder-stability.md) before collecting results; results differ from the original R14 physics.
 
 RoboFrontier 用 MuJoCo 多机械臂任务研究 GPT 的分工、规划与协作。Frontier V2
