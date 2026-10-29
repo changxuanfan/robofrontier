@@ -247,6 +247,7 @@ def main():
     smoke = sub.add_parser('l3-max-test', help='Four maximum-arm Level 3 engineering tasks, parallel 4, one hour each')
     smoke.add_argument('--output', type=Path, required=True)
     smoke.add_argument('--prepare-only', action='store_true', help='Prepare the batch without model calls')
+    smoke.add_argument('--wall-limit-s', type=float, default=3600, help='Per-task seconds after START (default 3600)')
     for command in ('prepare', 'submit'):
         prepare = sub.add_parser(command)
         prepare.add_argument('--output', type=Path, required=True)
@@ -278,7 +279,7 @@ def main():
         print('Level 3 maximum-arm engineering test: ' + ', '.join(cases), flush=True)
         args.command = 'prepare' if args.prepare_only else 'submit'
         args.level, args.min_arms, args.families = 3, False, None
-        args.wall_limit_s, args.parallel, args.cases = 3600, 4, cases
+        args.parallel, args.cases = 4, cases
     if args.command == 'setup-assets':
         from scripts.benchmark_handoff import setup_assets
         print(json.dumps(setup_assets(archive_path=args.archive), ensure_ascii=False, indent=2))

@@ -35,6 +35,16 @@ class LunaCpuTests(unittest.TestCase):
             self.assertEqual(call.call_count, 2)
             self.assertEqual(call.call_args_list[1].args[0][-2:], ['--parallel', '4'])
 
+    def test_l3_max_test_supports_a_30_minute_limit(self):
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {}, clear=False):
+            output = Path(tmp)/'batch'; output.mkdir()
+            with patch('sys.argv', ['luna_cpu', 'l3-max-test', '--output', str(output), '--prepare-only', '--wall-limit-s', '1800']), \
+                 patch('scripts.luna_cpu.ROOT', Path(tmp)), patch('scripts.luna_cpu.load_env'), \
+                 patch('scripts.luna_cpu.subprocess.call', return_value=0) as call:
+                self.assertEqual(main(), 0)
+            command = call.call_args.args[0]
+            self.assertEqual(command[command.index('--wall-limit-s') + 1], '1800.0')
+
     def test_collect_copies_controller_and_delegate_and_detects_missing(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp); batch=root/'batch'; run=batch/'luna/demo'; state=run/'private/state'

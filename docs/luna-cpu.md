@@ -85,6 +85,8 @@ sacct -j JOB_ID --format=JobID,State,Elapsed,AllocCPUS,MaxRSS,TotalCPU
 .venv/bin/python -m scripts.luna_cpu l3-max-test --output runs/policy/luna-l3-max-test
 ```
 
+如需每项最多 30 分钟，在上述 `l3-max-test` 命令后增加 `--wall-limit-s 1800`；并行数仍为 4。Slurm 脚本仍固定一小时。
+
 只准备并检查任务，不调用模型或启动仿真：
 
 ```sh
