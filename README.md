@@ -36,6 +36,15 @@ Oracle工厂展示使用各录制自己的冻结来源。旧`frontier-v2.json`�
 
 新 clone 后，运行 `.venv/bin/python -m scripts.benchmark_handoff setup-assets` 自动下载、校验并恢复当前资产；离线步骤见 [Luna CPU 指南](docs/luna-cpu.md)。
 
+Luna Linux 使用者请先按 [完整交接指南](docs/luna-cpu.md) 创建 Python 环境、安装 Codex CLI、填写自己的 API Key 并准备资产。要在 Slurm 上排队四类 Level 3 最大臂、一小时工程测试，在仓库根目录执行：
+
+```sh
+sbatch --partition=YOUR_PARTITION --cpus-per-task=YOUR_CPUS --mem=YOUR_MEMORY \
+  --time=YOUR_JOB_TIME scripts/slurm_luna_l3_max_test.sh
+```
+
+将占位符替换为集群允许的资源和足够覆盖准备、运行、收尾的时间。此命令会调用付费 API；状态、日志、结果收集与会话备份的具体命令见指南。现有 36 项入口独立保留，尚未达到正式 24 小时运行资格。
+
 Python 与依赖由 `.python-version`、`pyproject.toml`、`uv.lock` 管理。
 机器人上游资产与许可证由 `scripts/fetch_robot.py` 物化，来源记录在 `vendor/`。
 

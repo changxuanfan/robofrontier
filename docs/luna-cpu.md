@@ -32,6 +32,8 @@ chmod 600 .env
 
 `setup-assets` 也可不通过 Luna 包装器独立使用：`python -m scripts.benchmark_handoff setup-assets`。离线机器可先从 [Release](https://github.com/changxuanfan/robofrontier/releases/tag/handoff-20261028) 下载 `policy-assets-transport-rolling-20261029.tar.gz`，再传 `setup-assets --archive /path/to/policy-assets-transport-rolling-20261029.tar.gz`。脚本固定检查发布包 SHA-256、任务发布清单和所有文件；不同内容或损坏时停止，不覆盖已有不同资产。缓存放在忽略 Git 的 `runs/asset-cache/`。下载需要网络，离线资产要由用户提前传入。与 Release 清单不匹配的其他分支不能使用本版本配置。
 
+本分支锁定的资产包 SHA-256 为 `a492c25a7eb45c626a42c164de54a130cce7dcc921a08e02096764e38ba2b361`。Release 日期和资产上传日期可以不同；不要自行换用其他包或修改校验值。`setup-assets` 报 `already_complete` 表示文件已完整，不一定会下载或创建缓存；缺失时才下载并校验。若报网络错误，使用上面的离线方式；若报 SHA 或目标文件不一致，保留报错并核对分支和包，不要忽略校验。
+
 ## 2. 在 Slurm 排队
 
 准备阶段执行 `setup-assets`，以便计算节点无法联网 GitHub 时仍可复用资产。以下仅是提交格式，资源数值是**示例，不是 36 项所需配置**；请根据集群规则、排队限制和测试结果修改。任务预算设计为从 START 开始，但当前存在上文所述的宿主截止问题。Slurm 作业时限还必须留出预检、启动和收尾时间，过短会中断任务。
@@ -59,6 +61,22 @@ squeue -u "$USER"
 ```
 
 默认批次为 `runs/policy/luna-l3-max-test-<Slurm作业ID>/`，可用 `RF_BATCH_OUTPUT` 指定未存在的其他路径。这个脚本固定四项和一小时，不使用 `RF_PARALLEL` 或 `RF_WALL_LIMIT_S`。请勿将 Slurm 时限设为恰好一小时，否则准备和收尾可能使作业被提前终止。可用下节的 `status`、`usage`、`performance`、`stop` 和 `collect` 查询或收集这个批次；不要分享包含密钥或任务私有数据的目录。
+
+将下面的 `JOB_ID` 替换为 `sbatch` 返回的数字；在仓库根目录使用与计算节点相同的共享路径：
+
+```sh
+squeue -j JOB_ID
+cat slurm-JOB_ID.out # 若站点配置了其他输出路径，以站点配置为准
+.venv/bin/python -m scripts.luna_cpu status runs/policy/luna-l3-max-test-JOB_ID
+.venv/bin/python -m scripts.luna_cpu usage runs/policy/luna-l3-max-test-JOB_ID
+sacct -j JOB_ID --format=JobID,State,Elapsed,AllocCPUS,MaxRSS,TotalCPU
+```
+
+批次关闭后执行以下命令收集运行数据和关联的 Controller / 子代理 session；输出的 `collection.json` 应检查缺失项，再单独备份整个收集目录。若 Slurm 抢占或取消，检查任务状态和日志，不要将中断当作正常失败或成功。
+
+```sh
+.venv/bin/python -m scripts.luna_cpu collect runs/policy/luna-l3-max-test-JOB_ID --output runs/exports/luna-l3-max-test-JOB_ID
+```
 
 不通过 Slurm 时，独立执行（预检和任务都会调用付费 API）：
 
