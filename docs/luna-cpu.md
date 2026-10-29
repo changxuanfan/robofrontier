@@ -1,5 +1,7 @@
 # Luna CPU benchmark：Linux / Slurm 交接
 
+**暂不要在 Lustre/NFS 上运行或提交此脚本：**运行数据库使用 SQLite WAL，目前节点本地存储与结果回传方案尚未验证。macOS Docker 测试中，活跃数据库从宿主机访问后出现损坏；具体原因尚待复现。参见 [SQLite WAL 文档](https://www.sqlite.org/wal.html)。下列 Slurm 命令仅保留为待验证的格式，不能视作可安全运行的交接方案。
+
 本分支使用 **GPT-6 Luna、high、OpenAI API Key、adaptive**。默认选择全部 36 项、最多 36 项并发，每项开始后限时 86400 秒（24 小时）。Controller 可自行增减子代理，模型请求并发可能高于任务数。没有监督模型的主 session 也可以通过命令运行；运行会产生 API 费用。当前任务资产是 **Mosaic R14**。
 
 **正式 24 小时任务暂不就绪：**任务预算设计为从 START 开始计时，但当前 Codex 宿主另有从进程创建起算的固定 24 小时截止条件，可能提前结束任务。此问题尚未修复和验证；请先用于环境准备和经授权的小规模工程测试，不要据此提交 24 小时正式批次。
@@ -8,7 +10,7 @@
 
 ## 1. 获取代码并准备环境
 
-取得本分支后，在集群允许存放大文件的 Lustre 目录 clone 并进入仓库根目录。不要将大型数据写入有配额的 home。准备 Python 3.12、Node.js、Codex CLI、Mesa OSMesa（Debian/Ubuntu 的 `libosmesa6`），并确认允许 Codex Linux sandbox 使用所需用户命名空间。依赖和网络环境由集群管理员决定。
+取得本分支后，代码和只读资产可按集群规定准备；活跃运行数据库暂不可放在 Lustre/NFS，待节点本地运行与结果回传流程验证。不要将大型数据写入有配额的 home。准备 Python 3.12、Node.js、Codex CLI、Mesa OSMesa（Debian/Ubuntu 的 `libosmesa6`），并确认允许 Codex Linux sandbox 使用所需用户命名空间。依赖和网络环境由集群管理员决定。
 
 ```sh
 cd /path/to/your/lustre/directory
