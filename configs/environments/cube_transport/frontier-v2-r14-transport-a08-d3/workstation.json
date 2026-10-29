@@ -63575,8 +63575,8 @@
       "vertical_fov_deg": 38.0
     }
   ],
-  "physics_sha256": "3bf09d2328e1f244dcba56e1ec1be37c732b796bc6db080d0d27cf631154e19d",
-  "scene_sha256": "75261ec9e4cc26863c71c66efbf732b7af5cf357e610bea20469334b462f16a8",
+  "physics_sha256": "c9f5fe295307243e95254d8ce05d9fe87b0258c118e68eff0d00aa5c36a1357d",
+  "scene_sha256": "77e9b13d079d7432d96adc60c8eff0a7edad8f6dd283266b1d3856c0af58e723",
   "support_surfaces": {
     "tabletop_z_m": 0.8,
     "ground_collision": "floor",

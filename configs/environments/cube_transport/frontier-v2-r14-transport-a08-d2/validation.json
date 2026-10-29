@@ -1,11 +1,11 @@
 {
-  "status": "compiled_tabletop_variant",
+  "status": "rolling_friction_candidate",
   "oracle_verified": false,
   "policy_verified": false,
   "frozen_input": true,
   "nq": 240,
   "nv": 216,
   "ngeom": 1201,
-  "physics_sha256": "060f892334b622fde5e593cf42fa0962253ec5b56ebef9427de3baa32ee32e42",
-  "scope": "Compiled tabletop-only revision and exact parity with the source half-opening FK model; no new physics execution"
+  "physics_sha256": "f6e62be76227dbcb14e57613a8a57c04dce29c613b24790fea088eb82e1504c2",
+  "scope": "Rolling-friction candidate; full-task physical execution not validated."
 }

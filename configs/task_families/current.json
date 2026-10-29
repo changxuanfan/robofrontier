@@ -76,10 +76,10 @@
           "id": "transport-a08-d1",
           "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a08-d1",
           "source_files": {
-            "scene.xml": "44b107f2b7e3065d33020d581f022e56dc99ba1a4f45769295df06fd2415e9e5",
-            "task.json": "0b34bf3ac59870c6176952c2dff7437ec4da8092eb64611914cfe474d21813ee",
+            "scene.xml": "583b57d299e76241cd8d5a81e57778e8d0346e5bb6a5a97418bcedd221401599",
+            "task.json": "85d9bc2bdb1745ac36805df6751c19696791b07d42675729d2141e1fd135e0dc",
             "environment.json": "b05adfb5c5b1f8f8eb9485f3e8364b493371401811cb4b7692be5f356343cdf2",
-            "workstation.json": "9cdbb6fe88061870fff93648fef8b85f8b8396e001d39c0f7a2fd2b2eec46d4b"
+            "workstation.json": "812d66ec9d09bf87bebd3aade8fdb299ad77e648d8a8d4175e7d4348f03251f8"
           },
           "public_files": {
             "family-guidance.md": {
@@ -87,7 +87,7 @@
               "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
             }
           },
-          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "qualification": "rolling_friction_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/transport/public/transport-a08-d1/public-task.json",
             "sha256": "03be230e9579284d4b4b386ef21d3d596dc1a9572d7103e58b112ac6bb9ca484"
@@ -97,10 +97,10 @@
           "id": "transport-a08-d2",
           "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a08-d2",
           "source_files": {
-            "scene.xml": "556fc939b70b3e5eeca8be4fae77c5cd8f249a35b56e2f9e0edee34bdce6044c",
-            "task.json": "8b2bf013849d985db5a7418b48c866837fbdd7c1e4f90578665bfaebdcf6235b",
+            "scene.xml": "dbedc186744645cfbe7f4af852c7a74a1c141dcbab0c3b4d04fd7ad535561514",
+            "task.json": "38ae316682ba531385367e48f6b2bfb1a95c835369c3c65b8d50eeb84c0f509e",
             "environment.json": "c3ff6db43913e735b4062f5b7cf85f06ea8ca4989ecc0b01762d1c5e160d997a",
-            "workstation.json": "34cc18549947adbf1b032243caf450ccb0db6fc1b9192abc839582610a7a435d"
+            "workstation.json": "6ad7780b6a09883ab05ed9c917ddc9e3d39aecbfb51eba25cdc594005095237e"
           },
           "public_files": {
             "family-guidance.md": {
@@ -108,7 +108,7 @@
               "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
             }
           },
-          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "qualification": "rolling_friction_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/transport/public/transport-a08-d2/public-task.json",
             "sha256": "18e0e481a54097647a950865d05974b71615cc66e3783e45bd37c7e9229dd254"
@@ -118,10 +118,10 @@
           "id": "transport-a08-d3",
           "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a08-d3",
           "source_files": {
-            "scene.xml": "75261ec9e4cc26863c71c66efbf732b7af5cf357e610bea20469334b462f16a8",
-            "task.json": "a4fd58a0ae349c8d98f6dcdb15c07376b88692850dba3500895bd801f48badec",
+            "scene.xml": "77e9b13d079d7432d96adc60c8eff0a7edad8f6dd283266b1d3856c0af58e723",
+            "task.json": "bf86b60cae9d383bfa3b5cad19d6731decaa06cd3ad13fa9b679783ee4ae8a97",
             "environment.json": "e5718d5d2c2ef5188201e2581f4d94fde3bb56ba4e7865b4e45969ff527f2f0b",
-            "workstation.json": "a4b9d8d054acb050fc57c063995a2025ed3e7afee5784b17042dab9247259705"
+            "workstation.json": "ea93dcad99ec5caa356dd0cf8790afcac3e62ab6a8f8a53bdfef839fbb6308cf"
           },
           "public_files": {
             "family-guidance.md": {
@@ -129,7 +129,7 @@
               "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
             }
           },
-          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "qualification": "rolling_friction_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/transport/public/transport-a08-d3/public-task.json",
             "sha256": "6200e5f52d190577819506b5ffa012617ddb5cb38d7f06a76a48e425cbe7fe58"
@@ -139,10 +139,10 @@
           "id": "transport-a12-d1",
           "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a12-d1",
           "source_files": {
-            "scene.xml": "41856c8940c9801c9e3d0fcf0353dd0468a96c3b5fc6eef1d01d8aa9863e843e",
-            "task.json": "2d0c41231526ecb76eb6c448d67ede805259b681c5a713d123ff6f56dd4c43f8",
+            "scene.xml": "839ef1d8612d7d7ef37da28d6e5dd2b8ef245fe988f7c1c2082414b411a6d353",
+            "task.json": "bfbeb91f91fd4b888ac8968eb83e2edf4bb43ddd06d31ddf39f8d07cc39428d1",
             "environment.json": "2931674daccc0a212aeeabf886dbe409e539bdfcbb0dc9f41d4f295078a6e0f1",
-            "workstation.json": "2d54c8b7c1bf624c4e7111dac6c6a077118ae78f0d02e8fa1cecb1e2a235ff86"
+            "workstation.json": "0df15b14cd7894ac5d7b0249e3dc1befd0a9ec6e64fa695d4f445359d8bd347e"
           },
           "public_files": {
             "family-guidance.md": {
@@ -150,7 +150,7 @@
               "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
             }
           },
-          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "qualification": "rolling_friction_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/transport/public/transport-a12-d1/public-task.json",
             "sha256": "0cc8325d6b0b033246708b5bf4985cb7bd9e8cc8c4d3897cb8e640e9a30fe6eb"
@@ -160,10 +160,10 @@
           "id": "transport-a12-d2",
           "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a12-d2",
           "source_files": {
-            "scene.xml": "9d930aba9da6607207be67f0ff8d16871955f22b2453991d86a3d9879d40107f",
-            "task.json": "ed6c1a2e21135718f8f44d35d074de732d8f4600c2ce8aa3beae4cbb54d707fb",
+            "scene.xml": "33865ccf934d464cfa57b2c387fce97e08ab3e1a03fac45b29739345047dcd42",
+            "task.json": "1b174aae7145b74553b0363a49b7f30f90b7b758a8dce720b8c98d566f6493b4",
             "environment.json": "11886c6aac85ed17a81baa6796bc177a931c392860c67ab38ce2dbc9f258905b",
-            "workstation.json": "702b664c0e28ef85481d9d42a1d20ed982799470d2424231e07980d619741ce5"
+            "workstation.json": "6438a09f90691bd9205d3c9ad27bfd170374bd570aa04efb5dea963d4743852a"
           },
           "public_files": {
             "family-guidance.md": {
@@ -171,7 +171,7 @@
               "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
             }
           },
-          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "qualification": "rolling_friction_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/transport/public/transport-a12-d2/public-task.json",
             "sha256": "36b6670621df028dd2f037f9455222dd51464e7ea5d0f0263d10079113cf6d0c"
@@ -181,10 +181,10 @@
           "id": "transport-a12-d3",
           "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a12-d3",
           "source_files": {
-            "scene.xml": "be4474d54fae3f9817a6bf5ae0edc70f408deba684a3df3ee996f7e7f1d84b9d",
-            "task.json": "87ee872ace0e271e625abbe403e146cc0606a0f00cc14aaea05fc31b1cad382a",
+            "scene.xml": "a18d85f45fa964ffdb152a6a49e7e56be86577057eda874a7ae16c346db8e9fc",
+            "task.json": "c6dce738c855e53569826181ac782afd6983d5f2b16c31f4cdf508bb34fdce25",
             "environment.json": "1df9187023072aef2511dcc742e2c71341b23307dc6abacba612902d26e76d5f",
-            "workstation.json": "d1a07a6188a479e627bef61be45f7dce5782ba8758f87a9b8cf6fe4cf0175e14"
+            "workstation.json": "c4aaff31e5a4096f245c96115e8c93708d6712229779746c774b411a34defaa9"
           },
           "public_files": {
             "family-guidance.md": {
@@ -192,7 +192,7 @@
               "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
             }
           },
-          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "qualification": "rolling_friction_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/transport/public/transport-a12-d3/public-task.json",
             "sha256": "709ebcfdb38a7884fd9c92884b5c3c41e0ac235f7b263d433cdb3d023d5b1729"
@@ -1616,5 +1616,6 @@
   "harness": {
     "path": "configs/harnesses/policy.json",
     "sha256": "8dfee2da8b1f38fe0340c6f6b707fca36f736d003a7ff0e9665c1ec569bd31a4"
-  }
+  },
+  "transport_physics_revision": "r14-rolling-friction-candidate-20261029"
 }
