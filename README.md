@@ -1,6 +1,6 @@
 # RoboFrontier
 
-> **Transport physics revision:** This branch uses the rolling-friction candidate. See [validation and limitations](docs/transport-cylinder-stability.md) before collecting results; results differ from the original R14 physics.
+> **Physics revision:** This branch uses the Transport and Dial rolling-friction 0.03 candidate. See [validation and limitations](docs/transport-cylinder-stability.md) before collecting results; results differ from the original R14 physics.
 
 RoboFrontier 用 MuJoCo 多机械臂任务研究 GPT 的分工、规划与协作。Frontier V2
 包含 Transport、Mosaic、Relay、Dial 四类，每类三个规模、三个等级，共36项。
@@ -31,7 +31,7 @@ Oracle工厂展示使用各录制自己的冻结来源。旧`frontier-v2.json`�
 ## 安装与工程检查
 
 新 clone 后，安装 Python 环境并运行 `.venv/bin/python -m scripts.benchmark_handoff setup-assets`，
-可自动下载、校验并恢复当前 R14 任务资产；离线可使用 `setup-assets --archive /path/to/policy-assets-transport-rolling-20261029.tar.gz`。
+可自动下载、校验并恢复当前 R14 任务资产；离线可使用 `setup-assets --archive /path/to/policy-assets-rolling003-20261029.tar.gz`。
 资产包和校验说明见[多模型交接](docs/multimodel-handoff.md)。不要将密钥或运行数据提交到 Git。
 
 Python 与依赖由 `.python-version`、`pyproject.toml`、`uv.lock` 管理。

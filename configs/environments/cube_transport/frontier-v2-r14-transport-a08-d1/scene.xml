@@ -1488,17 +1488,17 @@
     </body>
     <body name="G_item1" pos="-0.973 0.107 0.8300000000000001" quat="1.0 0.0 0.0 0.0">
       <freejoint name="G_item1_free" />
-      <geom name="G_item1_geom" type="cylinder" pos="0.0 0.0 0.0" size="0.03 0.03" rgba="0.85 0.12 0.12 1.0" friction="1 .005 .01" condim="6" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.13253594007331937" />
+      <geom name="G_item1_geom" type="cylinder" pos="0.0 0.0 0.0" size="0.03 0.03" rgba="0.85 0.12 0.12 1.0" friction="1 .005 .03" condim="6" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.13253594007331937" />
       <geom name="G_item1_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="G_item1_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
     </body>
     <body name="G_item2" pos="-0.873 0.357 0.8300000000000001" quat="1.0 0.0 0.0 0.0">
       <freejoint name="G_item2_free" />
-      <geom name="G_item2_geom" type="cylinder" pos="0.0 0.0 0.0" size="0.03 0.03" rgba="0.85 0.12 0.12 1.0" friction="1 .005 .01" condim="6" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.13253594007331937" />
+      <geom name="G_item2_geom" type="cylinder" pos="0.0 0.0 0.0" size="0.03 0.03" rgba="0.85 0.12 0.12 1.0" friction="1 .005 .03" condim="6" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.13253594007331937" />
       <geom name="G_item2_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="G_item2_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
     </body>
     <body name="G_item3" pos="-0.973 0.607 0.8300000000000001" quat="1.0 0.0 0.0 0.0">
       <freejoint name="G_item3_free" />
-      <geom name="G_item3_geom" type="cylinder" pos="0.0 0.0 0.0" size="0.03 0.03" rgba="0.85 0.12 0.12 1.0" friction="1 .005 .01" condim="6" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.13253594007331937" />
+      <geom name="G_item3_geom" type="cylinder" pos="0.0 0.0 0.0" size="0.03 0.03" rgba="0.85 0.12 0.12 1.0" friction="1 .005 .03" condim="6" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.13253594007331937" />
       <geom name="G_item3_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="G_item3_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
     </body>
     <body name="board_H" pos="-0.6930000000000001 -0.357 0.803" quat="1.0 0.0 0.0 0.0">
@@ -1515,17 +1515,17 @@
     </body>
     <body name="H_item1" pos="-0.973 -0.607 0.8300000000000001" quat="1.0 0.0 0.0 0.0">
       <freejoint name="H_item1_free" />
-      <geom name="H_item1_geom" type="cylinder" pos="0.0 0.0 0.0" size="0.03 0.03" rgba="0.06 0.34 0.77 1.0" friction="1 .005 .01" condim="6" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.13253594007331937" />
+      <geom name="H_item1_geom" type="cylinder" pos="0.0 0.0 0.0" size="0.03 0.03" rgba="0.06 0.34 0.77 1.0" friction="1 .005 .03" condim="6" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.13253594007331937" />
       <geom name="H_item1_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="H_item1_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
     </body>
     <body name="H_item2" pos="-0.873 -0.357 0.8300000000000001" quat="1.0 0.0 0.0 0.0">
       <freejoint name="H_item2_free" />
-      <geom name="H_item2_geom" type="cylinder" pos="0.0 0.0 0.0" size="0.03 0.03" rgba="0.06 0.34 0.77 1.0" friction="1 .005 .01" condim="6" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.13253594007331937" />
+      <geom name="H_item2_geom" type="cylinder" pos="0.0 0.0 0.0" size="0.03 0.03" rgba="0.06 0.34 0.77 1.0" friction="1 .005 .03" condim="6" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.13253594007331937" />
       <geom name="H_item2_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="H_item2_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
     </body>
     <body name="H_item3" pos="-0.973 -0.107 0.8300000000000001" quat="1.0 0.0 0.0 0.0">
       <freejoint name="H_item3_free" />
-      <geom name="H_item3_geom" type="cylinder" pos="0.0 0.0 0.0" size="0.03 0.03" rgba="0.06 0.34 0.77 1.0" friction="1 .005 .01" condim="6" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.13253594007331937" />
+      <geom name="H_item3_geom" type="cylinder" pos="0.0 0.0 0.0" size="0.03 0.03" rgba="0.06 0.34 0.77 1.0" friction="1 .005 .03" condim="6" solref=".004 1" solimp=".95 .99 .001 .5 2" mass="0.13253594007331937" />
       <geom name="H_item3_print0" type="box" pos="0.0 0.0 0.030199999999999998" size="0.012 0.012 0.0001" rgba="0.945 0.937 0.91 1.0" material="H_item3_identity" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" mass="0" />
     </body>
     <camera name="board_A_close" pos="0.043 -0.273 1.42" xyaxes="-0.6790419816174271 0.7340994395864077 0.0 -0.5392958109397865 -0.4988486251193025 0.6784615519831465" fovy="38" />

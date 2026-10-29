@@ -1,22 +1,25 @@
-# Transport R14: cylinder rolling-friction candidate (2026-10-29)
+# Rolling-friction 0.03 engineering candidate (2026-10-29)
 
-This version changes Transport cylinder collision parameters to `condim=6`
-and rolling friction `0.01`. It is a new physics revision, not the original
-R14 physical environment. Identify runs by their frozen task release and scene
-hashes; do not pool or directly compare results across these physics revisions.
-The original GitHub release asset has been removed; old commits require an independently retained matching backup.
+This policy physics revision sets Transport cylinder collision geoms to
+`condim=6`, rolling friction `0.03`, and Dial module disk/stem collision geoms
+to `condim=6`, rolling friction `0.03`. Dial modules without a stem modify the
+disk only. Table friction, Mosaic blocks, Relay objects and other contact
+parameters are unchanged. This changes the physical environment: identify runs
+by their frozen scene and task-release hashes. Do not combine scores with
+previous physical revisions as if they were the same benchmark. Historical
+Oracle success and prior compiled-physics parity are not inherited.
 
-In the original `transport-a12-d2` scene, an untouched side-lying cylinder
-moved about 173 mm over 30 simulated seconds. In the updated scenes, a
-30-second passive test across the six cases containing cylinders measured at
-most 0.217 mm horizontal cylinder movement; the three remaining Transport
-cases have no cylinders. The 12-arm Level 2 candidate showed up to 4.362 mm
-displacement across all movable bodies in a separate 600-second test. A single
-engineering pickup of one cylinder also succeeded. These measurements do not
-certify full-task success, grasping all objects, handover, insertion, or
-long-duration stability. No original Oracle pass is inherited for this physics.
+Earlier in-memory engineering probes on `transport-a12-d2` H_item3 found that
+0.03 reduced post-release movement relative to 0.01 in some force/direction
+tests; 0.03 did not prevent large movements in all tests. One side-cylinder
+pickup and lift passed. In `dial-best5-n04-d2`, one 0.03 module force probe
+and a lift/knob-capture probe were favorable, and a hinge spring-return probe
+still worked. These are limited, case-specific probes, not complete model runs.
+Transport insertion, handovers, full Dial turns, other forces and long-duration
+cross-platform behavior remain unqualified. This release is for further
+engineering tests; it does not establish a formally validated benchmark.
 
-For the passive engineering check, prepare fresh Transport jobs and run:
+For an independent finite passive Transport check, prepare fresh jobs and run:
 
 ```sh
 python -m scripts.tasks prepare-batch --output runs/engineering/transport-stability --families transport
@@ -24,5 +27,4 @@ python -m scripts.check_transport_cylinder_stability --batch runs/engineering/tr
 ```
 
 This check uses simulation time, starts no model, and does not execute a task.
-If another experiment has already prepared jobs, do not modify its frozen
-inputs; prepare a new batch for this release.
+Do not modify existing frozen experiment inputs; prepare a fresh batch.
