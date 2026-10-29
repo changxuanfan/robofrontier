@@ -11,6 +11,30 @@ from scripts.luna_cpu import cpu_environment, interval_union, usage_report, coll
 
 
 class LunaCpuTests(unittest.TestCase):
+    def test_l3_max_test_prepares_exact_four_maximum_arm_cases(self):
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {}, clear=False):
+            output = Path(tmp)/'batch'; output.mkdir()
+            with patch('sys.argv', ['luna_cpu', 'l3-max-test', '--output', str(output), '--prepare-only']), \
+                 patch('scripts.luna_cpu.ROOT', Path(tmp)), patch('scripts.luna_cpu.load_env'), \
+                 patch('scripts.luna_cpu.subprocess.call', return_value=0) as call:
+                self.assertEqual(main(), 0)
+            command = call.call_args.args[0]
+            self.assertEqual(command[command.index('--wall-limit-s') + 1], '3600')
+            self.assertEqual(command[command.index('--cases') + 1:], [
+                'transport-a12-d3', 'mosaic-a08-12x24-d3', 'relay-a16-d3', 'dial-best5-n08-d3'])
+            self.assertEqual(call.call_count, 1)
+
+    def test_l3_max_test_starts_four_in_parallel(self):
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {'OPENAI_API_KEY':'test'}, clear=False):
+            output = Path(tmp)/'batch'; output.mkdir()
+            with patch('sys.argv', ['luna_cpu', 'l3-max-test', '--output', str(output)]), \
+                 patch('scripts.luna_cpu.ROOT', Path(tmp)), patch('scripts.luna_cpu.load_env'), \
+                 patch('scripts.luna_cpu.sandbox_probe'), patch('scripts.luna_cpu.render_probe', return_value={}), \
+                 patch('scripts.luna_cpu.subprocess.call', return_value=0) as call:
+                self.assertEqual(main(), 0)
+            self.assertEqual(call.call_count, 2)
+            self.assertEqual(call.call_args_list[1].args[0][-2:], ['--parallel', '4'])
+
     def test_collect_copies_controller_and_delegate_and_detects_missing(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp); batch=root/'batch'; run=batch/'luna/demo'; state=run/'private/state'

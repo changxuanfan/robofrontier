@@ -244,6 +244,9 @@ def main():
     collect = sub.add_parser('collect')
     collect.add_argument('batch', type=Path)
     collect.add_argument('--output', type=Path, required=True)
+    smoke = sub.add_parser('l3-max-test', help='Four maximum-arm Level 3 engineering tasks, parallel 4, one hour each')
+    smoke.add_argument('--output', type=Path, required=True)
+    smoke.add_argument('--prepare-only', action='store_true', help='Prepare the batch without model calls')
     for command in ('prepare', 'submit'):
         prepare = sub.add_parser(command)
         prepare.add_argument('--output', type=Path, required=True)
@@ -259,6 +262,23 @@ def main():
         if command == 'run': p.add_argument('--parallel', type=int, default=36)
     args = parser.parse_args()
     load_env(ROOT/'.env')
+    if args.command == 'l3-max-test':
+        from scripts.benchmark import select_cases
+        rows = select_cases(level=3)
+        cases = []
+        for family in ('transport', 'mosaic', 'relay', 'dial'):
+            candidates = [row for row in rows if row['family'] == family]
+            if not candidates:
+                raise SystemExit('No released Level 3 case for ' + family)
+            maximum = max(row['arms'] for row in candidates)
+            winners = [row for row in candidates if row['arms'] == maximum]
+            if len(winners) != 1:
+                raise SystemExit('Expected exactly one maximum-arm Level 3 case for ' + family)
+            cases.append(winners[0]['case_id'])
+        print('Level 3 maximum-arm engineering test: ' + ', '.join(cases), flush=True)
+        args.command = 'prepare' if args.prepare_only else 'submit'
+        args.level, args.min_arms, args.families = 3, False, None
+        args.wall_limit_s, args.parallel, args.cases = 3600, 4, cases
     if args.command == 'setup-assets':
         from scripts.benchmark_handoff import setup_assets
         print(json.dumps(setup_assets(archive_path=args.archive), ensure_ascii=False, indent=2))
@@ -317,6 +337,7 @@ def main():
         if args.level is not None: cmd += ['--level', str(args.level)]
         if args.min_arms: cmd += ['--min-arms']
         if args.families: cmd += ['--families', *args.families]
+        if getattr(args, 'cases', None): cmd += ['--cases', *args.cases]
     else:
         cmd += [str(args.batch)]
         if args.command == 'run': cmd += ['--parallel', str(args.parallel)]

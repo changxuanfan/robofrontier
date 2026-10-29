@@ -46,6 +46,35 @@ squeue -u "$USER"
 
 脚本可通过环境变量覆盖：`RF_BATCH_OUTPUT`、`RF_WALL_LIMIT_S`、`RF_PARALLEL`。例如小额工程测试可设 `RF_WALL_LIMIT_S=600 RF_PARALLEL=4`，但并发 4 默认仍会选 36 项；若只想跑 4 个最简单 Level 1 任务，使用下面手动命令的 `--level 1 --min-arms`。集群对环境变量传递有不同配置，请确认 `sbatch --export` 的站点规则。
 
+### Level 3 最大臂工程测试（四项并行）
+
+独立的测试入口选择每类 Level 3 中臂数最大的一个：Transport 12 臂、Mosaic 8 臂、Relay 16 臂、Dial 16 臂。固定并行 4 项、每项 START 后最多 3600 秒，使用 Luna high、adaptive 和 CPU 渲染。允许提前完成；各项启动时间可能不同，加上环境准备、付费预检、收尾和排队，整个 Slurm 作业需要超过一小时。测试产生 API 费用；任务数为 4 不表示模型请求数最多为 4。此测试用于工程验证，不证明 36 项并行或正式计分已通过。
+
+在仓库根目录、完成上面的环境和资产准备后提交（资源参数按站点要求填写；时限应覆盖准备、最长任务和收尾）：
+
+```sh
+sbatch --partition=YOUR_PARTITION --cpus-per-task=YOUR_CPUS --mem=YOUR_MEMORY \
+  --time=YOUR_JOB_TIME scripts/slurm_luna_l3_max_test.sh
+squeue -u "$USER"
+```
+
+默认批次为 `runs/policy/luna-l3-max-test-<Slurm作业ID>/`，可用 `RF_BATCH_OUTPUT` 指定未存在的其他路径。这个脚本固定四项和一小时，不使用 `RF_PARALLEL` 或 `RF_WALL_LIMIT_S`。请勿将 Slurm 时限设为恰好一小时，否则准备和收尾可能使作业被提前终止。可用下节的 `status`、`usage`、`performance`、`stop` 和 `collect` 查询或收集这个批次；不要分享包含密钥或任务私有数据的目录。
+
+不通过 Slurm 时，独立执行（预检和任务都会调用付费 API）：
+
+```sh
+.venv/bin/python -m scripts.luna_cpu preflight --output runs/policy/luna-l3-max-test
+.venv/bin/python -m scripts.luna_cpu l3-max-test --output runs/policy/luna-l3-max-test
+```
+
+只准备并检查任务，不调用模型或启动仿真：
+
+```sh
+.venv/bin/python -m scripts.luna_cpu l3-max-test --prepare-only --output runs/policy/luna-l3-max-plan
+```
+
+准备的批次不可再用相同路径执行 `l3-max-test`；若需运行它，先使用相同路径预检，再执行 `run runs/policy/luna-l3-max-plan --parallel 4`。各批次要独立目录。
+
 ## 3. 手动运行及查询
 
 每批需使用一个未存在的输出目录。`preflight --output`、`submit --output` 使用相同路径，自动选择相同的私有 Codex home。更换 Codex CLI 或模型配置后必须重新预检。预检需调用 API；`doctor` 不调用模型。
