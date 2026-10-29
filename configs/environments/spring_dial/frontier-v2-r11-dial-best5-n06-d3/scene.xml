@@ -1716,8 +1716,8 @@
     <camera name="top" pos="0.0 0.9776230198155906 8.857272363465093" xyaxes="1 0 0 0 1 0" fovy="48" />
     <body name="D01_module" pos="-1.73 2.118638962524921e-16 0.913" quat="0.6063390625908325 0.3638034375544994 0.3638034375544994 0.6063390625908325">
       <freejoint name="D01_module_free" />
-      <geom name="D01_module_stem" type="box" pos="0 .02 -.154" size="0.008 0.01 0.15" mass=".2592" material="module_blue" friction="0.8 0.005 0.0001" condim="4" solref="0.001 1" solimp="0.95 0.99 0.001" />
-      <geom name="D01_module_disk" type="cylinder" pos="0 0 0" size="0.15 0.004" mass="0.5103969754253306" material="module_white" friction="0.8 0.005 0.0001" condim="4" solref="0.001 1" solimp="0.95 0.99 0.001" />
+      <geom name="D01_module_stem" type="box" pos="0 .02 -.154" size="0.008 0.01 0.15" mass=".2592" material="module_blue" friction="0.8 0.005 0.03" condim="6" solref="0.001 1" solimp="0.95 0.99 0.001" />
+      <geom name="D01_module_disk" type="cylinder" pos="0 0 0" size="0.15 0.004" mass="0.5103969754253306" material="module_white" friction="0.8 0.005 0.03" condim="6" solref="0.001 1" solimp="0.95 0.99 0.001" />
       <geom name="D01_module_print" type="cylinder" pos="0.0 0.0 0.0043" size="0.148 0.00025" material="dial_face_print" contype="0" conaffinity="0" mass="0" />
       <body name="D01_rotor" pos="0.0 0.0 0.022">
         <joint name="D01_hinge" type="hinge" axis="0 0 -1" limited="true" range="-3.141592653589793 3.141592653589793" springref="0" stiffness=".12" damping=".003" />
@@ -1735,8 +1735,8 @@
     <camera name="D01_high" pos="-1.03 0.4000000000000002 1.9" xyaxes="-0.4961389383568338 0.8682431421244592 0.0 -0.6191185176063861 -0.3537820100607921 0.7010923979863257" fovy="38" />
     <body name="D02_module" pos="-1.399599400268659 1.0168684864659787 0.913" quat="0.7640317912552483 0.4584190747531489 0.23357618512041842 0.389293641867364">
       <freejoint name="D02_module_free" />
-      <geom name="D02_module_stem" type="box" pos="0 .02 -.154" size="0.008 0.01 0.15" mass=".2592" material="module_blue" friction="0.8 0.005 0.0001" condim="4" solref="0.001 1" solimp="0.95 0.99 0.001" />
-      <geom name="D02_module_disk" type="cylinder" pos="0 0 0" size="0.15 0.004" mass="0.5103969754253306" material="module_white" friction="0.8 0.005 0.0001" condim="4" solref="0.001 1" solimp="0.95 0.99 0.001" />
+      <geom name="D02_module_stem" type="box" pos="0 .02 -.154" size="0.008 0.01 0.15" mass=".2592" material="module_blue" friction="0.8 0.005 0.03" condim="6" solref="0.001 1" solimp="0.95 0.99 0.001" />
+      <geom name="D02_module_disk" type="cylinder" pos="0 0 0" size="0.15 0.004" mass="0.5103969754253306" material="module_white" friction="0.8 0.005 0.03" condim="6" solref="0.001 1" solimp="0.95 0.99 0.001" />
       <geom name="D02_module_print" type="cylinder" pos="0.0 0.0 0.0043" size="0.148 0.00025" material="dial_face_print" contype="0" conaffinity="0" mass="0" />
       <body name="D02_rotor" pos="0.0 0.0 0.022">
         <joint name="D02_hinge" type="hinge" axis="0 0 -1" limited="true" range="-3.141592653589793 3.141592653589793" springref="0" stiffness=".12" damping=".003" />
@@ -1754,8 +1754,8 @@
     <camera name="D02_high" pos="-0.5981734032892065 0.9290256076112265 1.9" xyaxes="0.10895568164301177 0.9940466082823816 -0.0 -0.7088252503159124 0.07769307562690218 0.7010923979863257" fovy="38" />
     <body name="D03_module" pos="-0.5345994002686589 1.6453277731906157 0.913" quat="0.8469357648690925 0.5081614589214555 0.08048486826577457 0.13414144710962425">
       <freejoint name="D03_module_free" />
-      <geom name="D03_module_stem" type="box" pos="0 .02 -.154" size="0.008 0.01 0.15" mass=".2592" material="module_blue" friction="0.8 0.005 0.0001" condim="4" solref="0.001 1" solimp="0.95 0.99 0.001" />
-      <geom name="D03_module_disk" type="cylinder" pos="0 0 0" size="0.15 0.004" mass="0.5103969754253306" material="module_white" friction="0.8 0.005 0.0001" condim="4" solref="0.001 1" solimp="0.95 0.99 0.001" />
+      <geom name="D03_module_stem" type="box" pos="0 .02 -.154" size="0.008 0.01 0.15" mass=".2592" material="module_blue" friction="0.8 0.005 0.03" condim="6" solref="0.001 1" solimp="0.95 0.99 0.001" />
+      <geom name="D03_module_disk" type="cylinder" pos="0 0 0" size="0.15 0.004" mass="0.5103969754253306" material="module_white" friction="0.8 0.005 0.03" condim="6" solref="0.001 1" solimp="0.95 0.99 0.001" />
       <geom name="D03_module_print" type="cylinder" pos="0.0 0.0 0.0043" size="0.148 0.00025" material="dial_face_print" contype="0" conaffinity="0" mass="0" />
       <body name="D03_rotor" pos="0.0 0.0 0.022">
         <joint name="D03_hinge" type="hinge" axis="0 0 -1" limited="true" range="-3.141592653589793 3.141592653589793" springref="0" stiffness=".12" damping=".003" />
@@ -1773,8 +1773,8 @@
     <camera name="D03_high" pos="0.0621351023118657 1.1031950095339873 1.9" xyaxes="0.67243293452264 0.7401580564779872 -0.0 -0.5277848294889124 0.4794920471156359 0.7010923979863257" fovy="38" />
     <body name="D04_module" pos="0.534599400268659 1.6453277731906155 0.913" quat="0.8469357648690925 0.5081614589214555 -0.08048486826577457 -0.13414144710962425">
       <freejoint name="D04_module_free" />
-      <geom name="D04_module_stem" type="box" pos="0 .02 -.154" size="0.008 0.01 0.15" mass=".2592" material="module_blue" friction="0.8 0.005 0.0001" condim="4" solref="0.001 1" solimp="0.95 0.99 0.001" />
-      <geom name="D04_module_disk" type="cylinder" pos="0 0 0" size="0.15 0.004" mass="0.5103969754253306" material="module_white" friction="0.8 0.005 0.0001" condim="4" solref="0.001 1" solimp="0.95 0.99 0.001" />
+      <geom name="D04_module_stem" type="box" pos="0 .02 -.154" size="0.008 0.01 0.15" mass=".2592" material="module_blue" friction="0.8 0.005 0.03" condim="6" solref="0.001 1" solimp="0.95 0.99 0.001" />
+      <geom name="D04_module_disk" type="cylinder" pos="0 0 0" size="0.15 0.004" mass="0.5103969754253306" material="module_white" friction="0.8 0.005 0.03" condim="6" solref="0.001 1" solimp="0.95 0.99 0.001" />
       <geom name="D04_module_print" type="cylinder" pos="0.0 0.0 0.0043" size="0.148 0.00025" material="dial_face_print" contype="0" conaffinity="0" mass="0" />
       <body name="D04_rotor" pos="0.0 0.0 0.022">
         <joint name="D04_hinge" type="hinge" axis="0 0 -1" limited="true" range="-3.141592653589793 3.141592653589793" springref="0" stiffness=".12" damping=".003" />
@@ -1792,8 +1792,8 @@
     <camera name="D04_high" pos="0.6987101107242573 0.8559814140340292 1.9" xyaxes="0.9790636615694521 0.20355428414606566 -0.0 -0.1451485425437155 0.6981413539414628 0.7010923979863258" fovy="38" />
     <body name="D05_module" pos="1.3995994002686591 1.0168684864659785 0.913" quat="0.7640317912552483 0.4584190747531489 -0.23357618512041842 -0.389293641867364">
       <freejoint name="D05_module_free" />
-      <geom name="D05_module_stem" type="box" pos="0 .02 -.154" size="0.008 0.01 0.15" mass=".2592" material="module_blue" friction="0.8 0.005 0.0001" condim="4" solref="0.001 1" solimp="0.95 0.99 0.001" />
-      <geom name="D05_module_disk" type="cylinder" pos="0 0 0" size="0.15 0.004" mass="0.5103969754253306" material="module_white" friction="0.8 0.005 0.0001" condim="4" solref="0.001 1" solimp="0.95 0.99 0.001" />
+      <geom name="D05_module_stem" type="box" pos="0 .02 -.154" size="0.008 0.01 0.15" mass=".2592" material="module_blue" friction="0.8 0.005 0.03" condim="6" solref="0.001 1" solimp="0.95 0.99 0.001" />
+      <geom name="D05_module_disk" type="cylinder" pos="0 0 0" size="0.15 0.004" mass="0.5103969754253306" material="module_white" friction="0.8 0.005 0.03" condim="6" solref="0.001 1" solimp="0.95 0.99 0.001" />
       <geom name="D05_module_print" type="cylinder" pos="0.0 0.0 0.0043" size="0.148 0.00025" material="dial_face_print" contype="0" conaffinity="0" mass="0" />
       <body name="D05_rotor" pos="0.0 0.0 0.022">
         <joint name="D05_hinge" type="hinge" axis="0 0 -1" limited="true" range="-3.141592653589793 3.141592653589793" springref="0" stiffness=".12" damping=".003" />
@@ -1811,8 +1811,8 @@
     <camera name="D05_high" pos="1.0684016051231853 0.2818120121112683 1.9" xyaxes="0.9117253470466579 -0.41080030617399876 0.0 0.2929295542356704 0.650124392513521 0.7010923979863257" fovy="38" />
     <body name="D06_module" pos="1.73 0.0 0.913" quat="0.6063390625908325 0.3638034375544994 -0.3638034375544994 -0.6063390625908325">
       <freejoint name="D06_module_free" />
-      <geom name="D06_module_stem" type="box" pos="0 .02 -.154" size="0.008 0.01 0.15" mass=".2592" material="module_blue" friction="0.8 0.005 0.0001" condim="4" solref="0.001 1" solimp="0.95 0.99 0.001" />
-      <geom name="D06_module_disk" type="cylinder" pos="0 0 0" size="0.15 0.004" mass="0.5103969754253306" material="module_white" friction="0.8 0.005 0.0001" condim="4" solref="0.001 1" solimp="0.95 0.99 0.001" />
+      <geom name="D06_module_stem" type="box" pos="0 .02 -.154" size="0.008 0.01 0.15" mass=".2592" material="module_blue" friction="0.8 0.005 0.03" condim="6" solref="0.001 1" solimp="0.95 0.99 0.001" />
+      <geom name="D06_module_disk" type="cylinder" pos="0 0 0" size="0.15 0.004" mass="0.5103969754253306" material="module_white" friction="0.8 0.005 0.03" condim="6" solref="0.001 1" solimp="0.95 0.99 0.001" />
       <geom name="D06_module_print" type="cylinder" pos="0.0 0.0 0.0043" size="0.148 0.00025" material="dial_face_print" contype="0" conaffinity="0" mass="0" />
       <body name="D06_rotor" pos="0.0 0.0 0.022">
         <joint name="D06_hinge" type="hinge" axis="0 0 -1" limited="true" range="-3.141592653589793 3.141592653589793" springref="0" stiffness=".12" damping=".003" />

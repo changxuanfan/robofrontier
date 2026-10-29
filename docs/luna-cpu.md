@@ -30,9 +30,9 @@ chmod 600 .env
 .venv/bin/python -m scripts.luna_cpu doctor
 ```
 
-`setup-assets` 也可不通过 Luna 包装器独立使用：`python -m scripts.benchmark_handoff setup-assets`。离线机器可先从 [Release](https://github.com/changxuanfan/robofrontier/releases/tag/handoff-20261028) 下载 `policy-assets-transport-rolling-20261029.tar.gz`，再传 `setup-assets --archive /path/to/policy-assets-transport-rolling-20261029.tar.gz`。脚本固定检查发布包 SHA-256、任务发布清单和所有文件；不同内容或损坏时停止，不覆盖已有不同资产。缓存放在忽略 Git 的 `runs/asset-cache/`。下载需要网络，离线资产要由用户提前传入。与 Release 清单不匹配的其他分支不能使用本版本配置。
+`setup-assets` 也可不通过 Luna 包装器独立使用：`python -m scripts.benchmark_handoff setup-assets`。离线机器可先从 [Release](https://github.com/changxuanfan/robofrontier/releases/tag/handoff-20261028) 下载 `policy-assets-rolling003-20261029.tar.gz`，再传 `setup-assets --archive /path/to/policy-assets-rolling003-20261029.tar.gz`。脚本固定检查发布包 SHA-256、任务发布清单和所有文件；不同内容或损坏时停止，不覆盖已有不同资产。缓存放在忽略 Git 的 `runs/asset-cache/`。下载需要网络，离线资产要由用户提前传入。与 Release 清单不匹配的其他分支不能使用本版本配置。
 
-本分支锁定的资产包 SHA-256 为 `a492c25a7eb45c626a42c164de54a130cce7dcc921a08e02096764e38ba2b361`。Release 日期和资产上传日期可以不同；不要自行换用其他包或修改校验值。`setup-assets` 报 `already_complete` 表示文件已完整，不一定会下载或创建缓存；缺失时才下载并校验。若报网络错误，使用上面的离线方式；若报 SHA 或目标文件不一致，保留报错并核对分支和包，不要忽略校验。
+本分支锁定的资产包 SHA-256 为 `1bb7420c38c44b7e2f469d3789a1c0096a4f5cf6d377894d1ae2c1b0a8de2d31`。Release 日期和资产上传日期可以不同；不要自行换用其他包或修改校验值。`setup-assets` 报 `already_complete` 表示文件已完整，不一定会下载或创建缓存；缺失时才下载并校验。若报网络错误，使用上面的离线方式；若报 SHA 或目标文件不一致，保留报错并核对分支和包，不要忽略校验。
 
 ## 2. 在 Slurm 排队
 

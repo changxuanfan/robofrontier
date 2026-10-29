@@ -1,11 +1,11 @@
 {
-  "status": "rolling_friction_candidate",
+  "status": "rolling_friction_003_candidate",
   "oracle_verified": false,
   "policy_verified": false,
   "frozen_input": true,
   "nq": 240,
   "nv": 216,
   "ngeom": 841,
-  "physics_sha256": "a1aeeedb5bd2c81bc506a152976a6733a04ccc933b45d280d2ecd07ce70adf63",
-  "scope": "Rolling-friction candidate; full-task physical execution not validated."
+  "physics_sha256": "e3c424b632800618df7a0f9321203336f8406c270518ae8b91e5d5b3170da2ab",
+  "scope": "Rolling friction 0.03 engineering candidate; original Oracle results are historical and full manipulation has not been qualified."
 }

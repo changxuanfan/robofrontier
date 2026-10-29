@@ -43,7 +43,7 @@ git switch -c experiments/my-model
 git push -u origin experiments/my-model
 ```
 
-无需 GitHub 也可交接 `roomscript2.bundle` 和 `policy-assets-transport-rolling-20261029.tar.gz`：
+无需 GitHub 也可交接 `roomscript2.bundle` 和 `policy-assets-rolling003-20261029.tar.gz`：
 
 ```sh
 git clone --branch codex/multimodel-handoff /path/to/roomscript2.bundle roomscript2
@@ -53,11 +53,11 @@ cd roomscript2
 bundle 是仓库历史快照，不是持续同步服务。日常协作用上述 GitHub 仓库即可；
 bundle 供离线交接或备份使用，后续更新可通过 GitHub 或新 bundle 传递。
 运行资产可从同仓库的 [handoff-20261028 Release](https://github.com/changxuanfan/robofrontier/releases/tag/handoff-20261028)
-下载 `policy-assets-transport-rolling-20261029.tar.gz`。也可在已登录自己 GitHub
+下载 `policy-assets-rolling003-20261029.tar.gz`。也可在已登录自己 GitHub
 账号的 `gh` CLI 中下载（仓库设为私有时需要访问权限）：
 
 ```sh
-gh release download handoff-20261028 --repo changxuanfan/robofrontier --pattern 'policy-assets-transport-rolling-20261029.tar.gz' --dir ../robofrontier-assets
+gh release download handoff-20261028 --repo changxuanfan/robofrontier --pattern 'policy-assets-rolling003-20261029.tar.gz' --dir ../robofrontier-assets
 ```
 
 使用 `setup-assets --archive` 时程序会根据仓库配置验证压缩包 SHA-256，
@@ -78,7 +78,7 @@ uv sync --locked --extra oracle
 # 安装指定版本的 CLI；已有合适版本可跳过
 npm install -g @openai/codex@0.164.0-alpha.11.1
 codex --version
-.venv/bin/python -m scripts.benchmark_handoff setup-assets --archive /path/to/policy-assets-transport-rolling-20261029.tar.gz
+.venv/bin/python -m scripts.benchmark_handoff setup-assets --archive /path/to/policy-assets-rolling003-20261029.tar.gz
 .venv/bin/python -m scripts.benchmark_handoff init-env
 ```
 
