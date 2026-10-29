@@ -1,11 +1,11 @@
 {
-  "status": "generated",
+  "status": "rolling_friction_003_candidate",
   "oracle_verified": false,
   "policy_verified": false,
   "frozen_input": false,
-  "robot_and_dial_physics_equal_to_r10": true,
+  "robot_and_dial_physics_equal_to_r10": false,
   "panel_footprint_supported": true,
   "score_panel_scale": 1.5,
-  "physics_sha256": "9a43e70b1dba1b92a658f67930b0fd01033d8abe7fc1a0f20344fbc28c3f70c7",
-  "scope": "Static compilation; only score panel collider relocated/resized; no grasp/rotation run"
+  "physics_sha256": "2443466ecfa3ca9a468fcac6331b613727ac09ee50f02d3e1fe5092083ebc51c",
+  "scope": "Rolling friction 0.03 engineering candidate; original Oracle results are historical and full manipulation has not been qualified."
 }

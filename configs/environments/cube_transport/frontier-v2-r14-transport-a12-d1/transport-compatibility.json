@@ -2,7 +2,7 @@
   "schema": "robofrontier.transport-half-opening-check.v1",
   "case_id": "transport-a12-d1",
   "source_scene_sha256": "bdb133bf14c6fb416da9737039c8991f8f3aed2b27fb10f01bc1ffc4b0d1a4c1",
-  "variant_scene_sha256": "839ef1d8612d7d7ef37da28d6e5dd2b8ef245fe988f7c1c2082414b411a6d353",
+  "variant_scene_sha256": "8c814682126427300b8408fe8ac341199d613524fcebfd5216e8b063aa41440c",
   "original_geometry": {
     "tabletop_z_m": 0.8,
     "outer_bounds_xy_m": [
@@ -208,6 +208,6 @@
   "simulated_seconds_advanced": 0.0,
   "original_oracle_pass_inherited": false,
   "physical_execution_verified": false,
-  "scope": "Rolling-friction candidate; previous tabletop geometry parity does not establish physical parity. Full manipulation not validated.",
+  "scope": "Rolling-friction 0.03 candidate; full manipulation not validated.",
   "historical_tabletop_parity_before_rolling_friction_change": true
 }

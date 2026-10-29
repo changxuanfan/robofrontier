@@ -32,7 +32,7 @@ uv sync --locked --extra oracle
 .venv/bin/python -m scripts.benchmark_handoff setup-assets
 ```
 
-上述公开下载不需要 GitHub 登录；离线安装可从同仓库的 `handoff-20261028` Release 下载 `policy-assets-transport-rolling-20261029.tar.gz`，再运行 `setup-assets --archive /path/to/policy-assets-transport-rolling-20261029.tar.gz`，程序会校验文件哈希。
+上述公开下载不需要 GitHub 登录；离线安装可从同仓库的 `handoff-20261028` Release 下载 `policy-assets-rolling003-20261029.tar.gz`，再运行 `setup-assets --archive /path/to/policy-assets-rolling003-20261029.tar.gz`，程序会校验文件哈希。
 包内资产版本为 R14，Mosaic R15 不在本分支。恢复程序还校验资产清单和文件哈希。
 
 在仓库根目录创建个人 `.env`，以下命令不会覆盖已有文件；只在自己的机器填写
