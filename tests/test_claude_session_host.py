@@ -51,6 +51,7 @@ class SessionHostTests(unittest.TestCase):
             release.set(); self.assertEqual(host.wait(3)['status'], 'idle')
             host.send('next turn'); self.assertEqual(host.wait(3)['status'], 'idle')
             self.assertEqual(calls[0]['session_id'], first['threadId'])
+            self.assertIsNone(calls[0]['timeout'])
             self.assertEqual(calls[1]['resume'], first['threadId'])
             self.assertNotEqual(calls[0]['events_name'], calls[1]['events_name'])
             self.assertEqual(len(list((run/'private/evidence').glob('*-summary.json'))), 2)

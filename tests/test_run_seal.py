@@ -86,4 +86,34 @@ class SealTests(unittest.TestCase):
             if service.store:service.close()
 
 
+    def test_live_idle_owner_preserves_jpeg_final(self):
+        service=RuntimeService(self.run,FakeWorld,fake_capture);world=service.world
+        self.store.put('lifecycle','running');ops=[]
+        source=self.run/'public/observations/captured-global.jpg';source.write_bytes(b'fake capture bytes')
+        service.capture=lambda cameras:{'images':{'global':str(source)},'scope':'fake capture, not rendered pixels'}
+        class Handler(BaseHTTPRequestHandler):
+            def log_message(self,*args):pass
+            def do_POST(self):
+                b=json.loads(self.rfile.read(int(self.headers['Content-Length'])));ops.append(b['op'])
+                if self.headers['X-Token']!=service.tokens['Meta']:self.send_error(403);return
+                j=service.accept(b['actor'],b['op'],b['data'],b['call_id'],b.get('ack_delivery'));service.pump()
+                raw=json.dumps(j['result']).encode();self.send_response(200);self.end_headers();self.wfile.write(raw)
+                if service.shutdown:service.close()
+        server=ThreadingHTTPServer(('127.0.0.1',0),Handler)
+        connection=self.run/'private/state/connections/Meta.json';cfg=json.loads(connection.read_text())
+        cfg['url']=f'http://127.0.0.1:{server.server_port}';write_json(connection,cfg)
+        thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+        try:
+            result=self.seal(3)
+            self.assertEqual(ops,['observe','shutdown'])
+            self.assertEqual(result['lifecycle'],'interrupted');self.assertTrue(result['fresh_observation'])
+            self.assertEqual((self.run/'private/outputs/final-global.jpg').read_bytes(),source.read_bytes())
+            self.assertEqual(world.executed,[])
+            with self.assertRaisesRegex(ValueError,'Physical restart'):
+                RuntimeService(self.run,FakeWorld,fake_capture)
+        finally:
+            server.shutdown();server.server_close()
+            if service.store:service.close()
+
+
 if __name__=='__main__':unittest.main()

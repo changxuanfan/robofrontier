@@ -178,6 +178,7 @@ def run_turn(profile, model, effort, mcp_config, prompt, run_dir, base_env,
              cancel_event=None, fork_from=None, enable_robot=True):
     """Run one turn, persist its raw events under run_dir, and return a status record.
 
+    `timeout=None` removes the per-turn deadline; cancellation remains active.
     Status is `timeout` when the process is killed at the deadline, otherwise
     `ended` or `failed` from the turn result. Callers must still verify physical
     outcomes through the runtime before treating a task as finished.
@@ -198,11 +199,11 @@ def run_turn(profile, model, effort, mcp_config, prompt, run_dir, base_env,
         raise PreLaunchCancelled('Claude turn cancelled before launch')
     process = subprocess.Popen(cmd, cwd=run_dir, env=env, text=True, stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE, stdin=subprocess.DEVNULL, start_new_session=True)
-    deadline = time.monotonic() + timeout
+    deadline = None if timeout is None else time.monotonic() + timeout
     while True:
-        remaining = deadline - time.monotonic()
+        remaining = None if deadline is None else deadline - time.monotonic()
         cancelled = cancel_event is not None and cancel_event.is_set()
-        if cancelled or remaining <= 0:
+        if cancelled or (remaining is not None and remaining <= 0):
             # The owner must reconcile outstanding physical operations separately.
             try:
                 os.killpg(process.pid, signal.SIGKILL)
@@ -212,7 +213,10 @@ def run_turn(profile, model, effort, mcp_config, prompt, run_dir, base_env,
             status = 'cancelled' if cancelled else 'timeout'
             break
         try:
-            stdout, stderr = process.communicate(timeout=min(0.25, remaining) if cancel_event is not None else remaining)
+            wait = remaining
+            if cancel_event is not None:
+                wait = 0.25 if remaining is None else min(0.25, remaining)
+            stdout, stderr = process.communicate(timeout=wait)
             status = 'exited'
             break
         except subprocess.TimeoutExpired:

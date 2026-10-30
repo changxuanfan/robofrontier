@@ -144,6 +144,25 @@ class ClaudeRunnerTests(unittest.TestCase):
             self.assertEqual(record['summary']['turn_status'], 'unknown')
             self.assertIsNone(record['summary']['task_success'])
 
+    def test_unlimited_turn_can_finish_and_can_be_cancelled(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run = Path(tmp) / 'run'; run.mkdir()
+            base = {'PATH': '/usr/bin:/bin', 'KIMI_API_KEY': SECRET}
+            binary = fake_claude(tmp, 'time.sleep(.15)\nprint(json.dumps({"type":"result", "subtype":"success", "is_error":False}))\n')
+            record = run_turn(PROFILE, 'm', 'high', None, 'go', run, base,
+                              binary=str(binary), timeout=None, enable_robot=False)
+            self.assertEqual(record['process'], 'exited')
+            self.assertEqual(record['summary']['turn_status'], 'ended')
+            binary = fake_claude(tmp, 'time.sleep(30)\n')
+            cancel = threading.Event(); timer = threading.Timer(.2, cancel.set); timer.start()
+            try:
+                record = run_turn(PROFILE, 'm', 'high', None, 'go', run, base,
+                                  binary=str(binary), timeout=None, cancel_event=cancel, enable_robot=False)
+            finally:
+                timer.cancel()
+            self.assertEqual(record['process'], 'cancelled')
+            self.assertEqual(record['summary']['turn_status'], 'unknown')
+
     def test_cancellation_before_launch_never_starts_cli(self):
         with tempfile.TemporaryDirectory() as tmp:
             run = Path(tmp) / 'run'; run.mkdir()

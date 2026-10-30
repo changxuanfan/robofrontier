@@ -1,8 +1,10 @@
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import tempfile
+import sqlite3
 import threading
 import unittest
+from unittest.mock import patch
 
 from robofrontier.claude.budget import BudgetLedger
 
@@ -12,6 +14,24 @@ class SharedBudgetTests(unittest.TestCase):
         self.tmp=tempfile.TemporaryDirectory(); self.path=Path(self.tmp.name)/'budget.sqlite'
         self.ledger=BudgetLedger.create(self.path, 1)
     def tearDown(self): self.ledger.close(); self.tmp.cleanup()
+
+    def test_busy_budget_reservation_waits_and_is_recorded_once(self):
+        from robofrontier import sqlite_busy
+        self.assertEqual(self.ledger.db.execute('PRAGMA busy_timeout').fetchone()[0],30000)
+        self.ledger.db.execute('PRAGMA busy_timeout=20')
+        other=sqlite3.connect(self.path,isolation_level=None,check_same_thread=False)
+        other.execute('BEGIN IMMEDIATE')
+        timer=threading.Timer(.11,other.rollback);timer.start()
+        try:
+            with patch.object(sqlite_busy,'MAX_BEGIN_ATTEMPTS',12), \
+                 patch.object(sqlite_busy,'RETRY_DELAY_SECONDS',.01), \
+                 self.assertLogs('robofrontier.sqlite_busy',level='WARNING'):
+                self.assertEqual(self.ledger.reserve('turn','Controller',.3),.3)
+            rows=self.ledger.snapshot()['reservations']
+            self.assertEqual(len(rows),1)
+            self.assertEqual(rows[0]['id'],'turn')
+        finally:
+            timer.join();other.close()
 
     def test_concurrent_process_connections_cannot_overreserve(self):
         gate=threading.Barrier(10)

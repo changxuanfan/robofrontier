@@ -50,7 +50,9 @@ def seal_run(store, timeout_s=30):
                     for name,path in observation.get('images',{}).items():
                         source=Path(path).resolve()
                         if source.is_relative_to(run/'public/observations') and source.is_file():
-                            target=output/('final-'+name+'.png');shutil.copy2(source,target)
+                            if source.suffix.lower() not in ('.png', '.jpg', '.jpeg'):
+                                raise ValueError('Unsupported observation image format')
+                            target=output/('final-'+name+source.suffix.lower());shutil.copy2(source,target)
                             observation['images'][name]=str(target)
             except (OSError,ValueError) as error:capture_error=str(error)
             # This is one shutdown request, never a physical-command retry.

@@ -95,6 +95,22 @@ class ClaudeFoundationTests(unittest.TestCase):
             self.assertIn('could not be loaded', response['content'][1]['text'])
             self.assertEqual(len(response['content']), 2)
 
+    def test_observation_jpeg_uses_actual_bytes_and_mime(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run=Path(tmp)/'run'; conn=run/'private/state/connections/Controller.json'
+            conn.parent.mkdir(parents=True)
+            conn.write_text(json.dumps({'run_id':'run','actor':'Controller'}))
+            image=run/'public/observations/scene.png'; image.parent.mkdir(parents=True)
+            from PIL import Image
+            Image.new('RGB',(896,560),(30,100,180)).save(image,format='JPEG',quality=85)
+            def invoke(conn,op,data,call_id,**kwargs):
+                return {'call_id':call_id,'observation':{'images':{'top':str(image)}}}
+            response=RobotBridge(run,conn,invoke).call(
+                {'op':'move','data':{},'call_id':'move-1','views':['top']})
+            self.assertEqual(response['content'][1]['mimeType'],'image/jpeg')
+            self.assertEqual(base64.b64decode(response['content'][1]['data']),image.read_bytes())
+            self.assertEqual(json.loads(response['content'][0]['text'])['call_id'],'move-1')
+
     def test_failed_action_image_keeps_execution_result_and_call_id(self):
         with tempfile.TemporaryDirectory() as tmp:
             run=Path(tmp)/'run'; conn=run/'private/state/connections/Controller.json'

@@ -78,14 +78,18 @@ class RobotBridge:
                 if not image.is_relative_to(public) or not image.is_file():
                     raise ValueError('Observation image is outside this run public directory or unavailable')
                 data_bytes = image.read_bytes()
-                if not data_bytes.startswith(b'\x89PNG\r\n\x1a\n'):
-                    raise ValueError('Observation is not a PNG image')
+                if data_bytes.startswith(b'\x89PNG\r\n\x1a\n'):
+                    mime = 'image/png'
+                elif data_bytes.startswith(b'\xff\xd8\xff'):
+                    mime = 'image/jpeg'
+                else:
+                    raise ValueError('Observation is not a PNG or JPEG image')
             except (OSError, ValueError, TypeError, RuntimeError):
                 # The RPC has already executed. Preserve its result and call ID
                 # even when the optional image cannot safely be returned.
                 content.append({'type': 'text', 'text': 'Selected view could not be loaded: ' + view})
                 continue
-            content.append({'type': 'image', 'data': base64.b64encode(data_bytes).decode('ascii'), 'mimeType': 'image/png'})
+            content.append({'type': 'image', 'data': base64.b64encode(data_bytes).decode('ascii'), 'mimeType': mime})
         return {'content': content}
 
     def attach_delegate_report(self, result, actor):

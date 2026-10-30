@@ -58,7 +58,7 @@ def role_mcp_config(run_dir, actor, python=sys.executable, *, _validated_delegat
 class ClaudeSessionHost:
     """Own one policy role's CLI turns; lifecycle events are never task results."""
     def __init__(self, run_dir, actor, profile, base_env, *, python=sys.executable,
-                 binary='claude', turn_timeout=900, max_budget_usd=None, total_budget_usd=None,
+                 binary='claude', turn_timeout=None, max_budget_usd=None, total_budget_usd=None,
                  budget_ledger=None, runner=run_turn, _validated_delegate=False):
         self.run = Path(run_dir).resolve()
         self.actor = actor

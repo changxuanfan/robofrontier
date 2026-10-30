@@ -7,6 +7,8 @@ import sqlite3
 import threading
 import time
 
+from ..sqlite_busy import BUSY_TIMEOUT_SECONDS, begin_immediate
+
 
 def _money(value, *, positive=True):
     if isinstance(value, bool): raise ValueError('Invalid monetary amount')
@@ -28,7 +30,7 @@ class BudgetLedger:
         self.path = Path(path)
         if not self.path.is_file(): raise ValueError('Budget ledger does not exist')
         self.lock = threading.RLock()
-        self.db = sqlite3.connect(self.path, isolation_level=None, check_same_thread=False, timeout=10)
+        self.db = sqlite3.connect(self.path, isolation_level=None, check_same_thread=False, timeout=BUSY_TIMEOUT_SECONDS)
         self.db.row_factory = sqlite3.Row
         self.db.execute('PRAGMA journal_mode=WAL'); self.db.execute('PRAGMA synchronous=FULL')
         if self.db.execute("SELECT value FROM meta WHERE key='limit'").fetchone() is None:
@@ -51,7 +53,7 @@ class BudgetLedger:
     @contextmanager
     def transaction(self):
         with self.lock:
-            self.db.execute('BEGIN IMMEDIATE')
+            begin_immediate(self.db, self.path)
             try:
                 yield
                 self.db.execute('COMMIT')

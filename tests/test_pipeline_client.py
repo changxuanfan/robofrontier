@@ -6,6 +6,7 @@ import threading
 import subprocess
 import sys
 import unittest
+from unittest.mock import patch
 from robofrontier.pipeline_client import client_call
 
 class ClientTests(unittest.TestCase):
@@ -37,6 +38,18 @@ class ClientTests(unittest.TestCase):
         threading.Thread(target=self.server.serve_forever,daemon=True).start()
         self.path.write_text(json.dumps({'schema_version':3,'run_id':'fake','actor':'A','url':f'http://127.0.0.1:{self.server.server_port}','token':'fake-test-token'}))
     def tearDown(self):self.server.shutdown();self.server.server_close();self.tmp.cleanup()
+    def test_default_http_timeout_covers_bounded_database_wait(self):
+        from robofrontier.pipeline_client import DEFAULT_HTTP_TIMEOUT_SECONDS
+        from robofrontier.sqlite_busy import MAX_BEGIN_WAIT_SECONDS
+        self.assertGreaterEqual(DEFAULT_HTTP_TIMEOUT_SECONDS, MAX_BEGIN_WAIT_SECONDS + 40)
+        import urllib.request
+        original = urllib.request.urlopen
+        with patch('robofrontier.pipeline_client.urllib.request.urlopen', wraps=original) as call:
+            client_call(self.path,'observe',{},'default-timeout',log_call_id=False)
+            self.assertEqual(call.call_args.kwargs['timeout'],DEFAULT_HTTP_TIMEOUT_SECONDS)
+            client_call(self.path,'observe',{},'explicit-timeout',timeout=2,log_call_id=False)
+            self.assertEqual(call.call_args.kwargs['timeout'],2)
+
     def test_cached_retry_does_not_send_twice_and_next_call_acknowledges_receipt(self):
         one=client_call(self.path,'observe',{},'one')
         self.assertEqual(client_call(self.path,'observe',{},'one'),one)
