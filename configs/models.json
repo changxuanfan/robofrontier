@@ -20,6 +20,26 @@
       "vision": true,
       "context_capacity": 272000
     },
+    "openlux-luna": {
+      "model": "gpt-6-luna",
+      "provider": "openlux",
+      "base_url": "https://api.openlux.ai/v1",
+      "env_key": "OPENLUX_API_KEY",
+      "effort": "high",
+      "vision": true,
+      "context_capacity": 272000,
+      "compatibility": "OpenLux account and group Responses, vision, tools and compaction require live preflight"
+    },
+    "openlux-terra": {
+      "model": "gpt-6.1-terra",
+      "provider": "openlux",
+      "base_url": "https://api.openlux.ai/v1",
+      "env_key": "OPENLUX_API_KEY",
+      "effort": "high",
+      "vision": true,
+      "context_capacity": 272000,
+      "compatibility": "OpenLux account and group Responses, vision, tools and compaction require live preflight"
+    },
     "deepseek": {
       "model": "deepseek-flash",
       "provider": "deepseek",

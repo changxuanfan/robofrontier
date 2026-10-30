@@ -18,6 +18,8 @@ import time
 from scripts.benchmark import load_env
 from robofrontier.task_families import ROOT
 
+CPU_PROFILES = ('luna', 'openlux-terra', 'openlux-luna')
+
 
 def cpu_environment():
     env = os.environ.copy()
@@ -131,58 +133,9 @@ def usage_report(batch_path):
 
 
 def collect_batch(batch_path, output):
-    """Copy closed batch evidence and role-linked sessions to a private directory."""
-    batch_path = Path(batch_path).resolve()
-    output = Path(output).resolve()
-    if output == batch_path or output.is_relative_to(batch_path):
-        raise ValueError('Collection output must be outside the batch directory')
-    batch = json.loads((batch_path/'batch.json').read_text())
-    if batch.get('status') not in ('closed', 'needs_review'):
-        raise ValueError('Collect only after the batch supervisor has closed')
-    home_marker = batch_path/'codex-home.json'
-    home = Path(json.loads(home_marker.read_text())['codex_home']) if home_marker.exists() else Path(os.environ.get('CODEX_HOME', Path.home()/'.codex'))
-    sessions = home/'sessions'
-    output.mkdir(parents=True, exist_ok=False, mode=0o700)
-    shutil.copytree(batch_path, output/'batch')
-    rows=[]
-    for job in batch['jobs']:
-        run=Path(job['run_directory']); db=run/'private/state/runtime.sqlite'; roles=[]; issues=[]
-        if not db.is_file():
-            issues.append('missing runtime.sqlite')
-        else:
-            with sqlite3.connect(f'file:{db}?mode=ro', uri=True) as conn:
-                agents=conn.execute('select id,value from agents').fetchall()
-            for actor, value in agents:
-                agent=json.loads(value); tid=agent.get('thread_id')
-                if not tid:
-                    if agent.get('kind') != 'manager': issues.append(f'{actor}: no recorded session id')
-                    continue
-                if not re.fullmatch(r'[A-Za-z0-9_-]+', tid) or not re.fullmatch(r'[A-Za-z0-9_-]+', job['case_id']):
-                    issues.append(f'{actor}: invalid session or case identifier'); continue
-                matches=list(sessions.rglob('*'+tid+'.jsonl')) if sessions.is_dir() else []
-                if len(matches)!=1:
-                    issues.append(f'{actor}: expected one session for {tid}, found {len(matches)}')
-                    roles.append({'actor':actor,'thread_id':tid,'matches':len(matches)})
-                    continue
-                target=output/'sessions'/job['case_id']/(tid+'.jsonl')
-                target.parent.mkdir(parents=True,exist_ok=True)
-                shutil.copy2(matches[0], target)
-                with target.open('rb') as stream:
-                    checksum=hashlib.file_digest(stream,'sha256').hexdigest()
-                roles.append({'actor':actor,'thread_id':tid,'session':str(target.relative_to(output)),
-                              'sha256':checksum})
-        if not roles: issues.append('no recorded role sessions')
-        results=run/'private/outputs'
-        if not any((results/name).is_file() for name in ('evaluation.json','interruption-evaluation.json','budget-cutoff.json')):
-            issues.append('no final or interruption evaluation')
-        if job.get('status') != 'closed': issues.append('job status: '+str(job.get('status')))
-        rows.append({'case_id':job['case_id'],'status':job.get('status'),'roles':roles,'issues':issues})
-    report={'schema':'robofrontier.luna-collection.v1','batch_status':batch['status'],
-            'source_batch':str(batch_path),'job_count':len(rows),'jobs':rows,
-            'complete':bool(rows) and not any(row['issues'] for row in rows),
-            'note':'Private task evidence and sessions; completeness checks do not prove score validity.'}
-    (output/'collection.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
-    return report
+    """Collect stopped task evidence through the shared engine-aware collector."""
+    from scripts.collect_benchmark_batch import collect_batch as collect
+    return collect(batch_path, output)
 
 
 def interval_union(intervals):
@@ -236,8 +189,10 @@ def performance_report(batch_path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
-    sub.add_parser('doctor')
+    doctor_cmd = sub.add_parser('doctor')
+    doctor_cmd.add_argument('--profile', choices=CPU_PROFILES, default='luna')
     preflight = sub.add_parser('preflight')
+    preflight.add_argument('--profile', choices=CPU_PROFILES, default='luna')
     preflight.add_argument('--output', type=Path, help='Use the isolated Codex home for this future batch')
     assets = sub.add_parser('setup-assets')
     assets.add_argument('--archive', type=Path)
@@ -245,17 +200,20 @@ def main():
     collect.add_argument('batch', type=Path)
     collect.add_argument('--output', type=Path, required=True)
     smoke = sub.add_parser('l3-max-test', help='Four maximum-arm Level 3 engineering tasks, parallel 4, one hour each')
+    smoke.add_argument('--profile', choices=CPU_PROFILES, default='luna')
     smoke.add_argument('--output', type=Path, required=True)
     smoke.add_argument('--prepare-only', action='store_true', help='Prepare the batch without model calls')
     smoke.add_argument('--wall-limit-s', type=float, default=3600, help='Per-task seconds after START (default 3600)')
     for command in ('prepare', 'submit'):
         prepare = sub.add_parser(command)
+        prepare.add_argument('--profile', choices=CPU_PROFILES, default='luna')
         prepare.add_argument('--output', type=Path, required=True)
         selection = prepare.add_mutually_exclusive_group()
         selection.add_argument('--level', type=int, choices=(1, 2, 3), default=None)
         selection.add_argument('--all-levels', action='store_true', help='Select all three levels (36 cases without other filters)')
         prepare.add_argument('--min-arms', action='store_true')
         prepare.add_argument('--families', nargs='+', choices=('transport', 'mosaic', 'relay', 'dial'))
+        prepare.add_argument('--cases', nargs='+', help='Select exact released case IDs')
         prepare.add_argument('--wall-limit-s', type=float, default=86400)
         if command == 'submit': prepare.add_argument('--parallel', type=int, default=36)
     for command in ('run', 'status', 'stop', 'usage', 'performance'):
@@ -303,7 +261,7 @@ def main():
     env = cpu_environment()
     if args.command == 'doctor':
         from scripts.benchmark_handoff import doctor
-        report = doctor(['luna'])
+        report = doctor([args.profile])
         try:
             report['cpu_render'] = {'passed': True, **render_probe(env)}
         except (RuntimeError, subprocess.TimeoutExpired) as error:
@@ -313,28 +271,33 @@ def main():
         except (RuntimeError, subprocess.TimeoutExpired) as error:
             report['codex_sandbox'] = {'passed': False, 'error': str(error)}
         print(json.dumps(report, ensure_ascii=False, indent=2))
-        return 0 if report['cpu_render']['passed'] and report['codex_sandbox']['passed'] and report['profiles']['luna']['credential_set'] and report['assets']['missing'] == 0 and report['assets']['changed'] == 0 else 1
+        return 0 if report['cpu_render']['passed'] and report['codex_sandbox']['passed'] and report['profiles'][args.profile]['credential_set'] and report['assets']['missing'] == 0 and report['assets']['changed'] == 0 else 1
     if args.command == 'usage':
         print(json.dumps(usage_report(args.batch), ensure_ascii=False, indent=2))
         return 0
     if args.command == 'performance':
         print(json.dumps(performance_report(args.batch), ensure_ascii=False, indent=2))
         return 0
-    if args.command in ('preflight', 'run', 'submit') and not env.get('OPENAI_API_KEY'):
-        raise SystemExit('Set OPENAI_API_KEY in .env or the process environment.')
+    if args.command == 'run':
+        batch_info = json.loads((args.batch/'batch.json').read_text())
+        names = {job.get('profile') for job in batch_info.get('jobs', [])}
+        if len(names) != 1 or not names <= set(CPU_PROFILES):
+            raise SystemExit('Expected a prepared batch with one supported profile.')
+        selected_profile = names.pop()
+    else:
+        selected_profile = getattr(args, 'profile', 'luna')
+    key_name = {'luna': 'OPENAI_API_KEY', 'openlux-terra': 'OPENLUX_API_KEY', 'openlux-luna': 'OPENLUX_API_KEY'}[selected_profile]
+    if args.command in ('preflight', 'run', 'submit') and not env.get(key_name):
+        raise SystemExit('Set ' + key_name + ' in .env or the process environment.')
     if args.command in ('preflight', 'run', 'submit'):
         sandbox_probe(env)
     if args.command in ('run', 'submit'):
-        if args.command == 'run':
-            batch = json.loads((args.batch/'batch.json').read_text())
-            if not batch.get('jobs') or any(job.get('profile') != 'luna' for job in batch['jobs']):
-                raise SystemExit('This entrypoint accepts only a prepared Luna batch.')
         print('CPU renderer: ' + json.dumps(render_probe(env)), flush=True)
     cmd = [sys.executable, '-m', 'scripts.benchmark', 'prepare' if args.command == 'submit' else args.command]
-    if args.command == 'preflight': cmd += ['--models', 'luna']
+    if args.command == 'preflight': cmd += ['--models', selected_profile]
     elif args.command in ('prepare', 'submit'):
         if not math.isfinite(args.wall_limit_s) or args.wall_limit_s <= 0: raise SystemExit('Wall limit must be positive and finite.')
-        cmd += ['--models', 'luna', '--wall-limit-s', str(args.wall_limit_s), '--output', str(args.output)]
+        cmd += ['--models', selected_profile, '--wall-limit-s', str(args.wall_limit_s), '--output', str(args.output)]
         if args.level is not None: cmd += ['--level', str(args.level)]
         if args.min_arms: cmd += ['--min-arms']
         if args.families: cmd += ['--families', *args.families]

@@ -32,6 +32,7 @@ from .task_config import load_task, action_limits, panda_control_profile
 from .robot_control import PandaArm
 from .scene_task import camera_names
 from .observation_image import observation_profile
+from .tool_errors import CallIdConflict, conflict_error
 from .runtime_service import RuntimeService
 from .motion_check import (CONTROL_DT, JOINT_SPEED_LIMIT, JOINT_ACCEL_LIMIT,
                            TRACKING_LIMIT, RobotGeometry, prepare_check, state_id)
@@ -409,11 +410,10 @@ class Service(RuntimeService):
         self.perf['capture_wall_s']+=time.perf_counter()-capture_start;self.perf['captures']+=1
         return result
 
-    def run(self):
+    def http_handler(self, observer):
         from http.cookies import SimpleCookie
         from urllib.parse import urlsplit
         service=self
-        observer=secrets.token_urlsafe(24)
         class Handler(BaseHTTPRequestHandler):
             def log_message(self,*args):pass
             def do_GET(self):
@@ -441,8 +441,17 @@ class Service(RuntimeService):
                     job=service.accept(actor,body['op'],body.get('data',{}),body['call_id'],body.get('ack_delivery'))
                     answer=job['result'] if job['done'].wait(40) else {'call_id':job['id'],'execution_status':'pending','note':'Query/retry original call ID; do not create duplicate motion'}
                     raw=json.dumps(answer,ensure_ascii=False).encode();self.send_response(200);self.send_header('Content-Type','application/json');self.end_headers();self.wfile.write(raw)
+                except CallIdConflict as error:
+                    raw=json.dumps(conflict_error(error.call_id)).encode()
+                    self.send_response(409);self.send_header('Content-Type','application/json')
+                    self.end_headers();self.wfile.write(raw)
                 except (ValueError,KeyError,TypeError) as error:self.send_error(400,str(error))
                 except (BrokenPipeError,ConnectionResetError):pass
+        return Handler
+
+    def run(self):
+        observer=secrets.token_urlsafe(24)
+        Handler=self.http_handler(observer)
         try:
             if self.hidden and os.environ.get('MUJOCO_GL','').lower()=='osmesa':
                 from mujoco.osmesa import GLContext

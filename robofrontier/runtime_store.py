@@ -9,6 +9,7 @@ import time
 import uuid
 
 from .sqlite_busy import BUSY_TIMEOUT_SECONDS, begin_immediate
+from .tool_errors import CallIdConflict
 
 
 def packed(value):
@@ -319,7 +320,7 @@ class RuntimeStore:
             row = self.db.execute('SELECT * FROM calls WHERE id=?', (call_id,)).fetchone()
             if row:
                 if (row['actor'], row['op'], row['parameters']) != (actor, op, packed(parameters)):
-                    raise ValueError('Call id reused with different parameters')
+                    raise CallIdConflict(call_id)
                 return dict(row)
             self.db.execute('INSERT INTO calls VALUES (?,?,?,?,?,?,?)',
                             (call_id, actor, op, packed(parameters), 'accepted', None, time.time()))

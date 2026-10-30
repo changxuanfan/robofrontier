@@ -4,7 +4,7 @@
 
 本分支使用 **GPT-6 Luna、high、OpenAI API Key、adaptive**。默认选择全部 36 项、最多 36 项并发，每项开始后限时 86400 秒（24 小时）。Controller 可自行增减子代理，模型请求并发可能高于任务数。没有监督模型的主 session 也可以通过命令运行；运行会产生 API 费用。当前任务资产是 **Mosaic R14**。
 
-**正式 24 小时任务暂不就绪：**任务预算设计为从 START 开始计时，但当前 Codex 宿主另有从进程创建起算的固定 24 小时截止条件，可能提前结束任务。此问题尚未修复和验证；请先用于环境准备和经授权的小规模工程测试，不要据此提交 24 小时正式批次。
+任务预算从持久化的 START 时间开始计算；Codex 宿主不再额外施加从进程创建起算的固定 24 小时截止。可用 `--wall-limit-s 43200` 准备 12 小时任务。物理连接启动仍有工程超时，Slurm 的 `--time` 覆盖准备、运行和收尾。物理世界意外中断后不能自动重启。正式集群批次仍受上方数据库存储方案验证限制。
 
 36 项持续并发尚未在目标 Linux 服务器验证。运行前确认 CPU、内存、磁盘、API 额度及费用预算；全部任务并发不等于它们一定同时开始或一定成功。后台保持完整记录不等于自动备份。
 
@@ -38,7 +38,7 @@ chmod 600 .env
 
 ## 2. 在 Slurm 排队
 
-准备阶段执行 `setup-assets`，以便计算节点无法联网 GitHub 时仍可复用资产。以下仅是提交格式，资源数值是**示例，不是 36 项所需配置**；请根据集群规则、排队限制和测试结果修改。任务预算设计为从 START 开始，但当前存在上文所述的宿主截止问题。Slurm 作业时限还必须留出预检、启动和收尾时间，过短会中断任务。
+准备阶段执行 `setup-assets`，以便计算节点无法联网 GitHub 时仍可复用资产。以下仅是提交格式，资源数值是**示例，不是 36 项所需配置**；请根据集群规则、排队限制和测试结果修改。任务预算从 START 开始。Slurm 作业时限还必须留出预检、启动和收尾时间，过短会中断任务。
 
 ```sh
 sbatch --partition=YOUR_PARTITION --cpus-per-task=YOUR_CPUS --mem=YOUR_MEMORY \
@@ -154,3 +154,7 @@ docker run --rm -v "$PWD:/workspace" -w /workspace robofrontier-luna-cpu submit 
 ```
 
 在 macOS 的 Docker，默认 seccomp 可能阻止 Codex sandbox：此前测试需给上述各命令增加 `--security-opt seccomp=unconfined`。这会降低容器隔离；Linux 集群先用默认配置检查，若失败由管理员确认可用方案。容器用户可能在宿主机创建不同所有者的文件。并非所有 Slurm 站点提供 Docker；上面的 Slurm 脚本使用原生 Linux Python 环境。
+
+### 已停止批次的收集与无损归档
+
+`collect` 现在调用四分支共用的收集器，新清单格式为 `robofrontier.policy-collection.v1`；旧 Luna 清单和归档仍可读取。命令、恢复兼容性、异常数据保留及空间要求见 [数据收集、无损归档与恢复](evidence-storage.md)。源数据不会自动删除，完整收集不代表任务成功。

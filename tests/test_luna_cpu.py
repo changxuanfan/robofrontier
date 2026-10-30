@@ -11,6 +11,45 @@ from scripts.luna_cpu import cpu_environment, interval_union, usage_report, coll
 
 
 class LunaCpuTests(unittest.TestCase):
+    def test_openlux_luna_has_separate_provider_and_high_effort(self):
+        p = profile('openlux-luna')
+        with tempfile.TemporaryDirectory() as folder:
+            launch = launch_config(p, Path(folder))
+            self.assertEqual((p['model'], p['effort']), ('gpt-6-luna', 'high'))
+            self.assertIn('model_providers.openlux.env_key="OPENLUX_API_KEY"', launch['args'])
+            self.assertIn('model_providers.openlux.wire_api="responses"', launch['args'])
+
+    def test_openlux_profile_uses_responses_and_separate_credential(self):
+        p = profile('openlux-terra')
+        with tempfile.TemporaryDirectory() as folder:
+            launch = launch_config(p, Path(folder))
+            self.assertEqual((p['model'], p['effort']), ('gpt-6.1-terra', 'high'))
+            self.assertIn('model_providers.openlux.env_key="OPENLUX_API_KEY"', launch['args'])
+            self.assertIn('model_providers.openlux.base_url="https://api.openlux.ai/v1"', launch['args'])
+            self.assertIn('model_providers.openlux.wire_api="responses"', launch['args'])
+            self.assertFalse(json.loads((Path(folder)/'models.json').read_text())['models'][0]['use_responses_lite'])
+
+    def test_openlux_submit_uses_selected_profile_and_credential(self):
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {'OPENLUX_API_KEY': 'test'}, clear=True):
+            output = Path(tmp)/'batch'; output.mkdir()
+            with patch('sys.argv', ['luna_cpu', 'submit', '--profile', 'openlux-terra', '--output', str(output), '--parallel', '4']), \
+                 patch('scripts.luna_cpu.ROOT', Path(tmp)), patch('scripts.luna_cpu.load_env'), \
+                 patch('scripts.luna_cpu.sandbox_probe'), patch('scripts.luna_cpu.render_probe', return_value={}), \
+                 patch('scripts.luna_cpu.subprocess.call', return_value=0) as call:
+                self.assertEqual(main(), 0)
+            command = call.call_args_list[0].args[0]
+            self.assertEqual(command[command.index('--models') + 1], 'openlux-terra')
+            self.assertEqual(call.call_args_list[1].args[0][-2:], ['--parallel', '4'])
+
+    def test_run_detects_prepared_profile_and_requires_correct_key(self):
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {'OPENAI_API_KEY': 'test'}, clear=True):
+            batch = Path(tmp)/'batch'; batch.mkdir()
+            (batch/'batch.json').write_text(json.dumps({'jobs': [{'profile': 'openlux-terra'}]}))
+            with patch('sys.argv', ['luna_cpu', 'run', str(batch)]), \
+                 patch('scripts.luna_cpu.ROOT', Path(tmp)), patch('scripts.luna_cpu.load_env'):
+                with self.assertRaisesRegex(SystemExit, 'OPENLUX_API_KEY'):
+                    main()
+
     def test_l3_max_test_prepares_exact_four_maximum_arm_cases(self):
         with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {}, clear=False):
             output = Path(tmp)/'batch'; output.mkdir()
