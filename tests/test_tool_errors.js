@@ -45,7 +45,7 @@ test('omitted outer ID generates a distinct request ID and preserves action targ
 const a=process.argv.slice(2),id=a[a.indexOf('--call-id')+1],data=JSON.parse(a[a.indexOf('--data')+1]);
 process.stdout.write(JSON.stringify({call_id:id,execution:{call_id:data.call_id,status:'completed'}}));`;
     fs.writeFileSync(python,source,{mode:0o755});
-    const host={actors:new Map([['thread','Controller']]),run:root,cwd:root,python,event:()=>{}};
+    const events=[],host={actors:new Map([['thread','Controller']]),run:root,cwd:root,python,event:x=>events.push(x)};
     const reply=await PolicyHost.prototype.toolRequest.call(host,'item/tool/call',{
       tool:'robot',threadId:'thread',callId:'native-query-1',arguments:{op:'job',data:{call_id:'action-A'}}});
     const value=JSON.parse(reply.contentItems[0].text);
@@ -53,5 +53,8 @@ process.stdout.write(JSON.stringify({call_id:id,execution:{call_id:data.call_id,
     assert.equal(value.call_id,'Controller-native-query-1');
     assert.equal(value.execution.call_id,'action-A');
     assert.notEqual(value.call_id,value.execution.call_id);
+    assert.deepEqual(events.map(e=>e.event),['robot_tool_started','robot_tool_completed']);
+    assert.equal(events[1].op,'job');
+    assert.ok(events[1].duration_s>=0);
   } finally {fs.rmSync(root,{recursive:true,force:true});}
 });
