@@ -14,7 +14,9 @@ from robofrontier.tool_errors import CallIdConflict, conflict_error, uncertain_e
 
 TOOL = {
     'name': 'robot',
-    'description': 'Call the robot API bound to this role. Selected camera views are returned as images. Preserve call_id for uncertain operations.',
+    'description': ('Call the robot API bound to this role. For each new move, gripper, action_batch, delegate or stop, '
+                    'provide a unique stable outer call_id. For job, put the original action ID in data.call_id '
+                    'and omit the outer call_id. Retry an uncertain request only with its original outer ID and identical op and data.'),
     'inputSchema': {'type': 'object', 'properties': {
         'op': {'type': 'string'}, 'data': {'type': 'object'},
         'call_id': {'type': 'string'}, 'views': {'type': 'array', 'items': {'type': 'string'}}},

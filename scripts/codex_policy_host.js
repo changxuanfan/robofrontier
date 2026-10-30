@@ -22,8 +22,8 @@ function toolFailure(callId, stdout) {
       'The tool result could not be confirmed; execution must not be inferred.',
     request_status:conflict?'rejected':'unknown',original_call_status:'unknown',
     note:conflict?
-      'The conflicting request was rejected. Inspect pending and, for your physical actions, job with the original ID. Use a new ID only for an intentionally new request after reconciling existing work; never replay uncertain motion.':
-      'Inspect pending and, for your physical actions, job with the original ID. Do not create a new ID to replay an uncertain operation.'};
+      'The conflicting request was rejected; the original request status is unknown. Inspect pending. To query your action, send a new job request with the original action ID in data.call_id and omit the outer call_id. Reconcile before any new physical action; never replay uncertain motion.':
+      'The original request status is unknown. Inspect pending. To query your action, send a new job request with the original action ID in data.call_id and omit the outer call_id. Retry an uncertain request only with its original outer call_id and identical operation and data; never replay motion under a new ID.'};
 }
 function observationMime(data) {
   if (data.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]))) return 'image/png';
@@ -31,9 +31,9 @@ function observationMime(data) {
   throw new Error('Observation is not PNG or JPEG');
 }
 const robotTool = {type:'function',name:'robot',description:
-  'Call your assigned RoboFrontier role API. Same operations/data as the frozen skill. Selected views return actual RGB images. Never manage sessions or use another role connection.',
+  'Call your assigned RoboFrontier role API. For a new request omit outer call_id; its generated request ID is returned as call_id. For job, data.call_id is the original action ID, not the new request ID. Selected views return RGB images.',
   inputSchema:{type:'object',properties:{op:{type:'string'},data:{type:'object'},
-    call_id:{type:'string'},views:{type:'array',items:{type:'string'}}},required:['op','data']}};
+    call_id:{type:'string',description:'Optional request ID. Omit for a new request. To retry an uncertain request, use its original ID and identical op and data.'},views:{type:'array',items:{type:'string'}}},required:['op','data']}};
 
 class PolicyHost {
   constructor(run, cwd, python) {
@@ -55,6 +55,8 @@ class PolicyHost {
     if (method!=='item/tool/call' || p.tool!=='robot') throw new Error('Unsupported host tool');
     const actor=this.actors.get(p.threadId); if (!actor) throw new Error('Unbound policy role');
     const a=typeof p.arguments==='string'?JSON.parse(p.arguments):p.arguments;
+    const toolStarted=Date.now();
+    this.event({event:'robot_tool_started',actor,thread_id:p.threadId,op:a.op,call_id:p.callId});
     if (['move','gripper','action_batch'].includes(a.op) && a.data?.cameras===undefined)
       a.data={...(a.data||{}),cameras:a.views||[]};
     // Native call IDs are scoped by actor and stable across transport retries.
@@ -79,11 +81,13 @@ class PolicyHost {
           contentItems.push({type:'inputText',text:'Selected view could not be loaded: '+view});
         }
       }
+      this.event({event:'robot_tool_completed',actor,thread_id:p.threadId,op:a.op,call_id:p.callId,duration_s:(Date.now()-toolStarted)/1000});
       return {success:true,contentItems};
     } catch(error) {
       const failure=toolFailure(callId,error.stdout);
       this.event({event:'robot_tool_failed',actor,thread_id:p.threadId,op:a.op,call_id:p.callId,
-        durable_call_id:callId,error_code:failure.error_code,request_status:failure.request_status});
+        durable_call_id:callId,error_code:failure.error_code,request_status:failure.request_status,
+        duration_s:(Date.now()-toolStarted)/1000});
       return {success:false,contentItems:[{type:'inputText',text:JSON.stringify(failure)}]};
     }
   }
@@ -143,7 +147,7 @@ class PolicyHost {
   bootstrap(actor) {
     return `执行新的独立 RoboFrontier 试验。运行目录：${this.run}。当前身份 ${actor}。
 先读取本 run 的 public/inputs/common.md、policy-rules.md、task.json、roles/${actor}.md、skill/SKILL.md、skill/references/tools.md、communication.md 与 adaptive.md（仅 adaptive）。只读取本任务公开输入、自己的工作笔记和被允许的图像。
-CLI 传输说明：使用本会话的 robot 工具，op/data 与冻结 Skill 的角色 API 完全相同；call_id 为你选择的稳定编号，views 明确选择本次返回的相机图像。robot 工具自动绑定自己的连接，返回完整 JSON 和真实 RGB。它等价于 Desktop 的 robotTool，无需装载 functions.exec 或 role_tools.js。做本地图像分析等非机器人工作后，用 robot inbox 刷新收件，等价于 roleStep。路径不是看过图片。
+CLI 传输说明：使用本会话的 robot 工具，op/data 与冻结 Skill 的角色 API 完全相同；新请求省略外层 call_id，响应中的 call_id 是该次请求编号；job 的 data.call_id 填原动作编号，新的 job 请求仍省略外层 call_id。结果未确认时只能用原外层编号和相同 op/data 重试同一请求，不能换编号重放动作。views 明确选择本次返回的相机图像。robot 工具自动绑定自己的连接，返回完整 JSON 和真实 RGB。它等价于 Desktop 的 robotTool，无需装载 functions.exec 或 role_tools.js。做本地图像分析等非机器人工作后，用 robot inbox 刷新收件，等价于 roleStep。路径不是看过图片。
 实验已经 START，计时已开始。先阅读任务并查看公开初始图或 robot observe，然后自行决定计划和机器人动作。可调用 robot ready 获取能力与限制，调用后继续执行，不需要等待另一条 START。任务内可按 adaptive 规则通过 robot delegate 请求 fork；不要直接管理会话。
 本次评分版本 terminal_outcome_v2：完成由当前任务公布的条件决定；任务支持的过程事件按各自检测规则单独报告，记录不自动否决完成。发生问题后可自行观察、恢复并继续。Relay 的最终目标是实际释放并支撑在 GOAL 容差内，空中交接记录不作为最终完成门槛。
 从 START 起最多 ${this.wallLimit} 秒，包括思考、通信、fork、容量等待与动作。收到 run_ended/预算结束立即停止新工作。结束只由任务规则和真实工具结果判断。

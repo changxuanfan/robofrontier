@@ -12,7 +12,7 @@ def conflict_error(call_id):
         'tool_error_schema': 1, 'call_id': call_id, 'error_code': 'CALL_ID_CONFLICT',
         'error': 'This call ID is already associated with a different request.',
         'request_status': 'rejected', 'original_call_status': 'unknown',
-        'note': 'The conflicting request was rejected. Inspect pending and, for your physical actions, job with the original ID. Use a new ID only for an intentionally new request after reconciling existing work; never replay uncertain motion.',
+        'note': 'The conflicting request was rejected; the original request status is unknown. Inspect pending. To query your action, send a new job request with the original action ID in data.call_id and omit the outer call_id. Reconcile before any new physical action; never replay uncertain motion.',
     }
 
 
@@ -29,5 +29,5 @@ def uncertain_error(call_id):
         'tool_error_schema': 1, 'call_id': call_id, 'error_code': 'TRANSPORT_UNCERTAIN',
         'error': 'The tool result could not be confirmed; execution must not be inferred.',
         'request_status': 'unknown', 'original_call_status': 'unknown',
-        'note': 'Inspect pending and, for your physical actions, job with the original ID. Do not create a new ID to replay an uncertain operation.',
+        'note': 'The original request status is unknown. Inspect pending. To query your action, send a new job request with the original action ID in data.call_id and omit the outer call_id. Retry an uncertain request only with its original outer call_id and identical operation and data; never replay motion under a new ID.',
     }
