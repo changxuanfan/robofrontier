@@ -59,7 +59,6 @@ class AdaptivePolicyHost:
                                       setup_budget_usd=self.setup_budget_usd,child_budget_usd=self.turn_budget_usd)
         self.dispatcher=AdaptiveDispatcher(self.store,self.setup)
         if self.store.get('config').get('startup_protocol') == 'direct_controller_v2':
-            self.started_monotonic = time.monotonic()
             reply=self.dispatcher.admin('request-start')
             if not reply.get('started'): raise ValueError('Direct START was not confirmed')
         return self.host.send(self.prompt)

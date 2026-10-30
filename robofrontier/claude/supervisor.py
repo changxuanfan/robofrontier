@@ -10,7 +10,7 @@ import time
 class CentralizedSupervisor:
     def __init__(self, policy, owner_alive, *, stop_requested=lambda: False,
                  startup_timeout_s=300, wall_limit_s=86400, poll_s=1,
-                 seal_timeout_s=30, clock=time.monotonic, sleep=time.sleep):
+                 seal_timeout_s=30, clock=time.monotonic, wall_clock=time.time, sleep=time.sleep):
         for name, value, maximum in (('startup_timeout_s', startup_timeout_s, 86400),
                                      ('wall_limit_s', wall_limit_s, 86400),
                                      ('poll_s', poll_s, 60)):
@@ -26,6 +26,7 @@ class CentralizedSupervisor:
         self.poll_s = poll_s
         self.seal_timeout_s = seal_timeout_s
         self.clock = clock
+        self.wall_clock = wall_clock
         self.sleep = sleep
         self.used = False
 
@@ -48,8 +49,11 @@ class CentralizedSupervisor:
             else:
                 self.policy.bind_and_bootstrap()
                 if self.policy.store.get('lifecycle') == 'running':
-                    # The direct host starts before the first model turn.
-                    started_at = getattr(self.policy, 'started_monotonic', self.clock())
+                    # Project the persisted START onto the monotonic clock.
+                    started_wall = self.policy.store.get('start_at')
+                    if not isinstance(started_wall, (int, float)) or isinstance(started_wall, bool) or not math.isfinite(started_wall):
+                        raise ValueError('Running policy is missing a valid START time')
+                    started_at = self.clock() - max(0., self.wall_clock() - started_wall)
                 while True:
                     if self.stop_requested():
                         reason = 'stop_requested'; break
@@ -72,7 +76,10 @@ class CentralizedSupervisor:
                             reason = 'startup_timeout'; break
                         if state == 'idle' and self.policy.store.agent('Controller')['ready']:
                             self.policy.start_when_ready()
-                            started_at = self.clock()
+                            started_wall = self.policy.store.get('start_at')
+                            if not isinstance(started_wall, (int, float)) or isinstance(started_wall, bool) or not math.isfinite(started_wall):
+                                raise ValueError('Running policy is missing a valid START time')
+                            started_at = self.clock() - max(0., self.wall_clock() - started_wall)
                     else:
                         if now - started_at >= self.wall_limit_s:
                             reason = 'wall_limit'; break

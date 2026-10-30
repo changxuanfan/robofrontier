@@ -10,6 +10,7 @@ import threading
 import uuid
 
 from robofrontier.pipeline_client import client_call
+from robofrontier.tool_errors import CallIdConflict, conflict_error, uncertain_error
 
 TOOL = {
     'name': 'robot',
@@ -59,10 +60,12 @@ class RobotBridge:
             data = {**data, 'cameras': views}
         try:
             result = self.invoke(self.connection, op, data, call_id, log_call_id=False)
+        except CallIdConflict:
+            return {'isError': True, 'content': [{'type': 'text', 'text':
+                json.dumps(conflict_error(call_id), ensure_ascii=False)}]}
         except Exception:
             return {'isError': True, 'content': [{'type': 'text', 'text':
-                'Tool transport failed. Original call_id=' + str(call_id) +
-                '. Inspect pending/job with this ID before retrying; never recreate motion.'}]}
+                json.dumps(uncertain_error(call_id), ensure_ascii=False)}]}
         if op == 'work' and 'delegate_id' in data:
             result = self.attach_delegate_report(result, data['delegate_id'])
         content = [{'type': 'text', 'text': json.dumps(result, ensure_ascii=False, allow_nan=False)}]

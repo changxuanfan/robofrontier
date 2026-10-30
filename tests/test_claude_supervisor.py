@@ -26,7 +26,7 @@ class Policy:
         self.store = Store(); self.host = Host(); self.dispatcher = None; self.binds = 0; self.cycles = 0
     def bind_and_bootstrap(self):
         self.binds += 1; self.dispatcher = Dispatcher(); self.host.state = 'active'
-    def start_when_ready(self): self.store.data['lifecycle'] = 'running'
+    def start_when_ready(self): self.store.data.update(lifecycle='running', start_at=self.now())
     def cycle(self): self.cycles += 1; return {'paused': False}
     def stop(self): self.host.stopped = True; self.host.state = 'unknown'
 
@@ -35,7 +35,8 @@ class SupervisorTests(unittest.TestCase):
     def supervisor(self, policy, sleep, **kwargs):
         self.now = 0
         def tick(seconds): self.now += seconds; sleep()
-        return CentralizedSupervisor(policy, lambda: True, clock=lambda: self.now, sleep=tick,
+        policy.now = lambda: self.now
+        return CentralizedSupervisor(policy, lambda: True, clock=lambda: self.now, wall_clock=lambda: self.now, sleep=tick,
                                      poll_s=1, startup_timeout_s=3, wall_limit_s=4, **kwargs)
 
     def test_ready_then_start_dispatch_wall_limit_and_seal(self):
@@ -61,7 +62,7 @@ class SupervisorTests(unittest.TestCase):
             p.binds += 1
             p.dispatcher = Dispatcher()
             p.store.data['lifecycle'] = 'running'
-            p.started_monotonic = self.now
+            p.store.data['start_at'] = self.now
             self.now += 3
             p.host.state = 'active'
         p.bind_and_bootstrap = bind
@@ -70,6 +71,33 @@ class SupervisorTests(unittest.TestCase):
         self.assertEqual(result['reason'], 'wall_limit')
         self.assertEqual(self.now, 4)
         self.assertEqual(p.cycles, 1)
+
+    def test_direct_start_uses_persisted_time_not_host_creation_or_bootstrap(self):
+        p = Policy()
+        supervisor = self.supervisor(p, lambda: None)
+        def bind():
+            p.binds += 1; p.dispatcher = Dispatcher()
+            self.now = 100
+            p.store.data.update(lifecycle='running', start_at=100)
+            self.now = 103
+            p.host.state = 'active'
+        p.bind_and_bootstrap = bind
+        result = supervisor.run()
+        self.assertEqual(result['reason'], 'wall_limit')
+        self.assertEqual(self.now, 104)
+        self.assertEqual(p.cycles, 1)
+
+    def test_missing_persisted_start_fails_closed(self):
+        p = Policy()
+        supervisor = self.supervisor(p, lambda: None)
+        def bind():
+            p.dispatcher = Dispatcher(); p.store.data['lifecycle'] = 'running'
+            p.host.state = 'active'
+        p.bind_and_bootstrap = bind
+        result = supervisor.run()
+        self.assertEqual(result['reason'], 'supervisor_error')
+        self.assertEqual(result['error_type'], 'ValueError')
+        self.assertEqual(p.cycles, 0)
 
     def test_unknown_turn_stops_without_resending(self):
         p = Policy()

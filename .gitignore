@@ -32,3 +32,7 @@ vendor/
 
 # Worktree-local cooperative Oracle dependency, never shared runtime state.
 /.oracle-deps/
+
+/.codex-luna/
+
+/.codex-tools/

@@ -54,7 +54,6 @@ class CentralizedPolicyHost:
         self.bound = True
         self.dispatcher = ClaudeDispatcher(self.store, self.host)
         if self.store.get('config').get('startup_protocol') == 'direct_controller_v2':
-            self.started_monotonic = time.monotonic()
             reply = self.dispatcher.admin('request-start')
             if not reply.get('started'): raise ValueError('Direct START was not confirmed')
         return self.host.send(self.prompt)
