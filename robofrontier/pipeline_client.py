@@ -10,9 +10,15 @@ import urllib.error
 import urllib.request
 import uuid
 from .run_setup import write_json
+from .sqlite_busy import MAX_BEGIN_WAIT_SECONDS
 
 
-def client_call(connection_path, op, data, call_id=None, timeout=45, log_call_id=True):
+# Allow the server to finish its bounded SQLite acquisition before its normal
+# 40-second response slice expires; explicit caller timeouts are unchanged.
+DEFAULT_HTTP_TIMEOUT_SECONDS = 45 + MAX_BEGIN_WAIT_SECONDS
+
+
+def client_call(connection_path, op, data, call_id=None, timeout=DEFAULT_HTTP_TIMEOUT_SECONDS, log_call_id=True):
     connection_path=Path(connection_path).resolve()
     cfg=json.loads(connection_path.read_text())
     if cfg.get('schema_version')!=3:

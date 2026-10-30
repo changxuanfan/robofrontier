@@ -8,6 +8,11 @@ const {CodexRpc,capacityFailure} = require('./codex_rpc');
 const {runMetaDispatcher} = require('./meta_dispatcher');
 const sleep = ms => new Promise(resolve=>setTimeout(resolve,ms));
 const read = file=>JSON.parse(fs.readFileSync(file,'utf8'));
+function observationMime(data) {
+  if (data.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]))) return 'image/png';
+  if (data.length>=3 && data[0]===255 && data[1]===216 && data[2]===255) return 'image/jpeg';
+  throw new Error('Observation is not PNG or JPEG');
+}
 const robotTool = {type:'function',name:'robot',description:
   'Call your assigned RoboFrontier role API. Same operations/data as the frozen skill. Selected views return actual RGB images. Never manage sessions or use another role connection.',
   inputSchema:{type:'object',properties:{op:{type:'string'},data:{type:'object'},
@@ -49,9 +54,15 @@ class PolicyHost {
       for (const view of a.views||[]) {
         const file=observation?.images?.[view];
         if (!file) {contentItems.push({type:'inputText',text:'Selected view unavailable: '+view});continue;}
-        const real=fs.realpathSync(file),publicRoot=fs.realpathSync(path.join(this.run,'public'))+path.sep;
-        if (!real.startsWith(publicRoot)) throw new Error('Observation outside this run public directory');
-        contentItems.push({type:'inputImage',imageUrl:'data:image/png;base64,'+fs.readFileSync(real).toString('base64')});
+        try {
+          const real=fs.realpathSync(file),publicRoot=fs.realpathSync(path.join(this.run,'public'))+path.sep;
+          if (!real.startsWith(publicRoot)) throw new Error('Observation outside this run public directory');
+          const bytes=fs.readFileSync(real),mime=observationMime(bytes);
+          contentItems.push({type:'inputImage',imageUrl:'data:'+mime+';base64,'+bytes.toString('base64')});
+        } catch (error) {
+          // The physical action already ran: retain the original result and call_id.
+          contentItems.push({type:'inputText',text:'Selected view could not be loaded: '+view});
+        }
       }
       this.event({event:'robot_tool_completed',actor,thread_id:p.threadId,op:a.op,call_id:p.callId,duration_s:(Date.now()-toolStarted)/1000});
       return {success:true,contentItems};
@@ -195,4 +206,4 @@ if (require.main===module) {
   process.on('SIGTERM',()=>{host.stopped=true;});process.on('SIGINT',()=>{host.stopped=true;});
   host.runTask().then(r=>process.stdout.write(JSON.stringify(r)+'\n')).catch(e=>{process.stderr.write(e.stack+'\n');process.exitCode=1;});
 }
-module.exports={PolicyHost,robotTool};
+module.exports={PolicyHost,robotTool,observationMime};

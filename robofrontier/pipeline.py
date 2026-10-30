@@ -31,6 +31,7 @@ from .recording import Video
 from .task_config import load_task, action_limits, panda_control_profile
 from .robot_control import PandaArm
 from .scene_task import camera_names
+from .observation_image import observation_profile
 from .runtime_service import RuntimeService
 from .motion_check import (CONTROL_DT, JOINT_SPEED_LIMIT, JOINT_ACCEL_LIMIT,
                            TRACKING_LIMIT, RobotGeometry, prepare_check, state_id)
@@ -192,7 +193,9 @@ class World:
             self.data.time=0
         mujoco.mj_forward(self.model,self.data)
         hand_cfg=self.directory/'private/inputs/harness.json'
-        profile=json.loads(hand_cfg.read_text()).get('gripper_position_servo','legacy') if hand_cfg.exists() else 'legacy'
+        frozen_cfg=json.loads(hand_cfg.read_text()) if hand_cfg.exists() else {}
+        self.observation_image=observation_profile(frozen_cfg)
+        profile=frozen_cfg.get('gripper_position_servo','legacy')
         for arm in self.arms.values():arm.configure_hand_position_servo(profile)
         self.beam_sampler=None;self.spring_sampler=None;self.suite_sampler=None;self.motion_recorder=None
         if self.task.get('kind')=='spring_dial':
@@ -249,7 +252,7 @@ class World:
                     'gripper_force_control':True,'robot_gravity_feedforward':True,'max_in_flight_physical_actions_per_robot':1,
                     'interface_allows_different_robot_actions_concurrently':True,'nonblocking_submission':{'wait':False}},
                 'robots':robots,'control_profile':panda_control_profile(cfg),
-                'camera_configuration':{'render_size_pixel':[1280,800],'cameras':{self.model.camera(i).name:{'position_world_m':self.model.cam_pos[i].tolist(),'quaternion_wxyz':self.model.cam_quat[i].tolist(),'fovy_deg':float(self.model.cam_fovy[i])} for i in range(self.model.ncam)}},
+                'camera_configuration':{'render_size_pixel':[self.observation_image['width'],self.observation_image['height']],'cameras':{self.model.camera(i).name:{'position_world_m':self.model.cam_pos[i].tolist(),'quaternion_wxyz':self.model.cam_quat[i].tolist(),'fovy_deg':float(self.model.cam_fovy[i])} for i in range(self.model.ncam)}},
                 'bounds_scope':'Admitted TCP command bounds, not whole-link envelopes, guaranteed IK reachability or collision-free zones.',
                 'state_sources':'Current robot state: observe; work/commitments: role notes and messages. No object state, occupancy or task plan is included.'}
 
@@ -379,6 +382,7 @@ class Service(RuntimeService):
         self.hidden=hidden;self.obs=0
         self.perf={'world_step_wall_s':0.,'world_steps':0,'capture_wall_s':0.,'captures':0,'pump_wall_s':0.}
         cfg = json.loads((Path(directory)/'private/inputs/harness.json').read_text())
+        self.observation_image = observation_profile(cfg)
         video_factory = (lambda:Video(Path(directory).resolve()/'private/outputs'/
                          (self.task.get('recording_camera','global')+'-realtime.mp4'),1280,800,self.config['video_fps'])) \
                          if cfg.get('record_realtime_video', True) else None
@@ -388,14 +392,16 @@ class Service(RuntimeService):
         capture_start=time.perf_counter()
         self.obs+=1;paths={}
         mujoco.mjr_setBuffer(mujoco.mjtFramebuffer.mjFB_OFFSCREEN,self.context)
-        viewport=mujoco.MjrRect(0,0,1280,800)
+        width, height = self.observation_image['width'], self.observation_image['height']
+        viewport=mujoco.MjrRect(0,0,width,height)
         for name in cameras:
             cam=mujoco.MjvCamera();cam.type=mujoco.mjtCamera.mjCAMERA_FIXED;cam.fixedcamid=self.world.model.camera(name).id
             mujoco.mjv_updateScene(self.world.model,self.world.data,self.options,None,cam,mujoco.mjtCatBit.mjCAT_ALL,self.scene)
             mujoco.mjr_render(viewport,self.scene,self.context)
-            rgb=np.empty((800,1280,3),dtype=np.uint8);mujoco.mjr_readPixels(rgb,None,viewport,self.context)
-            path=self.directory/'public/observations'/f'obs-{uuid.uuid4().hex[:8]}-{self.obs:05d}-{name}.png'
-            Image.fromarray(rgb[::-1]).save(path);paths[name]=str(path)
+            rgb=np.empty((height,width,3),dtype=np.uint8);mujoco.mjr_readPixels(rgb,None,viewport,self.context)
+            path=self.directory/'public/observations'/f"obs-{uuid.uuid4().hex[:8]}-{self.obs:05d}-{name}{self.observation_image['extension']}"
+            options = {'quality': self.observation_image['quality'], 'subsampling': 2, 'optimize': True} if self.observation_image['format']=='JPEG' else {}
+            Image.fromarray(rgb[::-1]).save(path, format=self.observation_image['format'], **options);paths[name]=str(path)
         if not getattr(self,'offscreen_context',None):
             mujoco.mjr_setBuffer(mujoco.mjtFramebuffer.mjFB_WINDOW,self.context)
         result={'sim_time_s':self.world.time,'captured_at':time.time(),'images':paths,
