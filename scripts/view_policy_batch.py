@@ -25,9 +25,11 @@ def main():
     def rows():return json.loads((base/'batch.json').read_text())['cases']
     def row(case):return next(x for x in rows() if x['case_id']==case)
     def frame(r):
-        run=Path(r['run_dir']);final=run/'private/outputs/final-global.png'
-        if final.exists():return final,'final'
-        files=list((run/'public/observations').glob('*-global.png'))
+        run=Path(r['run_dir'])
+        finals=[run/'private/outputs'/('final-global'+ext) for ext in ('.png','.jpg','.jpeg')]
+        finals=[p for p in finals if p.exists()]
+        if finals:return max(finals,key=lambda x:x.stat().st_mtime),'final'
+        files=[p for ext in ('png','jpg','jpeg') for p in (run/'public/observations').glob('*-global.'+ext)]
         if files:return max(files,key=lambda x:x.stat().st_mtime),'observation'
         return run/'public/inputs/preview-global.png','preview'
     class Handler(BaseHTTPRequestHandler):
@@ -48,7 +50,7 @@ def main():
                         evaluation=run/'private/outputs/evaluation.json';item['evaluation']=json.loads(evaluation.read_text()) if evaluation.exists() else None;values.append(item)
                     return self.reply(json.dumps(dict(cases=values)).encode(),'application/json')
                 if path.startswith('/frame/'):
-                    f,_=frame(row(path.removeprefix('/frame/')));return self.reply(f.read_bytes(),'image/png')
+                    f,_=frame(row(path.removeprefix('/frame/')));return self.reply(f.read_bytes(),'image/jpeg' if f.suffix.lower() in ('.jpg','.jpeg') else 'image/png')
                 if path.startswith('/video/'):
                     f=Path(row(path.removeprefix('/video/'))['run_dir'])/'private/outputs/global-realtime.mp4';size=f.stat().st_size;start=0;end=size-1;part=self.headers.get('Range')
                     if part:

@@ -8,6 +8,7 @@ import secrets
 import shutil
 
 from .runtime_store import RuntimeStore, packed
+from .observation_image import DEFAULT_PROFILE, observation_profile
 from .suite.provenance import environment_logic_manifest
 from .task_config import ROOT, load_task, load_harness, public_task,physical_control_fingerprint
 
@@ -31,6 +32,9 @@ def prepare_run(directory, task_path=None, harness_path=None, private_puzzle_pat
     if directory.exists():
         raise ValueError('Choose a new run directory; existing runs are never overwritten')
     task, cfg = load_task(task_path), load_harness(harness_path)
+    # Freeze new-run defaults; absent fields in already prepared runs remain legacy.
+    cfg.setdefault('observation_image_profile', DEFAULT_PROFILE)
+    image_profile = observation_profile(cfg)
     puzzle=None;puzzle_relative=None
     if task.get('kind')=='spring_dial':
         from .spring_dial_task import private_code,CODE_PATH
@@ -63,6 +67,22 @@ def prepare_run(directory, task_path=None, harness_path=None, private_puzzle_pat
     public['cameras'] = camera_names(task)
     for key,name in (('robot_layout_image','robot-layout.png'),('camera_calibration','camera-guide.json')):
         if (directory/'public/inputs'/name).is_file():public[key]='public/inputs/'+name
+    public['observation_image'] = {k: image_profile[k] for k in ('width', 'height', 'format')}
+    if 'quality' in image_profile: public['observation_image']['quality'] = image_profile['quality']
+    # Preserve the signed family asset; publish a run-specific calibration copy
+    # only when its original declares an image size. Camera pose/FOV stays fixed.
+    calibration_ref = public.get('camera_calibration')
+    if calibration_ref:
+        calibration_path = directory/'public/inputs'/calibration_ref.removeprefix('public/inputs/')
+        if calibration_path.is_file():
+            calibration = json.loads(calibration_path.read_text())
+            if 'image_size_pixel' in calibration:
+                calibration['image_size_pixel'] = [image_profile['width'], image_profile['height']]
+                calibration['source_calibration'] = calibration_ref
+                calibration['scope'] = str(calibration.get('scope', 'Camera calibration')) + '; image size matches this run observation profile'
+                derived = directory/'public/inputs/observation-camera-calibration.json'
+                write_json(derived, calibration)
+                public['camera_calibration'] = 'public/inputs/observation-camera-calibration.json'
     write_json(directory/'public/inputs/task.json', public)
     write_json(directory/'private/inputs/harness.json', cfg)
     roles = {cfg['manager']: {'kind':'manager'}}

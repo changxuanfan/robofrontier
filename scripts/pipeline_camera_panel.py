@@ -30,7 +30,7 @@ def capture():
         with urllib.request.urlopen(req,timeout=45) as r:result=json.load(r)
         if result.get('error'):raise RuntimeError(result['error'])
         if 'observation' not in result:raise RuntimeError('Capture pending; try refresh later')
-        obs=result['observation'];cache['images']={c:Path(f).read_bytes() for c,f in obs['images'].items()}
+        obs=result['observation'];cache['images']={c:(Path(f).read_bytes(), 'image/jpeg' if Path(f).suffix.lower() in ('.jpg','.jpeg') else 'image/png') for c,f in obs['images'].items()}
         cache.update(captured_at=time.time(),sim_time_s=obs['sim_time_s'],error=None)
         return {'cameras':CAMERAS,'sim_time_s':cache['sim_time_s'],'captured_at':cache['captured_at']}
 
@@ -44,8 +44,8 @@ class Handler(BaseHTTPRequestHandler):
         if path=='/':return self.reply((Path(__file__).resolve().parents[1]/'assets/pipeline_cameras.html').read_bytes(),'text/html; charset=utf-8')
         if path.startswith('/frames/'):
             name=path.removeprefix('/frames/').removesuffix('.png')
-            with lock:raw=cache['images'].get(name)
-            return self.reply(raw,'image/png') if raw else self.reply({'error':'refresh first'},status=404)
+            with lock:item=cache['images'].get(name)
+            return self.reply(item[0],item[1]) if item else self.reply({'error':'refresh first'},status=404)
         if path=='/api/status':
             with lock:return self.reply({'cameras':CAMERAS,**{k:v for k,v in cache.items() if k!='images'}})
         return self.reply({'error':'not found'},status=404)
