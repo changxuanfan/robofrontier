@@ -45,3 +45,15 @@ node --test tests/test_tool_errors.js
 # Claude branch additionally:
 PYTHONPATH=tests:. .venv/bin/python -m unittest tests.test_claude_tool_errors
 ```
+
+## CLI request ID and action ID
+
+For a new Codex robot request, omit the outer `call_id` and retain the response's
+`call_id`. Claude MCP requires a unique stable outer ID for each new `move`,
+`gripper`, `action_batch`, `delegate`, and `stop`; other requests may omit it.
+To query an earlier physical action, call
+`{"op":"job","data":{"call_id":"ACTION_ID"}}` with no outer `call_id`.
+The new query receives its own request ID; `data.call_id` names the original
+action. If the original request itself must be retried after an uncertain
+result, use its original outer ID and exactly the same operation and data.
+Do not assign a new ID to replay an uncertain physical action.
