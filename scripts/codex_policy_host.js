@@ -8,6 +8,28 @@ const {CodexRpc,capacityFailure} = require('./codex_rpc');
 const {runMetaDispatcher} = require('./meta_dispatcher');
 const sleep = ms => new Promise(resolve=>setTimeout(resolve,ms));
 const read = file=>JSON.parse(fs.readFileSync(file,'utf8'));
+function toolFailure(callId, stdout) {
+  let detail;
+  try { if (typeof stdout==='string' && stdout.length<=16384) detail=JSON.parse(stdout); } catch {}
+  const conflict=detail?.tool_error_schema===1 && detail.call_id===callId &&
+    detail.error_code==='CALL_ID_CONFLICT' && detail.request_status==='rejected' &&
+    detail.original_call_status==='unknown';
+  // Rebuild an allowlisted response; never pass through raw stderr, command
+  // lines, server strings or another request's details.
+  return {tool_error_schema:1,call_id:callId,
+    error_code:conflict?'CALL_ID_CONFLICT':'TRANSPORT_UNCERTAIN',
+    error:conflict?'This call ID is already associated with a different request.':
+      'The tool result could not be confirmed; execution must not be inferred.',
+    request_status:conflict?'rejected':'unknown',original_call_status:'unknown',
+    note:conflict?
+      'The conflicting request was rejected. Inspect pending and, for your physical actions, job with the original ID. Use a new ID only for an intentionally new request after reconciling existing work; never replay uncertain motion.':
+      'Inspect pending and, for your physical actions, job with the original ID. Do not create a new ID to replay an uncertain operation.'};
+}
+function observationMime(data) {
+  if (data.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]))) return 'image/png';
+  if (data.length>=3 && data[0]===255 && data[1]===216 && data[2]===255) return 'image/jpeg';
+  throw new Error('Observation is not PNG or JPEG');
+}
 const robotTool = {type:'function',name:'robot',description:
   'Call your assigned RoboFrontier role API. Same operations/data as the frozen skill. Selected views return actual RGB images. Never manage sessions or use another role connection.',
   inputSchema:{type:'object',properties:{op:{type:'string'},data:{type:'object'},
@@ -19,7 +41,7 @@ class PolicyHost {
     this.launch=read(path.join(this.run,'private/inputs/codex.json'));
     this.wallLimit=read(path.join(this.run,'private/inputs/task.json')).run_protocol.total_wall_limit_s;
     this.actors=new Map(); this.turns=new Map(); this.failures=new Map(); this.retries=new Set();
-    this.stopped=false; this.began=Date.now();
+    this.stopped=false;
   }
   event(value) {
     fs.appendFileSync(path.join(this.run,'private/outputs/codex-host.jsonl'),JSON.stringify({at:Date.now()/1000,...value})+'\n');
@@ -49,16 +71,23 @@ class PolicyHost {
       for (const view of a.views||[]) {
         const file=observation?.images?.[view];
         if (!file) {contentItems.push({type:'inputText',text:'Selected view unavailable: '+view});continue;}
-        const real=fs.realpathSync(file),publicRoot=fs.realpathSync(path.join(this.run,'public'))+path.sep;
-        if (!real.startsWith(publicRoot)) throw new Error('Observation outside this run public directory');
-        contentItems.push({type:'inputImage',imageUrl:'data:image/png;base64,'+fs.readFileSync(real).toString('base64')});
+        try {
+          const real=fs.realpathSync(file),publicRoot=fs.realpathSync(path.join(this.run,'public'))+path.sep;
+          if (!real.startsWith(publicRoot)) throw new Error('Observation outside this run public directory');
+          const bytes=fs.readFileSync(real),mime=observationMime(bytes);
+          contentItems.push({type:'inputImage',imageUrl:'data:'+mime+';base64,'+bytes.toString('base64')});
+        } catch (error) {
+          // The physical action already ran: retain the original result and call_id.
+          contentItems.push({type:'inputText',text:'Selected view could not be loaded: '+view});
+        }
       }
       this.event({event:'robot_tool_completed',actor,thread_id:p.threadId,op:a.op,call_id:p.callId,duration_s:(Date.now()-toolStarted)/1000});
       return {success:true,contentItems};
     } catch(error) {
-      this.event({event:'robot_tool_failed',actor,thread_id:p.threadId,op:a.op,call_id:p.callId,duration_s:(Date.now()-toolStarted)/1000});
-      return {success:false,contentItems:[{type:'inputText',text:
-        'Transport/tool error. Original call_id='+callId+'. Query pending/job with original ID; never recreate motion. '+error.message}]};
+      const failure=toolFailure(callId,error.stdout);
+      this.event({event:'robot_tool_failed',actor,thread_id:p.threadId,op:a.op,call_id:p.callId,
+        durable_call_id:callId,error_code:failure.error_code,request_status:failure.request_status,duration_s:(Date.now()-toolStarted)/1000});
+      return {success:false,contentItems:[{type:'inputText',text:JSON.stringify(failure)}]};
     }
   }
   async startServer() {
@@ -94,8 +123,9 @@ class PolicyHost {
       input:[{type:'text',text:prompt}],turnTrigger:'robofrontier'});
     this.turns.set(threadId,result.turn); return {threadId};
   }
+  stopRequested() { return this.stopped || fs.existsSync(path.join(this.run,'STOP')); }
   async retryCapacity() {
-    if (this.stopped || Date.now()-this.began>=86400000) return;
+    if (this.stopped) return;
     const snapshot=await this.admin('snapshot');
     if (snapshot.paused || ['ended','interrupted','recovery_required'].includes(snapshot.lifecycle)) return;
     for (const [id,actor] of this.actors) {
@@ -176,16 +206,20 @@ CLI 传输说明：使用本会话的 robot 工具，op/data 与冻结 Skill 的
         }};
       return await runMetaDispatcher({runDir:this.run,python:this.python,cwd:this.cwd,tools,
         startWhenReady:true,observationSource:'codex.app-server',onEvent:e=>this.event(e),
-        stopRequested:()=>this.stopped || Date.now()-this.began>=86400000 || fs.existsSync(path.join(this.run,'STOP'))});
+        stopRequested:()=>this.stopRequested()});
     } finally {
       this.stopped=true;
       // Seal the existing owner; never recreate its physical world.
-      try {await this.admin('seal',{timeout_s:30});} catch(error) {this.event({event:'seal_error',message:error.message});}
+      let sealError;
+      try {const result=await this.admin('seal',{timeout_s:30});
+        if (!result.sealed) throw new Error('Seal did not confirm closure');
+      } catch(error) {sealError=error;this.event({event:'seal_error',message:error.message});}
       for (const id of this.actors.keys()) {
         try {const s=await this.observe(id);if(s.thread.status.type==='active')
           await this.rpc.call('turn/interrupt',{threadId:id,turnId:s.latestTurn.id});} catch {}
       }
       if (this.rpc) await this.rpc.close();
+      if (sealError) throw new Error('Run seal incomplete; manual review required: '+sealError.message);
     }
   }
 }
@@ -195,4 +229,4 @@ if (require.main===module) {
   process.on('SIGTERM',()=>{host.stopped=true;});process.on('SIGINT',()=>{host.stopped=true;});
   host.runTask().then(r=>process.stdout.write(JSON.stringify(r)+'\n')).catch(e=>{process.stderr.write(e.stack+'\n');process.exitCode=1;});
 }
-module.exports={PolicyHost,robotTool};
+module.exports={PolicyHost,robotTool,observationMime};

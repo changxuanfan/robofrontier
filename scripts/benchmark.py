@@ -166,6 +166,49 @@ def prepare_batch(output, names, families=None, cases=None, config=None, level=N
     return output/'batch.json'
 
 
+def initialize_codex_home(launch, folder, timeout_s=90):
+    """Serialize the real app-server handshake for processes sharing CODEX_HOME."""
+    home=Path(os.environ.get('CODEX_HOME', Path.home()/'.codex')).expanduser().resolve()
+    home.mkdir(parents=True, exist_ok=True)
+    deadline=time.monotonic()+timeout_s
+    with (home/'robofrontier-init.lock').open('a+') as lock:
+        while True:
+            try:
+                fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                if time.monotonic()>=deadline:
+                    raise TimeoutError('Timed out waiting for CODEX_HOME initialization lock')
+                time.sleep(.1)
+        remaining=deadline-time.monotonic()
+        if remaining<=0:raise TimeoutError('Timed out before Codex initialization')
+        with (folder/'codex-initialize.log').open('a') as log:
+            subprocess.run(['node',str(ROOT/'scripts/codex_initialize.js'),*launch['args']],
+                           cwd=ROOT,stdout=log,stderr=log,check=True,timeout=remaining)
+
+
+def memory_snapshot():
+    """Informational snapshot, not a safe concurrency estimate."""
+    info={'parallel_memory_requirement_known':False}
+    try:
+        for line in Path('/proc/meminfo').read_text().splitlines():
+            if line.startswith('MemAvailable:'):
+                info['host_available_bytes']=int(line.split()[1])*1024
+    except (OSError,ValueError,IndexError):pass
+    # Typical cgroup v2/v1 mounts; nested limits or Slurm may be more restrictive.
+    for base,limit,current in [(Path('/sys/fs/cgroup'),'memory.max','memory.current'),
+                               (Path('/sys/fs/cgroup/memory'),'memory.limit_in_bytes','memory.usage_in_bytes')]:
+        try:
+            value=(base/limit).read_text().strip()
+            if value!='max':
+                n=int(value)
+                if n < (1<<60):info['cgroup_limit_bytes']=n
+            info['cgroup_current_bytes']=int((base/current).read_text().strip())
+            break
+        except (OSError,ValueError):continue
+    return info
+
+
 def run_batch(folder, parallel):
     folder=Path(folder).resolve();batch=read(folder/'batch.json')
     if batch['status']!='prepared_not_started':raise ValueError('Never automatically restart a batch/world')
@@ -197,6 +240,11 @@ def _run_batch_locked(folder, parallel, batch):
         # Validate configuration without inference before starting any task.
         subprocess.run(['codex','app-server',*launch['args'],'--print-startup-config'],
                        check=True,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
+    # Handshake is local and occurs before any task process or model turn.
+    initialize_codex_home(launch, folder)
+    resources=memory_snapshot()
+    batch['resource_snapshot']=resources
+    print('Resource snapshot (not a concurrency guarantee): '+json.dumps(resources),file=sys.stderr)
     batch.update(status='running',parallel=parallel,started_at=time.time(),model_calls=None,
                  model_calls_note='Per-task native usage events are recorded; aggregate API request count is not measured')
     write_json(folder/'batch.json',batch)
@@ -215,6 +263,7 @@ def _run_batch_locked(folder, parallel, batch):
             try:
                 result=future.result()
                 job.update(status='stopped_before_start' if result is None else 'closed' if result==0 else 'needs_review')
+                if result is not None:job['host_exit_code']=result
             except Exception as error:job.update(status='needs_review',error=str(error))
             write_json(folder/'batch.json',batch)
     batch.update(status='needs_review' if any(j['status']=='needs_review' for j in batch['jobs']) else 'closed',

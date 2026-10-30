@@ -13,7 +13,7 @@ RoboFrontier 用 MuJoCo 多机械臂任务研究 GPT 的分工、规划与协作
 - [Luna CPU：Linux、Docker、36 项并发及独立 session 保存](docs/luna-cpu.md)
 - [Luna Level 3 最大臂四任务、一小时 Slurm 工程测试](docs/luna-cpu.md#level-3-最大臂工程测试四项并行)
 
-  **当前尚不适合正式 24 小时批次：**宿主固定截止时间与 START 计时存在偏差，详见该指南。
+  **正式批次仍需验证：**Slurm 节点本地数据库暂存与回传尚未验证，详见该指南。
 - [四类任务说明图谱 UI](outputs/task-atlas/v1-20261027/index.html)（[离线 ZIP](outputs/exports/task-atlas-four-families-20261027.zip)）
 - [各类任务与版本入口](docs/frontier-v2-environments.md)
 - [Codex CLI 多模型、并行运行与公开材料](docs/gpt-policy.md)
@@ -87,3 +87,13 @@ uv run --extra oracle python -m scripts.check_harness
 单臂键盘 Demo 仍可由 `uv run robofrontier` 或 `Launch Demo.command` 启动；操作、
 配置与早期实验保存在 [历史说明](docs/history/readme-before-transport-cleanup-20261027.md)。
 其他试点与修订记录见 `docs/history/`、`benchmarks/`。旧成绩绑定原场景和控制来源。
+
+实验结束后的数据保存请见 [数据收集、无损归档与恢复](docs/evidence-storage.md)：四分支共用命令，包含原生 session、Motion、图片与恢复校验。
+
+### 并发启动与资源
+
+Codex 批次在并发启动任务前，会对实际使用的 `CODEX_HOME` 加锁，串行执行一次本地 app-server 初始化握手；初始化失败时不会启动任务。该握手不启动模型轮次，诊断记录在批次目录的 `codex-initialize.log`。所有共享该目录的 RoboFrontier 批次必须使用此启动入口；其他独立程序若不使用同一锁，仍可能发生竞争。请在节点本地文件系统使用 Codex 状态目录；此步骤不能保证网络或共享文件系统的 SQLite 安全。
+
+批次 `batch.json` 的 `resource_snapshot` 和启动提示仅提供可读取的内存快照，不是可运行并发数量的保证。Linux 容器的 cgroup 数值可能无法反映所有父级或 Slurm 限制；请核对调度器分配、容器上限及节点本地空间，再从较低并发逐步测量。内存不足或 OOM 属于工程异常，不能当作模型任务失败。Codex 退出非零或封存未确认时，批次任务标为 `needs_review`；已提交但结果不明的动作不能自动重放。
+
+Claude 原生运行路径使用任务独立的配置目录，不使用上述 Codex 握手；Claude 并发能力需要单独验证。
