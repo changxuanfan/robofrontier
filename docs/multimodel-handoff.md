@@ -99,6 +99,8 @@ DEEPSEEK_API_KEY=
 环境变量传到远程。当前工具以 macOS/Linux 为目标，使用 POSIX 文件锁。
 
 四家的型号、价格、官方接口与注意事项见[模型与价格](model-pricing-20261028.md)。
+八家候选的接入评价、缓存费用与并发/RPM/TPM对照见[完整比较](model-compatibility-20261028.md)；
+新增候选尚未加入运行配置，不能仅凭研究表直接启动。
 千问必须填写实际 workspace/region 的 **Responses base URL**，例如
 `https://<WorkspaceId>.cn-beijing.maas.aliyuncs.com/compatible-mode/v1`。
 其他三家的 endpoint 已写入模型配置，密钥仍从环境读取。

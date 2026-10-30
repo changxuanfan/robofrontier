@@ -11,6 +11,7 @@ import urllib.request
 import uuid
 from .run_setup import write_json
 from .sqlite_busy import MAX_BEGIN_WAIT_SECONDS
+from .tool_errors import CallIdConflict, conflict_error, is_conflict_error, uncertain_error
 
 
 # Allow the server to finish its bounded SQLite acquisition before its normal
@@ -30,7 +31,8 @@ def client_call(connection_path, op, data, call_id=None, timeout=DEFAULT_HTTP_TI
         fcntl.flock(lock,fcntl.LOCK_EX)
         if op=='pending':
             return {'pending':[json.loads(p.read_text())['body'] for p in state_dir.glob('*.json')
-                               if p.name!='receipt.json' and json.loads(p.read_text()).get('result') is None]}
+                               if p.name!='receipt.json' and json.loads(p.read_text()).get('result') is None
+                               and not json.loads(p.read_text()).get('rejection')]}
         if not cfg.get('url'):
             raise ValueError('Execution service not started; client never starts one automatically')
         call_id=call_id or uuid.uuid4().hex
@@ -40,7 +42,9 @@ def client_call(connection_path, op, data, call_id=None, timeout=DEFAULT_HTTP_TI
         if path.exists():
             saved=json.loads(path.read_text());body=saved['body']
             if body['op']!=op or body['data']!=data:
-                raise ValueError('Call ID reused with different operation/parameters')
+                raise CallIdConflict(call_id)
+            if is_conflict_error(saved.get('rejection'),call_id):
+                raise CallIdConflict(call_id)
             if saved.get('result') is not None:return saved['result']
         else:
             receipt_path=state_dir/'receipt.json'
@@ -58,7 +62,22 @@ def client_call(connection_path, op, data, call_id=None, timeout=DEFAULT_HTTP_TI
         # HTTP slice. Reusing it does not register a new wait or reset its clock.
         wait_deadline=time.monotonic()+float(data.get('timeout_s',30))+timeout if op=='wait_events' else None
         while True:
-            with urllib.request.urlopen(request,timeout=timeout) as response:result=json.load(response)
+            try:
+                with urllib.request.urlopen(request,timeout=timeout) as response:result=json.load(response)
+            except urllib.error.HTTPError as error:
+                # Only this explicit server rejection proves the new request was
+                # rejected. A timeout, arbitrary 409 or malformed body does not.
+                if error.code == 409 and error.headers.get_content_type() == 'application/json':
+                    try:
+                        detail=json.loads(error.read(16385))
+                    except (ValueError, OSError):
+                        detail=None
+                    if is_conflict_error(detail,call_id):
+                        fcntl.flock(lock,fcntl.LOCK_EX)
+                        write_json(path,{'body':body,'result':None,'rejection':conflict_error(call_id)})
+                        path.chmod(0o600)
+                        raise CallIdConflict(call_id) from None
+                raise
             if result.get('execution_status')!='pending':
                 break
             if op=='delegate':continue  # preserve the parent's fork boundary; original request only
@@ -88,8 +107,11 @@ def main():
     try:
         result=client_call(args.connection,args.op,json.loads(args.data),call_id,log_call_id=not args.quiet)
         print(json.dumps(result,ensure_ascii=False))
-    except (ValueError,OSError,urllib.error.URLError) as error:
-        print(json.dumps({'call_id':call_id,'error':str(error),'note':'Read pending/retry original call ID after an uncertain transport outcome; do not infer non-execution'},ensure_ascii=False))
+    except CallIdConflict:
+        print(json.dumps(conflict_error(call_id),ensure_ascii=False))
+        raise SystemExit(1)
+    except (ValueError,OSError,urllib.error.URLError):
+        print(json.dumps(uncertain_error(call_id),ensure_ascii=False))
         raise SystemExit(1)
 
 if __name__=='__main__':main()
