@@ -9,6 +9,8 @@ import time
 import uuid
 from .tool_errors import CallIdConflict
 
+from .sqlite_busy import BUSY_TIMEOUT_SECONDS, begin_immediate
+
 
 def packed(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',', ':'), allow_nan=False)
@@ -19,7 +21,7 @@ class RuntimeStore:
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.lock = threading.RLock()
-        self.db = sqlite3.connect(self.path, isolation_level=None, check_same_thread=False, timeout=10)
+        self.db = sqlite3.connect(self.path, isolation_level=None, check_same_thread=False, timeout=BUSY_TIMEOUT_SECONDS)
         self.db.row_factory = sqlite3.Row
         self.db.execute('PRAGMA journal_mode=WAL')
         self.db.execute('PRAGMA synchronous=FULL')
@@ -53,7 +55,10 @@ class RuntimeStore:
         with self.lock:
             nested = self.db.in_transaction
             savepoint = 's' + uuid.uuid4().hex
-            self.db.execute('SAVEPOINT ' + savepoint if nested else 'BEGIN IMMEDIATE')
+            if nested:
+                self.db.execute('SAVEPOINT ' + savepoint)
+            else:
+                begin_immediate(self.db, self.path)
             try:
                 yield self
                 self.db.execute('RELEASE ' + savepoint if nested else 'COMMIT')

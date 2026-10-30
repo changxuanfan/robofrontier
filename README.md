@@ -46,6 +46,7 @@ sbatch --partition=YOUR_PARTITION --cpus-per-task=YOUR_CPUS --mem=YOUR_MEMORY \
 ```
 
 将占位符替换为集群允许的资源和足够覆盖准备、运行、收尾的时间。此命令会调用付费 API；状态、日志、结果收集与会话备份的具体命令见指南。现有 36 项入口独立保留，尚未达到正式 24 小时运行资格。
+离线安装可使用 `setup-assets --archive /path/to/policy-assets-rolling003-20261029.tar.gz`；资产包与校验说明见[多模型交接](docs/multimodel-handoff.md)。不要将密钥或运行数据提交到 Git。
 
 Python 与依赖由 `.python-version`、`pyproject.toml`、`uv.lock` 管理。
 机器人上游资产与许可证由 `scripts/fetch_robot.py` 物化，来源记录在 `vendor/`。
