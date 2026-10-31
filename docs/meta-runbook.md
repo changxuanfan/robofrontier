@@ -72,11 +72,11 @@ seal 暂停新增动作，等待已有执行结算，通过原服务获取最后
 
 ## 按需 fork 模式
 
-配置 topology=adaptive 时，启动只有 Controller 的新运行。Controller 经 delegate 提交有边界的工作范围，固定分发器据此 fork 同一任务会话；Meta 不选择范围、机械臂或顺序。分发器验证原生 parent/ordinal/hash 后才授权，并在首次输入显式固定本轮 model/effort；原生 fork 默认档位不能当作继承证据。
+配置 topology=adaptive 时，启动只有 Controller 的新运行。Controller 经 delegate 提交有边界的工作范围；Meta 不选择范围、机械臂或顺序。Codex 引擎的分发器先从 Controller 创建不执行任务的快照会话，再从该快照创建整批分身。快照 ID 在读取原生 lineage 前持久保存；验证 Controller→快照及快照→各分身的 parent/ordinal/hash，确认所有分身同一边界后才授权。Controller 指定的各自范围仍由宿主分别发送，首次输入显式固定本轮 model/effort；原生 fork 默认档位不能当作继承证据。Claude 通用 `delegate-bind` 入口继续禁用；Claude 自有的实验性 adaptive 主机独立创建无工具快照并核对两段原生历史及快照完整性，再创建和授权分身。Claude 快照需要一次模型调用，并计入共享预算；创建结果不确定、来源不符或快照被更改时暂停，不能自动重试。该流程尚未取得正式计分资格。
 
 初始任务会话用Main/Coordinator/Worker加运行标识命名。分发器在分身身份确认、首次指令投递后，尽力设为Fork [所控机械臂]+短身份+运行标识；多臂范围自然显示A+B等。命名只是界面元数据，工具缺失、错误或超过短期限只记录，不暂停任务、不改变控制权，也不重试创建会话。
 
-SQLite 保存委派、分身身份和机器人控制权，不新增数据库。连接为运行时状态；原始 roles.json 仅描述初始角色。主会话在创建批次期间停留于工具边界，物理继续；建立并发送分身任务后即返回，完成事件按到达交付。分身 return_task 交回范围，团队 finish 仍只由 Controller 提出。
+SQLite 保存委派、Codex 快照和分身身份与机器人控制权，不新增数据库。连接为运行时状态；原始 roles.json 仅描述初始角色。主会话等待 delegate 工具结果期间原生历史仍可能变化；Codex 路径用快照固定同批来源，不等待主会话 idle，Claude 实验路径仍使用独立的父历史检查。物理继续，建立并发送分身任务后即返回，完成事件按到达交付。分身 return_task 交回范围，团队 finish 仍只由 Controller 提出。
 
 原生创建或投递结果未知时标记 needs_review，不自动 refork 或释放所有权；已知分身 ID 与原生 lineage 用于人工/工程核实。共享工作区和可读连接仍不是 OS 安全隔离；实验角色必须遵守当前连接与证据边界，不能声称防御恶意凭据冒用。
 

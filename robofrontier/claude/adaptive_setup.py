@@ -4,6 +4,7 @@ The caller is the trusted process which owns the active parent and shared budget
 This module does not start a world, schedule subsequent wakes, or qualify a batch.
 """
 import json
+import hashlib
 import math
 import threading
 from pathlib import Path
@@ -63,12 +64,29 @@ class AdaptiveForkSetup:
         delegates=Delegations(self.store)
         batch=self.admin('delegate-claim', {'id':batch_id})['delegation']
         try:
+            first=batch['children'][0]['actor']
+            snap=self.fork_factory(self.store,self.parent,batch_id,first,self.owner,
+                                   max_budget_usd=self.setup_budget_usd,budget_ledger=self.ledger,
+                                   cancel_event=self.cancel_event,snapshot=True)
+            snap_path=Path(self.parent.run)/'private/claude-forks'/('snapshot-'+hashlib.sha256(batch_id.encode()).hexdigest()+'.json')
+            if (json.loads(snap_path.read_text()) != snap or snap.get('status') != 'history_verified_no_authority'
+                    or not snap.get('snapshot') or snap.get('batch_id') != batch_id
+                    or snap.get('actor') != first or snap.get('owner') != self.owner
+                    or snap.get('parent_session') != self.parent.session_id
+                    or snap.get('source_session') != self.parent.session_id
+                    or snap['proof']['source_sha256'] != snap['parent_history_sha256']
+                    or not isinstance(snap.get('snapshot_sha256'),str)):
+                raise ValueError('Trusted snapshot record is incomplete or changed')
+            # create_fork already checked the parent while creating the snapshot;
+            # the parent may append afterwards, so retain that verified proof.
+            delegates.snapshot_bind(batch_id,snap['child_session'],
+                                    {**snap['proof'],'snapshot_sha256':snap['snapshot_sha256']},self.owner)
             for child in batch['children']:
                 if self.cancel_event.is_set(): raise ValueError('Fork setup cancelled')
                 actor=child['actor']
                 result=self.fork_factory(self.store, self.parent, batch_id, actor, self.owner,
                                          max_budget_usd=self.setup_budget_usd, budget_ledger=self.ledger,
-                                         cancel_event=self.cancel_event)
+                                         cancel_event=self.cancel_event,source_session=snap['child_session'])
                 if self.cancel_event.is_set(): raise ValueError('Fork setup cancelled')
                 _boundary(self.store,self.parent,batch_id,actor,self.owner)
                 # The known ID is committed before any further fallible checks.
@@ -81,8 +99,9 @@ class AdaptiveForkSetup:
                     raise ValueError('Trusted fork record is incomplete or changed')
                 if (result['actor'] != actor or result['batch_id'] != batch_id or result['owner'] != self.owner
                         or result['parent_session'] != self.parent.session_id
+                        or result.get('source_session') != snap['child_session']
                         or result['proof']['source_sha256'] != result['parent_history_sha256']
-                        or fork_provenance(result['parent_session'],result['child_session'],
+                        or fork_provenance(result['source_session'],result['child_session'],
                                            Path(self.parent.run)/'private/claude-config') != result['proof']):
                     raise ValueError('Trusted fork record does not match requested scope')
                 with self.store.transaction():

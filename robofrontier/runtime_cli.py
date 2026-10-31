@@ -65,10 +65,23 @@ def execute(store, op, data, owner, now):
     if op=='snapshot':
         return {'lifecycle':store.get('lifecycle'),'paused':store.get('dispatch_paused',False),
                 'dispatcher_health':store.get('dispatcher_health',{}),
-                'config':{k:cfg[k] for k in ('poll_interval_s','session_observation_ttl_s','model','effort')},
+                'config':{**{k:cfg[k] for k in ('poll_interval_s','session_observation_ttl_s','model','effort')},
+                          'engine':cfg.get('engine','codex')},
                 'agents':{a:{k:x for k,x in v.items() if k!='note'} for a,v in store.agents().items()},
                 'delegations':Delegations(store).active() if cfg['topology']=='adaptive' else [],
                 'pending':{a:store.pending(a) for a,v in store.agents().items() if v['kind']!='manager'}}
+    if op=='delegate-snapshot-bind':
+        if cfg.get('engine','codex') != 'codex':
+            raise ValueError('Claude adaptive delegation is not yet qualified')
+        d=Delegations(store);key=data['id'];thread_id=data['thread_id']
+        with store.transaction():
+            store.lease(owner,now,cfg['manager_lease_s'])
+            d.snapshot_created(key,thread_id,owner)
+        provenance=native_fork_provenance(store,d.batch(key)['source_thread_id'],thread_id)
+        with store.transaction():
+            store.lease(owner,time.time(),cfg['manager_lease_s'])
+            d.snapshot_bind(key,thread_id,provenance,owner)
+        return {'recorded':True}
     if op=='delegate-bind':
         # Matching transcript prefixes alone do not authenticate a native fork.
         # Claude adaptive delegation stays closed until creation and role binding
@@ -81,7 +94,10 @@ def execute(store, op, data, owner, now):
         with store.transaction():
             store.lease(owner,now,cfg['manager_lease_s'])
             d.created(key,data['actor'],data['thread_id'],owner)
-        provenance=native_fork_provenance(store,d.batch(key)['source_thread_id'],data['thread_id'])
+        batch=d.batch(key)
+        if not batch.get('snapshot_thread_id') or not batch.get('snapshot_provenance'):
+            raise ValueError('Verified delegation snapshot required')
+        provenance=native_fork_provenance(store,batch['snapshot_thread_id'],data['thread_id'])
         with store.transaction():
             store.lease(owner,time.time(),cfg['manager_lease_s'])
             d.bind(key,data['actor'],data['thread_id'],provenance,owner)
@@ -161,7 +177,7 @@ def main():
     p.add_argument('--run-dir',type=Path,required=True)
     p.add_argument('--owner',default='Meta')
     p.add_argument('op',choices=['snapshot','observe-sessions','request-start','plan','claim','dispatch-result','pause','resume-dispatch','export',
-                               'delegate-claim','delegate-bind','delegate-activate','delegate-started','delegate-uncertain','session-unavailable','seal'])
+                               'delegate-claim','delegate-snapshot-bind','delegate-bind','delegate-activate','delegate-started','delegate-uncertain','session-unavailable','seal'])
     p.add_argument('--data',default='{}')
     args=p.parse_args()
     path=args.run_dir.resolve()/'private/state/runtime.sqlite'

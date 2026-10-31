@@ -135,7 +135,14 @@ class ClaudeSessionHost:
             call = store.call(claim['batch_id'], 'Controller')
             if call['op'] != 'delegate' or call['status'] != 'accepted':
                 raise ValueError('Parent delegation boundary is no longer pending')
-            if fork_provenance(claim['parent_session'], claim['child_session'], run/'private/claude-config') != claim['proof']:
+            source = claim.get('source_session', claim['parent_session'])
+            if batch.get('snapshot_thread_id'):
+                if (source != batch['snapshot_thread_id'] or not batch.get('snapshot_provenance')
+                        or batch['snapshot_provenance'].get('snapshot_sha256') != claim['proof']['source_sha256']):
+                    raise ValueError('Delegate snapshot identity mismatch')
+            elif source != claim['parent_session']:
+                raise ValueError('Delegate source identity mismatch')
+            if fork_provenance(source, claim['child_session'], run/'private/claude-config') != claim['proof']:
                 raise ValueError('Fork history changed after verification')
             # A consumed claim survives crashes; an uncertain child is never resent.
             adopted = run/'private/claude-forks'/(actor+'.adopted')

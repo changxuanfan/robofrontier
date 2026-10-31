@@ -69,6 +69,9 @@ class ClaudeDispatchTests(unittest.TestCase):
         cfg = self.store.get('config'); cfg['topology'] = 'adaptive'; self.store.put('config', cfg)
         with self.assertRaisesRegex(ValueError, 'not yet qualified'):
             execute(self.store, 'delegate-bind', {}, 'test-owner', time.time())
+        with self.assertRaisesRegex(ValueError, 'not yet qualified'):
+            execute(self.store, 'delegate-snapshot-bind', {}, 'test-owner', time.time())
+        self.assertEqual(execute(self.store, 'snapshot', {}, 'test-owner', time.time())['config']['engine'], 'claude')
 
     def test_unqualified_topology_and_wrong_identity_are_rejected(self):
         self.host.session_id = 'other'

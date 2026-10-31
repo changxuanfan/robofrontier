@@ -74,7 +74,8 @@ def _boundary(store, parent_host, batch_id, actor, owner):
 
 
 def create_fork(store, parent_host, batch_id, actor, owner, *, max_budget_usd,
-                timeout=90, runner=run_turn, budget_ledger=None, cancel_event=None):
+                timeout=90, runner=run_turn, budget_ledger=None, cancel_event=None,
+                snapshot=False, source_session=None):
     """Create exactly one no-tool setup turn; on any ambiguity never retry.
 
     The returned evidence is not permission to run or bind a child. In particular,
@@ -86,19 +87,34 @@ def create_fork(store, parent_host, batch_id, actor, owner, *, max_budget_usd,
     _boundary(store, parent_host, batch_id, actor, owner)
     run = Path(parent_host.run).resolve()
     config = run / 'private/claude-config'
-    source = _pending_history(store, parent_host, batch_id, actor, owner, config, cancel_event)
+    batch = Delegations(store).batch(batch_id)
+    if snapshot and source_session is not None:
+        raise ValueError('Snapshot must come from the Controller')
+    source_id = source_session or parent_host.session_id
+    if source_session is not None:
+        if (batch.get('snapshot_thread_id') != source_id or not batch.get('snapshot_provenance')):
+            raise ValueError('Snapshot is not verified for this batch')
+        source = history(transcript_rows(config, source_id), source_id)
+    else:
+        source = _pending_history(store, parent_host, batch_id, actor, owner, config, cancel_event)
     if not source: raise ValueError('Parent transcript has no messages')
     digest = hashlib.sha256(json.dumps(source, sort_keys=True).encode()).hexdigest()
+    if source_session is not None and batch['snapshot_provenance'].get('snapshot_sha256') != digest:
+        raise ValueError('Snapshot history changed after verification')
     child = str(uuid.uuid4())
-    claim = run / 'private/claude-forks' / (actor + '.json')
+    claim_name = ('snapshot-' + hashlib.sha256(batch_id.encode()).hexdigest() if snapshot else actor)
+    claim = run / 'private/claude-forks' / (claim_name + '.json')
     claim.parent.mkdir(parents=True, exist_ok=True)
     entry = {'status': 'claimed', 'batch_id': batch_id, 'actor': actor, 'owner': owner,
-             'parent_session': parent_host.session_id, 'child_session': child,
+             'parent_session': parent_host.session_id, 'source_session': source_id,
+             'snapshot': snapshot, 'child_session': child,
              'parent_history_sha256': digest, 'claimed_at': time.time(), 'tool_permissions': 'none'}
     # Durable identity and intent precede the first potentially paid model call.
     with claim.open('x') as out:
         os.fchmod(out.fileno(), 0o600)
         json.dump(entry, out); out.flush(); os.fsync(out.fileno())
+    if snapshot:
+        Delegations(store).snapshot_created(batch_id, child, owner)
     reservation = None
     settled = False
     try:
@@ -110,9 +126,9 @@ def create_fork(store, parent_host, batch_id, actor, owner, *, max_budget_usd,
         if cancel_event is not None and cancel_event.is_set():
             raise PreLaunchCancelled('Fork setup cancelled before launch')
         record = runner(profile, profile['model'], profile['effort'], None, SETUP_PROMPT, run,
-                        parent_host.base_env, session_id=child, fork_from=parent_host.session_id,
+                        parent_host.base_env, session_id=child, fork_from=source_id,
                         enable_robot=False, max_budget_usd=max_budget_usd, timeout=timeout,
-                        binary=parent_host.binary, events_name=actor+'-fork-setup.jsonl', cancel_event=cancel_event)
+                        binary=parent_host.binary, events_name=claim_name+'-fork-setup.jsonl', cancel_event=cancel_event)
         summary = record.get('summary') or {}
         if (record.get('process') != 'exited' or record.get('exit_code') != 0
                 or summary.get('session_id') != child or summary.get('turn_status') != 'ended'
@@ -131,11 +147,14 @@ def create_fork(store, parent_host, batch_id, actor, owner, *, max_budget_usd,
             settled = True
             if shared['status'] == 'uncertain': raise ValueError('Shared budget is uncertain')
         _boundary(store, parent_host, batch_id, actor, owner)
-        proof = fork_provenance(parent_host.session_id, child, config)
+        proof = fork_provenance(source_id, child, config)
         if proof['source_sha256'] != digest:
             raise ValueError('Parent history changed across fork setup')
         entry.update(status='history_verified_no_authority', completed_at=time.time(), proof=proof,
                      reported_cost_usd=str(amount))
+        if snapshot:
+            snapshot_history = history(transcript_rows(config, child), child)
+            entry['snapshot_sha256'] = hashlib.sha256(json.dumps(snapshot_history, sort_keys=True).encode()).hexdigest()
         write_json(claim, entry)
         return entry
     except Exception as error:

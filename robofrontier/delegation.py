@@ -121,11 +121,42 @@ class Delegations:
             self.s.event('NATIVE_FORK_CREATED','Meta',{'id':key,'actor':actor,'thread_id':thread_id,'verified':False})
             return b
 
+    def snapshot_created(self, key, thread_id, owner):
+        """Persist a native snapshot ID before fallible lineage verification."""
+        with self.s.transaction():
+            b = self.owned(key, owner)
+            if b['status'] != 'creating' or not isinstance(thread_id, str) or not thread_id:
+                raise ValueError('Invalid snapshot creation state or ID')
+            if b.get('snapshot_thread_id') not in (None, thread_id):
+                raise ValueError('Snapshot already recorded')
+            if thread_id == b['source_thread_id'] or any(a['thread_id'] == thread_id for a in self.s.agents().values()):
+                raise ValueError('Snapshot must be a separate unassigned native session')
+            b['snapshot_thread_id'] = thread_id
+            self.save(b)
+            self.s.event('DELEGATION_SNAPSHOT_CREATED', 'Meta', {'id':key, 'thread_id':thread_id, 'verified':False})
+            return b
+
+    def snapshot_bind(self, key, thread_id, provenance, owner):
+        with self.s.transaction():
+            b = self.owned(key, owner)
+            if b['status'] != 'creating' or b.get('snapshot_thread_id') != thread_id:
+                raise ValueError('Snapshot identity or state changed')
+            if provenance['source_thread_id'] != b['source_thread_id']:
+                raise ValueError('Snapshot has wrong source session')
+            if b.get('snapshot_provenance') not in (None, provenance):
+                raise ValueError('Snapshot source boundary changed')
+            b['snapshot_provenance'] = provenance
+            self.save(b)
+            self.s.event('DELEGATION_SNAPSHOT_BOUND', 'Meta', {'id':key, 'thread_id':thread_id, **provenance})
+
     def bind(self, key, actor, thread_id, provenance, owner):
         self.created(key,actor,thread_id,owner)
         with self.s.transaction():
             b = self.owned(key,owner)
-            if provenance['source_thread_id']!=b['source_thread_id']:
+            expected_source = b.get('snapshot_thread_id') or b['source_thread_id']
+            if b.get('snapshot_thread_id') and not b.get('snapshot_provenance'):
+                raise ValueError('Snapshot is not verified')
+            if provenance['source_thread_id']!=expected_source:
                 raise ValueError('Fork has wrong source session')
             if b.get('source_provenance') not in (None,provenance):
                 raise ValueError('Forks did not share the exact source history boundary')
@@ -136,6 +167,8 @@ class Delegations:
     def activate(self, key, owner):
         with self.s.transaction():
             b = self.owned(key,owner)
+            if b.get('snapshot_thread_id') and not b.get('snapshot_provenance'):
+                raise ValueError('Snapshot is not verified')
             if not all(c['thread_id'] and c.get('verified') for c in b['children']):
                 raise ValueError('Fork batch incomplete or unverified')
             b['status']='active';b['activated_at']=time.time()

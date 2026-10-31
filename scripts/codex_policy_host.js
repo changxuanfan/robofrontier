@@ -189,24 +189,27 @@ CLI 传输说明：使用本会话的 robot 工具，op/data 与冻结 Skill 的
         await this.send(id,this.bootstrap(actor));
       }
       const wrap=value=>({content:[{type:'text',text:JSON.stringify(value)}]});
+      const createNativeFork=async (p,isSnapshot=false)=>{
+        const result=await this.rpc.call('thread/fork',{threadId:p.threadId,cwd:this.run,model:this.launch.model,
+          modelProvider:this.launch.provider,excludeTurns:true,ephemeral:false});
+        this.event({event:isSnapshot?'snapshot_created':'fork_created',thread_id:result.thread.id,parent:p.threadId});
+        if (!isSnapshot) {
+          const snapshot=await this.admin('snapshot');
+          const child=snapshot.delegations.flatMap(d=>d.children).find(c=>!c.thread_id);
+          if (!child) throw new Error('No pending runtime delegation for fork');
+          this.actors.set(result.thread.id,child.actor);
+        }
+        return wrap({threadId:result.thread.id,sourceThreadId:result.thread.forkedFromId,status:'created'});
+      };
       const tools={
         exec_command:async a=>{const r=await execAsync(a.cmd,{cwd:this.cwd,maxBuffer:16*1024*1024});return {output:r.stdout,exit_code:0};},
         mcp__codex_app__wait_threads:async({targets})=>{await this.retryCapacity();return wrap({polls:await Promise.all(targets.map(t=>this.observe(t.threadId)))});},
         mcp__codex_app__send_message_to_thread:async p=>wrap(await this.send(p.threadId,p.prompt)),
         mcp__codex_app__set_thread_title:async p=>{await this.rpc.call('thread/name/set',{threadId:p.threadId,name:p.title});return wrap({threadId:p.threadId});},
-        mcp__codex_app__fork_thread:async p=>{
-          const result=await this.rpc.call('thread/fork',{threadId:p.threadId,cwd:this.run,model:this.launch.model,
-            modelProvider:this.launch.provider,excludeTurns:true,ephemeral:false});
-          // Persist the known ID before lineage checks or other fallible work.
-          this.event({event:'fork_created',thread_id:result.thread.id,parent:p.threadId});
-          const snapshot=await this.admin('snapshot');
-          const child=snapshot.delegations.flatMap(d=>d.children).find(c=>!c.thread_id);
-          if (!child) throw new Error('No pending runtime delegation for fork');
-          this.actors.set(result.thread.id,child.actor);
-          return wrap({threadId:result.thread.id,sourceThreadId:result.thread.forkedFromId,status:'created'});
-        }};
+        mcp__codex_app__fork_thread:async p=>createNativeFork(p)};
       return await runMetaDispatcher({runDir:this.run,python:this.python,cwd:this.cwd,tools,
         startWhenReady:true,observationSource:'codex.app-server',onEvent:e=>this.event(e),
+        createSnapshot:async p=>JSON.parse((await createNativeFork(p,true)).content[0].text),
         stopRequested:()=>this.stopRequested()});
     } finally {
       this.stopped=true;

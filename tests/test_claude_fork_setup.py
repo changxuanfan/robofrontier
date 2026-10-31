@@ -24,10 +24,10 @@ class ForkSetupTests(unittest.TestCase):
         self.run.mkdir(); self.store=RuntimeStore(self.run/'private/state/runtime.sqlite')
         cfg=json.loads((Path(__file__).resolve().parents[1]/'configs/harnesses/policy.json').read_text())
         cfg.update(engine='claude',topology='adaptive',model='fake',effort='high')
-        self.store.initialize('run',cfg,['A']); self.store.update_agent('Controller',thread_id=PARENT,ready=True)
+        self.store.initialize('run',cfg,['A','B']); self.store.update_agent('Controller',thread_id=PARENT,ready=True)
         self.store.start(); self.store.begin_call('batch','Controller','delegate',{'scopes':[]})
         self.d=Delegations(self.store)
-        batch=self.d.create('Controller','batch',[{'robots':['A'],'goal':'g','done_when':'d'}])
+        batch=self.d.create('Controller','batch',getattr(self,'test_scopes',[{'robots':['A'],'goal':'g','done_when':'d'}]))
         self.actor=batch['children'][0]['actor']; self.d.claim('batch','owner')
         self.parent=Parent(self.run); self.folder=self.run/'private/claude-config/projects/-run'
         self.folder.mkdir(parents=True)
@@ -38,7 +38,8 @@ class ForkSetupTests(unittest.TestCase):
     def tearDown(self): self.store.close(); self.tmp.cleanup()
     def runner(self,*args,**kw):
         self.calls.append(kw); child=kw['session_id']
-        (self.folder/(child+'.jsonl')).write_text(json.dumps({**self.row,'sessionId':child})+'\n')
+        source=(self.folder/(kw['fork_from']+'.jsonl')).read_text().splitlines()
+        (self.folder/(child+'.jsonl')).write_text(''.join(json.dumps({**json.loads(row),'sessionId':child})+'\n' for row in source))
         return {'process':'exited','exit_code':0,'summary':{'session_id':child,'turn_status':'ended',
                 'malformed_lines':0,'tool_calls':0,'total_cost_usd':.01}}
     def create(self,runner=None):

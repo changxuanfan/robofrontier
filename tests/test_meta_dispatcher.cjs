@@ -48,16 +48,20 @@ async function startup(armed,ready) {
   assert.equal(starts,armed&&ready?1:0);assert.equal(sends,0);
 }
 async function interrupted(){let calls=0;const tools={exec_command:async()=>{calls++;return {exit_code:0,output:JSON.stringify({lifecycle:'interrupted',paused:false})}}};const r=await runMetaDispatcher({runDir:'/fake',python:'/fake/python',cwd:'/fake',tools,maxCycles:1});assert.equal(r.lifecycle,'interrupted');assert.equal(calls,1)}
-async function delegation({failFork=false,failBind=false,abandoned=false,lostStartAck=false,returnedBeforeAck=true,label=false,titleFailure=false}={}) {
-  let forks=0,starts=0,activations=0,reviews=0;const titles=[];
+async function delegation({failFork=false,failBind=false,failSnapshot=false,failSnapshotBind=false,wrongSnapshotParent=false,abandoned=false,lostStartAck=false,returnedBeforeAck=true,label=false,titleFailure=false,count=2}={}) {
+  let forks=0,anchors=0,starts=0,activations=0,reviews=0;const titles=[],prompts=[];
   const batch={id:'scope-call',source_thread_id:'parent',status:'creating',claimed_by:abandoned?'old-manager':null,
-    children:[{actor:'D1',robots:['A'],goal:'agent selected A outcome',done_when:'own evidence'},
-              {actor:'D2',robots:['B'],goal:'agent selected B outcome',done_when:'own evidence'}]};
+    children:Array.from({length:count},(_,i)=>({actor:'D'+(i+1),robots:[String.fromCharCode(65+i)],
+      goal:'agent selected '+String.fromCharCode(65+i)+' outcome',done_when:'own evidence'}))};
   const tools={exec_command:async({cmd})=>{
     let value={recorded:true};
-    if(cmd.includes(' snapshot '))value={lifecycle:'running',paused:false,config:{poll_interval_s:0,model:'gpt-6-luna',effort:'xhigh'},
+    if(cmd.includes(' snapshot --data '))value={lifecycle:'running',paused:false,config:{poll_interval_s:0,model:'gpt-6-luna',effort:'xhigh'},
       agents:{Controller:{kind:'controller',thread_id:'parent'}},delegations:batch.status==='creating'?[batch]:[]};
     else if(cmd.includes(' delegate-claim '))value={delegation:structuredClone(batch)};
+    else if(cmd.includes(' delegate-snapshot-bind ')){
+      assert(cmd.includes('"thread_id":"snapshot"'));
+      if(failSnapshotBind)return {exit_code:1,output:'snapshot lineage unavailable'};
+    }
     else if(cmd.includes(' delegate-bind ') && failBind)return {exit_code:1,output:'different native source cutoff'};
     else if(cmd.includes(' delegate-activate ')){activations++;batch.status='active';}
     else if(cmd.includes(' delegate-uncertain ')){reviews++;batch.status='needs_review';}
@@ -71,11 +75,11 @@ async function delegation({failFork=false,failBind=false,abandoned=false,lostSta
     return {exit_code:0,output:JSON.stringify(value)};
   },mcp__codex_app__wait_threads:async()=>response({polls:[{thread:{status:{type:'active'}},latestTurn:{id:'t1'}}]}),
   mcp__codex_app__fork_thread:async p=>{
-    forks++;assert.equal(p.threadId,'parent');assert.equal(p.environment.type,'same-directory');
+    forks++;assert.equal(p.threadId,'snapshot');assert.equal(p.environment.type,'same-directory');
     if(failFork)throw Error('creation acknowledgement lost');
-    return response({status:'created',sourceThreadId:'parent',threadId:'child'+forks});
+    return response({status:'created',sourceThreadId:'snapshot',threadId:'child'+forks});
   },mcp__codex_app__send_message_to_thread:async p=>{
-    starts++;assert.equal(p.model,'gpt-6-luna');assert.equal(p.thinking,'xhigh');
+    starts++;prompts.push(p);assert.equal(p.model,'gpt-6-luna');assert.equal(p.thinking,'xhigh');
     assert(p.prompt.includes('agent selected'));assert(p.prompt.includes('return_task'));
     assert(!p.prompt.includes('old-manager'));
     if(lostStartAck&&starts===1)throw Error('lost initial input acknowledgement');
@@ -85,11 +89,25 @@ async function delegation({failFork=false,failBind=false,abandoned=false,lostSta
     titles.push(p);if(titleFailure)throw Error('Optional title unavailable');
     return response({threadId:p.threadId,title:p.title});
   };
-  await runMetaDispatcher({runDir:'/fake',python:'/fake/python',cwd:'/fake',tools,maxCycles:2});
+  const createSnapshot=async p=>{
+    anchors++;assert.equal(p.threadId,'parent');
+    if(failSnapshot)throw Error('snapshot creation acknowledgement lost');
+    return {status:'created',sourceThreadId:wrongSnapshotParent?'wrong-parent':'parent',threadId:'snapshot'};
+  };
+  await runMetaDispatcher({runDir:'/fake',python:'/fake/python',cwd:'/fake',tools,createSnapshot,maxCycles:2});
   if(label){assert.equal(titles.length,2);assert(titles[0].title.startsWith('Fork [A]'));assert(titles[1].title.startsWith('Fork [B]'));}
-  if(abandoned||failFork||failBind){assert.equal(reviews,1);assert.equal(starts,0);assert.equal(activations,0);assert.equal(forks,abandoned?0:1);}
+  if(abandoned||failFork||failBind||failSnapshot||failSnapshotBind||wrongSnapshotParent){
+    assert.equal(reviews,1);assert.equal(starts,0);assert.equal(activations,0);
+    assert.equal(forks,abandoned||failSnapshot||failSnapshotBind||wrongSnapshotParent?0:1);
+  }
   else if(lostStartAck&&!returnedBeforeAck){assert.equal(forks,2);assert.equal(starts,1);assert.equal(activations,1);assert.equal(reviews,1);}
-  else {assert.equal(forks,2);assert.equal(starts,2);assert.equal(activations,1);assert.equal(reviews,0);}
+  else {assert.equal(forks,count);assert.equal(starts,count);assert.equal(activations,1);assert.equal(reviews,0);
+    for(let i=0;i<count;i++)for(let j=0;j<count;j++){
+      const goal='agent selected '+String.fromCharCode(65+j)+' outcome';
+      assert.equal(prompts[i].prompt.includes(goal),i===j);
+    }
+  }
+  assert.equal(anchors,abandoned?0:1);
 }
 async function statusScenario(mode) {
   let paused=false,pauses=0,reads=0;const polled=[],sent=[],invalidated=[];
@@ -172,7 +190,7 @@ async function neutralAdapter() {
     children:[{actor:'D1',robots:['A'],goal:'agent selected goal',done_when:'own evidence'}]};
   const tools={exec_command:async({cmd})=>{
     let value={recorded:true};
-    if(cmd.includes(' snapshot '))value={lifecycle:'running',paused:false,config:{poll_interval_s:0,model:'m',effort:'high'},
+    if(cmd.includes(' snapshot '))value={lifecycle:'running',paused:false,config:{poll_interval_s:0,model:'m',effort:'high',engine:'claude'},
       agents:{Controller:{kind:'controller',thread_id:'parent'}},delegations:batch.status==='creating'?[batch]:[]};
     else if(cmd.includes(' delegate-claim '))value={delegation:structuredClone(batch)};
     else if(cmd.includes(' delegate-activate '))batch.status='active';
@@ -194,7 +212,8 @@ async function neutralAdapter() {
  await neutralAdapter();
  await scenario();await scenario({busy:true});await scenario({failSend:true});await scenario({wrongThread:true});
  await interrupted();await startup(false,true);await startup(true,false);await startup(true,true);
- await delegation();await delegation({failFork:true});await delegation({failBind:true});await delegation({abandoned:true});
+ await delegation();await delegation({count:4});await delegation({failFork:true});await delegation({failBind:true});
+ await delegation({failSnapshot:true});await delegation({failSnapshotBind:true});await delegation({wrongSnapshotParent:true});await delegation({abandoned:true});
  await delegation({lostStartAck:true});await delegation({lostStartAck:true,returnedBeforeAck:false});
  await statusScenario('transient');await statusScenario('isolate');await statusScenario('persistent');await statusScenario('finished');
  await endedDelegateCallback();await endedDelegateCallback({failed:true});await platformErrorDetails();

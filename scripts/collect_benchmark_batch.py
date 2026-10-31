@@ -204,7 +204,7 @@ def collect_batch(batch_path, output, *, codex_home=None):
                 hashes[rel.as_posix()] = copy_stable(path, temporary/rel)
             rows = []
             for job, run, status in runs:
-                issues, roles = [], []
+                issues, roles, snapshot_sessions = [], [], []
                 db = temporary/'batch'/run.relative_to(batch_path)/'private/state/runtime.sqlite'
                 agents, meta = [], {}
                 if not db.is_file():
@@ -278,6 +278,28 @@ def collect_batch(batch_path, output, *, codex_home=None):
                             hashes[original_rel.as_posix()] = copy_stable(extra, temporary/original_rel)
                 if not roles:
                     issues.append('no recorded policy role sessions')
+                # Snapshot anchors are not policy actors, but are required to
+                # reconstruct and audit the native lineage of their delegates.
+                if engine == 'codex':
+                    for delegation_id, delegation in meta.get('delegations', {}).items():
+                        tid = delegation.get('snapshot_thread_id')
+                        if tid is None:
+                            continue  # historical runs did not create anchors
+                        if not isinstance(tid, str) or not ID.fullmatch(tid):
+                            issues.append(str(delegation_id)+': invalid snapshot session id')
+                            continue
+                        matches = sorted((home/'sessions').rglob('*'+tid+'.jsonl'))
+                        native_queries.append((home/'sessions', tid, matches))
+                        if len(matches) != 1:
+                            issues.append(str(delegation_id)+': expected one snapshot session, found '+str(len(matches)))
+                            continue
+                        base = Path('sessions')/job['profile'] if job.get('profile') else Path('sessions')
+                        rel = base/job['case_id']/(tid+'.jsonl')
+                        checksum = copy_stable(matches[0], temporary/rel)
+                        hashes[rel.as_posix()] = checksum
+                        native_sources[matches[0]] = checksum
+                        snapshot_sessions.append({'delegation_id':delegation_id,'thread_id':tid,
+                                                  'session':rel.as_posix(),'sha256':checksum})
                 results = run/'private/outputs'
                 if not any((results/name).is_file() for name in ('evaluation.json', 'interruption-evaluation.json', 'budget-cutoff.json')):
                     issues.append('no final/interruption evaluation')
@@ -303,7 +325,8 @@ def collect_batch(batch_path, output, *, codex_home=None):
                 rows.append({'case_id': job['case_id'], 'profile': job.get('profile'), 'status': status,
                              'engine': engine, 'topology': cfg.get('topology'), 'model': cfg.get('model'),
                              'lifecycle':meta.get('lifecycle'),
-                             'run': (Path('batch')/run.relative_to(batch_path)).as_posix(), 'roles': roles, 'issues': issues})
+                             'run': (Path('batch')/run.relative_to(batch_path)).as_posix(), 'roles': roles,
+                             'snapshot_sessions':snapshot_sessions, 'issues': issues})
             # Check all original evidence again, including files outside sessions.
             if list(_files(batch_path)) != initial_files or load(state_path) != state:
                 raise ValueError('Batch changed while collecting')

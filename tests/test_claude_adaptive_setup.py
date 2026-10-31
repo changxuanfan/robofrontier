@@ -51,7 +51,8 @@ class AdaptiveSetupTests(unittest.TestCase):
         with self.assertRaises(ValueError): self.store.action_robot('Controller','A')
         self.assertEqual(host.hosts[self.actor].wait(3)['status'],'idle')
         self.assertEqual(self.child_calls[0]['resume'],child['thread_id'])
-        self.assertEqual(self.ledger.snapshot()['reported_spend_usd'],'0.03')
+        self.assertEqual(self.ledger.snapshot()['reported_spend_usd'],'0.04')
+        self.assertNotEqual(self.calls[0]['events_name'],self.calls[1]['events_name'])
         with self.assertRaises(ValueError): host.establish('batch')
 
     def test_uncertain_fork_keeps_reserved_robot_and_known_child_id(self):
@@ -64,7 +65,8 @@ class AdaptiveSetupTests(unittest.TestCase):
         self.assertTrue(self.store.get('dispatch_paused'))
         batch=self.d.batch('batch')
         self.assertEqual(batch['status'],'needs_review')
-        self.assertIsNotNone(batch['children'][0]['thread_id'])
+        self.assertIsNotNone(batch['snapshot_thread_id'])
+        self.assertIsNone(batch['children'][0]['thread_id'])
         self.assertEqual(self.d.owners()['A'],self.actor)
         with self.assertRaises(ValueError): self.store.action_robot('Controller','A')
         with self.assertRaises(ValueError): self.store.action_robot(self.actor,'A')
@@ -84,6 +86,51 @@ class AdaptiveSetupTests(unittest.TestCase):
         self.assertFalse(worker.is_alive()); self.assertEqual(results[0]['status'],'needs_review')
         self.assertTrue(self.store.get('dispatch_paused')); self.assertEqual(self.child_calls,[])
         self.assertEqual(self.ledger.snapshot()['status'],'uncertain')
+
+class AdaptiveSnapshotTests(unittest.TestCase):
+    runner = fixtures.ForkSetupTests.runner
+    child_runner = AdaptiveSetupTests.child_runner
+    fork = AdaptiveSetupTests.fork
+    child = AdaptiveSetupTests.child
+    coordinator = AdaptiveSetupTests.coordinator
+    tearDown = AdaptiveSetupTests.tearDown
+    def setUp(self):
+        self.test_scopes=[{'robots':['A'],'goal':'first','done_when':'done'},
+                          {'robots':['B'],'goal':'second','done_when':'done'}]
+        AdaptiveSetupTests.setUp(self)
+        for child in self.d.batch('batch')['children']:
+            conn=self.run/'private/state/connections'/(child['actor']+'.json')
+            conn.write_text(json.dumps({'schema_version':3,'run_id':'run','actor':child['actor'],'token':'fake'}))
+
+    def test_parent_append_between_children_keeps_one_snapshot_boundary(self):
+        count=0
+        def mutate(*args,**kwargs):
+            nonlocal count
+            result=self.fork(*args,**kwargs)
+            if not kwargs.get('snapshot'):
+                count+=1
+                if count==1:
+                    with (self.folder/(fixtures.PARENT+'.jsonl')).open('a') as out:
+                        out.write(json.dumps({**self.row,'uuid':'later'})+'\n')
+            return result
+        result=self.coordinator(fork=mutate).establish('batch')
+        self.assertEqual(result['status'],'active')
+        batch=self.d.batch('batch')
+        self.assertTrue(batch.get('snapshot_thread_id'))
+        self.assertTrue(all(child['verified'] for child in batch['children']))
+        self.assertEqual(batch['source_provenance']['source_thread_id'],batch['snapshot_thread_id'])
+
+    def test_snapshot_mutation_before_first_child_fails_closed(self):
+        def mutate(*args,**kwargs):
+            result=self.fork(*args,**kwargs)
+            if kwargs.get('snapshot'):
+                with (self.folder/(result['child_session']+'.jsonl')).open('a') as out:
+                    out.write(json.dumps({**self.row,'sessionId':result['child_session'],'uuid':'tampered'})+'\n')
+            return result
+        result=self.coordinator(fork=mutate).establish('batch')
+        self.assertEqual(result['status'],'needs_review')
+        self.assertTrue(self.store.get('dispatch_paused'))
+        self.assertEqual(self.child_calls,[])
 
 
 if __name__=='__main__': unittest.main()

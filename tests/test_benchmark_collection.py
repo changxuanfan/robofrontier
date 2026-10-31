@@ -76,6 +76,34 @@ class BenchmarkCollectionTests(unittest.TestCase):
             original=run/'private/evidence/turn.jsonl'
             self.assertEqual(original.read_bytes(),(root/'restored/batch/model/demo/private/evidence/turn.jsonl').read_bytes())
 
+    def test_snapshot_anchor_is_collected_without_becoming_a_policy_role(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);batch,run,sessions=self.make_batch(root)
+            with sqlite3.connect(run/'private/state/runtime.sqlite') as conn:
+                conn.execute('create table meta(key text,value text)')
+                conn.executemany('insert into meta values (?,?)',[
+                    ('lifecycle',json.dumps('ended')),
+                    ('delegations',json.dumps({'batch-1':{'snapshot_thread_id':'anchor'}}))])
+            write(sessions/'anchor.jsonl',{'sessionId':'anchor','text':'inherited history'})
+            report=collect_batch(batch,root/'export')
+            self.assertTrue(report['complete'])
+            row=report['jobs'][0]
+            self.assertEqual(len(row['roles']),2)
+            self.assertEqual(row['snapshot_sessions'][0]['thread_id'],'anchor')
+            self.assertEqual((root/'export'/row['snapshot_sessions'][0]['session']).read_bytes(),(sessions/'anchor.jsonl').read_bytes())
+
+    def test_missing_snapshot_anchor_marks_collection_incomplete(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);batch,run,_=self.make_batch(root)
+            with sqlite3.connect(run/'private/state/runtime.sqlite') as conn:
+                conn.execute('create table meta(key text,value text)')
+                conn.executemany('insert into meta values (?,?)',[
+                    ('lifecycle',json.dumps('ended')),
+                    ('delegations',json.dumps({'batch-1':{'snapshot_thread_id':'anchor'}}))])
+            report=collect_batch(batch,root/'export')
+            self.assertFalse(report['complete'])
+            self.assertIn('batch-1: expected one snapshot session, found 0',report['jobs'][0]['issues'])
+
     def test_live_writers_and_pids_rejected_before_export(self):
         for name in ('supervisor.lock','model/demo/private/state/world.lock','model/demo/private/state/claude-engineering.lock'):
             with self.subTest(lock=name), tempfile.TemporaryDirectory() as tmp:
