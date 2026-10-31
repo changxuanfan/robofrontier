@@ -112,6 +112,7 @@ CLI 宿主使用持久化的原生 thread/start、turn/start、thread/fork；绑
 
 ```sh
 .venv/bin/python -m scripts.check_codex_cli --output runs/engineering/my-cli-protocol-check
+.venv/bin/python -m scripts.check_codex_snapshot
 ```
 
 当前工程未启动正式策略试验，未凭离线检查声称第三方厂商 API 已验收。物理／文件证据边界依旧是角色协议和工具认证，不是防恶意策略的操作系统隔离。
