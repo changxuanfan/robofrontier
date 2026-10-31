@@ -1,6 +1,6 @@
 // Loaded by Meta into functions.exec; definitions alone perform no I/O.
 // It has no task planner and never selects robot actions or delegation scopes.
-async function runMetaDispatcher({runDir, python, cwd, tools, onEvent = () => {}, stopRequested = () => false, maxCycles = Infinity, startWhenReady = false, observationSource = 'codex.wait_threads'}) {
+async function runMetaDispatcher({runDir, python, cwd, tools, onEvent = () => {}, stopRequested = () => false, maxCycles = Infinity, startWhenReady = false, observationSource = 'codex.wait_threads', createSnapshot}) {
   const quote = value => "'" + String(value).replaceAll("'", "'\\''") + "'";
   const owner = 'meta-' + Date.now() + '-' + Math.random().toString(16).slice(2);
   const cursors = new Map();
@@ -88,8 +88,16 @@ async function runMetaDispatcher({runDir, python, cwd, tools, onEvent = () => {}
       const claimed = (await runtime('delegate-claim',{id:batch.id})).delegation;
       let activated = false;
       try {
+        // Keep the snapshot inert: it is a lineage anchor, never a policy actor.
+        const source = {threadId:claimed.source_thread_id,environment:{type:'same-directory'}};
+        const anchor = decode(await (createSnapshot || tools.mcp__codex_app__fork_thread)(source));
+        if (!anchor.threadId) throw new Error('Native snapshot response incomplete; creation outcome unknown');
+        onEvent({event:'snapshot_created',thread_id:anchor.threadId,id:batch.id,verified:false});
+        await runtime('delegate-snapshot-bind',{id:batch.id,thread_id:anchor.threadId});
+        if (anchor.status!=='created' || anchor.sourceThreadId!==claimed.source_thread_id)
+          throw new Error('Native snapshot response inconsistent; known ID retained for review');
         for (const child of claimed.children) {
-          const fork = decode(await tools.mcp__codex_app__fork_thread({threadId:claimed.source_thread_id,environment:{type:'same-directory'}}));
+          const fork = decode(await tools.mcp__codex_app__fork_thread({threadId:anchor.threadId,environment:{type:'same-directory'}}));
           if (!fork.threadId)
             throw new Error('Native fork response incomplete; creation outcome unknown');
           child.thread_id = fork.threadId;
@@ -97,7 +105,7 @@ async function runMetaDispatcher({runDir, python, cwd, tools, onEvent = () => {}
           // The CLI checks the native parent pointer, exclusive ordinal and
           // prefix hash. It rejects a batch whose forks diverged at creation.
           await runtime('delegate-bind',{id:batch.id,actor:child.actor,thread_id:fork.threadId});
-          if (fork.status!=='created' || fork.sourceThreadId!==claimed.source_thread_id)
+          if (fork.status!=='created' || fork.sourceThreadId!==anchor.threadId)
             throw new Error('Native response inconsistent; known ID retained for review');
         }
         await runtime('delegate-activate',{id:batch.id}); activated = true;

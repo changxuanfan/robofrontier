@@ -59,6 +59,16 @@ def execute(store, op, data, owner, now):
                 'agents':{a:{k:x for k,x in v.items() if k!='note'} for a,v in store.agents().items()},
                 'delegations':Delegations(store).active() if cfg['topology']=='adaptive' else [],
                 'pending':{a:store.pending(a) for a,v in store.agents().items() if v['kind']!='manager'}}
+    if op=='delegate-snapshot-bind':
+        d=Delegations(store);key=data['id'];thread_id=data['thread_id']
+        with store.transaction():
+            store.lease(owner,now,cfg['manager_lease_s'])
+            d.snapshot_created(key,thread_id,owner)
+        provenance=fork_provenance(d.batch(key)['source_thread_id'],thread_id)
+        with store.transaction():
+            store.lease(owner,time.time(),cfg['manager_lease_s'])
+            d.snapshot_bind(key,thread_id,provenance,owner)
+        return {'recorded':True}
     if op=='delegate-bind':
         # Commit identity before reading platform files: a failed check must
         # not erase a native fork that already exists.
@@ -66,7 +76,10 @@ def execute(store, op, data, owner, now):
         with store.transaction():
             store.lease(owner,now,cfg['manager_lease_s'])
             d.created(key,data['actor'],data['thread_id'],owner)
-        provenance=fork_provenance(d.batch(key)['source_thread_id'],data['thread_id'])
+        batch=d.batch(key)
+        if not batch.get('snapshot_thread_id') or not batch.get('snapshot_provenance'):
+            raise ValueError('Verified delegation snapshot required')
+        provenance=fork_provenance(batch['snapshot_thread_id'],data['thread_id'])
         with store.transaction():
             store.lease(owner,time.time(),cfg['manager_lease_s'])
             d.bind(key,data['actor'],data['thread_id'],provenance,owner)
@@ -143,7 +156,7 @@ def main():
     p.add_argument('--run-dir',type=Path,required=True)
     p.add_argument('--owner',default='Meta')
     p.add_argument('op',choices=['snapshot','observe-sessions','request-start','plan','claim','dispatch-result','pause','resume-dispatch','export',
-                               'delegate-claim','delegate-bind','delegate-activate','delegate-started','delegate-uncertain','session-unavailable','seal'])
+                               'delegate-claim','delegate-snapshot-bind','delegate-bind','delegate-activate','delegate-started','delegate-uncertain','session-unavailable','seal'])
     p.add_argument('--data',default='{}')
     args=p.parse_args()
     path=args.run_dir.resolve()/'private/state/runtime.sqlite'

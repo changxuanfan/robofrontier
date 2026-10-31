@@ -17,7 +17,7 @@ Claude 批次也使用此命令，将输入换为其实际批次目录（例如 
 
 收集器检查监督程序和 world 的已有写入锁、Codex 宿主 PID、终止状态，复制后验证源文件是否变化；SQLite 检查在一次性副本中进行，保留原始 DB/WAL/SHM 字节。运行时未结束、未决物理动作、缺少任务 Motion、Motion chunk 或源资产哈希异常会列入 issues，不静默忽略。Motion 清单检查不代替完整解码和渲染验证。所有工具都应在任务原运行环境内执行，这些检查无法跨机器或容器可靠判断 PID 和文件锁。
 
-Codex session 优先从批次 `codex-home.json` 定位；无标记的旧批次使用 `CODEX_HOME` 或 `~/.codex`，可显式指定 `--codex-home /path/to/home`。只复制登记角色关联的 session，不打包整个 Codex home。
+Codex session 优先从批次 `codex-home.json` 定位；无标记的旧批次使用 `CODEX_HOME` 或 `~/.codex`，可显式指定 `--codex-home /path/to/home`。复制登记角色及委派快照关联的 session，不打包整个 Codex home。快照记录在 `jobs[].snapshot_sessions`，不是策略角色；缺少快照时收集结果标记不完整。
 
 Claude 收集原生 `private/claude-config/projects/*/<session-id>.jsonl`、关联的辅助 transcript 和批次内的 `private/evidence/*.jsonl`。原生 transcript 同时保留便于查找的 `sessions/` 索引副本及批次内原有的相对布局，归档时按内容去重。Claude 配置目录的其他内容（包括认证文件）不收集。若需恢复原生 CLI 会话，应另行配置凭据；本功能不保证跨 CLI 版本或迁移路径后的 resume。
 
