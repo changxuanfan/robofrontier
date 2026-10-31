@@ -15,6 +15,7 @@ vendor/
 /MUJOCO_LOG.TXT
 /.env
 /.env.*
+!/.env.example
 # Large environment assets/previews are materialized per worktree.
 /configs/environments/**/assets/
 /configs/environments/**/preview-*.png
@@ -30,3 +31,7 @@ vendor/
 
 # Worktree-local cooperative Oracle dependency, never shared runtime state.
 /.oracle-deps/
+
+/.codex-luna/
+
+/.codex-tools/

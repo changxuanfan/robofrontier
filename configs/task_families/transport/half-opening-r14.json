@@ -6,7 +6,7 @@
   "policy_reference": "prompts/tasks/transport.md",
   "physical_selection": "r14_half_opening_user_selected",
   "original_oracle_physical_revision": 13,
-  "physical_revision": 14,
+  "physical_revision": "rolling_friction_003_candidate_not_full_task_qualified",
   "central_opening_linear_scale": 0.5,
   "display_opening_scale_relative_to_physical": 1.0,
   "formal_gpt_ready": false,
@@ -90,8 +90,8 @@
       "physical_scene": "configs/environments/cube_transport/frontier-v2-r14-transport-a08-d1",
       "half_opening_audit": "outputs/oracle/transport-continuation-20261026/table-half-opening-preview/trajectory-audit.json",
       "half_opening_audit_sha256": "492aacafd48d2df1171fb55b3338097531f0285c5121b1a82e91a2eb280d97a8",
-      "physical_scene_sha256": "44b107f2b7e3065d33020d581f022e56dc99ba1a4f45769295df06fd2415e9e5",
-      "workstation_manifest_sha256": "9cdbb6fe88061870fff93648fef8b85f8b8396e001d39c0f7a2fd2b2eec46d4b"
+      "physical_scene_sha256": "8df9422a6d07504788bd75a21ed3f3d8427c334ed0c2abe7ec8f7b034322b6b2",
+      "workstation_manifest_sha256": "c28095e69eeb6ee9749bbfd3298964a3deb5bd09628fc126ca2f59ef47e7c15d"
     },
     {
       "case_id": "transport-a08-d2",
@@ -104,8 +104,8 @@
       "physical_scene": "configs/environments/cube_transport/frontier-v2-r14-transport-a08-d2",
       "half_opening_audit": "outputs/oracle/transport-continuation-20261026/table-half-opening-eight-L2/trajectory-audit.json",
       "half_opening_audit_sha256": "5838a192b000ffdd3030c99c53f05bae6ce88930747407eba6d3806544e5efcd",
-      "physical_scene_sha256": "556fc939b70b3e5eeca8be4fae77c5cd8f249a35b56e2f9e0edee34bdce6044c",
-      "workstation_manifest_sha256": "34cc18549947adbf1b032243caf450ccb0db6fc1b9192abc839582610a7a435d"
+      "physical_scene_sha256": "5a7b6a18d954b295d38f1a90295a69af90af1173f1eeb49eee07eb4b07fa1b66",
+      "workstation_manifest_sha256": "a60dced19fab72f9e7075d052c9c84ea83feb9f72c013c17c0942a4eb872ca78"
     },
     {
       "case_id": "transport-a08-d3",
@@ -118,8 +118,8 @@
       "physical_scene": "configs/environments/cube_transport/frontier-v2-r14-transport-a08-d3",
       "half_opening_audit": "outputs/oracle/transport-continuation-20261026/table-half-opening-eight-L3/trajectory-audit.json",
       "half_opening_audit_sha256": "2ec7eb6d49de83550b847c9f35f7d076f2022b71d323b36426eebe96f0288097",
-      "physical_scene_sha256": "75261ec9e4cc26863c71c66efbf732b7af5cf357e610bea20469334b462f16a8",
-      "workstation_manifest_sha256": "a4b9d8d054acb050fc57c063995a2025ed3e7afee5784b17042dab9247259705"
+      "physical_scene_sha256": "de593ea458c9bd29464eec8e8c5cf4a61bdbe28df72aee3eb2d811cb8ed7393c",
+      "workstation_manifest_sha256": "e2f552eb3a0c87fce049cf62276c67478097d440eb9c6b8dae83655f86138b48"
     },
     {
       "case_id": "transport-a12-d1",
@@ -132,8 +132,8 @@
       "physical_scene": "configs/environments/cube_transport/frontier-v2-r14-transport-a12-d1",
       "half_opening_audit": "outputs/oracle/transport-continuation-20261026/table-half-opening-twelve-arm/trajectory-audit.json",
       "half_opening_audit_sha256": "b66597674b81f8344a8ac3dc03eabee419fb15ce1c5fa57caf071a43b72a6dac",
-      "physical_scene_sha256": "41856c8940c9801c9e3d0fcf0353dd0468a96c3b5fc6eef1d01d8aa9863e843e",
-      "workstation_manifest_sha256": "2d54c8b7c1bf624c4e7111dac6c6a077118ae78f0d02e8fa1cecb1e2a235ff86"
+      "physical_scene_sha256": "8c814682126427300b8408fe8ac341199d613524fcebfd5216e8b063aa41440c",
+      "workstation_manifest_sha256": "9d9c260ad8d955929de2e7dbbdb416862aa9766e2ca0ce4fe3d8114e4556fa91"
     },
     {
       "case_id": "transport-a12-d2",
@@ -146,8 +146,8 @@
       "physical_scene": "configs/environments/cube_transport/frontier-v2-r14-transport-a12-d2",
       "half_opening_audit": "outputs/oracle/transport-continuation-20261026/table-half-opening-twelve-L2/trajectory-audit.json",
       "half_opening_audit_sha256": "827fd1f1d9f397ecc47fdff1eafd0e0570ff6232d96037c475ddd0f555437d98",
-      "physical_scene_sha256": "9d930aba9da6607207be67f0ff8d16871955f22b2453991d86a3d9879d40107f",
-      "workstation_manifest_sha256": "702b664c0e28ef85481d9d42a1d20ed982799470d2424231e07980d619741ce5"
+      "physical_scene_sha256": "0851cd2f05551603dbf5f090c8d03526f9f77e89d0a90aa4825b00937f5f9f71",
+      "workstation_manifest_sha256": "47d30debd80a610894f0df7c3d5afbbc3ee16e2446ffe9a8746e8a9ca70f6629"
     },
     {
       "case_id": "transport-a12-d3",
@@ -160,8 +160,8 @@
       "physical_scene": "configs/environments/cube_transport/frontier-v2-r14-transport-a12-d3",
       "half_opening_audit": "outputs/oracle/transport-continuation-20261026/table-half-opening-twelve-L3/trajectory-audit.json",
       "half_opening_audit_sha256": "44a89ec036054aa9c2b2615cf8a84edb2189f70ddb64b048e64700eb04342702",
-      "physical_scene_sha256": "be4474d54fae3f9817a6bf5ae0edc70f408deba684a3df3ee996f7e7f1d84b9d",
-      "workstation_manifest_sha256": "d1a07a6188a479e627bef61be45f7dce5782ba8758f87a9b8cf6fe4cf0175e14"
+      "physical_scene_sha256": "5855d88166e3449cce8124f0e40773208b14664275477ac3cdf7fa5a81e56fe1",
+      "workstation_manifest_sha256": "081b247fe9b172b2b556509ecdd8bf75d87809cb7e063c1bc06d3fc76bc8803d"
     }
   ],
   "witness_registry": {

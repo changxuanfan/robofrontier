@@ -43,6 +43,18 @@ class RelayContractTests(unittest.TestCase):
         self.assertTrue(relay.mon.result_cache['task_success'])
         self.assertEqual(relay.mon.result_cache['completed_payloads'],2)
 
+    def test_terminal_scoring_keeps_legacy_process_result_separate(self):
+        _,_,relay=self.world()
+        relay.mon.task['run_protocol']={'evaluation_semantics':'terminal_outcome_v2'}
+        relay.states['p1'].update(landed=False, transitions=[], dropped=True)
+        relay.mon.violations=[{'kind':'inter_robot_contact','key':'A / B'}]
+        relay.sample();result=relay.mon.result_cache
+        self.assertTrue(result['terminal_goal_met'])
+        self.assertTrue(result['task_success'])
+        self.assertFalse(result['legacy_process_goals_met'])
+        self.assertFalse(result['strict_task_success'])
+        self.assertEqual(result['terminal_completed_payloads'],2)
+
     def test_edge_tolerance_applies_to_whole_geometry(self):
         model,data,relay=self.world()
         for name in ['p1','p2']:data.joint(name+'_free').qpos[0]=.349

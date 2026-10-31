@@ -19,7 +19,7 @@
     "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n06-d3"
   },
   "scene_asset": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n06-d3",
-  "scene_sha256": "ef02a7f7441625cf29b3cda9799701bdc229916a46d3e8a1509133f084091eba",
+  "scene_sha256": "d4f2d67f5b036782beef27dbb7856e44eff1be1b3f7b47cc9c0875b30120aefc",
   "arms": {
     "A": {
       "base_position_m": [

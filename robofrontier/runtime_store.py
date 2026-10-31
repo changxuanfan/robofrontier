@@ -7,6 +7,9 @@ import sqlite3
 import threading
 import time
 import uuid
+from .tool_errors import CallIdConflict
+
+from .sqlite_busy import BUSY_TIMEOUT_SECONDS, begin_immediate
 
 
 def packed(value):
@@ -18,7 +21,7 @@ class RuntimeStore:
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.lock = threading.RLock()
-        self.db = sqlite3.connect(self.path, isolation_level=None, check_same_thread=False, timeout=10)
+        self.db = sqlite3.connect(self.path, isolation_level=None, check_same_thread=False, timeout=BUSY_TIMEOUT_SECONDS)
         self.db.row_factory = sqlite3.Row
         self.db.execute('PRAGMA journal_mode=WAL')
         self.db.execute('PRAGMA synchronous=FULL')
@@ -52,7 +55,10 @@ class RuntimeStore:
         with self.lock:
             nested = self.db.in_transaction
             savepoint = 's' + uuid.uuid4().hex
-            self.db.execute('SAVEPOINT ' + savepoint if nested else 'BEGIN IMMEDIATE')
+            if nested:
+                self.db.execute('SAVEPOINT ' + savepoint)
+            else:
+                begin_immediate(self.db, self.path)
             try:
                 yield self
                 self.db.execute('RELEASE ' + savepoint if nested else 'COMMIT')
@@ -128,13 +134,14 @@ class RuntimeStore:
             if self.get('lifecycle') != 'prepared':
                 raise ValueError('Run is not prepared')
             policy = {a: v for a, v in self.agents().items() if v['kind'] != 'manager'}
-            if not policy or not all(v['ready'] for v in policy.values()):
+            direct = self.get('config').get('startup_protocol') == 'direct_controller_v2'
+            if not policy or (direct and (set(policy) != {'Controller'} or not policy['Controller']['thread_id'])) or (not direct and not all(v['ready'] for v in policy.values())):
                 raise ValueError('All policy roles must be READY')
             self.put('lifecycle', 'running')
             self.put('physics_state', 'running')
             self.put('start_at', time.time())
             for a, v in policy.items():
-                self.update_agent(a, work_state='continue', note='START; form your own plan within role authority',
+                self.update_agent(a, work_state='waiting' if direct else 'continue', note='' if direct else 'START; form your own plan within role authority',
                                   work_saved_at=time.time(), work_revision=v['work_revision'] + 1)
             self.event('START', self.get('config')['manager'])
 
@@ -313,7 +320,7 @@ class RuntimeStore:
             row = self.db.execute('SELECT * FROM calls WHERE id=?', (call_id,)).fetchone()
             if row:
                 if (row['actor'], row['op'], row['parameters']) != (actor, op, packed(parameters)):
-                    raise ValueError('Call id reused with different parameters')
+                    raise CallIdConflict(call_id)
                 return dict(row)
             self.db.execute('INSERT INTO calls VALUES (?,?,?,?,?,?,?)',
                             (call_id, actor, op, packed(parameters), 'accepted', None, time.time()))

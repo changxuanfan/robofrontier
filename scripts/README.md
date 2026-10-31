@@ -4,7 +4,8 @@
 
 | 入口 | 用途 |
 | --- | --- |
-| `benchmark models/preflight/prepare/run/status/stop` | Codex CLI 多模型、API预检、9/36独立任务与24小时截止 |
+| `benchmark models/plan/preflight/prepare/run/status/stop` | Codex CLI 多模型、等级/最少臂选择、API小测与完整预检、并发与24小时截止 |
+| `benchmark_handoff doctor/init-env/assets/restore` | 交接环境检查、私有.env创建与按SHA校验的运行资产导出/恢复 |
 | `check_codex_cli` | 使用本地Responses stub验证真实CLI工具、图片与fork；无外部模型调用 |
 | `curate_repository` | 生成并校验数据清理计划，按冻结来源保护原始流 |
 | `tasks list/check/prepare/prepare-batch` | 当前36项的版本、输入审计与独立GPT准备 |

@@ -5,11 +5,11 @@ description: Execute a RoboFrontier run as Coordinator, Worker, peer, Controller
 
 # Robot collaboration
 
-Use the frozen task and current role assignment. Read [tools](references/tools.md) before READY and [communication](references/communication.md) before coordinating commitments. At startup combine task goals with READY's static robot capabilities; distinguish configuration, timestamped evidence and assumptions. Load selected RGB images when needed; a path alone is not viewing.
+Use the frozen task and current role assignment. Read [tools](references/tools.md) before robot operations and [communication](references/communication.md) before coordinating commitments. In a direct-start run, ready is optional for querying capabilities and limits; if called, continue afterwards without waiting for another START. Combine task goals with the available static robot capabilities; distinguish configuration, timestamped evidence and assumptions. Load selected RGB images when needed; a path alone is not viewing.
 
-Initial policy roles register READY before START, save waiting and end the startup turn. Runtime forks follow their current assignment rather than repeating team startup. After START choose to keep working, wait or save/end; one decision need not end a native turn. Meta runs infrastructure, not the task plan.
+Follow the startup protocol in your role prompt. If the host says the run has started, begin the task; if it requests a READY barrier, register READY, save waiting and end the startup turn. Runtime forks follow their current assignment rather than repeating team startup. After START choose to keep working, wait or save/end; one decision need not end a native turn. Meta runs infrastructure, not the task plan.
 
-In adaptive mode read [bounded forks](references/adaptive.md) before READY; current runtime assignments identify delegated scope and connection.
+In adaptive mode read [bounded forks](references/adaptive.md) before delegating; current runtime assignments identify delegated scope and connection.
 
 ## Rolling-horizon planning
 
@@ -35,7 +35,7 @@ Peers own their robots' plans and negotiate only affected commitments. Start unc
 
 ## Execution and evidence
 
-Use agent-authored finite action chunks when the next calls are already decided. For a self-contained segment with stable commitments, consider robotSequence's sequence message boundary to review ordinary mail once at its end. Choose step boundaries when changing commitments may affect the next action; step remains the default. Mail is retained; failures, unresolved execution, system events, pause/end and intermediate images still return control. New evidence needing interpretation or an unresolved shared condition remains a model boundary. Use nonblocking calls or concurrent submissions when useful work can overlap.
+Use agent-authored finite action chunks when the next calls are already decided. In Desktop, robotSequence can review ordinary mail at the end of a self-contained segment with stable commitments. In the CLI, submit chosen calls through the bound robot tool, reviewing returned events at each boundary. Mail is retained; failures, unresolved execution, system events, pause/end and intermediate images return control. New evidence needing interpretation or an unresolved shared condition remains a model boundary. Use nonblocking calls or concurrent submissions when useful work can overlap.
 
 Use READY’s actual capabilities and limits when choosing pose, aperture, speeds or joint targets. Initial supply location does not assign color ownership; shared goals remain shared unless the task specifies otherwise. For a reach or clearance problem, consider another supported pose, approach or teammate. Account for fingers and payload through placement, opening and retreat; command bounds or endpoint IK alone do not establish a usable path.
 

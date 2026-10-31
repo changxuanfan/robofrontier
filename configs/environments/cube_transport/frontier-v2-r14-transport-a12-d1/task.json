@@ -17,7 +17,7 @@
     "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a12-d1"
   },
   "scene_asset": "configs/environments/cube_transport/frontier-v2-r14-transport-a12-d1",
-  "scene_sha256": "41856c8940c9801c9e3d0fcf0353dd0468a96c3b5fc6eef1d01d8aa9863e843e",
+  "scene_sha256": "8c814682126427300b8408fe8ac341199d613524fcebfd5216e8b063aa41440c",
   "arms": {
     "A": {
       "base_position_m": [

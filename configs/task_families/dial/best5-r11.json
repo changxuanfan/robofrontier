@@ -29,10 +29,10 @@
       "arms": 4,
       "source_directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n04-d1",
       "source_sha256": {
-        "scene.xml": "f201cbea9e207b22cf727b5e4209a6e73cdfb674eafedbb23d22beda07efc0da",
-        "task.json": "a5565175299bab19d5e3319837260ca67f04dbc00a7c8b71bca7c338f59a4173",
+        "scene.xml": "64158f82832ed88b3d15939230be9fb002b1dcf818d8dae7a857ff5143e149c1",
+        "task.json": "2154aaa99f93d4784a321692599f563480049f04b2e1b99bcbcdb9987b6bb9ea",
         "environment.json": "2980da08f45d1d7e614d1907d39a1caf7bb4bc2a1128358d3e2bba37e9080f09",
-        "workstation.json": "542ba44715dc1a4ae679e616b751b86bb78dc3079c821d7041aebd7b96cd7aa6"
+        "workstation.json": "32bf795942cd7b5e7917d73f6f4151aea5dc92d36cbb4e29837cd1815830009c"
       },
       "oracle_evidence": {
         "report": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n04-d1/attempt-001/report.json",
@@ -45,7 +45,8 @@
         "assisted": false,
         "evidence_kind": "pure_program"
       },
-      "runtime_readiness": "pending_shared_integration"
+      "runtime_readiness": "pending_shared_integration",
+      "oracle_evidence_scope": "Historical pre-0.03 physics; not a qualification of this candidate."
     },
     {
       "case_id": "dial-best5-n04-d2",
@@ -54,10 +55,10 @@
       "arms": 8,
       "source_directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n04-d2",
       "source_sha256": {
-        "scene.xml": "d633603910e5bba92a2c07643c98cc4ca331f7191e0127ab693ad065d3cca1fc",
-        "task.json": "7119d93d17eba21217b91688089220dfb9f06674d8ed01c6cfb63ab6306c36be",
+        "scene.xml": "336bbc14aaf8892419f58dcef6d09a83c07bf3e97483ab01bc0479cc9e41ff2a",
+        "task.json": "cdf05ec31e42e96c5ab93a69d09ad4a102703062111d25b4f196883cf0153b4b",
         "environment.json": "8bc7239c72792c4a6e00ef688f58f63a9f1e022e1be522e9489202c754e6a70a",
-        "workstation.json": "654033dfdd7209d3b5ea1a8d8830eed60ba3ac15c8f1a2abe50eda28ca1b8220"
+        "workstation.json": "142572359ecf297495c36fc8a25de2bea960eeefab13c66ab6e31fa0bc343850"
       },
       "oracle_evidence": {
         "report": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n04-d2/attempt-001/report.json",
@@ -70,7 +71,8 @@
         "assisted": false,
         "evidence_kind": "pure_program"
       },
-      "runtime_readiness": "pending_shared_integration"
+      "runtime_readiness": "pending_shared_integration",
+      "oracle_evidence_scope": "Historical pre-0.03 physics; not a qualification of this candidate."
     },
     {
       "case_id": "dial-best5-n04-d3",
@@ -79,10 +81,10 @@
       "arms": 8,
       "source_directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n04-d3",
       "source_sha256": {
-        "scene.xml": "8a8ec1bacc42c66e37aa61b43c00ee4de712364ffc108afa36f4a649609304fb",
-        "task.json": "ba523015174ed1e2b1d0a1d06adb42c910a0c12fc4b372c05fcd6d7b57d3e745",
+        "scene.xml": "ef2185ffed8571c7e26c9a58c38cfc17294785416abd8fc5a06cb7443d888349",
+        "task.json": "796584681c9b0485e968cd1a8c9d75106a16bb5eb7a2aaaeb4bcaa6c78294f80",
         "environment.json": "3f5ebc2fb705aa4fa06ff4ddf6aad91d9168a28710bc86930b932625668914ab",
-        "workstation.json": "4f57ea5618619a96bdfa0ffdfe22678a9fca510b498faf8cd13fc7a78b1a1eca"
+        "workstation.json": "0ff014e83fd9b20e3cae455c7eefe3f022c3a8eff0719e208ddbe713415dd067"
       },
       "oracle_evidence": {
         "report": "runs/oracle/dial-best5-recovery-20261026/dial-best5-n04-d3/attempt-001/report.json",
@@ -95,7 +97,8 @@
         "assisted": false,
         "evidence_kind": "pure_program"
       },
-      "runtime_readiness": "pending_shared_integration"
+      "runtime_readiness": "pending_shared_integration",
+      "oracle_evidence_scope": "Historical pre-0.03 physics; not a qualification of this candidate."
     },
     {
       "case_id": "dial-best5-n06-d1",
@@ -104,10 +107,10 @@
       "arms": 6,
       "source_directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n06-d1",
       "source_sha256": {
-        "scene.xml": "cd08f46913c0daeff291eb714d525b201b35f7a4d866d6bd180dd05718b485f2",
-        "task.json": "0cb5d69885d269918c7bd10b4e08253cd8b364c86e18b9ee8c15b6a20ddd375d",
+        "scene.xml": "88fed05ed351d9709f45d8db8c0d2c89695fae9a4f417b55a5af7d9cf5a1d772",
+        "task.json": "a861191288b2d70a2e2df95b628eb21a31b02fd911f6c76e26000ca189866b83",
         "environment.json": "c6b018b45bff8a4a82ffd09c881939f0cf46d52a1e2ff9dd909bc028189fedcf",
-        "workstation.json": "91d961866d70b2bda9e84746f3b6a67decd8c0c573e59338eaf083188fb52311"
+        "workstation.json": "c9aa47e1a36c14c0fc759e0e17c76fa19c6287c46bd41f0b55c94f17ebae72cd"
       },
       "oracle_evidence": {
         "report": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n06-d1/attempt-001/report.json",
@@ -120,7 +123,8 @@
         "assisted": false,
         "evidence_kind": "pure_program"
       },
-      "runtime_readiness": "pending_shared_integration"
+      "runtime_readiness": "pending_shared_integration",
+      "oracle_evidence_scope": "Historical pre-0.03 physics; not a qualification of this candidate."
     },
     {
       "case_id": "dial-best5-n06-d2",
@@ -129,10 +133,10 @@
       "arms": 12,
       "source_directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n06-d2",
       "source_sha256": {
-        "scene.xml": "9080640b0f841605d62fa7ec808e8f4b9ee0fb13c0a8d6a9cf3c24c15c4f4e37",
-        "task.json": "f9785453241139baaddfdc965490f6e22bb0e2fdbf5db58fd0f91f881d30324f",
+        "scene.xml": "a8029d124a47a786e25ca949db07985459592e12e3a9c6f8fc7298493e2b42c7",
+        "task.json": "8c2ee465f91febbf773558d5f5f00e06f0b32651fb67182b716b0aeaf9e4c713",
         "environment.json": "dbfe3192cfd16cace648d6271c441f627f0a09a632a5c96590e15246a92dc5e7",
-        "workstation.json": "0b081beb141c06ede11fa9736b6507a52d03e9c3b8bd3f22250d93d0ae22a417"
+        "workstation.json": "61b35505076f541e0cccd5d3e7f1637e5248072ad1b7cbacdcacb284b05a4c91"
       },
       "oracle_evidence": {
         "report": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n06-d2/attempt-001/report.json",
@@ -145,7 +149,8 @@
         "assisted": false,
         "evidence_kind": "pure_program"
       },
-      "runtime_readiness": "pending_shared_integration"
+      "runtime_readiness": "pending_shared_integration",
+      "oracle_evidence_scope": "Historical pre-0.03 physics; not a qualification of this candidate."
     },
     {
       "case_id": "dial-best5-n06-d3",
@@ -154,10 +159,10 @@
       "arms": 12,
       "source_directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n06-d3",
       "source_sha256": {
-        "scene.xml": "ef02a7f7441625cf29b3cda9799701bdc229916a46d3e8a1509133f084091eba",
-        "task.json": "20d9b16a32c01c3ca3ab5dcf72517b9ebec33c49e39684caa0dd15b22b1444ba",
+        "scene.xml": "d4f2d67f5b036782beef27dbb7856e44eff1be1b3f7b47cc9c0875b30120aefc",
+        "task.json": "3fa962ac54c7451a230716634a1fa388dd061cecc89a792b15acc4cdea32175d",
         "environment.json": "c8f7ab7aed53e7bc3da9f2e696f3091adf67d54de69850793cea92dc09afddcc",
-        "workstation.json": "48989546d01fb3dfc09bc6e47e888691b6832e03888a107ed7a769b461a4ec7d"
+        "workstation.json": "0489e4015a54e6e7e128194caf5f2b510fa57ce231e28adb5b9d22114f9e7b6a"
       },
       "oracle_evidence": {
         "report": "runs/oracle/dial-best5-recovery-20261026/dial-best5-n06-d3/attempt-001/report.json",
@@ -170,7 +175,8 @@
         "assisted": false,
         "evidence_kind": "pure_program"
       },
-      "runtime_readiness": "pending_shared_integration"
+      "runtime_readiness": "pending_shared_integration",
+      "oracle_evidence_scope": "Historical pre-0.03 physics; not a qualification of this candidate."
     },
     {
       "case_id": "dial-best5-n08-d1",
@@ -179,10 +185,10 @@
       "arms": 8,
       "source_directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n08-d1",
       "source_sha256": {
-        "scene.xml": "2f2de801229fa18bde2ef659cdf99dbaa1d121cd0eb483c60f6c88647dc03e72",
-        "task.json": "4740997db55123b5ecce8be724d61c21a7377d23eed70583e953f0c292466666",
+        "scene.xml": "d4a25d60ddee17ba40678f735b88d39def5133e6725a811fdfb3d781286a32c2",
+        "task.json": "9c2fde8003e7ab36b48ebd4ab29e8aa31d2ec4cb0042b6f39ce9d3908b056654",
         "environment.json": "0eea13f357289fdbc87812f1eafe8b6587084d71fdb2fbc7bf4a97f4d1ae9e0b",
-        "workstation.json": "87aecc9d4b22983615c401d060806290bf774faf2707b76f6d6fcc718eb4cb8e"
+        "workstation.json": "542be1f29dd18a7d48951ecab5d8a2585bccd744c44b77838e1bd74ffd3f8577"
       },
       "oracle_evidence": {
         "report": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n08-d1/attempt-001/report.json",
@@ -195,7 +201,8 @@
         "assisted": false,
         "evidence_kind": "pure_program"
       },
-      "runtime_readiness": "pending_shared_integration"
+      "runtime_readiness": "pending_shared_integration",
+      "oracle_evidence_scope": "Historical pre-0.03 physics; not a qualification of this candidate."
     },
     {
       "case_id": "dial-best5-n08-d2",
@@ -204,10 +211,10 @@
       "arms": 16,
       "source_directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n08-d2",
       "source_sha256": {
-        "scene.xml": "b8e4149dcc226d1cf9ba824d17687024154e89eba97286df5bb0fb39fdec2966",
-        "task.json": "e4442c007ae48752670b548a2c7b3e4dbb7fb0133118354c118bf6f8e3c5af7e",
+        "scene.xml": "82a80c7a51de35318d14bea976bc577ff6ba49809ba385293369ccd43b3fac87",
+        "task.json": "8353d7a99a435db518099ce85192cd48637680ec9a4f2ef09af9a5f06a57c800",
         "environment.json": "2e2af1100435d181259f82772dd3778e5eb05402875d509d35a9e11b0c43e702",
-        "workstation.json": "629098290cf7b6b93bf7173737026a75a37c5ba4366f21c1657390502f447d01"
+        "workstation.json": "af2e8bdd3fb3d1a95410dee549be2a30c9479c86c2defc582fcba4685081f25d"
       },
       "oracle_evidence": {
         "report": "runs/oracle/dial-best5-r11-worktree-20261025/dial-best5-n08-d2/attempt-001/report.json",
@@ -220,7 +227,8 @@
         "assisted": false,
         "evidence_kind": "pure_program"
       },
-      "runtime_readiness": "pending_shared_integration"
+      "runtime_readiness": "pending_shared_integration",
+      "oracle_evidence_scope": "Historical pre-0.03 physics; not a qualification of this candidate."
     },
     {
       "case_id": "dial-best5-n08-d3",
@@ -229,10 +237,10 @@
       "arms": 16,
       "source_directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n08-d3",
       "source_sha256": {
-        "scene.xml": "ffe0032e1ee31f32e18fe1538d116fa7babd6469840917756c88ceb925cb4c4b",
-        "task.json": "5bbc0bafe7b1e80f57a21e039a5d2b90113b7a87d5d2b0bd0cde31b2762b0334",
+        "scene.xml": "7aa387ddd7859380d72bc215aaff6fdb48c4ff186e41eb042a3c6918d0b8ea83",
+        "task.json": "55197175e0db73339a0ec602e7374f360dfd7bf15a60b9166b2627364410176d",
         "environment.json": "5e8794c941abc4ae3ffcd2972df71a3342f949971b6f4a25f9eaf0f4f8f5e2a8",
-        "workstation.json": "24f6cfd5e83dea9150139816ace338b27b4210e46bf29e210e5279500a1af39d"
+        "workstation.json": "05cadf589bde6178b59b4d885999b49eca9c6c9925ea551d95f415ad4544e9b0"
       },
       "oracle_evidence": {
         "report": "runs/oracle/dial-best5-recovery-20261026/dial-best5-n08-d3/attempt-003/report.json",
@@ -245,7 +253,9 @@
         "assisted": true,
         "evidence_kind": "privileged_assisted"
       },
-      "runtime_readiness": "pending_shared_integration"
+      "runtime_readiness": "pending_shared_integration",
+      "oracle_evidence_scope": "Historical pre-0.03 physics; not a qualification of this candidate."
     }
-  ]
+  ],
+  "physics_revision_note": "Rolling friction 0.03 candidate. Oracle evidence belongs to historical physics and is not inherited."
 }

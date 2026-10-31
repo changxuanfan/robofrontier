@@ -1,6 +1,10 @@
 # Tool contract v0.24
 
-Use the repository's Python environment and assigned role connection:
+In the CLI benchmark, call the bound `robot` tool with `op`, `data`, optional stable `call_id`, and `views` naming RGB images to return. For `observe`, select cameras in `data.cameras` and the images to load in `views`. The host binds your current role; after other local work call `robot` with `op:"inbox"` to check events. The Desktop helper examples below apply to Desktop, not the CLI host.
+
+For Codex CLI, omit the outer `call_id` on a new robot request; the host generates a request ID returned as `call_id`. For Claude MCP, choose a unique stable outer `call_id` for each new `move`, `gripper`, `action_batch`, `delegate` or `stop`; other new requests may omit it. For a physical action, save this ID for status and safe recovery. A `job` query is a new request: put the original action ID in `data.call_id` and omit the outer `call_id`, for example `{"op":"job","data":{"call_id":"ACTION_ID"}}`. The response's outer `call_id` identifies the query; the `execution` record describes the target action (its ID may appear as `action_id` or `call_id`). If a request result is uncertain, inspect `pending` and query the original action; to retry that same request, supply its original outer `call_id` with identical `op` and `data`. Never replay uncertain physical work under a new ID. A conflict rejects the new request; it does not prove what happened to the original.
+
+In Desktop or direct client use, use the repository's Python environment and assigned role connection:
 
 ```sh
 "PYTHON" -m robofrontier.pipeline_client --connection "ROLE_CONNECTION" OP --data 'JSON'
@@ -10,7 +14,7 @@ Replace PYTHON and ROLE_CONNECTION with the values in the run's role file; quote
 
 ## Task tools
 
-- `ready {}`: confirms role documents loaded, registers readiness and returns controlled_robots, run limits and robot_facts: compact static capabilities, TCP/status definitions, fixed base poses and per-robot TCP command bounds. Use these definitions when interpreting command/feedback positions and controller modes. All policy roles receive the same static robot facts. Bounds are admitted commands, not full-link envelopes or guaranteed safe zones. Current state comes from observe; detailed geometry through robot_model. No object state or task plan is supplied. It starts no physics actions.
+- `ready {}`: registers readiness and returns controlled_robots, run limits and robot_facts: compact static capabilities, TCP/status definitions, fixed base poses and per-robot TCP command bounds. In direct-start runs it is optional and does not trigger START; continue after the response. Use these definitions when interpreting command/feedback positions and controller modes. All policy roles receive the same static robot facts. Bounds are admitted commands, not full-link envelopes or guaranteed safe zones. Current state comes from observe; detailed geometry through robot_model. No object state or task plan is supplied. It starts no physics actions.
 - `observe {"cameras":["global"]}`: returns timestamped RGB paths and robot proprioception: TCP position/quaternion, joint positions/velocities, actual and commanded gripper width, gripper velocity and controller status. Camera names come from task metadata. Select and actually load images when needed; there is no automatic proof of viewing. No live object state/depth/contact truth is exposed.
 - `move {"target_m":[x,y,z],"speed_m_s":number}` or `{"delta_m":[dx,dy,dz]}`: world-frame TCP position; optional `quaternion_wxyz:[w,x,y,z]` chooses world orientation and `angular_speed_rad_s` its rate. An orientation-only move holds the current TCP position. Omitted orientation retains the current reference. Quaternions are normalized; zero/nonfinite values fail. Robot-only IK validates position and orientation; a failed solve is not proof that every pose/seed is impossible. No object selection, grasp or collision-free path is inferred.
 
@@ -37,7 +41,7 @@ READY's `execution_timing` defines a bounded action budget computed from request
 - `job {"call_id":"ID"}`: returns your own action status. accepted/running means not finished; completed/failed is the execution outcome; uncertain means execution cannot safely be inferred after disruption. Never treat a timeout as non-execution.
 - `finish {"note":"completion evidence"}`: Coordinator, any peer Worker, or the single Controller proposes finish in its topology. Rejected while actions run or are uncertain. Verify the task's actual finish conditions; sustained holding and release are different outcomes. Private evaluation provides no corrective object coordinates to policy.
 
-Adaptive mode additionally supports `delegate {"scopes":[{"robots":["A"],"goal":"chosen outcome","done_when":"chosen verification","constraints":"chosen limits"}]}` for Controller and `return_task {"outcome":"completed","result":"evidence and unresolved issues"}` for a delegate. return_task saves the report first; only status and result_ref are delivered to Controller. Read full reports on demand from the referenced file. Read [bounded forks](adaptive.md) for setup, identity and return semantics. `work` includes outstanding scopes and ownership; `wait_events` receives first-return events without waiting for all delegates. These operations are unavailable in the other experimental modes.
+Adaptive mode additionally supports `delegate {"scopes":[{"robots":["A"],"goal":"chosen outcome","done_when":"chosen verification","constraints":"chosen limits"}]}` for Controller and `return_task {"outcome":"completed","result":"evidence and unresolved issues"}` for a delegate. return_task saves the report first and sends Controller a status and result reference. Read [bounded forks](adaptive.md) for platform-specific report access, setup, identity and return semantics. `work` includes outstanding scopes and ownership; `wait_events` receives first-return events without waiting for all delegates. These operations are unavailable in the other experimental modes.
 
 Adaptive Controller also receives compact delegate_status in work: native session IDs/status/timestamps, saved work metadata and active execution IDs. work {"delegate_id":"Delegate_…"} selects one own delegate's saved note/latest execution or returned result reference. It does not expose another role's inbox or private evaluator. A stopped native delegate that has not called return_task produces delegate_stopped_without_return through the same bounded system-event delivery; this is not a completed task or a control handback. See the adaptive reference for recovery and read-only native inspection.
 
@@ -53,7 +57,7 @@ These actions also accept `"cameras":["global","A_front"]` for the completion ob
 
 `run_paused:true` means engineering paused the run. Stop new physical work and save waiting; it is not a grasp failure or permission to recreate the world.
 
-## One operation with selected images
+## Desktop: one operation with selected images
 
 The frozen `public/inputs/role_tools.js` helper can return one chosen operation's JSON and selected actual RGB images in the same outer tool call. No MCP server is required. Replace these path placeholders from the role file:
 
@@ -70,7 +74,7 @@ For move/gripper, the helper requests the named views as the completion cameras 
 
 The helper prints compact feedback by default: TCP, gripper width, controller status, maximum absolute joint velocity, timestamps, selected paths and all outcomes/mail remain visible; joint arrays stay in the full returned object. Choose detail:"full" when joint configuration matters, or inspect the returned data in the same invocation without another physical call. The direct Python client also returns full feedback. The helper already prints its result; print additional fields only when useful.
 
-### Local tools also deliver role events
+### Desktop: local tools also deliver role events
 
 Robot API responses already include inbox batches. A bare native/local tool does not: while you analyze RGB or inspect a child chat, messages can arrive without a robot call. Use the same frozen helper's roleStep for such permitted non-robot work:
 
@@ -88,7 +92,7 @@ await roleStep({tools,python:"PYTHON",connection:"ROLE_CONNECTION",text,image,
 
 The callback may contain chosen analysis, selected image loading, a process poll or permitted read-only native calls. Print selected output normally. After it returns or throws, roleStep refreshes your own inbox once and emits role_events only for mail, system events, remaining batches, pause/end or an error. It returns the original operation value and preserves its exception. A failed inbox refresh is reported separately and never reruns the selected operation. It does not interpret mail or execute follow-up actions. Already-decided local calls can share one step; choose a new boundary before a decision needing new evidence. For waiting on team progress use wait_events. robotTool/robotSequence already deliver role events and need no extra roleStep wrapper.
 
-This is a project role-tool convention, not a global Codex tool-result hook: bypassing it with bare local/native calls bypasses this delivery boundary. Keep roleStep around subsequent tool/process polls as well. An active model doing no tool calls still receives queued events at its next boundary, not by running-turn steer.
+This Desktop helper is not a global Codex tool-result hook: bypassing it with bare local/native calls bypasses this delivery boundary. Keep roleStep around subsequent tool/process polls as well. CLI roles use the bound `robot` inbox operation instead. An active model doing no tool calls receives queued events at its next robot boundary, not by running-turn steer.
 
 One model decision may issue an already-decided local sequence of existing calls within one outer invocation, choosing its length and checks. Preserve each action's ID/result; return control for failures, uncertain outcomes, pause/end, system events or an unresolved shared-resource condition. Return to the model if proceeding requires interpreting a new image; loading pixels inside a script does not interpret them. Do not cross a condition that still needs another Agent's decision. This does not create an automatic conditional action queue.
 
@@ -98,7 +102,7 @@ The optional messageBoundary is "step" by default: mail stops the chunk after th
 
 ## Infrastructure boundary
 
-Meta binds sessions, starts a READY run, imports real Codex status observations and drives plan/claim/dispatch-result operations. Policy agents do not use these administrative operations. Meta's notifications contain a wake ID and trigger reason, never task instructions.
+Meta binds sessions, starts the run under its selected startup protocol, imports native session status observations and drives plan/claim/dispatch-result operations. Policy agents do not use these administrative operations. Meta's notifications contain a wake ID and trigger reason, never task instructions.
 
 Session running state, saved work state and robot action state are separate. Automatic work continuation is based only on explicit saved work and recorded execution facts. Unknown actions or repeated receipt/continuation failures stop automatic continuation for review. Physical-owner loss ends this run; there is no physical restart or implicit reset.
 

@@ -1,5 +1,9 @@
 # RoboFrontier
 
+> **运行数据库存储尚未验证：**运行时使用 SQLite WAL。不要将活跃的运行数据库放在 Lustre/NFS 等网络文件系统，或从 macOS 主机直接打开正在由 Docker 写入的数据库；节点本地临时目录与结果回传流程尚需验证。不要根据现有 Slurm 示例启动正式或多人共享批次，直到存储方案通过验证。参见 [SQLite WAL 文档](https://www.sqlite.org/wal.html)。
+
+> **Physics revision:** This branch uses the Transport and Dial rolling-friction 0.03 candidate. See [validation and limitations](docs/transport-cylinder-stability.md) before collecting results; results differ from the original R14 physics.
+
 RoboFrontier 用 MuJoCo 多机械臂任务研究 GPT 的分工、规划与协作。Frontier V2
 包含 Transport、Mosaic、Relay、Dial 四类，每类三个规模、三个等级，共36项。
 在线任务使用真实接触物理；离线展示读取已保存状态。
@@ -9,6 +13,8 @@ RoboFrontier 用 MuJoCo 多机械臂任务研究 GPT 的分工、规划与协作
 - [四类任务说明图谱 UI](outputs/task-atlas/v1-20261027/index.html)（[离线 ZIP](outputs/exports/task-atlas-four-families-20261027.zip)）
 - [各类任务与版本入口](docs/frontier-v2-environments.md)
 - [Codex CLI 多模型、并行运行与公开材料](docs/gpt-policy.md)
+- [多模型 worktree 交接、本机小测与调度 prompt](docs/multimodel-handoff.md)
+- [Linux 服务器策略基准准备](docs/server-benchmark.md)
 - [最终视频、数据保留与目录](docs/repository-layout.md)
 - [本次合并、数据保全与验收](docs/oracle-integration.md)
 - [架构、目录与运行数据](docs/architecture.md)
@@ -26,6 +32,10 @@ Oracle工厂展示使用各录制自己的冻结来源。旧`frontier-v2.json`�
 
 ## 安装与工程检查
 
+新 clone 后，安装 Python 环境并运行 `.venv/bin/python -m scripts.benchmark_handoff setup-assets`，
+可自动下载、校验并恢复当前 R14 任务资产；离线可使用 `setup-assets --archive /path/to/policy-assets-rolling003-20261029.tar.gz`。
+资产包和校验说明见[多模型交接](docs/multimodel-handoff.md)。不要将密钥或运行数据提交到 Git。
+
 Python 与依赖由 `.python-version`、`pyproject.toml`、`uv.lock` 管理。
 机器人上游资产与许可证由 `scripts/fetch_robot.py` 物化，来源记录在 `vendor/`。
 
@@ -38,7 +48,7 @@ uv run --extra oracle python -m scripts.check_harness
 ```sh
 .venv/bin/python -m scripts.tasks list
 .venv/bin/python -m scripts.tasks check --purpose gpt
-.venv/bin/python -m scripts.benchmark prepare --models gpt --cases transport-a04-d1 --output runs/policy/my-new-batch
+.venv/bin/python -m scripts.benchmark prepare --models astra --cases transport-a04-d1 --output runs/policy/my-new-batch
 .venv/bin/python -m scripts.factory video --renderer cycles --camera orbit --duration 8 --output outputs/robo-factory/my-gpu-demo
 ```
 
@@ -66,3 +76,13 @@ uv run --extra oracle python -m scripts.check_harness
 单臂键盘 Demo 仍可由 `uv run robofrontier` 或 `Launch Demo.command` 启动；操作、
 配置与早期实验保存在 [历史说明](docs/history/readme-before-transport-cleanup-20261027.md)。
 其他试点与修订记录见 `docs/history/`、`benchmarks/`。旧成绩绑定原场景和控制来源。
+
+实验结束后的数据保存请见 [数据收集、无损归档与恢复](docs/evidence-storage.md)：四分支共用命令，包含原生 session、Motion、图片与恢复校验。
+
+### 并发启动与资源
+
+Codex 批次在并发启动任务前，会对实际使用的 `CODEX_HOME` 加锁，串行执行一次本地 app-server 初始化握手；初始化失败时不会启动任务。该握手不启动模型轮次，诊断记录在批次目录的 `codex-initialize.log`。所有共享该目录的 RoboFrontier 批次必须使用此启动入口；其他独立程序若不使用同一锁，仍可能发生竞争。请在节点本地文件系统使用 Codex 状态目录；此步骤不能保证网络或共享文件系统的 SQLite 安全。
+
+批次 `batch.json` 的 `resource_snapshot` 和启动提示仅提供可读取的内存快照，不是可运行并发数量的保证。Linux 容器的 cgroup 数值可能无法反映所有父级或 Slurm 限制；请核对调度器分配、容器上限及节点本地空间，再从较低并发逐步测量。内存不足或 OOM 属于工程异常，不能当作模型任务失败。Codex 退出非零或封存未确认时，批次任务标为 `needs_review`；已提交但结果不明的动作不能自动重放。
+
+Claude 原生运行路径使用任务独立的配置目录，不使用上述 Codex 握手；Claude 并发能力需要单独验证。

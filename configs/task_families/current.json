@@ -76,10 +76,10 @@
           "id": "transport-a08-d1",
           "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a08-d1",
           "source_files": {
-            "scene.xml": "44b107f2b7e3065d33020d581f022e56dc99ba1a4f45769295df06fd2415e9e5",
-            "task.json": "0b34bf3ac59870c6176952c2dff7437ec4da8092eb64611914cfe474d21813ee",
+            "scene.xml": "8df9422a6d07504788bd75a21ed3f3d8427c334ed0c2abe7ec8f7b034322b6b2",
+            "task.json": "98678b3983e77276022cba7205bfe45adb63fa8a63aef259e09a2eac625fcc41",
             "environment.json": "b05adfb5c5b1f8f8eb9485f3e8364b493371401811cb4b7692be5f356343cdf2",
-            "workstation.json": "9cdbb6fe88061870fff93648fef8b85f8b8396e001d39c0f7a2fd2b2eec46d4b"
+            "workstation.json": "c28095e69eeb6ee9749bbfd3298964a3deb5bd09628fc126ca2f59ef47e7c15d"
           },
           "public_files": {
             "family-guidance.md": {
@@ -87,7 +87,7 @@
               "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
             }
           },
-          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "qualification": "rolling_friction_003_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/transport/public/transport-a08-d1/public-task.json",
             "sha256": "03be230e9579284d4b4b386ef21d3d596dc1a9572d7103e58b112ac6bb9ca484"
@@ -97,10 +97,10 @@
           "id": "transport-a08-d2",
           "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a08-d2",
           "source_files": {
-            "scene.xml": "556fc939b70b3e5eeca8be4fae77c5cd8f249a35b56e2f9e0edee34bdce6044c",
-            "task.json": "8b2bf013849d985db5a7418b48c866837fbdd7c1e4f90578665bfaebdcf6235b",
+            "scene.xml": "5a7b6a18d954b295d38f1a90295a69af90af1173f1eeb49eee07eb4b07fa1b66",
+            "task.json": "d420cd2b0c41f03c6a83c8292012d3b2d80a665678d86a9d8f7ce5c5b9269d43",
             "environment.json": "c3ff6db43913e735b4062f5b7cf85f06ea8ca4989ecc0b01762d1c5e160d997a",
-            "workstation.json": "34cc18549947adbf1b032243caf450ccb0db6fc1b9192abc839582610a7a435d"
+            "workstation.json": "a60dced19fab72f9e7075d052c9c84ea83feb9f72c013c17c0942a4eb872ca78"
           },
           "public_files": {
             "family-guidance.md": {
@@ -108,7 +108,7 @@
               "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
             }
           },
-          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "qualification": "rolling_friction_003_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/transport/public/transport-a08-d2/public-task.json",
             "sha256": "18e0e481a54097647a950865d05974b71615cc66e3783e45bd37c7e9229dd254"
@@ -118,10 +118,10 @@
           "id": "transport-a08-d3",
           "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a08-d3",
           "source_files": {
-            "scene.xml": "75261ec9e4cc26863c71c66efbf732b7af5cf357e610bea20469334b462f16a8",
-            "task.json": "a4fd58a0ae349c8d98f6dcdb15c07376b88692850dba3500895bd801f48badec",
+            "scene.xml": "de593ea458c9bd29464eec8e8c5cf4a61bdbe28df72aee3eb2d811cb8ed7393c",
+            "task.json": "132a78e1fe6c3ad692192d06f1b71183f07e3b55578e531bc2149d6568ec298e",
             "environment.json": "e5718d5d2c2ef5188201e2581f4d94fde3bb56ba4e7865b4e45969ff527f2f0b",
-            "workstation.json": "a4b9d8d054acb050fc57c063995a2025ed3e7afee5784b17042dab9247259705"
+            "workstation.json": "e2f552eb3a0c87fce049cf62276c67478097d440eb9c6b8dae83655f86138b48"
           },
           "public_files": {
             "family-guidance.md": {
@@ -129,7 +129,7 @@
               "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
             }
           },
-          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "qualification": "rolling_friction_003_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/transport/public/transport-a08-d3/public-task.json",
             "sha256": "6200e5f52d190577819506b5ffa012617ddb5cb38d7f06a76a48e425cbe7fe58"
@@ -139,10 +139,10 @@
           "id": "transport-a12-d1",
           "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a12-d1",
           "source_files": {
-            "scene.xml": "41856c8940c9801c9e3d0fcf0353dd0468a96c3b5fc6eef1d01d8aa9863e843e",
-            "task.json": "2d0c41231526ecb76eb6c448d67ede805259b681c5a713d123ff6f56dd4c43f8",
+            "scene.xml": "8c814682126427300b8408fe8ac341199d613524fcebfd5216e8b063aa41440c",
+            "task.json": "a4b58da9df42c88fadaed66e3e6ad3ff6df46db77f89c7dd7df0e16bb153c95e",
             "environment.json": "2931674daccc0a212aeeabf886dbe409e539bdfcbb0dc9f41d4f295078a6e0f1",
-            "workstation.json": "2d54c8b7c1bf624c4e7111dac6c6a077118ae78f0d02e8fa1cecb1e2a235ff86"
+            "workstation.json": "9d9c260ad8d955929de2e7dbbdb416862aa9766e2ca0ce4fe3d8114e4556fa91"
           },
           "public_files": {
             "family-guidance.md": {
@@ -150,7 +150,7 @@
               "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
             }
           },
-          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "qualification": "rolling_friction_003_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/transport/public/transport-a12-d1/public-task.json",
             "sha256": "0cc8325d6b0b033246708b5bf4985cb7bd9e8cc8c4d3897cb8e640e9a30fe6eb"
@@ -160,10 +160,10 @@
           "id": "transport-a12-d2",
           "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a12-d2",
           "source_files": {
-            "scene.xml": "9d930aba9da6607207be67f0ff8d16871955f22b2453991d86a3d9879d40107f",
-            "task.json": "ed6c1a2e21135718f8f44d35d074de732d8f4600c2ce8aa3beae4cbb54d707fb",
+            "scene.xml": "0851cd2f05551603dbf5f090c8d03526f9f77e89d0a90aa4825b00937f5f9f71",
+            "task.json": "5904b9636405e8e095546b43f01f5411285c4b12cf79124396650a638f12fb5c",
             "environment.json": "11886c6aac85ed17a81baa6796bc177a931c392860c67ab38ce2dbc9f258905b",
-            "workstation.json": "702b664c0e28ef85481d9d42a1d20ed982799470d2424231e07980d619741ce5"
+            "workstation.json": "47d30debd80a610894f0df7c3d5afbbc3ee16e2446ffe9a8746e8a9ca70f6629"
           },
           "public_files": {
             "family-guidance.md": {
@@ -171,7 +171,7 @@
               "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
             }
           },
-          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "qualification": "rolling_friction_003_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/transport/public/transport-a12-d2/public-task.json",
             "sha256": "36b6670621df028dd2f037f9455222dd51464e7ea5d0f0263d10079113cf6d0c"
@@ -181,10 +181,10 @@
           "id": "transport-a12-d3",
           "directory": "configs/environments/cube_transport/frontier-v2-r14-transport-a12-d3",
           "source_files": {
-            "scene.xml": "be4474d54fae3f9817a6bf5ae0edc70f408deba684a3df3ee996f7e7f1d84b9d",
-            "task.json": "87ee872ace0e271e625abbe403e146cc0606a0f00cc14aaea05fc31b1cad382a",
+            "scene.xml": "5855d88166e3449cce8124f0e40773208b14664275477ac3cdf7fa5a81e56fe1",
+            "task.json": "0666eee2dc0c177a7190b381a722f0ce8261b73ae2c2a263b8370c77827da77a",
             "environment.json": "1df9187023072aef2511dcc742e2c71341b23307dc6abacba612902d26e76d5f",
-            "workstation.json": "d1a07a6188a479e627bef61be45f7dce5782ba8758f87a9b8cf6fe4cf0175e14"
+            "workstation.json": "081b247fe9b172b2b556509ecdd8bf75d87809cb7e063c1bc06d3fc76bc8803d"
           },
           "public_files": {
             "family-guidance.md": {
@@ -192,7 +192,7 @@
               "sha256": "dc6e82660bc8ecdb16954167c6b0ee3340450ef8f66144ebe61e017dc208543d"
             }
           },
-          "qualification": "r14_tabletop_variant_with_r13_reference_and_geometric_compatibility",
+          "qualification": "rolling_friction_003_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/transport/public/transport-a12-d3/public-task.json",
             "sha256": "709ebcfdb38a7884fd9c92884b5c3c41e0ac235f7b263d433cdb3d023d5b1729"
@@ -1057,10 +1057,10 @@
           "id": "dial-best5-n04-d1",
           "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n04-d1",
           "source_files": {
-            "scene.xml": "f201cbea9e207b22cf727b5e4209a6e73cdfb674eafedbb23d22beda07efc0da",
-            "task.json": "a5565175299bab19d5e3319837260ca67f04dbc00a7c8b71bca7c338f59a4173",
+            "scene.xml": "64158f82832ed88b3d15939230be9fb002b1dcf818d8dae7a857ff5143e149c1",
+            "task.json": "2154aaa99f93d4784a321692599f563480049f04b2e1b99bcbcdb9987b6bb9ea",
             "environment.json": "2980da08f45d1d7e614d1907d39a1caf7bb4bc2a1128358d3e2bba37e9080f09",
-            "workstation.json": "542ba44715dc1a4ae679e616b751b86bb78dc3079c821d7041aebd7b96cd7aa6"
+            "workstation.json": "32bf795942cd7b5e7917d73f6f4151aea5dc92d36cbb4e29837cd1815830009c"
           },
           "public_files": {
             "preview-top.png": {
@@ -1092,7 +1092,7 @@
               "sha256": "7ae8bdb7fa64f21454be5966e8b594881b03a46aa299db4bd8b6c5be230ce801"
             }
           },
-          "qualification": "reviewed_reference_scene",
+          "qualification": "rolling_friction_003_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/dial/public/dial-best5-n04-d1/public-task.json",
             "sha256": "051f4cb11984fa6f68723f70211221a648c8c9d5b897a3a51c0b313c781f854f"
@@ -1102,10 +1102,10 @@
           "id": "dial-best5-n04-d2",
           "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n04-d2",
           "source_files": {
-            "scene.xml": "d633603910e5bba92a2c07643c98cc4ca331f7191e0127ab693ad065d3cca1fc",
-            "task.json": "7119d93d17eba21217b91688089220dfb9f06674d8ed01c6cfb63ab6306c36be",
+            "scene.xml": "336bbc14aaf8892419f58dcef6d09a83c07bf3e97483ab01bc0479cc9e41ff2a",
+            "task.json": "cdf05ec31e42e96c5ab93a69d09ad4a102703062111d25b4f196883cf0153b4b",
             "environment.json": "8bc7239c72792c4a6e00ef688f58f63a9f1e022e1be522e9489202c754e6a70a",
-            "workstation.json": "654033dfdd7209d3b5ea1a8d8830eed60ba3ac15c8f1a2abe50eda28ca1b8220"
+            "workstation.json": "142572359ecf297495c36fc8a25de2bea960eeefab13c66ab6e31fa0bc343850"
           },
           "public_files": {
             "preview-top.png": {
@@ -1137,7 +1137,7 @@
               "sha256": "4e6bac757c8d80ca7bbf118a9dfbb7b8a536a70b09f5eb4ede322442aa5db075"
             }
           },
-          "qualification": "reviewed_reference_scene",
+          "qualification": "rolling_friction_003_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/dial/public/dial-best5-n04-d2/public-task.json",
             "sha256": "bd385255f914a010551a5fbc5a66ee5cdc26154448a923fada0f205a32bc1d9d"
@@ -1147,10 +1147,10 @@
           "id": "dial-best5-n04-d3",
           "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n04-d3",
           "source_files": {
-            "scene.xml": "8a8ec1bacc42c66e37aa61b43c00ee4de712364ffc108afa36f4a649609304fb",
-            "task.json": "ba523015174ed1e2b1d0a1d06adb42c910a0c12fc4b372c05fcd6d7b57d3e745",
+            "scene.xml": "ef2185ffed8571c7e26c9a58c38cfc17294785416abd8fc5a06cb7443d888349",
+            "task.json": "796584681c9b0485e968cd1a8c9d75106a16bb5eb7a2aaaeb4bcaa6c78294f80",
             "environment.json": "3f5ebc2fb705aa4fa06ff4ddf6aad91d9168a28710bc86930b932625668914ab",
-            "workstation.json": "4f57ea5618619a96bdfa0ffdfe22678a9fca510b498faf8cd13fc7a78b1a1eca"
+            "workstation.json": "0ff014e83fd9b20e3cae455c7eefe3f022c3a8eff0719e208ddbe713415dd067"
           },
           "public_files": {
             "preview-top.png": {
@@ -1182,7 +1182,7 @@
               "sha256": "d14ecfdb383758233cb99aff9d64f4e473601c60241a8105b7b77a1f1cbcb67e"
             }
           },
-          "qualification": "reviewed_reference_scene",
+          "qualification": "rolling_friction_003_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/dial/public/dial-best5-n04-d3/public-task.json",
             "sha256": "7e3f9d282c82b528d924d9d1504230b694427135b750504b3adb86f7e817fd2f"
@@ -1192,10 +1192,10 @@
           "id": "dial-best5-n06-d1",
           "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n06-d1",
           "source_files": {
-            "scene.xml": "cd08f46913c0daeff291eb714d525b201b35f7a4d866d6bd180dd05718b485f2",
-            "task.json": "0cb5d69885d269918c7bd10b4e08253cd8b364c86e18b9ee8c15b6a20ddd375d",
+            "scene.xml": "88fed05ed351d9709f45d8db8c0d2c89695fae9a4f417b55a5af7d9cf5a1d772",
+            "task.json": "a861191288b2d70a2e2df95b628eb21a31b02fd911f6c76e26000ca189866b83",
             "environment.json": "c6b018b45bff8a4a82ffd09c881939f0cf46d52a1e2ff9dd909bc028189fedcf",
-            "workstation.json": "91d961866d70b2bda9e84746f3b6a67decd8c0c573e59338eaf083188fb52311"
+            "workstation.json": "c9aa47e1a36c14c0fc759e0e17c76fa19c6287c46bd41f0b55c94f17ebae72cd"
           },
           "public_files": {
             "preview-top.png": {
@@ -1227,7 +1227,7 @@
               "sha256": "30e8021ac81f356fa3f12943d0bf8a9b08389a65e999580b665136faa5b00e70"
             }
           },
-          "qualification": "reviewed_reference_scene",
+          "qualification": "rolling_friction_003_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/dial/public/dial-best5-n06-d1/public-task.json",
             "sha256": "1b4b388eb8ff942fc5f949648286b3cf8d8dfb7b1ca2b186b3daa1c1cee23b97"
@@ -1237,10 +1237,10 @@
           "id": "dial-best5-n06-d2",
           "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n06-d2",
           "source_files": {
-            "scene.xml": "9080640b0f841605d62fa7ec808e8f4b9ee0fb13c0a8d6a9cf3c24c15c4f4e37",
-            "task.json": "f9785453241139baaddfdc965490f6e22bb0e2fdbf5db58fd0f91f881d30324f",
+            "scene.xml": "a8029d124a47a786e25ca949db07985459592e12e3a9c6f8fc7298493e2b42c7",
+            "task.json": "8c2ee465f91febbf773558d5f5f00e06f0b32651fb67182b716b0aeaf9e4c713",
             "environment.json": "dbfe3192cfd16cace648d6271c441f627f0a09a632a5c96590e15246a92dc5e7",
-            "workstation.json": "0b081beb141c06ede11fa9736b6507a52d03e9c3b8bd3f22250d93d0ae22a417"
+            "workstation.json": "61b35505076f541e0cccd5d3e7f1637e5248072ad1b7cbacdcacb284b05a4c91"
           },
           "public_files": {
             "preview-top.png": {
@@ -1272,7 +1272,7 @@
               "sha256": "adb80baa0a184263745233f5b88825e57f3822dbbb57efbf9114ea9609525f0b"
             }
           },
-          "qualification": "reviewed_reference_scene",
+          "qualification": "rolling_friction_003_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/dial/public/dial-best5-n06-d2/public-task.json",
             "sha256": "cfbb4c71f9b073e148dc15a49f674516666831a4f439bc27dc11cbf8e43bc07b"
@@ -1282,10 +1282,10 @@
           "id": "dial-best5-n06-d3",
           "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n06-d3",
           "source_files": {
-            "scene.xml": "ef02a7f7441625cf29b3cda9799701bdc229916a46d3e8a1509133f084091eba",
-            "task.json": "20d9b16a32c01c3ca3ab5dcf72517b9ebec33c49e39684caa0dd15b22b1444ba",
+            "scene.xml": "d4f2d67f5b036782beef27dbb7856e44eff1be1b3f7b47cc9c0875b30120aefc",
+            "task.json": "3fa962ac54c7451a230716634a1fa388dd061cecc89a792b15acc4cdea32175d",
             "environment.json": "c8f7ab7aed53e7bc3da9f2e696f3091adf67d54de69850793cea92dc09afddcc",
-            "workstation.json": "48989546d01fb3dfc09bc6e47e888691b6832e03888a107ed7a769b461a4ec7d"
+            "workstation.json": "0489e4015a54e6e7e128194caf5f2b510fa57ce231e28adb5b9d22114f9e7b6a"
           },
           "public_files": {
             "preview-top.png": {
@@ -1317,7 +1317,7 @@
               "sha256": "8ed6bcd66d5af119d5fcee75d0c9dfb9130949f64c8fd009220a10c2a0cbc621"
             }
           },
-          "qualification": "reviewed_reference_scene",
+          "qualification": "rolling_friction_003_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/dial/public/dial-best5-n06-d3/public-task.json",
             "sha256": "e4fd89e95bf854a88c41d87766aa44d22dd6ed22fc6cb49dd7908a26792a0258"
@@ -1327,10 +1327,10 @@
           "id": "dial-best5-n08-d1",
           "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n08-d1",
           "source_files": {
-            "scene.xml": "2f2de801229fa18bde2ef659cdf99dbaa1d121cd0eb483c60f6c88647dc03e72",
-            "task.json": "4740997db55123b5ecce8be724d61c21a7377d23eed70583e953f0c292466666",
+            "scene.xml": "d4a25d60ddee17ba40678f735b88d39def5133e6725a811fdfb3d781286a32c2",
+            "task.json": "9c2fde8003e7ab36b48ebd4ab29e8aa31d2ec4cb0042b6f39ce9d3908b056654",
             "environment.json": "0eea13f357289fdbc87812f1eafe8b6587084d71fdb2fbc7bf4a97f4d1ae9e0b",
-            "workstation.json": "87aecc9d4b22983615c401d060806290bf774faf2707b76f6d6fcc718eb4cb8e"
+            "workstation.json": "542be1f29dd18a7d48951ecab5d8a2585bccd744c44b77838e1bd74ffd3f8577"
           },
           "public_files": {
             "preview-top.png": {
@@ -1362,7 +1362,7 @@
               "sha256": "d9844aad94cc90bc566243e622260f30308f5965e1ff9e6f095526e1bf5c687d"
             }
           },
-          "qualification": "reviewed_reference_scene",
+          "qualification": "rolling_friction_003_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/dial/public/dial-best5-n08-d1/public-task.json",
             "sha256": "2cc95ab472edf1a90045a27017a64edca92b7df9dac4fa4cf68c1455be1c8435"
@@ -1372,10 +1372,10 @@
           "id": "dial-best5-n08-d2",
           "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n08-d2",
           "source_files": {
-            "scene.xml": "b8e4149dcc226d1cf9ba824d17687024154e89eba97286df5bb0fb39fdec2966",
-            "task.json": "e4442c007ae48752670b548a2c7b3e4dbb7fb0133118354c118bf6f8e3c5af7e",
+            "scene.xml": "82a80c7a51de35318d14bea976bc577ff6ba49809ba385293369ccd43b3fac87",
+            "task.json": "8353d7a99a435db518099ce85192cd48637680ec9a4f2ef09af9a5f06a57c800",
             "environment.json": "2e2af1100435d181259f82772dd3778e5eb05402875d509d35a9e11b0c43e702",
-            "workstation.json": "629098290cf7b6b93bf7173737026a75a37c5ba4366f21c1657390502f447d01"
+            "workstation.json": "af2e8bdd3fb3d1a95410dee549be2a30c9479c86c2defc582fcba4685081f25d"
           },
           "public_files": {
             "preview-top.png": {
@@ -1407,7 +1407,7 @@
               "sha256": "a3161122eb20fd8fd657ba55d272772825ce5089cac764edad79ddadfb82458c"
             }
           },
-          "qualification": "reviewed_reference_scene",
+          "qualification": "rolling_friction_003_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/dial/public/dial-best5-n08-d2/public-task.json",
             "sha256": "770f0971cccbaccaa4ee881095cb53df6218527ee16d5258f7f0bb21ba3c60c2"
@@ -1417,10 +1417,10 @@
           "id": "dial-best5-n08-d3",
           "directory": "configs/environments/spring_dial/frontier-v2-r11-dial-best5-n08-d3",
           "source_files": {
-            "scene.xml": "ffe0032e1ee31f32e18fe1538d116fa7babd6469840917756c88ceb925cb4c4b",
-            "task.json": "5bbc0bafe7b1e80f57a21e039a5d2b90113b7a87d5d2b0bd0cde31b2762b0334",
+            "scene.xml": "7aa387ddd7859380d72bc215aaff6fdb48c4ff186e41eb042a3c6918d0b8ea83",
+            "task.json": "55197175e0db73339a0ec602e7374f360dfd7bf15a60b9166b2627364410176d",
             "environment.json": "5e8794c941abc4ae3ffcd2972df71a3342f949971b6f4a25f9eaf0f4f8f5e2a8",
-            "workstation.json": "24f6cfd5e83dea9150139816ace338b27b4210e46bf29e210e5279500a1af39d"
+            "workstation.json": "05cadf589bde6178b59b4d885999b49eca9c6c9925ea551d95f415ad4544e9b0"
           },
           "public_files": {
             "preview-top.png": {
@@ -1452,7 +1452,7 @@
               "sha256": "f9905219c7296f2d3235535e4cdb162ae1b5a0ba7b188eb21ea777bd0d12847c"
             }
           },
-          "qualification": "reviewed_reference_scene",
+          "qualification": "rolling_friction_003_candidate_not_full_task_qualified",
           "public_projection": {
             "path": "configs/task_families/dial/public/dial-best5-n08-d3/public-task.json",
             "sha256": "62fa8c7fd40e81eea603f7697e400cf65c929017c8195a2420ca84e435ff3fa4"
@@ -1615,6 +1615,7 @@
   },
   "harness": {
     "path": "configs/harnesses/policy.json",
-    "sha256": "c8e204946e347757150208ae7953537fa69a1a67972ad5785ab06528d44d58df"
-  }
+    "sha256": "8dfee2da8b1f38fe0340c6f6b707fca36f736d003a7ff0e9665c1ec569bd31a4"
+  },
+  "transport_physics_revision": "r14-rolling-friction-candidate-20261029"
 }

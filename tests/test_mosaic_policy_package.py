@@ -85,6 +85,13 @@ class MosaicCompletionContractTests(unittest.TestCase):
         mon=self.monitor();mon.violations=[{'kind':'inter_robot_collision'}]
         self.assertFalse(self.complete(mon));self.assertTrue(mon.result_cache['all_goals_met'])
 
+    def test_terminal_policy_scoring_reports_collision_separately(self):
+        mon=self.monitor();mon.task['run_protocol']={'evaluation_semantics':'terminal_outcome_v2'}
+        mon.violations=[{'kind':'inter_robot_contact'}]
+        self.assertTrue(self.complete(mon))
+        self.assertTrue(mon.result_cache['terminal_goal_met'])
+        self.assertFalse(mon.result_cache['strict_task_success'])
+
     def test_stability_dwell_speed_and_release_match_monitor(self):
         mon=self.monitor();Monitor.sample_goals(mon)
         mon.d.time=self.spec['stable_duration_sim_s']-1e-5;Monitor.sample_goals(mon)

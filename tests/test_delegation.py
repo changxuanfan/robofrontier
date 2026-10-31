@@ -207,6 +207,49 @@ class DelegationTests(unittest.TestCase):
         with self.assertRaises(ValueError):self.d.activate('batch','manager')
         self.assertIn('error',self.call(a,'gripper',{'robot':'A','state':'open'})['result'])
 
+    def test_snapshot_lineage_and_children_require_same_snapshot_boundary(self):
+        from robofrontier.runtime_cli import execute
+        self.delegate(('A','B'));self.d.claim('batch','manager')
+        children=self.d.batch('batch')['children']
+        snapshot='22222222-2222-4222-8222-222222222222'
+        anchor={'source_thread_id':'parent','source_ordinal':13,'source_sha256':'controller-cut'}
+        with patch('robofrontier.runtime_cli.fork_provenance',return_value=anchor):
+            execute(self.service.store,'delegate-snapshot-bind',{'id':'batch','thread_id':snapshot},'manager',time.time())
+        self.assertEqual(self.d.batch('batch')['snapshot_provenance'],anchor)
+        for i, child in enumerate(children):
+            proof={'source_thread_id':snapshot,'source_ordinal':17,'source_sha256':'snapshot-cut'}
+            with patch('robofrontier.runtime_cli.fork_provenance',return_value=proof) as read:
+                execute(self.service.store,'delegate-bind',{'id':'batch','actor':child['actor'],'thread_id':'child-'+str(i)},'manager',time.time())
+                read.assert_called_once_with(snapshot,'child-'+str(i))
+        self.d.activate('batch','manager')
+        self.assertEqual(self.d.batch('batch')['status'],'active')
+
+    def test_snapshot_id_persists_on_failed_lineage_and_cannot_activate(self):
+        from robofrontier.runtime_cli import execute
+        self.delegate();self.d.claim('batch','manager')
+        snapshot='22222222-2222-4222-8222-222222222222'
+        with patch('robofrontier.runtime_cli.fork_provenance',side_effect=ValueError('lineage unavailable')):
+            with self.assertRaisesRegex(ValueError,'lineage unavailable'):
+                execute(self.service.store,'delegate-snapshot-bind',{'id':'batch','thread_id':snapshot},'manager',time.time())
+        self.assertEqual(self.d.batch('batch')['snapshot_thread_id'],snapshot)
+        self.assertNotIn('snapshot_provenance',self.d.batch('batch'))
+        with self.assertRaisesRegex(ValueError,'Snapshot is not verified'):
+            self.d.bind('batch',self.d.batch('batch')['children'][0]['actor'],'child',
+                        {'source_thread_id':snapshot,'source_ordinal':17,'source_sha256':'x'},'manager')
+        with self.assertRaises(ValueError):self.d.activate('batch','manager')
+
+    def test_snapshot_rejects_wrong_parent_or_different_child_boundary(self):
+        self.delegate(('A','B'));self.d.claim('batch','manager')
+        a,b=self.d.batch('batch')['children'];snapshot='anchor'
+        self.d.snapshot_created('batch',snapshot,'manager')
+        with self.assertRaisesRegex(ValueError,'wrong source'):
+            self.d.snapshot_bind('batch',snapshot,{'source_thread_id':'other','source_ordinal':13,'source_sha256':'x'},'manager')
+        self.d.snapshot_bind('batch',snapshot,{'source_thread_id':'parent','source_ordinal':13,'source_sha256':'x'},'manager')
+        self.d.bind('batch',a['actor'],'child-a',{'source_thread_id':snapshot,'source_ordinal':17,'source_sha256':'a'},'manager')
+        with self.assertRaisesRegex(ValueError,'exact source history boundary'):
+            self.d.bind('batch',b['actor'],'child-b',{'source_thread_id':snapshot,'source_ordinal':18,'source_sha256':'b'},'manager')
+        with self.assertRaises(ValueError):self.d.activate('batch','manager')
+
     def test_setup_deadline_returns_unknown_without_releasing_or_reforking(self):
         self.delegate();b=self.d.batch('batch');b['setup_deadline']=time.time()-1;self.d.save(b)
         self.service.pump()

@@ -48,6 +48,30 @@ class CentralizedTests(unittest.TestCase):
         self.assertIn('error', self.call('Controller', 'move', {'robot':'A','target_m':[.4,0,.6]})['result'])
         self.assertEqual(self.service.world.executed, [])
 
+    def test_direct_controller_starts_only_after_binding_without_ready_turn(self):
+        cfg=dict(self.service.config, startup_protocol='direct_controller_v2')
+        path=Path(self.tmp.name)/'direct-config.json';path.write_text(json.dumps(cfg))
+        run=prepare_run(Path(self.tmp.name)/'direct-run',harness_path=path)
+        service=RuntimeService(run,FakeWorld,fake_capture)
+        def call(actor,op,data,ident):
+            job=service.accept(actor,op,data,ident);service.pump();return job['result']
+        try:
+            self.assertIn('error',call('Meta','start',{},'before-bind'))
+            self.assertIn('error',call('Controller','gripper',{'robot':'A','state':'close'},'before-start'))
+            self.assertTrue(call('Meta','bind',{'actor':'Controller','thread_id':'new-thread'},'bind')['bound'])
+            self.assertTrue(call('Meta','start',{},'start')['started'])
+            self.assertEqual(service.store.get('lifecycle'),'running')
+            self.assertFalse(service.store.agent('Controller')['ready'])
+            self.assertEqual(service.store.agent('Controller')['work_state'],'waiting')
+            self.assertEqual(call('Controller','gripper',{'robot':'A','state':'close','wait':False},'after-start')['execution_status'],'running')
+            ready=call('Controller','ready',{},'ready-after-start')
+            self.assertTrue(ready['ready'])
+            self.assertTrue(ready['run_started'])
+            self.assertEqual(service.store.get('lifecycle'),'running')
+            self.assertEqual(call('Controller','gripper',{'robot':'B','state':'close','wait':False},'after-ready')['execution_status'],'running')
+        finally:
+            service.close()
+
     def test_parallel_robot_actions_idempotence_and_completion_images(self):
         self.start()
         a = self.call('Controller','gripper',{'robot':'A','state':'close','wait':False},'arm-A')
